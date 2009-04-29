@@ -1,0 +1,178 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+	<groupId>org.sonatype.hudsonbook</groupId>
+	<artifactId>book</artifactId>
+	<version>0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>content-en</artifactId>
+  <packaging>jar</packaging>
+  <name>Hudson: The Definitive Guide</name>
+  <description>A book about Hudson</description>
+  <organization>
+    <name>Sonatype, Inc.</name>
+  </organization>
+  
+  <url>http://sonatype.com/book</url>
+  
+  <properties>
+    <book.title>Hudson: The Definitive Guide</book.title>
+    <book.subtitle>A Comprehensive Guide to Hudson</book.subtitle>
+    <organization.address>800 W. El Camino Real, Suite 400, Mountain View, CA, 94040</organization.address>
+    <organization.slogan>Sonatype: The Maven Company</organization.slogan>
+    <organization.logo>http://cms.sonatype.com/sites/all/themes/sonatype/images/sonatype_logo.gif</organization.logo>
+    <copyright.year>2009</copyright.year>
+  </properties>
+
+  <build>
+    <finalName>book</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>docbook/*.xml</include>
+          <include>xsl/html_chunk.xsl</include>
+          <include>xsl/fopdf.xsl</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>docbook/*.xml</exclude>
+          <exclude>xsl/html_chunk.xsl</exclude>
+          <exclude>xsl/fopdf.xsl</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <escapeString>\</escapeString>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+	    <groupId>com.agilejava.docbkx</groupId>
+	    <artifactId>docbkx-maven-plugin</artifactId>
+        <version>2.0.7</version>
+	    <dependencies>
+	      <dependency>
+	        <groupId>docbook</groupId>
+	        <artifactId>docbook-xml</artifactId>
+	        <version>4.5</version>
+	      </dependency>
+	    </dependencies>
+        <executions>
+
+          <execution>
+            <id>generate-pdf</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate-pdf</goal>
+            </goals>
+            <configuration>
+              <imgSrcPath>${basedir}/target/classes/docbook/</imgSrcPath>
+              <foCustomization>${basedir}/target/classes/xsl/fopdf.xsl</foCustomization>
+              <postProcess>
+                <copy tofile="${project.build.directory}/site/pdf/hudson-definitive-guide.pdf">
+                  <fileset file="${project.build.directory}/docbkx/pdf/public-book.pdf"/>
+                </copy>
+              </postProcess>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-html</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate-html</goal>
+            </goals>
+            <configuration>
+              <chunkedOutput>true</chunkedOutput>
+              <chunkSectionDepth>2</chunkSectionDepth>
+              <chunkSeparateLots>1</chunkSeparateLots>
+              <useIdAsFilename>1</useIdAsFilename>
+              <htmlCustomization>${basedir}/target/classes/xsl/html_chunk.xsl</htmlCustomization>
+              <postProcess>
+                <copy todir="${project.build.directory}/site/reference">
+                  <fileset dir="${project.build.directory}/docbkx/html"/>
+                </copy>
+                <copy todir="${project.build.directory}/site">
+                  <fileset dir="${basedir}/src/site/resources"/>
+                </copy>
+                <copy todir="${project.build.directory}/site/images">
+                  <fileset dir="${basedir}/target/classes/images"/>
+                </copy>
+                <copy todir="${project.build.directory}/site">
+                  <fileset dir="src/site/resources"/>
+                </copy>
+                <copy todir="${project.build.directory}/site/reference/figs/web">
+                  <fileset dir="target/classes/docbook/figs/web"/>
+                </copy>
+              </postProcess>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+	      <sourceDirectory>${basedir}/target/classes/docbook</sourceDirectory>
+	      <includes>public-book.xml</includes>
+	      <xincludeSupported>true</xincludeSupported>
+	    </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.0.1</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>project-team</report>
+              <report>license</report>
+              <report>mailing-list</report>
+              <report>summary</report>
+              <report>cim</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+  <profiles>
+    <profile>
+      <id>publish</id>
+      <distributionManagement>
+        <site>
+          <id>sonatype-site</id>
+          <name>Sonatype Book Examples</name>
+          <url>scp://deployer@172.16.0.1/var/www/domains/sonatype.com/books/htdocs/hudson-book/</url>
+        </site>
+      </distributionManagement>
+      <properties>
+        <sonatype.site>scp://deployer@172.16.0.1/var/www/domains/sonatype.com/books/htdocs/</sonatype.site>
+      </properties>
+    </profile>
+    <profile>
+      <id>stage</id>
+      <distributionManagement>
+        <site>
+          <id>sonatype-site</id>
+          <name>Sonatype Book Examples</name>
+          <url>scp://deployer@172.16.0.1/var/www/domains/sonatype.com/books/htdocs/hudson-book-stage/</url>
+        </site>
+      </distributionManagement>
+      <properties>
+        <sonatype.site>scp://deployer@172.16.0.1/var/www/domains/sonatype.com/books/htdocs/</sonatype.site>
+      </properties>
+    </profile>
+  </profiles>
+</project>
