@@ -586,11 +586,26 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     you are currently running by referring to the version number in the bottom
     right corner of every screen.</para>
 
-    <para>The plugins you have installed will be unaffected by your Hudson
-    upgrades. However, plugins can also be upgraded, independently of the main
-    Hudson executable. You upgrade your plugins directly in the Hudson web
-    application, using the Hudson Plugin Manager. We discuss plugins in more
-    detail further on in this book.</para>
+    <para>In the more recent versions of Hudson, you can even upgrade and
+    restart Hudson directly from the web interface. Hudson will display a
+    message to let you know that a new version is available. Just click on the
+    "Update" button, and Hudson will download the latest version and restart
+    itself. Note that, for this to work, the Hudson user needs to have
+    read-write access to the Hudson installation directory.</para>
+
+    <para><figure float="" id="hudson-upgrading">
+        <title>Upgrading Hudson</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/hudson-job-directories.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>The plugins you have installed will be unaffected by your
+    Hudson upgrades. However, plugins can also be upgraded, independently of
+    the main Hudson executable. You upgrade your plugins directly in the
+    Hudson web application, using the Hudson Plugin Manager. We discuss
+    plugins in more detail further on in this book.</para>
   </section>
 
   <section>
@@ -633,6 +648,16 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     It is much better to use a short and sensible name such as
     "C:\hudson".</para>
 
+    <para><figure float="" id="hudson-windows-service">
+        <title>Installing Hudson as a service on Windows</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/hudson-job-directories.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
     <para>A short home directory path is sometimes required for other reasons,
     too. On many versions of Windows (Windows XP, Windows Server 2003,...),
     file path lengths are limited to around 260 characters. If you combine a
@@ -647,7 +672,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     <para>This approach won't always work with Windows Vista. You will need to
     open the command line prompt as an administrator (right-click, "Run as
     administrator") and to execute the hudson.exe with the "install"
-    option:<screen>C:\hudson&gt; hudson.exe install</screen></para>
+    option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
 
     <para>This basic installation will work fine in a simple context, but you
     will often need to fine-tune your service. For example, by default, the
@@ -660,6 +685,16 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     Alternatively, run the application as the system user, but use the System
     Information page in Hudson to check the ${user.dir} directory, and place
     any files that must be placed in the user home directory here.</para>
+
+    <para><figure float="" id="hudson-windows-local-user">
+        <title>Running Hudson as a local user on Windows</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figures/hudson-job-directories.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
 
     <para>You configure the finer details of the Hudson service in a file
     called hudson.xml, in the same directory as your hudson.war file. Here you
@@ -677,7 +712,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     <para>Finally, if you need to uninstall the Hudson service, you can do one
     of two things. The simplest is to run the Hudson executable with the
     "uninstall" option: C:/hudson&gt;hudson.exe uninstall The other option is
-    to use the Windows service tool <command>sc</command>:<screen>C:/&gt;sc delete hudson</screen></para>
+    to use the Windows service tool <command>sc</command>:<screen>C:/&gt;<command>sc delete hudson</command></screen></para>
   </section>
 
   <section>
