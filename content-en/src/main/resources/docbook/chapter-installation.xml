@@ -64,15 +64,14 @@ Java HotSpot(TM) Client VM (build 10.0-b22, mixed mode, sharing)</screen>Hudson
 
     <screen>C:\Program Files\Hudson&gt; <command>java -jar hudson.war</command>
 [Winstone 2008/07/01 20:54:53] - Beginning extraction from war file
-[Winstone 2008/07/01 20:55:07] - No webapp classes folder found - C:\Users\john\.hudson\war\WEB-INF\
-classes
+[Winstone 2008/07/01 20:55:07] - No webapp classes folder found - C:\Users\john
 hudson home directory: C:\Users\john\.hudson
 ...
 1/07/2008 20:55:08 hudson.model.Hudson load
 INFO: Took 35 ms to load
 ...
 [Winstone 2008/07/01 20:55:08] - HTTP Listener started: port=8080
-[Winstone 2008/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: controlPort=disabled
+[Winstone 2008/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: contr
 [Winstone 2008/07/01 20:55:08] - AJP13 Listener started: port=8009</screen>
 
     <para>This will start up an fully operational Hudson Continuous
@@ -131,8 +130,8 @@ INFO: Took 35 ms to load
     the Hudson builds, and to troubleshoot problematic builds in real
     conditions. You can do this from the command line as shown here:</para>
 
-    <para><screen>john@lambton:~$ <command>sudo groupadd build</command>
-john@lambton:~$ <command>sudo useradd --create-home --shell /bin/bash --groups build hudson</command></screen></para>
+    <para><screen>$ <command>sudo groupadd build</command>
+$ <command>sudo useradd --create-home --shell /bin/bash --groups build hudson</command></screen></para>
 
     <para>The exact details may vary depending on your environment. For
     example, you may prefer to use a graphical administration console instead
@@ -149,9 +148,9 @@ export PATH=$JAVA_HOME/bin:$PATH</programlisting></para>
     <para>It is a good idea to give this user ownership of, or at least full
     access to, the Hudson installation directory. This will make it easier for
     Hudson to download plugins and upgrades, and to upgrade itself via the web
-    interface without manual intervention on the server. </para>
+    interface without manual intervention on the server.</para>
 
-    <para><screen>john@lambton:~$ <command>sudo chown -R hudson:hudson /usr/local/hudson</command></screen>You
+    <para><screen>$ <command>sudo chown -R hudson:hudson /usr/local/hudson</command></screen>You
     will now be able to use this user to run Hudson in an isolated
     environment.</para>
   </section>
@@ -180,12 +179,12 @@ export PATH=$JAVA_HOME/bin:$PATH</programlisting></para>
     earlier.<screen>john@lambton:~$ <command>sudo su - hudson</command>
 hudson@lambton:~$ <command>java -jar /usr/local/hudson/hudson.war</command> 
 [Winstone 2008/07/16 02:11:24] - Beginning extraction from war file
-[Winstone 2008/07/16 02:11:27] - No webapp classes folder found - /home/hudson/.hudson/war/WEB-INF/classes
+[Winstone 2008/07/16 02:11:27] - No webapp classes folder found - /home/hudson/
 hudson home directory: /home/hudson/.hudson
 ...
 [Winstone 2008/07/16 02:11:31] - HTTP Listener started: port=8080
 [Winstone 2008/07/16 02:11:31] - AJP13 Listener started: port=8009
-[Winstone 2008/07/16 02:11:31] - Winstone Servlet Engine v0.9.10 running: controlPort=disabled</screen></para>
+[Winstone 2008/07/16 02:11:31] - Winstone Servlet Engine v0.9.10 running: contro</screen></para>
 
     <para>This will start the embedded servlet engine in the console window.
     The Hudson web application will now be available on port 8080. When you
@@ -253,7 +252,8 @@ Forking into background to run as a daemon.</screen></para>
     first. It is straightforward to use a tools such as
     <command>wget</command> to invoke this command from a shell script:</para>
 
-    <para><programlisting>$ nohup wget --user=johns --password=1f2frfbf --auth-no-challenge http://localhost/hudson/exit &gt;/tmp/nohup.out 2&gt;&amp;1 &amp;</programlisting></para>
+    <para><programlisting>$ nohup wget --user=johns --password=1f2frfbf \
+  --auth-no-challenge http://localhost/hudson/exit &gt;/tmp/nohup.out 2&gt;&amp;1 &amp;</programlisting></para>
 
     <para>You can now bundle these commands up into an init.d script called
     <code>hudson</code> in your <code>/etc/init.d</code> directory, along the
@@ -274,13 +274,15 @@ HUDSON_PASSWORD=t0ps3cr3t
 
 start(){
  echo -n $"Starting Hudson service: "
- su - $HUDSON_USER -c "nohup java -jar $HUDSON_WAR --httpPort=8081 --ajp13Port=8109 --prefix=/hudson --daemon --logfile=$HUDSON_LOG 2&gt;&amp;1"
+ su - $HUDSON_USER -c "nohup java -jar $HUDSON_WAR --httpPort=8081 \
+    --ajp13Port=8109 --prefix=/hudson --daemon --logfile=$HUDSON_LOG 2&gt;&amp;1"
  RETVAL=$?
 }
 
 stop(){
   echo -n "Stopping hudson: "
-  nohup wget --user=$HUDSON_ADMIN --password=$HUDSON_PASSWORD --auth-no-challenge http://localhost/hudson/exit &gt;/tmp/nohup.out 2&gt;&amp;1
+  nohup wget --user=$HUDSON_ADMIN --password=$HUDSON_PASSWORD \
+    --auth-no-challenge http://localhost/hudson/exit &gt;/tmp/nohup.out 2&gt;&amp;1
   RETVAL=$?
 }
 
@@ -362,7 +364,7 @@ Stopping Hudson service: </screen></para>
     server. Hudson works fine with any version of Tomcat from Tomcat 5.0 on.
     The easiest approach is undoubtedly to simply unzip the Tomcat binary
     distribution onto your disk and copy the <filename>hudson.war</filename>
-    file into the Tomcat <filename>webapps</filename> directory. </para>
+    file into the Tomcat <filename>webapps</filename> directory.</para>
 
     <para>You start Tomcat by running the <filename>startup.bat</filename> or
     <filename>startup.sh</filename> script in the Tomcat bin directory. Hudson
@@ -412,7 +414,7 @@ ProxyPassReverse  /hudson  http://localhost:8081/hudson
 ProxyRequests     Off
 
 # Local reverse proxy authorization override
-# Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
+# Most unix distribution deny proxy by default
 &lt;Proxy http://localhost:8081/hudson*&gt;
   Order deny,allow
   Allow from all
@@ -621,6 +623,24 @@ HUDSON_HOME=/data/hudson
     and build histories. This directory should be backed up frequently and
     automatically. The Hudson executable itself is less critical, as it can
     easily be reinstalled without affecting your build environment.</para>
+
+    <para>Hudson provides a useful feature for backing up your data, in the
+    "Manage Hudson" screen. The "Backup Manager" screen (see <xref
+    linkend="hudson-backup" />) will let you back up all of your Hudson data
+    (including both configuration and build history) to a file of your choice.
+    You can then restore this data if required via the same screen. Note that
+    this will effectively shut down Hudson while the backup file is created,
+    so it's not a good idea to do this during peak time usage. </para>
+
+    <para><figure float="" id="hudson-backup">
+        <title>Backing up the Hudson files</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="figs/web/hudson-backup.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </section>
 
   <section>
@@ -638,7 +658,7 @@ HUDSON_HOME=/data/hudson
     restart Hudson directly from the web interface. Hudson will display a
     message to let you know that a new version is available (see <xref
     linkend="hudson-upgrading" />). Just click on the "Update" button, and
-    Hudson will download the latest version. </para>
+    Hudson will download the latest version.</para>
 
     <para><figure float="" id="hudson-upgrading">
         <title>Upgrading Hudson</title>
