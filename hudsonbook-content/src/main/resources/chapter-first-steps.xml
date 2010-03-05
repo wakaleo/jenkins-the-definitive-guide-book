@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-first-steps">
+  <title>Your first steps with Hudson</title>
+
+  <section>
+    <title>Introduction</title>
+
+    <para>In this chapter, we are going to take a quick guided tour through
+    some of Hudson's main features. You'll get to see first-hand just how easy
+    it is to set up a Hudson build job. And by the end of the chapter, you
+    will also be keeping tabs on test results and generating javadoc and code
+    coverage reports! We've got a lot of ground to cover, so let's get
+    started!</para>
+  </section>
+
+  <section id="sect-first-steps-environment">
+    <title>Preparing your environment</title>
+
+    <para>There are two ways you can tackle this chapter. You can read through
+    it without touching a keyboard, just to get an overview of what Hudson is
+    about. Or you can get your hands dirty, and follow along on your own
+    machine. If you want to do the latter, you'll need to download the
+    pre-bundled Subversion repository from the book website. We explain how to
+    set it all up further on. On the other hand, if you just want to read
+    along, you can safely skip this section and go to the next one, where all
+    the action starts.</para>
+
+    <para>In this chapter, we'll be using Hudson to build a Java application
+    using Maven. Maven is a widely-used build tool in the Java world, with
+    many powerful features such as declarative dependency management,
+    convention over configuration, and a large range of plugins. We'll also be
+    using a Subversion repository to store the source code. In fact,
+    Subversion, along with a recent version of Java, are the only things you
+    will need to install on your machine. We will also be using a recent Java
+    JDK and Maven 2.2.1, but if you don't have these installed on your
+    machine, don't fret! As we will see, Hudson will install them for
+    you.</para>
+
+    <para>The first thing you will need to install, if you haven't already got
+    one installed, is a recent version of Java. The JRE (Java Runtime
+    Environment) will do fine for now, though if you are doing any other Java
+    development work on your machine you will need the full Java Development
+    Kit (JDK). You can download both the JDK and the JRE installers from the
+    Java web site (<uri>http://java.sun.com/javase/downloads/index.jsp</uri>)
+    (see <xref linkend="fig-installing-java" />).</para>
+
+    <para><figure id="fig-installing-java">
+        <title>Installing Java</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/java-install.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/java-install.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>To run this lab on your own machine, you will also need to run
+    a local Subversion server on your workstation. You can download a bundled
+    Subversion repository from the book's website. Don't worry if you've never
+    done this before - it's not a big deal, and we'll step you through the
+    process. Subversion comes pre-installed on Mac OS X and many flavors of
+    Linux. Just make sure you have the Subversion server tools
+    (<command>svnserve</command> in particular) installed. You can check this
+    by running the <command>svnserve</command> command from the command line
+    as follows:<screen>piwakawaka:~ johnsmart$ <command>svnserve --version</command>
+svnserve, version 1.6.2 (r37639)
+   compiled May 14 2009, 14:34:54
+
+Copyright (C) 2000-2009 CollabNet.
+Subversion is open source software, see http://subversion.tigris.org/
+This product includes software developed by CollabNet (http://www.Collab.Net/).
+
+The following repository back-end (FS) modules are available:
+
+* fs_base : Module for working with a Berkeley DB repository.
+* fs_fs : Module for working with a plain file (FSFS) repository.
+
+Cyrus SASL authentication is available.
+</screen></para>
+
+    <para>If you need to, you can find the Subversion installation packages,
+    or installation instructions, for your operation system from the
+    Subversion website (<uri>http://subversion.apache.org</uri>). If you are
+    installing Subversion on Windows, make sure you only install the basic
+    command-line Subversion tools (<command>svn</command> and
+    <command>svnserve</command> in particular). Some of the Windows
+    installation packages, such as those from Collabnet and VisualSVN, will
+    install Subversion as a service on your workstation and set up an empty
+    repository for you. This is great if you are installing a Subversion
+    server, and if you are familiar with Subversion administration, but for
+    our purposes it is overkill, and will interfere with the instructions we
+    provide.</para>
+
+    <para>The SlikSVN installer
+    (<uri>http://www.sliksvn.com/en/download</uri>) is better choice in this
+    regard, and will only install the bare-bones Subversion command-line
+    tools, which is exactly what we want. However, be sure to choose the
+    'Complete' setup type (see <xref linkend="fig-sliksvn-install" />), as
+    this is the only one that includes the <command>svnserve</command>
+    tool.</para>
+
+    <para><figure id="fig-sliksvn-install">
+        <title>If you use the Slik Subversion installer for Windows, be sure
+        to select the 'Complete' setup type</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/sliksvn-install.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/sliksvn-install.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have installed Subversion, you should check that it is
+    working properly. Open a command prompt and run <command>svnserve
+    -version</command>. You should get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
+svnserve, version 1.6.9 (SlikSvn:tag/1.6.9@902044) WIN32
+   compiled Jan 22 2010, 10:39:27
+
+Copyright (C) 2000-2009 CollabNet.
+Subversion is open source software, see http://subversion.tigris.org/
+This product includes software developed by CollabNet (http://www.Collab.Net/).
+
+The following repository back-end (FS) modules are available:
+
+* fs_base : Module for working with a Berkeley DB repository.
+* fs_fs : Module for working with a plain file (FSFS) repository.
+
+Cyrus SASL authentication is available.</screen></para>
+
+    <para>Now you can download the sample repository from the book web site.
+    This repository comes as a zip file called svn-repos.zip, which you will
+    find in the <filename>resources/chapter-first-steps</filename> directory
+    of the book resources bundle. Unzip this file into your home directory.
+    Then, open up a command-line prompt and run the following command:<screen><command>svnserve -d -r svn-repos</command></screen></para>
+
+    <para>This will start a local Subversion server . In a Linux or Mac OS X
+    environment, the process will run as a daemon in the background. On
+    Windows, it will just run in the command prompt until you stop it manually
+    using Control-C (see <xref linkend="fig-running-svnserve" />). If your are
+    running Subversion on Windows, make sure you don't shut this
+    window!</para>
+
+    <para><figure id="fig-running-svnserve">
+        <title>Running the svnserve Subversion server in Windows</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/svnserve-running.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/svnserve-running.pdf" scalefit="0"
+                       width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Finally, just to make sure everything is working, open another
+    command prompt and run the <command>svn list</command> command. This will
+    display a listing of the top-level directory in our Subversion repository,
+    which should look something like this:<screen>C:\Documents and Settings\Owner&gt; svn list svn://localhost/gameoflife/trunk
+.classpath
+.project
+.settings/
+pom.xml
+src/</screen></para>
+
+    <para>If you are running Windows and prefer a graphical interface, you can
+    also install TortoiseSVN. TortoiseSVN
+    (<uri>http://tortoisesvn.tigris.org/</uri>) is an excellent graphical
+    client for Subversion that integrates right into Windows Explorer, letting
+    you update your Subversion workspace, commit source code changes, and more
+    using the contextual menu in Windows Explorer.</para>
+
+    <para>This is all you really need to follow along for the rest of the
+    chapter. So now, let's take Hudson for a spin.</para>
+  </section>
+
+  <section>
+    <title>Starting up Hudson</title>
+
+    <para>Probably the easiest way to run Hudson for the first time is to use
+    the Java Web Start link provided on the Hudson website. This will start up
+    Hudson on port 8080, and let you experiment with it as if it were
+    installed locally. All you need for this to work is a recent (Java 6 or
+    better) version of the Java Runtime Environment (JRE).</para>
+
+    <para>To get started, go to the 'Meet Hudson' page on the Hudson website
+    (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>)<footnoteref
+    linkend="footnote-browsers" /><footnote id="footnote-browsers">
+        <para>Use a modern browser such as Firefox, Chrome or Safari - Java
+        Web Start seems to work the most smoothly on Firefox.</para>
+      </footnote>. On this page, you will find a 'Test Drive' section with a
+    'Launch' button'. When you click on this link in Firefox, the browser will
+    ask if you want to open a file called 'hudson.jnlp' using Java Web Start
+    (see <xref linkend="fig-hudson-webstart-page" />). Click on OK - this will
+    download Hudson and start it up on your machine.</para>
+
+    <para>In some browsers, clicking on this button might simply download the
+    JNLP file. In Internet Explorer, you may even need to right click on the
+    link and select 'Save Target As' to save the JNLP file. In both of these
+    cases, when you click on the downloaded file, Java Web Start will download
+    and start Hudson.</para>
+
+    <para><figure id="fig-hudson-webstart-page">
+        <title>Running the svnserve Subversion server in Windows</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-webstart.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/hudson-webstart.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>Alternatively, you can simply download the latest Hudson WAR
+    file from the Hudson website and run it from the command line, as shown
+    here:</para>
+
+    <para><screen>C:\Documents and Settings\Owner&gt; <command>java -jar hudson.war</command></screen>Hudson
+    should now be running on your machine. Go to
+    <uri>http://localhost:8080</uri> and check it out. You should see a screen
+    like the one shown in <xref linkend="fig-hudson-start" os="" />. You are
+    now ready to take your first steps with Hudson!</para>
+
+    <para><figure id="fig-hudson-start">
+        <title>Hudson should be running on port 8080</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-start.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/hudson-start.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </section>
+
+  <section>
+    <title>Configuring the tools</title>
+
+    <para>Before we get started, we do need to do a little configuration. More
+    precisely, we need to tell Hudson about the build tools and JDK versions
+    we will be using for our builds.</para>
+
+    <para>Click on the 'Manage Hudson' link on the home page. This will take
+    you to the 'Manage Hudson' page, the central one-stop-shop for all your
+    Hudson configuration. From this screen, you can configure your Hudson
+    server, install and upgrade plugins, keep track of system load, manage
+    distributed build servers, and more! For now, however, we'll keep it
+    simple. Just click on the 'Configure System' link at the top of the
+    list.</para>
+
+    <para>This will take you to Hudson's main configuration screen. From here
+    you can configure everything from security configuration and build tools
+    to email servers and version control systems. In particular, you will need
+    to configure the tools you use to build your software. The sample
+    application we will be building is a Java application. So in this case,
+    all we need to do is to set up a recent JDK and Maven installation.</para>
+
+    <para>Let's configure Maven first. Hudson provides great out-of-the-box
+    support for Maven. Scroll down until you reach the 'Maven' section in the
+    'Configure System' screen (see <xref linkend="hudson-maven-jdk" />). If
+    you already have Maven installed on your machine, you can provide the path
+    in the MAVEN_HOME field. Otherwise, just tick the 'Install automatically'
+    check box. This option tells Hudson to download and install Maven from the
+    Apache web site the first time a build job needs it, which can come in
+    very handy when you are installing a new build server, or a remote agent
+    for distributed builds. Just choose the Maven version you want to install
+    and Hudson will do the rest. You will also need to give a name for your
+    Maven version (imaginatively called "Maven 2.2.1" in the example), so that
+    you can refer to it in your build jobs.</para>
+
+    <para><figure id="fig-hudson-maven-jdk">
+        <title>Configuring a Maven installation and a JDK</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-maven-jdk.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-maven-jdk.pdf" scalefit="0"
+                       width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have configured your Maven installation, you will also
+    need to configure a JDK installation. Again, if you have a Java JDK (as
+    opposed to a Java Runtime Environment,) already installed on your
+    workstation, you can simply provide the path to your JDK in the JAVA_HOME
+    field. Otherwise, you can ask Hudson to download the JDK from the
+    <uri>http://java.sun.com</uri> website the first time a build job requires
+    it. This is similar to the automatic Maven installation feature - just
+    pick the JDK version you need and Hudson will take care of all the
+    logistics. However, for licensing reasons, you will also need to tick a
+    check box to indicate that you agree with the Java SDK License
+    Agreement.</para>
+
+    <para>The last thing we really need to set up is notification. When a
+    Hudson build breaks, and when it works again, it will send out email
+    messages to the team to spread the word. Using plugins, you can also get
+    it to send instant messages or SMS messages, post entries on Twitter, or
+    get people notified in a few other ways. It all depends on what works best
+    for your organizational culture.</para>
+
+    <para>In this example, we are going to use simple email notification,
+    which is supported by Hudson out of the box. You need to configure this in
+    the 'Email Notification' section (see <xref
+    linkend="fig-hudson-email-config" />) of the 'System Configuration'
+    screen. The example given here shows how you might set up email
+    notification using a corporate SMTP server. In the 'Hudson URL' field, you
+    also need to put a URL that can be used to access your Hudson instance
+    from beyond your own machine. Hudson needs this URL to build proper
+    notification messages. If you are just testing Hudson for now, you can
+    leave this at '<uri>http://localhost:8080</uri>', but in this case the
+    notification messages will only work on your own machine.</para>
+
+    <para><figure id="fig-hudson-email-config">
+        <title>Configuring email notification</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-email-config.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-email-config.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>The email configuration can be a little tricky to set up on
+    your own, especially if you are working on a Windows box. If you are in a
+    corporate environment and have an email server handy, you can use that. If
+    you are running on Linux, chances are you already have a local email
+    server running, and you can just use <uri>localhost</uri> as your mail
+    server. Another possiblity is to use a In <xref
+    linkend="chapter-configuration" />, we even look at how to set it up using
+    a GMail account (see <xref linkend="sect-configuration-email" />).
+    However, don't worry if none of these solutions work for you - just follow
+    along for the email notification sections and the rest of the material we
+    cover will still work just fine.</para>
+
+    <para>That is all we need to configure at this stage. Go to the bottom of
+    the screen and click on 'Save'. You are now ready to set up your first
+    Hudson build job!</para>
+  </section>
+
+  <section>
+    <title>Your first Hudson build job</title>
+
+    <para>Build jobs are at the heart of the Hudson build process. Simply put,
+    you can think of a Hudson build job as a particular task or step in your
+    build process. It may involve just compiling your source code and running
+    your unit tests, or you may want a build job to do other related tasks,
+    such as integration tests, measuring code coverage or code quality
+    metrics, generating technical documentation, or an automated deployment to
+    an application server. A real project typically requires many separate but
+    related build jobs.</para>
+
+    <para>Our sample application is a simple Java implementation of John
+    Conway's "Game Of Life".<footnoteref
+    linkend="footnote-game-of-life" /><footnote id="footnote-game-of-life">
+        <para>See http://en.wikipedia.org/wiki/Conway's_Game_of_Life</para>
+      </footnote>. The Game of Life is a mathematical game which takes place
+    on a two dimensional grid of cells, which we will refer to as the
+    Universe. Each cell can be either alive or dead. Cells interact with their
+    direct neighbours to determine whether they will live or die in the next
+    generation of cells. For each new generation of cells, the following rules
+    are applied:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Any live cell with fewer than two live neighbours dies of
+        underpopulation.</para>
+      </listitem>
+
+      <listitem>
+        <para>Any live cell with more than three live neighbours dies of
+        overcrowding.</para>
+      </listitem>
+
+      <listitem>
+        <para>Any live cell with two or three live neighbours lives on to the
+        next generation.</para>
+      </listitem>
+
+      <listitem>
+        <para>Any dead cell with exactly three live neighbours becomes a live
+        cell.</para>
+      </listitem>
+    </orderedlist>
+
+    <para>Our application is a Java module, built using Maven, that implements
+    the core business logic of the Game of Life. We'll worry about the user
+    interfaces later on. For now, let's see how we can automate this build in
+    Hudson.</para>
+
+    <para>For our first build job, we will keep it simple: we are just going
+    to compile and test our sample application. Click on the 'New Job' link.
+    You should get to a screen similar to <xref
+    linkend="fig-first-build-job" />. Hudson supports several different types
+    of build job. The two most commonly-used are the free-style builds and the
+    Maven 2 builds. The free-style projects allow you to configure just about
+    any sort of build job: they are highly flexible and very configurable. The
+    Maven 2 builds understand the Maven project structure, and can use this to
+    let you set up Maven build jobs with less effort and a few extra features.
+    Nevertheless, although our project does use Maven, we are going to use a
+    free-style build job, just to keep things simple and general to start
+    with. So choose 'Build a free-style software project', as shown in <xref
+    linkend="fig-first-build-job" />.</para>
+
+    <para>You'll also need to give your build job a sensible name. In this
+    case, call it 'gameoflife-default', as it will be the default CI build for
+    our Game Of Life project.</para>
+
+    <para><figure id="fig-first-build-job">
+        <title>Setting up your first build job in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/hudson-new-job.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Once you click on OK, Hudson will display the project configuration
+    screen (see <xref linkend="fig-new-job-svn" />).</para>
+
+    <para>In a nutshell, Hudson works by checking out the source code of your
+    project and building it in it's own workspace. So the next thing you need
+    to do is to tell Hudson where it can find the source code for your
+    project. You do this in the 'Source Code Managment' section. Hudson
+    provides support for CVS and Subversion out of the box, and many others
+    such as Git, Mercurial, ClearCase, Perforce and many more via
+    plugins.</para>
+
+    <para>For this project, we will be getting the source code from the local
+    Subversion repository we set up earlier (so make sure you have this
+    Subversion repository up and running, as we described in <xref
+    linkend="sect-first-steps-environment" />). Choose 'Subversion' and enter
+    <uri>svn://localhost/gameoflife/trunk</uri> as the Repository URL (see
+    <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
+    Directory Module' field. This makes Hudson check out the source code
+    directly into the build job's workspace. If you don't do this, Subversion
+    will check the source code out to a subdirectory called
+    <filename>trunk</filename>. Using the build job's workspace makes some of
+    the other options a little simpler to configure. You can leave all of the
+    other options up until here with their default values.</para>
+
+    <para><figure id="fig-new-job-svn">
+        <title>Telling Hudson where to find the source code</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-freestyle-svn.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-freestyle-svn.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Once we have told Hudson where to find the source code for our
+    application, we need to tell it how often it should check for updates. We
+    want Hudson to monitor the repository and start a build whenever any
+    changes have been committed. This is by far the most common way to set up
+    a build job, and certainly the most useful in a Continuous Integration
+    context, as it provides fast feedback if the build fails. Other approaches
+    include building on regular intervals (for example, once a day) or
+    requiring a user to kick of the build manually.</para>
+
+    <para>We configure all of this in the 'Build Triggers' section (see <xref
+    linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option and enter
+    '* * * * *' (that's five asterisks) in the Schedule box. Hudson schedules
+    are configured using the <command>cron</command> syntax, well-known in the
+    Unix world. The <command>cron</command> syntax consists of five fields
+    separated by white space, indicating respectivly the minute (0-59), hour
+    (0-23), day of the month (1-31), month (1-12) and the day of the week
+    (0-7, with 0 and 7 being Sunday). The star is a wildcard character which
+    accepts any valid value for that field. So five stars basically means
+    "every minute of every hour of every day". You can also provide ranges of
+    values: "* 9-17 * * *" would mean "every minute of every day, between 9am
+    and 5pm". You can also space out the schedule using intervals: "*/5 * * *
+    *" means "every 5 minutes, for example. Finally, there are some other
+    convenient short-hands, such as "@daily" and "@hourly".</para>
+
+    <para>Don't worry if your Unix skills are a little rusty - if you click on
+    the blue question mark icon on the side of the schedule box, Hudson will
+    bring up a very complete refresher.</para>
+
+    <para><figure id="fig-new-job-triggers">
+        <title>Scheduling the build jobs</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-triggers.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-triggers.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>The next step is to configure the actual build itself. In a
+    free-style build job, you can break down your build job into a number of
+    build steps. This makes it easier to organize builds in clean, separate
+    stages. For example, a build might run a suite of functional tests in one
+    step, and then tag the build in a second step if all of the functional
+    tests succeed. In technical terms, a build step might involve invoking an
+    Ant task or a Maven target, or running a shell script. There are also many
+    Hudson plugins that let you use additional types of build steps.</para>
+
+    <para>For now, we just want to run a simple Maven build. Scroll down to
+    the 'Build' section and click on the 'Add Build Step' and choose 'Invoke
+    top-level Maven targets' (see <xref linkend="fig-new-job-build-step" />).
+    Then enter 'clean test' in the Goals. If you are not familiar with Maven,
+    this will delete any previous build artifacts, compile our code and run
+    our unit tests.</para>
+
+    <para><figure id="fig-new-job-build-step">
+        <title>Adding a build step</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-build-step.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-build-step.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>By default, this build job will fail if the code does not
+    compile or if any of the unit tests fail. That's the most fundamental
+    thing that you'd expect of any build server. But Hudson also does a great
+    job of helping you display your test results and test result
+    trends.</para>
+
+    <para>The defacto standard for test reporting in the Java world is an XML
+    format used by JUnit. This format is also used by many other Java testing
+    tools, such as TestNG, Spock and Easyb. Hudson understands this format, so
+    if your build produces JUnit XML test results, Hudson can generate nice
+    graphical test reports and statistics on test results over time, and also
+    let you view the details of any test failures. Hudson also keeps track of
+    how long your tests take to run, both globally, and per test - this can
+    come in handy if you need to track down performance issues.</para>
+
+    <para>So the next thing we need to do is to get Hudson to keep tabs on our
+    unit tests.</para>
+
+    <para>Go to the 'Post-build Actions' section (see <xref
+    linkend="fig-new-job-test-reports" />) and tick 'publish JUnit test result
+    report' checkbox. When Maven runs unit tests in a project, it
+    automatically generates the XML test reports in a directory called
+    <filename>surefire-reports</filename> in the <filename>target</filename>
+    directory. So enter "target/surefire-reports/*.xml" in the 'Test report
+    XMLs' field.</para>
+
+    <para><figure id="fig-new-job-test-reports">
+        <title>Configuring JUnit test reports and email notification</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-tests.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-tests.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>One of the main purposes of a CI server is to notify the
+    development team when something goes wrong. So, in our last step, we need
+    to tell Hudson what sort of notification system we want for this
+    build.</para>
+
+    <para>By default, Hudson will send an email out whenever a build fails for
+    the first time, and then when the build is fixed. Typically, you would
+    configure Hudson to derive or lookup the email addresses based on the SCM
+    usernames, possibly hooking in to an enterprise LDAP repository - this
+    way, Hudson will always send a notification to the developer who's
+    commited changes broke the build. You may also want to list the entire
+    development team in the Recipients list, just to keep people in the loop.
+    If you're following along, and managed to configure the email notification
+    earlier on, you can just put your own email address here to see what the
+    Hudson messages look like.</para>
+
+    <para>Now we're done - just press Save. Our build job should now be ready
+    to run. So let's see it in action!</para>
+  </section>
+
+  <section>
+    <title>Our first build job in action</title>
+
+    <para>Once you save your new build job, Hudson will display the home page
+    for this job (see <xref linkend="fig-new-job-running" />). This is where
+    Hudson displays details about the latest build results and the build
+    history.</para>
+
+    <para>If you wait a minute or so, the build should kick off automatically
+    - you can see the stripy progress bar in the 'Build History' section in
+    the bottom left hand corner of <xref linkend="fig-new-job-running" />. Or,
+    if you are impatient, you can also trigger the build manually using the
+    'Build Now' button.</para>
+
+    <para><figure id="fig-new-job-running">
+        <title>Your first build job running</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-running.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-running.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>The build will also now figure proudly on your Hudson server's home
+    page (see <xref linkend="fig-hudson-home-job-list" />). This page shows a
+    summary of all of your build jobs, including the current build status and
+    general state of heath of each of your builds. It tells you when each
+    build ran successfully for the last time, and when it last failed, and
+    also the result of the last build.</para>
+
+    <para>Once of Hudson's specialities is the way it lets you get an idea of
+    build behaviour over time. For example, Hudson uses a weather metaphor to
+    help give you an idea of the stability of your builds. Essentially, the
+    more your builds fail, the worse the weather gets. This helps you get an
+    idea of whether a particular broken build is an isolated event, or if the
+    build is breaking on a regular basis, in which case it might need some
+    special attention.</para>
+
+    <para>You can also manually trigger a build job here, using the build
+    schedule button (that's the one that looks a bit like a green play button
+    on top of a clock).</para>
+
+    <para><figure id="fig-hudson-dashboard">
+        <title>The Hudson dashboard</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-home-job-list.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-home-job-list.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>When the build finishes, the ball in the Build History box
+    becomes solid blue. This means the build was a success. Build failures are
+    generally indicated by a red ball. For some types of project, you can also
+    distinguish between a build error (such as a compiler error), indicated by
+    a red ball, and other sorts of build failures, such as unit test failures
+    or insufficient code coverage, which are indicated by a yellow ball. There
+    are also some other details about the latest test results, when the last
+    build was run, and so on. But before we look at the details, let's get
+    back to the core business model of a Continuous Integration server -
+    kicking off builds when someone changes the code!</para>
+
+    <para>We are going to commit a code change to Subversion and see what
+    happens. First, you will need to check out a copy of the source code from
+    the Subversion repository we set up. You can do this is from the command
+    line as shown here:<screen>$ <command>svn co svn://localhost/gameoflife/trunk gameoflife</command>
+...
+A    gameoflife/src
+A    gameoflife/src/test
+A    gameoflife/src/test/java
+A    gameoflife/src/test/java/com
+A    gameoflife/src/test/java/com/ciwithhudson
+A    gameoflife/src/test/java/com/ciwithhudson/gameoflife
+A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain
+A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/CellTest.java
+A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/UniverseTest.java
+A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/GridTest.java
+A    gameoflife/src/test/resources
+A    gameoflife/src/main
+A    gameoflife/src/main/java
+A    gameoflife/src/main/java/com
+A    gameoflife/src/main/java/com/ciwithhudson
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Cell.java
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Universe.java
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Grid.java
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
+A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/DeadCell.java
+A    gameoflife/src/main/resources
+A    gameoflife/pom.xml
+...
+Checked out revision 6.</screen></para>
+
+    <para>This will download the source code for our demo project into the
+    <filename>gameoflife</filename> directory. Now, if we make any changes, we
+    will be able to push them onto the Subversion repository and see if Hudson
+    can pick them up.</para>
+
+    <para>So let's make a change. The idea is to introduce a code change that
+    will cause the unit tests to fail. If your Java is a bit rusty, don't
+    worry, you won't need to know any Java to be able to break the build -
+    just follow the instructions!</para>
+
+    <para>First of all, open the <filename>LivingCell.java</filename> file,
+    which you will find in the
+    <filename>gameoflife-core/src/main/java/com/ciwithhudson/gameoflide/domain</filename>
+    directory. Open this file in your favorite text editor. You should see
+    something like this:<programlisting>package com.ciwithhudson.gameoflife.domain;
+
+public class LivingCell extends Cell {
+
+    public static final char SYMBOL = '+';
+    
+    @Override
+    public Boolean isAlive() {
+        return true;
+    }
+
+    @Override
+    public Cell nextGeneration(int neighbourCount) {
+        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
+            return new LivingCell();
+        } else {
+            return new DeadCell();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(SYMBOL);
+    }
+    
+}</programlisting></para>
+
+    <para>The application can print the state of the grid as a text array.
+    Currently, the application prints our live cells as a plus character
+    ('+'), and dead cells appear as a minus character ('-'). So a five-by-five
+    grid containing a single living cell in the center would look like
+    this:<screen>-----
+--+--
+-----</screen> Now users have asked the application - they want stars ('*')
+    instead of pluses! So we are going to make a slight change to the
+    <code>LivingCell</code> class method, and rewrite it as follows (the
+    modified line is in <command>bold</command>):</para>
+
+    <para><programlisting>public class LivingCell extends Cell {
+
+    <command>public static final char SYMBOL = '*';</command>
+    
+    @Override
+    public Boolean isAlive() {
+        return true;
+    }
+
+    @Override
+    public Cell nextGeneration(int neighbourCount) {
+        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
+            return new LivingCell();
+        } else {
+            return new DeadCell();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(SYMBOL);
+    }
+    
+}</programlisting>Save this change, and then commit them to the Subversion
+    repository by running "<command>svn commit</command>" from the
+    <filename>babble</filename> directory: <screen>$ <command>svn commit -m "Live cells should display as stars and not pluses"</command>
+Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
+Transmitting file data .
+Committed revision 7.</screen></para>
+
+    <para>Now go back to the Hudson web page. After a minute or so, a new
+    build should kick off, and fail. In fact, there are several other places
+    which are affected by this change, and the regression tests related to
+    these features are now failing.</para>
+
+    <para>If you set up email notification, you should also have received an
+    email message about the build failure and a link to the failed build on
+    the Hudson server. Back on the build job home page, you will see a second
+    build in the build history with an ominous red ball (see <xref
+    linkend="fig-new-job-failed" />) - this tells you that the latest build
+    has failed.</para>
+
+    <para>You might also notice some clouds next to the Build History title -
+    this is the same "weather" icon that we saw on the home page, and serves
+    the same purpose - to give you a general ideo of how stable your build is
+    over time.</para>
+
+    <para><figure id="fig-new-job-failed">
+        <title>A failed build</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-failed.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-failed.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>If you click on the new build history entry, Hudson will give
+    you some more details about what went wrong (see <xref
+    linkend="fig-new-job-failure-details" />). Hudson tells us that there were
+    11 new test failures in this build, something which can be seen at a
+    glance in the Test Result Trend graph - red indicates test failures. You
+    can even see at a glance which tests are failing, and how long they have
+    been broken.</para>
+
+    <para><figure id="fig-new-job-failure-details">
+        <title>A failed build</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-failure-details.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-failure-details.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>If you want to know exactly what went wrong, that's easy enough to
+    figure out as well. If you click on the failed test classes, Hudson brings
+    up the actual details of the test failures (see <xref
+    linkend="fig-hudson-new-job-test-failure-details" />), which is a great
+    help when it comes to reproducing and fixing the issue. Hudson displays a
+    host of information about the failed test in a very readable form,
+    including the error message the test produced, the stack trace, how long
+    the test has been broken, and how long it took to run.</para>
+
+    <para><figure id="fig-hudson-new-job-test-failure-details">
+        <title>Details about a failed test</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-test-failure-details.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-test-failure-details.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>Now let's fix the build. To make things simple, we'll just back
+    out our changes and recommit the code in it's original state (the end
+    users just changed their mind about the asterisks, anyway). So just undo
+    the changes you made to the <filename>LivingCell</filename> class (again,
+    the changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
+
+    <command>public static final char SYMBOL = '+';</command>
+    
+    @Override
+    public Boolean isAlive() {
+        return true;
+    }
+
+    @Override
+    public Cell nextGeneration(int neighbourCount) {
+        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
+            return new LivingCell();
+        } else {
+            return new DeadCell();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(SYMBOL);
+    }
+    
+}</programlisting></para>
+
+    <para>When you've done this, commit your changes again:<screen>$ <command>svn commit -m "Fixed broken unit tests"</command>
+Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
+Transmitting file data .
+Committed revision 8.</screen>Once you've committed these changes, Hudson
+    should pick them up and kick off a build. Once this is done, you will be
+    able to see the fruit of your work on the build job home page (see <xref
+    linkend="fig-new-job-fixed-build" />) - the build status is blue again and
+    all is well. Also notice the way we are building up a trend graph showing
+    the number of succeeding unit tests over time - this sort of report really
+    is one of Hudson's strong points.</para>
+
+    <para><figure id="fig-new-job-fixed-build">
+        <title>Now the build is back to normal</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-new-job-fixed.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-new-job-fixed.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </section>
+
+  <section>
+    <title>More reporting - displaying Javadocs</title>
+
+    <para>For many Java projects, Javadoc comments are an important source of
+    low-level technical documentation. There are even tools, such as UmlGraph,
+    that let you produce Javadoc with embedded UML diagrams to give you a
+    better picture of how the classes fit together in the application. This
+    sort of technical documentation has the advantage of being cheap to
+    produce, accurate and always up-to-date.</para>
+
+    <para>Hudson can integrate Javadoc API documentation directly into the
+    Hudson web site. Often, this sort of task is performed in a separate build
+    job, but for simplicity we are going to add another build step to the
+    gameoflife-default build job to generate and display Javadoc documention
+    for the Game Of Life API.</para>
+
+    <para>Start off by going into the 'gameoflife-default' configuration
+    screen again. Click on 'Add build step', and add a new build step to
+    'Invoke top level Maven targets' (see <xref
+    linkend="fig-hudson-freestyle-javadoc-build-step" />). In the Goals field,
+    place <command>javadoc:javadoc</command> - this will tell Maven to
+    generate the Javadoc documentation.</para>
+
+    <para><figure id="fig-hudson-freestyle-javadoc-build-step">
+        <title>Adding a new build step and report to generate Javadoc</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-freestyle-javadoc-build-step.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-freestyle-javadoc-build-step.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Now go to the 'Post-build Action' and tick the 'Publish Javadoc'
+    checkbox. In the 'Javadoc directory' field, enter
+    <filename>target/site/apidocs</filename> - this is where Maven will place
+    the Javadocs it generates. If you tick 'Retain Javadoc for each successful
+    build, Hudson will also keep track of the Javadocs for previous builds -
+    not always useful, but it can come in handy at times.</para>
+
+    <para>Now trigger a build manually. You can do this either from the build
+    job's home page (using the "Build Now" link), or directly from the server
+    home page. Once the build is finished, open the build job summary page.
+    You should now see a Javadoc link featuring prominently on the screen -
+    this link will open the latest version of the Javadoc documentation (see
+    <xref linkend="fig-hudson-javadoc-results" />). You will also see this
+    link on the build details page, where it will point to the Javadoc for
+    that particular build, if you have asked Hudson to store Javadoc for each
+    build.</para>
+
+    <para><figure id="fig-hudson-javadoc-results">
+        <title>Hudson will add a Javadoc link to your build results</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-build-with-javadoc.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-build-with-javadoc.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </section>
+
+  <section>
+    <title>Adding Code Coverage and other metrics</title>
+
+    <para>Reporting is one of Hudson's strong points. We have seen how easy it
+    is to display test results and to publish Javadocs, but you can publish a
+    large number of other very useful reports using Hudson's plugins.</para>
+
+    <para>Plugins are another one of Hudson's selling points - there are
+    plugins for doing just about anything, from integrating new build tools or
+    version control systems to notification mechanisms and reporting. In
+    addition, Hudson plugins are very easy to install and integrate smoothly
+    into the existing Hudson architecture.</para>
+
+    <para>To see how the plugins work, we are going to integrate code coverage
+    metrics using the Cobertura plugin. Code Coverage is an indication of how
+    much of your application code is actually executed during your tests - it
+    can be a useful tool in particular for finding areas of code that have not
+    been tested by your test suites. It can also give some indication as to
+    how well a team is applying good testing practices such as test-driven
+    development or behaviour-driven development. </para>
+
+    <para>Cobertura is an open source code coverage tool that works well with
+    both Maven and Hudson. Our Maven demonstration project is already
+    configured to record code coverage metrics, so all we need to do is to
+    install the Hudson Cobertura plugin and generate the code coverage metrics
+    for Hudson to record and display.</para>
+
+    <para><figure id="fig-hudson-plugin-manager">
+        <title>Hudson has a large range of plugins available</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-plugin-manager.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-plugin-manager.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>To install a new plugin, go to the 'Manage Hudson' page and
+    click on the 'Manage Plugins' entry. This will display a list of the
+    available plugins as well as the plugins already installed on your server
+    (see <xref linkend="fig-hudson-plugin-manager" />). We are interested in
+    the Cobertura plugin, so go to the 'Available' tab and scroll down until
+    you find the 'Cobertura Plugin' entry in the 'Build Reports section. Click
+    on the check box and then click on the 'Install' button at the bottom of
+    the screen.</para>
+
+    <para>This will download and install the plugin for you. Once it is done,
+    you will need to restart your Hudson instance to see the fruits of your
+    labor. When you have restarted Hudson, go to the configuration page for
+    the 'gameoflife-default' build job.</para>
+
+    <para>To set up code coverage metrics in our project, we need to do two
+    things. First we need to generate the Cobertura coverage data in an XML
+    form that Hudson can use; then we need to configure Hudson to display the
+    coverage reports.</para>
+
+    <para>Our Game Of Life project already has been configured to generate XML
+    code coverage reports if we ask it. All you need to do is to run
+    <command>mvn cobertura:cobertura</command> to generate the reports in XML
+    form. Cobertura can also generate HTML reports, but in our case we will be
+    letting Hudson take care of the reporting, so we can save on build time by
+    not generating the For this example, for simplicity, we will just add the
+    <command>cobertura:cobertura</command> goal to the second build step (see
+    <xref linkend="fig-hudson-cobertura-build-step" />). You could also add a
+    new build step just for the code coverage metrics. In a real-world
+    project, code quality metrics like this are typically placed in a distinct
+    build job, which is run less frequently than the default build.<figure
+        id="fig-hudson-cobertura-build-step">
+        <title>Adding another Maven goal to generating test coverage
+        metrics</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-cobertura-build-step.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-cobertura-build-step.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Next, we need to tell Hudson to keep track of our code coverage
+    metrics. Scroll down to the 'Post-build Actions' section. You should see a
+    new check box labeled 'Publish Cobertura Reports'. Hudson will often add
+    UI elements like this when you install a new plugin. When you tick this
+    box, Hudson will display the configuration options for the Cobertura
+    plugin that we installed earlier (see <xref
+    linkend="fig-hudson-cobertura-config" />).</para>
+
+    <para>Like most of the code-quality related plugins in Hudson, the
+    Cobertura plugin lets you fine-tune not only the way Hudson displays the
+    report data, but also how it interprets the data. In the 'Coverage Metrics
+    Targets' section, you can define what you consider to be the minimum
+    acceptable levels of code coverage. In <xref
+    linkend="fig-hudson-cobertura-config" />, we have configured Hudson to
+    list any builds with less than 50% test coverage as "unstable" (indicated
+    by a yellow ball), and notify the team accordingly.</para>
+
+    <para><figure id="fig-hudson-cobertura-config">
+        <title>Adding another Maven goal to generating test coverage
+        metrics</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-config-cobertura.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-config-cobertura.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>This fine-tuning often comes in handy in real-world builds. For
+    example, you may want to impose a special code coverage constraint in
+    release builds, to ensure high code coverage in release versions. Another
+    strategy that can be useful for legacy projects is to gradually increase
+    the minimum tolerated code coverage level over time. This way you can
+    avoid having to retro-fit unit tests on legacy code just to raise the code
+    coverage (a dubious strategy at the best of times), but you do encourage
+    all new code and bug fixes to be well tested.</para>
+
+    <para>Now trigger a build manually. The first time you run the build job
+    with Cobertura reporting activated, you will see coverage statistics for
+    your build displayed on the build home page, along with a 'Coverage
+    Report' link when you can go for more details (see <xref
+    linkend="fig-hudson-initial-coverage-report" />). The Cobertura report
+    shows different types of code coverage for the build we just ran. Since we
+    have only run the test coverage metrics once, the coverage will be
+    displayed as red and green bars.</para>
+
+    <para><figure id="fig-hudson-initial-coverage-report">
+        <title>Hudson displays code coverage metrics on the build home
+        page</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-initial-coverage-report.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-initial-coverage-report.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>If you click on the Coverage Report icon, you will see code coverage
+    for each package in your application, and even drill down to see the code
+    coverage (or lack thereof) for an individual class (see <xref
+    linkend="fig-hudson-code-coverage-class" />). When you get to this level,
+    Hudson displays both the overall coverage statistics for the class, and
+    also highlights the lines that were executed in green, and those that
+    weren't in red.</para>
+
+    <para>This reporting gets better with time. Hudson not only reports
+    metrics data for the latest build, but also keeps track of metrics over
+    time, so that you can see how they evolve throughout the life of the
+    project.</para>
+
+    <para>For example, if you drill down into the coverage reports, you will
+    notice that certain parts of this code are not tested (for example the
+    <filename>Cell.java</filename> class in <xref
+    linkend="fig-hudson-code-coverage-class" />). Let's see if we can improve
+    things.</para>
+
+    <para>Looking at this coverage report, we can notice that error handling
+    is poorly tested. We would probably want to ensure that our code behaves
+    as expected if a user provides an incorrectly-formatted cell grid. You can
+    improve things simply by adding a test like this one to the CellTest.java
+    class (in the
+    <filename>src/test/java/com/ciwithhudson/gameoflife/domain</filename>
+    directory):<programlisting>    @Test(expected=IllegalArgumentException.class)
+    public void anInvalidCharacterShouldThrowAnException() {
+        Cell.fromChar('X');
+    }</programlisting></para>
+
+    <para>Add this test and commit your changes to Subversion:<screen>$ svn commit -m "Added extra unit test"
+Sending        src/test/java/com/ciwithhudson/gameoflife/domain/CellTest.java
+Transmitting file data ..
+Committed revision 8.</screen></para>
+
+    <para><figure id="fig-hudson-code-coverage-class">
+        <title>Hudson displays code coverage metrics on the build home
+        page</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-code-coverage-class.png " />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-code-coverage-class.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>This will trigger another build, which should result in slightly
+    better code coverage statistics. You will also notice that Hudson is now
+    displaying a graph of code coverage over time, not just the latest results
+    (see <xref lang="" linkend="fig-hudson-code-coverage-graph" />).</para>
+
+    <para>Note that our objective here is not to improve the code coverage
+    just for the sake of improving code coverage - we are adding an extra test
+    to verify some code that was not previously tested, and as a result the
+    code coverage goes up. There is a subtle but important difference here -
+    code coverage, as with any other metric, is very much a means to an end
+    (high code quality and low maintenance costs), and not an end in
+    itself.</para>
+
+    <para>Nevertheless, metrics like this can give you a great insite into the
+    health of your project, and Hudson presents them in a particularly
+    accessible way.</para>
+
+    <para><figure id="fig-hudson-code-coverage-graph">
+        <title>Hudson displays code coverage metrics on the build home
+        page</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-code-coverage-graph.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-code-coverage-graph.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>This is just one of the code quality metrics plugins that have
+    been written for Hudson. There are many more (over fifty reporting plugins
+    alone at the time of writing). We'll look at some more of them in the
+    chapter on Continuous Code Quality.</para>
+  </section>
+
+  <section>
+    <title>Conclusion</title>
+
+    <para>In this chapter, we have gone through what you need to know to get
+    started with Hudson. You should be able to set up a new build job, and
+    setting up reporting on JUnit test results and javadocs. And you have seen
+    how to add a reporting pluging and keep tabs on code coverage. Well done!
+    But there's still a lot more to learn about Hudson - in the following
+    chapters, we will be looking at how Hudson can help you improve your build
+    automation process in many other areas as well.</para>
+  </section>
+</chapter>
