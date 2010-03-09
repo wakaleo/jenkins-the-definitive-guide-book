@@ -22,8 +22,8 @@
     it without touching a keyboard, just to get an overview of what Hudson is
     about. Or you can get your hands dirty, and follow along on your own
     machine. If you want to do the latter, you'll need to download the
-    pre-bundled Subversion repository from the book website. We explain how to
-    set it all up further on. On the other hand, if you just want to read
+    pre-bundled Subversion repository from the book website. We'll explain how
+    to set it all up further on. On the other hand, if you just want to read
     along, you can safely skip this section and go to the next one, where all
     the action starts.</para>
 
@@ -80,8 +80,7 @@ The following repository back-end (FS) modules are available:
 * fs_base : Module for working with a Berkeley DB repository.
 * fs_fs : Module for working with a plain file (FSFS) repository.
 
-Cyrus SASL authentication is available.
-</screen></para>
+Cyrus SASL authentication is available.</screen></para>
 
     <para>If you need to, you can find the Subversion installation packages,
     or installation instructions, for your operation system from the
@@ -192,13 +191,13 @@ src/</screen></para>
     the Java Web Start link provided on the Hudson website. This will start up
     Hudson on port 8080, and let you experiment with it as if it were
     installed locally. All you need for this to work is a recent (Java 6 or
-    better) version of the Java Runtime Environment (JRE).</para>
+    later) version of the Java Runtime Environment (JRE).</para>
 
     <para>To get started, go to the 'Meet Hudson' page on the Hudson website
     (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>)<footnoteref
     linkend="footnote-browsers" /><footnote id="footnote-browsers">
         <para>Use a modern browser such as Firefox, Chrome or Safari - Java
-        Web Start seems to work the most smoothly on Firefox.</para>
+        Web Start seems to work best on Firefox.</para>
       </footnote>. On this page, you will find a 'Test Drive' section with a
     'Launch' button'. When you click on this link in Firefox, the browser will
     ask if you want to open a file called 'hudson.jnlp' using Java Web Start
@@ -208,11 +207,11 @@ src/</screen></para>
     <para>In some browsers, clicking on this button might simply download the
     JNLP file. In Internet Explorer, you may even need to right click on the
     link and select 'Save Target As' to save the JNLP file. In both of these
-    cases, when you click on the downloaded file, Java Web Start will download
-    and start Hudson.</para>
+    cases, when you open the downloaded file, Java Web Start will download and
+    start Hudson.</para>
 
     <para><figure id="fig-hudson-webstart-page">
-        <title>Running the svnserve Subversion server in Windows</title>
+        <title>Running Hudson using Java Web Start</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -235,7 +234,7 @@ src/</screen></para>
     now ready to take your first steps with Hudson!</para>
 
     <para><figure id="fig-hudson-start">
-        <title>Hudson should be running on port 8080</title>
+        <title>The Hudson start page</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -366,12 +365,12 @@ src/</screen></para>
 
     <para>Build jobs are at the heart of the Hudson build process. Simply put,
     you can think of a Hudson build job as a particular task or step in your
-    build process. It may involve just compiling your source code and running
-    your unit tests, or you may want a build job to do other related tasks,
-    such as integration tests, measuring code coverage or code quality
-    metrics, generating technical documentation, or an automated deployment to
-    an application server. A real project typically requires many separate but
-    related build jobs.</para>
+    build process. This may involve simply compiling your source code and
+    running your unit tests. Or you might want a build job to do other related
+    tasks, such as running your integration tests, measuring code coverage or
+    code quality metrics, generating technical documentation, or even
+    deploying your application to a web server. A real project typically
+    requires many separate but related build jobs.</para>
 
     <para>Our sample application is a simple Java implementation of John
     Conway's "Game Of Life".<footnoteref
@@ -818,7 +817,7 @@ Committed revision 7.</screen></para>
 
     <para>You might also notice some clouds next to the Build History title -
     this is the same "weather" icon that we saw on the home page, and serves
-    the same purpose - to give you a general ideo of how stable your build is
+    the same purpose - to give you a general idea of how stable your build is
     over time.</para>
 
     <para><figure id="fig-new-job-failed">
@@ -840,8 +839,8 @@ Committed revision 7.</screen></para>
     linkend="fig-new-job-failure-details" />). Hudson tells us that there were
     11 new test failures in this build, something which can be seen at a
     glance in the Test Result Trend graph - red indicates test failures. You
-    can even see at a glance which tests are failing, and how long they have
-    been broken.</para>
+    can even see which tests are failing, and how long they have been
+    broken.</para>
 
     <para><figure id="fig-new-job-failure-details">
         <title>A failed build</title>
@@ -1026,18 +1025,19 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     into the existing Hudson architecture.</para>
 
     <para>To see how the plugins work, we are going to integrate code coverage
-    metrics using the Cobertura plugin. Code Coverage is an indication of how
+    metrics using the Cobertura plugin. Code coverage is an indication of how
     much of your application code is actually executed during your tests - it
     can be a useful tool in particular for finding areas of code that have not
     been tested by your test suites. It can also give some indication as to
     how well a team is applying good testing practices such as test-driven
-    development or behaviour-driven development. </para>
+    development or behaviour-driven development.</para>
 
-    <para>Cobertura is an open source code coverage tool that works well with
-    both Maven and Hudson. Our Maven demonstration project is already
-    configured to record code coverage metrics, so all we need to do is to
-    install the Hudson Cobertura plugin and generate the code coverage metrics
-    for Hudson to record and display.</para>
+    <para>Cobertura (<uri>http://cobertura.sourceforge.net/</uri>) is an open
+    source code coverage tool that works well with both Maven and Hudson. Our
+    Maven demonstration project is already configured to record code coverage
+    metrics, so all we need to do is to install the Hudson Cobertura plugin
+    and generate the code coverage metrics for Hudson to record and
+    display.</para>
 
     <para><figure id="fig-hudson-plugin-manager">
         <title>Hudson has a large range of plugins available</title>
@@ -1188,9 +1188,9 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     linkend="fig-hudson-code-coverage-class" />). Let's see if we can improve
     things.</para>
 
-    <para>Looking at this coverage report, we can notice that error handling
-    is poorly tested. We would probably want to ensure that our code behaves
-    as expected if a user provides an incorrectly-formatted cell grid. You can
+    <para>Looking at this coverage report, we can see that error handling is
+    poorly tested. We would probably want to ensure that our code behaves as
+    expected if a user provides an incorrectly-formatted cell grid. You can
     improve things simply by adding a test like this one to the CellTest.java
     class (in the
     <filename>src/test/java/com/ciwithhudson/gameoflife/domain</filename>
