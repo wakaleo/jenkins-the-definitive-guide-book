@@ -34,9 +34,8 @@
     using a Subversion repository to store the source code. In fact,
     Subversion, along with a recent version of Java, are the only things you
     will need to install on your machine. We will also be using a recent Java
-    JDK and Maven 2.2.1, but if you don't have these installed on your
-    machine, don't fret! As we will see, Hudson will install them for
-    you.</para>
+    JDK and Maven, but if you don't have these installed on your machine,
+    don't fret! As we will see, Hudson will install them for you.</para>
 
     <para>The first thing you will need to install, if you haven't already got
     one installed, is a recent version of Java. The JRE (Java Runtime
@@ -134,11 +133,12 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-    <para>Now you can download the sample repository from the book web site.
-    This repository comes as a zip file called svn-repos.zip, which you will
-    find in the <filename>resources/chapter-first-steps</filename> directory
-    of the book resources bundle. Unzip this file into your home directory.
-    Then, open up a command-line prompt and run the following command:<screen><command>svnserve -d -r svn-repos</command></screen></para>
+    <para>Once you are sure Subversion is correctly installed on your system,
+    you can download the sample repository from the book web site. This
+    repository comes as a zip file called svn-repos.zip, which you will find
+    in the <filename>resources/chapter-first-steps</filename> directory of the
+    book resources bundle. Unzip this file into your home directory. Then,
+    open up a command-line prompt and run the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
 
     <para>This will start a local Subversion server . In a Linux or Mac OS X
     environment, the process will run as a daemon in the background. On
@@ -166,19 +166,12 @@ Cyrus SASL authentication is available.</screen></para>
     <para>Finally, just to make sure everything is working, open another
     command prompt and run the <command>svn list</command> command. This will
     display a listing of the top-level directory in our Subversion repository,
-    which should look something like this:<screen>C:\Documents and Settings\Owner&gt; svn list svn://localhost/gameoflife/trunk
+    which should look something like this:<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
 .classpath
 .project
 .settings/
 pom.xml
 src/</screen></para>
-
-    <para>If you are running Windows and prefer a graphical interface, you can
-    also install TortoiseSVN. TortoiseSVN
-    (<uri>http://tortoisesvn.tigris.org/</uri>) is an excellent graphical
-    client for Subversion that integrates right into Windows Explorer, letting
-    you update your Subversion workspace, commit source code changes, and more
-    using the contextual menu in Windows Explorer.</para>
 
     <para>This is all you really need to follow along for the rest of the
     chapter. So now, let's take Hudson for a spin.</para>
@@ -194,8 +187,8 @@ src/</screen></para>
     later) version of the Java Runtime Environment (JRE).</para>
 
     <para>To get started, go to the 'Meet Hudson' page on the Hudson website
-    (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>)<footnoteref
-    linkend="footnote-browsers" /><footnote id="footnote-browsers">
+    (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>)<footnote
+        id="footnote-browsers">
         <para>Use a modern browser such as Firefox, Chrome or Safari - Java
         Web Start seems to work best on Firefox.</para>
       </footnote>. On this page, you will find a 'Test Drive' section with a
@@ -227,7 +220,7 @@ src/</screen></para>
     file from the Hudson website and run it from the command line, as shown
     here:</para>
 
-    <para><screen>C:\Documents and Settings\Owner&gt; <command>java -jar hudson.war</command></screen>Hudson
+    <para><screen>$ <command>java -jar hudson.war</command></screen>Hudson
     should now be running on your machine. Go to
     <uri>http://localhost:8080</uri> and check it out. You should see a screen
     like the one shown in <xref linkend="fig-hudson-start" os="" />. You are
@@ -273,16 +266,26 @@ src/</screen></para>
 
     <para>Let's configure Maven first. Hudson provides great out-of-the-box
     support for Maven. Scroll down until you reach the 'Maven' section in the
-    'Configure System' screen (see <xref linkend="hudson-maven-jdk" />). If
-    you already have Maven installed on your machine, you can provide the path
-    in the MAVEN_HOME field. Otherwise, just tick the 'Install automatically'
-    check box. This option tells Hudson to download and install Maven from the
-    Apache web site the first time a build job needs it, which can come in
-    very handy when you are installing a new build server, or a remote agent
-    for distributed builds. Just choose the Maven version you want to install
-    and Hudson will do the rest. You will also need to give a name for your
-    Maven version (imaginatively called "Maven 2.2.1" in the example), so that
-    you can refer to it in your build jobs.</para>
+    'Configure System' screen (see <xref linkend="hudson-maven-jdk" />).
+    </para>
+
+    <para>Hudson provides several options when it comes to configuring Maven.
+    If you already have Maven installed on your machine, you can simply
+    provide the path in the MAVEN_HOME field. Alternatively, you can install a
+    Maven distribution by extracting a zip file located in a shared directory,
+    or execute a home-rolled installation script. Or you can let Hudson do all
+    the hard work and download Maven for you. To choose this option, just tick
+    the 'Install automatically' check box. Hudson will download and install
+    Maven from the Apache web site the first time a build job needs it. Just
+    choose the Maven version you want to install and Hudson will do the rest.
+    You will also need to give a name for your Maven version (imaginatively
+    called "Maven 2.2.1" in the example), so that you can refer to it in your
+    build jobs.</para>
+
+    <para>For this to work, you need to have an Internet connection. If you
+    are behind a proxy, you'll need to provide your proxy information - we
+    discuss how to set this up in <xref
+    linkend="sect-configuration-proxies" />.</para>
 
     <para><figure id="fig-hudson-maven-jdk">
         <title>Configuring a Maven installation and a JDK</title>
@@ -298,11 +301,22 @@ src/</screen></para>
                        width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>Once you have configured your Maven installation, you will also
-    need to configure a JDK installation. Again, if you have a Java JDK (as
-    opposed to a Java Runtime Environment,) already installed on your
-    workstation, you can simply provide the path to your JDK in the JAVA_HOME
-    field. Otherwise, you can ask Hudson to download the JDK from the
+      </figure></para>
+
+    <para>One of the nice things about the Hudson Maven installation process
+    is how well it works with remote build agents. Later on in the book, we'll
+    see how Hudson can also run builds on remote build servers. You can define
+    a standard way of installing Maven for all of your build servers
+    (downloading from the internet, unzipping a distribution bundle on a
+    shared server,...) - all of these options will work when you add a new
+    remote build agent or set up a new build server using this Hudson
+    configuration.</para>
+
+    <para>Once you have configured your Maven installation, you will also need
+    to configure a JDK installation. Again, if you have a Java JDK (as opposed
+    to a Java Runtime Environment,) already installed on your workstation, you
+    can simply provide the path to your JDK in the JAVA_HOME field. Otherwise,
+    you can ask Hudson to download the JDK from the
     <uri>http://java.sun.com</uri> website the first time a build job requires
     it. This is similar to the automatic Maven installation feature - just
     pick the JDK version you need and Hudson will take care of all the
@@ -373,8 +387,7 @@ src/</screen></para>
     requires many separate but related build jobs.</para>
 
     <para>Our sample application is a simple Java implementation of John
-    Conway's "Game Of Life".<footnoteref
-    linkend="footnote-game-of-life" /><footnote id="footnote-game-of-life">
+    Conway's "Game Of Life".<footnote id="footnote-game-of-life">
         <para>See http://en.wikipedia.org/wiki/Conway's_Game_of_Life</para>
       </footnote>. The Game of Life is a mathematical game which takes place
     on a two dimensional grid of cells, which we will refer to as the
@@ -419,6 +432,7 @@ src/</screen></para>
     any sort of build job: they are highly flexible and very configurable. The
     Maven 2 builds understand the Maven project structure, and can use this to
     let you set up Maven build jobs with less effort and a few extra features.
+    There are also plugins that provide support for other types of build jobs.
     Nevertheless, although our project does use Maven, we are going to use a
     free-style build job, just to keep things simple and general to start
     with. So choose 'Build a free-style software project', as shown in <xref
@@ -486,12 +500,12 @@ src/</screen></para>
     <para>Once we have told Hudson where to find the source code for our
     application, we need to tell it how often it should check for updates. We
     want Hudson to monitor the repository and start a build whenever any
-    changes have been committed. This is by far the most common way to set up
-    a build job, and certainly the most useful in a Continuous Integration
-    context, as it provides fast feedback if the build fails. Other approaches
-    include building on regular intervals (for example, once a day), requiring
-    a user to kick of the build manually, or even triggering a build remotely
-    using a "post-commit" hook in your SCM.</para>
+    changes have been committed. This is a common way to set up a build job in
+    a Continuous Integration context, as it provides fast feedback if the
+    build fails. Other approaches include building on regular intervals (for
+    example, once a day), requiring a user to kick of the build manually, or
+    even triggering a build remotely using a "post-commit" hook in your
+    SCM.</para>
 
     <para>We configure all of this in the 'Build Triggers' section (see <xref
     linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option and enter
@@ -532,8 +546,10 @@ src/</screen></para>
     stages. For example, a build might run a suite of functional tests in one
     step, and then tag the build in a second step if all of the functional
     tests succeed. In technical terms, a build step might involve invoking an
-    Ant task or a Maven target, or running a shell script. There are also many
-    Hudson plugins that let you use additional types of build steps.</para>
+    Ant task or a Maven target, or running a shell script. There are also
+    Hudson plugins that let you use additional types of build steps: Gant,
+    Grails, Gradle, Rake, Ruby, MSBuild and many other build tools are all
+    supported.</para>
 
     <para>For now, we just want to run a simple Maven build. Scroll down to
     the 'Build' section and click on the 'Add Build Step' and choose 'Invoke
@@ -1069,16 +1085,26 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
       </figure>To install a new plugin, go to the 'Manage Hudson' page and
     click on the 'Manage Plugins' entry. This will display a list of the
     available plugins as well as the plugins already installed on your server
-    (see <xref linkend="fig-hudson-plugin-manager" />). We are interested in
-    the Cobertura plugin, so go to the 'Available' tab and scroll down until
-    you find the 'Cobertura Plugin' entry in the 'Build Reports section. Click
-    on the check box and then click on the 'Install' button at the bottom of
-    the screen.</para>
+    (see <xref linkend="fig-hudson-plugin-manager" />). If your build server
+    doesn't have an internet connection, you can also manually install a
+    plugin by downloading the plugin file elsewhere and uploading it to your
+    Hudson installation (just open the 'Advanced' tab in <xref
+    linkend="fig-hudson-plugin-manager" />), or by copying the plugin to the
+    <filename>$HUDSON_HOME/plugins</filename> directory.</para>
+
+    <para>In our case, we are interested in the Cobertura plugin, so go to the
+    'Available' tab and scroll down until you find the 'Cobertura Plugin'
+    entry in the 'Build Reports section. Click on the check box and then click
+    on the 'Install' button at the bottom of the screen.</para>
 
     <para>This will download and install the plugin for you. Once it is done,
     you will need to restart your Hudson instance to see the fruits of your
-    labor. When you have restarted Hudson, go to the configuration page for
-    the 'gameoflife-default' build job.</para>
+    labor. When you have restarted Hudson, go back to the 'Manage Plugins'
+    screen and click on the 'Installed' tab - there should now be a 'Cobertura
+    Plugin' entry in the list of installed plugins on this page.</para>
+
+    <para>Once you have made sure the plugin was successfully installed, go to
+    the configuration page for the 'gameoflife-default' build job.</para>
 
     <para>To set up code coverage metrics in our project, we need to do two
     things. First we need to generate the Cobertura coverage data in an XML
