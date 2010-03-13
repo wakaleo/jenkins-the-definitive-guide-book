@@ -40,15 +40,17 @@
     don't fret! As we will see, Hudson will install them for you.</para>
 
     <para>The first thing you will need to install, if you haven't already got
-    one installed, is a recent version of Java. <indexterm>
+    one installed, is a recent version of Java. Hudson is a Java web
+    application, so you will need at least the Java Runtime Environment, or
+    JRE<indexterm>
         <primary>Java</primary>
       </indexterm><indexterm>
         <primary>Java</primary>
 
         <secondary>JRE</secondary>
-      </indexterm>The JRE (Java Runtime Environment) will do fine for now,
-    though if you are doing any other Java development work on your machine
-    you will need the full Java Development Kit (JDK). <indexterm>
+      </indexterm> to run it. If you are doing any other Java development work
+    on your machine you will need (and may well already have) the full Java
+    Development Kit (JDK). <indexterm>
         <primary>Java</primary>
 
         <secondary>JDK</secondary>
@@ -70,14 +72,18 @@
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>To run this lab on your own machine, you will also need to run
-    a local Subversion server on your workstation. You can download a bundled
-    Subversion repository from the book's website. Don't worry if you've never
-    done this before - it's not a big deal, and we'll step you through the
-    process. Subversion comes pre-installed on Mac OS X and many flavors of
-    Linux. Just make sure you have the Subversion server tools
-    (<command>svnserve</command> in particular) installed. You can check this
-    by running the <indexterm>
+      </figure>The examples in this chapter use Subversion, so to run them on
+    your own machine, you will also need to install and run a local Subversion
+    server on your workstation. If this sounds a little daunting, don't worry
+    - it's actually pretty straightforward. Otherwise, you can follow along
+    without running the examples and still get a good feel for what Hudson can
+    do.</para>
+
+    <para>Don't worry if you've never done this before - it's not a big deal,
+    and we'll step you through the process. Subversion comes pre-installed on
+    Mac OS X and many flavors of Linux. Just make sure you have the Subversion
+    server tools (<command>svnserve</command> in particular) installed. You
+    can check this by running the <indexterm>
         <primary>Subversion</primary>
 
         <secondary>svnserve</secondary>
@@ -153,19 +159,25 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-    <para>Once you are sure Subversion is correctly installed on your system,
-    you can download the sample repository from the book web site. This
-    repository comes as a zip file called svn-repos.zip, which you will find
-    in the <filename>resources/chapter-first-steps</filename> directory of the
-    book resources bundle. Unzip this file into your home directory. Then,
-    open up a command-line prompt and run the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
+    <para>Once you have Subversion is correctly installed on your system, you
+    can download the sample repository from the book web site. A Subversion
+    repository is a simple directory structure that can be used on any
+    operating system. All the examples used in this book are available online,
+    on the book web site
+    (<uri>http://www.continuous-integration-with-hudson.org</uri>). Go to this
+    page and download the book resources zip file and extract it to your hard
+    disk. In our case, the repository comes as a zip file called
+    <filename>svn-repos.zip</filename>, which you will find in the
+    <filename>resources/chapter-first-steps</filename> directory of the book
+    resources. Unzip this file into your home directory. Then, open up a
+    command-line prompt and run the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
 
-    <para>This will start a local Subversion server . In a Linux or Mac OS X
-    environment, the process will run as a daemon in the background. On
-    Windows, it will just run in the command prompt until you stop it manually
-    using Control-C (see <xref linkend="fig-running-svnserve" />). If your are
-    running Subversion on Windows, make sure you don't shut this
-    window!</para>
+    <para>This will start a Subversion server running on your machine. In a
+    Linux or Mac OS X environment, the process will run as a daemon in the
+    background. On Windows, it will just run in the command prompt until you
+    stop it manually using Control-C (see <xref
+    linkend="fig-running-svnserve" />). If your are running Subversion on
+    Windows, make sure you don't shut this window!</para>
 
     <para><figure id="fig-running-svnserve">
         <title>Running the svnserve Subversion server in Windows</title>
@@ -205,10 +217,14 @@ src/</screen></para>
 
         <secondary>Staring using Java Web Start</secondary>
       </indexterm>Probably the easiest way to run Hudson for the first time is
-    to use the Java Web Start link provided on the Hudson website. This will
-    start up Hudson on port 8080, and let you experiment with it as if it were
-    installed locally. All you need for this to work is a recent (Java 6 or
-    later) version of the Java Runtime Environment (JRE).</para>
+    to use the Java Web Start link provided on the Hudson website. Java Web
+    Start is a technology that lets you start up a Java application on your
+    local machine via a URL on a web page - it comes bundled with the Java
+    JRE. In our case, this will start a Hudson server running on your machine,
+    and let you experiment with it as if it were installed locally. All you
+    need for this to work is a recent (Java 6 or later) version of the Java
+    Runtime Environment (JRE), which we installed in the previous
+    section.</para>
 
     <para>To get started, go to the 'Meet Hudson' page on the Hudson website
     (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>)<footnote
@@ -244,12 +260,14 @@ src/</screen></para>
         <primary>Judson</primary>
 
         <secondary>Starting from the command line</secondary>
-      </indexterm>Alternatively, you can simply download the latest Hudson WAR
-    file from the Hudson website and run it from the command line, as shown
+      </indexterm>If you are an experienced Java user versed in the ways of
+    WAR files, you may prefer to simply download the latest Hudson WAR file
+    from the Hudson website and run it from the command line, as shown
     here:</para>
 
-    <para><screen>$ <command>java -jar hudson.war</command></screen>Hudson
-    should now be running on your machine. Go to
+    <para><screen>$ <command>java -jar hudson.war</command></screen></para>
+
+    <para>In both cases, Hudson should now be running on your machine. Go to
     <uri>http://localhost:8080</uri> and check it out. You should see a screen
     like the one shown in <xref linkend="fig-hudson-start" os="" />. You are
     now ready to take your first steps with Hudson!</para>
@@ -297,8 +315,8 @@ src/</screen></para>
 
     <para>Let's configure Maven first. Hudson provides great out-of-the-box
     support for Maven. Scroll down until you reach the 'Maven' section in the
-    'Configure System' screen (see <xref linkend="hudson-maven-jdk" />).
-    </para>
+    'Configure System' screen (see <xref
+    linkend="hudson-maven-jdk" />).</para>
 
     <para>Hudson provides several options when it comes to configuring Maven.
     If you already have Maven installed on your machine, you can simply
@@ -355,50 +373,13 @@ src/</screen></para>
     check box to indicate that you agree with the Java SDK License
     Agreement.</para>
 
-    <para>The last thing we really need to set up is notification. When a
-    Hudson build breaks, and when it works again, it will send out email
+    <para>The last thing you would typically set up is notification. When a
+    Hudson build breaks, and when it works again, it can send out email
     messages to the team to spread the word. Using plugins, you can also get
     it to send instant messages or SMS messages, post entries on Twitter, or
     get people notified in a few other ways. It all depends on what works best
-    for your organizational culture.</para>
-
-    <para>In this example, we are going to use simple email notification,
-    which is supported by Hudson out of the box. You need to configure this in
-    the 'Email Notification' section (see <xref
-    linkend="fig-hudson-email-config" />) of the 'System Configuration'
-    screen. The example given here shows how you might set up email
-    notification using a corporate SMTP server. In the 'Hudson URL' field, you
-    also need to put a URL that can be used to access your Hudson instance
-    from beyond your own machine. Hudson needs this URL to build proper
-    notification messages. If you are just testing Hudson for now, you can
-    leave this at '<uri>http://localhost:8080</uri>', but in this case the
-    notification messages will only work on your own machine.</para>
-
-    <para><figure id="fig-hudson-email-config">
-        <title>Configuring email notification</title>
-
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-email-config.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-email-config.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>The email configuration can be a little tricky to set up on
-    your own, especially if you are working on a Windows box. If you are in a
-    corporate environment and have an email server handy, you can use that. If
-    you are running on Linux, chances are you already have a local email
-    server running, and you can just use <uri>localhost</uri> as your mail
-    server. Another possiblity is to use a In <xref
-    linkend="chapter-configuration" />, we even look at how to set it up using
-    a GMail account (see <xref linkend="sect-configuration-email" />).
-    However, don't worry if none of these solutions work for you - just follow
-    along for the email notification sections and the rest of the material we
-    cover will still work just fine.</para>
+    for your organizational culture. However, to keep things simple, we're not
+    going to worry about notifications just yet.</para>
 
     <para>That is all we need to configure at this stage. Go to the bottom of
     the screen and click on 'Save'. You are now ready to set up your first
@@ -641,12 +622,11 @@ src/</screen></para>
     Hudson to store all of the JAR files generated by this build job.</para>
 
     <para><figure id="fig-new-job-test-reports">
-        <title>Configuring JUnit test reports, artifact archiving and email
-        notification</title>
+        <title>Configuring JUnit test reports and artifact archiving</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-tests.png" />
+            <imagedata fileref="figs/web/hudson-new-job-tests-no-email.png" />
           </imageobject>
 
           <imageobject role="print" security="">
@@ -655,24 +635,11 @@ src/</screen></para>
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>One of the main purposes of a CI server is to notify the
-    development team when something goes wrong. So, in our last step, we need
-    to tell Hudson what sort of notification system we want for this
-    build.</para>
+      </figure></para>
 
-    <para>By default, Hudson will send an email out whenever a build fails for
-    the first time, and then when the build is fixed. Typically, you would
-    configure Hudson to derive or lookup the email addresses based on the SCM
-    usernames, possibly hooking in to an enterprise LDAP repository - this
-    way, Hudson will always send a notification to the developer who's
-    commited changes broke the build. You may also want to list the entire
-    development team in the Recipients list, just to keep people in the loop.
-    If you're following along, and managed to configure the email notification
-    earlier on, you can just put your own email address here to see what the
-    Hudson messages look like.</para>
-
-    <para>Now we're done - just press Save. Our build job should now be ready
-    to run. So let's see it in action!</para>
+    <para>Now we're done - just click on the Save button at the bottom of the
+    screen. Our build job should now be ready to run. So let's see it in
+    action!</para>
   </section>
 
   <section>
@@ -739,15 +706,19 @@ src/</screen></para>
           </imageobject>
         </mediaobject>
       </figure>When the build finishes, the ball in the Build History box
-    becomes solid blue. This means the build was a success. Build failures are
-    generally indicated by a red ball. For some types of project, you can also
-    distinguish between a build error (such as a compiler error), indicated by
-    a red ball, and other sorts of build failures, such as unit test failures
-    or insufficient code coverage, which are indicated by a yellow ball. There
-    are also some other details about the latest test results, when the last
-    build was run, and so on. But before we look at the details, let's get
-    back to the core business model of a Continuous Integration server -
-    kicking off builds when someone changes the code!</para>
+    becomes solid blue. This means the build was a success<footnote>
+        <para>If you think green balls would be a better indicator of success
+        than blue ones, you can do that too, thanks to the 'Green Balls'
+        plugin.</para>
+      </footnote>. Build failures are generally indicated by a red ball. For
+    some types of project, you can also distinguish between a build error
+    (such as a compiler error), indicated by a red ball, and other sorts of
+    build failures, such as unit test failures or insufficient code coverage,
+    which are indicated by a yellow ball. There are also some other details
+    about the latest test results, when the last build was run, and so on. But
+    before we look at the details, let's get back to the core business model
+    of a Continuous Integration server - kicking off builds when someone
+    changes the code!</para>
 
     <para>We are going to commit a code change to Subversion and see what
     happens. First, you will need to check out a copy of the source code from
@@ -794,7 +765,8 @@ Checked out revision 6.</screen></para>
     <para>First of all, open the <filename>LivingCell.java</filename> file,
     which you will find in the
     <filename>gameoflife-core/src/main/java/com/ciwithhudson/gameoflide/domain</filename>
-    directory. Open this file in your favorite text editor. You should see
+    directory. Open this file in your favorite code-savvy text editor
+    (something like TextPad on Windows or TextMate on Mac OS). You should see
     something like this:<programlisting>package com.ciwithhudson.gameoflife.domain;
 
 public class LivingCell extends Cell {
@@ -866,12 +838,8 @@ Committed revision 7.</screen></para>
     <para>Now go back to the Hudson web page. After a minute or so, a new
     build should kick off, and fail. In fact, there are several other places
     which are affected by this change, and the regression tests related to
-    these features are now failing.</para>
-
-    <para>If you set up email notification, you should also have received an
-    email message about the build failure and a link to the failed build on
-    the Hudson server. Back on the build job home page, you will see a second
-    build in the build history with an ominous red ball (see <xref
+    these features are now failing. You should see a second build in the build
+    history with an ominous red ball (see <xref
     linkend="fig-new-job-failed" />) - this tells you that the latest build
     has failed.</para>
 
