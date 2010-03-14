@@ -125,7 +125,7 @@ Cyrus SASL authentication is available.</screen></para>
       interfere with the instructions we provide.</para>
 
       <para>A better choice in this regard is the <indexterm>
-          <primary>Subverion</primary>
+          <primary>Subversion</primary>
 
           <secondary>SlikSVN</secondary>
         </indexterm>SlikSVN installer
@@ -175,7 +175,9 @@ Cyrus SASL authentication is available.</screen></para>
     <section>
       <title>Setting up the sample Subversion repository</title>
 
-      <para>All of the sample projects used in this book are available online.
+      <para>All of the <indexterm>
+          <primary>Sample projects</primary>
+        </indexterm>sample projects used in this book are available online.
       You can download the Subversion repository used for this chapter from
       the book web site, which you can find at
       <uri>http://www.continuous-integration-with-hudson.org</uri>. Go to this
@@ -199,15 +201,19 @@ Cyrus SASL authentication is available.</screen></para>
           </mediaobject>
         </figure>A Subversion repository is a simple directory structure that
       can be used on any operating system. In our case, the repository is
-      stored in a directory called <filename>svn-repos</filename>, which you
-      will find in the <filename>chapter-first-steps</filename> directory of
-      the book resources. You don't have to worry about the details, though.
-      To start up the Subversion server on your machine, just go to the
+      stored in a directory called <indexterm>
+          <primary>Subversion</primary>
+
+          <secondary>svn-repos directory</secondary>
+        </indexterm><filename>svn-repos</filename>, which you will find in the
+      <filename>chapter-first-steps</filename> directory of the book
+      resources. You don't have to worry about the details, though. To start
+      up the Subversion server on your machine, just go to the
       <filename>chapter-first-steps</filename> directory and run the
       <uri>start-svn.bat</uri> script (for Windows) or the
       <uri>start-svn.sh</uri> script (on Linux, Mac OS, and so forth).</para>
 
-      <para>If you are more experienced with Subverion, you might like to
+      <para>If you are more experienced with Subversion, you might like to
       start the server manually yourself. In this case, open up a command-line
       prompt in the <filename>chapter-first-steps</filename> directory and run
       the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
@@ -447,9 +453,11 @@ src/</screen></para>
     application, built using Maven. So in this case, all we need to do is to
     set up a recent JDK and Maven installation.</para>
 
-    <para>Let's configure Maven first. Hudson provides great out-of-the-box
-    support for Maven. Scroll down until you reach the 'Maven' section in the
-    'Configure System' screen (see <xref lang=""
+    <para><indexterm>
+        <primary>Maven</primary>
+      </indexterm>Let's configure Maven first. Hudson provides great
+    out-of-the-box support for Maven. Scroll down until you reach the 'Maven'
+    section in the 'Configure System' screen (see <xref lang=""
     linkend="hudson-maven" />).</para>
 
     <para>Hudson provides several options when it comes to configuring Maven.
@@ -495,18 +503,20 @@ src/</screen></para>
     remote build agent or set up a new build server using this Hudson
     configuration.</para>
 
-    <para>Once you have configured your Maven installation, you will also need
-    to configure a JDK installation (see <xref linkend="fig-hudson-jdk" />).
-    Again, if you have a Java JDK (as opposed to a Java Runtime Environment -
-    the JDK contains extra development tools such as the Java compiler)
-    already installed on your workstation, you can simply provide the path to
-    your JDK in the JAVA_HOME field. Otherwise, you can ask Hudson to download
-    the JDK from the <uri>http://java.sun.com</uri> website the first time a
-    build job requires it. This is similar to the automatic Maven installation
-    feature - just pick the JDK version you need and Hudson will take care of
-    all the logistics. However, for licensing reasons, you will also need to
-    tick a check box to indicate that you agree with the Java SDK License
-    Agreement.<figure id="fig-hudson-jdk">
+    <para><indexterm>
+        <primary>JDK</primary>
+      </indexterm>Once you have configured your Maven installation, you will
+    also need to configure a JDK installation (see <xref
+    linkend="fig-hudson-jdk" />). Again, if you have a Java JDK (as opposed to
+    a Java Runtime Environment - the JDK contains extra development tools such
+    as the Java compiler) already installed on your workstation, you can
+    simply provide the path to your JDK in the JAVA_HOME field. Otherwise, you
+    can ask Hudson to download the JDK from the <uri>http://java.sun.com</uri>
+    website the first time a build job requires it. This is similar to the
+    automatic Maven installation feature - just pick the JDK version you need
+    and Hudson will take care of all the logistics. However, for licensing
+    reasons, you will also need to tick a check box to indicate that you agree
+    with the Java SDK License Agreement.<figure id="fig-hudson-jdk">
         <title>Configuring a JDK installation</title>
 
         <mediaobject>
@@ -548,7 +558,9 @@ src/</screen></para>
     requires many separate but related build jobs.</para>
 
     <para>Our sample application is a simple Java implementation of John
-    Conway's "Game Of Life".<footnote id="footnote-game-of-life">
+    Conway's <indexterm>
+        <primary>Game Of Life</primary>
+      </indexterm>"Game Of Life".<footnote id="footnote-game-of-life">
         <para>See http://en.wikipedia.org/wiki/Conway's_Game_of_Life</para>
       </footnote>. The Game of Life is a mathematical game which takes place
     on a two dimensional grid of cells, which we will refer to as the
@@ -629,9 +641,13 @@ src/</screen></para>
     such as Git, Mercurial, ClearCase, Perforce and many more via
     plugins.</para>
 
-    <para>For this project, we will be getting the source code from the local
-    Subversion repository we set up earlier (so make sure you have this
-    Subversion repository up and running, as we described in <xref
+    <para><indexterm>
+        <primary>SCM</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>For this project, we will be getting the source code from
+    the local Subversion repository we set up earlier (so make sure you have
+    this Subversion repository up and running, as we described in <xref
     linkend="sect-first-steps-environment" />). On the Hudson screen, choose
     'Subversion' and enter <uri>svn://localhost/gameoflife/trunk</uri> as the
     Repository URL (see <xref linkend="fig-new-job-svn" />). Also, place a dot
@@ -668,20 +684,25 @@ src/</screen></para>
     even triggering a build remotely using a "post-commit" hook in your
     SCM.</para>
 
-    <para>We configure all of this in the 'Build Triggers' section (see <xref
-    linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option and enter
-    '* * * * *' (that's five asterisks) in the Schedule box. Hudson schedules
-    are configured using the <command>cron</command> syntax, well-known in the
-    Unix world. The <command>cron</command> syntax consists of five fields
-    separated by white space, indicating respectivly the minute (0-59), hour
-    (0-23), day of the month (1-31), month (1-12) and the day of the week
-    (0-7, with 0 and 7 being Sunday). The star is a wildcard character which
-    accepts any valid value for that field. So five stars basically means
-    "every minute of every hour of every day". You can also provide ranges of
-    values: "* 9-17 * * *" would mean "every minute of every day, between 9am
-    and 5pm". You can also space out the schedule using intervals: "*/5 * * *
-    *" means "every 5 minutes, for example. Finally, there are some other
-    convenient short-hands, such as "@daily" and "@hourly".</para>
+    <para><indexterm>
+        <primary>Build Triggers</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>We configure all of this in the 'Build Triggers' section
+    (see <xref linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option
+    and enter '* * * * *' (that's five asterisks) in the Schedule box. Hudson
+    schedules are configured using the <command>cron</command> syntax,
+    well-known in the Unix world. The <command>cron</command> syntax consists
+    of five fields separated by white space, indicating respectivly the minute
+    (0-59), hour (0-23), day of the month (1-31), month (1-12) and the day of
+    the week (0-7, with 0 and 7 being Sunday). The star is a wildcard
+    character which accepts any valid value for that field. So five stars
+    basically means "every minute of every hour of every day". You can also
+    provide ranges of values: "* 9-17 * * *" would mean "every minute of every
+    day, between 9am and 5pm". You can also space out the schedule using
+    intervals: "*/5 * * * *" means "every 5 minutes, for example. Finally,
+    there are some other convenient short-hands, such as "@daily" and
+    "@hourly".</para>
 
     <para>Don't worry if your Unix skills are a little rusty - if you click on
     the blue question mark icon on the side of the schedule box, Hudson will
@@ -712,12 +733,16 @@ src/</screen></para>
     Grails, Gradle, Rake, Ruby, MSBuild and many other build tools are all
     supported.</para>
 
-    <para>For now, we just want to run a simple Maven build. Scroll down to
-    the 'Build' section and click on the 'Add Build Step' and choose 'Invoke
-    top-level Maven targets' (see <xref linkend="fig-new-job-build-step" />).
-    Then enter 'clean test' in the Goals. If you are not familiar with Maven,
-    this will delete any previous build artifacts, compile our code and run
-    our unit tests.</para>
+    <para><indexterm>
+        <primary>Maven</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>For now, we just want to run a simple Maven build. Scroll
+    down to the 'Build' section and click on the 'Add Build Step' and choose
+    'Invoke top-level Maven targets' (see <xref
+    linkend="fig-new-job-build-step" />). Then enter 'clean test' in the
+    Goals. If you are not familiar with Maven, this will delete any previous
+    build artifacts, compile our code and run our unit tests.</para>
 
     <para><figure id="fig-new-job-build-step">
         <title>Adding a build step</title>
@@ -751,7 +776,11 @@ src/</screen></para>
     <para>So the next thing we need to do is to get Hudson to keep tabs on our
     unit tests.</para>
 
-    <para>Go to the 'Post-build Actions' section (see <xref
+    <para><indexterm>
+        <primary>JUnit reports</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>Go to the 'Post-build Actions' section (see <xref
     linkend="fig-new-job-test-reports" />) and tick 'Publish JUnit test result
     report' checkbox. When Maven runs unit tests in a project, it
     automatically generates the XML test reports in a directory called
@@ -979,17 +1008,15 @@ Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
 Transmitting file data .
 Committed revision 7.</screen></para>
 
-    <para>Now go back to the Hudson web page. After a minute or so, a new
-    build should kick off, and fail. In fact, there are several other places
-    which are affected by this change, and the regression tests related to
-    these features are now failing.</para>
-
-    <para>If you set up email notification, you should also have received an
-    email message about the build failure and a link to the failed build on
-    the Hudson server. Back on the build job home page, you will see a second
-    build in the build history with an ominous red ball (see <xref
-    linkend="fig-new-job-failed" />) - this tells you that the latest build
-    has failed.</para>
+    <para><indexterm>
+        <primary>Build failures</primary>
+      </indexterm>Now go back to the Hudson web page. After a minute or so, a
+    new build should kick off, and fail. In fact, there are several other
+    places which are affected by this change, and the regression tests related
+    to these features are now failing. On the build job home page, you will
+    see a second build in the build history with an ominous red ball (see
+    <xref linkend="fig-new-job-failed" />) - this tells you that the latest
+    build has failed.</para>
 
     <para>You might also notice some clouds next to the Build History title -
     this is the same "weather" icon that we saw on the home page, and serves
@@ -1014,7 +1041,9 @@ Committed revision 7.</screen></para>
     you some more details about what went wrong (see <xref
     linkend="fig-new-job-failure-details" />). Hudson tells us that there were
     11 new test failures in this build, something which can be seen at a
-    glance in the Test Result Trend graph - red indicates test failures. You
+    glance in the <indexterm>
+        <primary>Test Result Trend</primary>
+      </indexterm>Test Result Trend graph - red indicates test failures. You
     can even see which tests are failing, and how long they have been
     broken.</para>
 
@@ -1120,11 +1149,13 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
   <section>
     <title>More reporting - displaying Javadocs</title>
 
-    <para>For many Java projects, Javadoc comments are an important source of
-    low-level technical documentation. There are even tools, such as UmlGraph,
-    that let you produce Javadoc with embedded UML diagrams to give you a
-    better picture of how the classes fit together in the application. This
-    sort of technical documentation has the advantage of being cheap to
+    <para><indexterm>
+        <primary>Javadocs</primary>
+      </indexterm>For many Java projects, Javadoc comments are an important
+    source of low-level technical documentation. There are even tools, such as
+    UmlGraph, that let you produce Javadoc with embedded UML diagrams to give
+    you a better picture of how the classes fit together in the application.
+    This sort of technical documentation has the advantage of being cheap to
     produce, accurate and always up-to-date.</para>
 
     <para>Hudson can integrate Javadoc API documentation directly into the
@@ -1194,9 +1225,12 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
   <section>
     <title>Adding Code Coverage and other metrics</title>
 
-    <para>Reporting is one of Hudson's strong points. We have seen how easy it
-    is to display test results and to publish Javadocs, but you can publish a
-    large number of other very useful reports using Hudson's plugins.</para>
+    <para><indexterm>
+        <primary>Code Coverage</primary>
+      </indexterm>Reporting is one of Hudson's strong points. We have seen how
+    easy it is to display test results and to publish Javadocs, but you can
+    publish a large number of other very useful reports using Hudson's
+    plugins.</para>
 
     <para>Plugins are another one of Hudson's selling points - there are
     plugins for doing just about anything, from integrating new build tools or
