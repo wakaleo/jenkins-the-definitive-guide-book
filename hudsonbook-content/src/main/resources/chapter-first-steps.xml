@@ -21,7 +21,7 @@
     <para>There are two ways you can tackle this chapter. You can read through
     it without touching a keyboard, just to get an overview of what Hudson is
     about. Or you can get your hands dirty, and follow along on your own
-    machine. </para>
+    machine.</para>
 
     <para>If you do want to follow along at home, you may need to set up some
     software on your local machine. Remember, the most basic function of any
@@ -193,7 +193,7 @@ Cyrus SASL authentication is available.</screen></para>
 
             <imageobject role="print" security="">
               <imagedata align="center"
-                         fileref="figs/print/svnserve-running.pdf"
+                         fileref="figs/print/first-steps-examples.pdf"
                          scalefit="0" width="100%" wordsize="" />
             </imageobject>
           </mediaobject>
@@ -420,18 +420,37 @@ src/</screen></para>
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>This will take you to Hudson's main configuration screen. From
-    here you can configure everything from security configuration and build
-    tools to email servers and version control systems. In particular, you
-    will need to configure the tools you use to build your software. The
-    sample application we will be building is a Java application. So in this
-    case, all we need to do is to set up a recent JDK and Maven
-    installation.</para>
+      </figure>This will take you to Hudson's main configuration screen (see
+    <xref linkend="fig-hudson-configure" />). From here you can configure
+    everything from security configuration and build tools to email servers,
+    version control systems and integration with third-party software. The
+    screen contains a lot of information, but most of the fields contain
+    sensible default values, so you can safely ignore them for now.<figure
+        id="fig-hudson-configure">
+        <title>The Configure Hudson screen</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-configure.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-configure.pdf" scalefit="0"
+                       width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>For now, you will just need to configure the tools required to build
+    our sample project. The application we will be building is a Java
+    application, built using Maven. So in this case, all we need to do is to
+    set up a recent JDK and Maven installation.</para>
 
     <para>Let's configure Maven first. Hudson provides great out-of-the-box
     support for Maven. Scroll down until you reach the 'Maven' section in the
-    'Configure System' screen (see <xref
-    linkend="hudson-maven-jdk" />).</para>
+    'Configure System' screen (see <xref lang=""
+    linkend="hudson-maven" />).</para>
 
     <para>Hudson provides several options when it comes to configuring Maven.
     If you already have Maven installed on your machine, you can simply
@@ -451,18 +470,18 @@ src/</screen></para>
     discuss how to set this up in <xref
     linkend="sect-configuration-proxies" />.</para>
 
-    <para><figure id="fig-hudson-maven-jdk">
-        <title>Configuring a Maven installation and a JDK</title>
+    <para><figure id="fig-hudson-maven">
+        <title>Configuring a Maven installation</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-maven-jdk.png" />
+            <imagedata fileref="figs/web/hudson-configure-maven.png" />
           </imageobject>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-maven-jdk.pdf" scalefit="0"
-                       width="100%" wordsize="" />
+                       fileref="figs/print/hudson-configure-maven.pdf"
+                       scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -477,61 +496,39 @@ src/</screen></para>
     configuration.</para>
 
     <para>Once you have configured your Maven installation, you will also need
-    to configure a JDK installation. Again, if you have a Java JDK (as opposed
-    to a Java Runtime Environment,) already installed on your workstation, you
-    can simply provide the path to your JDK in the JAVA_HOME field. Otherwise,
-    you can ask Hudson to download the JDK from the
-    <uri>http://java.sun.com</uri> website the first time a build job requires
-    it. This is similar to the automatic Maven installation feature - just
-    pick the JDK version you need and Hudson will take care of all the
-    logistics. However, for licensing reasons, you will also need to tick a
-    check box to indicate that you agree with the Java SDK License
-    Agreement.</para>
-
-    <para>The last thing we would typically set up is notification. When a
-    Hudson build breaks, and when it works again, it will send out email
-    messages to the team to spread the word. Using plugins, you can also get
-    it to send instant messages or SMS messages, post entries on Twitter, or
-    get people notified in a few other ways. It all depends on what works best
-    for your organizational culture. </para>
-
-    <para>In this example, we are going to use simple email notification,
-    which is supported by Hudson out of the box. You need to configure this in
-    the 'Email Notification' section (see <xref
-    linkend="fig-hudson-email-config" />) of the 'System Configuration'
-    screen. The example given here shows how you might set up email
-    notification using a corporate SMTP server. In the 'Hudson URL' field, you
-    also need to put a URL that can be used to access your Hudson instance
-    from beyond your own machine. Hudson needs this URL to build proper
-    notification messages. If you are just testing Hudson for now, you can
-    leave this at '<uri>http://localhost:8080</uri>', but in this case the
-    notification messages will only work on your own machine.</para>
-
-    <para><figure id="fig-hudson-email-config">
-        <title>Configuring email notification</title>
+    to configure a JDK installation (see <xref linkend="fig-hudson-jdk" />).
+    Again, if you have a Java JDK (as opposed to a Java Runtime Environment -
+    the JDK contains extra development tools such as the Java compiler)
+    already installed on your workstation, you can simply provide the path to
+    your JDK in the JAVA_HOME field. Otherwise, you can ask Hudson to download
+    the JDK from the <uri>http://java.sun.com</uri> website the first time a
+    build job requires it. This is similar to the automatic Maven installation
+    feature - just pick the JDK version you need and Hudson will take care of
+    all the logistics. However, for licensing reasons, you will also need to
+    tick a check box to indicate that you agree with the Java SDK License
+    Agreement.<figure id="fig-hudson-jdk">
+        <title>Configuring a JDK installation</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-email-config.png" />
+            <imagedata fileref="figs/web/hudson-configure-jdk.png" />
           </imageobject>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-email-config.pdf"
+                       fileref="figs/print/hudson-configure-jdk.pdf"
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>The email configuration can be a little tricky to set up on
-    your own, especially if you are working on a Windows box. If you are in a
-    corporate environment and have an email server handy, you can use that. If
-    you are running on Linux, chances are you already have a local email
-    server running, and you can just use <uri>localhost</uri> as your mail
-    server. Another possiblity is to use a In <xref
-    linkend="chapter-configuration" />, we even look at how to set it up using
-    a GMail account (see <xref linkend="sect-configuration-email" />).
-    However, don't worry if none of these solutions work for you - just follow
-    along for the email notification sections and the rest of the material we
-    cover will still work just fine.</para>
+      </figure></para>
+
+    <para>The last thing you would typically set up is notification. When a
+    Hudson build breaks, and when it works again, it can send out email
+    messages to the team to spread the word. Using plugins, you can also get
+    it to send instant messages or SMS messages, post entries on Twitter, or
+    get people notified in a few other ways. It all depends on what works best
+    for your organizational culture. However, to keep things simple, we're not
+    going to worry about notifications just yet.</para>
 
     <para>That is all we need to configure at this stage. Go to the bottom of
     the screen and click on the 'Save' button. You are now ready to set up
@@ -547,7 +544,7 @@ src/</screen></para>
     running your unit tests. Or you might want a build job to do other related
     tasks, such as running your integration tests, measuring code coverage or
     code quality metrics, generating technical documentation, or even
-    deploying your application to a web server. A real project typically
+    deploying your application to a web server. A real project usually
     requires many separate but related build jobs.</para>
 
     <para>Our sample application is a simple Java implementation of John
@@ -635,12 +632,12 @@ src/</screen></para>
     <para>For this project, we will be getting the source code from the local
     Subversion repository we set up earlier (so make sure you have this
     Subversion repository up and running, as we described in <xref
-    linkend="sect-first-steps-environment" />). Choose 'Subversion' and enter
-    <uri>svn://localhost/gameoflife/trunk</uri> as the Repository URL (see
-    <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
-    Directory Module' field. This makes Hudson check out the source code
-    directly into the build job's workspace. If you don't do this, Subversion
-    will check the source code out to a subdirectory called
+    linkend="sect-first-steps-environment" />). On the Hudson screen, choose
+    'Subversion' and enter <uri>svn://localhost/gameoflife/trunk</uri> as the
+    Repository URL (see <xref linkend="fig-new-job-svn" />). Also, place a dot
+    (".") in the 'Local Directory Module' field. This makes Hudson check out
+    the source code directly into the build job's workspace. If you don't do
+    this, Subversion will check the source code out to a subdirectory called
     <filename>trunk</filename>. Using the build job's workspace makes some of
     the other options a little simpler to configure. You can leave all of the
     other options up until here with their default values.</para>
@@ -755,7 +752,7 @@ src/</screen></para>
     unit tests.</para>
 
     <para>Go to the 'Post-build Actions' section (see <xref
-    linkend="fig-new-job-test-reports" />) and tick 'publish JUnit test result
+    linkend="fig-new-job-test-reports" />) and tick 'Publish JUnit test result
     report' checkbox. When Maven runs unit tests in a project, it
     automatically generates the XML test reports in a directory called
     <filename>surefire-reports</filename> in the <filename>target</filename>
@@ -774,38 +771,24 @@ src/</screen></para>
     Hudson to store all of the JAR files generated by this build job.</para>
 
     <para><figure id="fig-new-job-test-reports">
-        <title>Configuring JUnit test reports, artifact archiving and email
-        notification</title>
+        <title>Configuring JUnit test reports and artifact archiving</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-tests.png" />
+            <imagedata fileref="figs/web/hudson-new-job-tests-no-email.png" />
           </imageobject>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-tests.pdf"
+                       fileref="figs/print/hudson-new-job-tests-no-email.pdf"
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>One of the main purposes of a CI server is to notify the
-    development team when something goes wrong. So, in our last step, we need
-    to tell Hudson what sort of notification system we want for this
-    build.</para>
+      </figure></para>
 
-    <para>By default, Hudson will send an email out whenever a build fails for
-    the first time, and then when the build is fixed. Typically, you would
-    configure Hudson to derive or lookup the email addresses based on the SCM
-    usernames, possibly hooking in to an enterprise LDAP repository - this
-    way, Hudson will always send a notification to the developer who's
-    commited changes broke the build. You may also want to list the entire
-    development team in the Recipients list, just to keep people in the loop.
-    If you're following along, and managed to configure the email notification
-    earlier on, you can just put your own email address here to see what the
-    Hudson messages look like.</para>
-
-    <para>Now we're done - just press Save. Our build job should now be ready
-    to run. So let's see it in action!</para>
+    <para>Now we're done - just click on the Save button at the bottom of the
+    screen. Our build job should now be ready to run. So let's see it in
+    action!</para>
   </section>
 
   <section>
@@ -1036,7 +1019,7 @@ Committed revision 7.</screen></para>
     broken.</para>
 
     <para><figure id="fig-new-job-failure-details">
-        <title>A failed build</title>
+        <title>The list of all the broken tests</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -1055,10 +1038,7 @@ Committed revision 7.</screen></para>
     figure out as well. If you click on the failed test classes, Hudson brings
     up the actual details of the test failures (see <xref
     linkend="fig-hudson-new-job-test-failure-details" />), which is a great
-    help when it comes to reproducing and fixing the issue. Hudson displays a
-    host of information about the failed test in a very readable form,
-    including the error message the test produced, the stack trace, how long
-    the test has been broken, and how long it took to run.</para>
+    help when it comes to reproducing and fixing the issue. </para>
 
     <para><figure id="fig-hudson-new-job-test-failure-details">
         <title>Details about a failed test</title>
@@ -1074,11 +1054,17 @@ Committed revision 7.</screen></para>
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>Now let's fix the build. To make things simple, we'll just back
-    out our changes and recommit the code in it's original state (the end
-    users just changed their mind about the asterisks, anyway). So just undo
-    the changes you made to the <filename>LivingCell</filename> class (again,
-    the changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
+      </figure>Hudson displays a host of information about the failed test in
+    a very readable form, including the error message the test produced, the
+    stack trace, how long the test has been broken, and how long it took to
+    run. Often, this in itself is enough to put a developer on the right track
+    towards fixing the issue.</para>
+
+    <para>Now let's fix the build. To make things simple, we'll just back out
+    our changes and recommit the code in it's original state (the end users
+    just changed their mind about the asterisks, anyway). So just undo the
+    changes you made to the <filename>LivingCell</filename> class (again, the
+    changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
 
     <command>public static final char SYMBOL = '+';</command>
     
@@ -1142,10 +1128,11 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     produce, accurate and always up-to-date.</para>
 
     <para>Hudson can integrate Javadoc API documentation directly into the
-    Hudson web site. Often, this sort of task is performed in a separate build
-    job, but for simplicity we are going to add another build step to the
-    gameoflife-default build job to generate and display Javadoc documention
-    for the Game Of Life API.</para>
+    Hudson web site. This way, everyone can find the latest Javadoc easily, in
+    a well known place. Often, this sort of task is performed in a separate
+    build job, but for simplicity we are going to add another build step to
+    the gameoflife-default build job to generate and display Javadoc
+    documention for the Game Of Life API.</para>
 
     <para>Start off by going into the 'gameoflife-default' configuration
     screen again. Click on 'Add build step', and add a new build step to
@@ -1225,7 +1212,7 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     how well a team is applying good testing practices such as test-driven
     development or behaviour-driven development.</para>
 
-    <para>Cobertura (<uri>http://cobertura.sourceforge.net/</uri>) is an open
+    <para>Cobertura (<uri>http://cobertura.sourceforge.net</uri>) is an open
     source code coverage tool that works well with both Maven and Hudson. Our
     Maven demonstration project is already configured to record code coverage
     metrics, so all we need to do is to install the Hudson Cobertura plugin
@@ -1343,8 +1330,8 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     strategy that can be useful for legacy projects is to gradually increase
     the minimum tolerated code coverage level over time. This way you can
     avoid having to retro-fit unit tests on legacy code just to raise the code
-    coverage (a dubious strategy at the best of times), but you do encourage
-    all new code and bug fixes to be well tested.</para>
+    coverage, but you do encourage all new code and bug fixes to be well
+    tested.</para>
 
     <para>Now trigger a build manually. The first time you run the build job
     with Cobertura reporting activated, you will see coverage statistics for
