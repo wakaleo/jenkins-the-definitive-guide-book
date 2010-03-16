@@ -8,11 +8,11 @@
     <title>Introduction</title>
 
     <para>In this chapter, we are going to take a quick guided tour through
-    some of Hudson's main features. You'll get to see first-hand just how easy
-    it is to set up a Hudson build job. And by the end of the chapter, you
-    will also be keeping tabs on test results and generating javadoc and code
-    coverage reports! We've got a lot of ground to cover, so let's get
-    started!</para>
+    some of Hudson's key features. You'll get to see first-hand just how easy
+    it is to install Hudson and set up your first Hudson automated build job.
+    And by the end of the chapter, you will also be keeping tabs on test
+    results, generating javadoc and publishing code coverage reports! We've
+    got a lot of ground to cover, so let's get started!</para>
   </section>
 
   <section id="sect-first-steps-environment">
@@ -21,71 +21,81 @@
     <para>There are two ways you can tackle this chapter. You can read through
     it without touching a keyboard, just to get an overview of what Hudson is
     about. Or you can get your hands dirty, and follow along on your own
-    machine. If you want to do the latter, you'll need to download the
-    pre-bundled Subversion repository from the book website. Subversion is a
-    popular open source version control system. We'll explain how to set it
-    all up further on. On the other hand, if you just want to read along, you
-    can safely skip this section and go to the next one, where all the action
-    starts.</para>
+    machine.</para>
+
+    <para>If you do want to follow along at home, you may need to set up some
+    software on your local machine. Remember, the most basic function of any
+    Continuous Integration tool is to monitor source code in a version control
+    system and to fetch and build the latest version of your source code
+    whenever any changes are committed. So you'll need a version control
+    system. More precisedly in our case, you'll need to set up a Subversion
+    server on your local machine. You'll also need to download the pre-bundled
+    Subversion repository from the book website. We'll explain how to set it
+    all up in great detail further on.</para>
 
     <para>In this chapter, we'll be using Hudson to build a Java application
     using Maven. <indexterm>
         <primary>maven</primary>
       </indexterm>Maven is a widely-used build tool in the Java world, with
     many powerful features such as declarative dependency management,
-    convention over configuration, and a large range of plugins. We'll also be
-    using a Subversion repository to store the source code. In fact,
-    Subversion, along with a recent version of Java, are the only things you
-    will need to install on your machine. We will also be using both a recent
-    Java Development Kit (JDK) and Maven (a widely-used open source Java build
-    tool), but if you don't have these installed on your machine, don't fret!
-    As we will see, Hudson will install them for you.</para>
+    convention over configuration, and a large range of plugins. As we
+    mentioned earlier, we'll also be using a Subversion repository to store
+    the source code. For our build, we will also be using recent versions of
+    the Java Development Kit (JDK) and Maven, but if you don't have these
+    installed on your machine, don't fret! As we will see, Hudson will install
+    them for you.</para>
 
-    <para>The first thing you will need to install is a recent version of
-    Java. Hudson is a Java web application, so you will need at least the Java
-    Runtime Environment, or JRE<indexterm>
-        <primary>Java</primary>
-      </indexterm><indexterm>
-        <primary>Java</primary>
+    <section>
+      <title>Installing Java</title>
 
-        <secondary>JRE</secondary>
-      </indexterm> to run it. If you are doing any other Java development work
-    on your machine you will need (and may well already have) the full Java
-    Development Kit (JDK). <indexterm>
-        <primary>Java</primary>
+      <para>The first thing you will need to install on your machine is Java.
+      Hudson is a Java web application, so you will need at least the Java
+      Runtime Environment, or JRE<indexterm>
+          <primary>Java</primary>
+        </indexterm><indexterm>
+          <primary>Java</primary>
 
-        <secondary>JDK</secondary>
-      </indexterm>You can download both the JDK and the JRE installers from
-    the Java web site
-    (<uri>http://java.sun.com/javase/downloads/index.jsp</uri>) (see <xref
-    linkend="fig-installing-java" />).</para>
+          <secondary>JRE</secondary>
+        </indexterm> to run it. If you don't have a version already installed,
+      you can download the JRE installer from the Java web site
+      (<uri>http://java.sun.com/javase/downloads/index.jsp</uri>) (see <xref
+      linkend="fig-installing-java" />).</para>
 
-    <para><figure id="fig-installing-java">
-        <title>Installing Java</title>
+      <para><figure id="fig-installing-java">
+          <title>Installing Java</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/java-install.png" />
-          </imageobject>
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/java-install.png" />
+            </imageobject>
 
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/java-install.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>The examples in this chapter use Subversion, so to run them on
-    your own machine, you will also need to install and run a local Subversion
-    server on your workstation. If this sounds a little daunting, don't worry
-    - it's actually pretty straightforward, and we'll step you through the
-    process. Subversion comes pre-installed on Mac OS X and many flavors of
-    Linux. Just make sure you have the Subversion server tools
-    (<command>svnserve</command> in particular) installed. You can check this
-    by running the <indexterm>
-        <primary>Subversion</primary>
+            <imageobject role="print" security="">
+              <imagedata align="center" fileref="figs/print/java-install.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </section>
 
-        <secondary>svnserve</secondary>
-      </indexterm><command>svnserve</command> command from the command line as
-    follows:<screen>$ <command>svnserve --version</command>
+    <section>
+      <title>Installing a local Subversion server</title>
+
+      <para>The examples in this chapter use Subversion, so to run them on
+      your own machine, you will also need to install and run a local
+      Subversion server on your workstation. If this sounds a little daunting,
+      don't worry - it's actually pretty straightforward, and we'll step you
+      through the process. Otherwise, you can follow along without running the
+      examples and still get a good feel for what Hudson can do.</para>
+
+      <para>Subversion comes pre-installed on Mac OS X and many flavors of
+      Linux. Just make sure you have the Subversion server tools
+      (<command>svnserve</command> in particular) installed. You can check
+      this by running the <indexterm>
+          <primary>Subversion</primary>
+
+          <secondary>svnserve</secondary>
+        </indexterm><command>svnserve</command> command from the command line
+      or in a DOS window as shown here:<screen>$ <command>svnserve --version</command>
 svnserve, version 1.6.2 (r37639)
    compiled May 14 2009, 14:34:54
 
@@ -100,48 +110,49 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-    <para>If you need to, you can find the Subversion installation packages,
-    or installation instructions, for your operation system from the
-    Subversion website (<uri>http://subversion.apache.org</uri>). If you are
-    installing Subversion on Windows, make sure you only install the basic
-    command-line Subversion tools (<command>svn</command> and
-    <command>svnserve</command> in particular). Some of the Windows
-    installation packages, such as those from Collabnet and VisualSVN, will
-    install Subversion as a service on your workstation and set up an empty
-    repository for you. This is great if you are installing a Subversion
-    server, and if you are familiar with Subversion administration, but for
-    our purposes it is overkill, and will interfere with the instructions we
-    provide.</para>
+      <para>If you get an error, you probably haven't got the Subversion
+      server software installed on your machine. You can find the Subversion
+      installation packages, or installation instructions, for your operation
+      system from the Subversion website
+      (<uri>http://subversion.apache.org</uri>). If you are installing
+      Subversion on Windows, make sure you only install the basic command-line
+      Subversion tools (<command>svn</command> and <command>svnserve</command>
+      in particular). Some of the Windows installation packages, such as those
+      from Collabnet and VisualSVN, will install Subversion as a service on
+      your workstation and set up an empty repository for you. This is great
+      if you are installing a Subversion server, and if you are familiar with
+      Subversion administration, but for our purposes it is overkill, and will
+      interfere with the instructions we provide.</para>
 
-    <para>The <indexterm>
-        <primary>Subverion</primary>
+      <para>A better choice in this regard is the <indexterm>
+          <primary>Subversion</primary>
 
-        <secondary>SlikSVN</secondary>
-      </indexterm>SlikSVN installer
-    (<uri>http://www.sliksvn.com/en/download</uri> - see <xref
-    linkend="fig-sliksvn-install" />) is better choice in this regard, and
-    will only install the bare-bones Subversion command-line tools, which is
-    exactly what we want. However, be sure to choose the 'Complete' setup
-    type, as this is the only one that includes the
-    <command>svnserve</command> tool.</para>
+          <secondary>SlikSVN</secondary>
+        </indexterm>SlikSVN installer
+      (<uri>http://www.sliksvn.com/en/download</uri>), which will only install
+      the bare-bones Subversion command-line tools, which suits us just fine.
+      However, be sure to choose the 'Complete' setup type (see <xref
+      linkend="fig-sliksvn-install" />), as this is the only one that includes
+      the <command>svnserve</command> tool.</para>
 
-    <para><figure id="fig-sliksvn-install">
-        <title>Installing Subversion with the Slik Subversion installer for
-        Windows</title>
+      <para><figure id="fig-sliksvn-install">
+          <title>If you use the Slik Subversion installer for Windows, be sure
+          to select the 'Complete' setup type</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/sliksvn-install.png" />
-          </imageobject>
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/sliksvn-install.png" />
+            </imageobject>
 
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/sliksvn-install.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>Once you have installed Subversion, you should check that it is
-    working properly. Open a command prompt and run <command>svnserve
-    -version</command>. You should get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/sliksvn-install.pdf" scalefit="0"
+                         width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have installed Subversion, you should check that it
+      is working properly. Open a command prompt and run <command>svnserve
+      -version</command>. You should now get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
 svnserve, version 1.6.9 (SlikSvn:tag/1.6.9@902044) WIN32
    compiled Jan 22 2010, 10:39:27
 
@@ -156,79 +167,93 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-    <para>You can download the Subversion repository used for this chapter
-    from the book web site, which you can find at
-    <uri>http://www.continuous-integration-with-hudson.org</uri>. In fact,
-    you'll find a lot of the tools and resources referred to in this chapter,
-    as well as all of the examples used in this book, on this site. Go to this
-    page now and download the book-examples zip file. When you unzip this
-    file, you should see a sub-folder for each chapter of the book (see <xref
-    linkend="fig-first-steps-examples" />).</para>
+      <para>With Subversion now installed, we can proceed to set up the sample
+      repository containing the project we will be building with
+      Hudson.</para>
+    </section>
 
-    <para><figure id="fig-first-steps-examples">
-        <title>The Book examples folder on a Windows machine</title>
+    <section>
+      <title>Setting up the sample Subversion repository</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/first-steps-examples.png " />
-          </imageobject>
+      <para>All of the <indexterm>
+          <primary>Sample projects</primary>
+        </indexterm>sample projects used in this book are available online.
+      You can download the Subversion repository used for this chapter from
+      the book web site, which you can find at
+      <uri>http://www.continuous-integration-with-hudson.org</uri>. Go to this
+      page now and download the book-examples zip file. When you unzip this
+      file, you should see a sub-folder for each chapter of the book (see
+      <xref linkend="fig-first-steps-examples" />).</para>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/first-steps-examples.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>A Subversion repository is a simple directory structure that
-    can be used on any operating system. In our case, the repository is stored
-    in a directory called <filename>svn-repos</filename>, which you will find
-    in the <filename>chapter-first-steps</filename> directory of the book
-    resources. You don't have to worry about the details, though. To start up
-    the Subversion server on your machine, just go to the
-    <filename>chapter-first-steps</filename> directory and run the
-    <uri>start-svn.bat</uri> script (for Windows) or the
-    <uri>start-svn.sh</uri> script (on Linux, Mac OS, and so forth).</para>
+      <para><figure id="fig-first-steps-examples">
+          <title>The Book examples folder on a Windows machine</title>
 
-    <para>For the more experienced, you may like to start the server manually
-    yourself. In this case, open up a command-line prompt in the
-    <filename>chapter-first-steps</filename> and run the following
-    command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/first-steps-examples.png " />
+            </imageobject>
 
-    <para>In both cases, you will end up with a Subversion server running on
-    your machine. In a Linux or Mac OS X environment, the process will run as
-    a daemon in the background. On Windows, it will just run in the command
-    prompt until you stop it manually using Control-C (see <xref
-    linkend="fig-running-svnserve" />). If your are running Subversion on
-    Windows, make sure you don't shut this window!</para>
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/first-steps-examples.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure>A Subversion repository is a simple directory structure that
+      can be used on any operating system. In our case, the repository is
+      stored in a directory called <indexterm>
+          <primary>Subversion</primary>
 
-    <para><figure id="fig-running-svnserve">
-        <title>Running the svnserve Subversion server in Windows</title>
+          <secondary>svn-repos directory</secondary>
+        </indexterm><filename>svn-repos</filename>, which you will find in the
+      <filename>chapter-first-steps</filename> directory of the book
+      resources. You don't have to worry about the details, though. To start
+      up the Subversion server on your machine, just go to the
+      <filename>chapter-first-steps</filename> directory and run the
+      <uri>start-svn.bat</uri> script (for Windows) or the
+      <uri>start-svn.sh</uri> script (on Linux, Mac OS, and so forth).</para>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/svnserve-running.png" />
-          </imageobject>
+      <para>If you are more experienced with Subversion, you might like to
+      start the server manually yourself. In this case, open up a command-line
+      prompt in the <filename>chapter-first-steps</filename> directory and run
+      the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/svnserve-running.pdf" scalefit="0"
-                       width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <para>In both cases, you will end up with a Subversion server running on
+      your machine. In a Linux or Mac OS X environment, the process will run
+      as a daemon in the background. On Windows, it will just run in the
+      command prompt until you stop it manually using Control-C (see <xref
+      linkend="fig-running-svnserve" />). If your are running Subversion on
+      Windows, make sure you don't shut this window!</para>
 
-    <para>Finally, just to make sure everything is working, open another
-    command prompt and run the <command>svn list</command> command. This will
-    display a listing of the top-level directory in our Subversion repository,
-    which should look something like this:<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
+      <para><figure id="fig-running-svnserve">
+          <title>Running the svnserve Subversion server in Windows</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/svnserve-running.png" />
+            </imageobject>
+
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/svnserve-running.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Finally, just to make sure everything is working, open another
+      command prompt and run the <command>svn list</command> command. This
+      will display a listing of the top-level directory in our Subversion
+      repository, which should look something like this:<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
 .classpath
 .project
 .settings/
 pom.xml
 src/</screen></para>
 
-    <para>This is all you really need to follow along for the rest of the
-    chapter. So now, let's take Hudson for a spin.</para>
+      <para>This is all you really need to follow along for the rest of the
+      chapter. So now, let's take Hudson for a spin.</para>
+    </section>
   </section>
 
   <section>
@@ -238,7 +263,7 @@ src/</screen></para>
         <primary>Hudson</primary>
 
         <secondary>Staring using Java Web Start</secondary>
-      </indexterm>Probably the easiest way to run Hudson for the first time is
+      </indexterm>One of the easiest way to run Hudson for the first time is
     to use the Java Web Start link provided on the Hudson website. Java Web
     Start is a technology that lets you start up a Java application on your
     local machine via a URL on a web page - it comes bundled with the Java
@@ -278,11 +303,11 @@ src/</screen></para>
     Click on OK - this will download Hudson and start it up on your machine
     (see <xref linkend="fig-first-steps-downloading-hudson" />).</para>
 
-    <para>In some browsers, clicking on this button might simply download the
+    <para>In other browsers, clicking on this button may simply download the
     JNLP file. In Internet Explorer, you may even need to right click on the
-    link and select 'Save Target As' to save the JNLP file. In both of these
-    cases, when you open the JNLP file, Java Web Start will download and start
-    Hudson.</para>
+    link and select 'Save Target As' to save the JNLP file, and then run run
+    it from Windows Explorer. However, in both of these cases, when you open
+    the JNLP file, Java Web Start will download and start Hudson.</para>
 
     <para><figure id="fig-first-steps-downloading-hudson">
         <title>Java Web Start will download and run the latest version of
@@ -346,7 +371,7 @@ src/</screen></para>
 
     <para>By this stage, Hudson should be running on your machine, either
     through the Java Web Start launcher or directly from the command line.
-    Hudson is a web application - you can access it through any web browser.
+    Hudson is a web application, so you can access it through any web browser.
     By default, Hudson will be running on port 8080. Go to
     <uri>http://localhost:8080</uri> and check it out. You should see a screen
     like the one shown in <xref linkend="fig-hudson-start" os="" />. You are
@@ -379,41 +404,64 @@ src/</screen></para>
         <primary>Hudson</primary>
 
         <secondary>Manage Hudson screen</secondary>
-      </indexterm>'Manage Hudson' link on the home page. This will take you to
-    the 'Manage Hudson' page, the central one-stop-shop for all your Hudson
-    configuration. From this screen, you can configure your Hudson server,
-    install and upgrade plugins, keep track of system load, manage distributed
-    build servers, and more! For now, however, we'll keep it simple. Just
-    click on the 'Configure System' link at the top of the list.</para>
+      </indexterm>'Manage Hudson' link on the home page (see <xref
+    linkend="fig-hudson-start" os="" />). This will take you to the 'Manage
+    Hudson' page, the central one-stop-shop for all your Hudson configuration.
+    From this screen, you can configure your Hudson server, install and
+    upgrade plugins, keep track of system load, manage distributed build
+    servers, and more! For now, however, we'll keep it simple. Just click on
+    the 'Configure System' link at the top of the list (see <xref
+    linkend="fig-hudson-manage" />).</para>
 
-    <para>This will take you to Hudson's main configuration screen. From here
-    you can configure everything from security configuration and build tools
-    to email servers and version control systems. In particular, you will need
-    to configure the tools you use to build your software. The sample
-    application we will be building is a Java application. So in this case,
-    all we need to do is to set up a recent JDK and Maven installation.</para>
-
-    <para>Let's configure Maven first. Hudson provides great out-of-the-box
-    support for Maven. Scroll down until you reach the 'Maven' section in the
-    'Configure System' screen (see <xref
-    linkend="hudson-maven-jdk" />).</para>
-
-    <para><figure id="fig-hudson-maven-jdk">
-        <title>Configuring a Maven installation and a JDK</title>
+    <para><figure id="fig-hudson-manage">
+        <title>The Manage Hudson screen</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-maven-jdk.png" />
+            <imagedata fileref="figs/web/hudson-manage.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/hudson-manage.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>This will take you to Hudson's main configuration screen (see
+    <xref linkend="fig-hudson-configure" />). From here you can configure
+    everything from security configuration and build tools to email servers,
+    version control systems and integration with third-party software. The
+    screen contains a lot of information, but most of the fields contain
+    sensible default values, so you can safely ignore them for now.<figure
+        id="fig-hudson-configure">
+        <title>The Configure Hudson screen</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-configure.png" />
           </imageobject>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-maven-jdk.pdf" scalefit="0"
+                       fileref="figs/print/hudson-configure.pdf" scalefit="0"
                        width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>Hudson provides several options when it comes to configuring
-    Maven. If you already have Maven installed on your machine, you can simply
+      </figure></para>
+
+    <para>For now, you will just need to configure the tools required to build
+    our sample project. The application we will be building is a Java
+    application, built using Maven. So in this case, all we need to do is to
+    set up a recent JDK and Maven installation.</para>
+
+    <para><indexterm>
+        <primary>Maven</primary>
+      </indexterm>Let's configure Maven first. Hudson provides great
+    out-of-the-box support for Maven. Scroll down until you reach the 'Maven'
+    section in the 'Configure System' screen (see <xref lang=""
+    linkend="hudson-maven" />).</para>
+
+    <para>Hudson provides several options when it comes to configuring Maven.
+    If you already have Maven installed on your machine, you can simply
     provide the path in the MAVEN_HOME field. Alternatively, you can install a
     Maven distribution by extracting a zip file located in a shared directory,
     or execute a home-rolled installation script. Or you can let Hudson do all
@@ -430,6 +478,22 @@ src/</screen></para>
     discuss how to set this up in <xref
     linkend="sect-configuration-proxies" />.</para>
 
+    <para><figure id="fig-hudson-maven">
+        <title>Configuring a Maven installation</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-configure-maven.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-configure-maven.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
     <para>One of the nice things about the Hudson Maven installation process
     is how well it works with remote build agents. Later on in the book, we'll
     see how Hudson can also run builds on remote build servers. You can define
@@ -439,17 +503,34 @@ src/</screen></para>
     remote build agent or set up a new build server using this Hudson
     configuration.</para>
 
-    <para>Once you have configured your Maven installation, you will also need
-    to configure a JDK installation. Again, if you have a Java JDK (as opposed
-    to a Java Runtime Environment,) already installed on your workstation, you
-    can simply provide the path to your JDK in the JAVA_HOME field. Otherwise,
-    you can ask Hudson to download the JDK from the
-    <uri>http://java.sun.com</uri> website the first time a build job requires
-    it. This is similar to the automatic Maven installation feature - just
-    pick the JDK version you need and Hudson will take care of all the
-    logistics. However, for licensing reasons, you will also need to tick a
-    check box to indicate that you agree with the Java SDK License
-    Agreement.</para>
+    <para><indexterm>
+        <primary>JDK</primary>
+      </indexterm>Once you have configured your Maven installation, you will
+    also need to configure a JDK installation (see <xref
+    linkend="fig-hudson-jdk" />). Again, if you have a Java JDK (as opposed to
+    a Java Runtime Environment - the JDK contains extra development tools such
+    as the Java compiler) already installed on your workstation, you can
+    simply provide the path to your JDK in the JAVA_HOME field. Otherwise, you
+    can ask Hudson to download the JDK from the <uri>http://java.sun.com</uri>
+    website the first time a build job requires it. This is similar to the
+    automatic Maven installation feature - just pick the JDK version you need
+    and Hudson will take care of all the logistics. However, for licensing
+    reasons, you will also need to tick a check box to indicate that you agree
+    with the Java SDK License Agreement.<figure id="fig-hudson-jdk">
+        <title>Configuring a JDK installation</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-configure-jdk.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-configure-jdk.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
 
     <para>The last thing you would typically set up is notification. When a
     Hudson build breaks, and when it works again, it can send out email
@@ -460,8 +541,8 @@ src/</screen></para>
     going to worry about notifications just yet.</para>
 
     <para>That is all we need to configure at this stage. Go to the bottom of
-    the screen and click on 'Save'. You are now ready to set up your first
-    Hudson build job!</para>
+    the screen and click on the 'Save' button. You are now ready to set up
+    your first Hudson build job!</para>
   </section>
 
   <section>
@@ -473,11 +554,13 @@ src/</screen></para>
     running your unit tests. Or you might want a build job to do other related
     tasks, such as running your integration tests, measuring code coverage or
     code quality metrics, generating technical documentation, or even
-    deploying your application to a web server. A real project typically
+    deploying your application to a web server. A real project usually
     requires many separate but related build jobs.</para>
 
     <para>Our sample application is a simple Java implementation of John
-    Conway's "Game Of Life".<footnote id="footnote-game-of-life">
+    Conway's <indexterm>
+        <primary>Game Of Life</primary>
+      </indexterm>"Game Of Life".<footnote id="footnote-game-of-life">
         <para>See http://en.wikipedia.org/wiki/Conway's_Game_of_Life</para>
       </footnote>. The Game of Life is a mathematical game which takes place
     on a two dimensional grid of cells, which we will refer to as the
@@ -526,7 +609,13 @@ src/</screen></para>
     Nevertheless, although our project does use Maven, we are going to use a
     free-style build job, just to keep things simple and general to start
     with. So choose 'Build a free-style software project', as shown in <xref
-    linkend="fig-first-build-job" />.<figure id="fig-first-build-job">
+    linkend="fig-first-build-job" />.</para>
+
+    <para>You'll also need to give your build job a sensible name. In this
+    case, call it 'gameoflife-default', as it will be the default CI build for
+    our Game Of Life project.</para>
+
+    <para><figure id="fig-first-build-job">
         <title>Setting up your first build job in Hudson</title>
 
         <mediaobject>
@@ -541,10 +630,6 @@ src/</screen></para>
         </mediaobject>
       </figure></para>
 
-    <para>You'll also need to give your build job a sensible name. In this
-    case, call it 'gameoflife-default', as it will be the default CI build for
-    our Game Of Life project.</para>
-
     <para>Once you click on OK, Hudson will display the project configuration
     screen (see <xref linkend="fig-new-job-svn" />).</para>
 
@@ -556,15 +641,19 @@ src/</screen></para>
     such as Git, Mercurial, ClearCase, Perforce and many more via
     plugins.</para>
 
-    <para>For this project, we will be getting the source code from the local
-    Subversion repository we set up earlier (so make sure you have this
-    Subversion repository up and running, as we described in <xref
-    linkend="sect-first-steps-environment" />). Choose 'Subversion' and enter
-    <uri>svn://localhost/gameoflife/trunk</uri> as the Repository URL (see
-    <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
-    Directory Module' field. This makes Hudson check out the source code
-    directly into the build job's workspace. If you don't do this, Subversion
-    will check the source code out to a subdirectory called
+    <para><indexterm>
+        <primary>SCM</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>For this project, we will be getting the source code from
+    the local Subversion repository we set up earlier (so make sure you have
+    this Subversion repository up and running, as we described in <xref
+    linkend="sect-first-steps-environment" />). On the Hudson screen, choose
+    'Subversion' and enter <uri>svn://localhost/gameoflife/trunk</uri> as the
+    Repository URL (see <xref linkend="fig-new-job-svn" />). Also, place a dot
+    (".") in the 'Local Directory Module' field. This makes Hudson check out
+    the source code directly into the build job's workspace. If you don't do
+    this, Subversion will check the source code out to a subdirectory called
     <filename>trunk</filename>. Using the build job's workspace makes some of
     the other options a little simpler to configure. You can leave all of the
     other options up until here with their default values.</para>
@@ -595,20 +684,25 @@ src/</screen></para>
     even triggering a build remotely using a "post-commit" hook in your
     SCM.</para>
 
-    <para>We configure all of this in the 'Build Triggers' section (see <xref
-    linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option and enter
-    '* * * * *' (that's five asterisks) in the Schedule box. Hudson schedules
-    are configured using the <command>cron</command> syntax, well-known in the
-    Unix world. The <command>cron</command> syntax consists of five fields
-    separated by white space, indicating respectivly the minute (0-59), hour
-    (0-23), day of the month (1-31), month (1-12) and the day of the week
-    (0-7, with 0 and 7 being Sunday). The star is a wildcard character which
-    accepts any valid value for that field. So five stars basically means
-    "every minute of every hour of every day". You can also provide ranges of
-    values: "* 9-17 * * *" would mean "every minute of every day, between 9am
-    and 5pm". You can also space out the schedule using intervals: "*/5 * * *
-    *" means "every 5 minutes, for example. Finally, there are some other
-    convenient short-hands, such as "@daily" and "@hourly".</para>
+    <para><indexterm>
+        <primary>Build Triggers</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>We configure all of this in the 'Build Triggers' section
+    (see <xref linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option
+    and enter '* * * * *' (that's five asterisks) in the Schedule box. Hudson
+    schedules are configured using the <command>cron</command> syntax,
+    well-known in the Unix world. The <command>cron</command> syntax consists
+    of five fields separated by white space, indicating respectivly the minute
+    (0-59), hour (0-23), day of the month (1-31), month (1-12) and the day of
+    the week (0-7, with 0 and 7 being Sunday). The star is a wildcard
+    character which accepts any valid value for that field. So five stars
+    basically means "every minute of every hour of every day". You can also
+    provide ranges of values: "* 9-17 * * *" would mean "every minute of every
+    day, between 9am and 5pm". You can also space out the schedule using
+    intervals: "*/5 * * * *" means "every 5 minutes, for example. Finally,
+    there are some other convenient short-hands, such as "@daily" and
+    "@hourly".</para>
 
     <para>Don't worry if your Unix skills are a little rusty - if you click on
     the blue question mark icon on the side of the schedule box, Hudson will
@@ -639,12 +733,16 @@ src/</screen></para>
     Grails, Gradle, Rake, Ruby, MSBuild and many other build tools are all
     supported.</para>
 
-    <para>For now, we just want to run a simple Maven build. Scroll down to
-    the 'Build' section and click on the 'Add Build Step' and choose 'Invoke
-    top-level Maven targets' (see <xref linkend="fig-new-job-build-step" />).
-    Then enter 'clean test' in the Goals. If you are not familiar with Maven,
-    this will delete any previous build artifacts, compile our code and run
-    our unit tests.</para>
+    <para><indexterm>
+        <primary>Maven</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>For now, we just want to run a simple Maven build. Scroll
+    down to the 'Build' section and click on the 'Add Build Step' and choose
+    'Invoke top-level Maven targets' (see <xref
+    linkend="fig-new-job-build-step" />). Then enter 'clean test' in the
+    Goals. If you are not familiar with Maven, this will delete any previous
+    build artifacts, compile our code and run our unit tests.</para>
 
     <para><figure id="fig-new-job-build-step">
         <title>Adding a build step</title>
@@ -678,8 +776,12 @@ src/</screen></para>
     <para>So the next thing we need to do is to get Hudson to keep tabs on our
     unit tests.</para>
 
-    <para>Go to the 'Post-build Actions' section (see <xref
-    linkend="fig-new-job-test-reports" />) and tick 'publish JUnit test result
+    <para><indexterm>
+        <primary>JUnit reports</primary>
+
+        <secondary>Configuring in Freestyle build jobs</secondary>
+      </indexterm>Go to the 'Post-build Actions' section (see <xref
+    linkend="fig-new-job-test-reports" />) and tick 'Publish JUnit test result
     report' checkbox. When Maven runs unit tests in a project, it
     automatically generates the XML test reports in a directory called
     <filename>surefire-reports</filename> in the <filename>target</filename>
@@ -707,7 +809,7 @@ src/</screen></para>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-tests.pdf"
+                       fileref="figs/print/hudson-new-job-tests-no-email.pdf"
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
@@ -782,19 +884,15 @@ src/</screen></para>
           </imageobject>
         </mediaobject>
       </figure>When the build finishes, the ball in the Build History box
-    becomes solid blue. This means the build was a success<footnote>
-        <para>If you think green balls would be a better indicator of success
-        than blue ones, you can do that too, thanks to the 'Green Balls'
-        plugin.</para>
-      </footnote>. Build failures are generally indicated by a red ball. For
-    some types of project, you can also distinguish between a build error
-    (such as a compiler error), indicated by a red ball, and other sorts of
-    build failures, such as unit test failures or insufficient code coverage,
-    which are indicated by a yellow ball. There are also some other details
-    about the latest test results, when the last build was run, and so on. But
-    before we look at the details, let's get back to the core business model
-    of a Continuous Integration server - kicking off builds when someone
-    changes the code!</para>
+    becomes solid blue. This means the build was a success. Build failures are
+    generally indicated by a red ball. For some types of project, you can also
+    distinguish between a build error (such as a compiler error), indicated by
+    a red ball, and other sorts of build failures, such as unit test failures
+    or insufficient code coverage, which are indicated by a yellow ball. There
+    are also some other details about the latest test results, when the last
+    build was run, and so on. But before we look at the details, let's get
+    back to the core business model of a Continuous Integration server -
+    kicking off builds when someone changes the code!</para>
 
     <para>We are going to commit a code change to Subversion and see what
     happens. First, you will need to check out a copy of the source code from
@@ -841,8 +939,7 @@ Checked out revision 6.</screen></para>
     <para>First of all, open the <filename>LivingCell.java</filename> file,
     which you will find in the
     <filename>gameoflife-core/src/main/java/com/ciwithhudson/gameoflide/domain</filename>
-    directory. Open this file in your favorite text editor (something like
-    Wordpad on Windows or TextEdit on Mac OS, for example). You should see
+    directory. Open this file in your favorite text editor. You should see
     something like this:<programlisting>package com.ciwithhudson.gameoflife.domain;
 
 public class LivingCell extends Cell {
@@ -911,13 +1008,20 @@ Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
 Transmitting file data .
 Committed revision 7.</screen></para>
 
-    <para>Now go back to the Hudson web page. After a minute or so, a new
-    build should kick off, and fail. In fact, there are several other places
-    which are affected by this change, and the regression tests related to
-    these features are now failing. You should see a second build in the build
-    history with an ominous red ball (see <xref
-    linkend="fig-new-job-failed" />) - this tells you that the latest build
-    has failed.</para>
+    <para><indexterm>
+        <primary>Build failures</primary>
+      </indexterm>Now go back to the Hudson web page. After a minute or so, a
+    new build should kick off, and fail. In fact, there are several other
+    places which are affected by this change, and the regression tests related
+    to these features are now failing. On the build job home page, you will
+    see a second build in the build history with an ominous red ball (see
+    <xref linkend="fig-new-job-failed" />) - this tells you that the latest
+    build has failed.</para>
+
+    <para>You might also notice some clouds next to the Build History title -
+    this is the same "weather" icon that we saw on the home page, and serves
+    the same purpose - to give you a general idea of how stable your build is
+    over time.</para>
 
     <para><figure id="fig-new-job-failed">
         <title>A failed build</title>
@@ -929,25 +1033,22 @@ Committed revision 7.</screen></para>
 
           <imageobject role="print" security="">
             <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-failed.pdf "
+                       fileref="figs/print/hudson-new-job-failed.pdf"
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>You might also notice some clouds next to the Build History
-    title - this is the same "weather" icon that we saw on the home page, and
-    serves the same purpose - to give you a general idea of how stable your
-    build is over time.</para>
-
-    <para>If you click on the new build history entry, Hudson will give you
-    some more details about what went wrong (see <xref
+      </figure>If you click on the new build history entry, Hudson will give
+    you some more details about what went wrong (see <xref
     linkend="fig-new-job-failure-details" />). Hudson tells us that there were
     11 new test failures in this build, something which can be seen at a
-    glance in the Test Result Trend graph - red indicates test failures. You
+    glance in the <indexterm>
+        <primary>Test Result Trend</primary>
+      </indexterm>Test Result Trend graph - red indicates test failures. You
     can even see which tests are failing, and how long they have been
     broken.</para>
 
     <para><figure id="fig-new-job-failure-details">
-        <title>A failed build</title>
+        <title>The list of all the broken tests</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -966,10 +1067,7 @@ Committed revision 7.</screen></para>
     figure out as well. If you click on the failed test classes, Hudson brings
     up the actual details of the test failures (see <xref
     linkend="fig-hudson-new-job-test-failure-details" />), which is a great
-    help when it comes to reproducing and fixing the issue. Hudson displays a
-    host of information about the failed test in a very readable form,
-    including the error message the test produced, the stack trace, how long
-    the test has been broken, and how long it took to run.</para>
+    help when it comes to reproducing and fixing the issue. </para>
 
     <para><figure id="fig-hudson-new-job-test-failure-details">
         <title>Details about a failed test</title>
@@ -985,11 +1083,17 @@ Committed revision 7.</screen></para>
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>Now let's fix the build. To make things simple, we'll just back
-    out our changes and recommit the code in it's original state (the end
-    users just changed their mind about the asterisks, anyway). So just undo
-    the changes you made to the <filename>LivingCell</filename> class (again,
-    the changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
+      </figure>Hudson displays a host of information about the failed test in
+    a very readable form, including the error message the test produced, the
+    stack trace, how long the test has been broken, and how long it took to
+    run. Often, this in itself is enough to put a developer on the right track
+    towards fixing the issue.</para>
+
+    <para>Now let's fix the build. To make things simple, we'll just back out
+    our changes and recommit the code in it's original state (the end users
+    just changed their mind about the asterisks, anyway). So just undo the
+    changes you made to the <filename>LivingCell</filename> class (again, the
+    changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
 
     <command>public static final char SYMBOL = '+';</command>
     
@@ -1045,18 +1149,21 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
   <section>
     <title>More reporting - displaying Javadocs</title>
 
-    <para>For many Java projects, Javadoc comments are an important source of
-    low-level technical documentation. There are even tools, such as UmlGraph,
-    that let you produce Javadoc with embedded UML diagrams to give you a
-    better picture of how the classes fit together in the application. This
-    sort of technical documentation has the advantage of being cheap to
+    <para><indexterm>
+        <primary>Javadocs</primary>
+      </indexterm>For many Java projects, Javadoc comments are an important
+    source of low-level technical documentation. There are even tools, such as
+    UmlGraph, that let you produce Javadoc with embedded UML diagrams to give
+    you a better picture of how the classes fit together in the application.
+    This sort of technical documentation has the advantage of being cheap to
     produce, accurate and always up-to-date.</para>
 
     <para>Hudson can integrate Javadoc API documentation directly into the
-    Hudson web site. Often, this sort of task is performed in a separate build
-    job, but for simplicity we are going to add another build step to the
-    gameoflife-default build job to generate and display Javadoc documention
-    for the Game Of Life API.</para>
+    Hudson web site. This way, everyone can find the latest Javadoc easily, in
+    a well known place. Often, this sort of task is performed in a separate
+    build job, but for simplicity we are going to add another build step to
+    the gameoflife-default build job to generate and display Javadoc
+    documention for the Game Of Life API.</para>
 
     <para>Start off by going into the 'gameoflife-default' configuration
     screen again. Click on 'Add build step', and add a new build step to
@@ -1118,9 +1225,12 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
   <section>
     <title>Adding Code Coverage and other metrics</title>
 
-    <para>Reporting is one of Hudson's strong points. We have seen how easy it
-    is to display test results and to publish Javadocs, but you can publish a
-    large number of other very useful reports using Hudson's plugins.</para>
+    <para><indexterm>
+        <primary>Code Coverage</primary>
+      </indexterm>Reporting is one of Hudson's strong points. We have seen how
+    easy it is to display test results and to publish Javadocs, but you can
+    publish a large number of other very useful reports using Hudson's
+    plugins.</para>
 
     <para>Plugins are another one of Hudson's selling points - there are
     plugins for doing just about anything, from integrating new build tools or
@@ -1136,7 +1246,7 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     how well a team is applying good testing practices such as test-driven
     development or behaviour-driven development.</para>
 
-    <para>Cobertura (<uri>http://cobertura.sourceforge.net/</uri>) is an open
+    <para>Cobertura (<uri>http://cobertura.sourceforge.net</uri>) is an open
     source code coverage tool that works well with both Maven and Hudson. Our
     Maven demonstration project is already configured to record code coverage
     metrics, so all we need to do is to install the Hudson Cobertura plugin
@@ -1254,8 +1364,8 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     strategy that can be useful for legacy projects is to gradually increase
     the minimum tolerated code coverage level over time. This way you can
     avoid having to retro-fit unit tests on legacy code just to raise the code
-    coverage (a dubious strategy at the best of times), but you do encourage
-    all new code and bug fixes to be well tested.</para>
+    coverage, but you do encourage all new code and bug fixes to be well
+    tested.</para>
 
     <para>Now trigger a build manually. The first time you run the build job
     with Cobertura reporting activated, you will see coverage statistics for
