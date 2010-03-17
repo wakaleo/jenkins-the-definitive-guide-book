@@ -1,0 +1,73 @@
+Automated testing with Hudson
+
+If you are doing Continuous Integration without automated testing, you are not getting anywhere near as much out of your CI server as you should. One of the fundamental tenants of CI is that a build should be verifiable. Hudson should be able to tell you, clearly and without ambiguity, whether your build is ready to proceed to the next stage of the build process. And automated tests are your most important tool to help you decide whether your build is a valid one.
+
+Hudson does an excellent job of reporting on your test results. However, it is up to you to write the appropriate tests and to configure your build to run them automatically. Fortunately integrating JUnit into your builds is relatively easy.
+
+Tests are a 
+
+- Displaying JUnit test results
+
+
+Hudson distinguishes between test failures and skipped tests. Skipped tests are ones that have been deactivated, for example by using the @Ignore annotation in JUnit:
+
+<Example of an ignored test>
+
+Skipping tests is legitimate in some circumstances, and using the @Ignore annotation is a much nicer approach than simply commenting out the test or renaming it, as it lets Hudson keep tabs on the ignored tests for you.
+
+Hudson will tell you about the total number of tests that passed and failed, and also tell you about how this varies from the previous build. So you can get an idea of whether some tests have been fixed, or whether they are failing successively build after build.
+
+You can drill down into modules, packages, and test classes, and list the individual tests within a test class.
+
+   - Drilling into JUnit test results
+
+   - Test result trends
+
+It can also come in handy to keep tabs on how long your tests take to run, not just whether they pass or fail. Unit tests should be designed to run fast, and overly long-running tests can be the sign of a performance issue. If your tests seem to be taking too long to run, or are taking more time than they used to, you can find out why by using the Test Result Trends graph.
+
+At the top level, this graph tells you how long your tests have been taking to run, over time. 
+
+<<Screenshot>>
+
+You can also drill down and investigate at the test level. First, you need to display the list of all the tests being executed by your build:
+<<Screenshot>>
+
+From here, you can see how long each test is taking, and click on a particular test to investigate further. Within the test details, you can 
+
+<<Screenshot>>
+
+This graph will tell you how long this particular test has been taking to run. If the test slowed down dramatically starting from a particular build, you'll be able to see it here.
+
+- Web testing in Hudson
+   - Selenium tests
+
+- Testing in other languages
+  - MSTest
+  - Gallileo/MbUnit (.NET)
+  - NUnit (.Net)
+  - CppUnit
+  - JSUnit
+  - xUnit
+
+- Test coverage metrics
+
+Another very useful test-related metric is code coverage. Code coverage give an indication of what parts of your application where executed during the tests. While this in itself is not a sufficient indication of quality testing (it is easy to execute an entire application without actually testing anything), it is a very good indication of code that has *not* been tested. And, if your team is introducing rigorous testing practices such as Test-Driven-Development, code coverage can be a good indicator of how well these practices are being applied.
+
+Hudson will not measure code coverage directly, but it does have several excellent code coverage reporting plugins that you can use to keep track of the code coverage in your builds.
+
+- Using Cobertura
+  - Example of Maven integration
+  - Configuring the Cobertura plugin
+  - Viewing the results
+
+- Using Emma code coverage
+  - Example of Maven configuration
+  - Configuring the Emma plugin
+  - Viewing the results
+
+Like any other reporting, code coverage reporting is only really effective if people actually take notice of it. One way of ensuring that team members pay attention to the code coverage metrics is to review them regularly. Another approach, which requires less discipline on the team's part, involves making the code quality build fail if the code coverage is not up to scratch.
+
+  - Configuring the Coverage plugins to fail builds and notify.
+
+- Performance tests
+  - Performance plugin
