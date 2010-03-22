@@ -394,10 +394,10 @@ isabled</screen></para>
 
     <para>In a real-world architecture, Hudson may not be the only web
     application running on your build server. Depending on the capacity of
-    your build server, Hudson may have to cohabit with other web applications
-    or Maven repositories, for example. If you are running Hudson along side
-    another application server, such as Tomcat, Jetty or Glassfish, you will
-    also need to override the ajp13 port, using the <indexterm>
+    your server, Hudson may have to cohabit with other web applications or
+    Maven repository managers, for example. If you are running Hudson along
+    side another application server, such as Tomcat, Jetty or Glassfish, you
+    will also need to override the ajp13 port, using the <indexterm>
         <primary>configuration</primary>
 
         <secondary>--ajp13Port</secondary>
@@ -480,7 +480,9 @@ isabled</screen></para>
       </indexterm>Since Hudson is distributed as an ordinary WAR file, it is
     easy to deploy it on any standard Java application server such as Tomcat,
     Jetty or Glassfish. Running Hudson on an application server is arguably
-    more complicated to setup and to maintain. On the other hand, your system
+    more complicated to setup and to maintain. You also loose certain nice
+    administration features such as the ability to upgrade Hudson or restart
+    the server directly from within Hudson. On the other hand, your system
     administrators might be more familiar with maintaining an application
     running on Tomcat or Glassfish than on the more obscure Winstone
     server.</para>
@@ -507,12 +509,6 @@ isabled</screen></para>
     ensure that it starts automatically whenever the server reboots.</para>
 
     <para>TODO: Step through installing Tomcat and Hudson on Windows</para>
-  </section>
-
-  <section>
-    <title>Setting up Hudson as a Unix Service</title>
-
-    <para>TODO?</para>
   </section>
 
   <section>
@@ -676,6 +672,9 @@ isabled</screen></para>
     you can freely update or reinstall your Hudson executable without
     affecting your Hudson home directory.</para>
 
+    <para>Needless to say, this directory will need a lot of disk
+    space.</para>
+
     <para>By default, the Hudson home directory will be called ".hudson", and
     will be placed in your home directory. For example, if you are running a
     machine under Windows Vista, if your username is "john", you would find
@@ -700,15 +699,16 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     server configuration, details that you configure in the "Manage Hudson"
     screen. These configuration details are stored in the form of a set of XML
     files. Much of the core configuration, for example, is stored in the
-    <filename>config.xml</filename> file, and the details of your Maven
-    installations are stored in a file called
+    <filename>config.xml</filename> file. Other tools-specific configuration
+    is stored in other appropriately-named XML files: the details of your
+    Maven installations, for example, are stored in a file called
     <filename>hudson.tasks.Maven.xml</filename>. You rarely need to modify
     these files by hand, though occasionally it can come in handy.</para>
 
     <para>The Hudson home directory also contains a number of sub-directories
     (see <xref lang="" linkend="fig-hudson-home-directory" />). Not all of the
-    directories will be present after a fresh installation, as some are
-    created when required by Hudson. And if you look at an existing Hudson
+    files and directories will be present after a fresh installation, as some
+    are created when required by Hudson. And if you look at an existing Hudson
     installation, you will see additional XML files relating to Hudson
     configuration and plugins.</para>
 
@@ -728,7 +728,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
       </mediaobject>
     </figure>
 
-    <para>This directory structure is described in more detail in <xref
+    <para>The main directories are described in more detail in <xref
     linkend="hudson-home-directory-structure" />.<table
         id="hudson-home-directory-structure">
         <title>The Hudson home directory structure</title>
@@ -757,17 +757,17 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
               <entry>fingerprints</entry>
 
               <entry>This directory is used by Hudson to keep track of
-              artifact fingerprints. We look at how to track artifacts in
-              TODO:chapter ???.</entry>
+              artifact fingerprints. We look at how to track artifacts later
+              on in the book.</entry>
             </row>
 
             <row>
               <entry>jobs</entry>
 
-              <entry>This directory contains information about the build jobs
-              that Hudson manages, as well as the artifacts and data resulting
-              from these builds. We look at this directory in detail
-              below.</entry>
+              <entry>This directory contains configuration details about the
+              build jobs that Hudson manages, as well as the artifacts and
+              data resulting from these builds. We look at this directory in
+              detail below.</entry>
             </row>
 
             <row>
@@ -779,6 +779,24 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
               executable, or in the expanded web application directory. This
               means that you can update your Hudson executable and not have to
               re-install all your plugins.</entry>
+            </row>
+
+            <row>
+              <entry>updates</entry>
+
+              <entry>This is an internal directory used by Hudson to store
+              information about available plugin updates.</entry>
+            </row>
+
+            <row>
+              <entry>userContent</entry>
+
+              <entry>You can use this directory to place your own custom
+              content onto your Hudson server. You can access files in this
+              directory at <uri>http://myserver/hudson/userContent</uri> (if
+              you are running Hudson on an application server) or
+              <uri>http://myserver/userContent</uri> (if you are running in
+              stand-alone mode)</entry>
             </row>
 
             <row>
@@ -797,11 +815,9 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
             </row>
           </tbody>
         </tgroup>
-      </table></para>
-
-    <para>The "jobs" directory (see <xref lang=""
+      </table>The "jobs" directory (see <xref lang=""
     linkend="fig-hudson-job-directories" />) is a crucial part of the Hudson
-    directory structure, and deserves a bit more attention.</para>
+    directory structure, and deserves a bit more attention. </para>
 
     <figure id="fig-hudson-jobs-directory">
       <title>The Hudson Jobs Directory</title>
