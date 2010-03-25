@@ -10,12 +10,12 @@
     <para><indexterm>
         <primary>configuration</primary>
       </indexterm>Before you can start creating your build jobs in Hudson, you
-    need to do a little configuration. In this chapter, we will look at how to
-    configure your Hudson server to work with your particular environment.
-    Hudson is highly configurable, and, although most options are provided
-    with sensible default values, or are able to find the right tools build
-    tools the system path and environment variables, it is always a good idea
-    to know exactly what your build server is doing.</para>
+    need to do a little configuration, to ensure that your Hudson server works
+    smoothly in your particular environment. Hudson is highly configurable,
+    and, although most options are provided with sensible default values, or
+    are able to find the right tools build tools the system path and
+    environment variables, it is always a good idea to know exactly what your
+    build server is doing.</para>
 
     <para>Hudson is globally very easy to configure. The administration
     screens are intuitive, and the contextual online help (the blue question
@@ -66,7 +66,10 @@
                 <secondary>Configure System</secondary>
               </indexterm>This is where you manage paths to the various tools
             you use in your builds, such as JDKs, and versions of Ant and
-            Maven. You also configure security options here.</para>
+            Maven, as well as security options, email servers, and other
+            system-wide configuration details. Many of the plugins that you
+            install will also need to be configured here - Hudson will add the
+            fields dynamically when you install the plugins.</para>
           </listitem>
         </varlistentry>
 
@@ -78,16 +81,20 @@
                 <primary>configuration</primary>
 
                 <secondary>Reload Configuration from Disk</secondary>
-              </indexterm>Hudson stores all its configuration details as XML
-            files stored in the Hudson home directory (see <xref
-            linkend="sec-hudson-home-directory" />). These configuration files
-            are quite readable and easy to understand and, in some rare cases,
-            you may want to modify these files by hand in the file system.
-            More frequently, you may have changed some options that you didn't
-            intend to, and would like to return to a stable configuration. In
-            both cases, you can use the 'Reload Configuration from Disk' link
-            to undo any changes you have made and reload the entire
-            configuration from the files in your Hudson home directory.</para>
+              </indexterm>As we saw in the previous chapter, Hudson stores all
+            its system and build job configuration details as XML files stored
+            in the Hudson home directory (see <xref
+            linkend="sec-hudson-home-directory" />). It also stores all of the
+            build history in the same directory. If you are migrating build
+            jobs from one Hudson instance to another, or archiving old build
+            jobs, you will need to add or remove the corresponding build job
+            directories to Hudson's <filename>builds</filename> directory. You
+            don't need to take Hudson offline to do this - you can simply use
+            the 'Reload Configuration from Disk' to reload the Hudson system
+            and build job configurations directly. This process can be a
+            little slow if there is a lot of build history, as Hudson loads
+            not only the build configurations but also all of the historical
+            data as well.</para>
           </listitem>
         </varlistentry>
 
@@ -103,10 +110,10 @@
             extensible architecture. There is a large ecosystem of third-party
             open source plugins available, enabling you to add extra features
             to your build server, from support for different SCM tools such as
-            Git, Mercury or ClearCase, to code quality and code coverage
-            metrics reporting. We will be looking at some of the more popular
-            plugins later on in this book. Plugins can be installed, updated
-            and removed through the 'Manage Plugins' screen.</para>
+            Git, Mercurial or ClearCase, to code quality and code coverage
+            metrics reporting. We will be looking at many of the more popular
+            and useful plugins throughout this book. Plugins can be installed,
+            updated and removed through the 'Manage Plugins' screen.</para>
           </listitem>
         </varlistentry>
 
@@ -121,10 +128,11 @@
               </indexterm>This screen displays a list of all the current Java
             system properties and system environment variables. Here, you can
             check exactly what version of Java Hudson is running in, what user
-            it is running under, and so forth. It's main use is for
-            trouble-shooting,so that you can make sure that your server is
-            running with the system properties and variables you think it
-            is.</para>
+            it is running under, and so forth. You can also check that Hudson
+            is using the correct environmnet variable settings. It's main use
+            is for trouble-shooting, so that you can make sure that your
+            server is running with the system properties and variables you
+            think it is.</para>
           </listitem>
         </varlistentry>
 
@@ -223,13 +231,13 @@
   <section>
     <title>Configuring the system environment</title>
 
-    <para>Probably the most important Hudson administration page is the
-    'Configure System' screen (<xref linkend="configure-system" />). Here, you
-    set up most of the fundamental tools that Hudson needs to do its daily
-    work. The default screen contains a number of sections, each relating to a
-    different configuration area or external tool. In addition, when you
-    install plugins, their system-wide configuration is also often done in
-    this screen.</para>
+    <para>The most important Hudson administration page is the 'Configure
+    System' screen (<xref linkend="configure-system" />). Here, you set up
+    most of the fundamental tools that Hudson needs to do its daily work. The
+    default screen contains a number of sections, each relating to a different
+    configuration area or external tool. In addition, when you install
+    plugins, their system-wide configuration is also often done in this
+    screen.</para>
 
     <para><figure id="fig-configure-system">
         <title>System configuration in Hudson</title>
