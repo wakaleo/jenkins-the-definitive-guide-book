@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter>
+  <title>Maintaining Hudson</title>
+
+  <section>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>maintenance</primary>
+      </indexterm>In this chapter, we will be discussing a few tips and tricks
+    that you might find useful when maintaining a large Hudson instance. We
+    will look at things like how to archive build jobs or migrate them from
+    one server to another,</para>
+  </section>
+
+  <section>
+    <title>Monitoring Disk Space</title>
+
+    <para>Build History takes disk space. In addition, Hudson analyses the
+    build records when it loads a project configuration, so a build job with a
+    thousand archived builds is going to take a lot longer to load than one
+    with only fifty. If you have a large Hudson server with tens or hundreds
+    of build jobs, multiply this accordingly.</para>
+
+    <para>You can also limit the number of builds a project maintains in its
+    history. If you tell Hudson to only keep the last 20 builds, it will start
+    discarding (and deleting) older build jobs once it reaches this number.
+    You can limit them by number (i.e. no more than 20 builds) or by date
+    (i.e. builds no older than 30 days). It does this intelligently, though:
+    if there has ever been a successful build, Hudson will always keep at
+    least the latest succesful build as part of its build history, so you will
+    never loose your last successful build. </para>
+
+    <para>&lt;&lt;hudson limiting number of builds&gt;&gt;</para>
+
+    <section>
+      <title>Using the Disk Usage plugin</title>
+
+      <para>One of the most useful tools in the Hudson administrator's tool
+      box is the Disk Usage plugin. This plugin records and reports on the
+      amount of disk space used by your projects. It lets you isolate and fix
+      projects that are using too much disk space, </para>
+
+      <para>You can install the Disk Usage plugin in the usual way, from the
+      Plugin Manager screen (see <xref
+      linkend="fig-maintenance-disk-usage-plugin" />)</para>
+
+      <para><figure id="fig-maintenance-disk-usage-plugin" label="">
+          <title>Installing the Disk Usage plugin</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/maintenance-disk-usage-plugin.png" />
+            </imageobject>
+
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/maintenance-disk-usage-plugin.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have installed the plugin and restarted Hudson, the
+      Disk Usage plugin will record the amount of disk space used by each
+      project. It will also add a 'Disk Usage' link on the 'Manage Hudson'
+      screen, which you can use to display the overall disk usage for your
+      projects (see <xref linkend="fig-maintenance-disk-usage" />). </para>
+
+      <para>This list is sorted by overall disk usage, so the projects using
+      the most disk space are at the top. The list provides two values for
+      each project - the Builds column indicates the total amount of space
+      used by all of the project's build history, whereas the Workspace column
+      is the amount of space used to build the project. For ongoing projects,
+      the <command>Workspace</command> value tends to be relatively stable (a
+      project needs what it needs to build correctly), whereas the
+      <command>Builds</command> column will increase over time, sometimes at a
+      dramatic rate, unless you do something about it. You can keep the space
+      needed by a project's history under control by limiting the number of
+      builds being kept for a project, and by being careful about what
+      artifacts are being stored.</para>
+
+      <para><figure floatstyle="" id="fig-maintenance-disk-usage" label="">
+          <title>Viewing disk usage</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/maintenance-disk-usage.png" />
+            </imageobject>
+
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/maintenance-disk-usage.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure>To get an idea of how fast the disk space is being used up,
+      you can also display the amount of disk space used in each project over
+      time. To do this, you need to activate the plugin in the 'System
+      Configuration' screen (see <xref
+      linkend="maintenance-activating-disk-usage" />). </para>
+
+      <para><figure id="fig-maintenance-disk-usage-plugin" label="">
+          <title>Installing the Disk Usage plugin</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/maintenance-activating-disk-usage.png" />
+            </imageobject>
+
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/maintenance-activating-disk-usage.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure>This will record and display how much space your projects are
+      using over time. The Disk Usage plugin displays a graph of disk usage
+      over time (see <xref linkend="fig-maintenance-project-disk-usage" />),
+      which can give you a great view of how fast your project is filling up
+      the disk, or, on the contrary, if the disk usage is stable over
+      time.</para>
+
+      <para><figure floatstyle="" id="fig-maintenance-project-disk-usage"
+          label="">
+          <title>Installing the Disk Usage plugin</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata fileref="figs/web/maintenance-project-disk-usage.png" />
+            </imageobject>
+
+            <imageobject role="print" security="">
+              <imagedata align="center"
+                         fileref="figs/print/maintenance-project-disk-usage.pdf"
+                         scalefit="0" width="100%" wordsize="" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </section>
+
+    <section>
+      <title>Disk usage and the Hudson Maven project type</title>
+
+      <para>If you are using the Hudson Maven build jobs, there are some
+      additional details you should know about. In Hudson, Maven build jobs
+      will automatically archive your build artifacts by default. This may not
+      be what you intend.</para>
+
+      <para>The problem is that these SNAPSHOT artifacts take up space - a lot
+      of it. On an active project, Hudson might be running several builds per
+      hour, so permanently storing the generated JAR files for each build can
+      be very costly. The problem is accentuated if you have multi-module
+      projects, as Hudson will archive the artifacts generated for each
+      module.</para>
+
+      <para>In fact, if you need to archive your Maven SNAPSHOT artifacts, it
+      is probably a better idea to deploy them directly to your local Maven
+      repository manager. Nexus Pro, for example, can be configured to and
+      Artifactory can be configured to delete old snapshot artifacts.</para>
+
+      <para>Fortunatly, you can configure Hudson to this, go to the 'Build'
+      section of your build job configuration screen and click on the
+      'Advanced' button. This will display some extra fields, as shown
+      below:</para>
+
+      <para>&lt;&lt;hudson-maven-artifacts.png&gt;&gt;</para>
+
+      <para>If you tick the "Disable automatic artifact archiving" checkbox,
+      Hudson will refrain from storing the jar files your project build
+      generates. This is a good way of making your friendly system
+      administrator happy.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Monitoring the server load</title>
+
+    <para>TODO</para>
+  </section>
+
+  <section>
+    <title>Managing slave nodes</title>
+
+    <para>TODO: Discuss how Hudson deactivates nodes that don't have enough
+    resources</para>
+  </section>
+
+  <section>
+    <title>Archiving build jobs</title>
+
+    <para>TODO</para>
+  </section>
+
+  <section>
+    <title>Migrating build jobs</title>
+
+    <para>There are times when you need to move or copy Hudson build jobs from
+    one Hudson instance to another, without copying the entire Hudson
+    configuration. For example, you might be migrating your build jobs to a
+    Hudson instance on a brand new box, with system configuration details that
+    vary from the original machine. Or you might be restoring an old build job
+    that you have archived.</para>
+
+    <para>As we have seen, Hudson stores all of the data it needs for a
+    project in a sub-directory of the <filename>jobs</filename> directory in
+    your Hudson home directory. This sub-directory is easy to identify - it
+    has the same name as your project. Incidently, this is one reason why your
+    project names really shouldn't contain spaces, particularly if Hudson is
+    running under Unix or Linux - it makes maintenance and admin tasks a lot
+    easier if the project names are also well-behaved unix filenames.</para>
+
+    <para>You can copy or move build jobs between instances of projects simply
+    enough by copying or moving the build job directories to the new Hudson
+    instance. The project job directory is self-contained - it contains both
+    the full project configuration and all the build history. It is safe
+    enough to copy build job directories to a running Hudson instance, though
+    if you are also deleting them from the original server, you should shut
+    this one down first. You don't even need to restart the new Hudson
+    instance to see the results of your import - just go to the 'Manage
+    Hudson' screen and click on 'Reload Configuration From Disk'. This will
+    load the new jobs and make them immediately visible on the Hudson
+    dashboard.</para>
+
+    <para>There are a few gotchas, however. If you are migrating your jobs to
+    a brand new Hudson configuration, remember to install, or migrate, the
+    plugins from your original server. The plugins can be found in the
+    <filename>plugins</filename> directory, so you can simply copy everything
+    from this directory to the corresponding directory in your new
+    instance.</para>
+
+    <para>Of course, you might be migrating the build jobs to a new instance
+    precisely <emphasis>because</emphasis> the plugin configuration on the
+    original box is a mess. Some Hudson plugins can be a bit buggy sometimes,
+    and you may want to move to a clean installation with a well-known,
+    well-defined set of vetted plugins. In this case, you may need to rework
+    some of your project configurations once they have been imported.</para>
+
+    <para>The reason for this is straightforward. When you use a plugin in a
+    project, the project's config.xml will be updated with plugin-specific
+    configuration fields. If for some reason you need to migrate projects
+    selectively to a Hudson installation *without* these plugins installed,
+    Hudson will no longer understand these parts of the project configuration.
+    The same thing can also sometimes happen if the plugin versions are very
+    different on the machines, and the data format used by the plugin has
+    changed.</para>
+
+    <para>If you are migrating jobs to a Hudson instance with a different
+    configuration, it also pays to keep an eye on the system logs. Invalid
+    plugin configurations will usually through warnings or exceptions. While
+    not always fatal, these error messages often mean that the plugin will not
+    work as expected, or at all.</para>
+
+    <para>Hudson provides some useful features to help you migrate your
+    project configurations. If Hudson finds data that it thinks is out of date
+    or invalid, it will tell you so. On the 'Manage Hudson' screen, you will
+    get a message like the one in Figure 1.</para>
+
+    <para><figure id="fig-hudson-home-page">
+        <title>You can download Hudson from the Hudson website</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-home-page.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-home-page.pdf" scalefit="0"
+                       width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>From here, you can choose to either leave the configuration as it is
+    (just in case you roll back to a previous version of your Hudson instance,
+    for example), or let Hudson discard the fields it cannot read. If you
+    choose this option, Hudson will bring up a screen containing more details
+    about the error, and can even help tidy up your project configuration
+    files if you wish (see Figure ???).</para>
+
+    <para><figure id="fig-hudson-home-page">
+        <title>You can download Hudson from the Hudson website</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/hudson-home-page.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/hudson-home-page.pdf" scalefit="0"
+                       width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>This screen gives you more details about the project containing
+    the dodgy data, as well as the exact error message. This gives you several
+    options. If you are sure that you no longer need the plugin that
+    originally created the data, you can safely remove the redundant fields by
+    clicking on the 'Discard Unreadable Data' button. Alternatively, you may
+    decide that the fields belong to a useful plugin that hasn't yet been
+    installed on the new Hudson instance. In this case, install the plugin and
+    all should be well. Finally, you can always choose to leave the redundant
+    data and live with the error message, at least until you are sure that you
+    won't need to migrate the job back to the old server some day.</para>
+
+    <para>However, Hudson doesn't always detect all of the errors or
+    inconsistancies - it still pays to keep one eye on the system logs when
+    you migrate your build jobs. For example, the following is a real example
+    from a Hudson log file showing what can happen during the migration
+    process:<screen>Mar 16, 2010 2:05:06 PM hudson.util.CopyOnWriteList$ConverterImpl unmarshal
+WARNING: Failed to resolve class
+com.thoughtworks.xstream.mapper.CannotResolveClassException: hudson.plugins.ciga
+me.GamePublisher : hudson.plugins.cigame.GamePublisher
+        at com.thoughtworks.xstream.mapper.DefaultMapper.realClass(DefaultMapper
+.java:68)
+        at com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper
+.java:38)
+        at com.thoughtworks.xstream.mapper.DynamicProxyMapper.realClass(DynamicP
+roxyMapper.java:71)
+        at com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper
+.java:38)</screen></para>
+
+    <para>The error is essentially telling us that it can't find a class
+    called hudson.plugins.cigame.GamePublisher. In fact, the target
+    installation is missing the "CI Game" plugin. And in this case (as
+    sometimes happens), no warning messages where appearing on the 'Manage
+    Hudson' page, so Hudson was unable to correct the configuration files
+    itself.</para>
+
+    <para>The simplest solution in this case would be to install the CI Game
+    plugin on the target server. But what if we don't want to install this
+    plugin? We could leave the configuration files alone, but this might mask
+    more signifiant errors later on - it would be better to tidy them
+    up.</para>
+
+    <para>In that case, we need to inspect and update the project
+    configuration files by hand. On this Unix box, I just used grep to find
+    all the configuration files containin a reference to 'cigame':</para>
+
+    <para><screen>$ cd $HUDSON_HOME/jobs
+$ grep cigame */config.xml
+project-a/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
+project-b/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
+project-c/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;</screen>In
+    these config.xml files, I found the reference to the CI Game plugin in the
+    <literal>&lt;publishers&gt;</literal> section (which is where the
+    configuration for the reporting plugins generally goes):</para>
+
+    <para><programlisting>&lt;maven2-moduleset&gt;
+  ...
+  &lt;publishers&gt;
+    &lt;hudson.plugins.cigame.GamePublisher/&gt;
+    &lt;hudson.plugins.claim.ClaimPublisher/&gt;
+  &lt;/publishers&gt;
+  ...
+&lt;/maven2-moduleset&gt;</programlisting>To fix the issue, all I have to do
+    is to remove the offending line:</para>
+
+    <para><programlisting>&lt;maven2-moduleset&gt;
+  ...
+  &lt;publishers&gt;
+    &lt;hudson.plugins.claim.ClaimPublisher/&gt;
+  &lt;/publishers&gt;
+  
+  ...
+&lt;/maven2-moduleset&gt;</programlisting>The exact location of the plugin
+    configration data will vary dependening on the plugin, but in general the
+    config.xml files are quite readable, and updating them by hand isn't too
+    hard.</para>
+
+    <para>So, all in all, migrating build jobs between Hudson instances isn't
+    all that hard - you just need to know a couple of tricks for the corner
+    cases, and if you know where to look Hudson provides some nice tools to
+    make the process smoother.</para>
+  </section>
+
+  <section>
+    <title>Conclusion</title>
+
+    <para>In this chapter, we looked at a number of considerations that you
+    should be aware of if your job is to maintain your Hudson server.</para>
+  </section>
+</chapter>
