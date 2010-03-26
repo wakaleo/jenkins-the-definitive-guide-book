@@ -258,7 +258,49 @@
   <section>
     <title>Archiving build jobs</title>
 
-    <para>TODO</para>
+    <para>Another way to address disk space issues is to delete or archive
+    projects that are no longer active. Archiving a project allows you to
+    easily restore it later if you need to consult the project data or
+    artifacts. Archiving a project is simple: just move the build project
+    directory out of the job directory. Of course, typically, you would
+    compress it into a ZIP file or a tarball first. In the following example,
+    we archive the tweeter-default project:</para>
+
+    <para><screen>$ <command>cd $HUDSON_HOME/jobs</command>
+$ <command>ls</command>
+gameoflife-default      tweeter-default
+$ <command>tar czf tweeter-default.tgz tweeter-default</command>
+$ <command>ls</command>
+gameoflife-default      tweeter-default         tweeter-default.tgz
+</screen>As long as the project you want to archive is not running, you can
+    now safely delete the project directory and move the archive into
+    storage:</para>
+
+    <para><screen>$ <command>rm -Rf tweeter-default
+</command>$ <command><command>mv tweeter-default.tgz /data/archives/hudson</command>
+</command></screen></para>
+
+    <para>Once you have done this, you can simply reload the configuration
+    from the disk in the 'Manage Hudson' screen (see <xref
+    linkend="fig-maintenance-reload-configuration" />).</para>
+
+    <para><figure floatstyle="" id="fig-maintenance-reload-configuration"
+        label="">
+        <title>Reloading the configuration from disk</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/maintenance-reload-configuration.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/maintenance-reload-configuration.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>On a Windows machine, you can do exactly the same thing by
+    creating a ZIP file of the project directory.</para>
   </section>
 
   <section>
