@@ -11,8 +11,11 @@
         <primary>maintenance</primary>
       </indexterm>In this chapter, we will be discussing a few tips and tricks
     that you might find useful when maintaining a large Hudson instance. We
-    will look at things like how to archive build jobs or migrate them from
-    one server to another,</para>
+    will look at things like how to limit, and keep tabs on, disk usage, how
+    to give Hudson enough memory and to archive build jobs or migrate them
+    from one server to another. Some of these topics are discussed elsewhere
+    in the book, but here we will be looking at things from the point of view
+    of the system administrator.</para>
   </section>
 
   <section>
@@ -24,16 +27,76 @@
     with only fifty. If you have a large Hudson server with tens or hundreds
     of build jobs, multiply this accordingly.</para>
 
-    <para>You can also limit the number of builds a project maintains in its
-    history. If you tell Hudson to only keep the last 20 builds, it will start
-    discarding (and deleting) older build jobs once it reaches this number.
-    You can limit them by number (i.e. no more than 20 builds) or by date
-    (i.e. builds no older than 30 days). It does this intelligently, though:
-    if there has ever been a successful build, Hudson will always keep at
-    least the latest succesful build as part of its build history, so you will
-    never loose your last successful build. </para>
+    <para>Probably the simplest way to keep a cap on disk usage is to limit
+    the number of builds a project maintains in its history. You can configure
+    this by ticking the 'Discard Old Builds' checkbox at the top of the
+    project configuration page (see <xref
+    linkend="fig-maintenance-discard-old-builds" />). If you tell Hudson to
+    only keep the last 20 builds, it will start discarding (and deleting)
+    older build jobs once it reaches this number. You can limit them by number
+    (i.e. no more than 20 builds) or by date (i.e. builds no older than 30
+    days). It does this intelligently, though: if there has ever been a
+    successful build, Hudson will always keep at least the latest succesful
+    build as part of its build history, so you will never loose your last
+    successful build.</para>
 
-    <para>&lt;&lt;hudson limiting number of builds&gt;&gt;</para>
+    <para><figure id="fig-maintenance-discard-old-builds" label="">
+        <title>Discarding old builds</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/maintenance-discard-old-builds.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/maintenance-discard-old-builds.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>The problem with discarding old builds is that you loose the
+    build history at the same time. Hudson uses the build records to produce
+    graphs of test results and build metrics. If you limit the number of
+    builds to be kept to twenty, for example, Hudson will only display graphs
+    containing the last twenty data points, which can be a bit limited. This
+    sort of information can be very useful to the developers, but it is often
+    good to be able to see how the project metrics are doing throughout the
+    whole life of the project, not just over the last week or two.</para>
+
+    <para>Fortunately, Hudson has a work-around that can keep both developers
+    and system administrators happy. In general, the things that takes up the
+    most disk space are the build artifacts: JAR files, WAR files, and so on.
+    The build history itself is mostly XML log files, which don't take up too
+    much space. If you click on the 'Advanced...' button, Hudson will let you
+    discard the artifacts, but not the build data. In <xref
+    linkend="fig-maintenance-discard-old-builds-advanced" />, for example, we
+    have configured Hudson to keep artifacts for a maximum of 7 days, . This
+    is a great option if you need to put a cap on disk usage, but still want
+    to provide a full scope of build metrics for the development teams.</para>
+
+    <para><figure id="fig-maintenance-discard-old-builds-advanced" label="">
+        <title>Discarding old builds - advanced options</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/maintenance-discard-old-builds-advanced.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/maintenance-discard-old-builds-advanced.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Don't hesitate about being ruthless, and keeping the maximum number
+    of builds with artifacts quite low. Remember, Hudson will always keep the
+    last stable and the last successful builds, no matter what you tell it, so
+    you will always have at least one working artifact (unless of course the
+    project has yet to successfully build). Hudson also lets you to mark an
+    individual build as 'Keep this log forever', to exclude certain important
+    builds from being discarded automatically. </para>
 
     <section>
       <title>Using the Disk Usage plugin</title>
@@ -41,7 +104,7 @@
       <para>One of the most useful tools in the Hudson administrator's tool
       box is the Disk Usage plugin. This plugin records and reports on the
       amount of disk space used by your projects. It lets you isolate and fix
-      projects that are using too much disk space, </para>
+      projects that are using too much disk space,</para>
 
       <para>You can install the Disk Usage plugin in the usual way, from the
       Plugin Manager screen (see <xref
@@ -65,7 +128,7 @@
       Disk Usage plugin will record the amount of disk space used by each
       project. It will also add a 'Disk Usage' link on the 'Manage Hudson'
       screen, which you can use to display the overall disk usage for your
-      projects (see <xref linkend="fig-maintenance-disk-usage" />). </para>
+      projects (see <xref linkend="fig-maintenance-disk-usage" />).</para>
 
       <para>This list is sorted by overall disk usage, so the projects using
       the most disk space are at the top. The list provides two values for
@@ -98,7 +161,7 @@
       you can also display the amount of disk space used in each project over
       time. To do this, you need to activate the plugin in the 'System
       Configuration' screen (see <xref
-      linkend="maintenance-activating-disk-usage" />). </para>
+      linkend="maintenance-activating-disk-usage" />).</para>
 
       <para><figure id="fig-maintenance-disk-usage-plugin" label="">
           <title>Installing the Disk Usage plugin</title>
@@ -171,6 +234,12 @@
       generates. This is a good way of making your friendly system
       administrator happy.</para>
     </section>
+  </section>
+
+  <section>
+    <title>How much memory does Hudson need?</title>
+
+    <para></para>
   </section>
 
   <section>
