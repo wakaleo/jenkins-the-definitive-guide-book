@@ -42,9 +42,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
     You can download the latest version from the Hudson web site
     (<uri>https://hudson.dev.java.net</uri>) (see <xref
     linkend="hudson-home-page" />). Hudson is a dynamic project, and new
-    releases come out at an impressive rate - sometimes, two or three new
-    releases will appear in the same week! Despite this, each new release is
-    well tested, and instability or regressions are relatively rare.</para>
+    releases come out at a regular rate.</para>
 
     <figure id="fig-hudson-home-page">
       <title>You can download Hudson from the Hudson website</title>
@@ -72,20 +70,14 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
     website. Once you have downloaded the latest and greatest Hudson release,
     you place it in an appropriate directory on your build server. On a
     Windows environment, you might put it in a directory called
-    <filename>C:\Program Files\Hudson</filename>. On a Linux or Unix box, it
-    might go in <filename>/usr/local/hudson</filename>,
+    <filename>C:\Tools\Hudson</filename> (it's a good idea
+    <emphasis>not</emphasis> to place Hudson in a directory containing spaces
+    in the path, such as <filename>C:\Program Files</filename>, as this can
+    cause problems for Hudson in some circumstances). On a Linux or Unix box,
+    it might go in <filename>/usr/local/hudson</filename>,
     <filename>/opt/hudson</filename>, or in some other directory, depending on
     your local conventions and on the whim of your system
     administrator.</para>
-
-    <para>And as far as basic installation goes, that's pretty much it. In the
-    next section, we will look at a few considerations you might need to
-    consider when you install Hudson on a fully-fledged production-ready build
-    server.</para>
-  </section>
-
-  <section>
-    <title>Testing your Hudson installation</title>
 
     <para>Before we go any further, let's just start up Hudson and take a
     look. If you didn't try this out in the previous chapter, now is the time
@@ -116,18 +108,8 @@ isabled
           <imageobject role="web" security="">
             <imagedata fileref="figs/web/hudson-start.png" />
           </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/hudson-start.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
         </mediaobject>
-      </figure>Now that you've seen Hudson running, we can look at what extra
-    steps you might need to do to install Hudson on a real build server. There
-    are actually several different approaches depending on your operating
-    system and requirements, so you might want to skim through the rest of the
-    chapter before coming back to focus on the sections that best match your
-    target environment.</para>
+      </figure></para>
   </section>
 
   <section>
@@ -163,9 +145,6 @@ isabled
     expect to be running. The memory usage of a Continuous Integration server
     is best described as spiky - Hudson will be creating additional JVMs as
     required for its build jobs, and these need memory.</para>
-
-    <para>TODO: Put a JConsole screenshot of typical Hudson memory
-    usage.</para>
 
     <para>Another useful approach is to set up multiple build machines. Hudson
     makes it quite easy to set up 'slaves' on other machines that can be used
@@ -524,17 +503,22 @@ isabled</screen></para>
     intend to run simultaneously.</para>
 
     <para>Hudson naturally needs RAM to run, but if you need to support a
-    large number of build processes, it is not enough just to gice Hudson a
+    large number of build processes, it is not enough just to give Hudson a
     lot of memory. In fact Hudson spans a new Java process each time it kicks
     off a build, so during a large build, the build process needs the memory,
     not Hudson.</para>
 
     <para>You can define build-specific memory options for your Hudson build
     jobs - we will see how to do this later on in the book. However if you
-    have a lot of builds to maintain, you might want to define the MAVEN_OPTS
-    and ANT_OPTS environment variables to be used as default values for your
-    builds. On a Unix machine, you might place something like this in your
-    <filename>.profile</filename> file, for example:<programlisting>export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+    have a lot of builds to maintain, you might want to define the JAVA_OPTS,
+    MAVEN_OPTS and ANT_OPTS environment variables to be used as default values
+    for your builds. The JAVA_OPTS options will apply for the main Hudson
+    process, whereas the other two options will be used when Hudson kicks off
+    new JVM processes for Maven and Ant build jobs respectively. </para>
+
+    <para>Here is an example of how these variables might be configured on a
+    Unix machine in the <filename>.profile</filename> file:<programlisting>export JAVA_OPTS=-Djava.awt.headless=true -Xmx512m -DHUDSON_HOME=/data/hudson
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
   </section>
 
@@ -699,9 +683,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
     useful information, as well as any plugins you may have installed. The
     Hudson home directory format is backward compatible across versions, so
     you can freely update or reinstall your Hudson executable without
-    affecting your Hudson home directory. More precisely, if the format does
-    change, Hudson knows how to upgrade your configuration files for
-    you.</para>
+    affecting your Hudson home directory.</para>
 
     <para>Needless to say, this directory will need a lot of disk
     space.</para>
@@ -726,15 +708,24 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
 export HUDSON_HOME=/data/hudson
 java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
 
-    <para>The Hudson home directory contains all the details of your Hudson
-    server configuration, details that you configure in the "Manage Hudson"
-    screen. These configuration details are stored in the form of a set of XML
-    files. Much of the core configuration, for example, is stored in the
-    <filename>config.xml</filename> file. Other tools-specific configuration
-    is stored in other appropriately-named XML files: the details of your
-    Maven installations, for example, are stored in a file called
-    <filename>hudson.tasks.Maven.xml</filename>. You rarely need to modify
-    these files by hand, though occasionally it can come in handy.</para>
+    <para>If you are running Hudson in a Java EE container such as Tomcat or
+    JBoss, you can configure the webapp to expose its own environments
+    variables. For example, if you are using Tomcat, you could create a file
+    called <filename>hudson.xml</filename> in the
+    <filename>$CATALINA_BASE/conf/localhost</filename> directory.</para>
+
+    <para><programlisting>&lt;Context docBase="../hudson.war"&gt;
+  &lt;Environment name="HUDSON_HOME" type="java.lang.String" value="/data/hudson" override="true"/&gt;
+&lt;/Context&gt;</programlisting>The Hudson home directory contains all the
+    details of your Hudson server configuration, details that you configure in
+    the "Manage Hudson" screen. These configuration details are stored in the
+    form of a set of XML files. Much of the core configuration, for example,
+    is stored in the <filename>config.xml</filename> file. Other
+    tools-specific configuration is stored in other appropriately-named XML
+    files: the details of your Maven installations, for example, are stored in
+    a file called <filename>hudson.tasks.Maven.xml</filename>. You rarely need
+    to modify these files by hand, though occasionally it can come in
+    handy.</para>
 
     <para>The Hudson home directory also contains a number of sub-directories
     (see <xref lang="" linkend="fig-hudson-home-directory" />). Not all of the
@@ -806,10 +797,12 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
 
               <entry>This directory contains any plugins that you have
               installed. Plugins allow you to extend Hudson by adding extra
-              feature. Note that plugins are not stored with the hudson
-              executable, or in the expanded web application directory. This
-              means that you can update your Hudson executable and not have to
-              re-install all your plugins.</entry>
+              feature. Note that, with the exception of the core Hudson
+              plugins Hudson core plugins (subversion, cvs, ssh-slaves, maven,
+              and scid-ad), plugins are not stored with the hudson executable,
+              or in the expanded web application directory. This means that
+              you can update your Hudson executable and not have to re-install
+              all your plugins. </entry>
             </row>
 
             <row>
@@ -981,7 +974,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     version number in the bottom right corner of every screen.</para>
 
     <para>If you are running Hudson as a stand-alone instance, you can also
-    upgrade you Hudson installation directly from the web interface, in the
+    upgrade your Hudson installation directly from the web interface, in the
     'Manage Hudson' section. Hudson will indicate if a more recent version is
     available, and give you the option to either download it manually or
     upgrade automatically (see <xref lang=""
