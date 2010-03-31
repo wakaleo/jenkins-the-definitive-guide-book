@@ -404,9 +404,8 @@
 
     <para>Build tools are the bread-and-butter of any build server, and Hudson
     is no exception. Out-of-the-box, Hudson supports three principal build
-    tools: Ant, Maven, and the venerable-but-not-to-be-underestimated
-    shell-script. Using Hudson plugins, you can also add support for other
-    build tools such as Gant.</para>
+    tools: Ant, Maven, and the basic shell-script. Using Hudson plugins, you
+    can also add support for other build tools such as Gant.</para>
 
     <section>
       <title>Maven</title>
@@ -700,7 +699,49 @@
   <section id="sect-configuration-proxies">
     <title>Configuring a proxy</title>
 
-    <para>TODO</para>
+    <para><indexterm>
+        <primary>proxy</primary>
+      </indexterm>In most enterprise environments, your Hudson server will be
+    situated behind a firewall, and will not have direct access to the
+    internet. Hudson needs internet access to download plugins and updates,
+    and also to install tools such as the JDK, Ant and Maven from remote
+    sites. If you need to go through an HTTP proxy server to get to the
+    internet, you can configure the connection details (the server and port,
+    and if required the username and password) in the 'Advanced' tab on the
+    'Plugin Manager' screen (see <xref linkend="fig-configuration-proxy" />).
+    </para>
+
+    <para>If your proxy is using Microsoft's <indexterm>
+        <primary>NTLM</primary>
+
+        <secondary>proxy authentication</secondary>
+      </indexterm>NTLM authentication scheme, then you will need to provide a
+    domain name as well as a username. You can place both in the 'User name'
+    field: just enter the domain name, followed by a back-slash ('\'),
+    followed by the username, such as "MyDomain\Joe Bloggs".</para>
+
+    <para><figure floatstyle="" id="fig-configuration-proxy">
+        <title>Configuring an Email server in Hudson to use a Google Apps
+        domain</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/configuration-proxy.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/configuration-proxy.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Finally, if you are setting up Proxy access on your Hudson build
+    server, remember that all of the other tools running on this server will
+    need to know about the proxy as well. In particular, this may include
+    tools such as Subversion (if you are accessing an external repository) and
+    Maven (if you are not using an Enterprise Repository Manager).</para>
   </section>
 
   <section>
