@@ -10,9 +10,12 @@
     <para>In this chapter, we are going to take a quick guided tour through
     some of Hudson's key features. You'll get to see first-hand just how easy
     it is to install Hudson and set up your first Hudson automated build job.
-    And by the end of the chapter, you will also be keeping tabs on test
-    results, generating javadoc and publishing code coverage reports! We've
-    got a lot of ground to cover, so let's get started!</para>
+    We won't dwell on the details too much - there are more details to come in
+    the following chapters, as well as a detailed chapter on Hudson
+    Administration at the end of the book. This chapter is just an
+    introduction. Still, by the end of the chapter, you will also be keeping
+    tabs on test results, generating javadoc and publishing code coverage
+    reports! We've got a lot of ground to cover, so let's get started!</para>
   </section>
 
   <section id="sect-first-steps-environment">
@@ -28,7 +31,7 @@
     Continuous Integration tool is to monitor source code in a version control
     system and to fetch and build the latest version of your source code
     whenever any changes are committed. So you'll need a version control
-    system. More precisedly in our case, you'll need to set up a Subversion
+    system. More precisely in our case, you'll need to set up a Subversion
     server on your local machine. You'll also need to download the pre-bundled
     Subversion repository from the book website. We'll explain how to set it
     all up in great detail further on.</para>
@@ -56,8 +59,20 @@
           <primary>Java</primary>
 
           <secondary>JRE</secondary>
-        </indexterm> to run it. If you don't have a version already installed,
-      you can download the JRE installer from the Java web site
+        </indexterm> to run it. For the examples in this chapter, you will
+      need a recent version of Java 6 (these examples were written with Java 6
+      update 17, and the latest release at the time of writing was Java 6
+      update 19). If you are not sure, you can check this from the command
+      line (by opening a DOS console on Windows), and running '<command>java
+      -version</command>'. If Java is installed on your machine should get
+      something like this:<screen>$ <command>java -version</command>
+java version "1.6.0_17"
+Java(TM) SE Runtime Environment (build 1.6.0_17-b04-248-10M3025)
+Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></para>
+
+      <para>If you don't have a version already installed, or if your version
+      is an older one, download and install the latest JRE installer from the
+      Java web site
       (<uri>http://java.sun.com/javase/downloads/index.jsp</uri>) (see <xref
       linkend="fig-installing-java" />).</para>
 
@@ -111,9 +126,12 @@ The following repository back-end (FS) modules are available:
 Cyrus SASL authentication is available.</screen></para>
 
       <para>If you get an error, you probably haven't got the Subversion
-      server software installed on your machine. You can find the Subversion
-      installation packages, or installation instructions, for your operation
-      system from the Subversion website
+      server software installed on your machine. You will need Subversion 1.6
+      or higher to work with the sample repositories, so if you have an older
+      version of Subversion installed, you will also need to upgrade. </para>
+
+      <para>You can find the Subversion installation packages, or installation
+      instructions, for your operation system from the Subversion website
       (<uri>http://subversion.apache.org</uri>). If you are installing
       Subversion on Windows, make sure you only install the basic command-line
       Subversion tools (<command>svn</command> and <command>svnserve</command>
@@ -136,8 +154,7 @@ Cyrus SASL authentication is available.</screen></para>
       the <command>svnserve</command> tool.</para>
 
       <para><figure id="fig-sliksvn-install">
-          <title>If you use the Slik Subversion installer for Windows, be sure
-          to select the 'Complete' setup type</title>
+          <title>Installing Slik Subversion</title>
 
           <mediaobject>
             <imageobject role="web" security="">
@@ -263,14 +280,14 @@ src/</screen></para>
         <primary>Hudson</primary>
 
         <secondary>Staring using Java Web Start</secondary>
-      </indexterm>One of the easiest way to run Hudson for the first time is
-    to use the Java Web Start link provided on the Hudson website. Java Web
-    Start is a technology that lets you start up a Java application on your
-    local machine via a URL on a web page - it comes bundled with the Java
-    JRE. In our case, this will start a Hudson server running on your machine,
-    and let you experiment with it as if it were installed locally. All you
-    need for this to work is a recent (Java 6 or later) version of the Java
-    Runtime Environment (JRE), which we installed in the previous
+      </indexterm>There are several ways to run Hudson on your machine. One of
+    the easiest way to run Hudson for the first time is to use Java Web Start.
+    Java Web Start is a technology that lets you start up a Java application
+    on your local machine via a URL on a web page - it comes bundled with the
+    Java JRE. In our case, this will start a Hudson server running on your
+    machine, and let you experiment with it as if it were installed locally.
+    All you need for this to work is a recent (Java 6 or later) version of the
+    Java Runtime Environment (JRE), which we installed in the previous
     section.</para>
 
     <para>For convenience, there is a link to the Hudson Java Web Start
@@ -369,13 +386,24 @@ src/</screen></para>
 
     <para><screen>$ <command>java -jar hudson.war</command></screen></para>
 
-    <para>By this stage, Hudson should be running on your machine, either
-    through the Java Web Start launcher or directly from the command line.
-    Hudson is a web application, so you can access it through any web browser.
-    By default, Hudson will be running on port 8080. Go to
-    <uri>http://localhost:8080</uri> and check it out. You should see a screen
-    like the one shown in <xref linkend="fig-hudson-start" os="" />. You are
-    now ready to take your first steps with Hudson!</para>
+    <para>Whether you have started Hudson using Java Web Start or from the
+    command line, Hudson should now be running on your local machine. By
+    default, Hudson will be running on port 8080, so you can access Hudson in
+    your web browser on <uri>http://localhost:8080</uri>.</para>
+
+    <para>Alternatively, if you are familiar with Java application servers
+    such as Tomcat, you can simply deploy the Hudson war file to your
+    application server - with Tomcat, for example, you could simply place the
+    <filename>hudson.war</filename> file in Tomcat's
+    <filename>webapps</filename> directory. If you are running Hudson on an
+    application server, the URL that you use to access Hudson will be slightly
+    different. On a default Tomcat installation, for example, you can access
+    Hudson in your web browser on
+    <uri>http://localhost:8080/hudson</uri>.</para>
+
+    <para>When you open Hudson in your browser, you should see a screen like
+    the one shown in <xref linkend="fig-hudson-start" os="" />. You are now
+    ready to take your first steps with Hudson!</para>
 
     <para><figure id="fig-hudson-start">
         <title>The Hudson start page</title>
@@ -452,6 +480,12 @@ src/</screen></para>
     our sample project. The application we will be building is a Java
     application, built using Maven. So in this case, all we need to do is to
     set up a recent JDK and Maven installation.</para>
+
+    <para>However before we start, take a look at the little blue question
+    mark icons lined to the right of the screen. These are Hudson's contextual
+    help buttons. If you are curious about a particular field, click on the
+    help icon next to it and Hudson will display a very detailed description
+    about what it is and how it works.</para>
 
     <para><indexterm>
         <primary>Maven</primary>
@@ -594,7 +628,10 @@ src/</screen></para>
     <para>Our application is a Java module, built using Maven, that implements
     the core business logic of the Game of Life. We'll worry about the user
     interfaces later on. For now, let's see how we can automate this build in
-    Hudson.</para>
+    Hudson. If you are not familiar with Maven, or prefer Ant or another build
+    framework - don't worry! The examples don't require much knowledge of
+    Maven, and we'll be looking at plenty of examples of using other build
+    tools later on in the book.</para>
 
     <para>For our first build job, we will keep it simple: we are just going
     to compile and test our sample application. Click on the 'New Job' link.
@@ -702,7 +739,7 @@ src/</screen></para>
     day, between 9am and 5pm". You can also space out the schedule using
     intervals: "*/5 * * * *" means "every 5 minutes, for example. Finally,
     there are some other convenient short-hands, such as "@daily" and
-    "@hourly".</para>
+    "@hourly". </para>
 
     <para>Don't worry if your Unix skills are a little rusty - if you click on
     the blue question mark icon on the side of the schedule box, Hudson will
@@ -937,6 +974,15 @@ Checked out revision 6.</screen></para>
     will cause the unit tests to fail. If your Java is a bit rusty, don't
     worry, you won't need to know any Java to be able to break the build -
     just follow the instructions!</para>
+
+    <para>Now in normal development, you would first modify the unit test that
+    describes this behaviour. Then you would verify that the test fails with
+    the existing code, and implement the code to ensure that the test passes.
+    <emphasis>Then</emphasis> you would commit your changes to Subversion,
+    allowing Hudson to build them. However this would be a poor demonstration
+    of how Hudson handles unit test failures. So in this example, we will,
+    against all best practices, simply modify the application code
+    directly.</para>
 
     <para>First of all, open the <filename>LivingCell.java</filename> file,
     which you will find in the
