@@ -44,21 +44,6 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
     linkend="hudson-home-page" />). Hudson is a dynamic project, and new
     releases come out at a regular rate.</para>
 
-    <figure id="fig-hudson-home-page">
-      <title>You can download Hudson from the Hudson website</title>
-
-      <mediaobject>
-        <imageobject role="web" security="">
-          <imagedata fileref="figs/web/hudson-home-page.png" />
-        </imageobject>
-
-        <imageobject role="print" security="">
-          <imagedata align="center" fileref="figs/print/hudson-home-page.pdf"
-                     scalefit="0" width="100%" wordsize="" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
     <para>At the time of writing, there was no slick graphical installer for
     Hudson, even for Windows - installation remains a largely manual process.
     There are however native packages for several Linux distributions,
@@ -78,6 +63,21 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
     <filename>/opt/hudson</filename>, or in some other directory, depending on
     your local conventions and on the whim of your system
     administrator.</para>
+
+    <figure id="fig-hudson-home-page">
+      <title>You can download Hudson from the Hudson website</title>
+
+      <mediaobject>
+        <imageobject role="web" security="">
+          <imagedata fileref="figs/web/hudson-home-page.png" />
+        </imageobject>
+
+        <imageobject role="print" security="">
+          <imagedata align="center" fileref="figs/print/hudson-home-page.pdf"
+                     scalefit="0" width="100%" wordsize="" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Before we go any further, let's just start up Hudson and take a
     look. If you didn't try this out in the previous chapter, now is the time
@@ -108,6 +108,11 @@ isabled
           <imageobject role="web" security="">
             <imagedata fileref="figs/web/hudson-start.png" />
           </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center" fileref="figs/print/hudson-start.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
         </mediaobject>
       </figure></para>
   </section>
@@ -121,20 +126,24 @@ isabled
 
     <para>Before you start your installation, the first thing you will need is
     a build server. To work well, Hudson needs both processor power and
-    memory. Hudson itself is a relatively modest Java application. However, in
-    most configurations, at least some of the builds will be run on the
-    principal build server. Builds tend to be both memory and
+    memory. Hudson itself is a relatively modest Java web application.
+    However, in most configurations, at least some of the builds will be run
+    on the principal build server. Builds tend to be both memory and
     processor-intensive operations, and Hudson can be configured to run
-    several builds in parallel. The amount of memory required will depend
-    largely on the nature of your builds, but memory is cheap these days, and
-    it's best not to be stingy. As a rule of thumb, you will need one
-    processor per parallel build, though, in practice, you can capitalize on
-    I/O delays to do a little better than this. It is also in your best
-    interest to dedicate your build server as much as possible to the task of
-    running continuous builds. In particular, you should avoid memory or
-    CPU-intensive applications such as test servers, heavily-used enterprise
-    applications, enterprise databases such as Oracle, enterprise mail
-    servers, and so on.</para>
+    several builds in parallel. Depending on the number of build jobs you are
+    managing, Hudson will also need memory of it's own for its own internal
+    use. The amount of memory required will depend largely on the nature of
+    your builds, but memory is cheap these days, and it's best not to be
+    stingy.</para>
+
+    <para>A build server also needs CPU horsepower. As a rule of thumb, you
+    will need one processor per parallel build, though, in practice, you can
+    capitalize on I/O delays to do a little better than this. It is also in
+    your best interest to dedicate your build server as much as possible to
+    the task of running continuous builds. In particular, you should avoid
+    memory or CPU-intensive applications such as test servers, heavily-used
+    enterprise applications, enterprise databases such as Oracle, enterprise
+    mail servers, and so on.</para>
 
     <para>One very practical option available in many organizations today is
     to use a virtual machine. This way, you can choose the amount of memory
@@ -152,8 +161,10 @@ isabled
     job is requested - then the main Hudson installation dispatches the build
     job to the slave and reports on the results. This is a great way to absorb
     sudden spikes of build activity, for example just before a major release
-    of your principal product. We will look at how to do this in detail later
-    on in the book.</para>
+    of your principal product. It is also a useful strategy if certain
+    heavy-weight builds tend to "hog" the main build server - just put them on
+    their own dedicated build agent! We will look at how to do this in detail
+    later on in the book.</para>
 
     <para><indexterm>
         <primary>installation</primary>
@@ -514,7 +525,7 @@ isabled</screen></para>
     MAVEN_OPTS and ANT_OPTS environment variables to be used as default values
     for your builds. The JAVA_OPTS options will apply for the main Hudson
     process, whereas the other two options will be used when Hudson kicks off
-    new JVM processes for Maven and Ant build jobs respectively. </para>
+    new JVM processes for Maven and Ant build jobs respectively.</para>
 
     <para>Here is an example of how these variables might be configured on a
     Unix machine in the <filename>.profile</filename> file:<programlisting>export JAVA_OPTS=-Djava.awt.headless=true -Xmx512m -DHUDSON_HOME=/data/hudson
@@ -612,8 +623,6 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
     <para>This approach won't always work with Windows Vista. Open the command
     line prompt as an administrator (right-click, "Run as administrator") and
     to execute the hudson.exe with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
-
-    <para>TODO: Test with Windows 7</para>
 
     <para>This basic installation will work fine in a simple context, but you
     will often need to fine-tune your service. For example, by default, the
@@ -802,7 +811,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
               and scid-ad), plugins are not stored with the hudson executable,
               or in the expanded web application directory. This means that
               you can update your Hudson executable and not have to re-install
-              all your plugins. </entry>
+              all your plugins.</entry>
             </row>
 
             <row>
@@ -896,17 +905,6 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
     also contains symbolic links with the actual build numbers that point to
     the build history directories.</para>
 
-    <para>Each build directory contains information such as the build result
-    log file, the Subversion revision number used for this build (if you are
-    using Subversion), the changes that triggered this build, and any other
-    data or metrics that you have asked Hudson to keep track of. For example,
-    if your build job keeps track of unit test results or test coverage
-    metrics, this data will be stored here for each build. The build directory
-    also contains any artifacts you are storing - binary artifacts, but also
-    other generated files such as javadoc or code coverage metrics. Some types
-    of build jobs, such as the Hudson Maven build jobs, will also archive
-    binary artifacts by default.</para>
-
     <para><figure id="fig-hudson-jobs-directory-details">
         <title>The builds directory</title>
 
@@ -921,20 +919,31 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
                        scalefit="0" width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>The size of the "build" directory will naturally grow over
-    time, as the build history cumulates. You will probably want to take this
-    into account when designing your build server directory structure,
-    especially if your build server is running in a Unix-style environment
-    with multiple disk partitions. A lot of this data takes the form of text
-    or XML files, which does not consume a large amount of extra space for
-    each build. However, if your build archives some of your build artifacts,
-    such as JAR or WAR files, they too will be stored here. The size of these
-    artifacts should be factored into your disk space requirements. We will
-    see later on how to limit the number of builds stored for a particular
-    build job is space is an issue. Limiting the number of build jobs that
-    Hudson stores is always a trade-off between disk space and keeping useful
-    build statistics, as Hudson does rely on this build history for its
-    powerful reporting features.</para>
+      </figure>Each build directory contains information such as the build
+    result log file, the Subversion revision number used for this build (if
+    you are using Subversion), the changes that triggered this build, and any
+    other data or metrics that you have asked Hudson to keep track of. For
+    example, if your build job keeps track of unit test results or test
+    coverage metrics, this data will be stored here for each build. The build
+    directory also contains any artifacts you are storing - binary artifacts,
+    but also other generated files such as javadoc or code coverage metrics.
+    Some types of build jobs, such as the Hudson Maven build jobs, will also
+    archive binary artifacts by default.</para>
+
+    <para>The size of the "build" directory will naturally grow over time, as
+    the build history cumulates. You will probably want to take this into
+    account when designing your build server directory structure, especially
+    if your build server is running in a Unix-style environment with multiple
+    disk partitions. A lot of this data takes the form of text or XML files,
+    which does not consume a large amount of extra space for each build.
+    However, if your build archives some of your build artifacts, such as JAR
+    or WAR files, they too will be stored here. The size of these artifacts
+    should be factored into your disk space requirements. We will see later on
+    how to limit the number of builds stored for a particular build job is
+    space is an issue. Limiting the number of build jobs that Hudson stores is
+    always a trade-off between disk space and keeping useful build statistics,
+    as Hudson does rely on this build history for its powerful reporting
+    features.</para>
 
     <para>Hudson uses the files in this directory extensively to display build
     history and metrics data, so you should be particularly careful not to
