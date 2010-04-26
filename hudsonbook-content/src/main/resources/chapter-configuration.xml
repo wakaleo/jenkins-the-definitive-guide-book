@@ -316,7 +316,62 @@
   <section>
     <title>Configuring Global Properties</title>
 
-    <para>TODO (seems to be buggy at time of writing)</para>
+    <para>The Global Properties (see <xref
+    linkend="fig-configure-global-properties" />) section lets you define
+    variables that can be managed centrally but used in all of your build
+    jobs. You can add as many properties as you want here, and use them in
+    your build jobs. Hudson will make them available within your build job
+    environment, so you can freely use them within your Ant and Maven build
+    scripts. Note that you shouldn't put periods (".") in the property names,
+    as they won't be processed correctly. So "ldapserver" or "ldap_server" is
+    fine, but not "ldap.server".</para>
+
+    <para><figure id="fig-configure-global-properties">
+        <title>System configuration in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/configuration-global-properties.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/configuration-global-properties.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>There are two ways you typically use these variables. Firstly,
+    you can use them directly in your build script, using the ${key} notation.
+    This is the simplest approach, but means that there is a tight coupling
+    between your build job configuration and your build scripts.</para>
+
+    <para>If your script uses a different property name (one containing dots,
+    for example), you can also pass the value to your build script in the
+    build job configuration. In <xref linkend="config-properties-in-job" /> we
+    pass the <command>ldapserver</command> property value defined in <xref
+    linkend="fig-configure-global-properties" /> to a Maven build job. Using
+    the "-D" option means that this value will be accessible from within the
+    build script. This is a flexible approach, as we can assign the global
+    properties defined within Hudson to script-specific variables in our build
+    scripts. In <xref linkend="config-properties-in-job" />, for example, the
+    <command>ldapserver</command> property will be available from within the
+    Maven build via the internal ${ldap.server} property.</para>
+
+    <para><figure id="fig-config-properties-in-job">
+        <title>System configuration in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/config-properties-in-job.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/config-properties-in-job.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </section>
 
   <section>
@@ -388,7 +443,7 @@
     specified version of Java into the <filename>tools</filename>) directory
     in Hudson home directory. If the build is running on a new build agent
     that doesn't have this JDK installed, it will download and install it onto
-    the build agent machine as well. </para>
+    the build agent machine as well.</para>
 
     <para>This is also a great way to configure build agents. As we'll see
     later on in the book, Hudson can delegate build jobs to other machines, or
@@ -409,7 +464,7 @@
     a local server and makes for faster automatic installations.</para>
 
     <para><figure floatstyle="" id="fig-configure-jdk-installers">
-        <title> ild Installing a JDK automatically</title>
+        <title>ild Installing a JDK automatically</title>
 
         <mediaobject>
           <imageobject role="web" security="">
