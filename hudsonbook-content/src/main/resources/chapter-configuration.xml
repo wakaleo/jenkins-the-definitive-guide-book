@@ -20,9 +20,12 @@
     <para>Hudson is globally very easy to configure. The administration
     screens are intuitive, and the contextual online help (the blue question
     mark icons next to each field) is detailed and precise. In this chapter,
-    we will look at how to configure your server in detail, including how to
-    configure Hudson to use different versions of Java, build tools such as
-    Ant and Maven, and SCM tools such as CVS and Subversion.</para>
+    we will look at how to configure your basic server setup in detail,
+    including how to configure Hudson to use different versions of Java, build
+    tools such as Ant and Maven, and SCM tools such as CVS and Subversion. We
+    will look at more advanced server configuration, such as other using
+    version control systems or notification tools, further on in the
+    book.</para>
   </section>
 
   <section>
@@ -129,7 +132,7 @@
             system properties and system environment variables. Here, you can
             check exactly what version of Java Hudson is running in, what user
             it is running under, and so forth. You can also check that Hudson
-            is using the correct environmnet variable settings. It's main use
+            is using the correct environment variable settings. It's main use
             is for trouble-shooting, so that you can make sure that your
             server is running with the system properties and variables you
             think it is.</para>
@@ -196,7 +199,7 @@
 
                 <secondary>Manage Nodes</secondary>
               </indexterm>Hudson handles parallel and distributed builds well.
-            In this screen, you can configure how many builds you want Hudson
+            In this screen, you can configure how many builds you want. Hudson
             to run simultaneously, and, if you are using distributed builds,
             set up build nodes. A build node is another machine that Hudson
             can use to execute its builds. We will look at how to configure
@@ -232,7 +235,7 @@
     <title>Configuring the system environment</title>
 
     <para>The most important Hudson administration page is the 'Configure
-    System' screen (<xref linkend="configure-system" />). Here, you set up
+    System' screen (<xref linkend="fig-configure-system" />). Here, you set up
     most of the fundamental tools that Hudson needs to do its daily work. The
     default screen contains a number of sections, each relating to a different
     configuration area or external tool. In addition, when you install
@@ -316,7 +319,63 @@
   <section>
     <title>Configuring Global Properties</title>
 
-    <para>TODO (seems to be buggy at time of writing)</para>
+    <para>The Global Properties (see <xref
+    linkend="fig-configure-global-properties" />) section lets you define
+    variables that can be managed centrally but used in all of your build
+    jobs. You can add as many properties as you want here, and use them in
+    your build jobs. Hudson will make them available within your build job
+    environment, so you can freely use them within your Ant and Maven build
+    scripts. Note that you shouldn't put periods (".") in the property names,
+    as they won't be processed correctly. So "ldapserver" or "ldap_server" is
+    fine, but not "ldap.server".</para>
+
+    <para><figure id="fig-configure-global-properties">
+        <title>System configuration in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/configuration-global-properties.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/configuration-global-properties.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure>There are two ways you typically use these variables. Firstly,
+    you can use them directly in your build script, using the ${key} or $key
+    notation (so "${ldapserver}" or "$ldapserver" in the example give above.
+    This is the simplest approach, but means that there is a tight coupling
+    between your build job configuration and your build scripts.</para>
+
+    <para>If your script uses a different property name (one containing dots,
+    for example), you can also pass the value to your build script in the
+    build job configuration. In <xref linkend="config-properties-in-job" /> we
+    pass the <command>ldapserver</command> property value defined in <xref
+    linkend="fig-configure-global-properties" /> to a Maven build job. Using
+    the "-D" option means that this value will be accessible from within the
+    build script. This is a flexible approach, as we can assign the global
+    properties defined within Hudson to script-specific variables in our build
+    scripts. In <xref linkend="fig-config-properties-in-job" />, for example,
+    the <command>ldapserver</command> property will be available from within
+    the Maven build via the internal ${ldap.server} property.</para>
+
+    <para><figure id="fig-config-properties-in-job">
+        <title>System configuration in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/config-properties-in-job.png" />
+          </imageobject>
+
+          <imageobject role="print" security="">
+            <imagedata align="center"
+                       fileref="figs/print/config-properties-in-job.pdf"
+                       scalefit="0" width="100%" wordsize="" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </section>
 
   <section>
@@ -326,29 +385,42 @@
         <primary>configuration</primary>
 
         <secondary>JDKs</secondary>
-      </indexterm>If you are working with Hudson, you are most likely working
-    with Java projects.</para>
+      </indexterm>Historically, one of the most common uses of Hudson has been
+    to build Java applications. So Hudson naturally provides excellent
+    built-in support for Java.</para>
 
-    <para>By default, Hudson will build Java applications using the version of
-    Java it finds on the system path, which is usually the version that Hudson
-    itself is running under. However, for a production build server, you will
-    probably want more control than this. For example, you may be running your
-    Hudson server under Java 6, for performance reasons. However, your
-    production server might be running under Java 5 or even Java 1.4. Large
-    organisations are often cautious when it comes to upgrading Java versions
-    in their production environments, and some of the more heavy-weight
-    application servers on the market are notoriously slow to be certified
-    with the latest JDKs.</para>
+    <para>By default, Hudson will build Java applications using whatever
+    version of Java it finds on the system path, which is usually the version
+    that Hudson itself is running under. However, for a production build
+    server, you will probably want more control than this. For example, you
+    may be running your Hudson server under Java 6, for performance reasons.
+    However, your production server might be running under Java 5 or even Java
+    1.4. Large organisations are often cautious when it comes to upgrading
+    Java versions in their production environments, and some of the more
+    heavy-weight application servers on the market are notoriously slow to be
+    certified with the latest JDKs.</para>
 
     <para>In any case, it is always a wise practice to build your application
     using a version of Java that is close to the one running on your
-    production server. While an application compiled with Java 1.4 will run
-    fine under Java 6, the inverse is not always true. Hudson lets you
-    configure and use as many versions of Java as you want (see <xref
-    linkend="fig-configure-jdk" />). Just add an appropriate name and
-    <filename>JAVA_HOME</filename> path for each JDK you want to use in the
-    <command>JDKs</command> section of the <command>Configure System</command>
-    screen. Although you need to type the <filename>JAVA_HOME</filename> path
+    production server. While an application compiled with Java 1.4 will
+    usually run fine under Java 6, the inverse is not always true. Or you may
+    have different applications that need to be built using different versions
+    of Java.</para>
+
+    <para>Hudson provides good support for working with multiple JVMs. Indeed,
+    Hudson makes it very easy to configure and use as many versions of Java as
+    you want Like most system-level configuration, we do this in the
+    <command>Configure System</command> screen (see <xref
+    linkend="configure-system" />). Here, you will find a section called 'JDK'
+    which allows you to manage the JDK installations you need Hudson to work
+    with.</para>
+
+    <para>The simplest way to declare a JDK installation is simply to supply
+    an appropriate name (which will be used to identify this Java installation
+    later on when you configure your builds), along with the path to the Java
+    installation directory (the same path you would use for the
+    <filename>JAVA_HOME</filename> variable) (see <xref
+    linkend="fig-configure-jdk" />). Although you need to type the path
     manually, Hudson will check in real time both that the directory exists
     and that it looks like a valid JDK directory.</para>
 
@@ -366,18 +438,34 @@
                        width="100%" wordsize="" />
           </imageobject>
         </mediaobject>
-      </figure>You can provide a path to an existing JDK, or you can ask
-    Hudson to install a JDK for you.</para>
+      </figure></para>
 
-    <para>This second option is a particularly convenient way to set up a
-    build server (see <xref linkend="fig-configure-jdk-installers" />). The
-    first time a build needs to use this JDK, Hudson will download and install
-    the specified version of Java into the <filename>tools</filename>
-    directory in Hudson home directory. By default, Hudson proposes to
-    download the JDK from the Sun website. Alternatively, you can provide the
-    URL of the JDK binaries (either in the form of a ZIP or a GZip-compressed
-    TAR file) - this lets you provide standard installations on a local
-    server, for example.</para>
+    <para>You can also ask Hudson to install Java for you. In this case,
+    Hudson will download the JDK installation and install a copy on your
+    machine (see <xref linkend="fig-configure-jdk-installers" />). The first
+    time a build needs to use this JDK, Hudson will download and install the
+    specified version of Java into the <filename>tools</filename>) directory
+    in Hudson home directory. If the build is running on a new build agent
+    that doesn't have this JDK installed, it will download and install it onto
+    the build agent machine as well.</para>
+
+    <para>This is also a great way to configure build agents. As we'll see
+    later on in the book, Hudson can delegate build jobs to other machines, or
+    build agents. A build agent (or 'slave') is simply another computer that
+    Hudson can use to run some of its builds. If you use Hudson's 'Install
+    automatically' option, you don't need to manually install all the JDK
+    versions you need on the build agent machines - Hudson will do it for you
+    the first time it needs to.</para>
+
+    <para>By default, Hudson proposes to download the JDK from the Sun
+    website. If your Hudson installation is behind a proxy server, you may
+    need to configure your proxy settings to ensure that Hudson can access the
+    external download sites (see <xref
+    linkend="sect-configuration-proxies" />). Another option is to provide a
+    URL pointing to your own internal copy of the JDK binaries (either in the
+    form of a ZIP or a GZip-compressed TAR file), stored on a local server
+    within your organization. This lets you provide standard installations on
+    a local server and makes for faster automatic installations.</para>
 
     <para><figure floatstyle="" id="fig-configure-jdk-installers">
         <title>Installing a JDK automatically</title>
@@ -395,8 +483,9 @@
         </mediaobject>
       </figure>The automatic installer will not work in all environments (if
     it can't find or identify your operating system to its satisfaction, for
-    example, the installation will fail), but it is a useful way to set up new
-    build servers or distributed build machines in a consistent manner.</para>
+    example, the installation will fail), but it is nevertheless a useful and
+    convenient way to set up new build servers or distributed build agents in
+    a consistent manner.</para>
   </section>
 
   <section>
@@ -405,7 +494,8 @@
     <para>Build tools are the bread-and-butter of any build server, and Hudson
     is no exception. Out-of-the-box, Hudson supports three principal build
     tools: Ant, Maven, and the basic shell-script. Using Hudson plugins, you
-    can also add support for other build tools such as Gant.</para>
+    can also add support for other build tools and other languages, such as
+    Gant, Grails, MSBuild, and many more.</para>
 
     <section>
       <title>Maven</title>
@@ -417,16 +507,16 @@
         </indexterm><indexterm>
           <primary>Maven</primary>
         </indexterm>Maven is a high-level build scripting framework for Java
-      that uses notions such as a standard directory structure, Convention
-      over Configuration, and Declarative Dependency Management to simplify a
-      lot of the low level scripting that you find in a typical Ant build
-      script. In Maven, your project uses a standard, well-defined build life
-      cycle - compile, test, package, deploy, and so forth. Each life cycle
-      phase is associated with a Maven plugin. The various Maven plugins uses
-      the standard directory structure to carry out these tasks with a minimum
-      of intervention on your part. You can also extend Maven by overriding
-      the default plugin configurations or by invoking additional
-      plugins.</para>
+      that uses notions such as a standard directory structure and standard
+      life cycles, Convention over Configuration, and Declarative Dependency
+      Management to simplify a lot of the low level scripting that you find in
+      a typical Ant build script. In Maven, your project uses a standard,
+      well-defined build life cycle - compile, test, package, deploy, and so
+      forth. Each life cycle phase is associated with a Maven plugin. The
+      various Maven plugins uses the standard directory structure to carry out
+      these tasks with a minimum of intervention on your part. You can also
+      extend Maven by overriding the default plugin configurations or by
+      invoking additional plugins.</para>
 
       <para>Hudson provides excellent support for Maven, and has a good
       understanding of Maven project structures and dependencies. You can
@@ -461,8 +551,6 @@
       needs to use Maven, it will download a copy and install it to the
       <filename>tools</filename> directory in the Hudson home
       directory.</para>
-
-      <para>TODO: More about using the Installers</para>
 
       <para>Sometimes you need to pass Java system options to your Maven build
       process. For instance it is often useful to give Maven a bit of extra
@@ -577,8 +665,9 @@
         <primary>configuration</primary>
 
         <secondary>CVS</secondary>
-      </indexterm>Hudson supports CVS and Subversion out-of-the-box. Other
-    version control systems are supported by plugins.</para>
+      </indexterm>Hudson comes pre-installed with plugins for CVS and
+    Subversion. Other version control systems are supported by plugins that
+    you can download from the 'Manage Plugins' screen.</para>
 
     <section>
       <title>Configuring Subversion</title>
@@ -603,36 +692,6 @@
       details in a file called <filename>.cvspass</filename>, which is usually
       in your home directory. If this is not the case, you can provide a path
       where Hudson can find this file.</para>
-    </section>
-
-    <section>
-      <title>Configuring Git</title>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>Configuring Mercurial</title>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>Working with Microsoft Team Foundation Server</title>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>Working with ClearCase</title>
-
-      <para></para>
-    </section>
-
-    <section>
-      <title>Working with Perforce</title>
-
-      <para></para>
     </section>
   </section>
 
@@ -760,12 +819,6 @@
     need to know about the proxy as well. In particular, this may include
     tools such as Subversion (if you are accessing an external repository) and
     Maven (if you are not using an Enterprise Repository Manager).</para>
-  </section>
-
-  <section>
-    <title>Allocating memory for your build jobs</title>
-
-    <para>TODO</para>
   </section>
 
   <section>

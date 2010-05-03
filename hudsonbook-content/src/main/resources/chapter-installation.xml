@@ -34,15 +34,15 @@
     fact, on your build server, you will almost certainly need the full
     features of the Java Development Kit (JDK) 5.0 or better to execute your
     builds. If you're not sure, you can check the version of Java on your
-    machine by executing the "java -version" command:<screen>piwakawaka:~ johnsmart$ java -version
+    machine by executing the "java -version" command:<screen>$ java -version
 java version "1.6.0_17"
 Java(TM) SE Runtime Environment (build 1.6.0_17-b04-248-10M3025)
 Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudson
     is distributed in the form of a bundled Java web application (a WAR file).
     You can download the latest version from the Hudson web site
-    (<uri>https://hudson.dev.java.net</uri>) (see <xref
-    linkend="hudson-home-page" />). Hudson is a dynamic project, and new
-    releases come out at a regular rate.</para>
+    (<uri>https://hudson-ci.org</uri> - see <xref
+    linkend="fig-hudson-home-page" />) or from the book web site. Hudson is a
+    dynamic project, and new releases come out at a regular rate.</para>
 
     <para>At the time of writing, there was no slick graphical installer for
     Hudson, even for Windows - installation remains a largely manual process.
@@ -83,11 +83,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
     look. If you didn't try this out in the previous chapter, now is the time
     to get your hands dirty. Open a console in the directory containing the
     <filename>hudson.war</filename> file and run the following
-    command:<screen>C:\Program Files\Hudson&gt;<command>java -jar hudson.war</command>
+    command:<screen>$ <command>java -jar hudson.war</command>
 [Winstone 2008/07/01 20:54:53] - Beginning extraction from war file
-[Winstone 2008/07/01 20:55:07] - No webapp classes folder found - C:\Users\john\.hudson
-\war\WEB-INF\classes
-hudson home directory: C:\Users\john\.hudson
 ...
 1/07/2008 20:55:08 hudson.model.Hudson load
 INFO: Took 35 ms to load
@@ -620,9 +617,12 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
     the HUDSON_HOME environment variable to point to a shorter path in the
     <filename>hudson.xml</filename> file, as we discussed above.</para>
 
-    <para>This approach won't always work with Windows Vista. Open the command
-    line prompt as an administrator (right-click, "Run as administrator") and
-    to execute the hudson.exe with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
+    <para>This approach won't always work with Windows Vista or Windows 7. An
+    alternative strategy is to use the hudson.exe program that the Web Start
+    installation process will have installed in the directory you specified
+    above. Open the command line prompt as an administrator (right-click, "Run
+    as administrator") and to run the <filename>hudson.exe</filename>
+    executable with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
 
     <para>This basic installation will work fine in a simple context, but you
     will often need to fine-tune your service. For example, by default, the
@@ -702,7 +702,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting></para>
     For example, if you are running a machine under Windows 7, if your
     username is "john", you would find the Hudson home directory under
     <filename>C:\Users\john\.hudson</filename>. Under Windows XP, it would be
-    <filename>C:\Programs and Applications\John\.hudson</filename>. On a Linux
+    <filename>C:\Documents and Settings\John\.hudson</filename>. On a Linux
     machine, it would most likely be under
     <filename>/home/john/.hudson</filename>. And so on.</para>
 
@@ -851,7 +851,7 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting></para>
       </table>The "jobs" directory is a crucial part of the Hudson directory
     structure, and deserves a bit more attention. You can see an example of a
     real Hudson jobs directory in <xref lang=""
-    linkend="fig-hudson-job-directories" />.</para>
+    linkend="fig-hudson-jobs-directory" />.</para>
 
     <figure id="fig-hudson-jobs-directory">
       <title>The Hudson Jobs Directory</title>
