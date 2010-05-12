@@ -12,5 +12,5 @@ cp continuous-integration-with-hudson/hudsonbook-content/target/classes/book.xml
 cd $SVN_REPO
 svn add *
 svn add figs/*
-svn commit -m "Integrating latest changes"
+svn commit -m "Integrating latest changes; orm:commitpdf"
 
