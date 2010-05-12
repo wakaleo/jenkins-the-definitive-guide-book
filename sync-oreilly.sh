@@ -5,7 +5,7 @@ echo "Subversion repo already exists"
 else
 svn co https://prod.oreilly.com/external/authors/books/9781449389598/current SVN_REPO
 fi
-mvn verify
+#mvn verify
 cp hudsonbook-content/src/main/resources/*.xml $SVN_REPO
 cp -Rf hudsonbook-content/src/main/resources/figs/* $SVN_REPO/figs
 cp continuous-integration-with-hudson/hudsonbook-content/target/classes/book.xml $SVN_REPO
