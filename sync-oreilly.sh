@@ -8,7 +8,7 @@ fi
 #mvn verify
 cp hudsonbook-content/src/main/resources/*.xml $SVN_REPO
 cp -Rf hudsonbook-content/src/main/resources/figs/* $SVN_REPO/figs
-cp continuous-integration-with-hudson/hudsonbook-content/target/classes/book.xml $SVN_REPO
+cp hudsonbook-content/target/classes/book.xml $SVN_REPO
 cd $SVN_REPO
 svn up
 svn add *
