@@ -107,12 +107,21 @@ public class UniverseTest {
     }
 
     @Test
-    public void aLiveCellWithFourNeighboursWillDieInTheNextGeneration() {
+    public void aLiveCellWithFourNeighboursAboveWillDieInTheNextGeneration() {
         Universe universe = new Universe(3,3);
         universe.seedWith("++-:+++:---");
         universe.nextGeneration();
         assertThat(universe.toString(), is("+-+\n+-+\n-+-\n"));
     }
+
+    @Test
+    public void aLiveCellWithFourNeighboursBelowWillDieInTheNextGeneration() {
+        Universe universe = new Universe(3,3);
+        universe.seedWith("---:+++:++-");
+        universe.nextGeneration();
+        assertThat(universe.toString(), is("-+-\n+-+\n+-+\n"));
+    }
+
 
     @Test
     public void aLiveCellWithFiveNeighboursWillDieInTheNextGeneration() {
@@ -123,6 +132,14 @@ public class UniverseTest {
     }
     
     @Test
+    public void aLiveCellWithSixNeighboursWillDieInTheNextGeneration() {
+        Universe universe = new Universe(3,3);
+        universe.seedWith("++-:+++:++-");
+        universe.nextGeneration();
+        assertThat(universe.toString(), is("+-+\n--+\n+-+\n"));
+    }
+
+    @Test
     public void aDeadCellWithThreeNeighboursWillLiveInTheNextGeneration() {
         Universe universe = new Universe(3,3);
         universe.seedWith("++-:+--:---");
@@ -130,6 +147,7 @@ public class UniverseTest {
         assertThat(universe.toString(), is("++-\n++-\n---\n"));
     }
 
+    
     @Test
     public void aUniverseCanHaveManySuccessiveGeneration() {
         Universe universe = new Universe(3,3);

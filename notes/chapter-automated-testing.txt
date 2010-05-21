@@ -64,11 +64,35 @@ For free-style build jobs, you need to do a little more configuration work. In a
  
 - Displaying test results
 
+Once Hudson knows where to find the JUnit reports, it does an excellent job of reporting on them. 
+
+In many ways, Hudson's primary job is to detect and to report on build failures. And a failing unit test is one of the most obvious symptoms of a build failure. 
+
+Hudson makes the distinction between *failed* builds and *unstable* builds. A failed build (indicated by a red ball) represents a build job that is broken in some brutal manner - a compilation error, for example. An unstable build is a build that is not considered of sufficient quality. For freestyle projects, test failures typically break the build (the build process returns a non-zero value, in Unix terms), which results in a failed build. For Maven build jobs, Hudson is a little more refined - compilation errors and the like are treated as *failed* builds (red), whereas test failures are displayed as *unstable* builds (yellow).
+
+In <Figure X> we can see how Hudson displays a Maven build job containing test failures.  The project home page is your first port of call when a build breaks. When a build results in failing tests, the 'Latest Test Result' link will indicate the current number of test failures in this build job ("5 failures" in the illustration), and also the change in the number of test failures since the last build ("+5" in the illustration - five new test failures). Test failures will also appear as red in the 'Test Result Trend' graph to the right of the page.
+
+<<testing-maven-test-failure-dashboard>>
+
+If you click on the 'Latest Test Result link, Hudson will display a summary of the current test results (see <testing-test-result-details>). For a Maven build job, Hudson will initially display a summary view of test results per module - to see the full details of the failing tests, just click on the module you are interest in. For a freestyle build job, Hudson will display the full failing tests view immediately. 
+
+<<testing-test-result-details>>
+
+This full view is useful . The 'Age' column tells you how for how long a test has been broken - the hyperlink will take you back to the first build in which this test failed.
+
+You can also see the details of a particular test failure by clicking on the corresponding link on this screen. 
+
+
+testing-test-results-all-tests
+
+- Latest Test Results
+
+- Test result trends
+
 You can drill down into modules, packages, and test classes, and list the individual tests within a test class.
 
    - Drilling into JUnit test results
 
-   - Test result trends
 
 It can also come in handy to keep tabs on how long your tests take to run, not just whether they pass or fail. Unit tests should be designed to run fast, and overly long-running tests can be the sign of a performance issue. If your tests seem to be taking too long to run, or are taking more time than they used to, you can find out why by using the Test Result Trends graph.
 

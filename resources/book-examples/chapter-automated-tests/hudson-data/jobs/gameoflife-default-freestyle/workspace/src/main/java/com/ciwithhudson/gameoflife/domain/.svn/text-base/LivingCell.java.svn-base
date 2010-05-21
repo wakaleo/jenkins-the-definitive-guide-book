@@ -11,7 +11,7 @@ public class LivingCell extends Cell {
 
     @Override
     public Cell nextGeneration(int neighbourCount) {
-        if (neighbourCount >= 2 && neighbourCount <= 3) {
+        if (neighbourCount >= 0 && neighbourCount <= 3) {
             return new LivingCell();
         } else {
             return new DeadCell();
