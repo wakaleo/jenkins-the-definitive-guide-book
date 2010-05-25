@@ -24,10 +24,11 @@
   <sect1>
     <title>Downloading and Installing Hudson</title>
 
-    <para>Hudson is easy to install, and can run just about anywhere. This
-    makes it easy to install and try out on your local machine, and you can be
-    up and running with a bare-bones installation in a matter of
-    minutes.</para>
+    <para>Hudson is easy to install, and can run just about anywhere. You can
+    run it either as a stand-alone application, or deployed on a conventional
+    Java application server such as Tomcat or JBoss. This first option makes
+    it easy to install and try out on your local machine, and you can be up
+    and running with a bare-bones installation in a matter of minutes.</para>
 
     <para>Since Hudson is a Java application, you will need a recent version
     of Java on your machine. More precisely, you will need at least Java 5. In
@@ -68,11 +69,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Hudso
       <title>You can download Hudson from the Hudson website</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-home-page.png" width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -99,11 +98,9 @@ isabled
       <title>The Hudson start page</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-start.png" width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
   </sect1>
@@ -188,6 +185,61 @@ export PATH=$JAVA_HOME/bin:$PATH</programlisting>
 
     <para>You will now be able to use this user to run Hudson in an isolated
     environment.</para>
+  </sect1>
+
+  <sect1 id="sec-hudson-home-directory">
+    <title>The Hudson home directory</title>
+
+    <para><indexterm>
+        <primary>home directory</primary>
+      </indexterm><indexterm>
+        <primary>HUDSON_HOME</primary>
+      </indexterm>Before we install Hudson, however, there are some things you
+    need to know about how Hudson stores its data. Indeed, no matter where you
+    store the Hudson WAR file, Hudson keeps all its important data in a
+    special separate directory called the Hudson home directory. Here, Hudson
+    stores information about your build server configuration, your build jobs,
+    build artifacts, user accounts, and other useful information, as well as
+    any plugins you may have installed. The Hudson home directory format is
+    backward compatible across versions, so you can freely update or reinstall
+    your Hudson executable without affecting your Hudson home
+    directory.</para>
+
+    <para>Needless to say, this directory will need a lot of disk
+    space.</para>
+
+    <para>By default, the Hudson home directory will be called
+    <filename>.hudson,</filename> and will be placed in your home directory.
+    For example, if you are running a machine under Windows 7, if your
+    username is "john", you would find the Hudson home directory under
+    <filename>C:\Users\john\.hudson</filename>. Under Windows XP, it would be
+    <filename>C:\Documents and Settings\John\.hudson</filename>. On a Linux
+    machine, it would most likely be under
+    <filename>/home/john/.hudson</filename>. And so on.</para>
+
+    <para>You can force Hudson to use a different directory as its home
+    directory by defining the <code>HUDSON_HOME</code> environment variable.
+    You may need to do this on a build server to conform to local directory
+    conventions or to make your system administrator happy. For example, if
+    your Hudson WAR file is installed in
+    <filename>/usr/local/hudson</filename>, and the Hudson home directory
+    needs to be in the <filename>/data/hudson</filename> directory, you might
+    write a startup script along the following lines:</para>
+
+    <programlisting>export HUDSON_BASE=/usr/local/hudson
+export HUDSON_HOME=/data/hudson
+java -jar ${HUDSON_BASE}/hudson.war</programlisting>
+
+    <para>If you are running Hudson in a Java EE container such as Tomcat or
+    JBoss, you can configure the webapp to expose its own environments
+    variables. For example, if you are using Tomcat, you could create a file
+    called <filename>hudson.xml</filename> in the
+    <filename>$CATALINA_BASE/conf/localhost</filename> directory.</para>
+
+    <para><programlisting>&lt;Context docBase="../hudson.war"&gt;
+  &lt;Environment name="HUDSON_HOME" type="java.lang.String" 
+               value="/data/hudson" override="true"/&gt;
+&lt;/Context&gt;</programlisting></para>
   </sect1>
 
   <sect1>
@@ -333,7 +385,12 @@ $ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</comm
     serlvet engine to allow you to run the server out-of-the-box, without
     having to configure a web server yourself. This is probably the easiest
     way to get started, allowing you to be up and running with Hudson in a
-    matter of minutes.</para>
+    matter of minutes. It is also a very flexible option, and provides some
+    extra features unavailable if you deploy Hudson to a conventional
+    application server. In particular, if you are running Hudson as a
+    stand-alone server, you will be able to install plugins and upgrades on
+    the fly, and restart Hudson directly from the administration
+    screens.</para>
 
     <para>To run Hudson using the embedded servlet container, just go to the
     command line and type the following:<screen>C:\Program Files\Hudson&gt;<command>java -jar hudson.war</command>
@@ -447,6 +504,32 @@ isabled</screen></para>
         </varlistentry>
       </variablelist></para>
 
+    <para>Stopping Hudson using Control-C is a little brutal, of course - in
+    practice, you would set up a script to start and stop your server
+    automatically. </para>
+
+    <para>If you are running Hudson using the embedded Winstone application
+    server, you can also restart and shutdown Hudson elegantly by calling the
+    Winstone server directly. To do this, you need to specify the controlPort
+    option when you start Hudson, as shown here:<screen>$ java -jar hudson.war --controlPort=8001</screen></para>
+
+    <para>A slightly more complete example in a Unix environment might look
+    like this:</para>
+
+    <para><screen>$ nohup java -jar hudson.war --controlPort=8001 &gt; /var/log/hudson.log 2&gt;&amp;1 &amp;</screen>The
+    key here is the <command>controlPort</command> option. This option gives
+    you the means of stopping or restarting Hudson directly via the Winstone
+    tools. The only problem is that you need a matching version of the
+    Winstone JAR file. Fortunately, one comes bundled with your Hudson
+    installation, so you don't have to look far.</para>
+
+    <para>To restart the server, you can run the following command: </para>
+
+    <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl reload: --host=localhost --port=8001 </screen>And
+    to shut it down completely, you can use the following:</para>
+
+    <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl shutdown --host=localhost --port=8001 </screen></para>
+
     <para>Running Hudson as a stand-alone application may not be to everyone's
     taste. For a production server, you might want to take advantage of the
     more sophisticated monitoring and administration features of a full blown
@@ -494,7 +577,9 @@ isabled</screen></para>
     <para>However, this approach is not necessarily the most flexible or
     robust option. If your build server is a Windows box, for example, you
     probably should install Tomcat as a Windows service, so that you can
-    ensure that it starts automatically whenever the server reboots.</para>
+    ensure that it starts automatically whenever the server reboots.
+    Similarly, if you are installing Tomcat in a Unix environment, it should
+    be set up as a service.</para>
   </sect1>
 
   <sect1>
@@ -560,11 +645,9 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
       <title>Starting Hudson using Java Web Start</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-webstart.png" width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -591,12 +674,10 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
       <title>Installing Hudson as a Windows Service</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-install-as-windows-service.png"
                      width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -635,12 +716,10 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
       <title>Configuring the Hudson Windows Service</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-windows-service.png"
                      width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -670,64 +749,21 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
   </sect1>
 
   <sect1 id="sec-hudson-home-directory">
-    <title>The Hudson home directory</title>
+    <title>What's in the Hudson home directory</title>
 
     <para><indexterm>
         <primary>home directory</primary>
       </indexterm><indexterm>
         <primary>HUDSON_HOME</primary>
-      </indexterm>No matter where you store the Hudson WAR file, Hudson keeps
-    all its important data in a special separate directory called the Hudson
-    home directory. Here, Hudson stores information about your build server
-    configuration, your build jobs, build artifacts, user accounts, and other
-    useful information, as well as any plugins you may have installed. The
-    Hudson home directory format is backward compatible across versions, so
-    you can freely update or reinstall your Hudson executable without
-    affecting your Hudson home directory.</para>
-
-    <para>Needless to say, this directory will need a lot of disk
-    space.</para>
-
-    <para>By default, the Hudson home directory will be called
-    <filename>.hudson,</filename> and will be placed in your home directory.
-    For example, if you are running a machine under Windows 7, if your
-    username is "john", you would find the Hudson home directory under
-    <filename>C:\Users\john\.hudson</filename>. Under Windows XP, it would be
-    <filename>C:\Documents and Settings\John\.hudson</filename>. On a Linux
-    machine, it would most likely be under
-    <filename>/home/john/.hudson</filename>. And so on.</para>
-
-    <para>You can force Hudson to use a different directory as its home
-    directory by defining the <code>HUDSON_HOME</code> environment variable.
-    You may need to do this on a build server to conform to local directory
-    conventions or to make your system administrator happy. For example, if
-    your Hudson WAR file is installed in
-    <filename>/usr/local/hudson</filename>, and the Hudson home directory
-    needs to be in the <filename>/data/hudson</filename> directory, you might
-    write a startup script along the following lines:</para>
-
-    <programlisting>export HUDSON_BASE=/usr/local/hudson
-export HUDSON_HOME=/data/hudson
-java -jar ${HUDSON_BASE}/hudson.war</programlisting>
-
-    <para>If you are running Hudson in a Java EE container such as Tomcat or
-    JBoss, you can configure the webapp to expose its own environments
-    variables. For example, if you are using Tomcat, you could create a file
-    called <filename>hudson.xml</filename> in the
-    <filename>$CATALINA_BASE/conf/localhost</filename> directory.</para>
-
-    <para><programlisting>&lt;Context docBase="../hudson.war"&gt;
-  &lt;Environment name="HUDSON_HOME" type="java.lang.String" 
-               value="/data/hudson" override="true"/&gt;
-&lt;/Context&gt;</programlisting>The Hudson home directory contains all the
-    details of your Hudson server configuration, details that you configure in
-    the "Manage Hudson" screen. These configuration details are stored in the
-    form of a set of XML files. Much of the core configuration, for example,
-    is stored in the <filename>config.xml</filename> file. Other
-    tools-specific configuration is stored in other appropriately-named XML
-    files: the details of your Maven installations, for example, are stored in
-    a file called <filename>hudson.tasks.Maven.xml</filename>. You rarely need
-    to modify these files by hand, though occasionally it can come in
+      </indexterm>The Hudson home directory contains all the details of your
+    Hudson server configuration, details that you configure in the "Manage
+    Hudson" screen. These configuration details are stored in the form of a
+    set of XML files. Much of the core configuration, for example, is stored
+    in the <filename>config.xml</filename> file. Other tools-specific
+    configuration is stored in other appropriately-named XML files: the
+    details of your Maven installations, for example, are stored in a file
+    called <filename>hudson.tasks.Maven.xml</filename>. You rarely need to
+    modify these files by hand, though occasionally it can come in
     handy.</para>
 
     <para>The Hudson home directory also contains a number of sub-directories
@@ -741,12 +777,10 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
       <title>The Hudson Home Directory</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-home-directory.png"
                      width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -849,12 +883,10 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
       <title>The Hudson Jobs Directory</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-job-directories.png"
                      width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -898,12 +930,10 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
       <title>The builds directory</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-job-directory-details.png"
                      width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -981,11 +1011,9 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
       <title>Upgrading Hudson from the web interface</title>
 
       <mediaobject>
-        <imageobject role="web" >
+        <imageobject role="web">
           <imagedata fileref="figs/web/hudson-upgrade.png" width="4.3in" />
         </imageobject>
-
-        
       </mediaobject>
     </figure>
 
@@ -995,6 +1023,13 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
     particular, you need to be running Hudson as a stand-alone application,
     and the user running Hudson needs to have read-write access to the
     <filename>hudson.war</filename> file.</para>
+
+    <para>If you are running Hudson on an application server such as Tomcat or
+    JBoss, you might need to do a bit more tidying up when you upgrade your
+    Hudson instance. Tomcat, for example, places compiled JSP pages in the
+    <filename>CATALINA_BASE/work</filename> directory. When you upgrade your
+    Hudson version, these files need to be removed to prevent the possibility
+    of any stale pages being served.</para>
 
     <para>Any plugins you have installed will be unaffected by your Hudson
     upgrades. However, plugins can also be upgraded, independently of the main
