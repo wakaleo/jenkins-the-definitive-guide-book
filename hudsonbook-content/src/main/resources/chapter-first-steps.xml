@@ -4,7 +4,7 @@
 <chapter id="chapter-first-steps">
   <title>Your first steps with Hudson</title>
 
-  <section>
+  <sect1>
     <title>Introduction</title>
 
     <para>In this chapter, we are going to take a quick guided tour through
@@ -16,9 +16,9 @@
     introduction. Still, by the end of the chapter, you will also be keeping
     tabs on test results, generating javadoc and publishing code coverage
     reports! We've got a lot of ground to cover, so let's get started!</para>
-  </section>
+  </sect1>
 
-  <section id="sect-first-steps-environment">
+  <sect1 id="sect-first-steps-environment">
     <title>Preparing your environment</title>
 
     <para>There are two ways you can tackle this chapter. You can read through
@@ -48,7 +48,7 @@
     installed on your machine, don't fret! As we will see, Hudson will install
     them for you.</para>
 
-    <section>
+    <sect2>
       <title>Installing Java</title>
 
       <para>The first thing you will need to install on your machine is Java.
@@ -72,27 +72,23 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></par
 
       <para>If you don't have a version already installed, or if your version
       is an older one, download and install the latest JRE installer from the
-      Java web site
-      (<uri>http://java.sun.com/javase/downloads/index.jsp</uri>) (see <xref
-      linkend="fig-installing-java" />).</para>
+      Java web site (<ulink
+      url="http://java.sun.com/javase/downloads/index.jsp"></ulink>) (see
+      <xref linkend="fig-installing-java" />).</para>
 
-      <para><figure id="fig-installing-java">
-          <title>Installing Java</title>
+      <figure id="fig-installing-java">
+        <title>Installing Java</title>
 
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/java-install.png" />
-            </imageobject>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/java-install.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
 
-            <imageobject role="print" security="">
-              <imagedata align="center" fileref="figs/print/java-install.pdf"
-                         scalefit="0" width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </section>
-
-    <section>
+    <sect2>
       <title>Installing a local Subversion server</title>
 
       <para>The examples in this chapter use Subversion, so to run them on
@@ -132,43 +128,41 @@ Cyrus SASL authentication is available.</screen></para>
 
       <para>You can find the Subversion installation packages, or installation
       instructions, for your operation system from the Subversion website
-      (<uri>http://subversion.apache.org</uri>). If you are installing
-      Subversion on Windows, make sure you only install the basic command-line
-      Subversion tools (<command>svn</command> and <command>svnserve</command>
-      in particular). Some of the Windows installation packages, such as those
-      from Collabnet and VisualSVN, will install Subversion as a service on
-      your workstation and set up an empty repository for you. This is great
-      if you are installing a Subversion server, and if you are familiar with
-      Subversion administration, but for our purposes it is overkill, and will
-      interfere with the instructions we provide.</para>
+      (<ulink url="http://subversion.apache.org"></ulink>). If you are
+      installing Subversion on Windows, make sure you only install the basic
+      command-line Subversion tools (<command>svn</command> and
+      <command>svnserve</command> in particular). Some of the Windows
+      installation packages, such as those from Collabnet and VisualSVN, will
+      install Subversion as a service on your workstation and set up an empty
+      repository for you. This is great if you are installing a Subversion
+      server, and if you are familiar with Subversion administration, but for
+      our purposes it is overkill, and will interfere with the instructions we
+      provide.</para>
 
       <para>A better choice in this regard is the <indexterm>
           <primary>Subversion</primary>
 
           <secondary>SlikSVN</secondary>
-        </indexterm>SlikSVN installer
-      (<uri>http://www.sliksvn.com/en/download</uri>), which will only install
-      the bare-bones Subversion command-line tools, which suits us just fine.
-      However, be sure to choose the 'Complete' setup type (see <xref
-      linkend="fig-sliksvn-install" />), as this is the only one that includes
-      the <command>svnserve</command> tool.</para>
+        </indexterm>SlikSVN installer (<ulink
+      url="http://www.sliksvn.com/en/download"></ulink>), which will only
+      install the bare-bones Subversion command-line tools, which suits us
+      just fine. However, be sure to choose the 'Complete' setup type (see
+      <xref linkend="fig-sliksvn-install" />), as this is the only one that
+      includes the <command>svnserve</command> tool.</para>
 
-      <para><figure id="fig-sliksvn-install">
-          <title>Installing Slik Subversion</title>
+      <figure id="fig-sliksvn-install">
+        <title>Installing Slik Subversion</title>
 
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/sliksvn-install.png" />
-            </imageobject>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/sliksvn-install.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/sliksvn-install.pdf" scalefit="0"
-                         width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure>Once you have installed Subversion, you should check that it
-      is working properly. Open a command prompt and run <command>svnserve
+      <para>Once you have installed Subversion, you should check that it is
+      working properly. Open a command prompt and run <command>svnserve
       -version</command>. You should now get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
 svnserve, version 1.6.9 (SlikSvn:tag/1.6.9@902044) WIN32
    compiled Jan 22 2010, 10:39:27
@@ -187,38 +181,36 @@ Cyrus SASL authentication is available.</screen></para>
       <para>With Subversion now installed, we can proceed to set up the sample
       repository containing the project we will be building with
       Hudson.</para>
-    </section>
+    </sect2>
 
-    <section>
+    <sect2>
       <title>Setting up the sample Subversion repository</title>
 
       <para>All of the <indexterm>
           <primary>Sample projects</primary>
         </indexterm>sample projects used in this book are available online.
       You can download the Subversion repository used for this chapter from
-      the book web site, which you can find at
-      <uri>http://www.continuous-integration-with-hudson.org</uri>. Go to this
-      page now and download the book-examples zip file. When you unzip this
-      file, you should see a sub-folder for each chapter of the book (see
+      the book web site, which you can find at <ulink
+      url="http://www.continuous-integration-with-hudson.org"></ulink>. Go to
+      this page now and download the book-examples zip file. When you unzip
+      this file, you should see a sub-folder for each chapter of the book (see
       <xref linkend="fig-first-steps-examples" />).</para>
 
-      <para><figure id="fig-first-steps-examples">
-          <title>The Book examples folder on a Windows machine</title>
+      <figure id="fig-first-steps-examples">
+        <title>The Book examples folder on a Windows machine</title>
 
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/first-steps-examples.png " />
-            </imageobject>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/first-steps-examples.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/first-steps-examples.pdf"
-                         scalefit="0" width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure>A Subversion repository is a simple directory structure that
-      can be used on any operating system. In our case, the repository is
-      stored in a directory called <indexterm>
+      <para>A Subversion repository is a simple directory structure that can
+      be used on any operating system. In our case, the repository is stored
+      in a directory called <indexterm>
           <primary>Subversion</primary>
 
           <secondary>svn-repos directory</secondary>
@@ -226,9 +218,10 @@ Cyrus SASL authentication is available.</screen></para>
       <filename>chapter-first-steps</filename> directory of the book
       resources. You don't have to worry about the details, though. To start
       up the Subversion server on your machine, just go to the
-      <filename>chapter-first-steps</filename> directory and run the
-      <uri>start-svn.bat</uri> script (for Windows) or the
-      <uri>start-svn.sh</uri> script (on Linux, Mac OS, and so forth).</para>
+      <filename>chapter-first-steps</filename> directory and run the <ulink
+      url="start-svn.bat"></ulink> script (for Windows) or the <ulink
+      url="start-svn.sh"></ulink> script (on Linux, Mac OS, and so
+      forth).</para>
 
       <para>If you are more experienced with Subversion, you might like to
       start the server manually yourself. In this case, open up a command-line
@@ -242,21 +235,16 @@ Cyrus SASL authentication is available.</screen></para>
       linkend="fig-running-svnserve" />). If your are running Subversion on
       Windows, make sure you don't shut this window!</para>
 
-      <para><figure id="fig-running-svnserve">
-          <title>Running the svnserve Subversion server in Windows</title>
+      <figure id="fig-running-svnserve">
+        <title>Running the svnserve Subversion server in Windows</title>
 
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/svnserve-running.png" />
-            </imageobject>
-
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/svnserve-running.pdf"
-                         scalefit="0" width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/svnserve-running.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
       <para>Finally, just to make sure everything is working, open another
       command prompt and run the <command>svn list</command> command. This
@@ -270,10 +258,10 @@ src/</screen></para>
 
       <para>This is all you really need to follow along for the rest of the
       chapter. So now, let's take Hudson for a spin.</para>
-    </section>
-  </section>
+    </sect2>
+  </sect1>
 
-  <section>
+  <sect1>
     <title>Starting up Hudson</title>
 
     <para><indexterm>
@@ -286,37 +274,38 @@ src/</screen></para>
     on your local machine via a URL on a web page - it comes bundled with the
     Java JRE. In our case, this will start a Hudson server running on your
     machine, and let you experiment with it as if it were installed locally.
-    All you need for this to work is a recent (Java 6 or later) version of the
-    Java Runtime Environment (JRE), which we installed in the previous
-    section.</para>
+    In theory all you need for this to work is a recent (Java 6 or later)
+    version of the Java Runtime Environment (JRE), which we installed in the
+    previous section. However, to use Java Web Start, you should make sure
+    that you have the latest version of the Java JRE installed on your browser
+    (1.6.0_20 at the time of writing). This will help minimize any security
+    risks and provide for better performance.</para>
 
     <para>For convenience, there is a link to the Hudson Java Web Start
-    instance on the book resources page (at
-    <uri>http://www.continuous-integration-with-hudson.org</uri>). Here you
-    will find a large orange 'Launch' button in the "Book Resources" section
-    (see <xref linkend="fig-hudson-webstart-page" />). You can also find this
-    link on the 'Meet Hudson' page on the Hudson website
-    (<uri>http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson</uri>), where,
-    if you scroll down far enough, you should find a 'Test Drive' section with
-    an identical 'Launch' button'.</para>
+    instance on the book resources page (at <ulink
+    url="http://www.continuous-integration-with-hudson.org"></ulink>). Here
+    you will find a large orange 'Launch' button in the "Book Resources"
+    section (see <xref linkend="fig-hudson-webstart-page" />). You can also
+    find this link on the 'Meet Hudson' page on the Hudson website (<ulink
+    url="http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson"></ulink>),
+    where, if you scroll down far enough, you should find a 'Test Drive'
+    section with an identical 'Launch' button'.</para>
 
-    <para><figure id="fig-hudson-webstart-page">
-        <title>Running Hudson using Java Web Start from the Book web
-        site</title>
+    <figure id="fig-hudson-webstart-page">
+      <title>Running Hudson using Java Web Start from the Book web
+      site</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-webstart.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/hudson-webstart.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/hudson-webstart.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>Java Web Start seems to work best on Firefox. When you click on
-    the 'Launch' button on either of these sites in Firefox, the browser will
-    ask if you want to open a file called 'hudson.jnlp' using Java Web Start.
+    <para>Java Web Start seems to work best on Firefox. When you click on the
+    'Launch' button on either of these sites in Firefox, the browser will ask
+    if you want to open a file called 'hudson.jnlp' using Java Web Start.
     Click on OK - this will download Hudson and start it up on your machine
     (see <xref linkend="fig-first-steps-downloading-hudson" />).</para>
 
@@ -326,23 +315,21 @@ src/</screen></para>
     it from Windows Explorer. However, in both of these cases, when you open
     the JNLP file, Java Web Start will download and start Hudson.</para>
 
-    <para><figure id="fig-first-steps-downloading-hudson">
-        <title>Java Web Start will download and run the latest version of
-        Hudson</title>
+    <figure id="fig-first-steps-downloading-hudson">
+      <title>Java Web Start will download and run the latest version of
+      Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/first-steps-downloading-hudson.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/first-steps-downloading-hudson.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/first-steps-downloading-hudson.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>Java Web Start will only need to download a particular version
-    of Hudson once. From then on, when you click on the 'Launch' button again,
+    <para>Java Web Start will only need to download a particular version of
+    Hudson once. From then on, when you click on the 'Launch' button again,
     Java Web Start will use the copy of Hudson it has already downloaded (that
     is, until the next version comes out). Ignore any messages your operating
     system or anti-virus software may bring up - it is perfectly safe to run
@@ -353,22 +340,19 @@ src/</screen></para>
     "Hudson Console" (see <xref linkend="fig-first-steps-console" />). To stop
     Hudson at any time, just close this window.</para>
 
-    <para><figure id="fig-first-steps-console">
-        <title>Java Web Start will download and run the latest version of
-        Hudson</title>
+    <figure id="fig-first-steps-console">
+      <title>Java Web Start will download and run the latest version of
+      Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/first-steps-console.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/first-steps-console.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/first-steps-console.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure><indexterm>
+    <para><indexterm>
         <primary>Hudson</primary>
 
         <secondary>Starting from the command line</secondary>
@@ -376,10 +360,10 @@ src/</screen></para>
     WAR files, you may prefer to simply download the latest version of Hudson
     and run it from the command line. Hudson comes in the form of an
     executable WAR file - you can download the most recent version from the
-    Hudson website home page (<uri>http://hudson-ci.org</uri>). For
+    Hudson website home page (<ulink url="http://hudson-ci.org"></ulink>). For
     convenience, there is also a link to the latest version of Hudson in the
-    Resources section of the book website (at
-    <uri>http://www.continuous-integration-with-hudson.org</uri>).</para>
+    Resources section of the book website (at <ulink
+    url="http://www.continuous-integration-with-hudson.org"></ulink>).</para>
 
     <para>Once downloaded, you can start Hudson from the command line as shown
     here:</para>
@@ -389,7 +373,7 @@ src/</screen></para>
     <para>Whether you have started Hudson using Java Web Start or from the
     command line, Hudson should now be running on your local machine. By
     default, Hudson will be running on port 8080, so you can access Hudson in
-    your web browser on <uri>http://localhost:8080</uri>.</para>
+    your web browser on <ulink url="http://localhost:8080"></ulink>.</para>
 
     <para>Alternatively, if you are familiar with Java application servers
     such as Tomcat, you can simply deploy the Hudson war file to your
@@ -398,30 +382,26 @@ src/</screen></para>
     <filename>webapps</filename> directory. If you are running Hudson on an
     application server, the URL that you use to access Hudson will be slightly
     different. On a default Tomcat installation, for example, you can access
-    Hudson in your web browser on
-    <uri>http://localhost:8080/hudson</uri>.</para>
+    Hudson in your web browser on <ulink
+    url="http://localhost:8080/hudson"></ulink>.</para>
 
     <para>When you open Hudson in your browser, you should see a screen like
     the one shown in <xref linkend="fig-hudson-start" os="" />. You are now
     ready to take your first steps with Hudson!</para>
 
-    <para><figure id="fig-hudson-start">
-        <title>The Hudson start page</title>
+    <figure id="fig-hudson-start">
+      <title>The Hudson start page</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-start.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/hudson-start.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
 
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/hudson-start.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-  </section>
-
-  <section>
+  <sect1>
     <title>Configuring the tools</title>
 
     <para>Before we get started, we do need to do a little configuration. More
@@ -438,43 +418,37 @@ src/</screen></para>
     From this screen, you can configure your Hudson server, install and
     upgrade plugins, keep track of system load, manage distributed build
     servers, and more! For now, however, we'll keep it simple. Just click on
-    the 'Configure System' link at the top of the list (see <xref
+    the 'Configuring System' link at the top of the list (see <xref
     linkend="fig-hudson-manage" />).</para>
 
-    <para><figure id="fig-hudson-manage">
-        <title>The Manage Hudson screen</title>
+    <figure id="fig-hudson-manage">
+      <title>The Manage Hudson screen</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-manage.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/hudson-manage.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/hudson-manage.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>This will take you to Hudson's main configuration screen (see
-    <xref linkend="fig-hudson-configure" />). From here you can configure
-    everything from security configuration and build tools to email servers,
-    version control systems and integration with third-party software. The
-    screen contains a lot of information, but most of the fields contain
-    sensible default values, so you can safely ignore them for now.<figure
-        id="fig-hudson-configure">
-        <title>The Configure Hudson screen</title>
+    <para>This will take you to Hudson's main configuration screen (see <xref
+    linkend="fig-hudson-configure" />). From here you can configure everything
+    from security configuration and build tools to email servers, version
+    control systems and integration with third-party software. The screen
+    contains a lot of information, but most of the fields contain sensible
+    default values, so you can safely ignore them for now.</para>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-configure.png" />
-          </imageobject>
+    <figure id="fig-hudson-configure">
+      <title>The Configure Hudson screen</title>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-configure.pdf" scalefit="0"
-                       width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/hudson-configure.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>For now, you will just need to configure the tools required to build
     our sample project. The application we will be building is a Java
@@ -512,21 +486,17 @@ src/</screen></para>
     discuss how to set this up in <xref
     linkend="sect-configuration-proxies" />.</para>
 
-    <para><figure id="fig-hudson-maven">
-        <title>Configuring a Maven installation</title>
+    <figure id="fig-hudson-maven">
+      <title>Configuring a Maven installation</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-configure-maven.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-configure-maven.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-configure-maven.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>One of the nice things about the Hudson Maven installation process
     is how well it works with remote build agents. Later on in the book, we'll
@@ -545,26 +515,24 @@ src/</screen></para>
     a Java Runtime Environment - the JDK contains extra development tools such
     as the Java compiler) already installed on your workstation, you can
     simply provide the path to your JDK in the JAVA_HOME field. Otherwise, you
-    can ask Hudson to download the JDK from the <uri>http://java.sun.com</uri>
-    website the first time a build job requires it. This is similar to the
-    automatic Maven installation feature - just pick the JDK version you need
-    and Hudson will take care of all the logistics. However, for licensing
-    reasons, you will also need to tick a check box to indicate that you agree
-    with the Java SDK License Agreement.<figure id="fig-hudson-jdk">
-        <title>Configuring a JDK installation</title>
+    can ask Hudson to download the JDK from the <ulink
+    url="http://java.sun.com"></ulink> website the first time a build job
+    requires it. This is similar to the automatic Maven installation feature -
+    just pick the JDK version you need and Hudson will take care of all the
+    logistics. However, for licensing reasons, you will also need to tick a
+    check box to indicate that you agree with the Java SDK License
+    Agreement.</para>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-configure-jdk.png" />
-          </imageobject>
+    <figure id="fig-hudson-jdk">
+      <title>Configuring a JDK installation</title>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-configure-jdk.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-configure-jdk.png" width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>The last thing you would typically set up is notification. When a
     Hudson build breaks, and when it works again, it can send out email
@@ -577,9 +545,9 @@ src/</screen></para>
     <para>That is all we need to configure at this stage. Go to the bottom of
     the screen and click on the 'Save' button. You are now ready to set up
     your first Hudson build job!</para>
-  </section>
+  </sect1>
 
-  <section>
+  <sect1>
     <title>Your first Hudson build job</title>
 
     <para>Build jobs are at the heart of the Hudson build process. Simply put,
@@ -594,7 +562,7 @@ src/</screen></para>
     <para>Our sample application is a simple Java implementation of John
     Conway's <indexterm>
         <primary>Game Of Life</primary>
-      </indexterm>"Game Of Life".<footnote id="footnote-game-of-life">
+      </indexterm>"Game Of Life"<footnote id="footnote-game-of-life">
         <para>See http://en.wikipedia.org/wiki/Conway's_Game_of_Life</para>
       </footnote>. The Game of Life is a mathematical game which takes place
     on a two dimensional grid of cells, which we will refer to as the
@@ -656,13 +624,9 @@ src/</screen></para>
         <title>Setting up your first build job in Hudson</title>
 
         <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center" fileref="figs/print/hudson-new-job.pdf"
-                       scalefit="0" width="100%" wordsize="" />
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/hudson-new-job.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -686,30 +650,26 @@ src/</screen></para>
     the local Subversion repository we set up earlier (so make sure you have
     this Subversion repository up and running, as we described in <xref
     linkend="sect-first-steps-environment" />). On the Hudson screen, choose
-    'Subversion' and enter <uri>svn://localhost/gameoflife/trunk</uri> as the
-    Repository URL (see <xref linkend="fig-new-job-svn" />). Also, place a dot
-    (".") in the 'Local Directory Module' field. This makes Hudson check out
-    the source code directly into the build job's workspace. If you don't do
-    this, Subversion will check the source code out to a subdirectory called
+    'Subversion' and enter <ulink
+    url="svn://localhost/gameoflife/trunk"></ulink> as the Repository URL (see
+    <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
+    Directory Module' field. This makes Hudson check out the source code
+    directly into the build job's workspace. If you don't do this, Subversion
+    will check the source code out to a subdirectory called
     <filename>trunk</filename>. Using the build job's workspace makes some of
     the other options a little simpler to configure. You can leave all of the
     other options up until here with their default values.</para>
 
-    <para><figure id="fig-new-job-svn">
-        <title>Telling Hudson where to find the source code</title>
+    <figure id="fig-new-job-svn">
+      <title>Telling Hudson where to find the source code</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-freestyle-svn.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-freestyle-svn.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-freestyle-svn.png" width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Once we have told Hudson where to find the source code for our
     application, we need to tell it how often it should check for updates. We
@@ -745,21 +705,19 @@ src/</screen></para>
     the blue question mark icon on the side of the schedule box, Hudson will
     bring up a very complete refresher.</para>
 
-    <para><figure id="fig-new-job-triggers">
-        <title>Scheduling the build jobs</title>
+    <figure id="fig-new-job-triggers">
+      <title>Scheduling the build jobs</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-triggers.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-triggers.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-triggers.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>The next step is to configure the actual build itself. In a
+    <para>The next step is to configure the actual build itself. In a
     free-style build job, you can break down your build job into a number of
     build steps. This makes it easier to organize builds in clean, separate
     stages. For example, a build might run a suite of functional tests in one
@@ -782,26 +740,22 @@ src/</screen></para>
     previous build artifacts, compile our code, run our unit tests and
     generates a JAR file.</para>
 
-    <para><figure id="fig-new-job-build-step">
-        <title>Adding a build step</title>
+    <figure id="fig-new-job-build-step">
+      <title>Adding a build step</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-build-step.png"
-                       remap="" scalefit="" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-build-step.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-build-step.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>By default, this build job will fail if the code does not
-    compile or if any of the unit tests fail. That's the most fundamental
-    thing that you'd expect of any build server. But Hudson also does a great
-    job of helping you display your test results and test result
-    trends.</para>
+    <para>By default, this build job will fail if the code does not compile or
+    if any of the unit tests fail. That's the most fundamental thing that
+    you'd expect of any build server. But Hudson also does a great job of
+    helping you display your test results and test result trends.</para>
 
     <para>The defacto standard for test reporting in the Java world is an XML
     format used by JUnit. This format is also used by many other Java testing
@@ -841,28 +795,33 @@ src/</screen></para>
     linkend="fig-new-job-test-reports" />, for example, we have configured
     Hudson to store all of the JAR files generated by this build job.</para>
 
-    <para><figure id="fig-new-job-test-reports">
-        <title>Configuring JUnit test reports and artifact archiving</title>
+    <para>Note that while this approach is convenient, in many projects you
+    would typically store your binary artifacts in an Enterprise Repository
+    Manager such as Nexus or Artifactory. An Enterprise Repository Manager is
+    a server that helps share and distribute binary artifacts between
+    developers and teams within an organization, and is commonly used with
+    Maven projects, as well as some other tools such as Ivy and Gradle. As we
+    will see further on in this book, Hudson also makes it easy to automate
+    deployment to these repositories.</para>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-tests-no-email.png" />
-          </imageobject>
+    <figure id="fig-new-job-test-reports">
+      <title>Configuring JUnit test reports and artifact archiving</title>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-tests-no-email.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-tests-no-email.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Now we're done - just click on the Save button at the bottom of the
     screen. Our build job should now be ready to run. So let's see it in
     action!</para>
-  </section>
+  </sect1>
 
-  <section>
+  <sect1>
     <title>Our first build job in action</title>
 
     <para>Once you save your new build job, Hudson will display the home page
@@ -876,21 +835,17 @@ src/</screen></para>
     if you are impatient, you can also trigger the build manually using the
     'Build Now' button.</para>
 
-    <para><figure id="fig-new-job-running">
-        <title>Your first build job running</title>
+    <figure id="fig-new-job-running">
+      <title>Your first build job running</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-running.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-running.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-running.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>The build will also now figure proudly on your Hudson server's home
     page (see <xref linkend="fig-hudson-dashboard" />). This page shows a
@@ -911,22 +866,19 @@ src/</screen></para>
     schedule button (that's the one that looks a bit like a green play button
     on top of a clock).</para>
 
-    <para><figure id="fig-hudson-dashboard">
-        <title>The Hudson dashboard</title>
+    <figure id="fig-hudson-dashboard">
+      <title>The Hudson dashboard</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-home-job-list.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-home-job-list.png" width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-home-job-list.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>When the build finishes, the ball in the Build History box
-    becomes solid blue. This means the build was a success. Build failures are
+    <para>When the build finishes, the ball in the Build History box becomes
+    solid blue. This means the build was a success. Build failures are
     generally indicated by a red ball. For some types of project, you can also
     distinguish between a build error (such as a compiler error), indicated by
     a red ball, and other sorts of build failures, such as unit test failures
@@ -991,7 +943,9 @@ Checked out revision 6.</screen></para>
     which you will find in the
     <filename>gameoflife-core/src/main/java/com/ciwithhudson/gameoflide/domain</filename>
     directory. Open this file in your favorite text editor. You should see
-    something like this:<programlisting>package com.ciwithhudson.gameoflife.domain;
+    something like this:</para>
+
+    <programlisting>package com.ciwithhudson.gameoflife.domain;
 
 public class LivingCell extends Cell {
 
@@ -1016,7 +970,7 @@ public class LivingCell extends Cell {
         return Character.toString(SYMBOL);
     }
     
-}</programlisting></para>
+}</programlisting>
 
     <para>The application can print the state of the grid as a text array.
     Currently, the application prints our live cells as a plus character
@@ -1029,7 +983,7 @@ public class LivingCell extends Cell {
     <code>LivingCell</code> class method, and rewrite it as follows (the
     modified line is in <command>bold</command>):</para>
 
-    <para><programlisting>public class LivingCell extends Cell {
+    <programlisting>public class LivingCell extends Cell {
 
     <command>public static final char SYMBOL = '*';</command>
     
@@ -1052,8 +1006,10 @@ public class LivingCell extends Cell {
         return Character.toString(SYMBOL);
     }
     
-}</programlisting>Save this change, and then commit them to the Subversion
-    repository by running "<command>svn commit</command>" from the
+}</programlisting>
+
+    <para>Save this change, and then commit them to the Subversion repository
+    by running "<command>svn commit</command>" from the
     <filename>babble</filename> directory: <screen>$ <command>svn commit -m "Live cells should display as stars and not pluses"</command>
 Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
 Transmitting file data .
@@ -1074,22 +1030,20 @@ Committed revision 7.</screen></para>
     the same purpose - to give you a general idea of how stable your build is
     over time.</para>
 
-    <para><figure id="fig-new-job-failed">
-        <title>A failed build</title>
+    <figure id="fig-new-job-failed">
+      <title>A failed build</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-failed.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-failed.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-failed.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>If you click on the new build history entry, Hudson will give
-    you some more details about what went wrong (see <xref
+    <para>If you click on the new build history entry, Hudson will give you
+    some more details about what went wrong (see <xref
     linkend="fig-new-job-failure-details" />). Hudson tells us that there were
     11 new test failures in this build, something which can be seen at a
     glance in the <indexterm>
@@ -1098,21 +1052,17 @@ Committed revision 7.</screen></para>
     can even see which tests are failing, and how long they have been
     broken.</para>
 
-    <para><figure id="fig-new-job-failure-details">
-        <title>The list of all the broken tests</title>
+    <figure id="fig-new-job-failure-details">
+      <title>The list of all the broken tests</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-failure-details.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-failure-details.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-failure-details.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>If you want to know exactly what went wrong, that's easy enough to
     figure out as well. If you click on the failed test classes, Hudson brings
@@ -1120,22 +1070,20 @@ Committed revision 7.</screen></para>
     linkend="fig-hudson-new-job-test-failure-details" />), which is a great
     help when it comes to reproducing and fixing the issue.</para>
 
-    <para><figure id="fig-hudson-new-job-test-failure-details">
-        <title>Details about a failed test</title>
+    <figure id="fig-hudson-new-job-test-failure-details">
+      <title>Details about a failed test</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-test-failure-details.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-test-failure-details.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-test-failure-details.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>Hudson displays a host of information about the failed test in
-    a very readable form, including the error message the test produced, the
+    <para>Hudson displays a host of information about the failed test in a
+    very readable form, including the error message the test produced, the
     stack trace, how long the test has been broken, and how long it took to
     run. Often, this in itself is enough to put a developer on the right track
     towards fixing the issue.</para>
@@ -1144,7 +1092,9 @@ Committed revision 7.</screen></para>
     our changes and recommit the code in it's original state (the end users
     just changed their mind about the asterisks, anyway). So just undo the
     changes you made to the <filename>LivingCell</filename> class (again, the
-    changes are highlighted in <command>bold</command>):<programlisting>public class LivingCell extends Cell {
+    changes are highlighted in <command>bold</command>):</para>
+
+    <programlisting>public class LivingCell extends Cell {
 
     <command>public static final char SYMBOL = '+';</command>
     
@@ -1167,7 +1117,7 @@ Committed revision 7.</screen></para>
         return Character.toString(SYMBOL);
     }
     
-}</programlisting></para>
+}</programlisting>
 
     <para>When you've done this, commit your changes again:<screen>$ <command>svn commit -m "Fixed broken unit tests"</command>
 Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
@@ -1180,24 +1130,19 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     the number of succeeding unit tests over time - this sort of report really
     is one of Hudson's strong points.</para>
 
-    <para><figure id="fig-new-job-fixed-build">
-        <title>Now the build is back to normal</title>
+    <figure id="fig-new-job-fixed-build">
+      <title>Now the build is back to normal</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-new-job-fixed.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-new-job-fixed.png" width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-new-job-fixed.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-  </section>
-
-  <section>
+  <sect1>
     <title>More reporting - displaying Javadocs</title>
 
     <para><indexterm>
@@ -1223,21 +1168,17 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     place <command>javadoc:javadoc</command> - this will tell Maven to
     generate the Javadoc documentation.</para>
 
-    <para><figure id="fig-hudson-freestyle-javadoc-build-step">
-        <title>Adding a new build step and report to generate Javadoc</title>
+    <figure id="fig-hudson-freestyle-javadoc-build-step">
+      <title>Adding a new build step and report to generate Javadoc</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-freestyle-javadoc-build-step.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-freestyle-javadoc-build-step.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-freestyle-javadoc-build-step.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Now go to the 'Post-build Action' and tick the 'Publish Javadoc'
     checkbox. In the 'Javadoc directory' field, enter
@@ -1262,24 +1203,20 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     that particular build, if you have asked Hudson to store Javadoc for each
     build.</para>
 
-    <para><figure id="fig-hudson-javadoc-results">
-        <title>Hudson will add a Javadoc link to your build results</title>
+    <figure id="fig-hudson-javadoc-results">
+      <title>Hudson will add a Javadoc link to your build results</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-build-with-javadoc.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-build-with-javadoc.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-build-with-javadoc.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-  </section>
-
-  <section>
+  <sect1>
     <title>Adding Code Coverage and other metrics</title>
 
     <para><indexterm>
@@ -1303,34 +1240,32 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     how well a team is applying good testing practices such as test-driven
     development or behaviour-driven development.</para>
 
-    <para>Cobertura (<uri>http://cobertura.sourceforge.net</uri>) is an open
-    source code coverage tool that works well with both Maven and Hudson. Our
-    Maven demonstration project is already configured to record code coverage
-    metrics, so all we need to do is to install the Hudson Cobertura plugin
-    and generate the code coverage metrics for Hudson to record and
-    display.</para>
+    <para>Cobertura (<ulink url="http://cobertura.sourceforge.net"></ulink>)
+    is an open source code coverage tool that works well with both Maven and
+    Hudson. Our Maven demonstration project is already configured to record
+    code coverage metrics, so all we need to do is to install the Hudson
+    Cobertura plugin and generate the code coverage metrics for Hudson to
+    record and display.</para>
 
-    <para><figure id="fig-hudson-plugin-manager">
-        <title>Hudson has a large range of plugins available</title>
+    <figure id="fig-hudson-plugin-manager">
+      <title>Hudson has a large range of plugins available</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-plugin-manager.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-plugin-manager.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-plugin-manager.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>To install a new plugin, go to the 'Manage Hudson' page and
-    click on the 'Manage Plugins' entry. This will display a list of the
-    available plugins as well as the plugins already installed on your server
-    (see <xref linkend="fig-hudson-plugin-manager" />). If your build server
-    doesn't have an internet connection, you can also manually install a
-    plugin by downloading the plugin file elsewhere and uploading it to your
-    Hudson installation (just open the 'Advanced' tab in <xref
+    <para>To install a new plugin, go to the 'Manage Hudson' page and click on
+    the 'Manage Plugins' entry. This will display a list of the available
+    plugins as well as the plugins already installed on your server (see <xref
+    linkend="fig-hudson-plugin-manager" />). If your build server doesn't have
+    an internet connection, you can also manually install a plugin by
+    downloading the plugin file elsewhere and uploading it to your Hudson
+    installation (just open the 'Advanced' tab in <xref
     linkend="fig-hudson-plugin-manager" />), or by copying the plugin to the
     <filename>$HUDSON_HOME/plugins</filename> directory.</para>
 
@@ -1363,23 +1298,20 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     <xref linkend="fig-hudson-cobertura-build-step" />). You could also add a
     new build step just for the code coverage metrics. In a real-world
     project, code quality metrics like this are typically placed in a distinct
-    build job, which is run less frequently than the default build.<figure
-        id="fig-hudson-cobertura-build-step">
-        <title>Adding another Maven goal to generating test coverage
-        metrics</title>
+    build job, which is run less frequently than the default build.</para>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-cobertura-build-step.png" />
-          </imageobject>
+    <figure id="fig-hudson-cobertura-build-step">
+      <title>Adding another Maven goal to generating test coverage
+      metrics</title>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-cobertura-build-step.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-cobertura-build-step.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Next, we need to tell Hudson to keep track of our code coverage
     metrics. Scroll down to the 'Post-build Actions' section. You should see a
@@ -1398,22 +1330,18 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     list any builds with less than 50% test coverage as "unstable" (indicated
     by a yellow ball), and notify the team accordingly.</para>
 
-    <para><figure id="fig-hudson-cobertura-config">
-        <title>Adding another Maven goal to generating test coverage
-        metrics</title>
+    <figure id="fig-hudson-cobertura-config">
+      <title>Adding another Maven goal to generating test coverage
+      metrics</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-config-cobertura.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-config-cobertura.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-config-cobertura.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>This fine-tuning often comes in handy in real-world builds. For
     example, you may want to impose a special code coverage constraint in
@@ -1433,22 +1361,18 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     have only run the test coverage metrics once, the coverage will be
     displayed as red and green bars.</para>
 
-    <para><figure id="fig-hudson-initial-coverage-report">
-        <title>Hudson displays code coverage metrics on the build home
-        page</title>
+    <figure id="fig-hudson-initial-coverage-report">
+      <title>Hudson displays code coverage metrics on the build home
+      page</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-initial-coverage-report.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-initial-coverage-report.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-initial-coverage-report.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>If you click on the Coverage Report icon, you will see code coverage
     for each package in your application, and even drill down to see the code
@@ -1475,32 +1399,30 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     improve things simply by adding a test like this one to the CellTest.java
     class (in the
     <filename>src/test/java/com/ciwithhudson/gameoflife/domain</filename>
-    directory):<programlisting>    @Test(expected=IllegalArgumentException.class)
+    directory):</para>
+
+    <programlisting>    @Test(expected=IllegalArgumentException.class)
     public void anInvalidCharacterShouldThrowAnException() {
         Cell.fromChar('X');
-    }</programlisting></para>
+    }</programlisting>
 
     <para>Add this test and commit your changes to Subversion:<screen>$ svn commit -m "Added extra unit test"
 Sending        src/test/java/com/ciwithhudson/gameoflife/domain/CellTest.java
 Transmitting file data ..
 Committed revision 8.</screen></para>
 
-    <para><figure id="fig-hudson-code-coverage-class">
-        <title>Hudson displays code coverage metrics on the build home
-        page</title>
+    <figure id="fig-hudson-code-coverage-class">
+      <title>Hudson displays code coverage metrics on the build home
+      page</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-code-coverage-class.png " />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-code-coverage-class.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-code-coverage-class.png "
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>This will trigger another build, which should result in slightly
     better code coverage statistics. You will also notice that Hudson is now
@@ -1515,32 +1437,34 @@ Committed revision 8.</screen></para>
     (high code quality and low maintenance costs), and not an end in
     itself.</para>
 
-    <para>Nevertheless, metrics like this can give you a great insite into the
-    health of your project, and Hudson presents them in a particularly
+    <para>Nevertheless, metrics like this can give you a great insight into
+    the health of your project, and Hudson presents them in a particularly
     accessible way.</para>
 
-    <para><figure id="fig-hudson-code-coverage-graph">
-        <title>Hudson displays code coverage metrics on the build home
-        page</title>
+    <figure id="fig-hudson-code-coverage-graph">
+      <title>Hudson displays code coverage metrics on the build home
+      page</title>
 
-        <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/hudson-code-coverage-graph.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-code-coverage-graph.png"
+                     width="4.3in" />
+        </imageobject>
 
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-code-coverage-graph.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
-        </mediaobject>
-      </figure>This is just one of the code quality metrics plugins that have
-    been written for Hudson. There are many more (over fifty reporting plugins
+        <!--
+          
+-->
+      </mediaobject>
+    </figure>
+
+    <para>This is just one of the code quality metrics plugins that have been
+    written for Hudson. There are many more (over fifty reporting plugins
     alone at the time of writing). We'll look at some more of them in the
     chapter on Continuous Code Quality.</para>
-  </section>
+  </sect1>
 
-  <section>
+  <sect1>
     <title>Conclusion</title>
 
     <para>In this chapter, we have gone through what you need to know to get
@@ -1550,5 +1474,5 @@ Committed revision 8.</screen></para>
     But there's still a lot more to learn about Hudson - in the following
     chapters, we will be looking at how Hudson can help you improve your build
     automation process in many other areas as well.</para>
-  </section>
+  </sect1>
 </chapter>
