@@ -227,7 +227,7 @@ export PATH=$JAVA_HOME/bin:$PATH</programlisting>
     write a startup script along the following lines:</para>
 
     <programlisting>export HUDSON_BASE=/usr/local/hudson
-export HUDSON_HOME=/data/hudson
+export HUDSON_HOME=/var/hudson-data
 java -jar ${HUDSON_BASE}/hudson.war</programlisting>
 
     <para>If you are running Hudson in a Java EE container such as Tomcat or
@@ -446,7 +446,7 @@ isabled</screen></para>
         <primary>configuration</primary>
 
         <secondary>--ajp13Port</secondary>
-      </indexterm><command>--ajp13Port</command> option:<screen>$ java -jar hudson.war --httpPort=8081 --ajp13Port 8010</screen></para>
+      </indexterm><command>--ajp13Port</command> option:<screen>$ java -jar hudson.war --httpPort=8081 --ajp13Port=8010</screen></para>
 
     <para>Some other useful options are:<variablelist>
         <varlistentry>
@@ -523,12 +523,33 @@ isabled</screen></para>
     Winstone JAR file. Fortunately, one comes bundled with your Hudson
     installation, so you don't have to look far.</para>
 
-    <para>To restart the server, you can run the following command: </para>
+    <para>To restart the server, you can run the following command:</para>
 
     <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl reload: --host=localhost --port=8001 </screen>And
     to shut it down completely, you can use the following:</para>
 
     <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl shutdown --host=localhost --port=8001 </screen></para>
+
+    <para>Another way to shut down Hudson cleanly is to invoke the special
+    "/exit" URL, as shown here:</para>
+
+    <para><screen>$ wget http://localhost:8080/exit</screen>On a real server,
+    you would typically have set up security, so that only a system
+    administrator could access this URL. In this case, you will need to
+    provide a username and a password:</para>
+
+    <para><screen>$ wget --user=admin --password=secret http://localhost:8080/exit</screen>Note
+    that you can actually do this from a different server, not just the local
+    machine:</para>
+
+    <para><screen>$ wget --user=admin --password=secret http://localhost:8080/exit</screen></para>
+
+    <para>Note that while both these methods will shut down Hudson relatively
+    cleanly (more so than killing the process directly, for example), they
+    will interrupt any builds in progress. So it is recommended practice to
+    prepare the shutdown cleanly by using the 'Prepare for Shutdown' button on
+    the 'Manage Hudson' screen (see <xref
+    linkend="sect-configuration-manage-hudson" />). </para>
 
     <para>Running Hudson as a stand-alone application may not be to everyone's
     taste. For a production server, you might want to take advantage of the
@@ -539,6 +560,73 @@ isabled</screen></para>
     known pattern of Java web application development. If this is the case,
     you may prefer to, or be obliged to, deploy Hudson as a standard Java web
     application. We look at this option in the following section.</para>
+  </sect1>
+
+  <sect1>
+    <title>Running Hudson behind an Apache server</title>
+
+    <para>If you are running Hudson in a Unix environment, you may want to
+    hide it behind an Apache HTTP server in order to harmonize the server URLs
+    and simplify maintenance and access. This way, users can access the Hudson
+    server using a URL like <ulink
+    url="http://myserver.myorg.com/hudson"></ulink> rather than <ulink
+    url="http://myserver.myorg.com:8081"></ulink>.</para>
+
+    <para>One way to do this is to use the Apache <command>mod_proxy</command>
+    and <command>mod_proxy_ajp</command> modules. These modules let you use
+    implement proxying on your Apache server using the AJP13 (Apache JServer
+    Protocol version 1.3). Using this module, Apache will transfer requests to
+    particular URL patterns on your Apache server (running on port 80)
+    directly to the Hudson server running on a different port. So when a user
+    opens a URL like <ulink url="http://www.myorg.com/hudson"></ulink>, Apache
+    will transparently forward traffic to your Hudson server running on <ulink
+    url="http://buildserver.myorg.com:8081/hudson"></ulink>.Technically, this
+    is known as "Reverse Proxying", as the client has no knowledge that the
+    server is doing any proxying, or where the proxied server is located. So
+    you can safely tuck your Hudson server away behind a firewall, while still
+    providing broader access to your Hudson instance via the public-facing
+    URL.</para>
+
+    <para>The exact configuration of this module will vary depending on the
+    details of your Apache version and installation details, but one possible
+    approach is shown here.</para>
+
+    <para>First of all, if you are running Hudson as a stand-alone
+    application, make sure you start up Hudson using the
+    <command>--prefix</command> option. The prefix you choose must match the
+    suffix in the public-facing URL you want to use. So if you want to access
+    Hudson via the URL <ulink
+    url="http://myserver.myorg.com/hudson"></ulink>,you will need to provide
+    'hudson' as a prefix:<screen>$ java -jar hudson.war --httpPort=8081 --ajp13Port=8010 --prefix=hudson</screen></para>
+
+    <para>If you are running Hudson on an application server such as Tomcat,
+    it will already be running under a particular web context ("/hudson" by
+    default).</para>
+
+    <para>Next, make sure the <command>mod_proxy</command> and
+    <command>mod_proxy_ajp</command> modules are activated. In your
+    <filename>httpd.conf</filename> file (often in the
+    <filename>/etc/httpf/conf</filename> directory), you should have the
+    following line:</para>
+
+    <para><screen>LoadModule proxy_module modules/mod_proxy.so</screen>The
+    proxy is actually configured in the <filename>proxy_ajp.conf</filename>
+    file (often in the <filename>/etc/httpd/conf.d</filename> directory). Note
+    that the name of the proxy path ("/hudson" in this example) must match the
+    prefix or web context that Hudson is using. An example of such a
+    configuration file is given here:</para>
+
+    <para><screen>LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
+
+ProxyPass         /hudson  http://localhost:8081/hudson
+ProxyPassReverse  /hudson  http://localhost:8081/hudson
+ProxyRequests     Off</screen>Once this is done, you just need to restart your
+    Apache server:<screen>$ sudo /etc/init.d/httpd restart
+Stopping httpd:                                            [  OK  ]
+Starting httpd:                                            [  OK  ]</screen></para>
+
+    <para>Now you should be able to access your Hudson server using a URL like
+    <ulink url="http://myserver.myorg.com/hudson"></ulink>.</para>
   </sect1>
 
   <sect1>
