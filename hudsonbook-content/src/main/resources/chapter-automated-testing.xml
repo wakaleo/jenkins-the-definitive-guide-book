@@ -4,7 +4,7 @@
 <chapter id="chapter-automated-testing">
   <title>Automated testing</title>
 
-  <section>
+  <sect1>
     <title>Introduction</title>
 
     <para><indexterm>
@@ -24,42 +24,389 @@
     test them by hand, which is hardly in the spirit of Continuous
     Integration.</para>
 
+    <para>There are many ways you can integrate automated tests into your
+    application. One of the most efficient ways to write high quality tests is
+    to write them first, using techniques such as Test Driven Development
+    (TDD) or Behaviour Driven Development (BDD). In this approach, commonly
+    used in many Agile projects, the aim of your unit tests to both clarify
+    your understanding of the code's behaviour and to write an automated test
+    that the code does indeed implement this behaviour. Focusing on testing
+    the expected behaviour, rather than the implementation, of your code also
+    makes for more comprehensive and more accurate tests, and thus helps
+    Hudson to provide more relevant feedback. </para>
+
+    <para>Of course, more classical unit testing, done once the code has been
+    implemented, is also another commonly-used approach. </para>
+
+    <para>Hudson is not limited to unit testing, though. There are many other
+    types of automated testing that you should consider, depending on the
+    nature of your application, including integration testing, web testing,
+    functional testing, performance testing, load testing and so on.</para>
+
+    <para>Hudson can also be used, in conjunction with techniques like
+    Behaviour-Driven Development and Acceptance Test Driven Development, as a
+    communications tool aimed at both developers and other project
+    stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
+    Cucumber, and many others, try to present acceptance tests in terms that
+    testers, product owners and end users can understand. With the use of such
+    tools, Hudson can report on project progress in a non-developer friendly
+    manner, and thus facilitate communication between developers and
+    non-developers within a team.</para>
+
+    <para>For existing or legacy applications with little or no automated
+    testing in place, it can be time-consuming and difficult to retro-fit
+    comprehensive unit tests onto the code. One useful approach in these
+    situations is to write automated functional tests ("regression") tests
+    that simulate the most common ways that users manipulate the application.
+    For example, automated web testing tools such as Selenium and Web Driver
+    can be used to web applications. While this approach is not as
+    comprehensive as a combination of good quality unit, integration and
+    acceptance tests, it is still an effective and relatively cost-efficient
+    way to integrate automated regression testing into an existing
+    application.</para>
+
     <para>In this chapter, we will see how Hudson helps you keep track of
     automated test results, and how you can use this information to monitor
     and dissect your build process.</para>
-  </section>
+  </sect1>
 
-  <section>
-    <title>Integrating JUnit test results</title>
+  <sect1>
+    <title>Automating your unit tests</title>
 
-    <para>JUnit is the de facto standard of the Java world in unit testing
-    tools.</para>
+    <para>The first thing we will look at is how to integrate your unit tests
+    into Hudson. Whether you are practicing Test-Driven Development, or
+    writing unit tests using a more conventional approach, these are probably
+    the first tests that you will want to automate with Hudson.</para>
 
-    <para>Hudson understands the JUnit test report format, and does an
-    excellent job of displaying JUnit test results (see <xref
-    linkend="fig-junit-test-result-trend" />).</para>
+    <para>Hudson does an excellent job of reporting on your test results.
+    However, it is up to you to write the appropriate tests and to configure
+    your build to run them automatically. Fortunately integrating unit tests
+    into your automated builds is generally relatively easy.</para>
 
-    <para><figure id="fig-junit-test-result-trend">
+    <para>There are many unit testing tools out there. In the Java world,
+    JUnit is the de facto standard in this area. TestNG is another popular
+    Java unit testing framework. For C# applications, the NUnit testing
+    framework proposes similar functionalities to those provided by JUnit, as
+    does <command>Test::Unit</command> for Ruby.</para>
+
+    <para>Hudson does an excellent job of reporting on your test results.
+    However, it is up to you to write the appropriate tests and to configure
+    your build to run them automatically. Fortunately integrating unit tests
+    into your automated builds is relatively easy. In the rest of this
+    section, we will look at how to do so with some of the more common build
+    tools in use.</para>
+
+    <sect2>
+      <title>Automating your tests with Maven</title>
+
+      <para>Maven is a popular open source build tool of the Java world, that
+      makes use of practices such as declarative dependencies, standard
+      directories and build life cycles, and convention over configuration to
+      encourage clean, maintainable, high level build scripts. Test automation
+      is strongly supported in Maven. Maven projects use a standard directory
+      structure: it will automatically look for unit tests in a directory
+      called <filename>src/test/java</filename>. There is little else to
+      configure: just add a dependency to the test framework (or frameworks)
+      your tests are using, and Maven will automatically look for and execute
+      the JUnit, TestNG or even POJO (Plain Old Java Objects) tests contained
+      in this directory structure.</para>
+
+      <para>In Maven, you run your unit tests by invoking the
+      <command>test</command> life cycle phase, as shown here:</para>
+
+      <screen>$ <command>mvn test</command>
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Tweeter domain model
+[INFO]    task-segment: [test]
+[INFO] ------------------------------------------------------------------------
+...
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.wakaleo.training.tweeter.domain.TagTest
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 sec
+Running com.wakaleo.training.tweeter.domain.TweeterTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 sec
+Running com.wakaleo.training.tweeter.domain.TweeterUserTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 sec
+Running com.wakaleo.training.tweeter.domain.TweetFeeRangeTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 sec
+Running com.wakaleo.training.tweeter.domain.HamcrestTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
+
+Results :
+
+Tests run: 38, Failures: 0, Errors: 0, Skipped: 0</screen>
+
+      <para>In addition to executing your tests, and failing the build if any
+      of the tests fail, Maven will produce a set of test reports in the
+      <filename>target/surefire-reports</filename> directory, in both XML and
+      text formats. For our CI purposes, it is the XML files that interest us,
+      as Hudson is able to understand and analyse these files for it's CI
+      reporting:</para>
+
+      <screen>$ <command>ls target/surefire-reports/*.xml</command>
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.HamcrestTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TagTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweetFeeRangeTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest.xml</screen>
+
+      <para>Maven defines two distinct testing phases: unit tests and
+      integration tests. Unit tests should be fast and lightweight, providing
+      a large amount of test feedback in as little time as possible.
+      Integration tests are slower and more cumbersome, and often require the
+      application to be build and deployed to a server (even an embedded one)
+      to carry out more complete tests. Both these sorts of tests are
+      important, and for a well-designed Continuous Integration environment,
+      it is important to be able to distinguish between them. The build should
+      ensure that all of the unit tests are run initially - if a unit test
+      fails, developers should be notified very quickly. Only if all of the
+      unit tests pass is it worthwhile undertaking the slower and more
+      heavy-weight integration tests.</para>
+
+      <para>In Maven, integration tests are executed during the
+      <command>integration-test</command> life cycle phase, which you can
+      invoke by running '<command>mvn integration-test</command>' or (more
+      simply) '<command>mvn verify</command>'. During this phase, it is easy
+      to configure Maven to start up your web application on an embedded Jetty
+      web server, or to package and deploy your application to a test server,
+      for example. Your integration tests can then be executed against the
+      running application. The tricky part however is telling Maven how to
+      distinguish between your unit tests and your integration tests, so that
+      they will only be executed when a running version of the application is
+      available. </para>
+
+      <para>There are several ways to do this, but at the time of writing
+      there is no official standard approach used across all Maven projects.
+      One simple strategy is to use naming conventions: all integration tests
+      might end in 'IntegrationTest', or be placed in a particular package.
+      The following class uses one such convention:</para>
+
+      <para><programlisting>public class AccountIntegrationTest {
+  
+  @Test
+  public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+  }
+}</programlisting>In Maven, tests are configured via the
+      <command>maven-surefire-plugin</command> plugin. To ensure that Maven
+      only runs these tests during the <command>integration-test</command>
+      phase, you can configure this plugin as shown here:</para>
+
+      <programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/*IntegrationTest.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;includes&gt;
+                &lt;include&gt;**/*IntegrationTest.java&lt;/include&gt;
+              &lt;/includes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      ...</programlisting>
+
+      <para>This will ensure that the integration tests are skipped during the
+      unit test phase, and only executed during the integration test
+      phase.</para>
+
+      <para>If you are using TestNG, you can identify your integration tests
+      using TestNG Groups. In TestNG, test classes or test methods can be
+      tagged using the 'groups' attribute of the <command>@Test</command>
+      annotation, as shown here:<programlisting>@Test(groups = { "integration-test" })
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}</programlisting></para>
+
+      <para>Using Maven, you could ensure that these tests where only run
+      during the integration test phase using the following
+      configuration:</para>
+
+      <para><programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludedGroups&gt;integration-tests&lt;/excludedGroups&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;groups&gt;integration-tests&lt;/groups&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      ...</programlisting></para>
+    </sect2>
+
+    <sect2>
+      <title>Automating your unit tests with Ant</title>
+
+      <para>TODO</para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Configuring JUnit reports in Hudson</title>
+
+    <para>Once your build generates test results, you need to configure your
+    Hudson build job to display them. For Maven build jobs, no special
+    configuration is required - just make sure you invoke a goal that will run
+    your tests, such as <command>mvn test</command> (for your unit tests) or
+    <command>mvn verify</command> (for unit and integration tests), as shown
+    in <xref linkend="fig-testing-maven-verify-goal" />.</para>
+
+    <para><figure id="fig-testing-maven-verify-goal">
         <title>You configure your Hudson installation in the 'Manage Hudson'
         screen</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/junit-test-result-trend.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/hudson-manage-hudson.pdf"
-                       scalefit="0" width="100%" wordsize="" />
+            <imagedata fileref="figs/web/testing-maven-verify-goal.png" />
           </imageobject>
         </mediaobject>
       </figure></para>
-  </section>
 
-  <section>
+    <para>For free-style build jobs, you need to do a little more
+    configuration work. In addition to ensuring that your build actually runs
+    the tests, you need to tell Hudson to publish the JUnit test results
+    report. You configure this in the <command>Post-build Actions</command>
+    section (see <xref linkend="fig-testing-freestyle-junit-config" />). Here,
+    you provide a path to the JUnit XML reports. Their exact location will
+    depend on a project - for a Maven project, a path like
+    '<filename>**/target/surefire-reports/*.xml</filename>' will find them for
+    most projects. For an Ant-based project, it will depend on how you
+    configured the Ant JUnit task, as we discussed above.</para>
+
+    <para><figure id="fig-testing-freestyle-junit-config">
+        <title>Configuring Maven test reports in a freestyle project</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/testing-freestyle-junit-config.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Displaying test results</title>
+
+    <para>Once Hudson knows where to find the JUnit reports, it does an
+    excellent job of reporting on them. Indeed, in many ways, Hudson's primary
+    job is to detect and to report on build failures. And a failing unit test
+    is one of the most obvious symptoms of a build failure. </para>
+
+    <para>Hudson makes the distinction between <emphasis>failed</emphasis>
+    builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
+    by a red ball) indicates test failures, or a build job that is broken in
+    some brutal manner, such as a compilation error. An unstable build, on the
+    other hand, is a build that is not considered of sufficient quality. What
+    defines "quality" in this sense is largely up to you, but it is typically
+    related to code quality metrics such as code coverage or coding standards,
+    that we will be discussing later on in the book. For now, we will focus on
+    the <emphasis>failed</emphasis> builds</para>
+
+    <para>In <xref linkend="fig-testing-maven-test-failure-dashboard" /> we
+    can see how Hudson displays a Maven build job containing test failures.
+    The project home page is your first port of call when a build breaks. When
+    a build results in failing tests, the 'Latest Test Result' link will
+    indicate the current number of test failures in this build job ("5
+    failures" in the illustration), and also the change in the number of test
+    failures since the last build ("+5" in the illustration - five new test
+    failures). Test failures will also appear as red in the 'Test Result
+    Trend' graph to the right of the page.</para>
+
+    <para><figure id="fig-testing-maven-test-failure-dashboard">
+        <title>Configuring Maven test reports in a freestyle project</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/testing-maven-test-failure-dashboard.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>If you click on the 'Latest Test Result link, Hudson will
+    display a summary of the current test results (see <xref
+    linkend="fig-testing-test-result-details" />). For a Maven build job,
+    Hudson will initially display a summary view of test results per module -
+    to see the full details of the failing tests, just click on the module you
+    are interest in. For a freestyle build job, Hudson will display the full
+    failing tests view immediately. </para>
+
+    <para><figure id="fig-testing-test-result-details">
+        <title>Configuring Maven test reports in a freestyle project</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata fileref="figs/web/testing-test-result-details.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>This full view is useful . The 'Age' column tells you how for
+    how long a test has been broken - the hyperlink will take you back to the
+    first build in which this test failed.</para>
+
+    <para> You can also see the details of a particular test failure by
+    clicking on the corresponding link on this screen. </para>
+  </sect1>
+
+  <sect1>
     <title>Conclusion</title>
 
     <para>TODO</para>
-  </section>
+  </sect1>
 </chapter>
