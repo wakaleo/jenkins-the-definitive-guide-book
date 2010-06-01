@@ -33,10 +33,10 @@
     that the code does indeed implement this behaviour. Focusing on testing
     the expected behaviour, rather than the implementation, of your code also
     makes for more comprehensive and more accurate tests, and thus helps
-    Hudson to provide more relevant feedback. </para>
+    Hudson to provide more relevant feedback.</para>
 
     <para>Of course, more classical unit testing, done once the code has been
-    implemented, is also another commonly-used approach. </para>
+    implemented, is also another commonly-used approach.</para>
 
     <para>Hudson is not limited to unit testing, though. There are many other
     types of automated testing that you should consider, depending on the
@@ -176,7 +176,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       running application. The tricky part however is telling Maven how to
       distinguish between your unit tests and your integration tests, so that
       they will only be executed when a running version of the application is
-      available. </para>
+      available.</para>
 
       <para>There are several ways to do this, but at the time of writing
       there is no official standard approach used across all Maven projects.
@@ -299,6 +299,12 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
       <para>TODO</para>
     </sect2>
+
+    <sect2>
+      <title>Automating your unit tests with Gradle</title>
+
+      <para>TODO</para>
+    </sect2>
   </sect1>
 
   <sect1>
@@ -317,7 +323,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/testing-maven-verify-goal.png" />
+            <imagedata align="center"
+                       fileref="figs/web/testing-maven-verify-goal.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -338,10 +346,18 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/testing-freestyle-junit-config.png" />
+            <imagedata align="center"
+                       fileref="figs/web/testing-freestyle-junit-config.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Ignoring Tests</title>
+
+    <para></para>
   </sect1>
 
   <sect1>
@@ -350,7 +366,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     <para>Once Hudson knows where to find the JUnit reports, it does an
     excellent job of reporting on them. Indeed, in many ways, Hudson's primary
     job is to detect and to report on build failures. And a failing unit test
-    is one of the most obvious symptoms of a build failure. </para>
+    is one of the most obvious symptoms of a build failure.</para>
 
     <para>Hudson makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
@@ -373,11 +389,14 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Trend' graph to the right of the page.</para>
 
     <para><figure id="fig-testing-maven-test-failure-dashboard">
-        <title>Configuring Maven test reports in a freestyle project</title>
+        <title>Hudson displays test result trends on the project home
+        page</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/testing-maven-test-failure-dashboard.png" />
+            <imagedata align="center"
+                       fileref="figs/web/testing-maven-test-failure-dashboard.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>If you click on the 'Latest Test Result link, Hudson will
@@ -386,22 +405,174 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Hudson will initially display a summary view of test results per module -
     to see the full details of the failing tests, just click on the module you
     are interest in. For a freestyle build job, Hudson will display the full
-    failing tests view immediately. </para>
+    failing tests view immediately. In both cases, Hudson starts off by
+    presenting a summary of test results for each package. From here, you can
+    drill down, seeing test results for each test class and then finally the
+    tests within the test classes themselves. And if there are any failed
+    tests, these will be prominently displayed at the top of the page.</para>
 
     <para><figure id="fig-testing-test-result-details">
-        <title>Configuring Maven test reports in a freestyle project</title>
+        <title>Hudson displays a summary of the test results</title>
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/testing-test-result-details.png" />
+            <imagedata align="center"
+                       fileref="figs/web/testing-test-result-details.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>This full view is useful . The 'Age' column tells you how for
-    how long a test has been broken - the hyperlink will take you back to the
-    first build in which this test failed.</para>
+      </figure>This full view gives you both a good overview of the current
+    state of your tests, and an indication of their history. Indeed, the 'Age'
+    column tells you how for how long a test has been broken, with a hyperlink
+    that takes you back to the first build in which this test failed.</para>
 
-    <para> You can also see the details of a particular test failure by
-    clicking on the corresponding link on this screen. </para>
+    <para>You can also add a description to the test results, using the 'Edit
+    Description' link in the top right-hand corner of the screen. This is a
+    great way to annotate a build failure with some additional details, in
+    order to add extra information about the origin of test failures for
+    example.</para>
+
+    <para>When a test fails, you generally want to know why. To see the
+    details of a particular test failure, just click on the corresponding link
+    on this screen. This will display all the gruesome details, including the
+    error message and the stack trace, as well as a reminder of for how long
+    the test has failing (see <xref
+    linkend="fig-testing-test-failure-details" />). You should be wary of
+    tests that have been failing for more than just a couple of builds - this
+    is an indicator of either a tricky technical problem that might need
+    investigating, or a complacent attitude to failed builds (developers might
+    just be ignoring build failures), which is more serious and definitely
+    should be investigated.</para>
+
+    <para><figure id="fig-testing-test-failure-details">
+        <title>The details of a test failure</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata align="center"
+                       fileref="figs/web/testing-test-failure-details.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>It can also come in handy to keep tabs on how long your tests
+    take to run, not just whether they pass or fail. Unit tests should be
+    designed to run fast, and overly long-running tests can be the sign of a
+    performance issue. Slow unit tests also delay feedback, and in CI, fast
+    feedback is the name of the game. For example, running one thousand unit
+    tests in five minutes is good - taking an hour to run them is not. So it
+    is a good idea to regularly check how long your unit tests are taking to
+    run, and if necessary investigate why they are taking so long.</para>
+
+    <para>Luckily, Hudson can easily tell you how long your tests have been
+    taking to run over time. On the build job home page, click on the "trend"
+    link in the <command>Build History</command> box on the left of the
+    screen. This will give you a graph along the lines of the one in <xref
+    linkend="fig-testing-test-trend" />, showing how long each of your builds
+    took to run. Now tests are not the only thing that happens in a build job,
+    but if you have enough tests to worry about, they will probably take a
+    large proportion of the time. So this graph is a great way to see how well
+    your tests are performing as well.</para>
+
+    <para><figure id="fig-testing-test-trend">
+        <title>Build time trends can give you a good indicator of how fast
+        your tests are running</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata align="center"
+                       fileref="figs/web/testing-test-trend.png" width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>When you are on the Test Results page (see <xref
+    linkend="fig-testing-test-result-details" />), you can also drill down and
+    see how long the tests in a particular module, package or class are taking
+    to run. Just click on the test duration in the test results page ("Took 31
+    ms" in <xref linkend="fig-testing-test-result-details" />) to view the
+    test history for a package, class, or individual test (see <xref
+    linkend="fig-testing-test-result-history" />). This makes it easy to
+    isolate a test that is taking more time then it should, or even decide
+    when a general optimization of your unit tests is required.</para>
+
+    <para><figure id="fig-testing-test-result-history">
+        <title>Hudson also lets you see how long your tests take to
+        run</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata align="center"
+                       fileref="figs/web/testing-test-result-history.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Ignoring Tests</title>
+
+    <para>Hudson distinguishes between test failures and skipped tests.
+    Skipped tests are ones that have been deactivated, for example by using
+    the <command>@Ignore</command> annotation in JUnit:</para>
+
+    <para><programlisting>@Ignore("Pending more details from the BA")
+@Test 
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}</programlisting></para>
+
+    <para>Skipping tests is legitimate in some circumstances, such as to place
+    an automated acceptance test, or higher-level technical test, on hold
+    while you implement the lower levels. In such cases, you don't want to be
+    distracted by the failing acceptance test, but you don't want to forget
+    that the test exists either. Using techniques such as the
+    <command>@Ignore</command> annotation are better than simply commenting
+    out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on
+    the ignored tests for you. </para>
+
+    <para>In TestNG, you can also skip tests, using the 'enabled'
+    property:</para>
+
+    <para><programlisting>@Test(enabled=false)
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}</programlisting>In TestNG, you can also define dependencies between tests,
+    so that certain tests will only run after another test or group of tests
+    has run, as illustrated here:</para>
+
+    <para><programlisting>@Test
+public void serverStartedOk() {...}
+ 
+@Test(dependsOnMethods = { "serverStartedOk" })
+public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}</programlisting>In
+    this case, if the first test (serverStartedOk()) fails, the following test
+    will be skipped.</para>
+
+    <para>In all of these cases, Hudson will mark the tests that were not run
+    as yellow, both in the overall test results trend, and in the test details
+    (see <xref linkend="fig-testing-test-skipped" />). Skipped tests are not
+    as bad as test failures, but it is important not to get into the habit of
+    neglecting them. Skipped tests are like branches in a version control
+    system: a test should be skipped for a specific reason, with a clear idea
+    as to when they will be reactivated. A skipped test that remains skipped
+    for too long is a bad smell.</para>
+
+    <para><figure id="fig-testing-test-skipped">
+        <title>Hudson displays skipped tests as yellow</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata align="center"
+                       fileref="figs/web/testing-test-skipped.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </sect1>
 
   <sect1>
