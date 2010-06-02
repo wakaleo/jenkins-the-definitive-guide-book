@@ -339,22 +339,67 @@ $ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</comm
     writing the configuration options are more limited than those provided by
     the Ubuntu package: you can define the HTTP port using the HUDSON_PORT
     parameter, for example, but to specify an application context you need to
-    modify the startup script by hand.</para>
+    modify the startup script by hand. The principle configuration options are
+    listed here:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>HUDSON_JAVA_CMD: The version of Java you want to use to run
+        Hudson; </para>
+      </listitem>
+
+      <listitem>
+        <para>HUDSON_JAVA_OPTIONS: Command-line options to pass to Java, such
+        as memory options.</para>
+      </listitem>
+
+      <listitem>
+        <para>HUDSON_PORT: The port that Hudson will to run on.</para>
+      </listitem>
+    </itemizedlist>
   </sect1>
 
   <sect1>
     <title>Installing Hudson on SUSE or OpenSUSE</title>
 
     <para>Binary packages are also available for SUSE and OpenSUSE, so the
-    installation process on these platforms is straightforward. First, as
-    always, you need to ensure that a recent version of the Java JDK has been
-    installed. Next, you need to add the Hudson repository to the SUSE
-    repository list:<screen>$ <command>sudo zypper addrepo http://hudson-ci.org/opensuse/ hudson</command></screen></para>
+    installation process on these platforms is straightforward. First, you
+    need to add the Hudson repository to the SUSE repository list:<screen>$ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</command></screen></para>
 
-    <para>Next, you simply install Hudson as shown here:<screen>$ <command>sudo zypper install hudson</command></screen></para>
+    <para>Then you need to download the latest Hudson RPM package from the
+    Hudson web site:</para>
 
-    <para>This will create a <filename>hudson</filename> user and install
-    Hudson as a service. To start Hudson use the 'service' command:<screen>$ <command>sudo service hudson start</command></screen></para>
+    <para><screen>$ <command>sudo wget -O /tmp/hudson.rpm http://hudson-ci.org/latest/opensuse/hudson.rpm</command></screen>Finally,
+    you simply install the Hudson RPM file using the <command>zypper</command>
+    command:<screen>$ <command>sudo zypper install /tmp/hudson.rpm</command>
+Loading repository data...
+Reading installed packaged...
+Resolving package dependencies...
+
+The following NEW packages are going to be installed:
+  hudson java-1.6.0-sun
+
+
+2 new packages to install.
+...
+Continue? [y/n/?] (y):
+...
+Installing hudson-1.360-1.1 [done]
+Additional rpm output:
+hudson                   0:off  1:off  2:off  3:on   4:off  5:on   6:off</screen></para>
+
+    <para>As you can gather from the console output, this will install both
+    Hudson and the latest JDK from Sun, if the latter is not already
+    installed. OpenSuse installations typically have the OpenJDK version of
+    Java, but Hudson prefers the Sun variety. When it downloads the Sun JDK,
+    it will prompt you to validate the Sun Java license before continuing with
+    the installation.</para>
+
+    <para>This installation process will also create a
+    <filename>hudson</filename> user and install Hudson as a service, so that
+    it will start up automatically whenever the machine boots. To start Hudson
+    manually, you can invoke the hudson startup script in the
+    <filename>/etc/init.d</filename> directory:<screen>$ <command>sudo /etc/init.d/hudson hudson start</command></screen></para>
 
     <para>Hudson will now be running on the default port of 8080 (<ulink
     url="http://localhost:8080/"></ulink>).</para>
@@ -365,6 +410,13 @@ $ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</comm
     <filename>/etc/sysconfig/hudson</filename> file, but for any advanced
     configuration options, you need to modify the startup script in
     <filename>/etc/init.d/hudson</filename>.</para>
+
+    <para>The <command>zypper</command> tool also makes it easy to update your
+    Hudson instance:</para>
+
+    <para><screen>$ <command>sudo zypper update hudson</command></screen>This
+    will download and install the latest version of Hudson from the Hudson web
+    site.</para>
   </sect1>
 
   <sect1 id="sect-running-hudson-standalone">
@@ -506,7 +558,7 @@ isabled</screen></para>
 
     <para>Stopping Hudson using Control-C is a little brutal, of course - in
     practice, you would set up a script to start and stop your server
-    automatically. </para>
+    automatically.</para>
 
     <para>If you are running Hudson using the embedded Winstone application
     server, you can also restart and shutdown Hudson elegantly by calling the
@@ -549,7 +601,7 @@ isabled</screen></para>
     will interrupt any builds in progress. So it is recommended practice to
     prepare the shutdown cleanly by using the 'Prepare for Shutdown' button on
     the 'Manage Hudson' screen (see <xref
-    linkend="sect-configuration-manage-hudson" />). </para>
+    linkend="sect-configuration-manage-hudson" />).</para>
 
     <para>Running Hudson as a stand-alone application may not be to everyone's
     taste. For a production server, you might want to take advantage of the
