@@ -1,0 +1,30 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <f:entry title="${%Host}" field="host">
+        <f:textbox />
+    </f:entry>
+
+    <f:advanced>
+        <f:entry title="${%Username}" field="username">
+            <f:textbox />
+        </f:entry>
+
+        <f:entry title="${%Password}" help="/plugin/ssh-slaves/help_password.html">
+            <input class="setting-input" type="password" name="launcher.password" value="${instance.password}"/>
+        </f:entry>
+
+        <f:entry title="${%Private Key File}" help="/plugin/ssh-slaves/help_privatekey.html" field="privatekey">
+            <f:textbox />
+        </f:entry>
+
+        <f:entry title="${%Port}">
+            <f:textbox name="launcher.port" value="${instance.port?:22}"/>
+        </f:entry>
+
+        <f:entry title="${%JVM Options}" field="jvmOptions">
+            <f:textbox />
+        </f:entry>
+
+    </f:advanced>
+
+</j:jelly>

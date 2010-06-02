@@ -2,26 +2,97 @@ Automated testing with Hudson
 
 If you are doing Continuous Integration without automated testing, you are not getting anywhere near as much out of your CI server as you should. One of the fundamental tenants of CI is that a build should be verifiable. Hudson should be able to tell you, clearly and without ambiguity, whether your build is ready to proceed to the next stage of the build process. And automated tests are your most important tool to help you decide whether your build is a valid one.
 
-Hudson does an excellent job of reporting on your test results. However, it is up to you to write the appropriate tests and to configure your build to run them automatically. Fortunately integrating JUnit into your builds is relatively easy.
+- Automating your tests
 
-Tests are a 
+Hudson does an excellent job of reporting on your test results. However, it is up to you to write the appropriate tests and to configure your build to run them automatically. Fortunately integrating JUnit into your automated builds is relatively easy.
 
-- Displaying JUnit test results
+-- Automating your tests with Maven
+
+Test automation is strongly supported in Maven. Maven projects use a standard directory structure: it will automatically look for unit tests in a directory called *src/test/java*.  There is little else to configure: just add a dependency to the test framework (or frameworks) your tests are using, and Maven will automatically look for and execute the JUnit, TestNG or even POJO (Plain Old Java Objects) tests contained in this directory structure.
+
+$ mvn test
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Tweeter domain model
+[INFO]    task-segment: [test]
+[INFO] ------------------------------------------------------------------------
+...
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.wakaleo.training.tweeter.domain.TagTest
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 sec
+Running com.wakaleo.training.tweeter.domain.TweeterTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 sec
+Running com.wakaleo.training.tweeter.domain.TweeterUserTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 sec
+Running com.wakaleo.training.tweeter.domain.TweetFeeRangeTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 sec
+Running com.wakaleo.training.tweeter.domain.HamcrestTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
+
+Results :
+
+Tests run: 38, Failures: 0, Errors: 0, Skipped: 0
+
+Maven will produce the test results in the *target/surefire-reports* directory, in both XML and text formats. For our CI purposes, it is the XML files that interest us.
+
+$ ls target/surefire-reports/*.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.HamcrestTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TagTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweetFeeRangeTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest.xml
+
+Maven also distinguishes between unit tests and integration tests. Unit tests should be fast and lightweight, providing a large amount of test feedback in as little time as possible. Integration tests are slower and more cumbersome, and often require the application to be build and deployed to a server (even an embedded one) to carry out more complete tests. Both these sorts of tests are important, and for a well-designed Continuous Integration environment, it is important to be able to distinguish between them.
+
+-- Automating your tests with Ant
+
+Ant also provides support for automated JUnit tests, though you have to do more low-level configuration to get it working. Ant comes with a *JUnit* task which lets you automate your JUnit tests. This is an optional task, and Ant does not actually come with the JUnit libraries built-in: you have to provide these yourself, either by placing the appropriate junit.jar and ant-junit.jar in the $ANT_HOME/lib directory, or by defining them in a <classpath> element within the <taskdef> tag.
+
+This first approach is not a very portable solution: you need to configure the Ant installation on each machine on which the build will run, which makes it not very suitable for Continuous Integration builds. Using an embedded <classpath> element is a better solution, though this will only work with Ant 1.7 or higher.
+
+- Configuring JUnit reports in Hudson
+
+Once your build generates test results, you need to configure your Hudson build job to display them. For Maven build jobs, no special configuration is required - just make sure you invoke a goal that will run your tests, such as *mvn test* (for your unit tests) or *mvn verify* (for unit and integration tests).
+
+<<Screenshot - testing-maven-verify-goal>>
+
+For free-style build jobs, you need to do a little more configuration work. In addition to ensuring that your build actually runs the tests, you need to tell Hudson to publish the JUnit test results report. You configure this in the *Post-build Actions* section. Here, you provide a path to the JUnit XML reports. Their exact location will depend on a project - for a Maven project, a path like '**/target/surefire-reports/*.xml' will find them for most projects. For an Ant-based project, it will depend on how you configured the Ant JUnit task (see above).
+
+<<Screenshot - testing-freestyle-junit-config>>
+ 
+- Displaying test results
+
+Once Hudson knows where to find the JUnit reports, it does an excellent job of reporting on them. 
+
+In many ways, Hudson's primary job is to detect and to report on build failures. And a failing unit test is one of the most obvious symptoms of a build failure. 
+
+Hudson makes the distinction between *failed* builds and *unstable* builds. A failed build (indicated by a red ball) represents a build job that is broken in some brutal manner - a compilation error, for example. An unstable build is a build that is not considered of sufficient quality. For freestyle projects, test failures typically break the build (the build process returns a non-zero value, in Unix terms), which results in a failed build. For Maven build jobs, Hudson is a little more refined - compilation errors and the like are treated as *failed* builds (red), whereas test failures are displayed as *unstable* builds (yellow).
+
+In <Figure X> we can see how Hudson displays a Maven build job containing test failures.  The project home page is your first port of call when a build breaks. When a build results in failing tests, the 'Latest Test Result' link will indicate the current number of test failures in this build job ("5 failures" in the illustration), and also the change in the number of test failures since the last build ("+5" in the illustration - five new test failures). Test failures will also appear as red in the 'Test Result Trend' graph to the right of the page.
+
+<<testing-maven-test-failure-dashboard>>
+
+If you click on the 'Latest Test Result link, Hudson will display a summary of the current test results (see <testing-test-result-details>). For a Maven build job, Hudson will initially display a summary view of test results per module - to see the full details of the failing tests, just click on the module you are interest in. For a freestyle build job, Hudson will display the full failing tests view immediately. 
+
+<<testing-test-result-details>>
+
+This full view is useful . The 'Age' column tells you how for how long a test has been broken - the hyperlink will take you back to the first build in which this test failed.
+
+You can also see the details of a particular test failure by clicking on the corresponding link on this screen. 
 
 
-Hudson distinguishes between test failures and skipped tests. Skipped tests are ones that have been deactivated, for example by using the @Ignore annotation in JUnit:
+testing-test-results-all-tests
 
-<Example of an ignored test>
+- Latest Test Results
 
-Skipping tests is legitimate in some circumstances, and using the @Ignore annotation is a much nicer approach than simply commenting out the test or renaming it, as it lets Hudson keep tabs on the ignored tests for you.
-
-Hudson will tell you about the total number of tests that passed and failed, and also tell you about how this varies from the previous build. So you can get an idea of whether some tests have been fixed, or whether they are failing successively build after build.
+- Test result trends
 
 You can drill down into modules, packages, and test classes, and list the individual tests within a test class.
 
    - Drilling into JUnit test results
 
-   - Test result trends
 
 It can also come in handy to keep tabs on how long your tests take to run, not just whether they pass or fail. Unit tests should be designed to run fast, and overly long-running tests can be the sign of a performance issue. If your tests seem to be taking too long to run, or are taking more time than they used to, you can find out why by using the Test Result Trends graph.
 
@@ -37,6 +108,48 @@ From here, you can see how long each test is taking, and click on a particular t
 <<Screenshot>>
 
 This graph will tell you how long this particular test has been taking to run. If the test slowed down dramatically starting from a particular build, you'll be able to see it here.
+
+
+- Skipped tests
+
+Hudson distinguishes between test failures and skipped tests. Skipped tests are ones that have been deactivated, for example by using the @Ignore annotation in JUnit:
+
+@Ignore 
+@Test 
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}
+
+Skipping tests is legitimate in some circumstances, such as to place an automated acceptance test, or higher-level technical test, on hold while you implement the lower levels. In such cases, you don't want to be distracted by the failing acceptance test, but you don't want to forget that the test exists either. Using techniques such as the @Ignore annotation are better than simply commenting out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on the ignored tests for you.
+
+In TestNG, you can also skip tests, using the 'enabled' property.
+
+@Test(enabled=false)
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}
+
+In TestNG, you can also define dependencies between tests, so that certain tests will only run after another test or group of tests has run. 
+
+@Test
+public void serverStartedOk() {...}
+ 
+@Test(dependsOnMethods = { "serverStartedOk" })
+public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}
+
+In this case, if the first test (serverStartedOk()) fails, the following test will be skipped.
+
+In all of these cases, Hudson will mark the tests that were not run as yellow.
+
+Hudson will tell you about the total number of tests that passed and failed, and also tell you about how this varies from the previous build. So you can get an idea of whether some tests have been fixed, or whether they are failing successively build after build.
+
+<<Screenshot - ignored tests in Hudson>>
 
 - Web testing in Hudson
    - Selenium tests
