@@ -261,24 +261,23 @@ java -jar ${HUDSON_BASE}/hudson.war</programlisting>
     convenient to install the native binary package for these platforms. This
     is easy enough to do, though these binaries are not provided in the
     standard repositories because of the high frequency of updates. First, you
-    need to add the key to your system as shown here:<screen>$ <command>wget -O - http://hudson-ci.org/debian/hudson-ci.org.key \
-</command>&gt; <command>| sudo apt-key add -</command></screen>Then you need
-    to add the following entry to your
-    <filename>/etc/apt/sources.list</filename> file:<screen>$ <command>deb http://hudson-ci.org/debian binary/</command></screen></para>
+    need to add the key to your system as shown here:<screen>$ <command>sudo su -
+</command># <command>echo "deb http://hudson.gotdns.com/debian binary/" &gt; /etc/apt/sources.list.d/hudson</command></screen>Now,
+    update the Debian package repository:<screen># <command>aptitude update</command></screen></para>
 
-    <para>If you don't have a JDK already installed, you will need to install
-    it:<screen>$ <command>sudo apt-get install sun-java6-jdk</command></screen></para>
+    <para>Once this is done, you can install Hudson using the
+    <command>aptitude</command> tool:<screen>$ <command>aptitude install -y hudson</command></screen></para>
 
-    <para>Finally, you need to update your package index and install
-    Hudson:<screen>$ <command>sudo apt-get update</command>
-$ <command>sudo apt-get install hudson</command></screen>This will install
-    Hudson as a service, with a correctly configured startup script in
-    <filename>/etc/init.d/hudson</filename> and a corresponding system user
-    called '<filename>hudson</filename>'. By default, you will find the Hudson
-    WAR file in <filename>/usr/share/hudson</filename> and the Hudson home
-    directory in <filename>/var/lib/hudson</filename>.</para>
+    <para>This will install Hudson as a service, with a correctly configured
+    startup script in <filename>/etc/init.d/hudson</filename> and a
+    corresponding system user called '<filename>hudson</filename>'. If you
+    didn't already have Java installed on your server, it will also install
+    the OpenJDK version of Java. By default, you will find the Hudson WAR file
+    in the<filename>/usr/share/hudson</filename> directory, and the Hudson
+    home directory in <filename>/var/lib/hudson</filename>. </para>
 
-    <para>To start or stop Hudson, simply invoke this script<screen>$ <command>sudo /etc/init.d/hudson start</command>
+    <para>The installation process should have started Hudson. In general, to
+    start Hudson, simply invoke this script:<screen>$ <command>sudo /etc/init.d/hudson start</command>
 </screen></para>
 
     <para>Hudson will now be running on the default port of 8080 (<ulink
@@ -345,7 +344,7 @@ $ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</comm
     <itemizedlist>
       <listitem>
         <para>HUDSON_JAVA_CMD: The version of Java you want to use to run
-        Hudson; </para>
+        Hudson;</para>
       </listitem>
 
       <listitem>
