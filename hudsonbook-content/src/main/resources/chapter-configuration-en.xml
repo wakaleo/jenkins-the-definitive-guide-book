@@ -32,24 +32,24 @@
     <title>The configuration dashboard - the Manage Hudson screen</title>
 
     <para>In Hudson, you manage virtually all aspects of system configuration
-    in the 'Manage Hudson' screen (see <xref linkend="fig-hudson-manage-hudson" />). You
-    can also get to this screen directly from anywhere in the application by
-    typing 'manage' in the Hudson search box. This screen changes depending on
-    what plugins you install, so don't be surprised if you see more that what
-    we show here.</para>
+    in the 'Manage Hudson' screen (see <xref
+    linkend="fig-hudson-manage-hudson" />). You can also get to this screen
+    directly from anywhere in the application by typing 'manage' in the Hudson
+    search box. This screen changes depending on what plugins you install, so
+    don't be surprised if you see more that what we show here.</para>
 
     <figure id="fig-hudson-manage-hudson">
-        <title>You configure your Hudson installation in the 'Manage Hudson'
-        screen</title>
+      <title>You configure your Hudson installation in the 'Manage Hudson'
+      screen</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/hudson-manage-hudson.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-manage-hudson.png" width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          
-        </mediaobject>
-      </figure>
     <para>This screen lets you configure different aspects of your Hudson
     server.Each link on this page takes you to a dedicated configuration
     screen, where you can manage different parts of the Hudson server. Some of
@@ -198,7 +198,8 @@
             to run simultaneously, and, if you are using distributed builds,
             set up build nodes. A build node is another machine that Hudson
             can use to execute its builds. We will look at how to configure
-            distributed builds in detail later on in the book (TODO - add chapter ref).</para>
+            distributed builds in detail later on in the book (TODO - add
+            chapter ref).</para>
           </listitem>
         </varlistentry>
 
@@ -237,18 +238,19 @@
     screen.</para>
 
     <figure id="fig-configure-system">
-        <title>System configuration in Hudson</title>
+      <title>System configuration in Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/hudson-system-configuration.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/hudson-system-configuration.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          
-        </mediaobject>
-      </figure>
-<para>The 'Configure System' screen lets you define global parameters
-    for your Hudson installation, as well as external tools required for your
+    <para>The 'Configure System' screen lets you define global parameters for
+    your Hudson installation, as well as external tools required for your
     build process. The first part of this screen lets you define some general
     system-wide parameters.</para>
 
@@ -268,6 +270,24 @@
     server by including the name of your server and a short blurb describing
     its purpose. You can also use it to display messages for all users, such
     as to announce system outages and so on.</para>
+
+    <para><indexterm>
+        <primary>configuration</primary>
+
+        <secondary>executors</secondary>
+      </indexterm>The '<command># of executors</command>' field controls the
+    number of parallel build jobs this Hudson server can run. A build executor
+    runs a single build at a time, so the more build executors your server
+    has, the more builds it can run concurrently. If any additional build jobs
+    are triggered, they will be queued until a build executor becomes
+    available. </para>
+
+    <para>As you might imagine, this value has a major impact on the
+    performance of your server. If you set this value too low, builds that
+    could have been run in parallel will queue instead, so feedback will be
+    delayed. If it is too high, you will saturate your CPU, and the builds
+    will take longer to run. As a rule of thumb, you can start off with
+    roughly the number of processors on your machine.</para>
 
     <para><indexterm>
         <primary>configuration</primary>
@@ -321,25 +341,28 @@
     fine, but not "ldap.server".</para>
 
     <figure id="fig-configure-global-properties">
-        <title>System configuration in Hudson</title>
+      <title>System configuration in Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-global-properties.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/configuration-global-properties.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          
-        </mediaobject>
-      </figure><para>There are two ways you typically use these variables. Firstly,
-    you can use them directly in your build script, using the ${key} or $key
+    <para>There are two ways you typically use these variables. Firstly, you
+    can use them directly in your build script, using the ${key} or $key
     notation (so "${ldapserver}" or "$ldapserver" in the example give above.
     This is the simplest approach, but means that there is a tight coupling
     between your build job configuration and your build scripts.</para>
 
     <para>If your script uses a different property name (one containing dots,
     for example), you can also pass the value to your build script in the
-    build job configuration. In <xref linkend="fig-config-properties-in-job" /> we
-    pass the <command>ldapserver</command> property value defined in <xref
+    build job configuration. In <xref
+    linkend="fig-config-properties-in-job" /> we pass the
+    <command>ldapserver</command> property value defined in <xref
     linkend="fig-configure-global-properties" /> to a Maven build job. Using
     the "-D" option means that this value will be accessible from within the
     build script. This is a flexible approach, as we can assign the global
@@ -349,16 +372,16 @@
     the Maven build via the internal ${ldap.server} property.</para>
 
     <figure id="fig-config-properties-in-job">
-        <title>System configuration in Hudson</title>
+      <title>System configuration in Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/config-properties-in-job.png" />
-          </imageobject>
-
-          
-        </mediaobject>
-      </figure>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/config-properties-in-job.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
   </sect1>
 
   <sect1>
@@ -394,9 +417,9 @@
     Hudson makes it very easy to configure and use as many versions of Java as
     you want Like most system-level configuration, we do this in the
     <command>Configure System</command> screen (see <xref
-    linkend="fig-configure-system" />). Here, you will find a section called 'JDK'
-    which allows you to manage the JDK installations you need Hudson to work
-    with.</para>
+    linkend="fig-configure-system" />). Here, you will find a section called
+    'JDK' which allows you to manage the JDK installations you need Hudson to
+    work with.</para>
 
     <para>The simplest way to declare a JDK installation is simply to supply
     an appropriate name (which will be used to identify this Java installation
@@ -408,16 +431,15 @@
     and that it looks like a valid JDK directory.</para>
 
     <figure id="fig-configure-jdk">
-        <title>System configuration in Hudson</title>
+      <title>System configuration in Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-jdk.png" />
-          </imageobject>
-
-          
-        </mediaobject>
-      </figure>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/configuration-jdk.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>You can also ask Hudson to install Java for you. In this case,
     Hudson will download the JDK installation and install a copy on your
@@ -447,18 +469,19 @@
     a local server and makes for faster automatic installations.</para>
 
     <figure floatstyle="" id="fig-configure-jdk-installers">
-        <title>Installing a JDK automatically</title>
+      <title>Installing a JDK automatically</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-jdk-installer.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center"
+                     fileref="figs/web/configuration-jdk-installer.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          
-        </mediaobject>
-      </figure>
-    <para>The automatic installer will not work in all environments (if
-    it can't find or identify your operating system to its satisfaction, for
+    <para>The automatic installer will not work in all environments (if it
+    can't find or identify your operating system to its satisfaction, for
     example, the installation will fail), but it is nevertheless a useful and
     convenient way to set up new build servers or distributed build agents in
     a consistent manner.</para>
@@ -504,20 +527,21 @@
       projects.</para>
 
       <figure floatstyle="" id="fig-configure-maven">
-          <title>Configuring Maven in Hudson</title>
+        <title>Configuring Maven in Hudson</title>
 
-          <mediaobject>
-            <imageobject role="web" >
-              <imagedata width="4.3in" align="center" fileref="figs/web/configuration-maven.png" />
-            </imageobject>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/configuration-maven.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
-            
-          </mediaobject>
-        </figure>
-<para>If you tick the 'Install automatically' check box, Hudson
-      with download and install the requested version of Maven for you. You
-      can either ask Hudson to download Maven directly from the Apache site,
-      or from a (presumably local) URL of your choice. This is an excellent
+      <para>If you tick the 'Install automatically' check box, Hudson with
+      download and install the requested version of Maven for you. You can
+      either ask Hudson to download Maven directly from the Apache site, or
+      from a (presumably local) URL of your choice. This is an excellent
       choice when you are using distributed builds, and, since Maven is
       cross-platform, it will work on any machine. You don't need to install
       Maven explicitly on each build machine - the first time a build machine
@@ -534,17 +558,18 @@
       in handy if you want to use certain standard memory options (for
       example) across all projects, without having to set it up in each
       project by hand.</para>
-<figure floatstyle="" id="fig-configure-mvnopts">
-          <title>Configuring system-wide MVN_OPTS</title>
 
-          <mediaobject>
-            <imageobject role="web" >
-              <imagedata width="4.3in" align="center" fileref="figs/web/configuration-mvnops.png" />
-            </imageobject>
+      <figure floatstyle="" id="fig-configure-mvnopts">
+        <title>Configuring system-wide MVN_OPTS</title>
 
-            
-          </mediaobject>
-        </figure>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/configuration-mvnops.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </sect2>
 
     <sect2>
@@ -594,16 +619,15 @@
       distributed build servers to an existing infrastructure.</para>
 
       <figure floatstyle="" id="fig-configure-ant">
-          <title>Configuring Ant in Hudson</title>
+        <title>Configuring Ant in Hudson</title>
 
-          <mediaobject>
-            <imageobject role="web" >
-              <imagedata width="4.3in" align="center" fileref="figs/web/configuration-ant.png" />
-            </imageobject>
-
-            
-          </mediaobject>
-        </figure>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/configuration-ant.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </sect2>
 
     <sect2>
@@ -694,20 +718,20 @@
     failure screen on Hudson.</para>
 
     <figure floatstyle="" id="fig-configure-email">
-        <title>Configuring an Email server in Hudson</title>
+      <title>Configuring an Email server in Hudson</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-email.png" />
-          </imageobject>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/configuration-email.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
-          
-        </mediaobject>
-      </figure>
-<para>Hudson also provides for more sophisticated email
-    configuration, using more advanced features such as SMTP authentication
-    and SSL. If this is your case, click on the 'Advanced' button to configure
-    these options.</para>
+    <para>Hudson also provides for more sophisticated email configuration,
+    using more advanced features such as SMTP authentication and SSL. If this
+    is your case, click on the 'Advanced' button to configure these
+    options.</para>
 
     <para><indexterm>
         <primary>Gmail</primary>
@@ -719,17 +743,16 @@
     and the non-standard port of 465).</para>
 
     <figure floatstyle="" id="fig-configure-gmail">
-        <title>Configuring an Email server in Hudson to use a Google Apps
-        domain</title>
+      <title>Configuring an Email server in Hudson to use a Google Apps
+      domain</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-gmail.png" />
-          </imageobject>
-
-          
-        </mediaobject>
-      </figure>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/configuration-gmail.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
   </sect1>
 
   <sect1 id="sect-configuration-proxies">
@@ -757,17 +780,16 @@
     followed by the username, such as "MyDomain\Joe Bloggs".</para>
 
     <figure floatstyle="" id="fig-configuration-proxy">
-        <title>Configuring an Email server in Hudson to use a Google Apps
-        domain</title>
+      <title>Configuring an Email server in Hudson to use a Google Apps
+      domain</title>
 
-        <mediaobject>
-          <imageobject role="web" >
-            <imagedata width="4.3in" align="center" fileref="figs/web/configuration-proxy.png" />
-          </imageobject>
-
-          
-        </mediaobject>
-      </figure>
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata align="center" fileref="figs/web/configuration-proxy.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <para>Finally, if you are setting up Proxy access on your Hudson build
     server, remember that all of the other tools running on this server will

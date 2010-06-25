@@ -355,12 +355,6 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
   </sect1>
 
   <sect1>
-    <title>Ignoring Tests</title>
-
-    <para></para>
-  </sect1>
-
-  <sect1>
     <title>Displaying test results</title>
 
     <para>Once Hudson knows where to find the JUnit reports, it does an
@@ -530,7 +524,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     that the test exists either. Using techniques such as the
     <command>@Ignore</command> annotation are better than simply commenting
     out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on
-    the ignored tests for you. </para>
+    the ignored tests for you.</para>
 
     <para>In TestNG, you can also skip tests, using the 'enabled'
     property:</para>
@@ -573,6 +567,504 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </imageobject>
         </mediaobject>
       </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Code Coverage</title>
+
+    <para>Another very useful test-related metric is code coverage. Code
+    coverage give an indication of what parts of your application where
+    executed during the tests. While this in itself is not a sufficient
+    indication of quality testing (it is easy to execute an entire application
+    without actually testing anything, and code coverage metrics provide no
+    indication of the quality or accuracy of your tests), it is a very good
+    indication of code that has <emphasis>not</emphasis> been tested. And, if
+    your team is introducing rigorous testing practices such as
+    Test-Driven-Development, code coverage can be a good indicator of how well
+    these practices are being applied.</para>
+
+    <para>Code coverage analysis is a CPU and memory-intensive process, and
+    will slow down your build job significantly. For this reason, you will
+    typically run code coverage metrics in a separate Hudson build job, to be
+    run after your unit and integration tests are successful.</para>
+
+    <para>In this section, we will look at two code coverage tools, and how to
+    integrated them with Hudson: Cobertura, an open source code coverage tool,
+    and Clover, a commercial code coverage tool from Atlassian.</para>
+
+    <sect2>
+      <title>Measuring code coverage with Cobertura</title>
+
+      <para>Cobertura (<ulink url="http://cobertura.sourceforge.net"></ulink>)
+      is an open source code coverage tool that is easy to use and integrates
+      well with both Maven and Hudson.</para>
+
+      <para>Like almost all of the Hudson code quality metrics
+      plugins<footnote>
+          <para>With the notable exception of Sonar, which we will look at
+          later on in the book.</para>
+        </footnote>, the Cobertura plugin for Hudson will not run any test
+      coverage metrics for you. It is left up to you to generate the raw code
+      coverage data as part of your automated build process. Hudson, on the
+      other hand, does an excellent job of <emphasis>reporting</emphasis> on
+      the code coverage metrics, including keeping track of code coverage over
+      time, and providing aggregate coverage across multiple application
+      modules.</para>
+
+      <para>Code coverage can be a complicated business, and it helps to
+      understand the basic process that Cobertura follow, especially when you
+      need to set it up in more low-level build scripting tools like Ant. Code
+      coverage analysis works in three steps. First, it modifies (or
+      "instruments") your application classes, so that they keep a tally of
+      the number of times each line of code has been executed<footnote>
+          <para>This is actually a slight over-simplification: in fact,
+          Cobertura stores other data as well, such as how many times each
+          possible outcome of a boolean test was executed. However this does
+          not alter the general approach.</para>
+        </footnote>. They store all this data in a special data file
+      (Cobertura uses a file called
+      <filename>cobertura.ser</filename>).</para>
+
+      <para>When the application code has been instrumented, you run your
+      tests against this instrumented code. At the end of the tests, Cobertura
+      will have generated a data file containing the number of times each line
+      of code was executed during the tests.</para>
+
+      <para>Once this data file has been generated, Cobertura can use this
+      data to generate a report in a more usable format, such as XML or
+      HTML.</para>
+
+      <sect3>
+        <title>Integrating Cobertura with Maven</title>
+
+        <para>Producing code coverage metrics with Cobertura in Maven is
+        relatively straightforward. If all you are interested in is producing
+        code coverage data, you just need to add the
+        <command>cobertura-maven-plugin</command> to the build section of your
+        <filename>pom.xml</filename> file:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+             &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+             &lt;version&gt;2.4&lt;/version&gt;
+             &lt;configuration&gt;
+             &lt;formats&gt;
+                &lt;format&gt;html&lt;/format&gt;
+                &lt;format&gt;xml&lt;/format&gt;
+             &lt;/formats&gt;
+           &lt;/configuration&gt;
+         &lt;/plugin&gt;
+         ...
+      &lt;/plugins&gt;
+   &lt;build&gt;
+   ...
+&lt;/project&gt;</programlisting>This will generate code coverage metrics when
+        you invoke the Cobertura plugin directly:<screen>$ <command>mvn cobertura:cobertura</command></screen></para>
+
+        <para>The code coverage data will be generated in the
+        <filename>target/site/cobertura</filename> directory, in a file called
+        <filename>coverage.xml</filename>. </para>
+
+        <para>This approach, however, will instrument your classes and produce
+        code coverage data for every build, which is inefficient. A better
+        approach is to place this configuration in a special profile, as shown
+        here:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+   &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;metrics&lt;/id&gt;
+      &lt;build&gt;
+        &lt;plugins&gt;
+          &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+            &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;configuration&gt;
+              &lt;formats&gt;
+                &lt;format&gt;html&lt;/format&gt;
+                &lt;format&gt;xml&lt;/format&gt;
+              &lt;/formats&gt;
+            &lt;/configuration&gt;
+          &lt;/plugin&gt;
+        &lt;/plugins&gt;
+      &lt;/build&gt;
+    &lt;/profile&gt;
+    ...
+  &lt;/profiles&gt;
+&lt;/project&gt;</programlisting>In this case, you would invoke the Cobertura
+        plugin using the 'metrics' profile to generate the code coverage
+        data:<screen>$ <command>mvn cobertura:cobertura -Pmetrics</command></screen></para>
+
+        <para>Another approach is to include code coverage reporting in your
+        Maven reports. This approach is considerably slower and more
+        memory-hungry than just generating the coverage data, but it can make
+        sense if you are also generating other code quality metrics and
+        reports at the same time. If you want to do this, you need to also
+        include the Maven Cobertura plugin in the reporting section, as shown
+        here:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+  &lt;reporting&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.4&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;formats&gt;
+            &lt;format&gt;html&lt;/format&gt;
+            &lt;format&gt;xml&lt;/format&gt;
+          &lt;/formats&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/reporting&gt;
+&lt;/project&gt;</programlisting>Now the coverage data will be generated when
+        you generate the Maven site for this project:<screen>$ <command>mvn site</command></screen></para>
+
+        <para>At the time of writing, there is a limitation with the Maven
+        Cobertura plugin - code coverage will be only recorded for tests
+        executed during the <command>test</command> lifecycle phase, and not
+        for tests executed during the <command>integration-test</command>
+        phase.</para>
+      </sect3>
+
+      <sect3>
+        <title>Integrating Cobertura with Ant</title>
+
+        <para>Integrating Cobertura into your Ant build is more complicated
+        than doing so in Maven. However it does give you a finer control over
+        what classes are instrumented, and when coverage is measured.</para>
+
+        <para>Cobertura comes bundled with an Ant task that you can use to
+        integrate Cobertura into your Ant builds. You will need to download
+        the latest Cobertura distribution, and unzip it somewhere on your hard
+        disk. To make your build more portable, and therefore easier to deploy
+        onto Hudson, it is a good idea to place the Cobertura distribution you
+        are using within your project directory, and to save it in your
+        version control system. This way it is easier to ensure that the build
+        will use the same version of Cobertura no matter where it is
+        run.</para>
+
+        <para>Assuming you have downloaded the latest Cobertura installation
+        and placed it within your project in a directory called
+        <filename>tools</filename>, you could do something like
+        this:<programlisting>&lt;property name="cobertura.dir" value="{basedir}/tools/cobertura" /&gt;<co
+              id="co-ch04-cobertura-dir" />
+
+&lt;path id="cobertura.classpath"&gt;<co id="co-ch04-cobertura-path" />
+    &lt;fileset dir="${cobertura.dir}"&gt;
+        &lt;include name="cobertura.jar" /&gt;<co id="co-ch04-cobertura-jar" />
+        &lt;include name="lib/**/*.jar" /&gt;<co id="co-ch04-cobertura-libs" />
+    &lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;taskdef classpathref="cobertura.classpath" resource="tasks.properties" /&gt;</programlisting></para>
+
+        <para><calloutlist>
+            <callout arearefs="co-ch04-cobertura-dir">
+              <para>Tell Ant where your Cobertura installation is.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-path">
+              <para>We need to set up a classpath that Cobertura can use to
+              run.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-jar">
+              <para>The path contains the Cobertura application itself;</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-libs">
+              <para>And all of its dependencies.</para>
+            </callout>
+          </calloutlist>Next, you need to instrument your application classes.
+        You have to be careful to place these instrumented classes in a
+        separated directory, so that they don't get bundled up and deployed to
+        production by accident.</para>
+
+        <para><programlisting>&lt;target name="instrument" depends="init,compile"&gt;<co
+              id="co-ch04-cobertura-instrumentation" />
+    &lt;delete file="cobertura.ser"/&gt;<co id="co-ch04-cobertura-delete" />
+    &lt;delete dir="${instrumented.dir}" /&gt;<co
+              id="co-ch04-cobertura-delete-instrumented" />
+    &lt;cobertura-instrument todir="${instrumented.dir}"&gt;<co
+              id="co-ch04-cobertura-instrument" />
+        &lt;fileset dir="${classes.dir}"&gt;
+            &lt;include name="**/*.class" /&gt;
+            &lt;exclude name="**/*Test.class" /&gt;
+        &lt;/fileset&gt;
+    &lt;/cobertura-instrument&gt;
+&lt;/target&gt;</programlisting></para>
+
+        <para><calloutlist>
+            <callout arearefs="co-ch04-cobertura-instrumentation">
+              <para>We can only instrument the application classes once they
+              have been compiled.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-delete">
+              <para>Remove any coverage data generated by previous
+              builds.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-delete-instrumented">
+              <para>Remove any previously instrumented classes.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-instrument">
+              <para>Instrument the application classes (but not the test
+              classes) and place them in the ${instrumented.dir}
+              directory.</para>
+            </callout>
+          </calloutlist></para>
+
+        <para>At this stage, the ${instrumented.dir} directory contains an
+        instrumented version of our application classes. Now all we need to do
+        to generate some useful code coverage data is to run our unit tests
+        against the classes in this directory:</para>
+
+        <para><programlisting>&lt;target name="test-coverage" depends="instrument"&gt;
+    &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit" />
+        &lt;classpath location="${instrumented.dir}" /&gt;
+        &lt;classpath location="${classes.dir}" /&gt;
+        &lt;classpath refid="cobertura.classpath" /&gt;<co
+              id="co-ch04-cobertura-classpath" />
+
+        &lt;formatter type="xml" /&gt;
+        &lt;test name="${testcase}" todir="${reports.xml.dir}" if="testcase" /&gt;
+        &lt;batchtest todir="${reports.xml.dir}" unless="testcase"&gt;
+            &lt;fileset dir="${src.dir}"&gt;
+                &lt;include name="**/*Test.java" /&gt;
+            &lt;/fileset&gt;
+        &lt;/batchtest&gt;
+    &lt;/junit&gt;
+&lt;/target&gt;</programlisting><calloutlist>
+            <callout arearefs="co-ch04-cobertura-junit">
+              <para>Run the JUnit tests against the instrumented application
+              classes</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-classpath">
+              <para>The instrumented classes use Cobertura classes, so the
+              Cobertura libraries also need to be on the classpath.</para>
+            </callout>
+          </calloutlist></para>
+
+        <para>This will produce the raw test coverage data we need to produce
+        the XML test coverage reports that Hudson can use. To actually produce
+        these reports, we need to invoke another task, as shown here:</para>
+
+        <para><programlisting>&lt;target name="coverage-report" depends="test-coverage"&gt;
+    &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" /&gt;
+&lt;/target&gt;</programlisting>Finally, don't forget to tidy up after your
+        done: the <command>clean</command> target should delete not only the
+        generated classes, but also the generated instrumented classes, the
+        Cobertura coverage data, and the Cobertura reports:</para>
+
+        <para><programlisting>&lt;target name="clean" description="Remove all files created by the build/test process."&gt;
+    &lt;delete dir="${classes.dir}" /&gt;
+    &lt;delete dir="${instrumented.dir}" /&gt;
+    &lt;delete dir="${reports.dir}" /&gt;
+    &lt;delete file="cobertura.log" /&gt;
+    &lt;delete file="cobertura.ser" /&gt;
+&lt;/target&gt;</programlisting>Once this is done, you are ready to integrate
+        your coverage reports into Hudson.</para>
+      </sect3>
+
+      <sect3>
+        <title>Installing the Cobertura code coverage plugin</title>
+
+        <para>Once code coverage data is being generated as part of your build
+        process, you can configure Hudson to report on it. This involves
+        installing the Hudson Cobertura plugin. We went through this process
+        in <xref linkend="sect-first-steps-metrics" />, but we'll run through
+        it again to refresh your memory. Go to the 'Manage Hudson' screen, and
+        click on 'Manage Plugins'. This will take you to the Plugin Manager
+        screen. If Cobertura has not been installed, you will find the
+        Cobertura Plugin in the 'Available' tab, in the 'Build Reports'
+        section (see <xref linkend="fig-hudson-cobertura-plugin" />). To
+        install it, just tick the checkbox and press enter (or scroll down to
+        the bottom of the screen and click on the 'Install' button). Hudson
+        will download and install the plugin for you. Once the downloading is
+        done, you will need to restart your Hudson server.</para>
+
+        <para><figure id="fig-hudson-cobertura-plugin">
+            <title>Installing the Cobertura plugin</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-cobertura-plugin.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Reporting on code coverage in your build</title>
+
+        <para>Once you have installed the plugin, you can set up code coverage
+        reporting in your build jobs. Since code coverage can be slow and
+        memory-hungry, you would typically create a separate build job for
+        this and other code quality metrics, to be run after the normal unit
+        and integration tests. For very large projects, you may even want to
+        set this up as a build that only runs on a nightly basis. Indeed,
+        feedback on code coverage and other such metrics is usually not as
+        time-critical as feedback on test results, and this will leave build
+        executors free for build jobs that can benefit from snappy
+        feedback.</para>
+
+        <para>As we mentioned earlier, Hudson does not do any code coverage
+        analysis itself - you need to configure your build to produce the
+        Cobertura <filename>coverage.xml</filename> file before you can
+        generate any nice graphs or reports, typically using one of the
+        techniques we discussed previously (see</para>
+
+        <para><xref linkend="fig-hudson-coverage-build-config" />). </para>
+
+        <para><figure id="fig-hudson-coverage-build-config">
+            <title>Your code coverage metrics build needs to generate the
+            coverage data</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-testing-cobertura-build.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Once you have configured your build to produce some code
+        coverage data, you can configure Cobertura in the 'Post-Action Builds'
+        section of your build job. When you tick the 'Publish Cobertura
+        Coverage Report' checkbox, you should see something like <xref
+        linkend="fig-hudson-coverage-config" />.</para>
+
+        <para><figure id="fig-hudson-coverage-config">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-config-cobertura.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>The first and most important field here is the path to the
+        Cobertura XML data that we generated. Your project may include a
+        single <filename>coverage.xml</filename> file, or several (if your
+        project is made up of sub-projects or Maven modules, for example). The
+        path accepts Ant-style wildcards, so it is easy to include code
+        coverage data from several files. For any Maven project, a path like
+        '**/target/site/cobertura/coverage.xml' will include all of the code
+        coverage metrics for all of the modules in the project.</para>
+
+        <para>There are actually several types of code coverage, and it can
+        sometimes be useful to distinguish between them. The most intuitive is
+        Line Coverage, which counts the number of times any given line is
+        executed during the automated tests. "Conditional Coverage" (also
+        referred to as "Branch Coverage") takes into account whether the
+        boolean expressions in <command>if</command> statements and the like
+        are tested in a way that checks all the possible outcomes of the
+        conditional expression. For example, consider the following code
+        snippet:<programlisting>if (price &gt; 10000) {
+  managerApprovalRequired = true;
+}</programlisting></para>
+
+        <para>To obtain full Conditional Coverage for this code, you would
+        need to execute it twice: once with a value that is more than 10000,
+        and one with a value of 10000 or less. </para>
+
+        <para>Other more basic code coverage metrics include methods (how many
+        methods in the application were exercised by the tests), classes and
+        packages. </para>
+
+        <para>Hudson lets you define which of these metrics you want to track.
+        By default, the Cobertura plugin will record Conditional, Line, and
+        Method coverage, which is usually plenty. However it is easy to add
+        other coverage metrics if you think this might be useful for your
+        team.</para>
+
+        <para>Hudson code quality metrics are not simply a passive reporting
+        process - Hudson lets you define how these metrics affect the build
+        outcome. You can define threshold values for the coverage metrics that
+        affect both the build outcome and the weather reports on the Hudson
+        dashboard (see <xref
+        linkend="fig-hudson-testing-coverage-stabiliy" />). Each coverage
+        metric that you track takes three threshold values. </para>
+
+        <para><figure id="fig-hudson-testing-coverage-stabiliy">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-testing-coverage-stabiliy.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The first (the one with the sunny icon) is the minimum
+        value necessary for the build to have a sunny weather icon. The second
+        indicates the value below which the build will be attributed a stormy
+        weather icon. Hudson will extrapolate between these values for the
+        other more nuanced weather icons. </para>
+
+        <para>The last threshold value is simply the value below which a build
+        will be marked as 'unstable' - the yellow ball. While not quite as bad
+        as the red ball (for a broken build), a yellow ball will still result
+        in a notification message and will look bad on the dashboard.</para>
+
+        <para>This feature is far from simply a cosmetic detail - it provides
+        a valuable way of setting objective code quality goals for your
+        projects. Although it cannot be interpreted along, falling code
+        coverage is generally not a good sign in a project. So if you are
+        serious about code coverage, use these threshold values to provide
+        some hard feedback about when things are not up to scratch.</para>
+      </sect3>
+
+      <sect3>
+        <title>Interpreting code coverage metrics</title>
+
+        <para>Hudson displays your code coverage reports on the build job home
+        page. The first time it runs, it produces a simple bar chart (see
+        <xref linkend="fig-hudson-initial-coverage-report" />). From the
+        second build onwards, a graph is shown, indicating the various types
+        of coverage that you are tracking over time.</para>
+      </sect3>
+
+      <sect3>
+        <title>Aggregating code coverage data</title>
+
+        <para></para>
+      </sect3>
+
+      <sect3>
+        <title>Running Cobertura on multi-module Maven projects</title>
+
+        <para>Many Maven projects are organized into several modules.</para>
+
+        <para>The Cobertura Hudson plugin is perfectly capable of aggregating
+        code coverage metrics from the different modules in your project,
+        which is convenient, since the Maven Cobertura plugin itself currently
+        does not support this feature.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Measuring code coverage with Clover</title>
+
+      <para></para>
+    </sect2>
   </sect1>
 
   <sect1>
