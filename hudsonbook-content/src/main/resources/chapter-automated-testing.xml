@@ -10,19 +10,18 @@
     <para><indexterm>
         <primary>Automated testing</primary>
       </indexterm>Continuous Integration without automated testing isn't
-    really Continuous Integration - it's simply a small improvement on
-    automatically scheduled builds. Indeed, if you are using Hudson without
-    any automated tests, you are not getting anywhere near as much value out
-    of your Continuous Integration infrastructure as you should.</para>
+    really Continuous Integration - in fact it is simply a small improvement
+    on automatically scheduled builds. If you are using Hudson without any
+    automated tests, you are not getting anywhere near as much value out of
+    your Continuous Integration infrastructure as you should.</para>
 
-    <para>One of the fundamental tenants of Continuous Integration is that a
-    build should be verifiable. It must be possible to objectively determine
-    whether a particular build artifact is ready to proceed to the next stage
-    of the build process, and the most convenient way to do this is by using
-    automated tests. Without proper automated testing set up in your build
-    process, you will find yourself having to retain many build artifacts and
-    test them by hand, which is hardly in the spirit of Continuous
-    Integration.</para>
+    <para>One of the basic principles of Continuous Integration is that a
+    build should be verifiable. You have to be able to objectively determine
+    whether a particular build is ready to proceed to the next stage of the
+    build process, and the most convenient way to do this is to use automated
+    tests. Without proper automated testing, you find yourself having to
+    retain many build artifacts and test them by hand, which is hardly in the
+    spirit of Continuous Integration.</para>
 
     <para>There are many ways you can integrate automated tests into your
     application. One of the most efficient ways to write high quality tests is
@@ -36,12 +35,14 @@
     Hudson to provide more relevant feedback.</para>
 
     <para>Of course, more classical unit testing, done once the code has been
-    implemented, is also another commonly-used approach.</para>
+    implemented, is also another commonly-used approach, and is certainly
+    better than no tests at all.</para>
 
     <para>Hudson is not limited to unit testing, though. There are many other
     types of automated testing that you should consider, depending on the
     nature of your application, including integration testing, web testing,
-    functional testing, performance testing, load testing and so on.</para>
+    functional testing, performance testing, load testing and so on. All of
+    these have their place in an automated build setup.</para>
 
     <para>Hudson can also be used, in conjunction with techniques like
     Behaviour-Driven Development and Acceptance Test Driven Development, as a
@@ -49,21 +50,23 @@
     stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
     Cucumber, and many others, try to present acceptance tests in terms that
     testers, product owners and end users can understand. With the use of such
-    tools, Hudson can report on project progress in a non-developer friendly
-    manner, and thus facilitate communication between developers and
-    non-developers within a team.</para>
+    tools, Hudson can report on project progress in business terms, and so
+    facilitate communication between developers and non-developers within a
+    team.</para>
 
     <para>For existing or legacy applications with little or no automated
     testing in place, it can be time-consuming and difficult to retro-fit
-    comprehensive unit tests onto the code. One useful approach in these
-    situations is to write automated functional tests ("regression") tests
-    that simulate the most common ways that users manipulate the application.
-    For example, automated web testing tools such as Selenium and Web Driver
-    can be used to web applications. While this approach is not as
-    comprehensive as a combination of good quality unit, integration and
-    acceptance tests, it is still an effective and relatively cost-efficient
-    way to integrate automated regression testing into an existing
-    application.</para>
+    comprehensive unit tests onto the code. In addition, the tests may not be
+    very effective, as they will tend to validate the existing implementation
+    rather than verify the expected business behaviour. One useful approach in
+    these situations is to write automated functional tests ("regression")
+    tests that simulate the most common ways that users manipulate the
+    application. For example, automated web testing tools such as Selenium and
+    WebDriver can be effectively used to test web applications at a high
+    level. While this approach is not as comprehensive as a combination of
+    good quality unit, integration and acceptance tests, it is still an
+    effective and relatively cost-efficient way to integrate automated
+    regression testing into an existing application.</para>
 
     <para>In this chapter, we will see how Hudson helps you keep track of
     automated test results, and how you can use this information to monitor
@@ -85,28 +88,22 @@
 
     <para>There are many unit testing tools out there. In the Java world,
     JUnit is the de facto standard in this area. TestNG is another popular
-    Java unit testing framework. For C# applications, the NUnit testing
-    framework proposes similar functionalities to those provided by JUnit, as
-    does <command>Test::Unit</command> for Ruby.</para>
+    Java unit testing framework with a number of innovative features. For C#
+    applications, the NUnit testing framework proposes similar functionalities
+    to those provided by JUnit, as does <command>Test::Unit</command> for
+    Ruby.</para>
 
     <para>These tools can also serve for integration tests, and even for web
-    tests using tools such as Selenium or WebDriver, which work well with
-    JUnit, for example. In the following sections we make no distinction
-    between these different types of test, as, from a configuration point of
-    view, they are treated by Hudson in exactly the same manner. However, you
-    will almost certainly need to make the distinction in your build jobs. In
-    order to get the fastest possible feedback loop, your tests should be
-    grouped into well-defined categories, starting with the fast-running unit
-    tests, and then proceeding to the integration tests, before finally
-    running the slower functional and web tests. We will discuss strategies
-    for grouping your tests further on.</para>
-
-    <para>Hudson does an excellent job of reporting on your test results.
-    However, it is up to you to write the appropriate tests and to configure
-    your build to run them automatically. Fortunately incorporating unit and
-    integration tests into your automated builds is relatively easy. In the
-    rest of this section, we will look at how to do so with some of the more
-    common build tools in use.</para>
+    tests using tools such as Selenium or WebDriver, which both work well with
+    JUnit. In the following sections we make no distinction between these
+    different types of test, as, from a configuration point of view, they are
+    treated by Hudson in exactly the same manner. However, you will almost
+    certainly need to make the distinction in your build jobs. In order to get
+    the fastest possible feedback loop, your tests should be grouped into
+    well-defined categories, starting with the fast-running unit tests, and
+    then proceeding to the integration tests, before finally running the
+    slower functional and web tests. We will discuss strategies for grouping
+    your tests further on.</para>
 
     <sect2>
       <title>Automating your tests with Maven</title>
@@ -220,7 +217,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
           &lt;skip&gt;true&lt;/skip&gt;<co id="maven-it-1" />
         &lt;/configuration&gt;
         &lt;executions&gt;
-          &lt;execution&gt;<co id="???" />
+          &lt;execution&gt;<co id="maven-it-2" />
             &lt;id&gt;unit-tests&lt;/id&gt;
             &lt;phase&gt;test&lt;/phase&gt;
             &lt;goals&gt;
@@ -250,7 +247,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       &lt;/plugin&gt;
       ...</programlisting>
 
-      <para><calloutlist id="maven-it-1">
+      <para><calloutlist>
           <callout arearefs="maven-it-1">
             <para>Skip all tests by default - this deactivates the default
             Maven test configuration.</para>
@@ -269,7 +266,68 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       during the unit test phase, and only executed during the integration
       test phase.</para>
 
-      <para>If you are using TestNG, you can identify your integration tests
+      <para>If you don't want to put unwanted constraints on the names of your
+      test classes, you can use package names instead. In the project
+      illustrated in <xref linkend="fig-hudson-testing-sample-project" />, all
+      of the functional tests have been placed in a package called 'webtests'.
+      There is no constraint on the names of the tests, but we are using Page
+      Objects to model our application user interface, so we also make sure
+      that no classes in the 'pages' package (underneath the 'webtests'
+      package) are treated as tests.</para>
+
+      <para><figure id="fig-hudson-testing-sample-project">
+          <title>A project containing freely-named test classes</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-testing-sample-project.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In Maven, we could do this with the following
+      configuration:</para>
+
+      <para><programlisting>      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/webtests/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;includes&gt;
+                &lt;include&gt;**/webtests/*.java&lt;/include&gt;
+              &lt;/includes&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/pages/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>TestNG currently has more flexible support for test groups than
+      JUnit. If you are using TestNG, you can identify your integration tests
       using TestNG Groups. In TestNG, test classes or test methods can be
       tagged using the 'groups' attribute of the <command>@Test</command>
       annotation, as shown here:<programlisting>@Test(groups = { "integration-test" })
@@ -326,11 +384,50 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
             phase</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="maven-it-ng-2">
             <para>Run only the tests in the integration-tests group during the
             integration-test phase.</para>
           </callout>
         </calloutlist></para>
+
+      <para>It often makes good sense to run your tests in parallel where
+      possible, as it can speed up your tests significantly (see <xref
+      linkend="sect-tests-too-slow" />). TestNG provides good support for
+      parallel tests. For instance, using TestNG, you could configure your
+      test methods to run in parallel on ten concurrent threads like
+      this:<programlisting>      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;parallel&gt;methods&lt;/parallel&gt;
+          &lt;threadCount&gt;10&lt;/threadCount&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>As of JUnit 4.7, you can also run your JUnit tests in parallel
+      using a similar configuration. In fact, the configuration shown above
+      will work for JUnit 4.7 onwards. But you can also configure the maximum
+      number of threads per CPU core, which allows for a bit more flexibility
+      when the tests are run on different machines:</para>
+
+      <para><programlisting>      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;parallel&gt;methods&lt;/parallel&gt;
+          &lt;perCoreThreadCount&gt;4&lt;/perCoreThreadCount&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>You can also set the &lt;parallel&gt; configuration item to
+      'classes' instead of 'methods', which will try to run the test classes
+      in parallel, rather than each method. This will be slower, but might be
+      safer for some test cases not designed with concurrency in mind.</para>
+
+      <para>Mileage will vary, so you should experiment with the numbers to
+      get the best results.</para>
     </sect2>
 
     <sect2>
@@ -372,7 +469,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
       &lt;/fileset&gt;
     &lt;/batchtest&gt;
   &lt;/junit&gt;
-  &lt;fail message="TEST FAILURE" if="failed" /&gt;<co id="???" />
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;<co id="junit-ant-7" />
 &lt;/target&gt;
 </programlisting></para>
 
@@ -416,18 +513,78 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
             for each batch of tests.</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="junit-ant-6">
             <para>You define the tests you want to run in a fileset element.
-            This provides a great deal of flexibility, and makes it trivial to
+            This provides a great deal of flexibility, and makes it easy to
             define other targets for different subsets of tests (integration,
             web, and so on).</para>
           </callout>
 
-          <callout arearefs="???">
+          <callout arearefs="junit-ant-7">
             <para>Force the build to fail <emphasis>after</emphasis> the tests
             have finished, if any of them failed.</para>
           </callout>
         </calloutlist></para>
+
+      <para>If you prefer TestNG, Ant is of course well supported here as
+      well. Using TestNG with the previous example, you could do something
+      like this:</para>
+
+      <para><programlisting>&lt;property name="build.dir" value="target" /&gt;
+&lt;property name="java.classes" value="${build.dir}/classes" /&gt;
+&lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
+&lt;property name="test.reports" value="${build.dir}/test-reports" /&gt;
+&lt;property name="lib" value="${build.dir}/lib" /&gt;
+
+&lt;path id="test.classpath"&gt;
+  &lt;pathelement location="${java.classes}" /&gt;
+  &lt;pathelement location="${lib}" /&gt;
+&lt;/path&gt;
+
+&lt;taskdef resource="testngtasks" classpath="lib/testng.jar"/&gt;
+
+&lt;target name="test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>TestNG is a very flexible testing library, and
+      the TestNG task has many more options than this. For example, to only
+      run tests defined as part of the "integration-test" group that we saw
+      earlier, we could do this:</para>
+
+      <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>groups="integration-test"</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>Or to run your tests in parallel, using four
+      concurrent threads, you could do this:</para>
+
+      <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>parallel="true"
+          threadCount=4</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting></para>
     </sect2>
   </sect1>
 
@@ -438,8 +595,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Hudson build job to display them. For Maven build jobs, no special
     configuration is required - just make sure you invoke a goal that will run
     your tests, such as <command>mvn test</command> (for your unit tests) or
-    <command>mvn verify</command> (for unit and integration tests), as shown
-    in <xref linkend="fig-testing-maven-verify-goal" />.</para>
+    <command>mvn verify</command> (for unit and integration tests). An example
+    of a Maven build job configuration is shown in <xref
+    linkend="fig-testing-maven-verify-goal" />.</para>
 
     <para><figure id="fig-testing-maven-verify-goal">
         <title>You configure your Hudson installation in the 'Manage Hudson'
@@ -456,11 +614,11 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
     <para>For free-style build jobs, you need to do a little more
     configuration work. In addition to ensuring that your build actually runs
-    the tests, you need to tell Hudson to publish the JUnit test results
-    report. You configure this in the <command>Post-build Actions</command>
-    section (see <xref linkend="fig-testing-freestyle-junit-config" />). Here,
-    you provide a path to the JUnit or TestNG XML reports. Their exact
-    location will depend on a project - for a Maven project, a path like
+    the tests, you need to tell Hudson to publish the JUnit test report. You
+    configure this in the <command>Post-build Actions</command> section (see
+    <xref linkend="fig-testing-freestyle-junit-config" />). Here, you provide
+    a path to the JUnit or TestNG XML reports. Their exact location will
+    depend on a project - for a Maven project, a path like
     '<filename>**/target/surefire-reports/*.xml</filename>' will find them for
     most projects. For an Ant-based project, it will depend on how you
     configured the Ant JUnit task, as we discussed above.</para>
@@ -483,29 +641,31 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
     <para>Once Hudson knows where to find the test reports, whether they be
     from JUnit or TestNG, it does an excellent job of reporting on them.
-    Indeed, in many ways, Hudson's primary job is to detect and to report on
-    build failures. And a failing unit test is one of the most obvious
-    symptoms of a build failure.</para>
+    Indeed, one of Hudson's main jobs is to detect and to report on build
+    failures. And a failing unit test is one of the most obvious
+    symptoms.</para>
 
     <para>Hudson makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
     by a red ball) indicates test failures, or a build job that is broken in
     some brutal manner, such as a compilation error. An unstable build, on the
-    other hand, is a build that is not considered of sufficient quality. What
-    defines "quality" in this sense is largely up to you, but it is typically
-    related to code quality metrics such as code coverage or coding standards,
-    that we will be discussing later on in the book. For now, we will focus on
-    the <emphasis>failed</emphasis> builds</para>
+    other hand, is a build that is not considered of sufficient quality. This
+    is intentionally a little vague: what defines "quality" in this sense is
+    largely up to you, but it is typically related to code quality metrics
+    such as code coverage or coding standards, that we will be discussing
+    later on in the book. For now, let's focus on the
+    <emphasis>failed</emphasis> builds.</para>
 
     <para>In <xref linkend="fig-testing-maven-test-failure-dashboard" /> we
     can see how Hudson displays a Maven build job containing test failures.
-    The project home page is your first port of call when a build breaks. When
-    a build results in failing tests, the 'Latest Test Result' link will
-    indicate the current number of test failures in this build job ("5
-    failures" in the illustration), and also the change in the number of test
-    failures since the last build ("+5" in the illustration - five new test
-    failures). Test failures will also appear as red in the 'Test Result
-    Trend' graph to the right of the page.</para>
+    This is the build job home page, which should be your first port of call
+    when a build breaks. When a build results in failing tests, the 'Latest
+    Test Result' link will indicate the current number of test failures in
+    this build job ("5 failures" in the illustration), and also the change in
+    the number of test failures since the last build ("+5" in the illustration
+    - five new test failures). You can also see how the tests have been faring
+    over time - test failures from previous builds will also appear as red in
+    the 'Test Result Trend' graph.</para>
 
     <para><figure id="fig-testing-maven-test-failure-dashboard">
         <title>Hudson displays test result trends on the project home
@@ -518,17 +678,23 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>If you click on the 'Latest Test Result link, Hudson will
-    display a summary of the current test results (see <xref
-    linkend="fig-testing-test-result-details" />). For a Maven build job,
-    Hudson will initially display a summary view of test results per module -
-    to see the full details of the failing tests, just click on the module you
-    are interest in. For a freestyle build job, Hudson will display the full
-    failing tests view immediately. In both cases, Hudson starts off by
-    presenting a summary of test results for each package. From here, you can
-    drill down, seeing test results for each test class and then finally the
-    tests within the test classes themselves. And if there are any failed
-    tests, these will be prominently displayed at the top of the page.</para>
+      </figure>If you click on the 'Latest Test Result link, Hudson will give
+    you a rundown of the current test results (see <xref
+    linkend="fig-testing-test-result-details" />). Hudson understands Maven
+    multi-module project structures, and for a Maven build job, Hudson will
+    initially display a summary view of test results per module. For more
+    details about the failing tests in a particular module, just click on the
+    module you are interest in.</para>
+
+    <para>For freestyle build jobs, Hudson will directly give you a summary of
+    your test results, but organized by high-level packages rather than
+    modules.</para>
+
+    <para>In both cases, Hudson starts off by presenting a summary of test
+    results for each package. From here, you can drill down, seeing test
+    results for each test class and then finally the tests within the test
+    classes themselves. And if there are any failed tests, these will be
+    prominently displayed at the top of the page.</para>
 
     <para><figure id="fig-testing-test-result-details">
         <title>Hudson displays a summary of the test results</title>
@@ -541,27 +707,26 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
           </imageobject>
         </mediaobject>
       </figure>This full view gives you both a good overview of the current
-    state of your tests, and an indication of their history. Indeed, the 'Age'
-    column tells you how for how long a test has been broken, with a hyperlink
-    that takes you back to the first build in which this test failed.</para>
+    state of your tests, and an indication of their history. The 'Age' column
+    tells you how for how long a test has been broken, with a hyperlink that
+    takes you back to the first build in which this test failed.</para>
 
     <para>You can also add a description to the test results, using the 'Edit
     Description' link in the top right-hand corner of the screen. This is a
     great way to annotate a build failure with some additional details, in
-    order to add extra information about the origin of test failures for
-    example.</para>
+    order to add extra information about the origin of test failures or some
+    notes about how to fix them.</para>
 
     <para>When a test fails, you generally want to know why. To see the
     details of a particular test failure, just click on the corresponding link
     on this screen. This will display all the gruesome details, including the
-    error message and the stack trace, as well as a reminder of for how long
-    the test has failing (see <xref
-    linkend="fig-testing-test-failure-details" />). You should be wary of
-    tests that have been failing for more than just a couple of builds - this
-    is an indicator of either a tricky technical problem that might need
-    investigating, or a complacent attitude to failed builds (developers might
-    just be ignoring build failures), which is more serious and definitely
-    should be investigated.</para>
+    error message and the stack trace, as well as a reminder of long the test
+    has failing (see <xref linkend="fig-testing-test-failure-details" />). You
+    should be wary of tests that have been failing for more than just a couple
+    of builds - this is an indicator of either a tricky technical problem that
+    might need investigating, or a complacent attitude to failed builds
+    (developers might just be ignoring build failures), which is more serious
+    and definitely should be investigated.</para>
 
     <para><figure id="fig-testing-test-failure-details">
         <title>The details of a test failure</title>
@@ -573,9 +738,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>It can also come in handy to keep tabs on how long your tests
-    take to run, not just whether they pass or fail. Unit tests should be
-    designed to run fast, and overly long-running tests can be the sign of a
+      </figure>Make sure you also keep an eye on how long your tests take to
+    run, and not just whether they pass or fail. Unit tests should be designed
+    to run fast, and overly long-running tests can be the sign of a
     performance issue. Slow unit tests also delay feedback, and in CI, fast
     feedback is the name of the game. For example, running one thousand unit
     tests in five minutes is good - taking an hour to run them is not. So it
@@ -631,7 +796,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
     <para>Hudson distinguishes between test failures and skipped tests.
     Skipped tests are ones that have been deactivated, for example by using
-    the <command>@Ignore</command> annotation in JUnit:</para>
+    the <command>@Ignore</command> annotation in JUnit 4:</para>
 
     <para><programlisting>@Ignore("Pending more details from the BA")
 @Test 
@@ -642,11 +807,11 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     assertThat(account.getBalance(), is(40));
 }</programlisting></para>
 
-    <para>Skipping tests is legitimate in some circumstances, such as to place
-    an automated acceptance test, or higher-level technical test, on hold
-    while you implement the lower levels. In such cases, you don't want to be
-    distracted by the failing acceptance test, but you don't want to forget
-    that the test exists either. Using techniques such as the
+    <para>Skipping some tests is perfectly legitimate in some circumstances,
+    such as to place an automated acceptance test, or higher-level technical
+    test, on hold while you implement the lower levels. In such cases, you
+    don't want to be distracted by the failing acceptance test, but you don't
+    want to forget that the test exists either. Using techniques such as the
     <command>@Ignore</command> annotation are better than simply commenting
     out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on
     the ignored tests for you.</para>
@@ -668,9 +833,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 public void serverStartedOk() {...}
  
 @Test(dependsOnMethods = { "serverStartedOk" })
-public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}</programlisting>In
-    this case, if the first test (serverStartedOk()) fails, the following test
-    will be skipped.</para>
+public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}</programlisting>Here,
+    if the first test (serverStartedOk()) fails, the following test will be
+    skipped.</para>
 
     <para>In all of these cases, Hudson will mark the tests that were not run
     as yellow, both in the overall test results trend, and in the test details
@@ -740,7 +905,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       understand the basic process that Cobertura follow, especially when you
       need to set it up in more low-level build scripting tools like Ant. Code
       coverage analysis works in three steps. First, it modifies (or
-      "instruments") your application classes, so that they keep a tally of
+      "instruments") your application classes, to make them keep a tally of
       the number of times each line of code has been executed<footnote>
           <para>This is actually a slight over-simplification: in fact,
           Cobertura stores other data as well, such as how many times each
@@ -1169,7 +1334,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
         <para>This feature is far from simply a cosmetic detail - it provides
         a valuable way of setting objective code quality goals for your
-        projects. Although it cannot be interpreted along, falling code
+        projects. Although it cannot be interpreted alone, falling code
         coverage is generally not a good sign in a project. So if you are
         serious about code coverage, use these threshold values to provide
         some hard feedback about when things are not up to scratch.</para>
@@ -1244,7 +1409,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     as both their aim and their audience is very different. Acceptance tests
     should be working examples of how the system works, with an emphasis on
     demonstration rather than exhaustive proof. The exhaustive tests should be
-    done at the unit-testing level. </para>
+    done at the unit-testing level.</para>
 
     <para>Acceptance Tests can be automated using conventional tools such as
     JUnit, but there is a growing tendency to use Behaviour-Driven Development
@@ -1253,7 +1418,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     development tools used for automated Acceptance Tests, such as JBehave and
     Concordion, produce JUnit-compatible reports that can be understood
     directly by Hudson. Others, like easyb, generate HTML reports with a
-    specific layout that is well-suited to non-developers. </para>
+    specific layout that is well-suited to non-developers.</para>
 
     <para>As a rule, your Acceptance Tests should be displayed separately from
     the other more conventional automated tests. If they use the same testing
@@ -1420,8 +1585,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
     <para>Note that we are also using the optional
     <filename>&lt;jvmarg&gt;</filename> tag to provide JMeter with an ample
-    amount of memory - performance testing is a memory-hungry activity.
-    </para>
+    amount of memory - performance testing is a memory-hungry activity.</para>
 
     <para>The script shown here will execute the JMeter performance tests
     against a running application. So you need to ensure that the application
@@ -1484,7 +1648,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   &lt;/build&gt;
 &lt;/project&gt;</programlisting>This will start up an instance of Jetty and
     deploy your web application to it just before the integration tests, and
-    shut it down afterwards. </para>
+    shut it down afterwards.</para>
 
     <para>Finally, you need to run the JMeter performance tests during this
     phase. You can do this by using the maven-antrun-plugin to invoke the Ant
@@ -1509,7 +1673,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
                 &lt;/goals&gt;
                 &lt;configuration&gt;
                   &lt;tasks&gt;
-                    &lt;ant antfile="build.xml" target="jmeter" /&gt;
+                    &lt;ant antfile="build.xml" target="jmeter" &gt;
                   &lt;/tasks&gt;
                 &lt;/configuration&gt;
               &lt;/execution&gt;
@@ -1592,7 +1756,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <para>If you take your performance metrics seriously, then the build
     should fail if the required SLA is not met. In a Continuous Integration
     environment, any sort of metrics build that does not fail if minimum
-    quality criteria are not met will tend to be ignored. </para>
+    quality criteria are not met will tend to be ignored.</para>
 
     <para>You can configure the Performance plugin to mark a build as unstable
     or failing if a certain percentage of requests result in errors. By
@@ -1616,12 +1780,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </imageobject>
         </mediaobject>
       </figure>Now, when the build job runs, the Performance plugin will
-    produce graphs keeping track of overall response times and the number of
-    errors (see <xref linkend="fig-hudson-performance-trend" />). There will
-    be a separate graph for each JMeter report you have generated. If there is
-    only one graph, it will appear on the build home page; otherwise you can
-    view them on a dedicated page that you can access via the 'Performance
-    Trend' menu item.</para>
+    produce graphs keeping track of overall response times and of the number
+    of errors (see <xref linkend="fig-hudson-performance-trend" />). There
+    will be a separate graph for each JMeter report you have generated. If
+    there is only one graph, it will appear on the build home page; otherwise
+    you can view them on a dedicated page that you can access via the
+    'Performance Trend' menu item.</para>
 
     <para><figure id="fig-hudson-performance-trend">
         <title>The Hudson Performance plugin keeps track of response time and
@@ -1702,7 +1866,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;/target&gt;</programlisting></para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-tests-too-slow">
     <title>Help! My tests are too slow</title>
 
     <para>One of the underlying principles of designing your CI builds is that
@@ -1717,7 +1881,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     fails, it will be difficult to figure out which of the many changes
     committed to version control during the day was responsible. This is a
     serious issue, and penalizes your CI server's ability to provide the fast
-    feedback that makes it useful. </para>
+    feedback that makes it useful.</para>
 
     <para>Of course some builds <emphasis>are</emphasis> slow, by their very
     nature. Performance or load tests fall into this category, as do some more
@@ -1738,7 +1902,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       hardware into the mix. This could be as simple as upgrading your build
       server. Compared to the time and effort saved in identifying and fixing
       integration-related bugs, the cost of buying a shiny new build server is
-      relatively modest. </para>
+      relatively modest.</para>
 
       <para>This can also involve distributing your builds across several
       servers. While this will not in itself speed up your tests, it may
@@ -1790,11 +1954,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       in isolation, which may require some refactoring.</para>
 
       <para>At a lower level, you can also run your tests in parallel at the
-      build scripting level. TestNG, and the more recent versions of JUnit,
-      both support running tests in parallel. Nevertheless, you will need to
-      ensure that your tests can be run concurrently, which may take some
-      refactoring. For example, common files or shared instance variables
-      within test cases will cause problems here.</para>
+      build scripting level. As we saw earlier, both TestNG, and the more
+      recent versions of JUnit support running tests in parallel.
+      Nevertheless, you will need to ensure that your tests can be run
+      concurrently, which may take some refactoring. For example, common files
+      or shared instance variables within test cases will cause problems
+      here.</para>
 
       <para>In general, you need to be careful of interactions between your
       tests. If your web tests start up an embedded web server such as Jetty,
@@ -1813,7 +1978,6 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <para>Automated testing is a critical part of any Continuous Integration
     environment, and should be taken very seriously. As in other areas on CI,
     and perhaps even more so, feedback is king, so it is important to ensure
-    that your tests run fast, even the integration and functional ones.
-    </para>
+    that your tests run fast, even the integration and functional ones.</para>
   </sect1>
 </chapter>
