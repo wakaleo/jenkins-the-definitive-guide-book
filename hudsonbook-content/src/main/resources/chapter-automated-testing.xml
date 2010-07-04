@@ -10,19 +10,18 @@
     <para><indexterm>
         <primary>Automated testing</primary>
       </indexterm>Continuous Integration without automated testing isn't
-    really Continuous Integration - it's simply a small improvement on
-    automatically scheduled builds. Indeed, if you are using Hudson without
-    any automated tests, you are not getting anywhere near as much value out
-    of your Continuous Integration infrastructure as you should.</para>
+    really Continuous Integration - in fact it is simply a small improvement
+    on automatically scheduled builds. If you are using Hudson without any
+    automated tests, you are not getting anywhere near as much value out of
+    your Continuous Integration infrastructure as you should.</para>
 
-    <para>One of the fundamental tenants of Continuous Integration is that a
-    build should be verifiable. It must be possible to objectively determine
-    whether a particular build artifact is ready to proceed to the next stage
-    of the build process, and the most convenient way to do this is by using
-    automated tests. Without proper automated testing set up in your build
-    process, you will find yourself having to retain many build artifacts and
-    test them by hand, which is hardly in the spirit of Continuous
-    Integration.</para>
+    <para>One of the basic principles of Continuous Integration is that a
+    build should be verifiable. You have to be able to objectively determine
+    whether a particular build is ready to proceed to the next stage of the
+    build process, and the most convenient way to do this is to use automated
+    tests. Without proper automated testing, you find yourself having to
+    retain many build artifacts and test them by hand, which is hardly in the
+    spirit of Continuous Integration.</para>
 
     <para>There are many ways you can integrate automated tests into your
     application. One of the most efficient ways to write high quality tests is
@@ -36,12 +35,14 @@
     Hudson to provide more relevant feedback.</para>
 
     <para>Of course, more classical unit testing, done once the code has been
-    implemented, is also another commonly-used approach.</para>
+    implemented, is also another commonly-used approach, and is certainly
+    better than no tests at all.</para>
 
     <para>Hudson is not limited to unit testing, though. There are many other
     types of automated testing that you should consider, depending on the
     nature of your application, including integration testing, web testing,
-    functional testing, performance testing, load testing and so on.</para>
+    functional testing, performance testing, load testing and so on. All of
+    these have their place in an automated build setup.</para>
 
     <para>Hudson can also be used, in conjunction with techniques like
     Behaviour-Driven Development and Acceptance Test Driven Development, as a
@@ -49,21 +50,23 @@
     stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
     Cucumber, and many others, try to present acceptance tests in terms that
     testers, product owners and end users can understand. With the use of such
-    tools, Hudson can report on project progress in a non-developer friendly
-    manner, and thus facilitate communication between developers and
-    non-developers within a team.</para>
+    tools, Hudson can report on project progress in business terms, and so
+    facilitate communication between developers and non-developers within a
+    team.</para>
 
     <para>For existing or legacy applications with little or no automated
     testing in place, it can be time-consuming and difficult to retro-fit
-    comprehensive unit tests onto the code. One useful approach in these
-    situations is to write automated functional tests ("regression") tests
-    that simulate the most common ways that users manipulate the application.
-    For example, automated web testing tools such as Selenium and Web Driver
-    can be used to web applications. While this approach is not as
-    comprehensive as a combination of good quality unit, integration and
-    acceptance tests, it is still an effective and relatively cost-efficient
-    way to integrate automated regression testing into an existing
-    application.</para>
+    comprehensive unit tests onto the code. In addition, the tests may not be
+    very effective, as they will tend to validate the existing implementation
+    rather than verify the expected business behaviour. One useful approach in
+    these situations is to write automated functional tests ("regression")
+    tests that simulate the most common ways that users manipulate the
+    application. For example, automated web testing tools such as Selenium and
+    WebDriver can be effectively used to test web applications at a high
+    level. While this approach is not as comprehensive as a combination of
+    good quality unit, integration and acceptance tests, it is still an
+    effective and relatively cost-efficient way to integrate automated
+    regression testing into an existing application.</para>
 
     <para>In this chapter, we will see how Hudson helps you keep track of
     automated test results, and how you can use this information to monitor
@@ -71,7 +74,7 @@
   </sect1>
 
   <sect1>
-    <title>Automating your unit tests</title>
+    <title>Automating your unit and integration tests</title>
 
     <para>The first thing we will look at is how to integrate your unit tests
     into Hudson. Whether you are practicing Test-Driven Development, or
@@ -85,16 +88,22 @@
 
     <para>There are many unit testing tools out there. In the Java world,
     JUnit is the de facto standard in this area. TestNG is another popular
-    Java unit testing framework. For C# applications, the NUnit testing
-    framework proposes similar functionalities to those provided by JUnit, as
-    does <command>Test::Unit</command> for Ruby.</para>
+    Java unit testing framework with a number of innovative features. For C#
+    applications, the NUnit testing framework proposes similar functionalities
+    to those provided by JUnit, as does <command>Test::Unit</command> for
+    Ruby.</para>
 
-    <para>Hudson does an excellent job of reporting on your test results.
-    However, it is up to you to write the appropriate tests and to configure
-    your build to run them automatically. Fortunately integrating unit tests
-    into your automated builds is relatively easy. In the rest of this
-    section, we will look at how to do so with some of the more common build
-    tools in use.</para>
+    <para>These tools can also serve for integration tests, and even for web
+    tests using tools such as Selenium or WebDriver, which both work well with
+    JUnit. In the following sections we make no distinction between these
+    different types of test, as, from a configuration point of view, they are
+    treated by Hudson in exactly the same manner. However, you will almost
+    certainly need to make the distinction in your build jobs. In order to get
+    the fastest possible feedback loop, your tests should be grouped into
+    well-defined categories, starting with the fast-running unit tests, and
+    then proceeding to the integration tests, before finally running the
+    slower functional and web tests. We will discuss strategies for grouping
+    your tests further on.</para>
 
     <sect2>
       <title>Automating your tests with Maven</title>
@@ -205,10 +214,10 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       &lt;plugin&gt;
         &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
         &lt;configuration&gt;
-          &lt;skip&gt;true&lt;/skip&gt;
+          &lt;skip&gt;true&lt;/skip&gt;<co id="maven-it-1" />
         &lt;/configuration&gt;
         &lt;executions&gt;
-          &lt;execution&gt;
+          &lt;execution&gt;<co id="maven-it-2" />
             &lt;id&gt;unit-tests&lt;/id&gt;
             &lt;phase&gt;test&lt;/phase&gt;
             &lt;goals&gt;
@@ -221,7 +230,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
               &lt;/excludes&gt;
             &lt;/configuration&gt;
           &lt;/execution&gt;
-          &lt;execution&gt;
+          &lt;execution&gt;<co id="maven-it-3" />
             &lt;id&gt;integration-tests&lt;/id&gt;
             &lt;phase&gt;integration-test&lt;/phase&gt;
             &lt;goals&gt;
@@ -238,11 +247,87 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       &lt;/plugin&gt;
       ...</programlisting>
 
-      <para>This will ensure that the integration tests are skipped during the
-      unit test phase, and only executed during the integration test
-      phase.</para>
+      <para><calloutlist>
+          <callout arearefs="maven-it-1">
+            <para>Skip all tests by default - this deactivates the default
+            Maven test configuration.</para>
+          </callout>
 
-      <para>If you are using TestNG, you can identify your integration tests
+          <callout arearefs="maven-it-2">
+            <para>During the unit test phase, run the tests but exclude the
+            integration tests</para>
+          </callout>
+
+          <callout arearefs="maven-it-3">
+            <para>During the integration test phase, run the tests but
+            <emphasis>only</emphasis> include the integration tests</para>
+          </callout>
+        </calloutlist>This will ensure that the integration tests are skipped
+      during the unit test phase, and only executed during the integration
+      test phase.</para>
+
+      <para>If you don't want to put unwanted constraints on the names of your
+      test classes, you can use package names instead. In the project
+      illustrated in <xref linkend="fig-hudson-testing-sample-project" />, all
+      of the functional tests have been placed in a package called 'webtests'.
+      There is no constraint on the names of the tests, but we are using Page
+      Objects to model our application user interface, so we also make sure
+      that no classes in the 'pages' package (underneath the 'webtests'
+      package) are treated as tests.</para>
+
+      <para><figure id="fig-hudson-testing-sample-project">
+          <title>A project containing freely-named test classes</title>
+
+          <mediaobject>
+            <imageobject role="web" security="">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-testing-sample-project.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In Maven, we could do this with the following
+      configuration:</para>
+
+      <para><programlisting>      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/webtests/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;includes&gt;
+                &lt;include&gt;**/webtests/*.java&lt;/include&gt;
+              &lt;/includes&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/pages/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>TestNG currently has more flexible support for test groups than
+      JUnit. If you are using TestNG, you can identify your integration tests
       using TestNG Groups. In TestNG, test classes or test methods can be
       tagged using the 'groups' attribute of the <command>@Test</command>
       annotation, as shown here:<programlisting>@Test(groups = { "integration-test" })
@@ -275,7 +360,8 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
             &lt;/goals&gt;
             &lt;configuration&gt;
               &lt;skip&gt;false&lt;/skip&gt;
-              &lt;excludedGroups&gt;integration-tests&lt;/excludedGroups&gt;
+              &lt;excludedGroups&gt;integration-tests&lt;/excludedGroups&gt;<co
+            id="maven-it-ng-1" />
             &lt;/configuration&gt;
           &lt;/execution&gt;
           &lt;execution&gt;
@@ -286,36 +372,232 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
             &lt;/goals&gt;
             &lt;configuration&gt;
               &lt;skip&gt;false&lt;/skip&gt;
-              &lt;groups&gt;integration-tests&lt;/groups&gt;
+              &lt;groups&gt;integration-tests&lt;/groups&gt;<co
+            id="maven-it-ng-2" />
             &lt;/configuration&gt;
           &lt;/execution&gt;
         &lt;/executions&gt;
       &lt;/plugin&gt;
-      ...</programlisting></para>
+      ...</programlisting><calloutlist>
+          <callout arearefs="maven-it-ng-1">
+            <para>Do not run the integration-tests group during the test
+            phase</para>
+          </callout>
+
+          <callout arearefs="maven-it-ng-2">
+            <para>Run only the tests in the integration-tests group during the
+            integration-test phase.</para>
+          </callout>
+        </calloutlist></para>
+
+      <para>It often makes good sense to run your tests in parallel where
+      possible, as it can speed up your tests significantly (see <xref
+      linkend="sect-tests-too-slow" />). TestNG provides good support for
+      parallel tests. For instance, using TestNG, you could configure your
+      test methods to run in parallel on ten concurrent threads like
+      this:<programlisting>      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;parallel&gt;methods&lt;/parallel&gt;
+          &lt;threadCount&gt;10&lt;/threadCount&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>As of JUnit 4.7, you can also run your JUnit tests in parallel
+      using a similar configuration. In fact, the configuration shown above
+      will work for JUnit 4.7 onwards. But you can also configure the maximum
+      number of threads per CPU core, which allows for a bit more flexibility
+      when the tests are run on different machines:</para>
+
+      <para><programlisting>      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;parallel&gt;methods&lt;/parallel&gt;
+          &lt;perCoreThreadCount&gt;4&lt;/perCoreThreadCount&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+      <para>You can also set the &lt;parallel&gt; configuration item to
+      'classes' instead of 'methods', which will try to run the test classes
+      in parallel, rather than each method. This will be slower, but might be
+      safer for some test cases not designed with concurrency in mind.</para>
+
+      <para>Mileage will vary, so you should experiment with the numbers to
+      get the best results.</para>
     </sect2>
 
     <sect2>
       <title>Automating your unit tests with Ant</title>
 
-      <para>TODO</para>
-    </sect2>
+      <para>Setting up automated testing in Ant is also relatively easy,
+      though it requires a bit more plumbing that with Maven. In particular,
+      Ant does not come packaged with the JUnit libraries or Ant tasks
+      out-of-the-box, so you have to install them somewhere yourself. The most
+      portable approach is to use a Dependency Management tool such as Ivy, or
+      to place the corresponding JAR files in a directory within your project
+      structure.</para>
 
-    <sect2>
-      <title>Automating your unit tests with Gradle</title>
+      <para>To run your tests in Ant, you call the
+      <filename>&lt;junit&gt;</filename> task. A typical Hudson-friendly
+      configuration is shown in this example:<programlisting>&lt;property name="build.dir" value="target" /&gt;
+&lt;property name="java.classes" value="${build.dir}/classes" /&gt;
+&lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
+&lt;property name="test.reports" value="${build.dir}/test-reports" /&gt;
+&lt;property name="lib" value="${build.dir}/lib" /&gt;
 
-      <para>TODO</para>
+&lt;path id="test.classpath"&gt;<co id="junit-ant-1" />
+  &lt;pathelement location="${basedir}/tools/junit/*.jar" /&gt;
+  &lt;pathelement location="${java.classes}" /&gt;
+  &lt;pathelement location="${lib}" /&gt;
+&lt;/path&gt;
+
+&lt;target name="test" depends="test-compile"&gt;
+  &lt;junit haltonfailure="no" failureproperty="failed"&gt;<co
+            id="junit-ant-2" />
+    &lt;classpath&gt;<co id="junit-ant-3" />
+      &lt;path refid="test.classpath" /&gt;
+      &lt;pathelement location="${test.classes}" /&gt;
+    &lt;/classpath&gt;
+    &lt;formatter type="xml" /&gt;<co id="junit-ant-4" />
+    &lt;batchtest fork="yes" forkmode="perBatch"<co id="junit-ant-5" /> todir="${test.reports}"&gt;
+      &lt;fileset dir="${test.src}"&gt;<co id="junit-ant-6" />
+        &lt;include name="**/*Test*.java" /&gt;
+      &lt;/fileset&gt;
+    &lt;/batchtest&gt;
+  &lt;/junit&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;<co id="junit-ant-7" />
+&lt;/target&gt;
+</programlisting></para>
+
+      <para><calloutlist>
+          <callout arearefs="junit-ant-1">
+            <para>We need to set up a classpath containing the
+            <filename>junit</filename> and <filename>junit-ant</filename> JAR
+            files, as well as the application classes and any other
+            dependencies the application needs to compile and run.</para>
+          </callout>
+
+          <callout arearefs="junit-ant-2">
+            <para>The tests themselves are run here. The
+            <command>haltonfailure</command> option is used to make the build
+            fail immediately if any tests fail. In a Continuous Integration
+            environment, this is not exactly what we want, as we need to get
+            the results for any subsequent tests as well. So we set this value
+            to "no" and use the <command>failureproperty</command> option to
+            force the build to fail once all of the tests have
+            finished.</para>
+          </callout>
+
+          <callout arearefs="junit-ant-3">
+            <para>The classpath needs to contain the JUnit libraries, your
+            application classes and their dependencies, and your compiled test
+            classes.</para>
+          </callout>
+
+          <callout arearefs="junit-ant-4">
+            <para>The Junit Ant task can produce both text and XML reports,
+            but for Hudson, we only need the XML ones.</para>
+          </callout>
+
+          <callout arearefs="junit-ant-5">
+            <para>The <command>fork</command> option runs your tests in a
+            separate JVM. This is generally a good idea, as it can avoid
+            classloader issues related to conflicts with Ant's own libraries.
+            However, the default behaviour of the JUnit Ant task is to create
+            a new JVM for each test, which slows down the tests significantly.
+            The 'perBatch' option is better, as it only creates one new JVM
+            for each batch of tests.</para>
+          </callout>
+
+          <callout arearefs="junit-ant-6">
+            <para>You define the tests you want to run in a fileset element.
+            This provides a great deal of flexibility, and makes it easy to
+            define other targets for different subsets of tests (integration,
+            web, and so on).</para>
+          </callout>
+
+          <callout arearefs="junit-ant-7">
+            <para>Force the build to fail <emphasis>after</emphasis> the tests
+            have finished, if any of them failed.</para>
+          </callout>
+        </calloutlist></para>
+
+      <para>If you prefer TestNG, Ant is of course well supported here as
+      well. Using TestNG with the previous example, you could do something
+      like this:</para>
+
+      <para><programlisting>&lt;property name="build.dir" value="target" /&gt;
+&lt;property name="java.classes" value="${build.dir}/classes" /&gt;
+&lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
+&lt;property name="test.reports" value="${build.dir}/test-reports" /&gt;
+&lt;property name="lib" value="${build.dir}/lib" /&gt;
+
+&lt;path id="test.classpath"&gt;
+  &lt;pathelement location="${java.classes}" /&gt;
+  &lt;pathelement location="${lib}" /&gt;
+&lt;/path&gt;
+
+&lt;taskdef resource="testngtasks" classpath="lib/testng.jar"/&gt;
+
+&lt;target name="test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>TestNG is a very flexible testing library, and
+      the TestNG task has many more options than this. For example, to only
+      run tests defined as part of the "integration-test" group that we saw
+      earlier, we could do this:</para>
+
+      <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>groups="integration-test"</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>Or to run your tests in parallel, using four
+      concurrent threads, you could do this:</para>
+
+      <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>parallel="true"
+          threadCount=4</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting></para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Configuring JUnit reports in Hudson</title>
+    <title>Configuring test reports in Hudson</title>
 
     <para>Once your build generates test results, you need to configure your
     Hudson build job to display them. For Maven build jobs, no special
     configuration is required - just make sure you invoke a goal that will run
     your tests, such as <command>mvn test</command> (for your unit tests) or
-    <command>mvn verify</command> (for unit and integration tests), as shown
-    in <xref linkend="fig-testing-maven-verify-goal" />.</para>
+    <command>mvn verify</command> (for unit and integration tests). An example
+    of a Maven build job configuration is shown in <xref
+    linkend="fig-testing-maven-verify-goal" />.</para>
 
     <para><figure id="fig-testing-maven-verify-goal">
         <title>You configure your Hudson installation in the 'Manage Hudson'
@@ -332,10 +614,10 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
     <para>For free-style build jobs, you need to do a little more
     configuration work. In addition to ensuring that your build actually runs
-    the tests, you need to tell Hudson to publish the JUnit test results
-    report. You configure this in the <command>Post-build Actions</command>
-    section (see <xref linkend="fig-testing-freestyle-junit-config" />). Here,
-    you provide a path to the JUnit XML reports. Their exact location will
+    the tests, you need to tell Hudson to publish the JUnit test report. You
+    configure this in the <command>Post-build Actions</command> section (see
+    <xref linkend="fig-testing-freestyle-junit-config" />). Here, you provide
+    a path to the JUnit or TestNG XML reports. Their exact location will
     depend on a project - for a Maven project, a path like
     '<filename>**/target/surefire-reports/*.xml</filename>' will find them for
     most projects. For an Ant-based project, it will depend on how you
@@ -355,38 +637,35 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
   </sect1>
 
   <sect1>
-    <title>Ignoring Tests</title>
-
-    <para></para>
-  </sect1>
-
-  <sect1>
     <title>Displaying test results</title>
 
-    <para>Once Hudson knows where to find the JUnit reports, it does an
-    excellent job of reporting on them. Indeed, in many ways, Hudson's primary
-    job is to detect and to report on build failures. And a failing unit test
-    is one of the most obvious symptoms of a build failure.</para>
+    <para>Once Hudson knows where to find the test reports, whether they be
+    from JUnit or TestNG, it does an excellent job of reporting on them.
+    Indeed, one of Hudson's main jobs is to detect and to report on build
+    failures. And a failing unit test is one of the most obvious
+    symptoms.</para>
 
     <para>Hudson makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
     by a red ball) indicates test failures, or a build job that is broken in
     some brutal manner, such as a compilation error. An unstable build, on the
-    other hand, is a build that is not considered of sufficient quality. What
-    defines "quality" in this sense is largely up to you, but it is typically
-    related to code quality metrics such as code coverage or coding standards,
-    that we will be discussing later on in the book. For now, we will focus on
-    the <emphasis>failed</emphasis> builds</para>
+    other hand, is a build that is not considered of sufficient quality. This
+    is intentionally a little vague: what defines "quality" in this sense is
+    largely up to you, but it is typically related to code quality metrics
+    such as code coverage or coding standards, that we will be discussing
+    later on in the book. For now, let's focus on the
+    <emphasis>failed</emphasis> builds.</para>
 
     <para>In <xref linkend="fig-testing-maven-test-failure-dashboard" /> we
     can see how Hudson displays a Maven build job containing test failures.
-    The project home page is your first port of call when a build breaks. When
-    a build results in failing tests, the 'Latest Test Result' link will
-    indicate the current number of test failures in this build job ("5
-    failures" in the illustration), and also the change in the number of test
-    failures since the last build ("+5" in the illustration - five new test
-    failures). Test failures will also appear as red in the 'Test Result
-    Trend' graph to the right of the page.</para>
+    This is the build job home page, which should be your first port of call
+    when a build breaks. When a build results in failing tests, the 'Latest
+    Test Result' link will indicate the current number of test failures in
+    this build job ("5 failures" in the illustration), and also the change in
+    the number of test failures since the last build ("+5" in the illustration
+    - five new test failures). You can also see how the tests have been faring
+    over time - test failures from previous builds will also appear as red in
+    the 'Test Result Trend' graph.</para>
 
     <para><figure id="fig-testing-maven-test-failure-dashboard">
         <title>Hudson displays test result trends on the project home
@@ -399,17 +678,23 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>If you click on the 'Latest Test Result link, Hudson will
-    display a summary of the current test results (see <xref
-    linkend="fig-testing-test-result-details" />). For a Maven build job,
-    Hudson will initially display a summary view of test results per module -
-    to see the full details of the failing tests, just click on the module you
-    are interest in. For a freestyle build job, Hudson will display the full
-    failing tests view immediately. In both cases, Hudson starts off by
-    presenting a summary of test results for each package. From here, you can
-    drill down, seeing test results for each test class and then finally the
-    tests within the test classes themselves. And if there are any failed
-    tests, these will be prominently displayed at the top of the page.</para>
+      </figure>If you click on the 'Latest Test Result link, Hudson will give
+    you a rundown of the current test results (see <xref
+    linkend="fig-testing-test-result-details" />). Hudson understands Maven
+    multi-module project structures, and for a Maven build job, Hudson will
+    initially display a summary view of test results per module. For more
+    details about the failing tests in a particular module, just click on the
+    module you are interest in.</para>
+
+    <para>For freestyle build jobs, Hudson will directly give you a summary of
+    your test results, but organized by high-level packages rather than
+    modules.</para>
+
+    <para>In both cases, Hudson starts off by presenting a summary of test
+    results for each package. From here, you can drill down, seeing test
+    results for each test class and then finally the tests within the test
+    classes themselves. And if there are any failed tests, these will be
+    prominently displayed at the top of the page.</para>
 
     <para><figure id="fig-testing-test-result-details">
         <title>Hudson displays a summary of the test results</title>
@@ -422,27 +707,26 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
           </imageobject>
         </mediaobject>
       </figure>This full view gives you both a good overview of the current
-    state of your tests, and an indication of their history. Indeed, the 'Age'
-    column tells you how for how long a test has been broken, with a hyperlink
-    that takes you back to the first build in which this test failed.</para>
+    state of your tests, and an indication of their history. The 'Age' column
+    tells you how for how long a test has been broken, with a hyperlink that
+    takes you back to the first build in which this test failed.</para>
 
     <para>You can also add a description to the test results, using the 'Edit
     Description' link in the top right-hand corner of the screen. This is a
     great way to annotate a build failure with some additional details, in
-    order to add extra information about the origin of test failures for
-    example.</para>
+    order to add extra information about the origin of test failures or some
+    notes about how to fix them.</para>
 
     <para>When a test fails, you generally want to know why. To see the
     details of a particular test failure, just click on the corresponding link
     on this screen. This will display all the gruesome details, including the
-    error message and the stack trace, as well as a reminder of for how long
-    the test has failing (see <xref
-    linkend="fig-testing-test-failure-details" />). You should be wary of
-    tests that have been failing for more than just a couple of builds - this
-    is an indicator of either a tricky technical problem that might need
-    investigating, or a complacent attitude to failed builds (developers might
-    just be ignoring build failures), which is more serious and definitely
-    should be investigated.</para>
+    error message and the stack trace, as well as a reminder of long the test
+    has failing (see <xref linkend="fig-testing-test-failure-details" />). You
+    should be wary of tests that have been failing for more than just a couple
+    of builds - this is an indicator of either a tricky technical problem that
+    might need investigating, or a complacent attitude to failed builds
+    (developers might just be ignoring build failures), which is more serious
+    and definitely should be investigated.</para>
 
     <para><figure id="fig-testing-test-failure-details">
         <title>The details of a test failure</title>
@@ -454,9 +738,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>It can also come in handy to keep tabs on how long your tests
-    take to run, not just whether they pass or fail. Unit tests should be
-    designed to run fast, and overly long-running tests can be the sign of a
+      </figure>Make sure you also keep an eye on how long your tests take to
+    run, and not just whether they pass or fail. Unit tests should be designed
+    to run fast, and overly long-running tests can be the sign of a
     performance issue. Slow unit tests also delay feedback, and in CI, fast
     feedback is the name of the game. For example, running one thousand unit
     tests in five minutes is good - taking an hour to run them is not. So it
@@ -512,7 +796,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 
     <para>Hudson distinguishes between test failures and skipped tests.
     Skipped tests are ones that have been deactivated, for example by using
-    the <command>@Ignore</command> annotation in JUnit:</para>
+    the <command>@Ignore</command> annotation in JUnit 4:</para>
 
     <para><programlisting>@Ignore("Pending more details from the BA")
 @Test 
@@ -523,14 +807,14 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     assertThat(account.getBalance(), is(40));
 }</programlisting></para>
 
-    <para>Skipping tests is legitimate in some circumstances, such as to place
-    an automated acceptance test, or higher-level technical test, on hold
-    while you implement the lower levels. In such cases, you don't want to be
-    distracted by the failing acceptance test, but you don't want to forget
-    that the test exists either. Using techniques such as the
+    <para>Skipping some tests is perfectly legitimate in some circumstances,
+    such as to place an automated acceptance test, or higher-level technical
+    test, on hold while you implement the lower levels. In such cases, you
+    don't want to be distracted by the failing acceptance test, but you don't
+    want to forget that the test exists either. Using techniques such as the
     <command>@Ignore</command> annotation are better than simply commenting
     out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on
-    the ignored tests for you. </para>
+    the ignored tests for you.</para>
 
     <para>In TestNG, you can also skip tests, using the 'enabled'
     property:</para>
@@ -549,9 +833,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 public void serverStartedOk() {...}
  
 @Test(dependsOnMethods = { "serverStartedOk" })
-public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}</programlisting>In
-    this case, if the first test (serverStartedOk()) fails, the following test
-    will be skipped.</para>
+public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed() {...}</programlisting>Here,
+    if the first test (serverStartedOk()) fails, the following test will be
+    skipped.</para>
 
     <para>In all of these cases, Hudson will mark the tests that were not run
     as yellow, both in the overall test results trend, and in the test details
@@ -576,8 +860,1124 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   </sect1>
 
   <sect1>
+    <title>Code Coverage</title>
+
+    <para>Another very useful test-related metric is code coverage. Code
+    coverage give an indication of what parts of your application where
+    executed during the tests. While this in itself is not a sufficient
+    indication of quality testing (it is easy to execute an entire application
+    without actually testing anything, and code coverage metrics provide no
+    indication of the quality or accuracy of your tests), it is a very good
+    indication of code that has <emphasis>not</emphasis> been tested. And, if
+    your team is introducing rigorous testing practices such as
+    Test-Driven-Development, code coverage can be a good indicator of how well
+    these practices are being applied.</para>
+
+    <para>Code coverage analysis is a CPU and memory-intensive process, and
+    will slow down your build job significantly. For this reason, you will
+    typically run code coverage metrics in a separate Hudson build job, to be
+    run after your unit and integration tests are successful.</para>
+
+    <para>In this section, we will look at two code coverage tools, and how to
+    integrated them with Hudson: Cobertura, an open source code coverage tool,
+    and Clover, a commercial code coverage tool from Atlassian.</para>
+
+    <sect2>
+      <title>Measuring code coverage with Cobertura</title>
+
+      <para>Cobertura (<ulink url="http://cobertura.sourceforge.net"></ulink>)
+      is an open source code coverage tool that is easy to use and integrates
+      well with both Maven and Hudson.</para>
+
+      <para>Like almost all of the Hudson code quality metrics
+      plugins<footnote>
+          <para>With the notable exception of Sonar, which we will look at
+          later on in the book.</para>
+        </footnote>, the Cobertura plugin for Hudson will not run any test
+      coverage metrics for you. It is left up to you to generate the raw code
+      coverage data as part of your automated build process. Hudson, on the
+      other hand, does an excellent job of <emphasis>reporting</emphasis> on
+      the code coverage metrics, including keeping track of code coverage over
+      time, and providing aggregate coverage across multiple application
+      modules.</para>
+
+      <para>Code coverage can be a complicated business, and it helps to
+      understand the basic process that Cobertura follow, especially when you
+      need to set it up in more low-level build scripting tools like Ant. Code
+      coverage analysis works in three steps. First, it modifies (or
+      "instruments") your application classes, to make them keep a tally of
+      the number of times each line of code has been executed<footnote>
+          <para>This is actually a slight over-simplification: in fact,
+          Cobertura stores other data as well, such as how many times each
+          possible outcome of a boolean test was executed. However this does
+          not alter the general approach.</para>
+        </footnote>. They store all this data in a special data file
+      (Cobertura uses a file called
+      <filename>cobertura.ser</filename>).</para>
+
+      <para>When the application code has been instrumented, you run your
+      tests against this instrumented code. At the end of the tests, Cobertura
+      will have generated a data file containing the number of times each line
+      of code was executed during the tests.</para>
+
+      <para>Once this data file has been generated, Cobertura can use this
+      data to generate a report in a more usable format, such as XML or
+      HTML.</para>
+
+      <sect3>
+        <title>Integrating Cobertura with Maven</title>
+
+        <para>Producing code coverage metrics with Cobertura in Maven is
+        relatively straightforward. If all you are interested in is producing
+        code coverage data, you just need to add the
+        <command>cobertura-maven-plugin</command> to the build section of your
+        <filename>pom.xml</filename> file:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+             &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+             &lt;version&gt;2.4&lt;/version&gt;
+             &lt;configuration&gt;
+             &lt;formats&gt;
+                &lt;format&gt;html&lt;/format&gt;
+                &lt;format&gt;xml&lt;/format&gt;
+             &lt;/formats&gt;
+           &lt;/configuration&gt;
+         &lt;/plugin&gt;
+         ...
+      &lt;/plugins&gt;
+   &lt;build&gt;
+   ...
+&lt;/project&gt;</programlisting>This will generate code coverage metrics when
+        you invoke the Cobertura plugin directly:<screen>$ <command>mvn cobertura:cobertura</command></screen></para>
+
+        <para>The code coverage data will be generated in the
+        <filename>target/site/cobertura</filename> directory, in a file called
+        <filename>coverage.xml</filename>.</para>
+
+        <para>This approach, however, will instrument your classes and produce
+        code coverage data for every build, which is inefficient. A better
+        approach is to place this configuration in a special profile, as shown
+        here:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+   &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;metrics&lt;/id&gt;
+      &lt;build&gt;
+        &lt;plugins&gt;
+          &lt;plugin&gt;
+            &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+            &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.4&lt;/version&gt;
+            &lt;configuration&gt;
+              &lt;formats&gt;
+                &lt;format&gt;html&lt;/format&gt;
+                &lt;format&gt;xml&lt;/format&gt;
+              &lt;/formats&gt;
+            &lt;/configuration&gt;
+          &lt;/plugin&gt;
+        &lt;/plugins&gt;
+      &lt;/build&gt;
+    &lt;/profile&gt;
+    ...
+  &lt;/profiles&gt;
+&lt;/project&gt;</programlisting>In this case, you would invoke the Cobertura
+        plugin using the 'metrics' profile to generate the code coverage
+        data:<screen>$ <command>mvn cobertura:cobertura -Pmetrics</command></screen></para>
+
+        <para>Another approach is to include code coverage reporting in your
+        Maven reports. This approach is considerably slower and more
+        memory-hungry than just generating the coverage data, but it can make
+        sense if you are also generating other code quality metrics and
+        reports at the same time. If you want to do this, you need to also
+        include the Maven Cobertura plugin in the reporting section, as shown
+        here:</para>
+
+        <para><programlisting> &lt;project&gt;
+   ...
+  &lt;reporting&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.4&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;formats&gt;
+            &lt;format&gt;html&lt;/format&gt;
+            &lt;format&gt;xml&lt;/format&gt;
+          &lt;/formats&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/reporting&gt;
+&lt;/project&gt;</programlisting>Now the coverage data will be generated when
+        you generate the Maven site for this project:<screen>$ <command>mvn site</command></screen></para>
+
+        <para>If your Maven project contains modules (as is common practice
+        for larger Maven projects), you just need to set up the Cobertura
+        configuration in a parent <filename>pom.xml</filename> file - test
+        coverage metrics and reports will be generated separately for each
+        module. However if you generate HTML code coverage reports in the
+        Maven web site (using the <command>mvn site</command> command), the
+        reports will only detail coverage for each individual module, not for
+        the project as a whole. This is not an issue for Hudson - the Hudson
+        Cobertura plugin is happy to take coverage data from several files and
+        combine them into a single aggregate report.</para>
+
+        <para>At the time of writing, there is a limitation with the Maven
+        Cobertura plugin - code coverage will be only recorded for tests
+        executed during the <command>test</command> lifecycle phase, and not
+        for tests executed during the <command>integration-test</command>
+        phase. This can be an issue if you are using this phase to run
+        integration or web tests that require a fully packaged and deployed
+        application - in this case, coverage from tests that are only
+        performed during the integration test phase will not be counted in the
+        Cobertura code coverage metrics.</para>
+      </sect3>
+
+      <sect3>
+        <title>Integrating Cobertura with Ant</title>
+
+        <para>Integrating Cobertura into your Ant build is more complicated
+        than doing so in Maven. However it does give you a finer control over
+        what classes are instrumented, and when coverage is measured.</para>
+
+        <para>Cobertura comes bundled with an Ant task that you can use to
+        integrate Cobertura into your Ant builds. You will need to download
+        the latest Cobertura distribution, and unzip it somewhere on your hard
+        disk. To make your build more portable, and therefore easier to deploy
+        onto Hudson, it is a good idea to place the Cobertura distribution you
+        are using within your project directory, and to save it in your
+        version control system. This way it is easier to ensure that the build
+        will use the same version of Cobertura no matter where it is
+        run.</para>
+
+        <para>Assuming you have downloaded the latest Cobertura installation
+        and placed it within your project in a directory called
+        <filename>tools</filename>, you could do something like
+        this:<programlisting>&lt;property name="cobertura.dir" value="{basedir}/tools/cobertura" /&gt;<co
+              id="co-ch04-cobertura-dir" />
+
+&lt;path id="cobertura.classpath"&gt;<co id="co-ch04-cobertura-path" />
+    &lt;fileset dir="${cobertura.dir}"&gt;
+        &lt;include name="cobertura.jar" /&gt;<co id="co-ch04-cobertura-jar" />
+        &lt;include name="lib/**/*.jar" /&gt;<co id="co-ch04-cobertura-libs" />
+    &lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;taskdef classpathref="cobertura.classpath" resource="tasks.properties" /&gt;</programlisting></para>
+
+        <para><calloutlist>
+            <callout arearefs="co-ch04-cobertura-dir">
+              <para>Tell Ant where your Cobertura installation is.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-path">
+              <para>We need to set up a classpath that Cobertura can use to
+              run.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-jar">
+              <para>The path contains the Cobertura application itself;</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-libs">
+              <para>And all of its dependencies.</para>
+            </callout>
+          </calloutlist>Next, you need to instrument your application classes.
+        You have to be careful to place these instrumented classes in a
+        separated directory, so that they don't get bundled up and deployed to
+        production by accident.</para>
+
+        <para><programlisting>&lt;target name="instrument" depends="init,compile"&gt;<co
+              id="co-ch04-cobertura-instrumentation" />
+    &lt;delete file="cobertura.ser"/&gt;<co id="co-ch04-cobertura-delete" />
+    &lt;delete dir="${instrumented.dir}" /&gt;<co
+              id="co-ch04-cobertura-delete-instrumented" />
+    &lt;cobertura-instrument todir="${instrumented.dir}"&gt;<co
+              id="co-ch04-cobertura-instrument" />
+        &lt;fileset dir="${classes.dir}"&gt;
+            &lt;include name="**/*.class" /&gt;
+            &lt;exclude name="**/*Test.class" /&gt;
+        &lt;/fileset&gt;
+    &lt;/cobertura-instrument&gt;
+&lt;/target&gt;</programlisting></para>
+
+        <para><calloutlist>
+            <callout arearefs="co-ch04-cobertura-instrumentation">
+              <para>We can only instrument the application classes once they
+              have been compiled.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-delete">
+              <para>Remove any coverage data generated by previous
+              builds.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-delete-instrumented">
+              <para>Remove any previously instrumented classes.</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-instrument">
+              <para>Instrument the application classes (but not the test
+              classes) and place them in the ${instrumented.dir}
+              directory.</para>
+            </callout>
+          </calloutlist></para>
+
+        <para>At this stage, the ${instrumented.dir} directory contains an
+        instrumented version of our application classes. Now all we need to do
+        to generate some useful code coverage data is to run our unit tests
+        against the classes in this directory:</para>
+
+        <para><programlisting>&lt;target name="test-coverage" depends="instrument"&gt;
+    &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit" />
+        &lt;classpath location="${instrumented.dir}" /&gt;
+        &lt;classpath location="${classes.dir}" /&gt;
+        &lt;classpath refid="cobertura.classpath" /&gt;<co
+              id="co-ch04-cobertura-classpath" />
+
+        &lt;formatter type="xml" /&gt;
+        &lt;test name="${testcase}" todir="${reports.xml.dir}" if="testcase" /&gt;
+        &lt;batchtest todir="${reports.xml.dir}" unless="testcase"&gt;
+            &lt;fileset dir="${src.dir}"&gt;
+                &lt;include name="**/*Test.java" /&gt;
+            &lt;/fileset&gt;
+        &lt;/batchtest&gt;
+    &lt;/junit&gt;
+&lt;/target&gt;</programlisting><calloutlist>
+            <callout arearefs="co-ch04-cobertura-junit">
+              <para>Run the JUnit tests against the instrumented application
+              classes</para>
+            </callout>
+
+            <callout arearefs="co-ch04-cobertura-classpath">
+              <para>The instrumented classes use Cobertura classes, so the
+              Cobertura libraries also need to be on the classpath.</para>
+            </callout>
+          </calloutlist></para>
+
+        <para>This will produce the raw test coverage data we need to produce
+        the XML test coverage reports that Hudson can use. To actually produce
+        these reports, we need to invoke another task, as shown here:</para>
+
+        <para><programlisting>&lt;target name="coverage-report" depends="test-coverage"&gt;
+    &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" /&gt;
+&lt;/target&gt;</programlisting>Finally, don't forget to tidy up after your
+        done: the <command>clean</command> target should delete not only the
+        generated classes, but also the generated instrumented classes, the
+        Cobertura coverage data, and the Cobertura reports:</para>
+
+        <para><programlisting>&lt;target name="clean" description="Remove all files created by the build/test process."&gt;
+    &lt;delete dir="${classes.dir}" /&gt;
+    &lt;delete dir="${instrumented.dir}" /&gt;
+    &lt;delete dir="${reports.dir}" /&gt;
+    &lt;delete file="cobertura.log" /&gt;
+    &lt;delete file="cobertura.ser" /&gt;
+&lt;/target&gt;</programlisting>Once this is done, you are ready to integrate
+        your coverage reports into Hudson.</para>
+      </sect3>
+
+      <sect3>
+        <title>Installing the Cobertura code coverage plugin</title>
+
+        <para>Once code coverage data is being generated as part of your build
+        process, you can configure Hudson to report on it. This involves
+        installing the Hudson Cobertura plugin. We went through this process
+        in <xref linkend="sect-first-steps-metrics" />, but we'll run through
+        it again to refresh your memory. Go to the 'Manage Hudson' screen, and
+        click on 'Manage Plugins'. This will take you to the Plugin Manager
+        screen. If Cobertura has not been installed, you will find the
+        Cobertura Plugin in the 'Available' tab, in the 'Build Reports'
+        section (see <xref linkend="fig-hudson-cobertura-plugin" />). To
+        install it, just tick the checkbox and press enter (or scroll down to
+        the bottom of the screen and click on the 'Install' button). Hudson
+        will download and install the plugin for you. Once the downloading is
+        done, you will need to restart your Hudson server.</para>
+
+        <para><figure id="fig-hudson-cobertura-plugin">
+            <title>Installing the Cobertura plugin</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-cobertura-plugin.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Reporting on code coverage in your build</title>
+
+        <para>Once you have installed the plugin, you can set up code coverage
+        reporting in your build jobs. Since code coverage can be slow and
+        memory-hungry, you would typically create a separate build job for
+        this and other code quality metrics, to be run after the normal unit
+        and integration tests. For very large projects, you may even want to
+        set this up as a build that only runs on a nightly basis. Indeed,
+        feedback on code coverage and other such metrics is usually not as
+        time-critical as feedback on test results, and this will leave build
+        executors free for build jobs that can benefit from snappy
+        feedback.</para>
+
+        <para>As we mentioned earlier, Hudson does not do any code coverage
+        analysis itself - you need to configure your build to produce the
+        Cobertura <filename>coverage.xml</filename> file (or files) before you
+        can generate any nice graphs or reports, typically using one of the
+        techniques we discussed previously (see</para>
+
+        <para><xref linkend="fig-hudson-coverage-build-config" />).</para>
+
+        <para><figure id="fig-hudson-coverage-build-config">
+            <title>Your code coverage metrics build needs to generate the
+            coverage data</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-testing-cobertura-build.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Once you have configured your build to produce some code
+        coverage data, you can configure Cobertura in the 'Post-Action Builds'
+        section of your build job. When you tick the 'Publish Cobertura
+        Coverage Report' checkbox, you should see something like <xref
+        linkend="fig-hudson-coverage-config" />.</para>
+
+        <para><figure id="fig-hudson-coverage-config">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-config-cobertura.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>The first and most important field here is the path to the
+        Cobertura XML data that we generated. Your project may include a
+        single <filename>coverage.xml</filename> file, or several. If you have
+        a multi-module Maven project, for example, the Maven Cobertura plugin
+        will generate a separate <filename>coverage.xml</filename> file for
+        each module.</para>
+
+        <para>The path accepts Ant-style wildcards, so it is easy to include
+        code coverage data from several files. For any Maven project, a path
+        like '**/target/site/cobertura/coverage.xml' will include all of the
+        code coverage metrics for all of the modules in the project.</para>
+
+        <para>There are actually several types of code coverage, and it can
+        sometimes be useful to distinguish between them. The most intuitive is
+        Line Coverage, which counts the number of times any given line is
+        executed during the automated tests. "Conditional Coverage" (also
+        referred to as "Branch Coverage") takes into account whether the
+        boolean expressions in <command>if</command> statements and the like
+        are tested in a way that checks all the possible outcomes of the
+        conditional expression. For example, consider the following code
+        snippet:<programlisting>if (price &gt; 10000) {
+  managerApprovalRequired = true;
+}</programlisting></para>
+
+        <para>To obtain full Conditional Coverage for this code, you would
+        need to execute it twice: once with a value that is more than 10000,
+        and one with a value of 10000 or less.</para>
+
+        <para>Other more basic code coverage metrics include methods (how many
+        methods in the application were exercised by the tests), classes and
+        packages.</para>
+
+        <para>Hudson lets you define which of these metrics you want to track.
+        By default, the Cobertura plugin will record Conditional, Line, and
+        Method coverage, which is usually plenty. However it is easy to add
+        other coverage metrics if you think this might be useful for your
+        team.</para>
+
+        <para>Hudson code quality metrics are not simply a passive reporting
+        process - Hudson lets you define how these metrics affect the build
+        outcome. You can define threshold values for the coverage metrics that
+        affect both the build outcome and the weather reports on the Hudson
+        dashboard (see <xref
+        linkend="fig-hudson-testing-coverage-stabiliy" />). Each coverage
+        metric that you track takes three threshold values.</para>
+
+        <para><figure id="fig-hudson-testing-coverage-stabiliy">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-testing-coverage-stabiliy.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The first (the one with the sunny icon) is the minimum
+        value necessary for the build to have a sunny weather icon. The second
+        indicates the value below which the build will be attributed a stormy
+        weather icon. Hudson will extrapolate between these values for the
+        other more nuanced weather icons.</para>
+
+        <para>The last threshold value is simply the value below which a build
+        will be marked as 'unstable' - the yellow ball. While not quite as bad
+        as the red ball (for a broken build), a yellow ball will still result
+        in a notification message and will look bad on the dashboard.</para>
+
+        <para>This feature is far from simply a cosmetic detail - it provides
+        a valuable way of setting objective code quality goals for your
+        projects. Although it cannot be interpreted alone, falling code
+        coverage is generally not a good sign in a project. So if you are
+        serious about code coverage, use these threshold values to provide
+        some hard feedback about when things are not up to scratch.</para>
+      </sect3>
+
+      <sect3>
+        <title>Interpreting code coverage metrics</title>
+
+        <para>Hudson displays your code coverage reports on the build job home
+        page. The first time it runs, it produces a simple bar chart (see
+        <xref linkend="fig-hudson-initial-coverage-report" />). From the
+        second build onwards, a graph is shown, indicating the various types
+        of coverage that you are tracking over time (see <xref
+        linkend="fig-hudson-code-coverage-graph-over-time" />). In both cases,
+        the graph will also show the code coverage metrics for the latest
+        build.</para>
+
+        <para><figure id="fig-hudson-code-coverage-graph-over-time">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-code-coverage-graph-over-time.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Hudson also does a great job letting you drill down into
+        the coverage metrics, displaying coverage breakdowns for packages,
+        classes within a package, and lines of code within a class (see <xref
+        linkend="fig-hudson-code-coverage-package" />). No matter what level
+        of detail you are viewing, Hudson will display a graph at the top of
+        the page showing the code coverage trend over time. Further down, you
+        will find the breakdown by package or class.</para>
+
+        <para><figure id="fig-hudson-code-coverage-package">
+            <title>Configuring the test coverage metrics in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-code-coverage-package.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Once you get to the class details level, Hudson will also
+        display the source code of the class, with the lines color-coded
+        according to their level of coverage. Lines that have been completely
+        executed during the tests are green, and lines that were never
+        executed are marked in red. A number in the margin indicates the
+        number of times a given line was executed. Finally, yellow shading in
+        the margin is used to indicate insufficient conditional coverage (for
+        example, an if statement that was only tested with one
+        outcome).</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Automated Acceptance Tests</title>
+
+    <para>Automated acceptance tests play an important part in many agile
+    projects, both for verification and for communication. As a verification
+    tool, acceptance tests perform a similar role to integration tests, and
+    aim to demonstrate that the application effectively does what is expected
+    of it. But this is almost a secondary aspect of automated Acceptance
+    Tests. The primary focus is actually on communication - demonstrating to
+    non-developers (business owners, business analysts, testers, and so forth)
+    precisely where the project is at.</para>
+
+    <para>Acceptance tests should not be mixed with developer-focused tests,
+    as both their aim and their audience is very different. Acceptance tests
+    should be working examples of how the system works, with an emphasis on
+    demonstration rather than exhaustive proof. The exhaustive tests should be
+    done at the unit-testing level.</para>
+
+    <para>Acceptance Tests can be automated using conventional tools such as
+    JUnit, but there is a growing tendency to use Behaviour-Driven Development
+    (BDD) frameworks for this purpose, as they tend to be a better fit for the
+    public-facing nature of Acceptance Tests. Many behaviour-driven
+    development tools used for automated Acceptance Tests, such as JBehave and
+    Concordion, produce JUnit-compatible reports that can be understood
+    directly by Hudson. Others, like easyb, generate HTML reports with a
+    specific layout that is well-suited to non-developers.</para>
+
+    <para>As a rule, your Acceptance Tests should be displayed separately from
+    the other more conventional automated tests. If they use the same testing
+    framework as your normal tests (e.g. JUnit), make sure they are executed
+    in a dedicated build job, so that non-developers can view them and
+    concentrate on the business-focused tests without being distracted by
+    low-level or technical ones. It can also help to adopt business-focused
+    and behavioural naming conventions for your tests and test classes, to
+    make them more accessible to non-developers (see <xref
+    linkend="fig-hudson-junit-acceptance-tests" />). The way you name your
+    tests and test classes can make a huge difference when it comes to reading
+    the test reports and understanding the actual business features and
+    behaviour that is being tested.</para>
+
+    <para><figure id="fig-hudson-junit-acceptance-tests">
+        <title>Using business-focused, behaviour-driven naming conventions for
+        JUnit tests</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-junit-acceptance-tests.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>If you are using a tool that generates HTML reports, you can display
+    them in the same build as your conventional tests, as long as they appear
+    in a separate report. Hudson provides a very convenient plugin for this
+    sort of HTML report, called the HTML Publisher plugin (see <xref
+    linkend="fig-hudson-html-publisher-plugin" />). While it is still your job
+    to ensure that your build produces the right reports, Hudson can display
+    the reports on your build job page, making them easily accessible to all
+    team members.</para>
+
+    <para><figure id="fig-hudson-html-publisher-plugin">
+        <title>Installing the HTML Publisher plugin</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-html-publisher-plugin.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>This plugin is easy to configure. Just go to the 'Post-build
+    actions' section and tick the 'Publish HTML reports' checkbox (see <xref
+    linkend="fig-hudson-html-reports" />). Next, give Hudson the directory
+    your HTML reports were generated to, an index page, and a title for your
+    report. You can also ask Hudson to store the reports generated for each
+    build, or only keep the latest one.</para>
+
+    <para><figure id="fig-hudson-html-reports">
+        <title>Installing the HTML Publisher plugin</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-html-reports.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once this is done, Hudson will display a special icon on your
+    build job home page, with a link to your HTML report. In <xref
+    linkend="fig-hudson-easyb-report" />, you can see the easyb reports we
+    configured previously in action.</para>
+
+    <para><figure id="fig-hudson-easyb-report">
+        <title>Hudson displays a special link on the build job home page for
+        your report</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-easyb-report.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Automated Performance Tests with JMeter</title>
+
+    <para>Application performance is another important area of testing.
+    Performance testing can be used to verify many things, such as how quickly
+    an application responds to requests with a given number of simultaneous
+    users, or how well the application copes with an increasing number of
+    users. Many applications have Service Level Agreements, or SLAs, which
+    define contractually how well they should perform.</para>
+
+    <para>Performance testing is often a one-off, ad-hoc activity, only
+    undertaken right at the end of the project or when things start to go
+    wrong. Nevertheless, performance issues are like any other sort of bug -
+    the later on in the process they are detected, the more costly they are to
+    fix. It therefore makes good of sense to automate these performance and
+    load tests, so that you can spot any areas of degrading performance before
+    it gets out into the wild.</para>
+
+    <para>JMeter (<ulink url="http://jakarta.apache.org/jmeter/"></ulink>) is
+    a popular open source performance and load testing tool. It works by
+    simulating load on your application, and measuring the response time as
+    the number of simulated users and requests increase. It effectively
+    simulates the actions of a browser or client application, sending requests
+    of various sorts (HTTP, SOAP, JDBC, JMS and so on) to your server. You
+    configure a set of requests to be sent to your application, as well as
+    random pauses, conditions and loops, and other variations designed to
+    better imitate real user actions.</para>
+
+    <para>JMeter runs as a Swing application, in which you can configure your
+    test scripts (see <xref linkend="fig-jmeter-console" />). You can even run
+    JMeter as a proxy, and then manipulate your application in an ordinary
+    browser to prepare an initial version of your test script.</para>
+
+    <para><figure id="fig-jmeter-console">
+        <title>Preparing a performance test script in JMeter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/jmeter-console.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>A full tutorial on using JMeter is beyond the scope of this
+    book. However, it is fairly easy to learn, and you can find ample details
+    about how to use this it on the JMeter website. With a little work, you
+    can have a very respectable test script up and running in a matter of
+    hours.</para>
+
+    <para>What we are interested in here is the process of automating these
+    performance tests. There are several ways to integrate JMeter tests into
+    your Hudson build process. Although at the time of writing, there was no
+    official JMeter plugin for Maven available in the Maven repositories,
+    there is an Ant plugin. So the simplest approach is to write an Ant script
+    to run your performance tests, and then either call this Ant script
+    directly, or (if you are using a Maven project, and want to run JMeter
+    through Maven) use the Maven Ant integration to invoke the Ant script from
+    within Maven. A simple Ant script running some JMeter tests is illustrated
+    here:<programlisting>&lt;project default="jmeter"&gt;
+    &lt;path id="jmeter.lib.path"&gt;
+      &lt;pathelement location="${basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
+    &lt;/path&gt;
+    
+    &lt;taskdef name="jmeter"
+             classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"
+             classpathref="jmeter.lib.path" /&gt;
+    
+
+    &lt;target name="jmeter"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results.jtl"&gt;
+        &lt;jvmarg value="-Xmx512m" /&gt;
+      &lt;/jmeter&gt;
+    &lt;/target&gt;
+&lt;/project&gt;</programlisting></para>
+
+    <para>This assumes that the JMeter installation is available in the
+    <filename>tools</filename> directory of your project. Placing tools such
+    as JMeter within your project structure is a good habit, as it makes your
+    build scripts more portable and easier to run on any machine, which is
+    precisely what we need to run them on Hudson.</para>
+
+    <para>Note that we are also using the optional
+    <filename>&lt;jvmarg&gt;</filename> tag to provide JMeter with an ample
+    amount of memory - performance testing is a memory-hungry activity.</para>
+
+    <para>The script shown here will execute the JMeter performance tests
+    against a running application. So you need to ensure that the application
+    you want to test is up and running before you start the tests. There are
+    several ways to do this. For more heavy-weight performance tests, you will
+    usually want to deploy your application to a test server before running
+    the tests. For most applications this is not usually too difficult - the
+    Maven Cargo plugin, for example, lets you automate the deployment process
+    to a variety of local and remote servers. We will also see how to do this
+    in Hudson later on in the book.</para>
+
+    <para>Alternatively, if you are using Maven for a web application, you can
+    use the Jetty or Cargo plugin to ensure that the application is deployed
+    before the integration tests start, and then call the JMeter Ant script
+    from within Maven during the integration test phase. Using Jetty, for
+    example, you could so something like this:</para>
+
+    <para><programlisting>&lt;project...&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.mortbay.jetty&lt;/groupId&gt;
+        &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;7.1.0.v20100505&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;scanIntervalSeconds&gt;10&lt;/scanIntervalSeconds&gt;
+          &lt;connectors&gt;
+            &lt;connector
+              implementation="org.eclipse.jetty.server.nio.SelectChannelConnector"&gt;
+              &lt;port&gt;${jetty.port}&lt;/port&gt;
+              &lt;maxIdleTime&gt;60000&lt;/maxIdleTime&gt;
+            &lt;/connector&gt;
+          &lt;/connectors&gt;
+          &lt;stopKey&gt;foo&lt;/stopKey&gt;
+          &lt;stopPort&gt;9999&lt;/stopPort&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;start-jetty&lt;/id&gt;
+            &lt;phase&gt;pre-integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;run&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;scanIntervalSeconds&gt;0&lt;/scanIntervalSeconds&gt;
+              &lt;daemon&gt;true&lt;/daemon&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;stop-jetty&lt;/id&gt;
+            &lt;phase&gt;post-integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;stop&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</programlisting>This will start up an instance of Jetty and
+    deploy your web application to it just before the integration tests, and
+    shut it down afterwards.</para>
+
+    <para>Finally, you need to run the JMeter performance tests during this
+    phase. You can do this by using the maven-antrun-plugin to invoke the Ant
+    script we wrote earlier on during the integration test phase:</para>
+
+    <para><programlisting>&lt;project...&gt;
+  ...
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;performance&lt;/id&gt;
+      &lt;build&gt;
+        &lt;plugins&gt;
+          &lt;plugin&gt;
+            &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+            &lt;version&gt;1.4&lt;/version&gt;
+            &lt;executions&gt;
+              &lt;execution&gt;
+                &lt;id&gt;run-jmeter&lt;/id&gt;
+                &lt;phase&gt;integration-test&lt;/phase&gt;
+                &lt;goals&gt;
+                  &lt;goal&gt;run&lt;/goal&gt;
+                &lt;/goals&gt;
+                &lt;configuration&gt;
+                  &lt;tasks&gt;
+                    &lt;ant antfile="build.xml" target="jmeter" &gt;
+                  &lt;/tasks&gt;
+                &lt;/configuration&gt;
+              &lt;/execution&gt;
+            &lt;/executions&gt;
+          &lt;/plugin&gt;
+        &lt;/plugins&gt;
+      &lt;/build&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+  ...
+&lt;/project&gt;</programlisting></para>
+
+    <para>Now, all you need to do is to run the integration tests with the
+    'performance' profile to get Maven to run the JMeter test suite:<screen>$ <command>mvn verify -Pperformance</command></screen></para>
+
+    <para>Once you have configured your build script to handle JMeter, you can
+    set up a performance test build in Hudson. For this, we will use the
+    Performance Test Hudson plugin, which understands JMeter logs and can
+    generate nice statistics and graphs using this data. So go to the 'Plugin
+    Manager' screen on your Hudson server and install this plugin (see <xref
+    linkend="fig-hudson-installing-performance-plugin" />). When you have
+    installed the plugin, you will need to restart Hudson.</para>
+
+    <para><figure id="fig-hudson-installing-performance-plugin">
+        <title>Preparing a performance test script in JMeter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-installing-oerformance-plugin.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have the plugin installed, you can set up a
+    performance build job in Hudson. This build job will typically be fairly
+    separate from your other builds. In <xref
+    linkend="fig-hudson-midnight-build" />, we have set up the performance
+    build to run on a nightly basis, which is probably enough for a
+    long-running load or performance test.</para>
+
+    <para><figure id="fig-hudson-midnight-build">
+        <title>Setting up the performance build to run every night at
+        midnight</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-midnight-build.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>All that remains is to configure the build job to run your
+    performance tests. In <xref
+    linkend="fig-hudson-performance-build-config" />, we are running the Maven
+    build we configured earlier on. Note that we are using the MAVEN_OPTS
+    field (accessible by clicking on the 'Advanced' button) to provide plenty
+    of memory for the build job.</para>
+
+    <para><figure id="fig-hudson-performance-build-config">
+        <title>Performance tests can require large amounts of memory.</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-performance-build-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>To set up performance reporting, just tick the 'Publish Performance
+    test result report' option in the Post-build Actions section. You will
+    need to tell Hudson where to find your JMeter test results (the output
+    files, not the test scripts). The Performance plugin is happy to process
+    multiple JMeter results, so you can put wildcards in the path to make sure
+    all of your JMeter reports are displayed.</para>
+
+    <para>If you take your performance metrics seriously, then the build
+    should fail if the required SLA is not met. In a Continuous Integration
+    environment, any sort of metrics build that does not fail if minimum
+    quality criteria are not met will tend to be ignored.</para>
+
+    <para>You can configure the Performance plugin to mark a build as unstable
+    or failing if a certain percentage of requests result in errors. By
+    default, these values will only be raised in the event of real application
+    errors (i.e. bugs) or server crashes. However you really should configure
+    your JMeter test scripts to place a ceiling on the maximum acceptable
+    response time for your requests. This is particularly important if your
+    application has contractual obligations in this regard. One way to do this
+    in JMeter is by by adding a 'Duration Assertion' element to your script.
+    This will cause an error if any request takes longer than a certain fixed
+    time to execute.</para>
+
+    <para><figure id="fig-hudson-performance-setup">
+        <title>Configuring the Performance plugin in your build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-performance-setup.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Now, when the build job runs, the Performance plugin will
+    produce graphs keeping track of overall response times and of the number
+    of errors (see <xref linkend="fig-hudson-performance-trend" />). There
+    will be a separate graph for each JMeter report you have generated. If
+    there is only one graph, it will appear on the build home page; otherwise
+    you can view them on a dedicated page that you can access via the
+    'Performance Trend' menu item.</para>
+
+    <para><figure id="fig-hudson-performance-trend">
+        <title>The Hudson Performance plugin keeps track of response time and
+        errors</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-performance-trend.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>This graph gives you an overview of performance over time. You would
+    typically use this graph to ensure that your average response times are
+    within the expected limits, and also spot any unusually high variations in
+    the average or maximum response times. However if you need to track down
+    and isolate performance issues, the Performance Breakdown screen can be
+    more useful. From within the Performance Trend report, click on the 'Last
+    Report' link at the top of the screen. This will display a breakdown of
+    response times and errors per request (see <xref
+    linkend="fig-hudson-performance-breakdown" />). You can do the same thing
+    for previous builds, by clicking on the 'Performance Report' link in the
+    build details page.</para>
+
+    <para><figure id="fig-hudson-performance-breakdown">
+        <title>You can also view performance results per request</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-performance-breakdown.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>With some minor variations, a JMeter test script basically works by
+    simulating a given number of simultaneous users. Typically, however, you
+    will want to see how your application performs for different numbers of
+    users. The Hudson Performance plugin handles this quite well, and can
+    process graphs for multiple JMeter reports. Just make sure you use a
+    wildcard expression when you tell Hudson where to find the reports.</para>
+
+    <para>Of course, it would be nice to be able to reuse the same JMeter test
+    script for each test run. JMeter supports parameters, so you can easily
+    reuse the same JMeter script with different numbers simulated users. You
+    just use a property expression in your JMeter script, and then pass the
+    property to JMeter when you run the script. If your property is called
+    "request.threads", then the property expression in your JMeter script
+    would be "${__property(request.threads)}". Then, you can use the
+    <filename>&lt;property&gt;</filename> element in the
+    <filename>&lt;jmeter&gt;</filename> Ant task to pass the property when you
+    run the script. The following Ant target, for example, runs JMeter three
+    times, for 200, 500 and 1000 simultaneous users:<programlisting>    &lt;target name="jmeter"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-200-users.jtl"&gt;
+        &lt;jvmarg value="-Xmx512m" /&gt;
+        &lt;property name="request.threads" value="200"/&gt;
+        &lt;property name="request.loop" value="20"/&gt;
+      &lt;/jmeter&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-500-users.jtl"&gt;
+        &lt;jvmarg value="-Xmx512m" /&gt;
+        &lt;property name="request.threads" value="500"/&gt;
+        &lt;property name="request.loop" value="20"/&gt;
+      &lt;/jmeter&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-1000-users.jtl"&gt;
+        &lt;jvmarg value="-Xmx512m" /&gt;
+        &lt;property name="request.threads" value="1000"/&gt;
+        &lt;property name="request.loop" value="20"/&gt;
+      &lt;/jmeter&gt;
+    &lt;/target&gt;</programlisting></para>
+  </sect1>
+
+  <sect1 id="sect-tests-too-slow">
+    <title>Help! My tests are too slow</title>
+
+    <para>One of the underlying principles of designing your CI builds is that
+    the value of information about a build failure diminishes rapidly with
+    time. In other words, the longer the news of a build failure takes to get
+    to you, the less it is worth, and the harder it is to fix.</para>
+
+    <para>Indeed, if your functional or integration tests are taking several
+    hours to run, chances are they won't be run for every change. They are
+    more likely to be scheduled as a nightly build. The problem with this is
+    that a lot can happen in twenty-four hours, and, if the nightly build
+    fails, it will be difficult to figure out which of the many changes
+    committed to version control during the day was responsible. This is a
+    serious issue, and penalizes your CI server's ability to provide the fast
+    feedback that makes it useful.</para>
+
+    <para>Of course some builds <emphasis>are</emphasis> slow, by their very
+    nature. Performance or load tests fall into this category, as do some more
+    heavy-weight code quality metrics builds for large projects. However,
+    integration and functional tests most definitely do
+    <emphasis>not</emphasis> fall into this category. You should do all you
+    can to make these tests as fast as possible. Under ten minutes is probably
+    acceptable for a full integration/functional test suite. Two hours is
+    not.</para>
+
+    <para>So, if you find yourself needing to speed up your tests, here are a
+    few strategies that might help, in approximate order of difficulty.</para>
+
+    <sect2>
+      <title>Add more hardware</title>
+
+      <para>Sometimes the easiest way to speed up your builds is to throw more
+      hardware into the mix. This could be as simple as upgrading your build
+      server. Compared to the time and effort saved in identifying and fixing
+      integration-related bugs, the cost of buying a shiny new build server is
+      relatively modest.</para>
+
+      <para>This can also involve distributing your builds across several
+      servers. While this will not in itself speed up your tests, it may
+      result in faster feedback if your build server is under heavy demand,
+      and if build jobs are constantly being queued.</para>
+    </sect2>
+
+    <sect2>
+      <title>Run less integration/functional tests</title>
+
+      <para>In many applications, integration or functional tests are used by
+      default as the standard way to test almost all aspects of the system.
+      However integration and functional tests are not the best way to detect
+      and identify bugs. Because of the large number of components involved in
+      a typical end-to-end test, it can be very hard to know where something
+      has gone wrong. In addition, with so many moving parts, it is extremely
+      difficult, if not completely unfeasible, to cover all of the possible
+      paths through the application.</para>
+
+      <para>For this reason, wherever possible, you should prefer
+      quick-running unit tests to the much slower integration and functional
+      tests. When you are confident that the individual components work well,
+      you can complete the picture by a few end-to-end tests that step through
+      common use cases for the system, or use cases that have caused problems
+      in the past. This will help ensure that the components do fit together
+      correctly, which is, after all, what integration tests are supposed to
+      do. But leave the more comprehensive tests where possible to unit tests.
+      This strategy is probably the most sustainable approach to keeping your
+      feedback loop short, but it does require some discipline and
+      effort.</para>
+    </sect2>
+
+    <sect2>
+      <title>Run your tests in parallel</title>
+
+      <para>If your functional tests take two hours to run, it is unlikely
+      that they all need to be run back-to-back. It is also unlikely that they
+      will be consuming all of the available CPU on your build machine. So
+      breaking your integration tests into smaller batches and running them in
+      parallel makes a lot of sense.</para>
+
+      <para>There are several strategies you can try, and your mileage will
+      probably vary depending on the nature of your application. One approach,
+      for example, is to set up several build jobs to run different subsets of
+      your functional tests, and to run these jobs in parallel. Hudson lets
+      you aggregate test results. This is a good way to take advantage of a
+      distributed build architecture to speed up your builds even further.
+      Essential to this strategy is the ability to run subsets of your tests
+      in isolation, which may require some refactoring.</para>
+
+      <para>At a lower level, you can also run your tests in parallel at the
+      build scripting level. As we saw earlier, both TestNG, and the more
+      recent versions of JUnit support running tests in parallel.
+      Nevertheless, you will need to ensure that your tests can be run
+      concurrently, which may take some refactoring. For example, common files
+      or shared instance variables within test cases will cause problems
+      here.</para>
+
+      <para>In general, you need to be careful of interactions between your
+      tests. If your web tests start up an embedded web server such as Jetty,
+      for example, you need to make sure the port used is different for each
+      set of concurrent tests.</para>
+
+      <para>Nevertheless, if you can get it to work for your application,
+      running your tests in parallel is one of the more effective way to speed
+      up your tests.</para>
+    </sect2>
+  </sect1>
+
+  <sect1>
     <title>Conclusion</title>
 
-    <para>TODO</para>
+    <para>Automated testing is a critical part of any Continuous Integration
+    environment, and should be taken very seriously. As in other areas on CI,
+    and perhaps even more so, feedback is king, so it is important to ensure
+    that your tests run fast, even the integration and functional ones.</para>
   </sect1>
 </chapter>

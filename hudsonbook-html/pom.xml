@@ -86,7 +86,7 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>hudsonbook-content</artifactId>
+									<artifactId>${hudsonbook-content}</artifactId>
 									<version>${project.version}</version>
 								</artifactItem>
 							</artifactItems>
@@ -103,14 +103,23 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
   </build>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>hudsonbook-content</artifactId>
+			<artifactId>${hudsonbook-content}</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-
+  <properties>
+    <hudsonbook-content>hudsonbook-content</hudsonbook-content>
+  </properties>
+  <profiles>
+    <profile>
+      <id>french</id>
+      <properties>
+        <hudsonbook-content>hudsonbook-content-fr</hudsonbook-content>
+      </properties>
+    </profile>
+  </profiles>
 </project>
