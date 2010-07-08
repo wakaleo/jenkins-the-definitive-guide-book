@@ -97,24 +97,10 @@
 					<xincludeSupported>true</xincludeSupported>
 					<imgSrcPath>${basedir}/target/docbook/</imgSrcPath>
 					<foCustomization>${basedir}/target/classes/fopdf.xsl</foCustomization>
-					<bodyFontFamily>fzbys</bodyFontFamily>
+					<bodyFontFamily>TimesNewRoman</bodyFontFamily>
 					<monospaceFontFamily>Courier</monospaceFontFamily>
-					<titleFontFamily>fzcys</titleFontFamily>
+					<titleFontFamily>ArialBold</titleFontFamily>
 					<fonts>
-						<font>
-							<name>fzbys</name>
-							<style>normal</style>
-							<weight>normal</weight>
-							<embedFile>${basedir}/src/fonts/fzbys.ttf</embedFile>
-							<metricsFile>${basedir}/src/fonts/fzbys.xml</metricsFile>
-						</font>
-						<font>
-							<name>fzcys</name>
-							<style>normal</style>
-							<weight>normal</weight>
-							<embedFile>${basedir}/src/fonts/fzcys.ttf</embedFile>
-							<metricsFile>${basedir}/src/fonts/fzcys.xml</metricsFile>
-						</font>
 						<font>
 							<name>Arial</name>
 							<style>normal</style>
@@ -135,7 +121,6 @@
 							<weight>normal</weight>
 							<embedFile>${basedir}/src/fonts/Courier.ttf</embedFile>
 							<metricsFile>${basedir}/target/fonts/Courier-metrics.xml</metricsFile>
-
 						</font>
 						<font>
 							<name>Courier</name>
@@ -143,7 +128,6 @@
 							<weight>bold</weight>
 							<embedFile>${basedir}/src/fonts/Courier-Bold.ttf</embedFile>
 							<metricsFile>${basedir}/target/fonts/Courier-Bold-metrics.xml</metricsFile>
-
 						</font>
 						<font>
 							<name>Courier</name>
@@ -151,7 +135,6 @@
 							<weight>normal</weight>
 							<embedFile>${basedir}/src/fonts/Courier-Oblique.ttf</embedFile>
 							<metricsFile>${basedir}/target/fonts/Courier-Oblique-metrics.xml</metricsFile>
-
 						</font>
 						<font>
 							<name>TimesNewRoman</name>
@@ -159,7 +142,6 @@
 							<weight>normal</weight>
 							<embedFile>${basedir}/src/fonts/TimesNewRoman.ttf</embedFile>
 							<metricsFile>${basedir}/target/fonts/TimesNewRoman-metrics.xml</metricsFile>
-
 						</font>
 					</fonts>
 				</configuration>
@@ -177,7 +159,7 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>${project.groupId}</groupId>
-									<artifactId>hudsonbook-content</artifactId>
+									<artifactId>${hudsonbook-content}</artifactId>
 									<version>${project.version}</version>
 								</artifactItem>
 							</artifactItems>
@@ -234,8 +216,54 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>hudsonbook-content</artifactId>
+			<artifactId>${hudsonbook-content}</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
+  <properties>
+    <hudsonbook-content>hudsonbook-content</hudsonbook-content>
+  </properties>
+  <profiles>
+    <profile>
+      <id>french</id>
+      <properties>
+        <hudsonbook-content>hudsonbook-content-fr</hudsonbook-content>
+      </properties>
+    </profile>
+    <profile>
+      <id>zh</id>
+      <properties>
+        <hudsonbook-content>hudsonbook-content-zh</hudsonbook-content>
+      </properties>
+      <build>
+      	<plugins>
+      		<plugin>
+				    <groupId>com.agilejava.docbkx</groupId>
+				    <artifactId>docbkx-maven-plugin</artifactId>
+				    <configuration>
+					    <bodyFontFamily>fzbys</bodyFontFamily>
+					    <monospaceFontFamily>Courier</monospaceFontFamily>
+					    <titleFontFamily>fzcys</titleFontFamily>
+					    <fonts>
+						    <font>
+							    <name>fzbys</name>
+							    <style>normal</style>
+							    <weight>normal</weight>
+							    <embedFile>${basedir}/src/fonts/fzbys.ttf</embedFile>
+							    <metricsFile>${basedir}/src/fonts/fzbys.xml</metricsFile>
+						    </font>
+						    <font>
+							    <name>fzcys</name>
+							    <style>normal</style>
+							    <weight>normal</weight>
+							    <embedFile>${basedir}/src/fonts/fzcys.ttf</embedFile>
+							    <metricsFile>${basedir}/src/fonts/fzcys.xml</metricsFile>
+						    </font>
+						  </fonts>
+						</configuration>
+      		</plugin>
+      	</plugins>
+      </build>
+    </profile>    
+  </profiles>	
 </project>
