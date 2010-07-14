@@ -632,7 +632,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         <para>Assuming you have downloaded the latest Cobertura installation
         and placed it within your project in a directory called
         <filename>tools</filename>, you could do something like
-        this:<programlisting>&lt;property name="cobertura.dir" value="${basedir}/tools/cobertura" /&gt;<co
+        this:<programlisting>&lt;property name="cobertura.dir" value="&dollar;{basedir}/tools/cobertura" /&gt;<co
               id="co-ch04-cobertura-dir" />
 
 &lt;path id="cobertura.classpath"&gt;<co id="co-ch04-cobertura-path" />
@@ -708,7 +708,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         against the classes in this directory:</para>
 
         <para><programlisting>&lt;target name="test-coverage" depends="instrument"&gt;
-    &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit" />
+    &lt;junit fork="yes" dir="&dollar;{basedir}"&gt;<co id="co-ch04-cobertura-junit" />
         &lt;classpath location="${instrumented.dir}" /&gt;
         &lt;classpath location="${classes.dir}" /&gt;
         &lt;classpath refid="cobertura.classpath" /&gt;<co
@@ -1131,7 +1131,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     within Maven. A simple Ant script running some JMeter tests is illustrated
     here:<programlisting>&lt;project default="jmeter"&gt;
     &lt;path id="jmeter.lib.path"&gt;
-      &lt;pathelement location="${basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
+      &lt;pathelement location="&dollar;{basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
     &lt;/path&gt;
     
     &lt;taskdef name="jmeter"
@@ -1140,9 +1140,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     
 
     &lt;target name="jmeter"&gt;
-      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
-              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="${basedir}/target/jmeter-results.jtl"&gt;
+      &lt;jmeter jmeterhome="&dollar;{basedir}/tools/jmeter"
+              testplan="&dollar;{basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="&dollar;{basedir}/target/jmeter-results.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
       &lt;/jmeter&gt;
     &lt;/target&gt;
@@ -1413,23 +1413,23 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <filename>&lt;jmeter&gt;</filename> Ant task to pass the property when you
     run the script. The following Ant target, for example, runs JMeter three
     times, for 200, 500 and 1000 simultaneous users:<programlisting>    &lt;target name="jmeter"&gt;
-      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
-              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="${basedir}/target/jmeter-results-200-users.jtl"&gt;
+      &lt;jmeter jmeterhome="&dollar;{basedir}/tools/jmeter"
+              testplan="&dollar;{basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="&dollar;{basedir}/target/jmeter-results-200-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="200"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
       &lt;/jmeter&gt;
-      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
-              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="${basedir}/target/jmeter-results-500-users.jtl"&gt;
+      &lt;jmeter jmeterhome="&dollar;{basedir}/tools/jmeter"
+              testplan="&dollar;{basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="&dollar;{basedir}/target/jmeter-results-500-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="500"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
       &lt;/jmeter&gt;
-      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
-              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="${basedir}/target/jmeter-results-1000-users.jtl"&gt;
+      &lt;jmeter jmeterhome="&dollar;{basedir}/tools/jmeter"
+              testplan="&dollar;{basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="&dollar;{basedir}/target/jmeter-results-1000-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="1000"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
