@@ -1,0 +1,308 @@
+<!--
+The MIT License
+
+Copyright (c) 2004-2009, Sun Microsystems, Inc., Kohsuke Kawaguchi, Stephen Connolly, Tom Huybrechts, Yahoo! Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jvnet.hudson.main</groupId>
+    <artifactId>pom</artifactId>
+    <version>1.352</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <artifactId>hudson-war</artifactId>
+  <packaging>war</packaging>
+  <name>Hudson war</name>
+  <description>
+    Creates a war file. Also includes additional static web resources, such as images, CSS, JavaScript, and
+    some HTML files.
+  </description>
+  
+  <build>
+    <directory>target</directory>
+    <finalName>hudson</finalName>
+    
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.1-beta-1</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>${basedir}/resources</directory>
+              <!--excludes> not much size improvements
+                <exclude>**/*-debug.js</exclude>
+              </excludes-->
+            </resource>
+            <resource>
+              <directory>${basedir}/target/generated-resources</directory>
+            </resource>
+          </webResources>
+          <!-- for putting Main-Class into war -->
+          <archive>
+            <manifest>
+              <mainClass>Main</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Version>${project.version}</Implementation-Version>
+            </manifestEntries>
+          </archive>
+          <!--outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping-->
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>list</goal>
+            </goals>
+            <configuration>
+              <outputFile>${basedir}/target/classes/dependencies.txt</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+        <artifactId>maven-antrun-extended-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <!-- deploy the war as a jar, so that the tests can pull this into the classpath -->
+                <attachArtifact file="target/hudson.war" classifier="war-for-test" type="jar" />
+              </tasks>
+            </configuration>
+          </execution>
+          <execution>
+            <id>resgen</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <verifyArtifact>false</verifyArtifact>
+              <tasks>
+                <mkdir dir="target/generated-resources" />
+
+                <!-- put executable war header -->
+                <resolveArtifact groupId="org.jvnet.hudson" artifactId="executable-war" version="1.14" type="jar" property="executable-war.jar" />
+                <unjar src="${executable-war.jar}" dest="target/generated-resources">
+                  <patternset>
+                    <include name="**/*.class" />
+                  </patternset>
+                </unjar>
+
+                <!-- dependencies that goes to unusual locations -->
+                <resolveArtifact artifactId="remoting" tofile="${basedir}/target/generated-resources/WEB-INF/remoting.jar" />
+                <resolveArtifact artifactId="remoting" tofile="${basedir}/target/generated-resources/WEB-INF/slave.jar" />
+                <resolveArtifact groupId="${project.groupId}" artifactId="cli" classifier="jar-with-dependencies" version="${project.version}" type="jar" tofile="${basedir}/target/generated-resources/WEB-INF/hudson-cli.jar" />
+                <resolveArtifact groupId="org.jvnet.hudson.winstone" artifactId="winstone" version="0.9.10-hudson-16" type="jar" tofile="${basedir}/target/generated-resources/winstone.jar" />
+
+                <!-- bundled plugins -->
+                <resolveArtifact groupId="${project.groupId}" artifactId="maven-plugin" version="${project.version}" type="hpi" tofile="${basedir}/target/generated-resources/WEB-INF/plugins/maven-plugin.hpi" />
+                <resolveArtifact groupId="org.jvnet.hudson.plugins" artifactId="ssh-slaves" version="0.9" type="hpi" tofile="${basedir}/target/generated-resources/WEB-INF/plugins/ssh-slaves.hpi" />
+                <resolveArtifact groupId="org.jvnet.hudson.plugins" artifactId="subversion" version="1.13" type="hpi" tofile="${basedir}/target/generated-resources/WEB-INF/plugins/subversion.hpi" />
+                <resolveArtifact groupId="org.jvnet.hudson.plugins" artifactId="cvs" version="1.0" type="hpi" tofile="${basedir}/target/generated-resources/WEB-INF/plugins/cvs.hpi" />
+                <resolveArtifact groupId="org.jvnet.hudson.plugins" artifactId="scis-ad" version="1.2" type="hpi" tofile="${basedir}/target/generated-resources/WEB-INF/plugins/scis-ad.hpi" />
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- this is really just a patched version of maven-jetty-plugin to workaround issue #932 -->
+        <groupId>org.jvnet.hudson.tools</groupId>
+        <artifactId>maven-hudson-dev-plugin</artifactId>
+        <version>6.1.7</version>
+        <configuration>
+          <contextPath>${contextPath}</contextPath>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                <port>${port}</port>
+            </connector>
+          </connectors>
+          <!--
+            read directly from core module's output directory,
+            so that changes are picked up right away without running mvn.
+          -->
+          <classesDirectory>../core/target/classes</classesDirectory>
+          <!-- use the test classpath for loading resources, since this takes priority -->
+          <testClassesDirectory>../core/src/main/resources</testClassesDirectory>
+          <useTestClasspath>true</useTestClasspath>
+          <!--
+            Reload webapp when you hit ENTER. (See JETTY-282 for more)
+          -->
+          <consoleForceReload>true</consoleForceReload>
+          <webAppSourceDirectory>${basedir}/resources</webAppSourceDirectory>
+          <userRealms>
+            <userRealm implementation="org.mortbay.jetty.security.HashUserRealm">
+              <name>default</name>
+              <config>${basedir}/src/realm.properties</config>
+            </userRealm>
+          </userRealms>
+          <systemProperties>
+            <systemProperty>
+              <name>HUDSON_HOME</name>
+              <value>${HUDSON_HOME}</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- always reload views during debugging -->
+              <name>stapler.jelly.noCache</name>
+              <value>true</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- show the stapler evaluation during execution -->
+              <name>stapler.trace</name>
+              <value>true</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- always reload scripts during debugging -->
+              <name>hudson.script.noCache</name>
+              <value>true</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- load view resources from the source directly, again for real time change -->
+              <name>stapler.resourcePath</name>
+              <value>../core/src/main/resources</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- enable the plugins in main by default -->
+              <name>hudson.bundled.plugins</name>
+              <value>${basedir}/../maven-plugin/target/test-classes/the.hpl,${basedir}/../ui-samples-plugin/target/test-classes/the.hpl</value>
+            </systemProperty>
+            <systemProperty>
+              <!-- stat collection pointless -->
+              <name>hudson.model.UsageStatistics.disabled</name>
+              <value>true</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jvnet.hudson.main</groupId>
+      <artifactId>hudson-core</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <!--
+          jars that are not needed in war. most of the exclusions should happen in the core, to make IDEs happy, not here.
+        -->
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jsp-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- offline profiler API when we need it -->
+    <!--dependency>
+      <groupId>com.yourkit.api</groupId>
+      <artifactId>yjp</artifactId>
+      <version>dontcare</version>
+      <scope>system</scope>
+      <systemPath>/usr/local/yjp/lib/yjp.jar</systemPath>
+    </dependency-->
+  </dependencies>
+  
+  <properties>
+    <HUDSON_HOME>${basedir}/work</HUDSON_HOME>
+    <contextPath>/</contextPath><!-- context path during test -->
+    <port>8080</port><!-- HTTP listener port -->
+  </properties>
+
+  <profiles>
+    <profile>
+      <!-- profile for creating Hudson IPS package -->
+      <id>ips</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jvnet.updatecenter2</groupId>
+            <artifactId>maven-makepkgs-plugin</artifactId>
+            <version>0.3</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>package</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <python>python2.5</python>
+              <proto>../ips/proto.py</proto>
+              <attach>false</attach>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- sign war -->
+      <id>sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <!-- sign the war -->
+              <execution>
+                <id>signWar</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <!--
+                      during the development, debug profile defined in ../pom.xml will cause
+                      the jars to be signed by a self-certified dummy public key.
+
+                      For release, you should define the real values in ~/.m2/settings.xml
+                    -->
+                    <signjar jar="target/hudson.war" alias="${hudson.sign.alias}" keystore="${hudson.sign.keystore}" storepass="${hudson.sign.storepass}" />
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

@@ -1,0 +1,29 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+
+<!--
+Project disk usage information + trend graph
+-->
+
+<j:set var="projectDiskUsage" value="${from.getDiskUsage()}" />
+
+<j:if test="${(projectDiskUsage!=null)  &amp;&amp; ((projectDiskUsage.getBuildUsage() > 0) || (projectDiskUsage.getWsUsage() > 0))}">
+    
+  <div style="width:auto;align:right;margin:12px;">
+    <div style="width:auto;margin:0px;margin-left:auto;text-align:right;">
+      <img src="${rootURL}/plugin/disk-usage/icons/diskusage16.png" /> 
+      <b>Disk Usage: </b> Workspace ${projectDiskUsage.getWsUsageString()}, Builds ${projectDiskUsage.getBuildUsageString()}  
+    </div>
+  </div>
+
+  <j:if test="${from.showGraph()}">
+    <div class="test-trend-caption">
+      Disk Usage Trend
+    </div>
+
+    <div>
+      <img src="disk-usage/graph" />
+    </div>
+  </j:if>
+  
+</j:if>
+</j:jelly>
