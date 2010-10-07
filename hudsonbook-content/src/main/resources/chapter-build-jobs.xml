@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Setting up your build jobs</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>build jobs</primary>
+      </indexterm>Build jobs are the basic currency of a Continuous
+    Integration server.</para>
+
+    <para>A build job is a particular way of building, testing, deploying or
+    otherwise doing something with your project. Build jobs come in a variety
+    of forms: you may want to compile and unit test your application, report
+    on code quality metrics related to the source code, generate
+    documentation, bundle up an application for a release, deploy it to
+    production, run an automated smoke test, or do any number of other such
+    tasks.</para>
+
+    <para>A software project will usually have several related build jobs. For
+    example, you might choose to start off with a dedicated build job that
+    runs all of your unit tests. If these pass, you might proceed to a build
+    job that executes longer-running integration tests...</para>
+
+    <para>TODO Staged builds, build steps and build pipelines</para>
+
+    <para>In Hudson, build jobs are easy to set up. In this chapter, we will
+    look at the main types of build jobs, how to configure them...</para>
+
+    <para>TODO: Finish introduction</para>
+  </sect1>
+
+  <sect1 id="sect-configuration-manage-hudson">
+    <title>Hudson build jobs</title>
+
+    <para>Creating a new build job in Hudson is simple: just click on the 'New
+    Job' menu item on the Hudson dashboard. Hudson supports several different
+    types of build job, which are presented to you when you choose to create a
+    new jon (see <xref linkend="fig-hudson-build-types" />).<variablelist>
+        <varlistentry>
+          <term>Free-style software project</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>free-style</secondary>
+              </indexterm> Free-style build jobs are general-purpose build
+            jobs, which provides a maximum of flexibility.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Maven 2 project</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>maven2</secondary>
+              </indexterm>The 'maven2 project' is a build job specially
+            adapted to Maven 2 (and Maven 3) projects. Hudson understands
+            Maven <filename>pom</filename> files and project structures, and
+            can use the information gleaned from the <filename>pom</filename>
+            file to reduce the work you need to do to set up your
+            project.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Monitor an external job</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>monitor an external job</secondary>
+              </indexterm>The 'Monitor an external job' build job lets you
+            keep an eye on non-interactive processes, such as cron
+            jobs.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Multi-configuration job</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build-jobs</primary>
+
+                <secondary>multi-configuration</secondary>
+              </indexterm>The 'multi-configuration project' (also referred to
+            as a 'matrix project') lets you run the same build job in many
+            different configurations. This powerful feature can be useful for
+            testing an application in many different environments, with
+            different databases, or even on different build machines.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist></para>
+
+    <para><figure id="fig-hudson-build-types">
+        <title>Hudson supports four main types of build job.</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-build-job-types.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>You can also copy an existing job, which is a great way to create a
+    new job that is very similar to an existing build job, except for a few
+    configuration details.</para>
+
+    <para>Let's look at each of these, starting off with the most flexible
+    option: the free-style build job.</para>
+  </sect1>
+
+  <sect1>
+    <title>Working with free-style build jobs</title>
+
+    <para>The free-style build job is the most flexible and configurable
+    option, and can be used for any type of project. It is relatively
+    straight-forward to set up, and many of the options we configure here also
+    appear in other build jobs.</para>
+
+    <sect2>
+      <title>General options</title>
+
+      <para>The first section you see when you create a new free-style job
+      contains general information about the project, such as a unique name
+      and description, and other information about how and where the build job
+      should be executed (see <xref
+      linkend="fig-hudson-new-project-general" />).</para>
+
+      <para><figure id="fig-hudson-new-project-general">
+          <title>Hudson supports four main types of build job.</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-new-project-general.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>The Project name can be anything you like, but it is worth noting
+      that it will be used for the project directory and the build job URL, so
+      I generally avoid names with spaces. The project description will go on
+      the project home page - use this to provide an overview of the build
+      job's goals and context. HTML tags will work fine in this field.</para>
+
+      <para>The other options are more technical, and we will be looking at
+      some of them in detail later on in the book.</para>
+
+      <para>One important option that you should think about upfront however
+      is how you want to handle build history. Build jobs can consume a lot of
+      disk space, especially if you store the build artifacts (the binary
+      files, such as JARs, WARs, TARs etc., generated by your build job). Even
+      without artifacts, keeping a record of every build job consumes
+      additional disk space and memory, which may or may not be justified,
+      depending on the nature of your build job. For example, for a code
+      quality metrics build that reports on static analysis and code coverage
+      metrics over time, you might want to keep a record of the builds for the
+      duration of the project, whereas, for a build job that automatically
+      deploys an application to a test server, keeping the build history and
+      artifacts for posterity might be less important.</para>
+
+      <para>The 'Discard Old Builds' option lets you limit the number of
+      builds you record in the build history. You can either tell Hudson to
+      only keep recent builds (Hudson will delete builds after a certain
+      number of days), or to keep no more than a specified number of builds.
+      If a certain build has particular sentimental value, you can always tell
+      Hudson to keep it forever. In addition, Hudson will never delete the
+      last stable and successful builds, no matter how old they are. For
+      example, if you limit Hudson to only keep the last twenty builds, and
+      your last successful build was thirty builds ago, Hudson will still keep
+      the successful build job as well as the last twenty failing
+      builds.</para>
+
+      <para>You also have the option to disable the build. A disabled build
+      will not be executed until you enable it again. Using this option when
+      you create a new build jobs is quite rare. On the other hand, this
+      option often comes in handy to temporarily suspend a build during
+      maintenance work or major refactoring, when notification of the build
+      failures will not be useful for the team.</para>
+    </sect2>
+
+    <sect2>
+      <title>Advanced Project Options</title>
+
+      <para>The Advanced Project options contains, as the name suggests,
+      configuration options that are less frequently required. You need to
+      click on the 'Advanced' button for them to appear (see <xref
+      linkend="hudson-new-project-advanced" />).</para>
+
+      <para><figure id="fig-hudson-new-project-advanced">
+          <title>To display the Advanced Options, you need to click on the
+          'Advanced' button</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-new-project-advanced.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The <command>Quiet Period</command> option in the build job
+      configuration simply lets you override the system-wide quiet period
+      defined in the Hudson System Configuration screen (see <xref
+      linkend="sect-configuration-system" />). This option is mainly used for
+      version control systems that don't support atomic commits, such as CVS,
+      but it is also sometimes used in teams where developers have the habit
+      of committing their work in several small commits. </para>
+
+      <para>The <command>Block build when upstream project</command> is
+      building option is useful when several related projects are affected by
+      a single commit, but they must be built in a specific order. If you
+      activate this option, Hudson will wait until any upstream build jobs
+      (see <xref linkend="sect-build-triggers" />) have finished before
+      starting this build. </para>
+
+      <para>For instance, when you release a new version of a multi-module
+      Maven project, version number updates will happen in many, if not all,
+      of the project modules. Suppose, for example, that we have added a web
+      application to the Game Of Life project we used in <xref
+      linkend="chapter-first-steps" />, setting it up as a separate Maven
+      project. When we release a new version of this project, both the core
+      and the web application version numbers will be updated (see ). Before
+      we can build the web application, we need to build a new version of the
+      original Game Of Life core module. However if you had a separate
+      free-style build job for each module, then the build jobs for both the
+      core and the web application would start simultaneously. The web
+      application build job will fail if it the core build job hasn't produced
+      a new version of the core module for it, even if there are no test
+      failures. </para>
+
+      <para>To avoid this issue, you could set up the web application build
+      job to <emphasis>only</emphasis> start once the core build has
+      successfully terminated. However this would mean that the web
+      application would never be built if changes where made that only
+      affected it, and not the core module. A better approach is to use the
+      <command>Block build when upstream project</command>. In this case, when
+      the version numbers are updated in version control, Hudson will schedule
+      both builds to be executed. However it will wait until the core build
+      has finished before starting the web application build.</para>
+
+      <para><figure id="fig-hudson-new-job-version-updates">
+          <title>The 'Block build when upstream project is building' option is
+          useful when a single commit can affect several related
+          projects.</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-new-job-version-updates.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>You can also override the default workspace used by Hudson to
+      check out the source code and build your project. Normally, Hudson will
+      create a special workspace directory for your project, which can be
+      found in the project's build job directory (see <xref
+      linkend="sec-hudson-home-directory-contents" />). This works fine in
+      almost all cases. However, there are times when you need to override
+      this option, and force Hudson to use a special directory. One common
+      example of this is if you want several build jobs to all work
+      successively in the same directory. You can override the default
+      directory by ticking the <command>Use custom workspace</command> option,
+      and providing the path yourself. The path can be either absolute, or
+      relative to Hudson's home directory.</para>
+
+      <para>We will look at some of the other more advanced options that
+      appear in this section later on in the book.</para>
+    </sect2>
+
+    <sect2>
+      <title>Source code management</title>
+
+      <para>TODO: Introduction</para>
+
+      <para>Hudson supports CVS and Subversion out-of-the-box, and also
+      integrates with a large number of other version control systems via
+      plugins. At the time of writing, SCM plugin support includes Accurev,
+      Bazaar, BitKeeper, ClearCase, CMVC, Dimensions, Git, CA Harvest,
+      Mercurial, Perforce, PVCS, StarTeam, CM/Synergy, Microsoft Team
+      Foundation Server, and even Visual SourceSafe. In the rest of this
+      section, we will look at how to configure some of the more common SCM
+      tools.</para>
+
+      <sect3>
+        <title>Working with Subversion</title>
+
+        <para>Subversion is one of the most widely used version control
+        systems, and Hudson comes bundled with full Subversion integration.
+        </para>
+
+        <para></para>
+      </sect3>
+
+      <sect3>
+        <title>Working with Git</title>
+
+        <para></para>
+      </sect3>
+
+      <sect3>
+        <title>Working with Mercurial</title>
+
+        <para></para>
+      </sect3>
+    </sect2>
+
+    <sect2 id="sect-build-triggers">
+      <title>Build Triggers</title>
+
+      <para></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>You don't need a great deal of configuration to get started with
+    Hudson. The configuration that is required is fairly straight-forward, and
+    is centralised in the <command>Configure System</command> screen. Once
+    this is done, you are ready to create your first Hudson build job!</para>
+  </sect1>
+</chapter>

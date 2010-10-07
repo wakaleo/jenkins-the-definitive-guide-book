@@ -345,7 +345,7 @@ $ <command>sudo rpm --import http://hudson-ci.org/redhat/hudson-ci.org.key</comm
     <itemizedlist>
       <listitem>
         <para>HUDSON_JAVA_CMD: The version of Java you want to use to run
-        Hudson; </para>
+        Hudson;</para>
       </listitem>
 
       <listitem>
@@ -594,7 +594,7 @@ isabled</screen></para>
     that you can actually do this from a different server, not just the local
     machine:</para>
 
-    <para><screen>$ wget --user=admin --password=secret http://localhost:8080/exit</screen></para>
+    <para><screen>$ wget --user=admin --password=secret http://buildserver.acme.com:8080/exit</screen></para>
 
     <para>Note that while both these methods will shut down Hudson relatively
     cleanly (more so than killing the process directly, for example), they
@@ -834,8 +834,8 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     alternative strategy is to use the hudson.exe program that the Web Start
     installation process will have installed in the directory you specified
     above. Open the command line prompt as an administrator (right-click, "Run
-    as administrator") and to run the <filename>hudson.exe</filename>
-    executable with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
+    as administrator") and run the <filename>hudson.exe</filename> executable
+    with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
 
     <para>This basic installation will work fine in a simple context, but you
     will often need to fine-tune your service. For example, by default, the
@@ -971,12 +971,12 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
 
               <entry>This directory contains any plugins that you have
               installed. Plugins allow you to extend Hudson by adding extra
-              feature. Note that, with the exception of the core Hudson
-              plugins Hudson core plugins (subversion, cvs, ssh-slaves, maven,
-              and scid-ad), plugins are not stored with the hudson executable,
-              or in the expanded web application directory. This means that
-              you can update your Hudson executable and not have to re-install
-              all your plugins.</entry>
+              feature. Note that, with the exception of the Hudson core
+              plugins (subversion, cvs, ssh-slaves, maven, and scid-ad),
+              plugins are not stored with the hudson executable, or in the
+              expanded web application directory. This means that you can
+              update your Hudson executable and not have to re-install all
+              your plugins.</entry>
             </row>
 
             <row>
@@ -1036,15 +1036,14 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     <filename>workspace</filename>, along with some other files. In
     particular, it contains the build job <filename>config.xml</filename>
     file, which contains, as you might expect, the configuration details for
-    this build job. There are also some other files used internally b<xref
-    linkend="fig-hudson-jobs-directory-details" />y Hudson, that you usually
-    wouldn't touch, such as the nextBuildNumber file (which contains the
-    number that will be assigned to the next build in this build job), as well
-    as symbolic links to the most recent successful build and the last stable
-    one. A successful build is one that does not have any compilation errors.
-    A stable build is a successful build that has passed whatever quality
-    criteria you may have configured, such as unit tests, code coverage and so
-    forth.</para>
+    this build job. There are also some other files used internally by Hudson,
+    that you usually wouldn't touch, such as the nextBuildNumber file (which
+    contains the number that will be assigned to the next build in this build
+    job), as well as symbolic links to the most recent successful build and
+    the last stable one. A successful build is one that does not have any
+    compilation errors. A stable build is a successful build that has passed
+    whatever quality criteria you may have configured, such as unit tests,
+    code coverage and so forth.</para>
 
     <para>Both the <filename>build</filename> and the
     <filename>workspace</filename> directories are important. The

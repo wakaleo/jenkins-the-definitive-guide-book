@@ -364,15 +364,15 @@ src/</screen></para>
     <para>Hudson provides several options when it comes to configuring Maven.
     If you already have Maven installed on your machine, you can simply
     provide the path in the MAVEN_HOME field. Alternatively, you can install a
-    Maven distribution by extracting a zip file located in a shared directory,
-    or execute a home-rolled installation script. Or you can let Hudson do all
-    the hard work and download Maven for you. To choose this option, just tick
-    the 'Install automatically' check box. Hudson will download and install
-    Maven from the Apache web site the first time a build job needs it. Just
-    choose the Maven version you want to install and Hudson will do the rest.
-    You will also need to give a name for your Maven version (imaginatively
-    called "Maven 2.2.1" in the example), so that you can refer to it in your
-    build jobs.</para>
+    Maven distribution by extracting a zip file located in a shared directory
+    on a local server, or execute a home-rolled installation script. Or you
+    can let Hudson do all the hard work and download Maven for you. To choose
+    this option, just tick the 'Install automatically' check box. Hudson will
+    download and install Maven from the Apache web site the first time a build
+    job needs it. Just choose the Maven version you want to install and Hudson
+    will do the rest. You will also need to give a name for your Maven version
+    (imaginatively called "Maven 2.2.1" in the example), so that you can refer
+    to it in your build jobs.</para>
 
     <para>For this to work, you need to have an Internet connection. If you
     are behind a proxy, you'll need to provide your proxy information - we
@@ -747,7 +747,7 @@ src/</screen></para>
     build ran successfully for the last time, and when it last failed, and
     also the result of the last build.</para>
 
-    <para>Once of Hudson's specialities is the way it lets you get an idea of
+    <para>One of Hudson's specialities is the way it lets you get an idea of
     build behaviour over time. For example, Hudson uses a weather metaphor to
     help give you an idea of the stability of your builds. Essentially, the
     more your builds fail, the worse the weather gets. This helps you get an
@@ -1159,8 +1159,13 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     an internet connection, you can also manually install a plugin by
     downloading the plugin file elsewhere and uploading it to your Hudson
     installation (just open the 'Advanced' tab in <xref
-    linkend="fig-hudson-plugin-manager" />), or by copying the plugin to the
-    <filename>$HUDSON_HOME/plugins</filename> directory.</para>
+    linkend="fig-hudson-plugin-manager" />), or by copying the plugin to
+    Hudson's <filename>plugins</filename> directory. You will find this
+    directory in your Hudson home directory, which will be located in a
+    directory called <filename>.hudson</filename> under your home directory
+    (e.g. <filename>/home/john/.hudson</filename> on linux,
+    <filename>/users/john/.hudson</filename> on Mac OS 10.x,
+    <filename>C:\Users\john\.hudson</filename> on Window 7, and so on).</para>
 
     <para>In our case, we are interested in the Cobertura plugin, so go to the
     'Available' tab and scroll down until you find the 'Cobertura Plugin'
@@ -1186,12 +1191,13 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     <command>mvn cobertura:cobertura</command> to generate the reports in XML
     form. Cobertura can also generate HTML reports, but in our case we will be
     letting Hudson take care of the reporting, so we can save on build time by
-    not generating the For this example, for simplicity, we will just add the
-    <command>cobertura:cobertura</command> goal to the second build step (see
-    <xref linkend="fig-hudson-cobertura-build-step" />). You could also add a
-    new build step just for the code coverage metrics. In a real-world
-    project, code quality metrics like this are typically placed in a distinct
-    build job, which is run less frequently than the default build.</para>
+    not generating the HTML output. For this example, for simplicity, we will
+    just add the <command>cobertura:cobertura</command> goal to the second
+    build step (see <xref linkend="fig-hudson-cobertura-build-step" />). You
+    could also add a new build step just for the code coverage metrics. In a
+    real-world project, code quality metrics like this are typically placed in
+    a distinct build job, which is run less frequently than the default
+    build.</para>
 
     <figure id="fig-hudson-cobertura-build-step">
       <title>Adding another Maven goal to generating test coverage

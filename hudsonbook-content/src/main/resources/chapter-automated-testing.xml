@@ -12,7 +12,7 @@
       </indexterm>If you aren't using automated tests with your Continuous
     Integration setup, you're really missing out on something big. Believe me
     - CI without automated tests is really just a small improvement on
-    automatically scheduled builds. Now don't get me wrong, if your coming
+    automatically scheduled builds. Now don't get me wrong, if you're coming
     from nothing, that's already a great step forward - but you can do much
     better. In short, if you are using Hudson without any automated tests, you
     are not getting anywhere near as much value out of your Continuous
@@ -164,7 +164,7 @@
         </mediaobject>
       </figure>For Java projects, whether they are using JUnit or TestNG,
     Hudson does an excellent job out of the box. If you are using Hudson for
-    non-Java projects, you might need need the xUnit Plugin. This plugin lets
+    non-Java projects, you might need the xUnit Plugin. This plugin lets
     Hudson process test reports from non-Java tools in a consistent way. It
     provides support for MSUnit and NUnit (for C# and other .NET languages),
     UnitTest++ and Boost Test (for C++), PHPUnit (for PHP), as well as a few
@@ -207,9 +207,10 @@
   <sect1>
     <title>Displaying test results</title>
 
-    <para>Once Hudson knows where to find the test reports. Indeed, one of
-    Hudson's main jobs is to detect and to report on build failures. And a
-    failing unit test is one of the most obvious symptoms. </para>
+    <para>Once Hudson knows where to find the test reports, it does a great
+    job of reporting on them. Indeed, one of Hudson's main jobs is to detect
+    and to report on build failures. And a failing unit test is one of the
+    most obvious symptoms.</para>
 
     <para>Hudson makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
@@ -286,13 +287,14 @@
     <para>When a test fails, you generally want to know why. To see the
     details of a particular test failure, just click on the corresponding link
     on this screen. This will display all the gruesome details, including the
-    error message and the stack trace, as well as a reminder of long the test
-    has failing (see <xref linkend="fig-testing-test-failure-details" />). You
-    should be wary of tests that have been failing for more than just a couple
-    of builds - this is an indicator of either a tricky technical problem that
-    might need investigating, or a complacent attitude to failed builds
-    (developers might just be ignoring build failures), which is more serious
-    and definitely should be investigated.</para>
+    error message and the stack trace, as well as a reminder of how long the
+    test has failing (see <xref
+    linkend="fig-testing-test-failure-details" />). You should be wary of
+    tests that have been failing for more than just a couple of builds - this
+    is an indicator of either a tricky technical problem that might need
+    investigating, or a complacent attitude to failed builds (developers might
+    just be ignoring build failures), which is more serious and definitely
+    should be investigated.</para>
 
     <para><figure id="fig-testing-test-failure-details">
         <title>The details of a test failure</title>
@@ -429,7 +431,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <title>Code Coverage</title>
 
     <para>Another very useful test-related metric is code coverage. Code
-    coverage give an indication of what parts of your application where
+    coverage gives an indication of what parts of your application where
     executed during the tests. While this in itself is not a sufficient
     indication of quality testing (it is easy to execute an entire application
     without actually testing anything, and code coverage metrics provide no
@@ -448,7 +450,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     supported in Hudson, all through dedicated plugins. Java developers can
     pick between Cobertura and Emma, two popular open source code coverage
     tools, or Clover, a powerful commercial code coverage tool from Atlassian.
-    For .NET projects, you can use NCover. </para>
+    For .NET projects, you can use NCover.</para>
 
     <para>The behaviour and configuration of all of these tools is similar. In
     this section, we will look at Cobertura.</para>
@@ -1258,7 +1260,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 &lt;/project&gt;</programlisting></para>
 
     <para>Now, all you need to do is to run the integration tests with the
-    'performance' profile to get Maven to run the JMeter test suite:<screen>$ <command>mvn verify -Pperformance</command></screen></para>
+    'performance' profile to get Maven to run the JMeter test suite. You can
+    do this by invoking the <command>integration-test</command> or
+    <command>verify</command> Maven lifecycle phase, e.g.<screen>$ <command>mvn verify -Pperformance</command></screen></para>
 
     <para>Once you have configured your build script to handle JMeter, you can
     set up a performance test build in Hudson. For this, we will use the
