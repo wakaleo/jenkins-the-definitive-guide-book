@@ -172,17 +172,17 @@
       deploys an application to a test server, keeping the build history and
       artifacts for posterity might be less important.</para>
 
-      <para>The 'Discard Old Builds' option lets you limit the number of
-      builds you record in the build history. You can either tell Hudson to
-      only keep recent builds (Hudson will delete builds after a certain
-      number of days), or to keep no more than a specified number of builds.
-      If a certain build has particular sentimental value, you can always tell
-      Hudson to keep it forever. In addition, Hudson will never delete the
-      last stable and successful builds, no matter how old they are. For
-      example, if you limit Hudson to only keep the last twenty builds, and
-      your last successful build was thirty builds ago, Hudson will still keep
-      the successful build job as well as the last twenty failing
-      builds.</para>
+      <para>The <command>Discard Old Builds</command> option lets you limit
+      the number of builds you record in the build history. You can either
+      tell Hudson to only keep recent builds (Hudson will delete builds after
+      a certain number of days), or to keep no more than a specified number of
+      builds. If a certain build has particular sentimental value, you can
+      always tell Hudson to keep it forever. In addition, Hudson will never
+      delete the last stable and successful builds, no matter how old they
+      are. For example, if you limit Hudson to only keep the last twenty
+      builds, and your last successful build was thirty builds ago, Hudson
+      will still keep the successful build job as well as the last twenty
+      failing builds.</para>
 
       <para>You also have the option to disable the build. A disabled build
       will not be executed until you enable it again. Using this option when
@@ -217,14 +217,14 @@
       linkend="sect-configuration-system" />). This option is mainly used for
       version control systems that don't support atomic commits, such as CVS,
       but it is also sometimes used in teams where developers have the habit
-      of committing their work in several small commits. </para>
+      of committing their work in several small commits.</para>
 
-      <para>The <command>Block build when upstream project</command> is
-      building option is useful when several related projects are affected by
-      a single commit, but they must be built in a specific order. If you
-      activate this option, Hudson will wait until any upstream build jobs
-      (see <xref linkend="sect-build-triggers" />) have finished before
-      starting this build. </para>
+      <para>The <command>Block build when upstream project is
+      building</command> option is useful when several related projects are
+      affected by a single commit, but they must be built in a specific order.
+      If you activate this option, Hudson will wait until any upstream build
+      jobs (see <xref linkend="sect-build-triggers" />) have finished before
+      starting this build.</para>
 
       <para>For instance, when you release a new version of a multi-module
       Maven project, version number updates will happen in many, if not all,
@@ -239,7 +239,7 @@
       core and the web application would start simultaneously. The web
       application build job will fail if it the core build job hasn't produced
       a new version of the core module for it, even if there are no test
-      failures. </para>
+      failures.</para>
 
       <para>To avoid this issue, you could set up the web application build
       job to <emphasis>only</emphasis> start once the core build has
@@ -285,7 +285,12 @@
     <sect2>
       <title>Source code management</title>
 
-      <para>TODO: Introduction</para>
+      <para>In it's most basic role, a Continuous Integration server monitors
+      your version control system, and checks out the latest changes as they
+      occur. The server then compiles and tests the most recent version of the
+      code. Alternatively, it may simply check out and build the latest
+      version of your source code on a regular basis. In either case, tight
+      integration with your version control system is essential.</para>
 
       <para>Hudson supports CVS and Subversion out-of-the-box, and also
       integrates with a large number of other version control systems via
@@ -300,30 +305,487 @@
         <title>Working with Subversion</title>
 
         <para>Subversion is one of the most widely used version control
-        systems, and Hudson comes bundled with full Subversion integration.
-        </para>
+        systems, and Hudson comes bundled with full Subversion integration
+        (see <xref linkend="fig-hudson-new-job-svn" />). To use source code
+        from a Subversion repository, you simply provide the corresponding
+        Subversion URL - it will work fine with any of the three Subversion
+        protocols of (http, svn or file). Hudson will check that the URL is
+        valid as soon as you enter it. If the repository requires
+        authentication, Hudson will prompt you for the corresponding
+        credentials automatically, and store them for any other build jobs
+        that access this repository.</para>
 
-        <para></para>
-      </sect3>
+        <para><figure id="fig-hudson-new-job-svn">
+            <title>Hudson provides built-in support for Subversion</title>
 
-      <sect3>
-        <title>Working with Git</title>
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-svn.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>By default, Hudson will check out the repository contents
+        into a sub-directory of your workspace, whose name will match the last
+        element in the Subversion URL, So if your Subversion URL is
+        <uri>svn://localhost/gameoflife/trunk</uri>, Hudson will check out the
+        repository contents to directory called <filename>trunk</filename> in
+        the build job workspace. If you would prefer another directory name,
+        just enter the directory name you want in the <command>Local module
+        directory</command> field. Place a period (".") here if you want
+        Hudson to check the source code directly into the workspace.</para>
 
-        <para></para>
-      </sect3>
+        <para>Occasionally you may need to get source code from more than one
+        Subversion URL. In this case, just use the <command>Add more
+        locations...</command> button to add as many additional repository
+        sources as you need.</para>
 
-      <sect3>
-        <title>Working with Mercurial</title>
+        <para>A well-designed build process should not modify the source code,
+        or leave any extra files that might confuse your version control
+        system or the build process. Both generated artifacts and temporary
+        files (such as log files, reports, test data or file-based databases)
+        should go in a directory set aside for this purpose (such as the
+        <filename>target</filename> directory in Maven builds), and/or be
+        configured to be ignored by your version control repository. They
+        should also be deleted as part of the build process, once the build
+        has finished with them. This is also an important part of ensuring a
+        clean and reproducible build process - for a given version of your
+        source code, your build should behave in exactly the same way, no
+        matter where or when it is run. Locally changed source code files, and
+        the presence of temporary files, both have the potential of
+        compromising this.</para>
 
-        <para></para>
+        <para>Normally, Hudson will check out a clean copy of the source code
+        for each build. If your project is well-behaved, however, you may be
+        able to use the <command>Use update</command> option, which speeds
+        things up substantially by using the <command>svn update</command>
+        command instead. To be on the safe side, you may want to use the
+        <command>Revert</command> option, which will run <command>svn
+        revert</command> before running <command>svn update</command>. This
+        will ensure that no local files have been modified, though it will not
+        remove any new files that have been created during the build
+        process.</para>
+
+        <para>Another very useful feature is Hudson's integration with source
+        code browsers. A good source code browser is an important part of your
+        Continuous Integration configuration. It lets you see at a glance what
+        changes triggered off a given build, which is very useful when it
+        comes to trouble-shooting broken builds (see <xref
+        linkend="fig-hudson-new-job-diff" />). Hudson integrates with most of
+        the major source code browsers, including open source tools such as
+        WebSVN and Sventon, and commercial ones like Atlassian's
+        FishEye.</para>
+
+        <para><figure id="fig-hudson-new-job-diff">
+            <title>Hudson provides built-in support for Subversion</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-diff.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Hudson also lets you refine the changes that will trigger a
+        build. In the Advanced section, you can use the <command>Excluded
+        Regions</command> field to tell Hudson not to trigger a build if only
+        certain files were changed. This field takes a list of regular
+        expressions, which identify files that should <emphasis>not</emphasis>
+        trigger a build. For example, suppose you don't want Hudson to start a
+        new build if only images have been changed. To do this, you could use
+        a set of regular expressions like the following:<programlisting>/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.jpg
+/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.gif
+/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.png</programlisting></para>
+
+        <para>Alternatively, you can specify the <command>Included
+        Regions</command>, if you are only interested in changes in part of
+        the source code directory structure. You can even combine the
+        <command>Excluded Regions</command> and <command>Included
+        Regions</command> fields - in this case a modified file will only
+        trigger a build if it is in the Included Regions but not in the
+        Excluded Regions.</para>
+
+        <para>You can also ignore changes coming from certain users
+        (<command>Excluded Users</command>), or with certain commit messages (
+        <command>Excluded Commit Messages</command>). For example, if your
+        project uses Maven, you may want to use the Maven Release Plugin to
+        promote your application from snapshot versions to official releases.
+        This plugin will automatically bump up the version number of your
+        application from a snapshot version used during development (such as
+        1.0.1-SNAPSHOT) to a release (1.0.1), bundles up and deploys a release
+        of your application with this version number, and then moves the
+        version on to the next snapshot number (e.g. 1.0.2-SNAPSHOT) for
+        ongoing development. During this process Maven takes care of many SCM
+        bookkeeping tasks, such as committing the source code with the release
+        version number and creating a tag for the released version of your
+        application, and then committing the source code with the new snapshot
+        version number.</para>
+
+        <para>Now suppose you have a special build job for generating a new
+        release using this process. The many commits generated by the Maven
+        Release Plugin would normally trigger off build jobs in Hudson.
+        However, since the release build job is already compiling and testing
+        this version of your application, you don't need Hudson to do it again
+        in a separate build job. To ensure that Hudson does not trigger a
+        build for this case, you can use the <command>Excluded Commit
+        Messages</command> field with the following value:</para>
+
+        <para><programlisting>[maven-release-plugin] prepare release.*</programlisting>This
+        will ensure that Hudson skips the changes corresponding to the new
+        release version, but not those corresponding to the next snapshot
+        version.</para>
       </sect3>
     </sect2>
 
     <sect2 id="sect-build-triggers">
       <title>Build Triggers</title>
 
+      <para>Once you have configured your version control system, you need to
+      tell Hudson when to kick off a build. You set this up in the
+      <command>Build Triggers</command> section.</para>
+
+      <para>In a Freestyle build, there are three basic ways a build job can
+      be triggered (see <xref
+      linkend="fig-hudson-new-job-triggers" />):</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Start a build job once another build job has completed</para>
+        </listitem>
+
+        <listitem>
+          <para>Kick off builds at periodical intervals</para>
+        </listitem>
+
+        <listitem>
+          <para>Poll the SCM for changes</para>
+        </listitem>
+      </orderedlist>
+
+      <para><figure id="fig-hudson-new-job-triggers">
+          <title>There are many ways that you can configure Hudson to start a
+          build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-new-job-triggers.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <sect3>
+        <title>Triggering a build job once another build job has
+        finished</title>
+
+        <para>The first option lets you set up a build that will be run
+        whenever another build has finished. This is an easy way to set up a
+        build pipeline. For example, you might set up an initial build job to
+        run unit and integration tests, followed by another separate build job
+        to run more CPU-intensive code quality metrics. You simply enter the
+        name of the preceding build job in this field. If the build job can be
+        triggered by several other build jobs, just list their names here,
+        separated by commas. In this case, the build job will be triggered
+        once <emphasis>any</emphasis> of the build jobs in the list
+        finish.</para>
+
+        <para>There is a symmetrical field in the <command>Post-build
+        actions</command> section of the preceding build job called
+        (appropriately enough) 'Build other projects'. This field will be
+        automatically updated in the corresponding build jobs whenever you
+        modify the 'Build after other projects are built' field. However,
+        unlike the 'Build after other projects are built', field, this field
+        gives you the option to trigger a build even if the build is unstable.
+        This is useful, for example, if you want to run a code quality metrics
+        build job even if there are unit test failures in the default build
+        job.</para>
+
+        <para><figure id="fig-hudson-new-job-trigger-build-after">
+            <title>Triggering another build job even if the current one is
+            unstable</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-trigger-build-after.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Scheduled build jobs</title>
+
+        <para>Another strategy is simply to trigger your build job at regular
+        intervals. It is important to note that this is not actually
+        Continuous Integration - it is simply scheduled builds, something you
+        could also do, for example, as a Unix cron job. In the early days of
+        automated builds, and even today in many shops, builds are not run in
+        response to changes committed to version control, but simply on a
+        nightly basis. However, to be effective, a Continuous Integration
+        server should provide feedback much more quickly than once a
+        day.</para>
+
+        <para>There are however a few cases where scheduled builds make sense.
+        This includes very long running build jobs, where quick feedback is
+        less critical. For example, intensive load and performance tests which
+        may take several hours to run, or Sonar build jobs. Sonar is an
+        excellent way to keep tabs on code quality metrics across your
+        projects and over time, but the Sonar server only stores one set of
+        data per day, so running Sonar builds more frequently than this is not
+        useful.</para>
+
+        <para>For all scheduling tasks, Hudson uses a cron-style syntax,
+        consisting of five fields separated by white space in the following
+        format:<blockquote>
+            <para>MINUTE HOUR DOM MONTH DOW</para>
+          </blockquote></para>
+
+        <para>with the following values possible for each field:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>MINUTE</term>
+
+            <listitem>
+              <para>Minutes within the hour (0-59)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>HOUR</term>
+
+            <listitem>
+              <para>The hour of the day (0-23) DOM</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>DOM</term>
+
+            <listitem>
+              <para>The day of the month (1-31)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>MONTH</term>
+
+            <listitem>
+              <para>The month (1-12)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>DOW</term>
+
+            <listitem>
+              <para>The day of the week (0-7) where 0 and 7 are Sunday.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>There are also a few short-cuts:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>'*' represents all possible values for a field. For example,
+            '* * * * *' means "once a minute".</para>
+          </listitem>
+
+          <listitem>
+            <para>You can define ranges using the 'M-N' notation. For example
+            '1-5' in the DOW field would mean 'Monday to Friday'.</para>
+          </listitem>
+
+          <listitem>
+            <para>You can use the slash notation to defined skips through a
+            range. For example, */5 in the MINUTE field would mean "every five
+            minutes".</para>
+          </listitem>
+
+          <listitem>
+            <para>A comma-separated list indicates a list of valid values. For
+            example, "15,45" in the MINUTE field would mean "at 15 and 45
+            minutes past every hour"</para>
+          </listitem>
+
+          <listitem>
+            <para>You can also use the shorthand values of '@yearly',
+            '@annually', '@monthly', '@weekly', '@daily', '@midnight', and
+            '@hourly'.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Typically, you will only have one line in this field, but for
+        more complicated scheduling setups, you may need multiple
+        lines.</para>
+      </sect3>
+
+      <sect3>
+        <title>Polling the SCM</title>
+
+        <para>As we have seen, scheduled build jobs are usually not the best
+        strategy for most CI build jobs. The value of any feedback is
+        proportional to the speed in which you receive that feedback, and
+        Continuous Integration is no exception. That is why polling the SCM is
+        generally a better option.</para>
+
+        <para>Polling involves asking the version control server at regular
+        intervals if any changes have been committed. If any changes have been
+        made to the source code in the project, Hudson kicks off a build.
+        Polling is usually a relatively cheap operation, so you can poll
+        frequently to ensure that a build kicks off rapidly after changes have
+        been committed. The more frequent the polling is, the faster the build
+        jobs will start, and the more accurate the feedback about what change
+        broke the build will be.</para>
+
+        <para>In Hudson, SCM polling is easy to configure, and uses the same
+        cron syntax we discussed previously. </para>
+
+        <para>The natural temptation for SCM polling is to poll as often as
+        possible (for example, using "* * * * *", or once every minute). Since
+        Hudson will simply queries the version control system, and only kicks
+        off a build if the source code has been modified, this approach is
+        often reasonable for small projects. It shows its limits if there are
+        a very large number of build jobs, as this may saturate the SCM server
+        and the network with queries, many of them unnecessary. In this case,
+        a more precise approach is better, where the Hudson build job is
+        triggered by the SCM when it receives a change. We discuss this option
+        in <xref linkend="sect-build-trigger-remote" />.</para>
+
+        <para>If updates are frequently committed to the version control
+        system, across many projects, this may cause many build jobs to be
+        queued, which can in turn slow down feedback times further. You can
+        reduce the build queue to some extent by polling less frequently, but
+        at the cost of less precise feedback. </para>
+
+        <para>If you are using CVS, polling may not be a good option. When CVS
+        checks for changes in a project, it checks each file one by one, which
+        is a slow and tedious process. The best solution here is to migrate to
+        a modern version control system. The second-best solution is to use
+        polling at very sparse intervals (for example every 30
+        minutes).</para>
+      </sect3>
+
+      <sect3 id="sect-build-trigger-remote">
+        <title>Triggering builds remotely</title>
+
+        <para>Polling can work well, but it does not scale particularly well -
+        with large numbers of build jobs, it is wasteful of network resources,
+        and there is always a small delay between the code change being
+        committed and the build job starting. A more precise strategy is to
+        get the SCM system to trigger the Hudson build whenever a change is
+        committed.</para>
+
+        <para>It is easy to start a Hudson build job remotely. You simply
+        invoke a URL of the following form:<blockquote>
+            <para>http://SERVER/hudson/job/PROJECTNAME/build</para>
+          </blockquote></para>
+
+        <para>For example, if my Hudson server was running on
+        http://myserver:8080/hudson, I could start the 'gameoflife' build job
+        by invoking the following URL using a tool like
+        <command>wget</command> or <command>curl</command>:<screen>$ wget http://myserver:8080/hudson/job/gameoflife/build</screen></para>
+
+        <para>The trick, then, is to get your version control server to do
+        this whenever a change is committed. The details of how to do this are
+        different for each version control system. In Subversion, for example,
+        you would need to write a post-commit hook script, which would trigger
+        a build. You could, for example, write a Subversion hook script that
+        parses the repository URL to extract the project name, and performs a
+        <command>wget</command> operation on the URL of the corresponding
+        build job. </para>
+
+        <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+REPOS="$1"
+PROJECT=<co id="svn-hook-1" />
+/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
+
+        <para><calloutlist>
+            <callout arearefs="maven-it-1">
+              <para>Use regular expression processing here to extract your
+              project name from the Subversion repository URL.</para>
+            </callout>
+          </calloutlist>However, this approach will only trigger one
+        particular build, and relies on a convention that the default build
+        job is based on the repository name in Subversion. A more flexible
+        approach with Subversion is to use the Hudson Subversion API directly,
+        as shown here:<programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+REPOS="$1"
+REV="$2"
+UUID=`svnlook uuid $REPOS`
+/usr/bin/wget \
+  --header "Content-Type:text/plain;charset=UTF-8" \
+  --post-data "`svnlook changed --revision $REV $REPOS`" \
+  --output-document "-" \
+  --timeout=2 \
+  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
+
+        <para>This would automatically start any Hudson build jobs monitoring
+        this Subversion repository.</para>
+
+        <para>If you have activated Hudson security, things become a little
+        more complicated. In the simplest case (where any user can do
+        anything), you need to activate the 'Trigger builds remotely' option
+        (see <xref linkend="fig-hudson-builds-tokens" />), and provide a
+        special string that can be used in the URL.<blockquote>
+            <para>http://SERVER/hudson/job/PROJECTNAME/build?token=DOIT</para>
+          </blockquote></para>
+
+        <para><figure id="fig-hudson-builds-tokens">
+            <title>Triggering a build via a URL using a token</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-builds-tokens.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>This won't work if users need to be logged on to trigger a build
+        (for example, if you are using matrix or project-based security). In
+        this case, you will need to provide a username and password, as shown
+        in the following example:</para>
+
+        <para><screen>$ wget http://scott:tiger@myserver:8080/hudson/job/gameoflife/build\</screen>or</para>
+
+        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/hudson/job/gameoflife/build\</screen></para>
+      </sect3>
+
+      <sect3>
+        <title>Manual build jobs</title>
+
+        <para>A build does not have to be triggered automatically. Some build
+        jobs should only be started manually, by human intervention. For
+        example, you may want to set up an automated deployment to a UAT
+        environment, that should only be started on the request of the QA
+        folks. In this case, you can simply leave the <command>Build
+        Triggers</command> section empty.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Build steps</title>
+
       <para></para>
     </sect2>
+
+    <sect2>
+      <title>Post-build actions</title>
+
+      <para></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Working with Maven 2 Build Jobs</title>
+
+    <para></para>
   </sect1>
 
   <sect1>
