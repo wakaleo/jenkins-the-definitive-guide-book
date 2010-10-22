@@ -643,7 +643,7 @@
         broke the build will be.</para>
 
         <para>In Hudson, SCM polling is easy to configure, and uses the same
-        cron syntax we discussed previously. </para>
+        cron syntax we discussed previously.</para>
 
         <para>The natural temptation for SCM polling is to poll as often as
         possible (for example, using "* * * * *", or once every minute). Since
@@ -660,7 +660,7 @@
         system, across many projects, this may cause many build jobs to be
         queued, which can in turn slow down feedback times further. You can
         reduce the build queue to some extent by polling less frequently, but
-        at the cost of less precise feedback. </para>
+        at the cost of less precise feedback.</para>
 
         <para>If you are using CVS, polling may not be a good option. When CVS
         checks for changes in a project, it checks each file one by one, which
@@ -697,7 +697,7 @@
         a build. You could, for example, write a Subversion hook script that
         parses the repository URL to extract the project name, and performs a
         <command>wget</command> operation on the URL of the corresponding
-        build job. </para>
+        build job.</para>
 
         <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
 REPOS="$1"
@@ -749,12 +749,12 @@ UUID=`svnlook uuid $REPOS`
 
         <para>This won't work if users need to be logged on to trigger a build
         (for example, if you are using matrix or project-based security). In
-        this case, you will need to provide a username and password, as shown
+        this case, you will need to provide a user name and password, as shown
         in the following example:</para>
 
-        <para><screen>$ wget http://scott:tiger@myserver:8080/hudson/job/gameoflife/build\</screen>or</para>
+        <para><screen>$ wget http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen>or</para>
 
-        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/hudson/job/gameoflife/build\</screen></para>
+        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen></para>
       </sect3>
 
       <sect3>
@@ -772,20 +772,161 @@ UUID=`svnlook uuid $REPOS`
     <sect2>
       <title>Build steps</title>
 
-      <para></para>
+      <para>Once you have told Hudson where and how often to obtain the
+      project source code, you need to tell it what to do with it. In a
+      freestyle build, you do this by defining build steps. Build steps are
+      the basic building blocks for the Hudson freestyle build process. They
+      are what lets you tell Hudson exactly <emphasis>how</emphasis> you want
+      your project built.</para>
+
+      <para>A build job may have one step, or more. It may even occasionally
+      have none. In a freestyle build, you can add as many build steps as you
+      want in the Build section of your project configuration (see <xref
+      linkend="fig-hudson-build-steps" />). In a basic Hudson installation,
+      you will be able to add steps to invoke Maven and Ant, as well as
+      running OS-specific shell or Windows batch commands. And by installing
+      additional plugins, you can also integrate other build tools, such as
+      Groovy, Gradle, Grails, Jython, MSBuild, Phing, Python, Rake, and Ruby,
+      just to name some of the more well-known tools.</para>
+
+      <para><figure id="fig-hudson-build-steps">
+          <title>Adding a build step to a freestyle build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-steps.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In the remainder of this section, we will look at some of the
+      more common sorts of build steps in more detail.</para>
+
+      <sect3>
+        <title>Maven build steps</title>
+
+        <para>Hudson has excellent Maven support, and Maven build steps are
+        easy to configure and very flexible. Just pick 'Invoke top-level Maven
+        targets' from the build step lists, pick a version of Maven to run (if
+        you have multiple versions installed), and enter the Maven goals you
+        want to run.</para>
+
+        <para>Just like on the command line, you can specify as many
+        individual goals as you want. You can also provide command-line
+        options. A few useful Maven options in a CI context are:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>-B, --batch-mode</term>
+
+            <listitem>
+              <para>This option tells Maven not to prompt for any input from
+              the user, just using the default values if any are required. If
+              Maven does prompt for any input during the Hudson build, the
+              build will get stuck indefinitely.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>-U, --update-snapshots</term>
+
+            <listitem>
+              <para>Forces Maven to check for updated releases and snapshot
+              dependencies on the remote repository. This makes sure you are
+              building with the latest and greatest snapshot dependencies, and
+              not just using older local copies which may not by in sync with
+              the latest version of the source code.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>-Dsurefire.useFile=false</term>
+
+            <listitem>
+              <para>This option forces Maven to write JUnit output to the
+              console, rather than to text files in the target directory as it
+              normally would. This way, any test failure details are directly
+              visible in the build job console output. The XML files that
+              Hudson needs for its test reporting will still be
+              generated.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>The advanced options are also worth investigating (click on the
+        'Advanced' button).</para>
+
+        <para>The optional <command>POM</command> field lets you override the
+        default location of the Maven <filename>pom.xml</filename> file. This
+        is the equivalent of running Maven from the command line with the
+        <command>-f</command> or <command>--file</command> option. This is
+        useful for some multi-module Maven projects where the aggregate
+        <filename>pom.xml</filename> file (the one containing the
+        <command>&lt;modules&gt;</command> section) is located in a
+        sub-directory rather than at the top level. </para>
+
+        <para>The <command>Properties</command> field lets you set property
+        values that will be passed into the Maven build process, using the
+        standard property file format shown here:</para>
+
+        <para><programlisting># Selenium test configuration
+selenium.host=testserver.acme.com
+selenium.port=8080
+selenium.broswer=firefox</programlisting>These properties are passed to Maven
+        as command-line options, as shown here:<programlisting>$ <command>mvn verify -Dselenium.host=testserver.acme.com ...</command></programlisting></para>
+
+        <para>The <command>JVM Options</command> field lets you set any of the
+        standard Java Virtual Machine options for your build job. So if your
+        build process is particularly memory intensive, you might add some
+        extra heap space with the <command>-Xmx</command> option (for example,
+        <command>-Xmx512m</command> would set the maximum heap size to
+        512Mb).</para>
+
+        <para>The final option lets you configure a private Maven repository
+        for this build job. Normally, Maven will just use the default Maven
+        repository (usually in the <filename>.m2/repository</filename> folder
+        in the user's home directory). Occasionally, this can lead to build
+        jobs interfering with each other, or use inconsistent snapshot
+        versions from one build to another. To be sure that your build is run
+        in clean laboratory conditions, you can activate this option. Your
+        build job will get its own private repository, reserved for its own
+        exclusive use. On the downside, the first time the build job runs a
+        build, this may take some time to download all of the Maven artifacts,
+        and private repositories can take up a lot of space. However, it is
+        the best way of guaranteeing that your build is run in a truly
+        isolated environment.</para>
+      </sect3>
+
+      <sect3>
+        <title>Ant build steps</title>
+
+        <para></para>
+      </sect3>
+
+      <sect3>
+        <title>Executing a shell command</title>
+
+        <para></para>
+      </sect3>
     </sect2>
 
     <sect2>
       <title>Post-build actions</title>
 
-      <para></para>
+      <para>- Archiving results</para>
+
+      <para>- Reporting on unit tests</para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Working with Maven 2 Build Jobs</title>
 
-    <para></para>
+    <para>- Multi-module builds</para>
+
+    <para>- Snapshot dependencies</para>
+
+    <para>- Reporting</para>
   </sect1>
 
   <sect1>
