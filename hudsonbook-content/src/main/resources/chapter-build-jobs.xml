@@ -863,7 +863,7 @@ UUID=`svnlook uuid $REPOS`
         useful for some multi-module Maven projects where the aggregate
         <filename>pom.xml</filename> file (the one containing the
         <command>&lt;modules&gt;</command> section) is located in a
-        sub-directory rather than at the top level. </para>
+        sub-directory rather than at the top level.</para>
 
         <para>The <command>Properties</command> field lets you set property
         values that will be passed into the Maven build process, using the
@@ -900,7 +900,35 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
       <sect3>
         <title>Ant build steps</title>
 
-        <para></para>
+        <para>Free-style build jobs work equally well with Ant. Apache Ant
+        (<uri>http://ant.apache.org/</uri>) is a widely-used and very
+        well-known Java build scripting tool. Indeed, a very large number of
+        Java projects out there rely on Ant build scripts.</para>
+
+        <para>Ant is not only used as a primary build scripting tool - even if
+        your project uses Maven, you may resort to calling Ant scripts to do
+        more specific tasks. There are Ant libraries available for many
+        development tools and low-level tasks, such as using SSH, or working
+        with proprietary application servers. In <xref
+        linkend="fig-hudson-build-ant-step" />, for example, we are invoking
+        an Ant script to run a JMeter test script. <figure
+            id="fig-hudson-build-ant-step">
+            <title>Configuring an Ant build step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-ant-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>As with the Maven build step, the 'Advanced...' button provides
+        you with more detailed options, such as specifying a different build
+        script, or a build script in a different directory (the default will
+        be <filename>build.xml</filename> in the root directory). You can also
+        specify properties and JVM options, just as you can for Maven.</para>
       </sect3>
 
       <sect3>
@@ -927,6 +955,12 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
     <para>- Snapshot dependencies</para>
 
     <para>- Reporting</para>
+  </sect1>
+
+  <sect1>
+    <title>Matrix builds</title>
+
+    <para></para>
   </sect1>
 
   <sect1>
