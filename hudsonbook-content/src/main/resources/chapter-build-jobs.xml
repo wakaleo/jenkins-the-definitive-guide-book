@@ -702,7 +702,7 @@
         <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
 REPOS="$1"
 PROJECT=<co id="svn-hook-1" />
-/usr/bin/wget $HUDSON_SERVER/job/&dollar;{PROJECT}/build</programlisting>
+/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
 
         <para><calloutlist>
             <callout arearefs="maven-it-1">
@@ -722,7 +722,7 @@ UUID=`svnlook uuid $REPOS`
   --post-data "`svnlook changed --revision $REV $REPOS`" \
   --output-document "-" \
   --timeout=2 \
-  $HUDSON_SERVER/subversion/&dollar;{UUID}/notifyCommit?rev=$REV</programlisting></para>
+  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
 
         <para>This would automatically start any Hudson build jobs monitoring
         this Subversion repository.</para>
@@ -809,7 +809,8 @@ UUID=`svnlook uuid $REPOS`
         easy to configure and very flexible. Just pick 'Invoke top-level Maven
         targets' from the build step lists, pick a version of Maven to run (if
         you have multiple versions installed), and enter the Maven goals you
-        want to run.</para>
+        want to run. Hudson freestyle build jobs work fine with both Maven 2
+        and Maven 3.</para>
 
         <para>Just like on the command line, you can specify as many
         individual goals as you want. You can also provide command-line
@@ -1010,7 +1011,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         <command>Groovy Plugin</command>
         (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
         lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
-        part of your build process. </para>
+        part of your build process.</para>
 
         <para>To use this plugin, you need to Once you have installed the
         Groovy plugin, you need to add a reference to your Groovy installation
@@ -1123,7 +1124,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>A convenient way to identify the current build job, in the
-              form of "hudson-&dollar;{JOB_NAME}-&dollar;{BUILD_NUMBER}" (e.g.
+              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
               "hudson-game-of-life-2010-10-30_23-59-59")</para>
             </listitem>
           </varlistentry>
@@ -1165,7 +1166,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
               variable is set to the <filename>JAVA_HOME</filename> of the
               specified JDK. When this variable is set,
               <filename>PATH</filename> is also updated to have
-              <filename>&dollar;JAVA_HOME/bin</filename>.</para>
+              <filename>$JAVA_HOME/bin</filename>.</para>
             </listitem>
           </varlistentry>
 
@@ -1228,7 +1229,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         access them using the <command>&lt;property&gt;</command> tag as shown
         here:<programlisting>&lt;target name="printinfo"&gt;
   &lt;property environment="env" /&gt;
-  &lt;echo message="&dollar;{env.BUILD_TAG}"/&gt;
+  &lt;echo message="${env.BUILD_TAG}"/&gt;
 &lt;/target&gt;</programlisting></para>
 
         <para>In Maven, you can access the variables either in the same way
@@ -1243,12 +1244,11 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
   &lt;artifactId&gt;gameoflife-core&lt;/artifactId&gt;
   &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;gameoflife-core&lt;/name&gt;
-  &lt;url&gt;&dollar;{JOB_URL}&lt;/url&gt;</programlisting></para>
+  &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting></para>
 
         <para>Alternatively, if you are building a web application, you can
         also use the <filename>maven-war-plugin</filename> to insert the build
-        job number into the web application manifest, e.g.
-<programlisting>&lt;project&gt;
+        job number into the web application manifest, e.g. <programlisting>&lt;project&gt;
   ...
   &lt;build&gt;
     ...
@@ -1261,9 +1261,9 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
           &lt;/manifest&gt;
           &lt;archive&gt;
             &lt;manifestEntries&gt;
-              &lt;Specification-Title&gt;&dollar;{project.name}&lt;/Specification-Title&gt;
-              &lt;Specification-Version&gt;&dollar;{project.version}&lt;/Specification-Version&gt;
-              &lt;Implementation-Version&gt;&dollar;{BUILD_TAG}&lt;/Implementation-Version&gt;
+              &lt;Specification-Title&gt;${project.name}&lt;/Specification-Title&gt;
+              &lt;Specification-Version&gt;${project.version}&lt;/Specification-Version&gt;
+              &lt;Implementation-Version&gt;${BUILD_TAG}&lt;/Implementation-Version&gt;
             &lt;/manifestEntries&gt;
           &lt;/archive&gt;
         &lt;/configuration&gt;
@@ -1296,12 +1296,117 @@ println env['BUILD_NUMBER']</programlisting></para>
       </sect3>
 
       <sect3>
+        <title>Building Grails projects</title>
+
+        <para>TODO</para>
+      </sect3>
+
+      <sect3>
+        <title>Building projects with Visual Studio MSBuild</title>
+
+        <para>Hudson is a Java application, but it also provides excellent
+        support for .NET projects. </para>
+
+        <para>To build .NET projects in Hudson, you need to install the
+        MSBuild plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
+
+        <para>You may also want to install the MSTest plugin
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/MSTest+Plugin</uri>)
+        and the NUnit plugin
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/NUnit+Plugin</uri>),
+        to display your test results. </para>
+
+        <para>Once you have installed the .NET plugins and restarted Hudson,
+        you need to configure your .NET build tools. Go to the
+        <command>Configure System</command> page and specify the path of the
+        MSBuild executable (see <xref
+        linkend="fig-hudson-msbuild-config" />).</para>
+
+        <para><figure id="fig-hudson-msbuild-config">
+            <title>Configuring .NET build tools in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-msbuild-config.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Once you have this set up, you can return to your freestyle
+        project and add your .NET build step configuration.</para>
+
+        <para>Go to the <command>Build</command> section and choose
+        '<command>Build a Visual project or solution using MSBuild</command>'
+        option in the 'Add Build Step' menu. Then enter the path to your
+        MSBuild build script (a <filename>.proj</filename> or
+        <filename>.sln</filename> file), along with any command-line options
+        your build requires (see <xref
+        linkend="fig-hudson-msbuild-step" />).</para>
+
+        <para><figure id="fig-hudson-msbuild-step">
+            <title>A build step using MSBuild</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-msbuild-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Build projects with NAnt</title>
+
+        <para>Another way to build your .NET projects is to use NAnt. NAnt is
+        a .NET version of the Ant build scripting tool widely used in the Java
+        world. NAnt build scripts are XML files (typically with a
+        <filename>.build</filename> extension), with a very similar format to
+        Ant build scripts.</para>
+
+        <para>To build with NAnt in Hudson, you need to install the Hudson
+        NAnt plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/NAnt+Plugin</uri>).
+        Once you have installed the plugin and restarted Hudson, go to the
+        <command>Configure System</command> page and specify the NAnt
+        installation directory in the <command>Nant Builders</command> section
+        (see <xref linkend="fig-hudson-msbuild-config" />).</para>
+
+        <para>Now go to the <command>Build</command> section of your freestyle
+        project and choose '<command>Execute NAnt build</command>' (see <xref
+        linkend="???" />). Here you specify your build script and the target
+        you want to invoke. If you click on the
+        '<command>Advanced...</command>' option, you can also set property
+        values to be passed into the NAnt script.</para>
+
+        <para><figure id="fig-hudson-nant-step">
+            <title>A build step using NAnt</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-nant-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Building Ruby projects</title>
+
+        <para>TODO</para>
+      </sect3>
+
+      <sect3>
         <title>Build steps for other languages</title>
 
-        <para>Hudson provides excellent support for other languages and
-        development environments, including Grails, Ruby, .NET, PHP, and many
-        others. We will discuss building non-Java projects in a dedicated
-        chapter later on in the book.</para>
+        <para>As the last few sections illustrate, Hudson provides excellent
+        support for other languages and development environments, including
+        Grails, Ruby, .NET, PHP, and many others. We will discuss other
+        aspects of building non-Java projects later on in the book.</para>
       </sect3>
     </sect2>
 
@@ -1311,6 +1416,10 @@ println env['BUILD_NUMBER']</programlisting></para>
       <para>- Archiving results</para>
 
       <para>- Reporting on unit tests</para>
+
+      <para>- Notifications</para>
+
+      <para>- Building other projects</para>
     </sect2>
   </sect1>
 
