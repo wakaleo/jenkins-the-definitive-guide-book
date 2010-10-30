@@ -1001,6 +1001,298 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         equivalent script in a more portable scripting language, such as
         Groovy or Gant.</para>
       </sect3>
+
+      <sect3>
+        <title>Running Groovy scripts</title>
+
+        <para>Groovy is not only a popular JVM dynamic language, it is also a
+        convenient language for low-level scripting. The Hudson
+        <command>Groovy Plugin</command>
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
+        lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
+        part of your build process. </para>
+
+        <para>To use this plugin, you need to Once you have installed the
+        Groovy plugin, you need to add a reference to your Groovy installation
+        in the system configuration page (see <xref
+        linkend="fig-hudson-groovy-installation" />).</para>
+
+        <para><figure id="fig-hudson-groovy-installation">
+            <title>Adding a Groovy installation to Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-installation.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Now you can add some Groovy scripting to your build job.
+        When you click on 'Add build step', you will see two new entries in
+        the drop-down menu: 'Execute Groovy script' and 'Execute system Groovy
+        script'. The first option is generally what you want - this will
+        simply execute a Groovy script in a separate JVM, as if you were
+        invoking Groovy from the command line. The second option runs Groovy
+        commands within Hudson's own JVM, with full access to Hudson's
+        internals, and is mainly used to manipulate the Hudson build jobs or
+        build process itself. This is a more advanced topic that we will
+        discuss later on in the book.</para>
+
+        <para>A Groovy build step can take one of two forms. For simple cases,
+        you can just add a small snippet of Groovy, as shown in <xref
+        linkend="fig-hudson-groovy-build-step" />. For more involved or
+        complicated cases, you would probably write a Groovy script and place
+        it under version control. Once your script is safely in your SCM, you
+        can run it by selecting the 'Groovy script file' option and providing
+        the path to your script (relative to your build job workspace).</para>
+
+        <para><figure id="fig-hudson-groovy-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>In <xref linkend="fig-hudson-groovy-fitnesse-build-step" />, you
+        can see a slightly more complicated example. Here we are running a
+        Groovy script called <filename>run-fitness-tests.groovy</filename>,
+        which can be found in the <filename>scripts</filename> directory. This
+        script takes the test suites to be executed as its parameters - we
+        provide these in the <command>Script parameters</command> field. If we
+        want to provide any options for Groovy itself, we can put these in the
+        <command>Groovy Parameters</command> field. Alternatively, we can also
+        provide command-line properties in the <command>Properties</command>
+        field - this is simply a more convenient way of using the
+        <command>-D</command> command line option to pass property values to
+        the Groovy script.</para>
+
+        <para><figure id="fig-hudson-groovy-fitnesse-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-fitnesse-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Using Hudson environment variables in your builds</title>
+
+        <para>One useful trick that can be used in virtually any build step is
+        to obtain information from Hudson about the current build job. In
+        fact, when Hudson starts a build step, it makes the following
+        environment variables available to the build script:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>BUILD_NUMBER</term>
+
+            <listitem>
+              <para>The current build number, such as "153"</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_ID</term>
+
+            <listitem>
+              <para>A timestamp for the current build id, in the format
+              YYYY-MM-DD_hh-mm-ss</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JOB_NAME</term>
+
+            <listitem>
+              <para>The name of the job, such as 'game-of-life'</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_TAG</term>
+
+            <listitem>
+              <para>A convenient way to identify the current build job, in the
+              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
+              "hudson-game-of-life-2010-10-30_23-59-59")</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>EXECUTOR_NUMBER</term>
+
+            <listitem>
+              <para>A number identifying the executor running this build among
+              the executors of the same machine. This is the number you see in
+              the "build executor status", except that the number starts from
+              0, not 1.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>NODE_NAME</term>
+
+            <listitem>
+              <para>The name of the slave if the build is running on a slave,
+              or "" if the build is running on master.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>NODE_LABELS</term>
+
+            <listitem>
+              <para>The list of labels associated with the node that this
+              build is running on.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JAVA_HOME</term>
+
+            <listitem>
+              <para>If your job is configured to use a specific JDK, this
+              variable is set to the <filename>JAVA_HOME</filename> of the
+              specified JDK. When this variable is set,
+              <filename>PATH</filename> is also updated to have
+              <filename>$JAVA_HOME/bin</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>WORKSPACE</term>
+
+            <listitem>
+              <para>The absolute path of the workspace.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>HUDSON_URL</term>
+
+            <listitem>
+              <para>The full URL of the Hudson server, for example
+              <filename>http://ci.acme.com:8080/hudson/</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JOB_URL</term>
+
+            <listitem>
+              <para>The full URL for this build job, for example
+              <filename>http://ci.acme.com:8080/hudson/game-of-life</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_URL</term>
+
+            <listitem>
+              <para>The full URL for this build, for example
+              <filename>http://ci.acme.com:8080/hudson/game-of-life/20</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>SVN_REVISION</term>
+
+            <listitem>
+              <para>For Subversion-based projects, this variable contains the
+              current revision number.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>CVS_BRANCH</term>
+
+            <listitem>
+              <para>For CVS-based projects, this variable contains the branch
+              of the module. If CVS is configured to check out the trunk, this
+              environment variable will not be set.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>These variables are easy to access. In an Ant script, you can
+        access them using the <command>&lt;property&gt;</command> tag as shown
+        here:<programlisting>&lt;target name="printinfo"&gt;
+  &lt;property environment="env" /&gt;
+  &lt;echo message="${env.BUILD_TAG}"/&gt;
+&lt;/target&gt;</programlisting></para>
+
+        <para>In Maven, you can access the variables directly. For
+        example...</para>
+
+        <para>TODO: Example of accessing variable directly in Maven</para>
+
+        <para>Alternatively, if you are building a web application, you can
+        also use the <filename>maven-war-plugin</filename> to insert the build
+        job number into the web application manifest, e.g.<programlisting>&lt;project&gt;
+    ...
+    &lt;build&gt;
+        ...
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;manifest&gt;
+                        &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+                    &lt;/manifest&gt;
+                    &lt;archive&gt;
+                        &lt;manifestEntries&gt;
+                            &lt;Specification-Title&gt;${project.name}&lt;/Specification-Title&gt;
+                            &lt;Specification-Version&gt;${project.version}&lt;/Specification-Version&gt;
+                            &lt;Implementation-Version&gt;${BUILD_TAG}&lt;/Implementation-Version&gt;
+                        &lt;/manifestEntries&gt;
+                    &lt;/archive&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            ...
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+    ...
+&lt;/project&gt;</programlisting></para>
+
+        <para>This will produce a <filename>MANIFEST.MF</filename> file along
+        the following lines:<programlisting>Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: johnsmart
+Build-Jdk: 1.6.0_22
+Hudson-Build-Number: 63
+Hudson-Project: game-of-life
+Hudson-Version: 1.382
+Implementation-Version: hudson-game-of-life-63
+Specification-Title: gameoflife-web
+Specification-Version: 0.0.55-SNAPSHOT</programlisting></para>
+
+        <para>And in a Groovy script, they can be obtained via the
+        <command>System.getenv()</command> method:<programlisting>def env = System.getenv()
+env.each {
+    println it
+}</programlisting>or<programlisting>def env = System.getenv()
+println env['BUILD_NUMBER']</programlisting></para>
+      </sect3>
+
+      <sect3>
+        <title>Build steps for other languages</title>
+
+        <para>Hudson provides excellent support for other languages and
+        development environments, including Grails, Ruby, .NET, PHP, and many
+        others. We will discuss building non-Java projects in a dedicated
+        chapter later on in the book.</para>
+      </sect3>
     </sect2>
 
     <sect2>
@@ -1009,12 +1301,6 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
       <para>- Archiving results</para>
 
       <para>- Reporting on unit tests</para>
-    </sect2>
-
-    <sect2 id="sect-hudson-environment-variables">
-      <title>Using Hudson environment variables in your builds</title>
-
-      <para></para>
     </sect2>
   </sect1>
 
