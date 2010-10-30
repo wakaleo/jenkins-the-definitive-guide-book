@@ -702,7 +702,7 @@
         <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
 REPOS="$1"
 PROJECT=<co id="svn-hook-1" />
-/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
+/usr/bin/wget $HUDSON_SERVER/job/&dollar;{PROJECT}/build</programlisting>
 
         <para><calloutlist>
             <callout arearefs="maven-it-1">
@@ -722,7 +722,7 @@ UUID=`svnlook uuid $REPOS`
   --post-data "`svnlook changed --revision $REV $REPOS`" \
   --output-document "-" \
   --timeout=2 \
-  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
+  $HUDSON_SERVER/subversion/&dollar;{UUID}/notifyCommit?rev=$REV</programlisting></para>
 
         <para>This would automatically start any Hudson build jobs monitoring
         this Subversion repository.</para>
@@ -1123,7 +1123,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>A convenient way to identify the current build job, in the
-              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
+              form of "hudson-&dollar;{JOB_NAME}-&dollar;{BUILD_NUMBER}" (e.g.
               "hudson-game-of-life-2010-10-30_23-59-59")</para>
             </listitem>
           </varlistentry>
@@ -1165,7 +1165,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
               variable is set to the <filename>JAVA_HOME</filename> of the
               specified JDK. When this variable is set,
               <filename>PATH</filename> is also updated to have
-              <filename>$JAVA_HOME/bin</filename>.</para>
+              <filename>&dollar;JAVA_HOME/bin</filename>.</para>
             </listitem>
           </varlistentry>
 
@@ -1228,7 +1228,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         access them using the <command>&lt;property&gt;</command> tag as shown
         here:<programlisting>&lt;target name="printinfo"&gt;
   &lt;property environment="env" /&gt;
-  &lt;echo message="${env.BUILD_TAG}"/&gt;
+  &lt;echo message="&dollar;{env.BUILD_TAG}"/&gt;
 &lt;/target&gt;</programlisting></para>
 
         <para>In Maven, you can access the variables either in the same way
@@ -1243,34 +1243,35 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
   &lt;artifactId&gt;gameoflife-core&lt;/artifactId&gt;
   &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;gameoflife-core&lt;/name&gt;
-  &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting></para>
+  &lt;url&gt;&dollar;{JOB_URL}&lt;/url&gt;</programlisting></para>
 
         <para>Alternatively, if you are building a web application, you can
         also use the <filename>maven-war-plugin</filename> to insert the build
-        job number into the web application manifest, e.g.<programlisting>&lt;project&gt;
+        job number into the web application manifest, e.g.
+<programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
     ...
-    &lt;build&gt;
-        ...
-        &lt;plugins&gt;
-            &lt;plugin&gt;
-                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
-                &lt;configuration&gt;
-                    &lt;manifest&gt;
-                        &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
-                    &lt;/manifest&gt;
-                    &lt;archive&gt;
-                        &lt;manifestEntries&gt;
-                            &lt;Specification-Title&gt;${project.name}&lt;/Specification-Title&gt;
-                            &lt;Specification-Version&gt;${project.version}&lt;/Specification-Version&gt;
-                            &lt;Implementation-Version&gt;${BUILD_TAG}&lt;/Implementation-Version&gt;
-                        &lt;/manifestEntries&gt;
-                    &lt;/archive&gt;
-                &lt;/configuration&gt;
-            &lt;/plugin&gt;
-            ...
-        &lt;/plugins&gt;
-    &lt;/build&gt;
-    ...
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;manifest&gt;
+            &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+          &lt;/manifest&gt;
+          &lt;archive&gt;
+            &lt;manifestEntries&gt;
+              &lt;Specification-Title&gt;&dollar;{project.name}&lt;/Specification-Title&gt;
+              &lt;Specification-Version&gt;&dollar;{project.version}&lt;/Specification-Version&gt;
+              &lt;Implementation-Version&gt;&dollar;{BUILD_TAG}&lt;/Implementation-Version&gt;
+            &lt;/manifestEntries&gt;
+          &lt;/archive&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  ...
 &lt;/project&gt;</programlisting></para>
 
         <para>This will produce a <filename>MANIFEST.MF</filename> file along
