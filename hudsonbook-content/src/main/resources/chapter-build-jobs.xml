@@ -932,9 +932,74 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
       </sect3>
 
       <sect3>
-        <title>Executing a shell command</title>
+        <title>Executing a shell or Windows batch command</title>
 
-        <para></para>
+        <para>Occasionally you may need to execute a command directly at the
+        Operating System level. Some legacy build processes rely on
+        OS-specific scripts, for example. In other cases, you may need to
+        perform a low-level operation that is most easily done with an
+        OS-level command.</para>
+
+        <para>You can do this in Hudson with the <command>Execute
+        Shell</command> (for Unix) or <command>Execute Windows Batch</command>
+        command (for Windows). As an example, in <xref
+        linkend="fig-hudson-build-shell-step" /> we have added a step to
+        execute the Unix <command>ls</command> command.</para>
+
+        <para><figure id="fig-hudson-build-shell-step">
+            <title>Configuring an 'Execute Shell' step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-shell-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The output from this build step is shown here:</para>
+
+        <para><programlisting>[workspace] $ /bin/sh -xe /var/folders/.../hudson2542160238803334344.sh
++ ls -al
+total 64
+drwxr-xr-x  14 johnsmart  staff   476 30 Oct 15:21 .
+drwxr-xr-x   9 johnsmart  staff   306 30 Oct 15:21 ..
+-rw-r--r--@  1 johnsmart  staff   294 22 Sep 01:40 .checkstyle
+-rw-r--r--@  1 johnsmart  staff   651 22 Sep 01:40 .classpath
+-rw-r--r--@  1 johnsmart  staff   947 22 Sep 01:40 .project
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 .settings
+-rw-r--r--@  1 johnsmart  staff   437 22 Sep 01:40 .springBeans
+drwxr-xr-x   9 johnsmart  staff   306 30 Oct 15:21 .svn
+-rw-r--r--@  1 johnsmart  staff  1228 22 Sep 01:40 build.xml
+-rw-r--r--@  1 johnsmart  staff    50 22 Sep 01:40 infinitest.filters
+-rw-r--r--   1 johnsmart  staff  6112 30 Oct 15:21 pom.xml
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 src
+drwxr-xr-x   3 johnsmart  staff   102 22 Sep 01:40 target
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
+</programlisting></para>
+
+        <para>You can either execute an OS-specific command (e.g
+        <command>ls</command>), or store a more complicated script as a file
+        in your version control system, and execute this script. If you are
+        executing a script, you just need to refer to the name of your script
+        relative to the work directory.</para>
+
+        <para>Shell scripts are executed using the "<command>-ex</command>"
+        option - the commands are printed to the console, as is the resulting
+        output. If any of the executed commands return a non-zero value, the
+        build will fail.</para>
+
+        <para>When Hudson executes a script, it sets a number of environment
+        variables that you can use within the script. We discuss these
+        variable in more detail in <xref
+        linkend="sect-hudson-environment-variables" />.</para>
+
+        <para>In fact, there are some very good reasons why you should avoid
+        using OS-level scripts in your build jobs if you can possibly avoid
+        it. In particular, it makes your build job in the lease OS-specific,
+        and at worst dependent on the precise machine configuration. One more
+        portable alternative to executing OS scripts include writing an
+        equivalent script in a more portable scripting language, such as
+        Groovy or Gant.</para>
       </sect3>
     </sect2>
 
@@ -944,6 +1009,12 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
       <para>- Archiving results</para>
 
       <para>- Reporting on unit tests</para>
+    </sect2>
+
+    <sect2 id="sect-hudson-environment-variables">
+      <title>Using Hudson environment variables in your builds</title>
+
+      <para></para>
     </sect2>
   </sect1>
 
