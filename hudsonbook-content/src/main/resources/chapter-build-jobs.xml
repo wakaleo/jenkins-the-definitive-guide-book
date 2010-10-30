@@ -1231,10 +1231,19 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
   &lt;echo message="${env.BUILD_TAG}"/&gt;
 &lt;/target&gt;</programlisting></para>
 
-        <para>In Maven, you can access the variables directly. For
-        example...</para>
+        <para>In Maven, you can access the variables either in the same way
+        (using the "env." prefix), or directly using the Hudson environment
+        variable. For example, in the following pom.xml file, the project URL
+        will point to the Hudson build job that ran the <command>mvn
+        site</command> build:</para>
 
-        <para>TODO: Example of accessing variable directly in Maven</para>
+        <para><programlisting>&lt;project...&gt;
+  ...
+  &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+  &lt;artifactId&gt;gameoflife-core&lt;/artifactId&gt;
+  &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;gameoflife-core&lt;/name&gt;
+  &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting></para>
 
         <para>Alternatively, if you are building a web application, you can
         also use the <filename>maven-war-plugin</filename> to insert the build
