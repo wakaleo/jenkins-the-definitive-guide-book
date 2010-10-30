@@ -1413,20 +1413,101 @@ println env['BUILD_NUMBER']</programlisting></para>
     <sect2>
       <title>Post-build actions</title>
 
+      <para>Once the build is completed, there are still a few things you need
+      to look after. You might </para>
+
+      <para></para>
+
       <para>- Archiving results</para>
 
       <para>- Reporting on unit tests</para>
 
       <para>- Notifications</para>
 
-      <para>- Building other projects</para>
+      <para>- Building other projects- Tidying up</para>
+
+      <sect3>
+        <title>Archiving build results</title>
+
+        <para>With a few exceptions, the principal goal of a build job is
+        generally to build something. In Hudson, we call this something an
+        artifact. An artifact might be a binary executable (a JAR or WAR file
+        for a Java project, for example), .</para>
+
+        <para>It is often convenient to keep a copy of the artifacts generated
+        by your build process. </para>
+
+        <para>If you are using an Enterprise Repository Manager such</para>
+
+        <para>- Keeping build results</para>
+
+        <para>Hudson archiving is veryflexible - you can use Ant-like
+        wildcards to find the files you want to archive (e.g. "**/*.jar", for
+        all the JAR files, anywhere in the workspace), or provide a list of
+        paths to archive different sorts of files (e.g. "**/target/*.zip,
+        **/target/*.tgz").</para>
+
+        <para>Archived build artifacts appear on the build results page (see
+        <xref linkend="fig-hudson-build-artifact" />). The most recent build
+        artifacts are also displayed on the build job home page.</para>
+
+        <para><figure id="fig-hudson-build-artifact">
+            <title>Build artifacts are displayed on the build results page,
+            and on the build job home page</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-artifacts.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>- Permanent URLs to the most recent build artifacts</para>
+
+        <para></para>
+
+        <para>Artifacts don't just have to be executable binaries. Imagine,
+        for example, that your build process involves automatically deploying
+        each build to a test server. For convenience, you want to keep a copy
+        of the exact source code associated with each deployed WAR file. One
+        way to do this would be to generate the source code associated with a
+        build, and archive both this file and the WAR file. We could do this
+        by generating a JAR file containing the application source code (for
+        example, by using the Maven Source Plugin for a Maven project), and
+        then including this in the list of artifacts to store (see <xref
+        linkend="fig-hudson-archiving-source" />).</para>
+
+        <para><figure id="fig-hudson-archiving-source">
+            <title>Archiving source code and a binary package</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-archiving-source.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Of course, this example is a tad academic: it would
+        probably be simpler just to use the revision number for this build
+        (which is displayed on the build result page) to retrieve the source
+        code from your version control system. But you get the idea.</para>
+      </sect3>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Working with Maven 2 Build Jobs</title>
 
+    <para>Maven 2 build jobs are specifically adapted to Maven 2 builds</para>
+
+    <para>At the time of writing, Maven 2 builds will not work with Maven 3.
+    </para>
+
     <para>- Multi-module builds</para>
+
+    <para>- Module-specific configurations</para>
 
     <para>- Snapshot dependencies</para>
 
