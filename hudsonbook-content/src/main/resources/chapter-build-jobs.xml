@@ -1296,12 +1296,6 @@ println env['BUILD_NUMBER']</programlisting></para>
       </sect3>
 
       <sect3>
-        <title>Building Grails projects</title>
-
-        <para>TODO</para>
-      </sect3>
-
-      <sect3>
         <title>Building projects with Visual Studio MSBuild</title>
 
         <para>Hudson is a Java application, but it also provides excellent
@@ -1395,12 +1389,6 @@ println env['BUILD_NUMBER']</programlisting></para>
       </sect3>
 
       <sect3>
-        <title>Building Ruby projects</title>
-
-        <para>TODO</para>
-      </sect3>
-
-      <sect3>
         <title>Build steps for other languages</title>
 
         <para>As the last few sections illustrate, Hudson provides excellent
@@ -1414,17 +1402,43 @@ println env['BUILD_NUMBER']</programlisting></para>
       <title>Post-build actions</title>
 
       <para>Once the build is completed, there are still a few things you need
-      to look after. You might </para>
+      to look after. You might want to archive some of the generated
+      artifacts, to report on test results, and to notify people about the
+      results. In this section, we look at some of the more common tasks you
+      need to configure after the build is done.</para>
 
-      <para></para>
+      <sect3>
+        <title>Reporting on test results</title>
 
-      <para>- Archiving results</para>
+        <para>One of the most obvious requirements of a build job is to report
+        on test results. Not only whether there are any test failures, but
+        also how many tests were executed, how long they took to execute, and
+        so on. In the Java world, JUnit is the most commonly-used testing
+        library around, and the JUnit XML format for test results is widely
+        used and understood by other tools as well. </para>
 
-      <para>- Reporting on unit tests</para>
+        <para>Hudson provides great support for test reporting. In a freestyle
+        build job, you need to tick the '<command>Publish JUnit test result
+        report</command>' checkbox, and provide a path to your JUnit report
+        files (see <xref linkend="fig-hudson-build-job-junit" />). You can use
+        a wildcard expression (such as "**/target/surefire-reports/*.xml" in a
+        Maven project) to include JUnit reports from a number of different
+        directories - Hudson will aggregate the results into a single
+        report.</para>
 
-      <para>- Notifications</para>
+        <para><figure id="fig-hudson-build-job-junit">
+            <title>Reporting on test results</title>
 
-      <para>- Building other projects- Tidying up</para>
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-junit.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>We look at automated tests in much more detail in <xref
+        linkend="chapter-automated-testing" />.</para>
+      </sect3>
 
       <sect3>
         <title>Archiving build results</title>
@@ -1619,6 +1633,74 @@ println env['BUILD_NUMBER']</programlisting></para>
         Manager as part of the build job, and retrieve them from here when
         required.</para>
       </sect3>
+
+      <sect3>
+        <title>Notifications</title>
+
+        <para>The point of a CI server is to let people know when a build
+        breaks. In Hudson, this comes under the heading of
+        Notification.</para>
+
+        <para>Out of the box, Hudson provides support for email notification.
+        You can activate this by ticking the '<command>E-mail
+        Notification</command>' checkbox in the <command>Post-build
+        Actions</command> (see ). Then enter the email addresses of the team
+        members who will need to know when the build breaks. When the build
+        does break, Hudson will send a friendly email message to the users in
+        this list containing a link to the broken build. </para>
+
+        <para><figure id="fig-hudson-build-job-email">
+            <title>Archiving source code and a binary package</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-email.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>You can also opt to send a separate email to the user who's
+        commit (presumably) broke the build. For this to work, you need to
+        have activated Security on your Hudson server (see chapter <xref
+        linkend="chapter-security" />).</para>
+
+        <para>Normally, Hudson will send an email notification out whenever a
+        build fails (for example, because of a compilation error). It will
+        also send out a notification when the build becomes unstable for the
+        first time (for example, if there are unit test failures). Unless you
+        configure it to do so, Hudson will not send emails for every unstable
+        build, but only for the first one.</para>
+
+        <para>Finally, Hudson will send a message when a previously failing or
+        unstable build succeeds, to let everyone know that the problem has
+        been resolved.</para>
+      </sect3>
+
+      <sect3>
+        <title>Building other projects</title>
+
+        <para>You can also start other build jobs in the Post-build Actions,
+        using the 'Build other projects' option. This is useful if you want to
+        organize your build process in several, smaller steps, rather than one
+        long build job. Just list the projects you want to start after this
+        one. Normally, these projects will only be triggered if the build was
+        stable, but you can optionally trigger another build job even if the
+        current build is unstable. This might be useful, for example, if you
+        wanted to run a code quality metrics reporting build job after a
+        project's main build job, even if there are test failures in the main
+        build.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Running your new build job</title>
+
+      <para>Now all you need to do is save your new build job. You can then
+      trigger the first build manually, or just wait for it to kick off by
+      itself.</para>
+
+      <para>In the rest of this chapter, we will have a look at two other
+      types of build jobs: Maven 2 build jobs and Matrix builds.</para>
     </sect2>
   </sect1>
 
