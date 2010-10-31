@@ -282,7 +282,7 @@
       appear in this section later on in the book.</para>
     </sect2>
 
-    <sect2>
+    <sect2 id="sect-subversion">
       <title>Source code management</title>
 
       <para>In it's most basic role, a Continuous Integration server monitors
@@ -1432,20 +1432,56 @@ println env['BUILD_NUMBER']</programlisting></para>
         <para>With a few exceptions, the principal goal of a build job is
         generally to build something. In Hudson, we call this something an
         artifact. An artifact might be a binary executable (a JAR or WAR file
-        for a Java project, for example), .</para>
+        for a Java project, for example), or some other related deliverable,
+        such as documentation or source code. A build job can store one or
+        many different artifacts, keeping only the latest copy or every
+        artifact ever built.</para>
 
-        <para>It is often convenient to keep a copy of the artifacts generated
-        by your build process. </para>
+        <para>Configuring Hudson to store your artifacts is easy - just tick
+        the 'Archive the artifacts' checkbox in the <command>Post-build
+        Actions</command>, and specify which artifacts you want to store (see
+        <xref
+        linkend="fig-hudson-build-job-artifact-configuration" />).</para>
 
-        <para>If you are using an Enterprise Repository Manager such</para>
+        <para><figure id="fig-hudson-build-job-artifact-configuration">
+            <title>Build artifacts are displayed on the build results page,
+            and on the build job home page</title>
 
-        <para>- Keeping build results</para>
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-artifact-configuration.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>In the '<command>Files to archive</command>' field, you can
+        provide the full paths of the files you want to archive (relative to
+        the job workspace), or, use Ant-like wild cards (e.g. "**/*.jar", for
+        all the JAR files, anywhere in the workspace). One advantage of using
+        wild cards is that it makes your build less dependent on your version
+        control set up. For example, if you are using Subversion (see <xref
+        linkend="sect-subversion" />), Hudson will check out your project
+        either directly in your workspace, or into a sub-directory, depending
+        on how you set it up. If you use a wild card expression like
+        "**/target/*.war", Hudson will find the file no matter what directory
+        the project is located in.</para>
 
-        <para>Hudson archiving is veryflexible - you can use Ant-like
-        wildcards to find the files you want to archive (e.g. "**/*.jar", for
-        all the JAR files, anywhere in the workspace), or provide a list of
-        paths to archive different sorts of files (e.g. "**/target/*.zip,
-        **/target/*.tgz").</para>
+        <para>As usual, the '<command>Advanced..</command>' button give access
+        to a few extra options. If you are using wild cards to find your
+        artifacts, you might need to exclude certain directories from the
+        search. You can do this by filling in the <command>Excludes</command>
+        field. You enter a pattern to match any files that you
+        <emphasis>don't</emphasis> want to archive, even if they would
+        normally be included by the 'Field to archive' field.</para>
+
+        <para>Archived artifacts can take a lot of disk space, especially if
+        builds are frequent. For this reason, you may want to only keep the
+        last successful one. To do this, just tick the '<command>Discard all
+        but the last successful/stable artifact</command>' option. Hudson will
+        keep artifacts from the last stable build (if there where any). It
+        will also keep the artifacts of the latest unstable build following
+        the stable build (if any), and also from the last failed build that
+        happened.</para>
 
         <para>Archived build artifacts appear on the build results page (see
         <xref linkend="fig-hudson-build-artifact" />). The most recent build
@@ -1458,15 +1494,97 @@ println env['BUILD_NUMBER']</programlisting></para>
             <mediaobject>
               <imageobject role="web">
                 <imagedata align="center"
-                           fileref="figs/web/hudson-build-artifacts.png"
+                           fileref="figs/web/hudson-build-job-artifacts.png"
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure></para>
+          </figure>You can also use permanent URLs to access the most recent
+        build artifacts. This is a great way to reuse the latest artifacts
+        from your builds, either in other Hudson build jobs or in external
+        scripts, for example. Three URLs are available: last stable build,
+        last successful build and last completed build. </para>
 
-        <para>- Permanent URLs to the most recent build artifacts</para>
+        <para>Before we look at the URLs, we should discuss the concept of
+        <emphasis>stable</emphasis> and <emphasis>successful</emphasis>
+        builds. </para>
 
-        <para></para>
+        <para>A build is <emphasis>successful</emphasis> when the compilation
+        reported no errors.</para>
+
+        <para>A build is considered <emphasis>stable</emphasis> if it was
+        built successfully, and no publisher reports it as unstable. For
+        example, depending on your project configuration, unit test failures,
+        insufficient code coverage, or other code quality metrics issues,
+        could cause a build to be marked as unstable. So a stable build is
+        always successful, but the opposite is not necessarily true - a build
+        can be successful without being stable.</para>
+
+        <para>A <emphasis>completed</emphasis> build is simply a build that
+        has finished, no matter what its result. Note that the archiving step
+        will take place no matter what the outcome of the build was. </para>
+
+        <para>The format of the artifact URLs is intuitive, and takes the
+        following form: </para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Latest Stable Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastStableBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Successful Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastSuccessfulBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Completed Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastCompletedBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>This is best illustrated by some examples. Suppose your Hudson
+        server is running on <uri>http://myserver:8080</uri>, your build job
+        is called <filename>game-of-life</filename>, and you are storing a
+        file called <filename>gameoflife.war</filename>, which is in the
+        target directory of your workspace. The URLs for this artifact would
+        be the following:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Latest Stable Build</term>
+
+            <listitem>
+              <para><uri>http://myserver:8080/job/gameoflife/lastStableBuild/artifact/target/gameoflife.war</uri>
+              </para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Successful Build</term>
+
+            <listitem>
+              <para><uri>http://myserver:8080/job/gameoflife/lastSuccessfulBuild/artifact/target/gameoflife.war</uri></para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Completed Build</term>
+
+            <listitem>
+              <para><filename>http://myserver:8080/job/gameoflife/lastCompletedBuild/artifact/target/gameoflife.war</filename></para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
 
         <para>Artifacts don't just have to be executable binaries. Imagine,
         for example, that your build process involves automatically deploying
@@ -1493,6 +1611,13 @@ println env['BUILD_NUMBER']</programlisting></para>
         probably be simpler just to use the revision number for this build
         (which is displayed on the build result page) to retrieve the source
         code from your version control system. But you get the idea.</para>
+
+        <para>Note that if you are using an Enterprise Repository Manager such
+        as Nexus or Artifactory to store your binary artifacts, you may not
+        need to keep them on the Hudson server. You may prefer simply to
+        automatically deploy your artifacts to your Enterprise Repository
+        Manager as part of the build job, and retrieve them from here when
+        required.</para>
       </sect3>
     </sect2>
   </sect1>
