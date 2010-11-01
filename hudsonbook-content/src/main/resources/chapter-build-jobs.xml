@@ -39,7 +39,7 @@
     <para>Creating a new build job in Hudson is simple: just click on the 'New
     Job' menu item on the Hudson dashboard. Hudson supports several different
     types of build job, which are presented to you when you choose to create a
-    new jon (see <xref linkend="fig-hudson-build-types" />).<variablelist>
+    new job (see <xref linkend="fig-hudson-build-types" />).<variablelist>
         <varlistentry>
           <term>Free-style software project</term>
 
@@ -1299,7 +1299,7 @@ println env['BUILD_NUMBER']</programlisting></para>
         <title>Building projects with Visual Studio MSBuild</title>
 
         <para>Hudson is a Java application, but it also provides excellent
-        support for .NET projects. </para>
+        support for .NET projects.</para>
 
         <para>To build .NET projects in Hudson, you need to install the
         MSBuild plugin
@@ -1309,7 +1309,7 @@ println env['BUILD_NUMBER']</programlisting></para>
         (<uri>http://wiki.hudson-ci.org//display/HUDSON/MSTest+Plugin</uri>)
         and the NUnit plugin
         (<uri>http://wiki.hudson-ci.org//display/HUDSON/NUnit+Plugin</uri>),
-        to display your test results. </para>
+        to display your test results.</para>
 
         <para>Once you have installed the .NET plugins and restarted Hudson,
         you need to configure your .NET build tools. Go to the
@@ -1415,7 +1415,7 @@ println env['BUILD_NUMBER']</programlisting></para>
         also how many tests were executed, how long they took to execute, and
         so on. In the Java world, JUnit is the most commonly-used testing
         library around, and the JUnit XML format for test results is widely
-        used and understood by other tools as well. </para>
+        used and understood by other tools as well.</para>
 
         <para>Hudson provides great support for test reporting. In a freestyle
         build job, you need to tick the '<command>Publish JUnit test result
@@ -1516,11 +1516,11 @@ println env['BUILD_NUMBER']</programlisting></para>
         build artifacts. This is a great way to reuse the latest artifacts
         from your builds, either in other Hudson build jobs or in external
         scripts, for example. Three URLs are available: last stable build,
-        last successful build and last completed build. </para>
+        last successful build and last completed build.</para>
 
         <para>Before we look at the URLs, we should discuss the concept of
         <emphasis>stable</emphasis> and <emphasis>successful</emphasis>
-        builds. </para>
+        builds.</para>
 
         <para>A build is <emphasis>successful</emphasis> when the compilation
         reported no errors.</para>
@@ -1535,10 +1535,10 @@ println env['BUILD_NUMBER']</programlisting></para>
 
         <para>A <emphasis>completed</emphasis> build is simply a build that
         has finished, no matter what its result. Note that the archiving step
-        will take place no matter what the outcome of the build was. </para>
+        will take place no matter what the outcome of the build was.</para>
 
         <para>The format of the artifact URLs is intuitive, and takes the
-        following form: </para>
+        following form:</para>
 
         <variablelist>
           <varlistentry>
@@ -1578,8 +1578,7 @@ println env['BUILD_NUMBER']</programlisting></para>
             <term>Latest Stable Build</term>
 
             <listitem>
-              <para><uri>http://myserver:8080/job/gameoflife/lastStableBuild/artifact/target/gameoflife.war</uri>
-              </para>
+              <para><uri>http://myserver:8080/job/gameoflife/lastStableBuild/artifact/target/gameoflife.war</uri></para>
             </listitem>
           </varlistentry>
 
@@ -1647,7 +1646,7 @@ println env['BUILD_NUMBER']</programlisting></para>
         Actions</command> (see ). Then enter the email addresses of the team
         members who will need to know when the build breaks. When the build
         does break, Hudson will send a friendly email message to the users in
-        this list containing a link to the broken build. </para>
+        this list containing a link to the broken build.</para>
 
         <para><figure id="fig-hudson-build-job-email">
             <title>Archiving source code and a binary package</title>
@@ -1707,10 +1706,20 @@ println env['BUILD_NUMBER']</programlisting></para>
   <sect1>
     <title>Working with Maven 2 Build Jobs</title>
 
-    <para>Maven 2 build jobs are specifically adapted to Maven 2 builds</para>
+    <para>Maven 2 build jobs are specifically adapted to Maven 2 builds.
+    Creating a Maven 2 build job requires considerably less work than
+    configuring the equivalent freestyle build job. Maven 2 build jobs support
+    advanced Maven-related features such as incremental builds on multi-module
+    projects and triggering builds from changes in snapshot dependencies, and
+    make configuration and reporting much simpler.</para>
 
-    <para>At the time of writing, Maven 2 builds will not work with Maven 3.
-    </para>
+    <para>However, there is a catch: Maven 2 build jobs are less flexible than
+    freestyle build jobs. In addition, at the time of writing, Maven 2 builds
+    will not work with Maven 3.</para>
+
+    <para>In this section, we will investigate how to configure Maven 2
+    builds, when you can use them, as well as their advantages and
+    limitations.</para>
 
     <para>- Multi-module builds</para>
 
@@ -1719,12 +1728,217 @@ println env['BUILD_NUMBER']</programlisting></para>
     <para>- Snapshot dependencies</para>
 
     <para>- Reporting</para>
-  </sect1>
 
-  <sect1>
-    <title>Matrix builds</title>
+    <sect2>
+      <title>Creating a Maven 2 build job</title>
 
-    <para></para>
+      <para>To create a new Maven 2 build job, just choose the 'Build a maven2
+      project' option in the 'New Job' page (see <xref
+      linkend="fig-hudson-build-job-new-mvn2" />).</para>
+
+      <para><figure id="fig-hudson-build-job-new-mvn2">
+          <title>Creating a new Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-job-new-mvn2.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <sect3>
+        <title>Building whenever a SNAPSHOT dependency is built</title>
+
+        <para>At first glance, the Maven 2 build job configuration screen is
+        very similar to the one we saw for freestyle builds in the previous
+        section. The first difference you may notice is in the <command>Build
+        Triggers</command> section. In this section, an extra option is
+        available: '<command>Build whenever a SNAPSHOT dependency is
+        built</command>'. If you select this option, Hudson will examine your
+        <filename>pom.xml</filename> file (or files) to see if any SNAPSHOT
+        dependencies are being built by other build jobs. If any other build
+        jobs update a SNAPSHOT dependency that your project uses, Hudson will
+        build your project as well.</para>
+
+        <para>Typically in Maven, SNAPSHOT dependencies are used to share the
+        latest bleeding-edge version of a library with other projects within
+        the same team. Since they are by definition unstable, it is not
+        recommended practice to rely on SNAPSHOT dependencies from other teams
+        or from external sources.</para>
+
+        <para>For example, imagine that you are working on a new
+        <emphasis>game-of-life</emphasis> web application. You are using Maven
+        2 for this project, so you can use a Maven 2 build job in Hudson. Your
+        team is also working on a reusable library called
+        <emphasis>cooltools</emphasis>. Since these two projects are being
+        developed by the same team, you are using some of the latest
+        <emphasis>cooltools</emphasis> features in the game-of-life web
+        application. So you have a SNAPSHOT dependency in the
+        <code>&lt;dependencies&gt;</code> section of your game-of-life
+        <filename>pom.xml</filename> file:<programlisting>    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.acme.common&lt;/groupId&gt;
+            &lt;artifactId&gt;cooltools&lt;/artifactId&gt;
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        ...
+    &lt;/dependencies&gt;</programlisting></para>
+
+        <para>On your Hudson server, you have set up Maven 2 build jobs for
+        both the <emphasis>cooltools</emphasis> and the
+        <emphasis>game-of-life</emphasis> applications. Since your
+        <emphasis>game-of-life</emphasis> project needs the latest
+        <emphasis>cooltools</emphasis> SNAPSHOT version, you tick the
+        '<command>Build whenever a SNAPSHOT dependency is built</command>'
+        option. This way, whenever the <emphasis>cooltools</emphasis> project
+        is rebuilt, the game-of-life project will automatically be rebuilt as
+        well.</para>
+      </sect3>
+
+      <sect3>
+        <title>Configuring the Maven build</title>
+
+        <para>The next area where you will notice a change is in the
+        <command>Build</command> section. In a Maven 2 build job, the build
+        section is entirely devoted to running a single Maven goal (see <xref
+        linkend="fig-hudson-build-job-maven2" />). In this section, you
+        specify the version of Maven you want to execute (remember, at the
+        time of Maven, this will only work with Maven 2), the location of the
+        <filename>pom.xml</filename> file, and the Maven goal (or goals) to
+        invoke. You can also add any command-line options you need here.
+        </para>
+
+        <para><figure id="fig-hudson-build-job-maven2">
+            <title>Creating a new Maven 2 build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-maven2.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>In many cases, this is all you need to get your Maven build
+        job configured. However, if you click on the
+        <command>'Advanced...'</command> button, you can take your pick of
+        some more advanced features.</para>
+
+        <para><figure id="fig-hudson-build-job-maven2-advanced">
+            <title>Maven 2 build jobs - advanced options</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/fig-hudson-build-job-maven2-advanced.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The "<command>Incremental Build</command>' option comes in
+        very handy for large, multi-module Maven builds. If you tick this
+        option, when a change is made to one of the project modules, Hudson
+        will only rebuild that module and any modules that use the changed
+        module. It performs this magic by using some new Maven features
+        introduced in Maven 2.1 (so it won't work if you are using Maven
+        2.0.x). Hudson detects which modules have been changed, and then uses
+        the <command>-pl</command> (<command>--project-list</command>) option
+        to build only the updated modules, and the <command>-amd</command>
+        (<command>--also-make-dependents</command>) option to build the
+        modules that use the updated modules. If nothing has been changed in
+        the source code, all of the modules are built.</para>
+
+        <para>By default, Hudson will archive all of the artifacts generated
+        by a Maven 2 build job. This can come in handy at times, but it can
+        also be very expensive in disk storage. If you want to turn off this
+        option, just tick the '<command>Disable automatic artifact
+        archiving</command>' option. Alternatively, you can always limit the
+        artifacts stored by using the ' <command>Discard Old Builds</command>'
+        option at the top of the configuration page.</para>
+
+        <para>The '<command>Build modules in parallel</command>' option tells
+        Hudson to run each individual module in parallel as a separate build.
+        In theory, this could speed up your builds quite a bit. In practice,
+        it will only really work if your modules are totally independent (that
+        is, you aren't using aggregation), which is rarely the case. If you
+        think building your modules in parallel could really speed up your
+        multi-module project, you may want to try a freestyle build with Maven
+        3 and its new parallel build feature.</para>
+
+        <para>The last option is to '<command>Use [a] private Maven
+        repository</command>'. Normally, when Hudson runs Maven, it will
+        behave in exactly the same way as Maven on the command line: it will
+        store artifacts in, and retrieve artifacts from the local Maven
+        repository (found in <filename>~/.m2/repository</filename> if you
+        haven't reconfigured it in the <filename>settings.xml</filename>
+        file). This is efficient in terms of disk space, but not always ideal
+        for CI builds. Indeed, if several build jobs are working on and with
+        the same snapshot artifacts, the builds may end up interfering with
+        each other.</para>
+
+        <para>When this option is checked, Hudson will tell Maven to use
+        $WORKSPACE/.repository as the local Maven repository. This means each
+        job will get its own isolated Maven repository just for itself. It
+        fixes the above problems, at the expense of additional disk space
+        consumption. </para>
+
+        <para>With this option, Maven will use a dedicated Maven repository
+        for this build job, located in the <filename>$WORKSPACE/.repository
+        </filename>directory. This takes more disk space, but guarantees a
+        better isolation between build jobs.</para>
+
+        <para>Another way of addressing this problem is to override the
+        default repository location by using the
+        <command>maven.repo.local</command> property, as shown
+        here:<programlisting>$ mvn install -Dmaven.repo.local=~/.m2/staging-repository</programlisting>This
+        approach has the advantage of being able to share a repository across
+        several build jobs, which is useful if you need to do a series of
+        related builds. It will also work with freestyle jobs.</para>
+      </sect3>
+
+      <sect3>
+        <title>Post-build Actions</title>
+
+        <para>The post-build actions in a Maven 2 build job are considerably
+        simpler to configure than in a freestyle job. This is simply because,
+        since this is a Maven build, Hudson knows where to look for a lot of
+        the build output. Artifacts, test reports, Javadoc, and so forth, are
+        all generated in standard directories, which means
+        <emphasis>you</emphasis> don't have to tell Hudson where to find
+        things. So Hudson will find, and report on, JUnit test results
+        automatically. The other post-build actions are similar to those we
+        saw in the freestyle build job.</para>
+
+        <para>One extra option does appear in the Maven 2 build jobs is the
+        ability to deploy your artifacts to a Maven repository (see <xref
+        linkend="fig-hudson-maven2" />). The advantage of getting Hudson to
+        deploy your artifacts (as opposed to simply running "<command>mvn
+        deploy</command>") is that, if you have a multi-module Maven build,
+        the artifacts will only be deployed once the entire build has finished
+        successfully. For example, suppose you have a multi-module Maven
+        project with five modules. if you run <command>mvn deploy</command>,
+        and the build fails after three modules, the first two modules will
+        have been deployed to your repository, but not the last three, which
+        leaves your repository in an instable state. Getting Hudson to do the
+        deploy ensures that the artifacts are only deployed as a group once
+        the build has successfully finished.</para>
+
+        <para><figure id="fig-hudson-maven2-deploy">
+            <title>Deploying artifacts to a Maven repository</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/fig-hudson-maven2-deploy.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>TODO: Artifactory integration</para>
+      </sect3>
+    </sect2>
   </sect1>
 
   <sect1>
