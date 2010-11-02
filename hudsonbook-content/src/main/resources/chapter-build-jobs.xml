@@ -23,14 +23,16 @@
     <para>A software project will usually have several related build jobs. For
     example, you might choose to start off with a dedicated build job that
     runs all of your unit tests. If these pass, you might proceed to a build
-    job that executes longer-running integration tests...</para>
-
-    <para>TODO Staged builds, build steps and build pipelines</para>
+    job that executes longer-running integration tests, runs code quality
+    metrics, or generates technical documentation, before finally bundling up
+    your web application and deploying it to a test server.</para>
 
     <para>In Hudson, build jobs are easy to set up. In this chapter, we will
-    look at the main types of build jobs, how to configure them...</para>
-
-    <para>TODO: Finish introduction</para>
+    look at the main types of build jobs and how to configure them. In later
+    chapters, we will take things further, looking at how to organize multiple
+    build jobs, how to set up build promotion pipelines, and how to automate
+    the deployment process. But, for now, lets start off with how to set up
+    your basic build jobs in Hudson.</para>
   </sect1>
 
   <sect1 id="sect-build-jobs">
@@ -96,7 +98,9 @@
             as a 'matrix project') lets you run the same build job in many
             different configurations. This powerful feature can be useful for
             testing an application in many different environments, with
-            different databases, or even on different build machines.</para>
+            different databases, or even on different build machines. We will
+            be looking at how to configure multi-configuration build jobs
+            later on in the book.</para>
           </listitem>
         </varlistentry>
       </variablelist></para>
@@ -1004,88 +1008,6 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
       </sect3>
 
       <sect3>
-        <title>Running Groovy scripts</title>
-
-        <para>Groovy is not only a popular JVM dynamic language, it is also a
-        convenient language for low-level scripting. The Hudson
-        <command>Groovy Plugin</command>
-        (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
-        lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
-        part of your build process.</para>
-
-        <para>To use this plugin, you need to Once you have installed the
-        Groovy plugin, you need to add a reference to your Groovy installation
-        in the system configuration page (see <xref
-        linkend="fig-hudson-groovy-installation" />).</para>
-
-        <para><figure id="fig-hudson-groovy-installation">
-            <title>Adding a Groovy installation to Hudson</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-groovy-installation.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>Now you can add some Groovy scripting to your build job.
-        When you click on 'Add build step', you will see two new entries in
-        the drop-down menu: 'Execute Groovy script' and 'Execute system Groovy
-        script'. The first option is generally what you want - this will
-        simply execute a Groovy script in a separate JVM, as if you were
-        invoking Groovy from the command line. The second option runs Groovy
-        commands within Hudson's own JVM, with full access to Hudson's
-        internals, and is mainly used to manipulate the Hudson build jobs or
-        build process itself. This is a more advanced topic that we will
-        discuss later on in the book.</para>
-
-        <para>A Groovy build step can take one of two forms. For simple cases,
-        you can just add a small snippet of Groovy, as shown in <xref
-        linkend="fig-hudson-groovy-build-step" />. For more involved or
-        complicated cases, you would probably write a Groovy script and place
-        it under version control. Once your script is safely in your SCM, you
-        can run it by selecting the 'Groovy script file' option and providing
-        the path to your script (relative to your build job workspace).</para>
-
-        <para><figure id="fig-hudson-groovy-build-step">
-            <title>Running Groovy commands as part of a build job</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-groovy-build-step.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
-
-        <para>In <xref linkend="fig-hudson-groovy-fitnesse-build-step" />, you
-        can see a slightly more complicated example. Here we are running a
-        Groovy script called <filename>run-fitness-tests.groovy</filename>,
-        which can be found in the <filename>scripts</filename> directory. This
-        script takes the test suites to be executed as its parameters - we
-        provide these in the <command>Script parameters</command> field. If we
-        want to provide any options for Groovy itself, we can put these in the
-        <command>Groovy Parameters</command> field. Alternatively, we can also
-        provide command-line properties in the <command>Properties</command>
-        field - this is simply a more convenient way of using the
-        <command>-D</command> command line option to pass property values to
-        the Groovy script.</para>
-
-        <para><figure id="fig-hudson-groovy-fitnesse-build-step">
-            <title>Running Groovy commands as part of a build job</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-groovy-fitnesse-build-step.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
-      </sect3>
-
-      <sect3>
         <title>Using Hudson environment variables in your builds</title>
 
         <para>One useful trick that can be used in virtually any build step is
@@ -1293,6 +1215,151 @@ env.each {
     println it
 }</programlisting>or<programlisting>def env = System.getenv()
 println env['BUILD_NUMBER']</programlisting></para>
+      </sect3>
+
+      <sect3>
+        <title>Running Groovy scripts</title>
+
+        <para>Groovy is not only a popular JVM dynamic language, it is also a
+        convenient language for low-level scripting. The Hudson
+        <command>Groovy Plugin</command>
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
+        lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
+        part of your build process.</para>
+
+        <para>To use this plugin, you need to Once you have installed the
+        Groovy plugin, you need to add a reference to your Groovy installation
+        in the system configuration page (see <xref
+        linkend="fig-hudson-groovy-installation" />).</para>
+
+        <para><figure id="fig-hudson-groovy-installation">
+            <title>Adding a Groovy installation to Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-installation.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Now you can add some Groovy scripting to your build job.
+        When you click on 'Add build step', you will see two new entries in
+        the drop-down menu: 'Execute Groovy script' and 'Execute system Groovy
+        script'. The first option is generally what you want - this will
+        simply execute a Groovy script in a separate JVM, as if you were
+        invoking Groovy from the command line. The second option runs Groovy
+        commands within Hudson's own JVM, with full access to Hudson's
+        internals, and is mainly used to manipulate the Hudson build jobs or
+        build process itself. This is a more advanced topic that we will
+        discuss later on in the book.</para>
+
+        <para>A Groovy build step can take one of two forms. For simple cases,
+        you can just add a small snippet of Groovy, as shown in <xref
+        linkend="fig-hudson-groovy-build-step" />. For more involved or
+        complicated cases, you would probably write a Groovy script and place
+        it under version control. Once your script is safely in your SCM, you
+        can run it by selecting the 'Groovy script file' option and providing
+        the path to your script (relative to your build job workspace).</para>
+
+        <para><figure id="fig-hudson-groovy-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>In <xref linkend="fig-hudson-groovy-fitnesse-build-step" />, you
+        can see a slightly more complicated example. Here we are running a
+        Groovy script called <filename>run-fitness-tests.groovy</filename>,
+        which can be found in the <filename>scripts</filename> directory. This
+        script takes the test suites to be executed as its parameters - we
+        provide these in the <command>Script parameters</command> field. If we
+        want to provide any options for Groovy itself, we can put these in the
+        <command>Groovy Parameters</command> field. Alternatively, we can also
+        provide command-line properties in the <command>Properties</command>
+        field - this is simply a more convenient way of using the
+        <command>-D</command> command line option to pass property values to
+        the Groovy script.</para>
+
+        <para><figure id="fig-hudson-groovy-fitnesse-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-fitnesse-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Building Grails projects</title>
+
+        <para>Grails is an open-source dynamic web application framework built
+        on Groovy and many well-established open source Java frameworks such
+        as Spring and Hibernate.</para>
+
+        <para>First, you need to install the Hudson Grails Plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/Grails+Plugin</uri>).
+        Once you have installed this and restarted Hudson, you need to provide
+        at least one version of Grails for Hudson to use in the
+        <command>Grails Builder</command> section of the <command>Configure
+        System</command> screen (see <xref
+        linkend="fig-hudson-build-job-grails-builder" />).</para>
+
+        <para><figure id="fig-hudson-build-job-grails-builder">
+            <title>Adding a Grails installation to Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-grails-builder.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Now you can set up a freestyle build job to build your
+        Grails project. The Grails Plugin adds the 'Build with Grails' build
+        step, which you can use to build your Grails application (see <xref
+        linkend="fig-hudson-build-job-grails" />). Here, you provide the
+        Grails target, or targets, you want to execute. Unlike the command
+        line, you can execute several targets in the same command. However, if
+        you need to pass any arguments to a particular target, you should
+        enclose the target and its arguments in double quotes. In <xref
+        linkend="fig-hudson-build-job-grails" />, for example, we run
+        <command>grails clean</command>, followed by <command>grails test-app
+        -unit -non-interactive</command>. To get this to work properly, we
+        enclose the options of the second command in quotes, which gives us
+        <command>grails clean "test-app -unit
+        -non-interactive"</command>.</para>
+
+        <para><figure id="fig-hudson-build-job-grails">
+            <title>Configuring a Grails build step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-grails.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The Grails build step takes many optional parameters. For
+        example, Grails is finicky about versions - if your project was
+        created by an older version, Grails will ask you to upgrade it. To be
+        on the safe side, for example, you may want to tick the
+        '<command>Force Upgrade</command>', which makes sure that runs a
+        <command>grails upgrade --non-interactive</command> before it runs the
+        main targets.</para>
+
+        <para>You can also specify the server port (useful if you are
+        executing web tests), and any other properties you want to pass to the
+        build.</para>
       </sect3>
 
       <sect3>
@@ -1721,63 +1788,52 @@ println env['BUILD_NUMBER']</programlisting></para>
     builds, when you can use them, as well as their advantages and
     limitations.</para>
 
-    <para>- Multi-module builds</para>
+    <para>To create a new Maven 2 build job, just choose the 'Build a maven2
+    project' option in the 'New Job' page (see <xref
+    linkend="fig-hudson-build-job-new-mvn2" />).</para>
 
-    <para>- Module-specific configurations</para>
+    <para><figure id="fig-hudson-build-job-new-mvn2">
+        <title>Creating a new Maven 2 build job</title>
 
-    <para>- Snapshot dependencies</para>
-
-    <para>- Reporting</para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-build-job-new-mvn2.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
 
     <sect2>
-      <title>Creating a Maven 2 build job</title>
+      <title>Building whenever a SNAPSHOT dependency is built</title>
 
-      <para>To create a new Maven 2 build job, just choose the 'Build a maven2
-      project' option in the 'New Job' page (see <xref
-      linkend="fig-hudson-build-job-new-mvn2" />).</para>
+      <para>At first glance, the Maven 2 build job configuration screen is
+      very similar to the one we saw for freestyle builds in the previous
+      section. The first difference you may notice is in the <command>Build
+      Triggers</command> section. In this section, an extra option is
+      available: '<command>Build whenever a SNAPSHOT dependency is
+      built</command>'. If you select this option, Hudson will examine your
+      <filename>pom.xml</filename> file (or files) to see if any SNAPSHOT
+      dependencies are being built by other build jobs. If any other build
+      jobs update a SNAPSHOT dependency that your project uses, Hudson will
+      build your project as well.</para>
 
-      <para><figure id="fig-hudson-build-job-new-mvn2">
-          <title>Creating a new Maven 2 build job</title>
+      <para>Typically in Maven, SNAPSHOT dependencies are used to share the
+      latest bleeding-edge version of a library with other projects within the
+      same team. Since they are by definition unstable, it is not recommended
+      practice to rely on SNAPSHOT dependencies from other teams or from
+      external sources.</para>
 
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata align="center"
-                         fileref="figs/web/hudson-build-job-new-mvn2.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <sect3>
-        <title>Building whenever a SNAPSHOT dependency is built</title>
-
-        <para>At first glance, the Maven 2 build job configuration screen is
-        very similar to the one we saw for freestyle builds in the previous
-        section. The first difference you may notice is in the <command>Build
-        Triggers</command> section. In this section, an extra option is
-        available: '<command>Build whenever a SNAPSHOT dependency is
-        built</command>'. If you select this option, Hudson will examine your
-        <filename>pom.xml</filename> file (or files) to see if any SNAPSHOT
-        dependencies are being built by other build jobs. If any other build
-        jobs update a SNAPSHOT dependency that your project uses, Hudson will
-        build your project as well.</para>
-
-        <para>Typically in Maven, SNAPSHOT dependencies are used to share the
-        latest bleeding-edge version of a library with other projects within
-        the same team. Since they are by definition unstable, it is not
-        recommended practice to rely on SNAPSHOT dependencies from other teams
-        or from external sources.</para>
-
-        <para>For example, imagine that you are working on a new
-        <emphasis>game-of-life</emphasis> web application. You are using Maven
-        2 for this project, so you can use a Maven 2 build job in Hudson. Your
-        team is also working on a reusable library called
-        <emphasis>cooltools</emphasis>. Since these two projects are being
-        developed by the same team, you are using some of the latest
-        <emphasis>cooltools</emphasis> features in the game-of-life web
-        application. So you have a SNAPSHOT dependency in the
-        <code>&lt;dependencies&gt;</code> section of your game-of-life
-        <filename>pom.xml</filename> file:<programlisting>    &lt;dependencies&gt;
+      <para>For example, imagine that you are working on a new
+      <emphasis>game-of-life</emphasis> web application. You are using Maven 2
+      for this project, so you can use a Maven 2 build job in Hudson. Your
+      team is also working on a reusable library called
+      <emphasis>cooltools</emphasis>. Since these two projects are being
+      developed by the same team, you are using some of the latest
+      <emphasis>cooltools</emphasis> features in the game-of-life web
+      application. So you have a SNAPSHOT dependency in the
+      <code>&lt;dependencies&gt;</code> section of your game-of-life
+      <filename>pom.xml</filename> file:<programlisting>    &lt;dependencies&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;com.acme.common&lt;/groupId&gt;
             &lt;artifactId&gt;cooltools&lt;/artifactId&gt;
@@ -1787,157 +1843,230 @@ println env['BUILD_NUMBER']</programlisting></para>
         ...
     &lt;/dependencies&gt;</programlisting></para>
 
-        <para>On your Hudson server, you have set up Maven 2 build jobs for
-        both the <emphasis>cooltools</emphasis> and the
-        <emphasis>game-of-life</emphasis> applications. Since your
-        <emphasis>game-of-life</emphasis> project needs the latest
-        <emphasis>cooltools</emphasis> SNAPSHOT version, you tick the
-        '<command>Build whenever a SNAPSHOT dependency is built</command>'
-        option. This way, whenever the <emphasis>cooltools</emphasis> project
-        is rebuilt, the game-of-life project will automatically be rebuilt as
-        well.</para>
-      </sect3>
+      <para>On your Hudson server, you have set up Maven 2 build jobs for both
+      the <emphasis>cooltools</emphasis> and the
+      <emphasis>game-of-life</emphasis> applications. Since your
+      <emphasis>game-of-life</emphasis> project needs the latest
+      <emphasis>cooltools</emphasis> SNAPSHOT version, you tick the
+      '<command>Build whenever a SNAPSHOT dependency is built</command>'
+      option. This way, whenever the <emphasis>cooltools</emphasis> project is
+      rebuilt, the game-of-life project will automatically be rebuilt as
+      well.</para>
+    </sect2>
 
-      <sect3>
-        <title>Configuring the Maven build</title>
+    <sect2>
+      <title>Configuring the Maven build</title>
 
-        <para>The next area where you will notice a change is in the
-        <command>Build</command> section. In a Maven 2 build job, the build
-        section is entirely devoted to running a single Maven goal (see <xref
-        linkend="fig-hudson-build-job-maven2" />). In this section, you
-        specify the version of Maven you want to execute (remember, at the
-        time of Maven, this will only work with Maven 2), the location of the
-        <filename>pom.xml</filename> file, and the Maven goal (or goals) to
-        invoke. You can also add any command-line options you need here.
-        </para>
+      <para>The next area where you will notice a change is in the
+      <command>Build</command> section. In a Maven 2 build job, the build
+      section is entirely devoted to running a single Maven goal (see <xref
+      linkend="fig-hudson-build-job-maven2" />). In this section, you specify
+      the version of Maven you want to execute (remember, at the time of
+      Maven, this will only work with Maven 2), the location of the
+      <filename>pom.xml</filename> file, and the Maven goal (or goals) to
+      invoke. You can also add any command-line options you need here.</para>
 
-        <para><figure id="fig-hudson-build-job-maven2">
-            <title>Creating a new Maven 2 build job</title>
+      <para><figure id="fig-hudson-build-job-maven2">
+          <title>Creating a new Maven 2 build job</title>
 
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-build-job-maven2.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>In many cases, this is all you need to get your Maven build
-        job configured. However, if you click on the
-        <command>'Advanced...'</command> button, you can take your pick of
-        some more advanced features.</para>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-job-maven2.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In many cases, this is all you need to get your Maven build
+      job configured. However, if you click on the
+      <command>'Advanced...'</command> button, you can take your pick of some
+      more advanced features.</para>
 
-        <para><figure id="fig-hudson-build-job-maven2-advanced">
-            <title>Maven 2 build jobs - advanced options</title>
+      <para><figure id="fig-hudson-build-job-maven2-advanced">
+          <title>Maven 2 build jobs - advanced options</title>
 
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/fig-hudson-build-job-maven2-advanced.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>The "<command>Incremental Build</command>' option comes in
-        very handy for large, multi-module Maven builds. If you tick this
-        option, when a change is made to one of the project modules, Hudson
-        will only rebuild that module and any modules that use the changed
-        module. It performs this magic by using some new Maven features
-        introduced in Maven 2.1 (so it won't work if you are using Maven
-        2.0.x). Hudson detects which modules have been changed, and then uses
-        the <command>-pl</command> (<command>--project-list</command>) option
-        to build only the updated modules, and the <command>-amd</command>
-        (<command>--also-make-dependents</command>) option to build the
-        modules that use the updated modules. If nothing has been changed in
-        the source code, all of the modules are built.</para>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-build-job-maven2-advanced.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The "<command>Incremental Build</command>' option comes in
+      very handy for large, multi-module Maven builds. If you tick this
+      option, when a change is made to one of the project modules, Hudson will
+      only rebuild that module and any modules that use the changed module. It
+      performs this magic by using some new Maven features introduced in Maven
+      2.1 (so it won't work if you are using Maven 2.0.x). Hudson detects
+      which modules have been changed, and then uses the
+      <command>-pl</command> (<command>--project-list</command>) option to
+      build only the updated modules, and the <command>-amd</command>
+      (<command>--also-make-dependents</command>) option to build the modules
+      that use the updated modules. If nothing has been changed in the source
+      code, all of the modules are built.</para>
 
-        <para>By default, Hudson will archive all of the artifacts generated
-        by a Maven 2 build job. This can come in handy at times, but it can
-        also be very expensive in disk storage. If you want to turn off this
-        option, just tick the '<command>Disable automatic artifact
-        archiving</command>' option. Alternatively, you can always limit the
-        artifacts stored by using the ' <command>Discard Old Builds</command>'
-        option at the top of the configuration page.</para>
+      <para>By default, Hudson will archive all of the artifacts generated by
+      a Maven 2 build job. This can come in handy at times, but it can also be
+      very expensive in disk storage. If you want to turn off this option,
+      just tick the '<command>Disable automatic artifact archiving</command>'
+      option. Alternatively, you can always limit the artifacts stored by
+      using the ' <command>Discard Old Builds</command>' option at the top of
+      the configuration page.</para>
 
-        <para>The '<command>Build modules in parallel</command>' option tells
-        Hudson to run each individual module in parallel as a separate build.
-        In theory, this could speed up your builds quite a bit. In practice,
-        it will only really work if your modules are totally independent (that
-        is, you aren't using aggregation), which is rarely the case. If you
-        think building your modules in parallel could really speed up your
-        multi-module project, you may want to try a freestyle build with Maven
-        3 and its new parallel build feature.</para>
+      <para>The '<command>Build modules in parallel</command>' option tells
+      Hudson to run each individual module in parallel as a separate build. In
+      theory, this could speed up your builds quite a bit. In practice, it
+      will only really work if your modules are totally independent (that is,
+      you aren't using aggregation), which is rarely the case. If you think
+      building your modules in parallel could really speed up your
+      multi-module project, you may want to try a freestyle build with Maven 3
+      and its new parallel build feature.</para>
 
-        <para>The last option is to '<command>Use [a] private Maven
-        repository</command>'. Normally, when Hudson runs Maven, it will
-        behave in exactly the same way as Maven on the command line: it will
-        store artifacts in, and retrieve artifacts from the local Maven
-        repository (found in <filename>~/.m2/repository</filename> if you
-        haven't reconfigured it in the <filename>settings.xml</filename>
-        file). This is efficient in terms of disk space, but not always ideal
-        for CI builds. Indeed, if several build jobs are working on and with
-        the same snapshot artifacts, the builds may end up interfering with
-        each other.</para>
+      <para>The last option is to '<command>Use [a] private Maven
+      repository</command>'. Normally, when Hudson runs Maven, it will behave
+      in exactly the same way as Maven on the command line: it will store
+      artifacts in, and retrieve artifacts from the local Maven repository
+      (found in <filename>~/.m2/repository</filename> if you haven't
+      reconfigured it in the <filename>settings.xml</filename> file). This is
+      efficient in terms of disk space, but not always ideal for CI builds.
+      Indeed, if several build jobs are working on and with the same snapshot
+      artifacts, the builds may end up interfering with each other.</para>
 
-        <para>When this option is checked, Hudson will tell Maven to use
-        $WORKSPACE/.repository as the local Maven repository. This means each
-        job will get its own isolated Maven repository just for itself. It
-        fixes the above problems, at the expense of additional disk space
-        consumption. </para>
+      <para>When this option is checked, Hudson will tell Maven to use
+      $WORKSPACE/.repository as the local Maven repository. This means each
+      job will get its own isolated Maven repository just for itself. It fixes
+      the above problems, at the expense of additional disk space
+      consumption.</para>
 
-        <para>With this option, Maven will use a dedicated Maven repository
-        for this build job, located in the <filename>$WORKSPACE/.repository
-        </filename>directory. This takes more disk space, but guarantees a
-        better isolation between build jobs.</para>
+      <para>With this option, Maven will use a dedicated Maven repository for
+      this build job, located in the <filename>$WORKSPACE/.repository
+      </filename>directory. This takes more disk space, but guarantees a
+      better isolation between build jobs.</para>
 
-        <para>Another way of addressing this problem is to override the
-        default repository location by using the
-        <command>maven.repo.local</command> property, as shown
-        here:<programlisting>$ mvn install -Dmaven.repo.local=~/.m2/staging-repository</programlisting>This
-        approach has the advantage of being able to share a repository across
-        several build jobs, which is useful if you need to do a series of
-        related builds. It will also work with freestyle jobs.</para>
-      </sect3>
+      <para>Another way of addressing this problem is to override the default
+      repository location by using the <command>maven.repo.local</command>
+      property, as shown here:<programlisting>$ mvn install -Dmaven.repo.local=~/.m2/staging-repository</programlisting>This
+      approach has the advantage of being able to share a repository across
+      several build jobs, which is useful if you need to do a series of
+      related builds. It will also work with freestyle jobs.</para>
+    </sect2>
 
-      <sect3>
-        <title>Post-build Actions</title>
+    <sect2>
+      <title>Post-build Actions</title>
 
-        <para>The post-build actions in a Maven 2 build job are considerably
-        simpler to configure than in a freestyle job. This is simply because,
-        since this is a Maven build, Hudson knows where to look for a lot of
-        the build output. Artifacts, test reports, Javadoc, and so forth, are
-        all generated in standard directories, which means
-        <emphasis>you</emphasis> don't have to tell Hudson where to find
-        things. So Hudson will find, and report on, JUnit test results
-        automatically. The other post-build actions are similar to those we
-        saw in the freestyle build job.</para>
+      <para>The post-build actions in a Maven 2 build job are considerably
+      simpler to configure than in a freestyle job. This is simply because,
+      since this is a Maven build, Hudson knows where to look for a lot of the
+      build output. Artifacts, test reports, Javadoc, and so forth, are all
+      generated in standard directories, which means <emphasis>you</emphasis>
+      don't have to tell Hudson where to find things. So Hudson will find, and
+      report on, JUnit test results automatically, for example. Later on in
+      the book, we will see how the Maven 2 projects also simplify the
+      configuration of many code quality metrics tools and reports. </para>
 
-        <para>One extra option does appear in the Maven 2 build jobs is the
-        ability to deploy your artifacts to a Maven repository (see <xref
-        linkend="fig-hudson-maven2" />). The advantage of getting Hudson to
-        deploy your artifacts (as opposed to simply running "<command>mvn
-        deploy</command>") is that, if you have a multi-module Maven build,
-        the artifacts will only be deployed once the entire build has finished
-        successfully. For example, suppose you have a multi-module Maven
-        project with five modules. if you run <command>mvn deploy</command>,
-        and the build fails after three modules, the first two modules will
-        have been deployed to your repository, but not the last three, which
-        leaves your repository in an instable state. Getting Hudson to do the
-        deploy ensures that the artifacts are only deployed as a group once
-        the build has successfully finished.</para>
+      <para>The other post-build actions are similar to those we saw in the
+      freestyle build job.</para>
 
-        <para><figure id="fig-hudson-maven2-deploy">
-            <title>Deploying artifacts to a Maven repository</title>
+      <para>One extra option does appear in the Maven 2 build jobs is the
+      ability to deploy your artifacts to a Maven repository (see <xref
+      linkend="fig-hudson-maven2" />). The advantage of getting Hudson to
+      deploy your artifacts (as opposed to simply running "<command>mvn
+      deploy</command>") is that, if you have a multi-module Maven build, the
+      artifacts will only be deployed once the entire build has finished
+      successfully. For example, suppose you have a multi-module Maven project
+      with five modules. If you run <command>mvn deploy</command>, and the
+      build fails after three modules, the first two modules will have been
+      deployed to your repository, but not the last three, which leaves your
+      repository in an instable state. Getting Hudson to do the deploy ensures
+      that the artifacts are only deployed as a group once the build has
+      successfully finished.</para>
 
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/fig-hudson-maven2-deploy.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
+      <para><figure id="fig-hudson-maven2-deploy">
+          <title>Deploying artifacts to a Maven repository</title>
 
-        <para>TODO: Artifactory integration</para>
-      </sect3>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-maven2-deploy.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This approach will work for any Enterprise Repository
+      manager. However, if you are using Artifactory, you may prefer to
+      install the Hudson Artifactory Plugin
+      (<uri>http://wiki.hudson-ci.org/display/HUDSON/Artifactory+Plugin</uri>),
+      which provides tighter integration with Artifactory. To activate this
+      plugin in your Maven 2 build job, just tick the 'Deploy artifacts to
+      Artifactory' option in the Post-build Actions. You choose what
+      repositories your project should deploy to from a list of repositories
+      on the server, along with the username and password required to perform
+      the deployment (see <xref linkend="fig-maven2-artifactory" />).</para>
+
+      <para><figure id="fig-maven2-artifactory">
+          <title>Deploying to Artifactory from Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-artifactory.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Your build job will now automatically deploy to Artifactory.
+      In addition, a link to the artifact on the server will now be displayed
+      on the build job home and build results pages (see <xref
+      linkend="fig-maven2-artifactory-link" />).</para>
+
+      <para><figure id="fig-maven2-artifactory-link">
+          <title>Deploying to Artifactory from Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-artifactory-link.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This link takes you to a page on the Artifactory server
+      containing the deployed artifact (see <xref
+      linkend="fig-artifactory-artifact" />).</para>
+
+      <para><figure id="fig-artifactory-artifact">
+          <title>Viewing the deployed artifact in Artifactory</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-artifactory-artifact.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Managing modules</title>
+
+      <para>When using Maven, it is common to split a project into several
+      modules. Maven 2 build jobs have an intrinsic understand of multi-module
+      projects, and adds a 'Modules' menu item that lets you display the
+      structure of the project at a glance (see <xref
+      linkend="fig-maven2-modules" />).</para>
+
+      <para><figure id="fig-maven2-modules">
+          <title>Managing modules in a Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-modules.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Clicking on any of the modules will take you to the build
+      page for that module. From here, you can view the detailed build results
+      for each module, trigger a build of that module in isolation, and if
+      necessary fine tune the configuration of individual module, overriding
+      the configuration of the overall project.</para>
     </sect2>
   </sect1>
 
