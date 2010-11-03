@@ -1963,8 +1963,12 @@ println env['BUILD_NUMBER']</programlisting></para>
       the book, we will see how the Maven 2 projects also simplify the
       configuration of many code quality metrics tools and reports. </para>
 
-      <para>The other post-build actions are similar to those we saw in the
-      freestyle build job.</para>
+      <para>Most of the other post-build actions are similar to those we saw
+      in the freestyle build job.</para>
+    </sect2>
+
+    <sect2>
+      <title>Deploying to an Enterprise Repository Manager</title>
 
       <para>One extra option does appear in the Maven 2 build jobs is the
       ability to deploy your artifacts to a Maven repository (see <xref
@@ -1990,16 +1994,73 @@ println env['BUILD_NUMBER']</programlisting></para>
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure>This approach will work for any Enterprise Repository
-      manager. However, if you are using Artifactory, you may prefer to
-      install the Hudson Artifactory Plugin
+        </figure></para>
+
+      <para>To do this, just tick the '<command>Deploy artifacts to Maven
+      repository</command>' option in the <command>Post-Build
+      actions</command>. You will need to specify the URL of the repository
+      you want to deploy to. This needs to be the full URL to the repository
+      (e.g.
+      <uri>http://nexus.acme.com/nexus/content/repositories/snapshots</uri>,
+      and not just <uri>http://nexus.acme.com/nexus</uri>)</para>
+
+      <para>Most repositories need you to authenticate before letting you
+      deploy artifacts to them. The standard Maven way to do this is to place
+      a <command>&lt;server&gt;</command> entry in your local
+      <filename>settings.xml</filename> file, as shown here:<programlisting>&lt;settings...&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;id&gt;nexus-snapshots&lt;/id&gt;
+      &lt;username&gt;scott&lt;/username&gt;
+      &lt;password&gt;tiger&lt;/password&gt;
+    &lt;/server&gt;
+    &lt;server&gt;
+      &lt;id&gt;nexus-releases&lt;/id&gt;
+      &lt;username&gt;scott&lt;/username&gt;
+      &lt;password&gt;tiger&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;</programlisting></para>
+
+      <para>For the more security-minded, you can also encrypt these passwords
+      if required.</para>
+
+      <para>Then, enter the corresponding ID value in the 'Repository ID'
+      field in Hudson. Hudson will then be able to look up the right username
+      and password, and deploy your artifacts. </para>
+
+      <para>Using this option, you always don't have to deploy straight away -
+      you can always come back and deploy the artifacts from a previous build
+      later. Just click on the '<command>Redeploy Artifacts</command>' menu on
+      the left and specify the repository URL you want to deploy your artifact
+      to (see <xref linkend="fig-hudson-redeploy-artifact" />). As in the
+      previous example, the '<command>Advanced</command>' button lets you
+      provide the ID for the <command>&lt;server&gt;</command> entry in your
+      local <filename>settings.xml</filename> file.</para>
+
+      <para><figure id="fig-hudson-redeploy-artifact">
+          <title>Redeploying an artifact</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-redeploy-artifact.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>This option will work for any Enterprise Repository manager.
+      However, if you are using Artifactory, you may prefer to install the
+      Hudson Artifactory Plugin
       (<uri>http://wiki.hudson-ci.org/display/HUDSON/Artifactory+Plugin</uri>),
-      which provides tighter integration with Artifactory. To activate this
-      plugin in your Maven 2 build job, just tick the 'Deploy artifacts to
-      Artifactory' option in the Post-build Actions. You choose what
-      repositories your project should deploy to from a list of repositories
-      on the server, along with the username and password required to perform
-      the deployment (see <xref linkend="fig-maven2-artifactory" />).</para>
+      which provides tighter integration with Artifactory. Once you have
+      installed it, you can activate this plugin in your Maven 2 build job by
+      ticking the 'Deploy artifacts to Artifactory' option in the Post-build
+      Actions. Then you choose what repositories your project should deploy to
+      from a list of repositories on the server, along with the username and
+      password required to perform the deployment (see <xref
+      linkend="fig-maven2-artifactory" />).</para>
 
       <para><figure id="fig-maven2-artifactory">
           <title>Deploying to Artifactory from Hudson</title>
@@ -2028,15 +2089,48 @@ println env['BUILD_NUMBER']</programlisting></para>
           </mediaobject>
         </figure>This link takes you to a page on the Artifactory server
       containing the deployed artifact (see <xref
-      linkend="fig-artifactory-artifact" />).</para>
+      linkend="fig-artifactory-artifact" />). From this page, there is also a
+      link that takes you back to the build that built the artifact.</para>
 
-      <para><figure id="fig-artifactory-artifact">
+      <figure id="fig-artifactory-artifact">
+        <title>Viewing the deployed artifact in Artifactory</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/fig-artifactory-artifact.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
+
+    <sect2>
+      <title>Deploying to commercial Enterprise Repository Managers</title>
+
+      <para>An Enterprise Repository Manager is an essential part of any
+      Maven-based software development infrastructure. They also play a key
+      role for non-Maven projects using tools like Ivy and Gradle, both of
+      which rely on standard Maven repositories. </para>
+
+      <para>Both of the principal Enterprise Repository Managers, Nexus and
+      Artifactory offer professional versions which come with extra
+      integration features with Hudson. Later on in the book, we will discuss
+      how you can use advanced features such as Nexus Pro's staging and
+      release management to implement sophisticated build promotion
+      strategies. On the deployment side of things, the commercial edition of
+      Artifactory (Artifactory Pro Power Pack) extends the two-way integration
+      we saw earlier to provide more detailed information about the artifact
+      bundles deployed by Hudson (see <xref
+      linkend="fig-artifactory-pro-artifact" />).</para>
+
+      <para><figure id="fig-artifactory-pro-artifact">
           <title>Viewing the deployed artifact in Artifactory</title>
 
           <mediaobject>
             <imageobject role="web">
               <imagedata align="center"
-                         fileref="figs/web/fig-artifactory-artifact.png "
+                         fileref="figs/web/fig-artifactory-pro-artifact.png "
                          width="4.3in" />
             </imageobject>
           </mediaobject>
@@ -2067,6 +2161,37 @@ println env['BUILD_NUMBER']</programlisting></para>
       for each module, trigger a build of that module in isolation, and if
       necessary fine tune the configuration of individual module, overriding
       the configuration of the overall project.</para>
+    </sect2>
+
+    <sect2>
+      <title>Extra build steps in your Maven build jobs</title>
+
+      <para>By default, the Maven 2 build job only allows for a single Maven
+      goal. There are times when this is a little limiting, and you would like
+      to add some extra steps before or after the main build. You can do this
+      with the Hudson M2 Extra Steps Plugin
+      (<uri>http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin</uri>).
+      This plugin lets you add normal build steps before and after the main
+      Maven goal, giving you the flexibility of a freestyle build while still
+      having the convenience of the Maven 2 build job configuration.</para>
+
+      <para>Install this plugin and go to the <command>Build
+      Environment</command> section of your build job. Tick the 'Configure
+      Extra M2 Build Steps' option. You should now be able to add build steps
+      that will be executed before and/or after your main Maven goal is
+      executed (see <xref linkend="fig-m2-extra-steps" />).</para>
+
+      <para><figure id="fig-m2-extra-steps">
+          <title>Managing modules in a Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-m2-extra-steps.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
   </sect1>
 
