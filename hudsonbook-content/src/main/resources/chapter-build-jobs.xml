@@ -12,13 +12,13 @@
       </indexterm>Build jobs are the basic currency of a Continuous
     Integration server.</para>
 
-    <para>A build job is a particular way of building, testing, deploying or
-    otherwise doing something with your project. Build jobs come in a variety
-    of forms: you may want to compile and unit test your application, report
-    on code quality metrics related to the source code, generate
-    documentation, bundle up an application for a release, deploy it to
-    production, run an automated smoke test, or do any number of other similar
-    tasks.</para>
+    <para>A build job is a particular way of compiling, testing, packaging,
+    deploying or otherwise doing something with your project. Build jobs come
+    in a variety of forms: you may want to compile and unit test your
+    application, report on code quality metrics related to the source code,
+    generate documentation, bundle up an application for a release, deploy it
+    to production, run an automated smoke test, or do any number of other
+    similar tasks.</para>
 
     <para>A software project will usually have several related build jobs. For
     example, you might choose to start off with a dedicated build job that
@@ -65,11 +65,10 @@
 
                 <secondary>maven2</secondary>
               </indexterm>The 'maven2 project' is a build job specially
-            adapted to Maven 2 (and Maven 3) projects. Hudson understands
-            Maven <filename>pom</filename> files and project structures, and
-            can use the information gleaned from the <filename>pom</filename>
-            file to reduce the work you need to do to set up your
-            project.</para>
+            adapted to Maven 2 projects. Hudson understands Maven
+            <filename>pom</filename> files and project structures, and can use
+            the information gleaned from the <filename>pom</filename> file to
+            reduce the work you need to do to set up your project.</para>
           </listitem>
         </varlistentry>
 
@@ -122,8 +121,10 @@
     new job that is very similar to an existing build job, except for a few
     configuration details.</para>
 
-    <para>Let's look at each of these, starting off with the most flexible
-    option: the free-style build job.</para>
+    <para>In this chapter, we will focus on the first two types of build jobs,
+    which are the most commonly used. We will discuss the others later on.
+    Let's start with the most flexible option: the free-style build
+    job.</para>
   </sect1>
 
   <sect1>
@@ -203,7 +204,7 @@
       <para>The Advanced Project options contains, as the name suggests,
       configuration options that are less frequently required. You need to
       click on the 'Advanced' button for them to appear (see <xref
-      linkend="hudson-new-project-advanced" />).</para>
+      linkend="fig-hudson-new-project-advanced" />).</para>
 
       <para><figure id="fig-hudson-new-project-advanced">
           <title>To display the Advanced Options, you need to click on the
@@ -373,9 +374,9 @@
 
         <para>Another very useful feature is Hudson's integration with source
         code browsers. A good source code browser is an important part of your
-        Continuous Integration configuration. It lets you see at a glance what
-        changes triggered off a given build, which is very useful when it
-        comes to trouble-shooting broken builds (see <xref
+        Continuous Integration setup. It lets you see at a glance what changes
+        triggered a given build, which is very useful when it comes to
+        trouble-shooting broken builds (see <xref
         linkend="fig-hudson-new-job-diff" />). Hudson integrates with most of
         the major source code browsers, including open source tools such as
         WebSVN and Sventon, and commercial ones like Atlassian's
@@ -533,11 +534,11 @@
         server should provide feedback much more quickly than once a
         day.</para>
 
-        <para>There are however a few cases where scheduled builds make sense.
-        This includes very long running build jobs, where quick feedback is
-        less critical. For example, intensive load and performance tests which
-        may take several hours to run, or Sonar build jobs. Sonar is an
-        excellent way to keep tabs on code quality metrics across your
+        <para>There are nevertheless a few cases where scheduled builds do
+        make sense. This includes very long running build jobs, where quick
+        feedback is less critical. For example, intensive load and performance
+        tests which may take several hours to run, or Sonar build jobs. Sonar
+        is an excellent way to keep tabs on code quality metrics across your
         projects and over time, but the Sonar server only stores one set of
         data per day, so running Sonar builds more frequently than this is not
         useful.</para>
@@ -670,9 +671,9 @@
         <para>If you are using CVS, polling may not be a good option. When CVS
         checks for changes in a project, it checks each file one by one, which
         is a slow and tedious process. The best solution here is to migrate to
-        a modern version control system. The second-best solution is to use
-        polling at very sparse intervals (for example every 30
-        minutes).</para>
+        a modern version control system such as Git or Subversion. The
+        second-best solution is to use polling at very sparse intervals (for
+        example every 30 minutes).</para>
       </sect3>
 
       <sect3 id="sect-build-trigger-remote">
@@ -706,8 +707,9 @@
 
         <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
 REPOS="$1"
-PROJECT=<co id="svn-hook-1" />
-/usr/bin/wget $HUDSON_SERVER/job/&amp;dollar;{PROJECT}/build</programlisting>
+PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
+            id="svn-hook-1" />
+/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
 
         <para><calloutlist>
             <callout arearefs="maven-it-1">
@@ -727,7 +729,7 @@ UUID=`svnlook uuid $REPOS`
   --post-data "`svnlook changed --revision $REV $REPOS`" \
   --output-document "-" \
   --timeout=2 \
-  $HUDSON_SERVER/subversion/&amp;dollar;{UUID}/notifyCommit?rev=$REV</programlisting></para>
+  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
 
         <para>This would automatically start any Hudson build jobs monitoring
         this Subversion repository.</para>
@@ -777,22 +779,22 @@ UUID=`svnlook uuid $REPOS`
     <sect2>
       <title>Build steps</title>
 
-      <para>Once you have told Hudson where and how often to obtain the
-      project source code, you need to tell it what to do with it. In a
-      freestyle build, you do this by defining build steps. Build steps are
-      the basic building blocks for the Hudson freestyle build process. They
-      are what lets you tell Hudson exactly <emphasis>how</emphasis> you want
-      your project built.</para>
+      <para>Now Hudson should know where and how often to obtain the project
+      source code. The next thing you need to explain to Hudson is what it
+      what to do with the source code. In a freestyle build, you do this by
+      defining build steps. Build steps are the basic building blocks for the
+      Hudson freestyle build process. They are what let you tell Hudson
+      exactly <emphasis>how</emphasis> you want your project built.</para>
 
       <para>A build job may have one step, or more. It may even occasionally
       have none. In a freestyle build, you can add as many build steps as you
-      want in the Build section of your project configuration (see <xref
-      linkend="fig-hudson-build-steps" />). In a basic Hudson installation,
-      you will be able to add steps to invoke Maven and Ant, as well as
-      running OS-specific shell or Windows batch commands. And by installing
-      additional plugins, you can also integrate other build tools, such as
-      Groovy, Gradle, Grails, Jython, MSBuild, Phing, Python, Rake, and Ruby,
-      just to name some of the more well-known tools.</para>
+      want to the <command>Build</command> section of your project
+      configuration (see <xref linkend="fig-hudson-build-steps" />). In a
+      basic Hudson installation, you will be able to add steps to invoke Maven
+      and Ant, as well as running OS-specific shell or Windows batch commands.
+      And by installing additional plugins, you can also integrate other build
+      tools, such as Groovy, Gradle, Grails, Jython, MSBuild, Phing, Python,
+      Rake, and Ruby, just to name some of the more well-known tools.</para>
 
       <para><figure id="fig-hudson-build-steps">
           <title>Adding a build step to a freestyle build job</title>
@@ -804,8 +806,8 @@ UUID=`svnlook uuid $REPOS`
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure>In the remainder of this section, we will look at some of the
-      more common sorts of build steps in more detail.</para>
+        </figure>In the remainder of this section, we will delve into some of
+      the more common types of build steps.</para>
 
       <sect3>
         <title>Maven build steps</title>
@@ -873,7 +875,7 @@ UUID=`svnlook uuid $REPOS`
 
         <para>The <command>Properties</command> field lets you set property
         values that will be passed into the Maven build process, using the
-        standard property file format shown here:</para>
+        standard property file format illustrated here:</para>
 
         <para><programlisting># Selenium test configuration
 selenium.host=testserver.acme.com
@@ -915,7 +917,11 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
         your project uses Maven, you may resort to calling Ant scripts to do
         more specific tasks. There are Ant libraries available for many
         development tools and low-level tasks, such as using SSH, or working
-        with proprietary application servers. In <xref
+        with proprietary application servers.</para>
+
+        <para>In it's most basic form, configuring an Ant build step very is
+        simple indeed - you just provide the version of Ant you want to use
+        and the name of the target you want to invoke. In <xref
         linkend="fig-hudson-build-ant-step" />, for example, we are invoking
         an Ant script to run a JMeter test script. <figure
             id="fig-hudson-build-ant-step">
@@ -1001,14 +1007,14 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
         <para>In fact, there are some very good reasons why you should avoid
         using OS-level scripts in your build jobs if you can possibly avoid
-        it. In particular, it makes your build job in the lease OS-specific,
-        and at worst dependent on the precise machine configuration. One more
-        portable alternative to executing OS scripts include writing an
-        equivalent script in a more portable scripting language, such as
-        Groovy or Gant.</para>
+        it. In particular, it makes your build job in the best of cases
+        OS-specific, and at worst dependant on the precise machine
+        configuration. One more portable alternative to executing OS scripts
+        include writing an equivalent script in a more portable scripting
+        language, such as Groovy or Gant.</para>
       </sect3>
 
-      <sect3>
+      <sect3 id="sect-hudson-environment-variables">
         <title>Using Hudson environment variables in your builds</title>
 
         <para>One useful trick that can be used in virtually any build step is
@@ -1021,7 +1027,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
             <term>BUILD_NUMBER</term>
 
             <listitem>
-              <para>The current build number, such as "153"</para>
+              <para>The current build number, such as "153".</para>
             </listitem>
           </varlistentry>
 
@@ -1030,7 +1036,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>A timestamp for the current build id, in the format
-              YYYY-MM-DD_hh-mm-ss</para>
+              YYYY-MM-DD_hh-mm-ss.</para>
             </listitem>
           </varlistentry>
 
@@ -1038,7 +1044,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
             <term>JOB_NAME</term>
 
             <listitem>
-              <para>The name of the job, such as 'game-of-life'</para>
+              <para>The name of the job, such as 'game-of-life'.</para>
             </listitem>
           </varlistentry>
 
@@ -1047,9 +1053,8 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>A convenient way to identify the current build job, in the
-              form of
-              "hudson-&amp;dollar;{JOB_NAME}-&amp;dollar;{BUILD_NUMBER}" (e.g.
-              "hudson-game-of-life-2010-10-30_23-59-59")</para>
+              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
+              "hudson-game-of-life-2010-10-30_23-59-59").</para>
             </listitem>
           </varlistentry>
 
@@ -1153,7 +1158,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         access them using the <command>&lt;property&gt;</command> tag as shown
         here:<programlisting>&lt;target name="printinfo"&gt;
   &lt;property environment="env" /&gt;
-  &lt;echo message="&amp;dollar;{env.BUILD_TAG}"/&gt;
+  &lt;echo message="${env.BUILD_TAG}"/&gt;
 &lt;/target&gt;</programlisting></para>
 
         <para>In Maven, you can access the variables either in the same way
@@ -1168,7 +1173,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
   &lt;artifactId&gt;gameoflife-core&lt;/artifactId&gt;
   &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;gameoflife-core&lt;/name&gt;
-  &lt;url&gt;&amp;dollar;{JOB_URL}&lt;/url&gt;</programlisting></para>
+  &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting></para>
 
         <para>Alternatively, if you are building a web application, you can
         also use the <filename>maven-war-plugin</filename> to insert the build
@@ -1185,9 +1190,9 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
           &lt;/manifest&gt;
           &lt;archive&gt;
             &lt;manifestEntries&gt;
-              &lt;Specification-Title&gt;&amp;dollar;{project.name}&lt;/Specification-Title&gt;
-              &lt;Specification-Version&gt;&amp;dollar;{project.version}&lt;/Specification-Version&gt;
-              &lt;Implementation-Version&gt;&amp;dollar;{BUILD_TAG}&lt;/Implementation-Version&gt;
+              &lt;Specification-Title&gt;${project.name}&lt;/Specification-Title&gt;
+              &lt;Specification-Version&gt;${project.version}&lt;/Specification-Version&gt;
+              &lt;Implementation-Version&gt;${BUILD_TAG}&lt;/Implementation-Version&gt;
             &lt;/manifestEntries&gt;
           &lt;/archive&gt;
         &lt;/configuration&gt;
@@ -1229,9 +1234,9 @@ println env['BUILD_NUMBER']</programlisting></para>
         lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
         part of your build process.</para>
 
-        <para>To use this plugin, you need to Once you have installed the
-        Groovy plugin, you need to add a reference to your Groovy installation
-        in the system configuration page (see <xref
+        <para>Once you have installed the Groovy plugin in the usual way, you
+        need to add a reference to your Groovy installation in the system
+        configuration page (see <xref
         linkend="fig-hudson-groovy-installation" />).</para>
 
         <para><figure id="fig-hudson-groovy-installation">
@@ -1308,10 +1313,11 @@ println env['BUILD_NUMBER']</programlisting></para>
         on Groovy and many well-established open source Java frameworks such
         as Spring and Hibernate.</para>
 
-        <para>First, you need to install the Hudson Grails Plugin
+        <para>Hudson provides excellent support for Grails builds. First, you
+        need to install the Hudson Grails Plugin
         (<uri>http://wiki.hudson-ci.org/display/HUDSON/Grails+Plugin</uri>).
-        Once you have installed this and restarted Hudson, you need to provide
-        at least one version of Grails for Hudson to use in the
+        Once you have installed this and restarted Hudson, you will need to
+        provide at least one version of Grails for Hudson to use in the
         <command>Grails Builder</command> section of the <command>Configure
         System</command> screen (see <xref
         linkend="fig-hudson-build-job-grails-builder" />).</para>
@@ -1327,7 +1333,7 @@ println env['BUILD_NUMBER']</programlisting></para>
               </imageobject>
             </mediaobject>
           </figure>Now you can set up a freestyle build job to build your
-        Grails project. The Grails Plugin adds the 'Build with Grails' build
+        Grails project. The Grails plugin adds the 'Build with Grails' build
         step, which you can use to build your Grails application (see <xref
         linkend="fig-hudson-build-job-grails" />). Here, you provide the
         Grails target, or targets, you want to execute. Unlike the command
@@ -1439,8 +1445,8 @@ println env['BUILD_NUMBER']</programlisting></para>
 
         <para>Now go to the <command>Build</command> section of your freestyle
         project and choose '<command>Execute NAnt build</command>' (see <xref
-        linkend="???" />). Here you specify your build script and the target
-        you want to invoke. If you click on the
+        linkend="fig-hudson-nant-step" />). Here you specify your build script
+        and the target you want to invoke. If you click on the
         '<command>Advanced...</command>' option, you can also set property
         values to be passed into the NAnt script.</para>
 
@@ -1462,8 +1468,8 @@ println env['BUILD_NUMBER']</programlisting></para>
 
         <para>As the last few sections illustrate, Hudson provides excellent
         support for other languages and development environments, including
-        Grails, Ruby, .NET, PHP, and many others. We will discuss other
-        aspects of building non-Java projects later on in the book.</para>
+        Ruby, .NET, PHP, and many others. We will discuss other aspects of
+        building non-Java projects later on in the book.</para>
       </sect3>
     </sect2>
 
@@ -1488,7 +1494,7 @@ println env['BUILD_NUMBER']</programlisting></para>
 
         <para>Hudson provides great support for test reporting. In a freestyle
         build job, you need to tick the '<command>Publish JUnit test result
-        report</command>' checkbox, and provide a path to your JUnit report
+        report</command>' option, and provide a path to your JUnit report
         files (see <xref linkend="fig-hudson-build-job-junit" />). You can use
         a wildcard expression (such as "**/target/surefire-reports/*.xml" in a
         Maven project) to include JUnit reports from a number of different
@@ -1712,13 +1718,14 @@ println env['BUILD_NUMBER']</programlisting></para>
         <para>Out of the box, Hudson provides support for email notification.
         You can activate this by ticking the '<command>E-mail
         Notification</command>' checkbox in the <command>Post-build
-        Actions</command> (see ). Then enter the email addresses of the team
-        members who will need to know when the build breaks. When the build
-        does break, Hudson will send a friendly email message to the users in
-        this list containing a link to the broken build.</para>
+        Actions</command> (see <xref linkend="fig-hudson-build-job-email" />).
+        Then enter the email addresses of the team members who will need to
+        know when the build breaks. When the build does break, Hudson will
+        send a friendly email message to the users in this list containing a
+        link to the broken build.</para>
 
         <para><figure id="fig-hudson-build-job-email">
-            <title>Archiving source code and a binary package</title>
+            <title>Email notification</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -1768,8 +1775,8 @@ println env['BUILD_NUMBER']</programlisting></para>
       itself. Once the build is finished, you can click on the build number to
       see the results of your work.</para>
 
-      <para>In the rest of this chapter, we will have a look at two other
-      types of build jobs: Maven 2 build jobs and Matrix builds.</para>
+      <para>In the rest of this chapter, we will have a look at the other most
+      commonly used build job: Maven 2 build jobs.</para>
     </sect2>
   </sect1>
 
@@ -1964,7 +1971,7 @@ println env['BUILD_NUMBER']</programlisting></para>
       don't have to tell Hudson where to find things. So Hudson will find, and
       report on, JUnit test results automatically, for example. Later on in
       the book, we will see how the Maven 2 projects also simplify the
-      configuration of many code quality metrics tools and reports. </para>
+      configuration of many code quality metrics tools and reports.</para>
 
       <para>Most of the other post-build actions are similar to those we saw
       in the freestyle build job.</para>
@@ -1983,7 +1990,7 @@ println env['BUILD_NUMBER']</programlisting></para>
       features that make configuring and maintaining your Maven repositories a
       lot simpler. Both these products have commercial versions, with
       additional features aimed at more sophisticated or high-end build
-      infrastructures. </para>
+      infrastructures.</para>
 
       <para>The advantage of getting Hudson to deploy your artifacts (as
       opposed to simply running "<command>mvn deploy</command>") is that, if
@@ -2142,7 +2149,7 @@ println env['BUILD_NUMBER']</programlisting></para>
       <para>An Enterprise Repository Manager is an essential part of any
       Maven-based software development infrastructure. They also play a key
       role for non-Maven projects using tools like Ivy and Gradle, both of
-      which rely on standard Maven repositories. </para>
+      which rely on standard Maven repositories.</para>
 
       <para>Both of the principal Enterprise Repository Managers, Nexus and
       Artifactory offer professional versions which come with extra
@@ -2233,9 +2240,10 @@ println env['BUILD_NUMBER']</programlisting></para>
   <sect1>
     <title>Conclusion</title>
 
-    <para>You don't need a great deal of configuration to get started with
-    Hudson. The configuration that is required is fairly straight-forward, and
-    is centralised in the <command>Configure System</command> screen. Once
-    this is done, you are ready to create your first Hudson build job!</para>
+    <para>In this chapter we have covered the basics of creating new build
+    jobs for the most common cases you are likely to encounter. Later on in
+    the book, we will build on these foundations to discuss more advanced
+    options such as parameterized builds, matrix builds, and build promotion
+    strategies.</para>
   </sect1>
 </chapter>
