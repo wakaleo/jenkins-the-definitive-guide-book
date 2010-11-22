@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-code-quality">
+  <title>Setting up your build jobs</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>code quality</primary>
+      </indexterm>Few would deny the importance of writing quality code. High
+    quality code contains less bugs, and is easier to understand and to
+    maintain. However, the precise definitions of code quality can be more
+    subjective, varying between organizations, teams, and even individuals
+    within a team. </para>
+
+    <para>This is where coding standards come into play. In many cases,
+    agreeing on a set of standards, and applying them, is more important than
+    the standards themselves. Indeed, one of the most important aspects of
+    quality code is that it is easy to read and to understand. If developers
+    within a team all apply the same coding standards and practices, the code
+    will be more readable, at least for members of that team. And if the
+    standards are commonly used within the industry, the code will also be
+    more readable for new developers arriving on the team. </para>
+
+    <para>Coding standards include both esthetic aspects such as code layout
+    and formatting, naming conventions, and so forth, as well as potentially
+    bad practices such as missing curly brackets after a condition in Java.
+    Consistent coding style lowers maintenance costs, make code clearer and
+    more readable, and makes it easier to work on code written by other team
+    members. </para>
+
+    <para>Only an experienced developer can really judge code quality in all
+    its aspects. That is the role of code reviews and, among other things,
+    practices like pair programming. In particular, only a human eye can
+    decide if a piece of code is truly well written, and if it actually does
+    what the requirements ask of it. However, code quality metrics tools can
+    help a great deal. In fact it is unrealistic to try to enforce coding
+    standards *without* the use of such tools. </para>
+
+    <para>These tools analyze your application source code or byte code, and
+    check whether the code respects certain rules. Code quality metrics can
+    encompass many aspects of code quality, from coding standards and best
+    practices right through to code coverage, with everything from compiler
+    warnings to TODO comments in between. Certain metrics concentrate on
+    measurable characteristics of your code base, such as the number of lines
+    of code (NLOC), average code complexity, or the number of lines per class.
+    Others focus on more sophisticated static analysis, or on looking for
+    potential bugs or poor practices in your code. </para>
+
+    <para>There are a wide range of code quality reporting plugins available
+    for Hudson. Many are for Java static analysis tools, such as Checkstyle,
+    PMD, Findbugs, Cobertura and JDepend. Others, such as fxcop and NCover,
+    are focused on .NET applications. </para>
+
+    <para>With all of these tools, you need to configure your build job to
+    generate the code quality metrics data before Hudson can produce any
+    reports. </para>
+
+    <para>The notable exception to this rule is Sonar. Sonar can extract code
+    quality metrics from any Maven project, with no additional configuration
+    required in your Maven project. This is great when you have large numbers
+    of existing Maven projects that you need to integrate into Hudson, and you
+    want to configure consistent code quality reporting across all of your
+    projects.</para>
+
+    <para>In the rest of this chapter, we will see how to set up code quality
+    reporting in your Hudson builds, and also how you can use it as an
+    effective part of your build process.</para>
+  </sect1>
+
+  <sect1 id="sect-build-jobs">
+    <title>Hudson build jobs</title>
+
+    <para>Creating a new build job in Hudson is simple: just click on the
+    '<command>New Job</command>' menu item on the Hudson dashboard. Hudson
+    supports several different types of build job, which are presented to you
+    when you choose to create a new job (see <xref
+    linkend="fig-hudson-build-types" />).<variablelist>
+        <varlistentry>
+          <term>Free-style software project</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>free-style</secondary>
+              </indexterm> Free-style build jobs are general-purpose build
+            jobs, which provides a maximum of flexibility.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Maven 2 project</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>maven2</secondary>
+              </indexterm>The 'maven2 project' is a build job specially
+            adapted to Maven 2 projects. Hudson understands Maven
+            <filename>pom</filename> files and project structures, and can use
+            the information gleaned from the <filename>pom</filename> file to
+            reduce the work you need to do to set up your project.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Monitor an external job</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build jobs</primary>
+
+                <secondary>monitor an external job</secondary>
+              </indexterm>The 'Monitor an external job' build job lets you
+            keep an eye on non-interactive processes, such as cron
+            jobs.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Multi-configuration job</term>
+
+          <listitem>
+            <para><indexterm>
+                <primary>Build-jobs</primary>
+
+                <secondary>multi-configuration</secondary>
+              </indexterm>The 'multi-configuration project' (also referred to
+            as a 'matrix project') lets you run the same build job in many
+            different configurations. This powerful feature can be useful for
+            testing an application in many different environments, with
+            different databases, or even on different build machines. We will
+            be looking at how to configure multi-configuration build jobs
+            later on in the book.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist></para>
+
+    <para><figure id="fig-hudson-build-types">
+        <title>Hudson supports four main types of build job.</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-build-job-types.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>You can also copy an existing job, which is a great way to create a
+    new job that is very similar to an existing build job, except for a few
+    configuration details.</para>
+
+    <para>In this chapter, we will focus on the first two types of build jobs,
+    which are the most commonly used. We will discuss the others later on.
+    Let's start with the most flexible option: the free-style build
+    job.</para>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>TODO</para>
+  </sect1>
+</chapter>
