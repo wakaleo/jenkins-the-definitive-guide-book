@@ -451,11 +451,9 @@
         mind-share competitor to <ulink
         url="http://mercurial.selenic.com/">Mercurial</ulink>. Git support in
         Hudson is both mature and full-featured. There are a number of plugins
-        that can contribute to the overall story of Git on Hudson. The core
-        Git-supporting plugin, <ulink
-        url="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin"><emphasis>Git
-        Plugin</emphasis></ulink> is where we'll begin. We'll discuss the
-        supplemental plugins shortly.</para>
+        that can contribute to the overall story of Git on Hudson. We will
+        begin by looking at the Git Plugin, which provides core Git support in
+        Hudson. We'll discuss the supplemental plugins shortly.</para>
 
         <sect4 id="installing-the-plugin">
           <title>Installing the Plugin</title>
@@ -467,8 +465,8 @@
           has already been installed on your build server, so you will need to
           make sure that this is the case. You can do this by running the
           following command on your build server:<screen>$ <command>git --version</command>
-git version 1.7.1</screen>Then simply check the corresponding check box in the
-          Hudson Plugin Manager page and click the <emphasis
+git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
+          check box in the Hudson Plugin Manager page and click the <emphasis
           role="strong">install</emphasis> button.</para>
 
           <sect5 id="system-wide-configuration-of-the-plugin">
@@ -532,9 +530,11 @@ git version 1.7.1</screen>Then simply check the corresponding check box in the
           <para>On either an existing or a new Hudson project, a new
           <emphasis>Source Code Management</emphasis> option for
           <emphasis>Git</emphasis> will be displayed. From here, you can
-          configure one or more repository addresses. Adding a second
-          (optional) repository provides distinct named locations for
-          <literal>pull</literal> and <literal>push</literal>.</para>
+          configure one or more repository addresses. One repository is
+          usually enough for most projects: adding a second repository can be
+          useful in more complicated cases, and lets you specify distinct
+          named locations for <literal>pull</literal> and
+          <literal>push</literal> operations.</para>
 
           <figure>
             <title>Entering a Git repo URL</title>
@@ -556,19 +556,20 @@ git version 1.7.1</screen>Then simply check the corresponding check box in the
             <title>Advanced Per-Project Source Code Management
             Configuration</title>
 
-            <para>Clicking on the <emphasis>Advanced</emphasis> button on the
-            URL configuration provides more precise control of the
-            <literal>pull</literal> behavior.</para>
+            <para>In most cases, the URL of the Git repository you are using
+            should be enough. However, if you need more options, click on the
+            <emphasis>Advanced</emphasis> button. This provides more precise
+            control of the <literal>pull</literal> behavior.</para>
 
             <para>The <emphasis>Name of repository</emphasis> is a shorthand
             title (a.k.a. <literal>remote</literal> in git parlance) for a
-            given repository for later reference in the merge action
-            configuration.</para>
+            given repository, that you can refer to later on in the merge
+            action configuration.</para>
 
             <para>The <emphasis>Refspec</emphasis> is a git-specific <ulink
             url="http://progit.org/book/ch9-5.html">language</ulink> for
-            controlling what is retrieved from remote servers and under what
-            namespace it is stored locally.</para>
+            controlling precisely what is retrieved from remote servers and
+            under what namespace it is stored locally.</para>
 
             <figure>
               <title>Advanced configuration of a git repo URL</title>
@@ -591,7 +592,7 @@ git version 1.7.1</screen>Then simply check the corresponding check box in the
             <title>Branches to Build</title>
 
             <para>The branch specifier is the wildcard pattern or specific
-            branch name that should be built by hudson. If left blank, all
+            branch name that should be built by Hudson. If left blank, all
             branches will be built. At the time of this writing, after the
             first time saving a job with a blank <emphasis>branches to
             build</emphasis> setting, it is populated with
@@ -718,7 +719,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
             <title>Clean after checkout</title>
 
             <para>Activate git's facilities for purging any untracked files or
-            folders, returning your working copy to a pristine state. </para>
+            folders, returning your working copy to a pristine state.</para>
           </sect5>
 
           <sect5 id="recursively-update-submodules">
