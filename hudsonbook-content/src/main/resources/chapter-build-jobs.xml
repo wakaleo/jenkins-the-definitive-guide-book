@@ -2008,6 +2008,163 @@ println env['BUILD_NUMBER']</programlisting></para>
       </sect3>
 
       <sect3>
+        <title>Building projects with Gradle</title>
+
+        <para>In comparison to the build tool veterans Ant and Maven, Gradle
+        (<uri>http://gradle.org</uri>) is a relatively new open source build
+        tool for the Java Virtual Machine. Build scripts for Gradle are
+        written in a Domain Specific Language (DSL) based on Groovy. Gradle
+        implements convention over configuration, allows direct access to Ant
+        tasks, and uses Maven-like declarative dependency management. The
+        concise nature of Groovy scripting lets you write very expressive
+        build scripts with very little code, albeit at the cost of loosing the
+        IDE support that exists for established tools like Ant and
+        Maven.</para>
+
+        <para>There are two different ways to run your Gradle builds with
+        Hudson. You can either use the Gradle plugin for Hudson or the Gradle
+        wrapper functionality.</para>
+
+        <sect4 id="the-gradle-plugin-for-hudson">
+          <title>The Gradle plugin for Hudson</title>
+
+          <para>You can install the Gradle plugin in the usual way - just go
+          to the 'Manage Plugins' screen and select the 'Hudson Gradle plugin.
+          Click 'Install' and restart your Hudson instance.</para>
+
+          <para>Once Hudson has restarted, you will need to configure your new
+          Gradle plugin. You should now find a new "Gradle" section in your
+          'Configure System' screen. Here you will need to add the Gradle
+          installation you want to use. The process is similar to that used
+          for the other tool installations. First, click the 'Add Gradle'
+          button to add a new Gradle installation, and enter an appropriate
+          name (see <xref linkend="fig-gradle-plugin" />). If Gradle has
+          already been installed on your build server, you can point to local
+          Gradle home directory. Alternatively, you can use the "Install
+          automatically" feature to download a Gradle installation, in the
+          form of a ZIP or GZipped TAR file, directly from a URL. You can use
+          a public URL (see <uri>http://gradle.org/downloads.html</uri>), or
+          may prefer to make these installations available on a local server
+          instead.</para>
+
+          <figure id="fig-gradle-plugin">
+            <title>Configuring the Gradle Plugin</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/configureGradle.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>You typically use Freestyle build jobs to configure your
+          Gradle builds. When you add a build step to a Freestyle build job,
+          you will now have a new option called "Invoke Gradle script", which
+          lets you add Gradle specific settings to your build job. </para>
+
+          <para>As an example, here is a very simple Gradle build script. It
+          is a simple Java project that uses a Maven directory structure and a
+          Maven repository manager. There is a custom goal, called
+          'uploadArchives', to deploy the generated archive to the local
+          Enterprise repository manager:</para>
+
+          <para><programlisting>apply plugin:'java'
+apply plugin:'maven'
+
+version='1.0-SNAPSHOT'
+group = "org.acme"
+
+repositories{
+  mavenCentral()
+    mavenRepo urls: 'http://build.server/nexus/content/repositories/public'
+}
+
+dependencies{
+  testCompile "junit:junit:4.8.2"
+}
+
+uploadArchives {
+  repositories.mavenDeployer {
+    configuration = configurations.archives
+      repository(url: "http://build.server/nexus/content/repositories/snapshots") {
+        authentication(userName: "admin", password: "password")
+     }
+  }
+}</programlisting>In <xref linkend="fig-gradle-build-job" />, we use the just
+          configured "Gradle-0.9RC2" instance to run this Gradle build. In
+          this case, we want to run the JUnit tests and upload the build
+          artifacts to our local Maven repository. Furthermore we configure
+          our job to collect the test results from "**/build/test-results",
+          the default directory for storing test results in Gradle.</para>
+
+          <para><figure id="fig-gradle-build-job">
+              <title>Setting up a Gradle build job</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/configureGradleJob.png"
+                             width="4.3in" />
+                </imageobject>
+              </mediaobject>
+            </figure></para>
+        </sect4>
+
+        <sect4 id="incremental-builds">
+          <title>Incremental builds</title>
+
+          <para>While running a Gradle build job with unchanged sources,
+          Gradle runs its builds incremental. If the output of a Gradle task
+          is still available and the sources haven't changed since the last
+          build, Gradle is able to skip the task execution and marks the
+          according task as up-to-date. This incremental build feature can
+          decrease the duration of a running build job tremendously.</para>
+
+          <para>If Gradle evaluates the test task as up-to-date even the
+          execution of your unit tests is skipped. This can cause problems
+          when running your Gradle build with Hudson. In our sample build job
+          above we configured a post build action to publish the JUnit reports
+          of our build. If the test task is skipped by Gradle, the Hudson job
+          will be marked as failed with the following message:</para>
+
+          <blockquote>
+            <para>Test reports were found but none of them are new. Did tests
+            run?</para>
+          </blockquote>
+
+          <para>You can easily fix this by invalidating the output and force a
+          re-execution of your tests by adding the following snippet to your
+          Gradle file:</para>
+
+          <screen>test {
+    outputs.upToDateWhen { false }
+}</screen>
+
+          <para>After adding the snippet above to your build file, your job
+          console output should look like the one in <xref
+          linkend="gradle-incremental-build" />.</para>
+
+          <figure id="gradle-incremental-build">
+            <title>Incremental Gradle job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/incrementalBuildJob.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>As you can see, except <emphasis>test</emphasis> and
+          <emphasis>uploadArchives</emphasis> all of the tasks have been
+          marked as up-to-date and not executed.</para>
+        </sect4>
+      </sect3>
+
+      <sect3>
         <title>Building projects with Visual Studio MSBuild</title>
 
         <para>Hudson is a Java application, but it also provides excellent
