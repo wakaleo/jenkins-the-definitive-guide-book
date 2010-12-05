@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<chapter id="chapter-configuration">
+<chapter id="chapter-build-jobs">
   <title>Setting up your build jobs</title>
 
   <sect1>
@@ -12,34 +12,37 @@
       </indexterm>Build jobs are the basic currency of a Continuous
     Integration server.</para>
 
-    <para>A build job is a particular way of building, testing, deploying or
-    otherwise doing something with your project. Build jobs come in a variety
-    of forms: you may want to compile and unit test your application, report
-    on code quality metrics related to the source code, generate
-    documentation, bundle up an application for a release, deploy it to
-    production, run an automated smoke test, or do any number of other such
-    tasks.</para>
+    <para>A build job is a particular way of compiling, testing, packaging,
+    deploying or otherwise doing something with your project. Build jobs come
+    in a variety of forms: you may want to compile and unit test your
+    application, report on code quality metrics related to the source code,
+    generate documentation, bundle up an application for a release, deploy it
+    to production, run an automated smoke test, or do any number of other
+    similar tasks.</para>
 
     <para>A software project will usually have several related build jobs. For
     example, you might choose to start off with a dedicated build job that
     runs all of your unit tests. If these pass, you might proceed to a build
-    job that executes longer-running integration tests...</para>
-
-    <para>TODO Staged builds, build steps and build pipelines</para>
+    job that executes longer-running integration tests, runs code quality
+    metrics, or generates technical documentation, before finally bundling up
+    your web application and deploying it to a test server.</para>
 
     <para>In Hudson, build jobs are easy to set up. In this chapter, we will
-    look at the main types of build jobs, how to configure them...</para>
-
-    <para>TODO: Finish introduction</para>
+    look at the main types of build jobs and how to configure them. In later
+    chapters, we will take things further, looking at how to organize multiple
+    build jobs, how to set up build promotion pipelines, and how to automate
+    the deployment process. But, for now, lets start off with how to set up
+    your basic build jobs in Hudson.</para>
   </sect1>
 
-  <sect1 id="sect-configuration-manage-hudson">
+  <sect1 id="sect-build-jobs">
     <title>Hudson build jobs</title>
 
-    <para>Creating a new build job in Hudson is simple: just click on the 'New
-    Job' menu item on the Hudson dashboard. Hudson supports several different
-    types of build job, which are presented to you when you choose to create a
-    new jon (see <xref linkend="fig-hudson-build-types" />).<variablelist>
+    <para>Creating a new build job in Hudson is simple: just click on the
+    '<command>New Job</command>' menu item on the Hudson dashboard. Hudson
+    supports several different types of build job, which are presented to you
+    when you choose to create a new job (see <xref
+    linkend="fig-hudson-build-types" />).<variablelist>
         <varlistentry>
           <term>Free-style software project</term>
 
@@ -62,11 +65,10 @@
 
                 <secondary>maven2</secondary>
               </indexterm>The 'maven2 project' is a build job specially
-            adapted to Maven 2 (and Maven 3) projects. Hudson understands
-            Maven <filename>pom</filename> files and project structures, and
-            can use the information gleaned from the <filename>pom</filename>
-            file to reduce the work you need to do to set up your
-            project.</para>
+            adapted to Maven 2 projects. Hudson understands Maven
+            <filename>pom</filename> files and project structures, and can use
+            the information gleaned from the <filename>pom</filename> file to
+            reduce the work you need to do to set up your project.</para>
           </listitem>
         </varlistentry>
 
@@ -96,7 +98,9 @@
             as a 'matrix project') lets you run the same build job in many
             different configurations. This powerful feature can be useful for
             testing an application in many different environments, with
-            different databases, or even on different build machines.</para>
+            different databases, or even on different build machines. We will
+            be looking at how to configure multi-configuration build jobs
+            later on in the book.</para>
           </listitem>
         </varlistentry>
       </variablelist></para>
@@ -117,8 +121,10 @@
     new job that is very similar to an existing build job, except for a few
     configuration details.</para>
 
-    <para>Let's look at each of these, starting off with the most flexible
-    option: the free-style build job.</para>
+    <para>In this chapter, we will focus on the first two types of build jobs,
+    which are the most commonly used. We will discuss the others later on.
+    Let's start with the most flexible option: the free-style build
+    job.</para>
   </sect1>
 
   <sect1>
@@ -139,7 +145,7 @@
       linkend="fig-hudson-new-project-general" />).</para>
 
       <para><figure id="fig-hudson-new-project-general">
-          <title>Hudson supports four main types of build job.</title>
+          <title>Creating a new build job</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -159,10 +165,10 @@
       <para>The other options are more technical, and we will be looking at
       some of them in detail later on in the book.</para>
 
-      <para>One important option that you should think about upfront however
-      is how you want to handle build history. Build jobs can consume a lot of
-      disk space, especially if you store the build artifacts (the binary
-      files, such as JARs, WARs, TARs etc., generated by your build job). Even
+      <para>One important aspect that you should think about upfront is how
+      you want to handle build history. Build jobs can consume a lot of disk
+      space, especially if you store the build artifacts (the binary files,
+      such as JARs, WARs, TARs etc., generated by your build job). Even
       without artifacts, keeping a record of every build job consumes
       additional disk space and memory, which may or may not be justified,
       depending on the nature of your build job. For example, for a code
@@ -172,17 +178,17 @@
       deploys an application to a test server, keeping the build history and
       artifacts for posterity might be less important.</para>
 
-      <para>The 'Discard Old Builds' option lets you limit the number of
-      builds you record in the build history. You can either tell Hudson to
-      only keep recent builds (Hudson will delete builds after a certain
-      number of days), or to keep no more than a specified number of builds.
-      If a certain build has particular sentimental value, you can always tell
-      Hudson to keep it forever. In addition, Hudson will never delete the
-      last stable and successful builds, no matter how old they are. For
-      example, if you limit Hudson to only keep the last twenty builds, and
-      your last successful build was thirty builds ago, Hudson will still keep
-      the successful build job as well as the last twenty failing
-      builds.</para>
+      <para>The <command>Discard Old Builds</command> option lets you limit
+      the number of builds you record in the build history. You can either
+      tell Hudson to only keep recent builds (Hudson will delete builds after
+      a certain number of days), or to keep no more than a specified number of
+      builds. If a certain build has particular sentimental value, you can
+      always tell Hudson to keep it forever. In addition, Hudson will never
+      delete the last stable and successful builds, no matter how old they
+      are. For example, if you limit Hudson to only keep the last twenty
+      builds, and your last successful build was thirty builds ago, Hudson
+      will still keep the successful build job as well as the last twenty
+      failing builds.</para>
 
       <para>You also have the option to disable the build. A disabled build
       will not be executed until you enable it again. Using this option when
@@ -198,7 +204,7 @@
       <para>The Advanced Project options contains, as the name suggests,
       configuration options that are less frequently required. You need to
       click on the 'Advanced' button for them to appear (see <xref
-      linkend="hudson-new-project-advanced" />).</para>
+      linkend="fig-hudson-new-project-advanced" />).</para>
 
       <para><figure id="fig-hudson-new-project-advanced">
           <title>To display the Advanced Options, you need to click on the
@@ -217,14 +223,14 @@
       linkend="sect-configuration-system" />). This option is mainly used for
       version control systems that don't support atomic commits, such as CVS,
       but it is also sometimes used in teams where developers have the habit
-      of committing their work in several small commits. </para>
+      of committing their work in several small commits.</para>
 
-      <para>The <command>Block build when upstream project</command> is
-      building option is useful when several related projects are affected by
-      a single commit, but they must be built in a specific order. If you
-      activate this option, Hudson will wait until any upstream build jobs
-      (see <xref linkend="sect-build-triggers" />) have finished before
-      starting this build. </para>
+      <para>The <command>Block build when upstream project is
+      building</command> option is useful when several related projects are
+      affected by a single commit, but they must be built in a specific order.
+      If you activate this option, Hudson will wait until any upstream build
+      jobs (see <xref linkend="sect-build-triggers" />) have finished before
+      starting this build.</para>
 
       <para>For instance, when you release a new version of a multi-module
       Maven project, version number updates will happen in many, if not all,
@@ -232,14 +238,14 @@
       application to the Game Of Life project we used in <xref
       linkend="chapter-first-steps" />, setting it up as a separate Maven
       project. When we release a new version of this project, both the core
-      and the web application version numbers will be updated (see ). Before
-      we can build the web application, we need to build a new version of the
-      original Game Of Life core module. However if you had a separate
-      free-style build job for each module, then the build jobs for both the
-      core and the web application would start simultaneously. The web
-      application build job will fail if it the core build job hasn't produced
-      a new version of the core module for it, even if there are no test
-      failures. </para>
+      and the web application version numbers will be updated (see <xref
+      linkend="fig-hudson-new-job-version-updates" />). Before we can build
+      the web application, we need to build a new version of the original Game
+      Of Life core module. However if you had a separate free-style build job
+      for each module, then the build jobs for both the core and the web
+      application would start simultaneously. The web application build job
+      will fail if it the core build job hasn't produced a new version of the
+      core module for it, even if there are no test failures.</para>
 
       <para>To avoid this issue, you could set up the web application build
       job to <emphasis>only</emphasis> start once the core build has
@@ -282,10 +288,15 @@
       appear in this section later on in the book.</para>
     </sect2>
 
-    <sect2>
+    <sect2 id="sect-subversion">
       <title>Source code management</title>
 
-      <para>TODO: Introduction</para>
+      <para>In it's most basic role, a Continuous Integration server monitors
+      your version control system, and checks out the latest changes as they
+      occur. The server then compiles and tests the most recent version of the
+      code. Alternatively, it may simply check out and build the latest
+      version of your source code on a regular basis. In either case, tight
+      integration with your version control system is essential.</para>
 
       <para>Hudson supports CVS and Subversion out-of-the-box, and also
       integrates with a large number of other version control systems via
@@ -300,38 +311,2733 @@
         <title>Working with Subversion</title>
 
         <para>Subversion is one of the most widely used version control
-        systems, and Hudson comes bundled with full Subversion integration.
-        </para>
+        systems, and Hudson comes bundled with full Subversion support (see
+        <xref linkend="fig-hudson-new-job-svn" />). To use source code from a
+        Subversion repository, you simply provide the corresponding Subversion
+        URL - it will work fine with any of the three Subversion protocols of
+        (http, svn or file). Hudson will check that the URL is valid as soon
+        as you enter it. If the repository requires authentication, Hudson
+        will prompt you for the corresponding credentials automatically, and
+        store them for any other build jobs that access this
+        repository.</para>
 
-        <para></para>
+        <para><figure id="fig-hudson-new-job-svn">
+            <title>Hudson provides built-in support for Subversion</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-svn.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>By default, Hudson will check out the repository contents
+        into a sub-directory of your workspace, whose name will match the last
+        element in the Subversion URL, So if your Subversion URL is
+        <uri>svn://localhost/gameoflife/trunk</uri>, Hudson will check out the
+        repository contents to directory called <filename>trunk</filename> in
+        the build job workspace. If you would prefer another directory name,
+        just enter the directory name you want in the <command>Local module
+        directory</command> field. Place a period (".") here if you want
+        Hudson to check the source code directly into the workspace.</para>
+
+        <para>Occasionally you may need to get source code from more than one
+        Subversion URL. In this case, just use the <command>Add more
+        locations...</command> button to add as many additional repository
+        sources as you need.</para>
+
+        <para>A well-designed build process should not modify the source code,
+        or leave any extra files that might confuse your version control
+        system or the build process. Both generated artifacts and temporary
+        files (such as log files, reports, test data or file-based databases)
+        should go in a directory set aside for this purpose (such as the
+        <filename>target</filename> directory in Maven builds), and/or be
+        configured to be ignored by your version control repository. They
+        should also be deleted as part of the build process, once the build
+        has finished with them. This is also an important part of ensuring a
+        clean and reproducible build process - for a given version of your
+        source code, your build should behave in exactly the same way, no
+        matter where or when it is run. Locally changed source code files, and
+        the presence of temporary files, both have the potential of
+        compromising this.</para>
+
+        <para>Normally, Hudson will check out a clean copy of the source code
+        for each build. If your project is well-behaved, however, you may be
+        able to use the <command>Use update</command> option, which speeds
+        things up substantially by using the <command>svn update</command>
+        command instead. To be on the safe side, you may want to use the
+        <command>Revert</command> option, which will run <command>svn
+        revert</command> before running <command>svn update</command>. This
+        will ensure that no local files have been modified, though it will not
+        remove any new files that have been created during the build
+        process.</para>
+
+        <para>Another very useful feature is Hudson's integration with source
+        code browsers. A good source code browser is an important part of your
+        Continuous Integration setup. It lets you see at a glance what changes
+        triggered a given build, which is very useful when it comes to
+        trouble-shooting broken builds (see <xref
+        linkend="fig-hudson-new-job-diff" />). Hudson integrates with most of
+        the major source code browsers, including open source tools such as
+        WebSVN and Sventon, and commercial ones like Atlassian's
+        FishEye.</para>
+
+        <para><figure id="fig-hudson-new-job-diff">
+            <title>Hudson provides built-in support for Subversion</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-diff.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Hudson also lets you refine the changes that will trigger a
+        build. In the Advanced section, you can use the <command>Excluded
+        Regions</command> field to tell Hudson not to trigger a build if only
+        certain files were changed. This field takes a list of regular
+        expressions, which identify files that should <emphasis>not</emphasis>
+        trigger a build. For example, suppose you don't want Hudson to start a
+        new build if only images have been changed. To do this, you could use
+        a set of regular expressions like the following:<programlisting>/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.jpg
+/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.gif
+/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.png</programlisting></para>
+
+        <para>Alternatively, you can specify the <command>Included
+        Regions</command>, if you are only interested in changes in part of
+        the source code directory structure. You can even combine the
+        <command>Excluded Regions</command> and <command>Included
+        Regions</command> fields - in this case a modified file will only
+        trigger a build if it is in the Included Regions but not in the
+        Excluded Regions.</para>
+
+        <para>You can also ignore changes coming from certain users
+        (<command>Excluded Users</command>), or with certain commit messages (
+        <command>Excluded Commit Messages</command>). For example, if your
+        project uses Maven, you may want to use the Maven Release Plugin to
+        promote your application from snapshot versions to official releases.
+        This plugin will automatically bump up the version number of your
+        application from a snapshot version used during development (such as
+        1.0.1-SNAPSHOT) to a release (1.0.1), bundles up and deploys a release
+        of your application with this version number, and then moves the
+        version on to the next snapshot number (e.g. 1.0.2-SNAPSHOT) for
+        ongoing development. During this process Maven takes care of many SCM
+        bookkeeping tasks, such as committing the source code with the release
+        version number and creating a tag for the released version of your
+        application, and then committing the source code with the new snapshot
+        version number.</para>
+
+        <para>Now suppose you have a special build job for generating a new
+        release using this process. The many commits generated by the Maven
+        Release Plugin would normally trigger off build jobs in Hudson.
+        However, since the release build job is already compiling and testing
+        this version of your application, you don't need Hudson to do it again
+        in a separate build job. To ensure that Hudson does not trigger a
+        build for this case, you can use the <command>Excluded Commit
+        Messages</command> field with the following value:</para>
+
+        <para><programlisting>[maven-release-plugin] prepare release.*</programlisting>This
+        will ensure that Hudson skips the changes corresponding to the new
+        release version, but not those corresponding to the next snapshot
+        version.</para>
       </sect3>
 
-      <sect3>
+      <sect3 id="git-plugin">
         <title>Working with Git</title>
 
-        <para></para>
-      </sect3>
+        <para><ulink url="http://git-scm.com/">Git</ulink> is a popular
+        distributed version control system that is a logical successor to
+        <ulink url="http://subversion.tigris.org/">Subversion</ulink> and a
+        mind-share competitor to <ulink
+        url="http://mercurial.selenic.com/">Mercurial</ulink>. Git support in
+        Hudson is both mature and full-featured. There are a number of plugins
+        that can contribute to the overall story of Git on Hudson. We will
+        begin by looking at the Git Plugin, which provides core Git support in
+        Hudson. We'll discuss the supplemental plugins shortly.</para>
 
-      <sect3>
-        <title>Working with Mercurial</title>
+        <sect4 id="installing-the-plugin">
+          <title>Installing the Plugin</title>
 
-        <para></para>
+          <para>The <emphasis>Git Plugin</emphasis> is available in the Hudson
+          Plugin Manager and is documented on its own <ulink
+          url="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin">wiki
+          page</ulink>. The plugin assumes that git (version 1.3.3 or later)
+          has already been installed on your build server, so you will need to
+          make sure that this is the case. You can do this by running the
+          following command on your build server:<screen>$ <command>git --version</command>
+git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
+          check box in the Hudson Plugin Manager page and click the <emphasis
+          role="strong">install</emphasis> button.</para>
+
+          <sect5 id="system-wide-configuration-of-the-plugin">
+            <title>System-wide Configuration of the Plugin</title>
+
+            <para>After installing the Git Plugin, a small new set of
+            configuration options will be available on the <emphasis>Manage
+            Hudson</emphasis> -&gt; <emphasis>Configure System</emphasis>
+            page. In particular, you need to provide the path to your git
+            executable. If git is already installed on the system path, just
+            put 'git' here.</para>
+
+            <figure>
+              <title>System-wide configuration of the Git Plugin</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_00_-_Git_Global_Config.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>System-wide configuration of the Git Plugin</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="ssh-key-setup">
+            <title>SSH Key Setup</title>
+
+            <para>If the Git repository you are accessing uses SSH
+            passphrase-less authentication -- for example, if the access
+            address is similar to
+            <literal>git@github.com:matthewmccullough/some-repo.git</literal>
+            -- you'll need to provide the private half of the key as file
+            <literal>~/.ssh/id_rsa</literal> where <literal>~</literal> is the
+            home directory of the user account under which Hudson is
+            running.</para>
+
+            <para>The fingerprint of the remote server will additionally need
+            to be placed in <literal>~/.ssh/known_hosts</literal> to prevent
+            Hudson from invisibly prompting for authorization to access this
+            git server for the first time.</para>
+
+            <para>Alternatively, if logging-in is enabled for the
+            <literal>hudson</literal> user, SSH into the Hudson machine as
+            <literal>hudson</literal> and manually attempt to git clone a
+            remote repository. This will test your private key setup and
+            establish the <literal>known_hosts</literal> file in the
+            <literal>~/.ssh</literal> directory. This is probably the simplest
+            option for users unfamiliar with the intricacies of SSH
+            configuration.</para>
+          </sect5>
+        </sect4>
+
+        <sect4 id="using-the-plugin">
+          <title>Using the Plugin</title>
+
+          <para>On either an existing or a new Hudson project, a new
+          <emphasis>Source Code Management</emphasis> option for
+          <emphasis>Git</emphasis> will be displayed. From here, you can
+          configure one or more repository addresses. One repository is
+          usually enough for most projects: adding a second repository can be
+          useful in more complicated cases, and lets you specify distinct
+          named locations for <literal>pull</literal> and
+          <literal>push</literal> operations.</para>
+
+          <figure>
+            <title>Entering a Git repo URL</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/Git_on_Hudson_01_-_Repo_URL.png"
+                           width="4.3in" />
+              </imageobject>
+
+              <textobject>
+                <phrase>Entering a Git repo URL</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+
+          <sect5 id="advanced-per-project-source-code-management-configuration">
+            <title>Advanced Per-Project Source Code Management
+            Configuration</title>
+
+            <para>In most cases, the URL of the Git repository you are using
+            should be enough. However, if you need more options, click on the
+            <emphasis>Advanced</emphasis> button. This provides more precise
+            control of the <literal>pull</literal> behavior.</para>
+
+            <para>The <emphasis>Name of repository</emphasis> is a shorthand
+            title (a.k.a. <literal>remote</literal> in git parlance) for a
+            given repository, that you can refer to later on in the merge
+            action configuration.</para>
+
+            <para>The <emphasis>Refspec</emphasis> is a git-specific <ulink
+            url="http://progit.org/book/ch9-5.html">language</ulink> for
+            controlling precisely what is retrieved from remote servers and
+            under what namespace it is stored locally.</para>
+
+            <figure>
+              <title>Advanced configuration of a git repo URL</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_02_-_Repo_URL_Advanced,_Name-of-Repo.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Advanced configuration of a git repo URL</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="branches-to-build">
+            <title>Branches to Build</title>
+
+            <para>The branch specifier is the wildcard pattern or specific
+            branch name that should be built by Hudson. If left blank, all
+            branches will be built. At the time of this writing, after the
+            first time saving a job with a blank <emphasis>branches to
+            build</emphasis> setting, it is populated with
+            <literal>**,</literal> which means "build all branches."</para>
+
+            <figure>
+              <title>Advanced configuration of the git branches to
+              build</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_02_-_Repo_URL_Advanced,_Branches-to-Build.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Advanced configuration of the git branches to
+                  build</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="excluded-regions">
+            <title>Excluded Regions</title>
+
+            <para>Regions are named specific or wildcard paths in the codebase
+            that, even when changed, should not trigger a build. Commonly
+            these are non-compiled files such as localization bundles or
+            images, which, understandably might not have an effect on unit or
+            integration tests.</para>
+
+            <figure>
+              <title>Branches and Regions</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_03_-_Excluded_Regions.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Branches and Regions</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="excluded-users">
+            <title>Excluded Users</title>
+
+            <para>The git plugin also lets you ignore certain users, even if
+            they make changes to the codebase that would typically trigger a
+            build.</para>
+
+            <para>This is not as spiteful as it sounds: excluded users are
+            typically automated users, not human developers, that happen to
+            have distinct accounts with commit rights in the source control
+            system. These automated users often are performing small numeric
+            changes such as bumping up version numbers in a
+            <filename>pom.xml</filename> file, rather than making actual logic
+            changes. If you want to exclude several users, just place them on
+            separate lines.</para>
+          </sect5>
+
+          <sect5 id="checkoutmerge-to-local-branch">
+            <title>Checkout/merge to local branch</title>
+
+            <para>There are times when you may want to create a local branch
+            from the tree you've specified, rather than just using a direct
+            <emphasis>detached HEAD</emphasis> checkout of the commit's hash.
+            In this case, just specify your local branch in the the
+            'Checkout/merge to a local branch' field.</para>
+
+            <para>This is a little easier to illustrate with an example.
+            Without specifying a local branch, the plugin would do something
+            like this:</para>
+
+            <screen>git checkout 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
+
+            <para>On the other hand, if you use a local branch named
+            <literal>mylocalbranch</literal>, Hudson would do the
+            following:</para>
+
+            <screen>git branch -D mylocalbranch
+git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
+          </sect5>
+
+          <sect5 id="local-subdirectory-for-repo">
+            <title>Local subdirectory for repo</title>
+
+            <para>By default, Hudson will clone the Git repository directly
+            into the build job workspace. If you prefer to use a different
+            directory, you can specify it here. Note that the directory you
+            specify is relative to the build job workspace.</para>
+          </sect5>
+
+          <sect5 id="merge-before-build">
+            <title>Merge before build</title>
+
+            <para>The typical recipe for using this option is to fold an
+            integration branch into a branch more similar to
+            <literal>master</literal>. Keep in mind that only conflict-less
+            merges will happen automatically. More complex merges that require
+            manual intervention will fail the build.</para>
+
+            <para>The resultant merged branch will not automatically be pushed
+            to another repository unless the later <emphasis>push</emphasis>
+            post-build action is enabled.</para>
+          </sect5>
+
+          <sect5 id="prune-remote-branches-before-build">
+            <title>Prune remote branches before build</title>
+
+            <para>Pruning removes local copies of remote branches that exist
+            as a remnant of the previous clone, but are no longer present on
+            the remote. In short, this is cleaning the local clone to be in
+            perfect sync with its remote siblings.</para>
+          </sect5>
+
+          <sect5 id="clean-after-checkout">
+            <title>Clean after checkout</title>
+
+            <para>Activate git's facilities for purging any untracked files or
+            folders, returning your working copy to a pristine state.</para>
+          </sect5>
+
+          <sect5 id="recursively-update-submodules">
+            <title>Recursively update submodules</title>
+
+            <para>If you are using git's submodule facilities in the project,
+            this option lets you ensure that every submodule is up-to-date
+            with an explicit call to <literal>update</literal>, even if
+            submodules are nested within other submodules.</para>
+          </sect5>
+
+          <sect5 id="use-commit-author-in-changelog">
+            <title>Use commit author in changelog</title>
+
+            <para>Hudson tracks and displays the author of changed code in a
+            summarized view. Git tracks both the committer and author of code
+            distinctly, and this option lets you toggle which of those two
+            usernames is displayed in the changelog.</para>
+          </sect5>
+
+          <sect5 id="wipe-out-workspace">
+            <title>Wipe out workspace</title>
+
+            <para>Typically Hudson will reuse the workspace, merely freshening
+            the checkout as necessary and, if you activated the 'Clean after
+            checkout' option, cleaning up untracked files. However, if you
+            prefer to have a completely clean workspace, you can use the 'Wipe
+            out workspace' option to delete and rebuild the workspace from the
+            ground up. Bear in mind that this may significantly lengthen the
+            time it takes to initialize and build the project.</para>
+          </sect5>
+
+          <sect5 id="choosing-strategy">
+            <title>Choosing strategy</title>
+
+            <para>Hudson decides which branches to build based on a
+            <emphasis>strategy</emphasis>. Users can influence this
+            branch-search process. The default choice is to search for all
+            branch HEADs. If the Gerrit plugin is installed (see below),
+            additional options for building all Gerrit-notified commits are
+            displayed.</para>
+
+            <figure>
+              <title>Choosing Strategy</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_04b_-_Choosing_Strategy.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Choosing Strategy</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="git-executable">
+            <title>Git executable</title>
+
+            <para>In the global options of Hudson, different Git executables
+            can be set up and used on a per-build basis. This is infrequently
+            used, and only when the clone or other git operations are highly
+            sensitive to a particular version of Git. Git tends to be very
+            version-flexible; slightly older repositories can easily be cloned
+            with a newer version of git and vice-versa.</para>
+
+            <figure>
+              <title>Git Executable Global Setup</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_04c_-_GitVersions.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Git Executable Global Setup</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="repository-browser">
+            <title>Repository browser</title>
+
+            <para>Like Subversion, Git has several source code browsers that
+            you can use. The most common ones are Gitorious, Git Web, or
+            Github. If you provide the URL to the corresponding repository
+            browser, Hudson will be able to display a link to the source code
+            changes that triggered a build.</para>
+
+            <figure>
+              <title>Repository Browser</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_04_-_Advanced_Config.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Repository Browser</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+        </sect4>
+
+        <sect4 id="build-triggers">
+          <title>Build Triggers</title>
+
+          <para>The basic git plugin offers the ability to <emphasis>Poll
+          SCM</emphasis> on a timed basis, looking for changes since the last
+          inquiry. If changes are found, a build is started. The polling log
+          is accessible via a link on the left hand side of the page in the
+          navigation bar when viewing a specific job. It offers information on
+          the last time the repository was polled and if it replied with a
+          list of changes.</para>
+
+          <figure>
+            <title>Polling Log</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/Git_on_Hudson_07_-_Polling_Log.png"
+                           width="4.3in" />
+              </imageobject>
+
+              <textobject>
+                <phrase>Polling Log</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+
+          <para>The git polling is distilled into a more developer-useful
+          format that shows commit comments as well as hyperlinking usernames
+          and changed files to more detailed views of each.</para>
+
+          <figure>
+            <title>Results of git Polling</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/Git_on_Hudson_11_-_Git_SCM-Polled_Changes.png"
+                           width="4.3in" />
+              </imageobject>
+
+              <textobject>
+                <phrase>Results of git Polling</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+
+          <para>Installing the <emphasis>Gerrit Build Trigger</emphasis> adds
+          a <emphasis>Gerrit event</emphasis> option that can be more
+          efficient and precise than simply polling the repository.</para>
+
+          <sect5 id="gerrit-trigger">
+            <title>Gerrit Trigger</title>
+
+            <para><ulink url="http://code.google.com/p/gerrit/">Gerrit</ulink>
+            is an open source web application that facilitates <ulink
+            url="https://review.source.android.com/#q,status:open,n,z">code
+            reviews</ulink> for project source hosted on a git version control
+            system. It reads a traditional git repository, and provides a side
+            by side comparison of changes. As the code is reviewed, Gerrit
+            provides a location to comment and move the patch to an
+            <emphasis>open</emphasis>, <emphasis>merged</emphasis>, or
+            <emphasis>abandoned</emphasis> status.</para>
+
+            <para>The <ulink
+            url="http://wiki.hudson-ci.org/display/HUDSON/Gerrit+Trigger">Gerrit
+            Trigger</ulink> is a Hudson plugin that can trigger a Hudson build
+            of the code when any user-specified activity happens in a
+            user-specified project in the git repository. It is a alternative
+            to the more typically-used <emphasis>Build periodically</emphasis>
+            or <emphasis>Poll SCM</emphasis>.</para>
+
+            <figure>
+              <title>Gerrit Trigger</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_08_-_Gerrit_Build_Trigger.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Gerrit Trigger</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+
+            <para>The configuration for this plugin is minimal and focused on
+            the <emphasis>Project Type</emphasis> and
+            <emphasis>Pattern</emphasis> and <emphasis>Branch Type</emphasis>
+            and <emphasis>Pattern</emphasis>. In each pair, the
+            <emphasis>type</emphasis> can be <emphasis>Plain</emphasis>,
+            <emphasis>Path</emphasis>, or <emphasis>RegExp</emphasis> --
+            pattern flavors of what to watch -- and then the value
+            (<emphasis>pattern</emphasis>) to evaluate using the
+            <emphasis>type</emphasis> as the guide.</para>
+          </sect5>
+        </sect4>
+
+        <sect4 id="post-build-actions">
+          <title>Post-build Actions</title>
+
+          <para>The git plugin for Hudson adds git-specific capabilities to
+          the post-processing of the build artifacts. Specifically, the
+          <emphasis>Git Publisher</emphasis> offers merging and pushing
+          actions. Check the <emphasis>Git Publisher</emphasis> checkbox to
+          display the following options:</para>
+
+          <sect5 id="push-only-if-build-succeeds">
+            <title>Push Only If Build Succeeds</title>
+
+            <para>If a merge or other commit-creating action has been taken
+            during the Hudson build, it can be enabled to push to a
+            remote.</para>
+          </sect5>
+
+          <sect5 id="merge-results">
+            <title>Merge Results</title>
+
+            <para>If pre-build merging is configured, push the merge-resultant
+            branch to its origin.</para>
+          </sect5>
+
+          <sect5 id="tags">
+            <title>Tags</title>
+
+            <para>When pushing tags, each tag can be named and chosen to be
+            created if it does not exist (which fails if it does already
+            exist). Environment variables can be embedded in the tag name.
+            Examples include the process ID such as
+            <literal>HUDSON_BUILD_$PPID</literal> or even a build number, if
+            that is provided by a Hudson plugin, such as
+            <literal>$HUDSON_AUTOTAG_$BUILDNUM</literal>. Tags can be targeted
+            to a specific remote such as <literal>origin</literal> or
+            <literal>integrationrepo</literal>.</para>
+
+            <figure>
+              <title>Merge Results</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_06_-_Advanced_Git_Publisher,_Branches,_Tags.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Merge Results</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+          </sect5>
+
+          <sect5 id="branches">
+            <title>Branches</title>
+
+            <para>The current HEAD used in the Hudson build of the application
+            can be pushed to other remotes as an after-step of the build. You
+            only need to provide the destination branch name and remote
+            name.</para>
+
+            <figure>
+              <title>Git Publisher</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_09_-_Git-Publisher-with-Success.png"
+                             width="4.3in" />
+                </imageobject>
+
+                <textobject>
+                  <phrase>Git Publisher</phrase>
+                </textobject>
+              </mediaobject>
+            </figure>
+
+            <para>Names of remotes are validated against the earlier
+            configuration of the plugin. If the remote doesn't exist, a
+            warning is displayed: <inlinemediaobject>
+                <imageobject role="web">
+                  <objectinfo>
+                    <title>Git Publisher With Warning On Commit</title>
+                  </objectinfo>
+
+                  <imagedata align="center"
+                             fileref="figs/web/Git_on_Hudson_10_-_Git-Publisher-with-Warning.png"
+                             width="4.3in" />
+                </imageobject>
+              </inlinemediaobject></para>
+          </sect5>
+        </sect4>
+
+        <sect4 id="github-plugin">
+          <title>GitHub Plugin</title>
+
+          <para>The GitHub plugin offers two integration points. First, it
+          offers an optional link to the project's GitHub homepage. Just enter
+          the URL for the project (without the tree/master or tree/branch
+          part). For example,
+          <literal>http://github.com/matthewmccullough/git-workshop</literal>.</para>
+
+          <para>Secondly, the GitHub plugin offers per-file-changed links that
+          are wired via the <emphasis>Repository browser</emphasis> section of
+          a job's <emphasis>Source Code Management</emphasis>
+          configuration.</para>
+
+          <figure>
+            <title>GitHub Repository Browser</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/Git_on_Hudson_13_-_GitHub_Repository_Browser.png"
+                           width="4.3in" />
+              </imageobject>
+
+              <textobject>
+                <phrase>GitHub Repository Browser</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+
+          <para>With the <literal>githubweb</literal> repository browser
+          chosen, all changed-detected files will be linked to the appropriate
+          GitHub source-viewing web page.</para>
+
+          <figure>
+            <title>GitHub Repository Browser</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/Git_on_Hudson_13_-_GitHubWeb.png"
+                           width="4.3in" />
+              </imageobject>
+
+              <textobject>
+                <phrase>GitHub Repository Browser</phrase>
+              </textobject>
+            </mediaobject>
+          </figure>
+        </sect4>
       </sect3>
     </sect2>
 
     <sect2 id="sect-build-triggers">
       <title>Build Triggers</title>
 
-      <para></para>
+      <para>Once you have configured your version control system, you need to
+      tell Hudson when to kick off a build. You set this up in the
+      <command>Build Triggers</command> section.</para>
+
+      <para>In a Freestyle build, there are three basic ways a build job can
+      be triggered (see <xref
+      linkend="fig-hudson-new-job-triggers" />):</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Start a build job once another build job has completed</para>
+        </listitem>
+
+        <listitem>
+          <para>Kick off builds at periodical intervals</para>
+        </listitem>
+
+        <listitem>
+          <para>Poll the SCM for changes</para>
+        </listitem>
+      </orderedlist>
+
+      <para><figure id="fig-hudson-new-job-triggers">
+          <title>There are many ways that you can configure Hudson to start a
+          build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-new-job-triggers.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <sect3>
+        <title>Triggering a build job once another build job has
+        finished</title>
+
+        <para>The first option lets you set up a build that will be run
+        whenever another build has finished. This is an easy way to set up a
+        build pipeline. For example, you might set up an initial build job to
+        run unit and integration tests, followed by another separate build job
+        to run more CPU-intensive code quality metrics. You simply enter the
+        name of the preceding build job in this field. If the build job can be
+        triggered by several other build jobs, just list their names here,
+        separated by commas. In this case, the build job will be triggered
+        once <emphasis>any</emphasis> of the build jobs in the list
+        finish.</para>
+
+        <para>There is a symmetrical field in the <command>Post-build
+        actions</command> section of the preceding build job called
+        (appropriately enough) 'Build other projects'. This field will be
+        automatically updated in the corresponding build jobs whenever you
+        modify the 'Build after other projects are built' field. However,
+        unlike the 'Build after other projects are built', field, this field
+        gives you the option to trigger a build even if the build is unstable.
+        This is useful, for example, if you want to run a code quality metrics
+        build job even if there are unit test failures in the default build
+        job.</para>
+
+        <para><figure id="fig-hudson-new-job-trigger-build-after">
+            <title>Triggering another build job even if the current one is
+            unstable</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-new-job-trigger-build-after.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Scheduled build jobs</title>
+
+        <para>Another strategy is simply to trigger your build job at regular
+        intervals. It is important to note that this is not actually
+        Continuous Integration - it is simply scheduled builds, something you
+        could also do, for example, as a Unix cron job. In the early days of
+        automated builds, and even today in many shops, builds are not run in
+        response to changes committed to version control, but simply on a
+        nightly basis. However, to be effective, a Continuous Integration
+        server should provide feedback much more quickly than once a
+        day.</para>
+
+        <para>There are nevertheless a few cases where scheduled builds do
+        make sense. This includes very long running build jobs, where quick
+        feedback is less critical. For example, intensive load and performance
+        tests which may take several hours to run, or Sonar build jobs. Sonar
+        is an excellent way to keep tabs on code quality metrics across your
+        projects and over time, but the Sonar server only stores one set of
+        data per day, so running Sonar builds more frequently than this is not
+        useful.</para>
+
+        <para>For all scheduling tasks, Hudson uses a cron-style syntax,
+        consisting of five fields separated by white space in the following
+        format:<blockquote>
+            <para>MINUTE HOUR DOM MONTH DOW</para>
+          </blockquote></para>
+
+        <para>with the following values possible for each field:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>MINUTE</term>
+
+            <listitem>
+              <para>Minutes within the hour (0-59)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>HOUR</term>
+
+            <listitem>
+              <para>The hour of the day (0-23) DOM</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>DOM</term>
+
+            <listitem>
+              <para>The day of the month (1-31)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>MONTH</term>
+
+            <listitem>
+              <para>The month (1-12)</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>DOW</term>
+
+            <listitem>
+              <para>The day of the week (0-7) where 0 and 7 are Sunday.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>There are also a few short-cuts:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>'*' represents all possible values for a field. For example,
+            '* * * * *' means "once a minute".</para>
+          </listitem>
+
+          <listitem>
+            <para>You can define ranges using the 'M-N' notation. For example
+            '1-5' in the DOW field would mean 'Monday to Friday'.</para>
+          </listitem>
+
+          <listitem>
+            <para>You can use the slash notation to defined skips through a
+            range. For example, */5 in the MINUTE field would mean "every five
+            minutes".</para>
+          </listitem>
+
+          <listitem>
+            <para>A comma-separated list indicates a list of valid values. For
+            example, "15,45" in the MINUTE field would mean "at 15 and 45
+            minutes past every hour"</para>
+          </listitem>
+
+          <listitem>
+            <para>You can also use the shorthand values of '@yearly',
+            '@annually', '@monthly', '@weekly', '@daily', '@midnight', and
+            '@hourly'.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Typically, you will only have one line in this field, but for
+        more complicated scheduling setups, you may need multiple
+        lines.</para>
+      </sect3>
+
+      <sect3>
+        <title>Polling the SCM</title>
+
+        <para>As we have seen, scheduled build jobs are usually not the best
+        strategy for most CI build jobs. The value of any feedback is
+        proportional to the speed in which you receive that feedback, and
+        Continuous Integration is no exception. That is why polling the SCM is
+        generally a better option.</para>
+
+        <para>Polling involves asking the version control server at regular
+        intervals if any changes have been committed. If any changes have been
+        made to the source code in the project, Hudson kicks off a build.
+        Polling is usually a relatively cheap operation, so you can poll
+        frequently to ensure that a build kicks off rapidly after changes have
+        been committed. The more frequent the polling is, the faster the build
+        jobs will start, and the more accurate the feedback about what change
+        broke the build will be.</para>
+
+        <para>In Hudson, SCM polling is easy to configure, and uses the same
+        cron syntax we discussed previously.</para>
+
+        <para>The natural temptation for SCM polling is to poll as often as
+        possible (for example, using "* * * * *", or once every minute). Since
+        Hudson will simply queries the version control system, and only kicks
+        off a build if the source code has been modified, this approach is
+        often reasonable for small projects. It shows its limits if there are
+        a very large number of build jobs, as this may saturate the SCM server
+        and the network with queries, many of them unnecessary. In this case,
+        a more precise approach is better, where the Hudson build job is
+        triggered by the SCM when it receives a change. We discuss this option
+        in <xref linkend="sect-build-trigger-remote" />.</para>
+
+        <para>If updates are frequently committed to the version control
+        system, across many projects, this may cause many build jobs to be
+        queued, which can in turn slow down feedback times further. You can
+        reduce the build queue to some extent by polling less frequently, but
+        at the cost of less precise feedback.</para>
+
+        <para>If you are using CVS, polling may not be a good option. When CVS
+        checks for changes in a project, it checks each file one by one, which
+        is a slow and tedious process. The best solution here is to migrate to
+        a modern version control system such as Git or Subversion. The
+        second-best solution is to use polling at very sparse intervals (for
+        example every 30 minutes).</para>
+      </sect3>
+
+      <sect3 id="sect-build-trigger-remote">
+        <title>Triggering builds remotely</title>
+
+        <para>Polling can work well, but it does not scale particularly well -
+        with large numbers of build jobs, it is wasteful of network resources,
+        and there is always a small delay between the code change being
+        committed and the build job starting. A more precise strategy is to
+        get the SCM system to trigger the Hudson build whenever a change is
+        committed.</para>
+
+        <para>It is easy to start a Hudson build job remotely. You simply
+        invoke a URL of the following form:<blockquote>
+            <para>http://SERVER/hudson/job/PROJECTNAME/build</para>
+          </blockquote></para>
+
+        <para>For example, if my Hudson server was running on
+        http://myserver:8080/hudson, I could start the 'gameoflife' build job
+        by invoking the following URL using a tool like
+        <command>wget</command> or <command>curl</command>:<screen>$ wget http://myserver:8080/hudson/job/gameoflife/build</screen></para>
+
+        <para>The trick, then, is to get your version control server to do
+        this whenever a change is committed. The details of how to do this are
+        different for each version control system. In Subversion, for example,
+        you would need to write a post-commit hook script, which would trigger
+        a build. You could, for example, write a Subversion hook script that
+        parses the repository URL to extract the project name, and performs a
+        <command>wget</command> operation on the URL of the corresponding
+        build job.</para>
+
+        <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+REPOS="$1"
+PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
+            id="svn-hook-1" />
+/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
+
+        <para><calloutlist>
+            <callout arearefs="svn-hook-1">
+              <para>Use regular expression processing here to extract your
+              project name from the Subversion repository URL.</para>
+            </callout>
+          </calloutlist>However, this approach will only trigger one
+        particular build, and relies on a convention that the default build
+        job is based on the repository name in Subversion. A more flexible
+        approach with Subversion is to use the Hudson Subversion API directly,
+        as shown here:<programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+REPOS="$1"
+REV="$2"
+UUID=`svnlook uuid $REPOS`
+/usr/bin/wget \
+  --header "Content-Type:text/plain;charset=UTF-8" \
+  --post-data "`svnlook changed --revision $REV $REPOS`" \
+  --output-document "-" \
+  --timeout=2 \
+  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
+
+        <para>This would automatically start any Hudson build jobs monitoring
+        this Subversion repository.</para>
+
+        <para>If you have activated Hudson security, things become a little
+        more complicated. In the simplest case (where any user can do
+        anything), you need to activate the 'Trigger builds remotely' option
+        (see <xref linkend="fig-hudson-builds-tokens" />), and provide a
+        special string that can be used in the URL.<blockquote>
+            <para>http://SERVER/hudson/job/PROJECTNAME/build?token=DOIT</para>
+          </blockquote></para>
+
+        <para><figure id="fig-hudson-builds-tokens">
+            <title>Triggering a build via a URL using a token</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-builds-tokens.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>This won't work if users need to be logged on to trigger a build
+        (for example, if you are using matrix or project-based security). In
+        this case, you will need to provide a user name and password, as shown
+        in the following example:</para>
+
+        <para><screen>$ wget http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen>or</para>
+
+        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen></para>
+      </sect3>
+
+      <sect3>
+        <title>Manual build jobs</title>
+
+        <para>A build does not have to be triggered automatically. Some build
+        jobs should only be started manually, by human intervention. For
+        example, you may want to set up an automated deployment to a UAT
+        environment, that should only be started on the request of the QA
+        folks. In this case, you can simply leave the <command>Build
+        Triggers</command> section empty.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Build steps</title>
+
+      <para>Now Hudson should know where and how often to obtain the project
+      source code. The next thing you need to explain to Hudson is what it
+      what to do with the source code. In a freestyle build, you do this by
+      defining build steps. Build steps are the basic building blocks for the
+      Hudson freestyle build process. They are what let you tell Hudson
+      exactly <emphasis>how</emphasis> you want your project built.</para>
+
+      <para>A build job may have one step, or more. It may even occasionally
+      have none. In a freestyle build, you can add as many build steps as you
+      want to the <command>Build</command> section of your project
+      configuration (see <xref linkend="fig-hudson-build-steps" />). In a
+      basic Hudson installation, you will be able to add steps to invoke Maven
+      and Ant, as well as running OS-specific shell or Windows batch commands.
+      And by installing additional plugins, you can also integrate other build
+      tools, such as Groovy, Gradle, Grails, Jython, MSBuild, Phing, Python,
+      Rake, and Ruby, just to name some of the more well-known tools.</para>
+
+      <para><figure id="fig-hudson-build-steps">
+          <title>Adding a build step to a freestyle build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-steps.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In the remainder of this section, we will delve into some of
+      the more common types of build steps.</para>
+
+      <sect3>
+        <title>Maven build steps</title>
+
+        <para>Hudson has excellent Maven support, and Maven build steps are
+        easy to configure and very flexible. Just pick 'Invoke top-level Maven
+        targets' from the build step lists, pick a version of Maven to run (if
+        you have multiple versions installed), and enter the Maven goals you
+        want to run. Hudson freestyle build jobs work fine with both Maven 2
+        and Maven 3.</para>
+
+        <para>Just like on the command line, you can specify as many
+        individual goals as you want. You can also provide command-line
+        options. A few useful Maven options in a CI context are:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>-B, --batch-mode</term>
+
+            <listitem>
+              <para>This option tells Maven not to prompt for any input from
+              the user, just using the default values if any are required. If
+              Maven does prompt for any input during the Hudson build, the
+              build will get stuck indefinitely.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>-U, --update-snapshots</term>
+
+            <listitem>
+              <para>Forces Maven to check for updated releases and snapshot
+              dependencies on the remote repository. This makes sure you are
+              building with the latest and greatest snapshot dependencies, and
+              not just using older local copies which may not by in sync with
+              the latest version of the source code.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>-Dsurefire.useFile=false</term>
+
+            <listitem>
+              <para>This option forces Maven to write JUnit output to the
+              console, rather than to text files in the target directory as it
+              normally would. This way, any test failure details are directly
+              visible in the build job console output. The XML files that
+              Hudson needs for its test reporting will still be
+              generated.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>The advanced options are also worth investigating (click on the
+        'Advanced' button).</para>
+
+        <para>The optional <command>POM</command> field lets you override the
+        default location of the Maven <filename>pom.xml</filename> file. This
+        is the equivalent of running Maven from the command line with the
+        <command>-f</command> or <command>--file</command> option. This is
+        useful for some multi-module Maven projects where the aggregate
+        <filename>pom.xml</filename> file (the one containing the
+        <command>&lt;modules&gt;</command> section) is located in a
+        sub-directory rather than at the top level.</para>
+
+        <para>The <command>Properties</command> field lets you set property
+        values that will be passed into the Maven build process, using the
+        standard property file format illustrated here:</para>
+
+        <para><programlisting># Selenium test configuration
+selenium.host=testserver.acme.com
+selenium.port=8080
+selenium.broswer=firefox</programlisting>These properties are passed to Maven
+        as command-line options, as shown here:<programlisting>$ <command>mvn verify -Dselenium.host=testserver.acme.com ...</command></programlisting></para>
+
+        <para>The <command>JVM Options</command> field lets you set any of the
+        standard Java Virtual Machine options for your build job. So if your
+        build process is particularly memory intensive, you might add some
+        extra heap space with the <command>-Xmx</command> option (for example,
+        <command>-Xmx512m</command> would set the maximum heap size to
+        512Mb).</para>
+
+        <para>The final option lets you configure a private Maven repository
+        for this build job. Normally, Maven will just use the default Maven
+        repository (usually in the <filename>.m2/repository</filename> folder
+        in the user's home directory). Occasionally, this can lead to build
+        jobs interfering with each other, or use inconsistent snapshot
+        versions from one build to another. To be sure that your build is run
+        in clean laboratory conditions, you can activate this option. Your
+        build job will get its own private repository, reserved for its own
+        exclusive use. On the downside, the first time the build job runs a
+        build, this may take some time to download all of the Maven artifacts,
+        and private repositories can take up a lot of space. However, it is
+        the best way of guaranteeing that your build is run in a truly
+        isolated environment.</para>
+      </sect3>
+
+      <sect3>
+        <title>Ant build steps</title>
+
+        <para>Free-style build jobs work equally well with Ant. Apache Ant
+        (<uri>http://ant.apache.org/</uri>) is a widely-used and very
+        well-known Java build scripting tool. Indeed, a very large number of
+        Java projects out there rely on Ant build scripts.</para>
+
+        <para>Ant is not only used as a primary build scripting tool - even if
+        your project uses Maven, you may resort to calling Ant scripts to do
+        more specific tasks. There are Ant libraries available for many
+        development tools and low-level tasks, such as using SSH, or working
+        with proprietary application servers.</para>
+
+        <para>In it's most basic form, configuring an Ant build step very is
+        simple indeed - you just provide the version of Ant you want to use
+        and the name of the target you want to invoke. In <xref
+        linkend="fig-hudson-build-ant-step" />, for example, we are invoking
+        an Ant script to run a JMeter test script. <figure
+            id="fig-hudson-build-ant-step">
+            <title>Configuring an Ant build step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-ant-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>As with the Maven build step, the 'Advanced...' button provides
+        you with more detailed options, such as specifying a different build
+        script, or a build script in a different directory (the default will
+        be <filename>build.xml</filename> in the root directory). You can also
+        specify properties and JVM options, just as you can for Maven.</para>
+      </sect3>
+
+      <sect3>
+        <title>Executing a shell or Windows batch command</title>
+
+        <para>Occasionally you may need to execute a command directly at the
+        Operating System level. Some legacy build processes rely on
+        OS-specific scripts, for example. In other cases, you may need to
+        perform a low-level operation that is most easily done with an
+        OS-level command.</para>
+
+        <para>You can do this in Hudson with the <command>Execute
+        Shell</command> (for Unix) or <command>Execute Windows Batch</command>
+        command (for Windows). As an example, in <xref
+        linkend="fig-hudson-build-shell-step" /> we have added a step to
+        execute the Unix <command>ls</command> command.</para>
+
+        <para><figure id="fig-hudson-build-shell-step">
+            <title>Configuring an 'Execute Shell' step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-shell-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The output from this build step is shown here:</para>
+
+        <para><programlisting>[workspace] $ /bin/sh -xe /var/folders/.../hudson2542160238803334344.sh
++ ls -al
+total 64
+drwxr-xr-x  14 johnsmart  staff   476 30 Oct 15:21 .
+drwxr-xr-x   9 johnsmart  staff   306 30 Oct 15:21 ..
+-rw-r--r--@  1 johnsmart  staff   294 22 Sep 01:40 .checkstyle
+-rw-r--r--@  1 johnsmart  staff   651 22 Sep 01:40 .classpath
+-rw-r--r--@  1 johnsmart  staff   947 22 Sep 01:40 .project
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 .settings
+-rw-r--r--@  1 johnsmart  staff   437 22 Sep 01:40 .springBeans
+drwxr-xr-x   9 johnsmart  staff   306 30 Oct 15:21 .svn
+-rw-r--r--@  1 johnsmart  staff  1228 22 Sep 01:40 build.xml
+-rw-r--r--@  1 johnsmart  staff    50 22 Sep 01:40 infinitest.filters
+-rw-r--r--   1 johnsmart  staff  6112 30 Oct 15:21 pom.xml
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 src
+drwxr-xr-x   3 johnsmart  staff   102 22 Sep 01:40 target
+drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
+</programlisting></para>
+
+        <para>You can either execute an OS-specific command (e.g
+        <command>ls</command>), or store a more complicated script as a file
+        in your version control system, and execute this script. If you are
+        executing a script, you just need to refer to the name of your script
+        relative to the work directory.</para>
+
+        <para>Shell scripts are executed using the "<command>-ex</command>"
+        option - the commands are printed to the console, as is the resulting
+        output. If any of the executed commands return a non-zero value, the
+        build will fail.</para>
+
+        <para>When Hudson executes a script, it sets a number of environment
+        variables that you can use within the script. We discuss these
+        variable in more detail in <xref
+        linkend="sect-hudson-environment-variables" />.</para>
+
+        <para>In fact, there are some very good reasons why you should avoid
+        using OS-level scripts in your build jobs if you can possibly avoid
+        it. In particular, it makes your build job in the best of cases
+        OS-specific, and at worst dependant on the precise machine
+        configuration. One more portable alternative to executing OS scripts
+        include writing an equivalent script in a more portable scripting
+        language, such as Groovy or Gant.</para>
+      </sect3>
+
+      <sect3 id="sect-hudson-environment-variables">
+        <title>Using Hudson environment variables in your builds</title>
+
+        <para>One useful trick that can be used in virtually any build step is
+        to obtain information from Hudson about the current build job. In
+        fact, when Hudson starts a build step, it makes the following
+        environment variables available to the build script:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>BUILD_NUMBER</term>
+
+            <listitem>
+              <para>The current build number, such as "153".</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_ID</term>
+
+            <listitem>
+              <para>A timestamp for the current build id, in the format
+              YYYY-MM-DD_hh-mm-ss.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JOB_NAME</term>
+
+            <listitem>
+              <para>The name of the job, such as 'game-of-life'.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_TAG</term>
+
+            <listitem>
+              <para>A convenient way to identify the current build job, in the
+              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
+              "hudson-game-of-life-2010-10-30_23-59-59").</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>EXECUTOR_NUMBER</term>
+
+            <listitem>
+              <para>A number identifying the executor running this build among
+              the executors of the same machine. This is the number you see in
+              the "build executor status", except that the number starts from
+              0, not 1.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>NODE_NAME</term>
+
+            <listitem>
+              <para>The name of the slave if the build is running on a slave,
+              or "" if the build is running on master.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>NODE_LABELS</term>
+
+            <listitem>
+              <para>The list of labels associated with the node that this
+              build is running on.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JAVA_HOME</term>
+
+            <listitem>
+              <para>If your job is configured to use a specific JDK, this
+              variable is set to the <filename>JAVA_HOME</filename> of the
+              specified JDK. When this variable is set,
+              <filename>PATH</filename> is also updated to have
+              <filename>$JAVA_HOME/bin</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>WORKSPACE</term>
+
+            <listitem>
+              <para>The absolute path of the workspace.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>HUDSON_URL</term>
+
+            <listitem>
+              <para>The full URL of the Hudson server, for example
+              <filename>http://ci.acme.com:8080/hudson/</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>JOB_URL</term>
+
+            <listitem>
+              <para>The full URL for this build job, for example
+              <filename>http://ci.acme.com:8080/hudson/game-of-life</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>BUILD_URL</term>
+
+            <listitem>
+              <para>The full URL for this build, for example
+              <filename>http://ci.acme.com:8080/hudson/game-of-life/20</filename>.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>SVN_REVISION</term>
+
+            <listitem>
+              <para>For Subversion-based projects, this variable contains the
+              current revision number.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>CVS_BRANCH</term>
+
+            <listitem>
+              <para>For CVS-based projects, this variable contains the branch
+              of the module. If CVS is configured to check out the trunk, this
+              environment variable will not be set.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>These variables are easy to access. In an Ant script, you can
+        access them using the <command>&lt;property&gt;</command> tag as shown
+        here:<programlisting>&lt;target name="printinfo"&gt;
+  &lt;property environment="env" /&gt;
+  &lt;echo message="${env.BUILD_TAG}"/&gt;
+&lt;/target&gt;</programlisting></para>
+
+        <para>In Maven, you can access the variables either in the same way
+        (using the "env." prefix), or directly using the Hudson environment
+        variable. For example, in the following pom.xml file, the project URL
+        will point to the Hudson build job that ran the <command>mvn
+        site</command> build:</para>
+
+        <para><programlisting>&lt;project...&gt;
+  ...
+  &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+  &lt;artifactId&gt;gameoflife-core&lt;/artifactId&gt;
+  &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;gameoflife-core&lt;/name&gt;
+  &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting></para>
+
+        <para>Alternatively, if you are building a web application, you can
+        also use the <filename>maven-war-plugin</filename> to insert the build
+        job number into the web application manifest, e.g. <programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;manifest&gt;
+            &lt;addDefaultImplementationEntries&gt;true&lt;/addDefaultImplementationEntries&gt;
+          &lt;/manifest&gt;
+          &lt;archive&gt;
+            &lt;manifestEntries&gt;
+              &lt;Specification-Title&gt;${project.name}&lt;/Specification-Title&gt;
+              &lt;Specification-Version&gt;${project.version}&lt;/Specification-Version&gt;
+              &lt;Implementation-Version&gt;${BUILD_TAG}&lt;/Implementation-Version&gt;
+            &lt;/manifestEntries&gt;
+          &lt;/archive&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;</programlisting></para>
+
+        <para>This will produce a <filename>MANIFEST.MF</filename> file along
+        the following lines:<programlisting>Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Created-By: Apache Maven
+Built-By: johnsmart
+Build-Jdk: 1.6.0_22
+Hudson-Build-Number: 63
+Hudson-Project: game-of-life
+Hudson-Version: 1.382
+Implementation-Version: hudson-game-of-life-63
+Specification-Title: gameoflife-web
+Specification-Version: 0.0.55-SNAPSHOT</programlisting></para>
+
+        <para>And in a Groovy script, they can be obtained via the
+        <command>System.getenv()</command> method:<programlisting>def env = System.getenv()
+env.each {
+    println it
+}</programlisting>or<programlisting>def env = System.getenv()
+println env['BUILD_NUMBER']</programlisting></para>
+      </sect3>
+
+      <sect3>
+        <title>Running Groovy scripts</title>
+
+        <para>Groovy is not only a popular JVM dynamic language, it is also a
+        convenient language for low-level scripting. The Hudson
+        <command>Groovy Plugin</command>
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
+        lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
+        part of your build process.</para>
+
+        <para>Once you have installed the Groovy plugin in the usual way, you
+        need to add a reference to your Groovy installation in the system
+        configuration page (see <xref
+        linkend="fig-hudson-groovy-installation" />).</para>
+
+        <para><figure id="fig-hudson-groovy-installation">
+            <title>Adding a Groovy installation to Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-installation.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Now you can add some Groovy scripting to your build job.
+        When you click on 'Add build step', you will see two new entries in
+        the drop-down menu: 'Execute Groovy script' and 'Execute system Groovy
+        script'. The first option is generally what you want - this will
+        simply execute a Groovy script in a separate JVM, as if you were
+        invoking Groovy from the command line. The second option runs Groovy
+        commands within Hudson's own JVM, with full access to Hudson's
+        internals, and is mainly used to manipulate the Hudson build jobs or
+        build process itself. This is a more advanced topic that we will
+        discuss later on in the book.</para>
+
+        <para>A Groovy build step can take one of two forms. For simple cases,
+        you can just add a small snippet of Groovy, as shown in <xref
+        linkend="fig-hudson-groovy-build-step" />. For more involved or
+        complicated cases, you would probably write a Groovy script and place
+        it under version control. Once your script is safely in your SCM, you
+        can run it by selecting the 'Groovy script file' option and providing
+        the path to your script (relative to your build job workspace).</para>
+
+        <para><figure id="fig-hudson-groovy-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>In <xref linkend="fig-hudson-groovy-fitnesse-build-step" />, you
+        can see a slightly more complicated example. Here we are running a
+        Groovy script called <filename>run-fitness-tests.groovy</filename>,
+        which can be found in the <filename>scripts</filename> directory. This
+        script takes the test suites to be executed as its parameters - we
+        provide these in the <command>Script parameters</command> field. If we
+        want to provide any options for Groovy itself, we can put these in the
+        <command>Groovy Parameters</command> field. Alternatively, we can also
+        provide command-line properties in the <command>Properties</command>
+        field - this is simply a more convenient way of using the
+        <command>-D</command> command line option to pass property values to
+        the Groovy script.</para>
+
+        <para><figure id="fig-hudson-groovy-fitnesse-build-step">
+            <title>Running Groovy commands as part of a build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-groovy-fitnesse-build-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Building Grails projects</title>
+
+        <para>Grails is an open-source dynamic web application framework built
+        on Groovy and many well-established open source Java frameworks such
+        as Spring and Hibernate.</para>
+
+        <para>Hudson provides excellent support for Grails builds. First, you
+        need to install the Hudson Grails Plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/Grails+Plugin</uri>).
+        Once you have installed this and restarted Hudson, you will need to
+        provide at least one version of Grails for Hudson to use in the
+        <command>Grails Builder</command> section of the <command>Configure
+        System</command> screen (see <xref
+        linkend="fig-hudson-build-job-grails-builder" />).</para>
+
+        <para><figure id="fig-hudson-build-job-grails-builder">
+            <title>Adding a Grails installation to Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-grails-builder.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Now you can set up a freestyle build job to build your
+        Grails project. The Grails plugin adds the 'Build with Grails' build
+        step, which you can use to build your Grails application (see <xref
+        linkend="fig-hudson-build-job-grails" />). Here, you provide the
+        Grails target, or targets, you want to execute. Unlike the command
+        line, you can execute several targets in the same command. However, if
+        you need to pass any arguments to a particular target, you should
+        enclose the target and its arguments in double quotes. In <xref
+        linkend="fig-hudson-build-job-grails" />, for example, we run
+        <command>grails clean</command>, followed by <command>grails test-app
+        -unit -non-interactive</command>. To get this to work properly, we
+        enclose the options of the second command in quotes, which gives us
+        <command>grails clean "test-app -unit
+        -non-interactive"</command>.</para>
+
+        <para><figure id="fig-hudson-build-job-grails">
+            <title>Configuring a Grails build step</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-grails.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The Grails build step takes many optional parameters. For
+        example, Grails is finicky about versions - if your project was
+        created by an older version, Grails will ask you to upgrade it. To be
+        on the safe side, for example, you may want to tick the
+        '<command>Force Upgrade</command>', which makes sure that runs a
+        <command>grails upgrade --non-interactive</command> before it runs the
+        main targets.</para>
+
+        <para>You can also specify the server port (useful if you are
+        executing web tests), and any other properties you want to pass to the
+        build.</para>
+      </sect3>
+
+      <sect3>
+        <title>Building projects with Gradle</title>
+
+        <para>In comparison to the build tool veterans Ant and Maven, Gradle
+        (<uri>http://gradle.org</uri>) is a relatively new open source build
+        tool for the Java Virtual Machine. Build scripts for Gradle are
+        written in a Domain Specific Language (DSL) based on Groovy. Gradle
+        implements convention over configuration, allows direct access to Ant
+        tasks, and uses Maven-like declarative dependency management. The
+        concise nature of Groovy scripting lets you write very expressive
+        build scripts with very little code, albeit at the cost of loosing the
+        IDE support that exists for established tools like Ant and
+        Maven.</para>
+
+        <para>There are two different ways to run your Gradle builds with
+        Hudson. You can either use the Gradle plugin for Hudson or the Gradle
+        wrapper functionality.</para>
+
+        <sect4 id="the-gradle-plugin-for-hudson">
+          <title>The Gradle plugin for Hudson</title>
+
+          <para>You can install the Gradle plugin in the usual way - just go
+          to the 'Manage Plugins' screen and select the 'Hudson Gradle plugin.
+          Click 'Install' and restart your Hudson instance.</para>
+
+          <para>Once Hudson has restarted, you will need to configure your new
+          Gradle plugin. You should now find a new "Gradle" section in your
+          'Configure System' screen. Here you will need to add the Gradle
+          installation you want to use. The process is similar to that used
+          for the other tool installations. First, click the 'Add Gradle'
+          button to add a new Gradle installation, and enter an appropriate
+          name (see <xref linkend="fig-gradle-plugin" />). If Gradle has
+          already been installed on your build server, you can point to local
+          Gradle home directory. Alternatively, you can use the "Install
+          automatically" feature to download a Gradle installation, in the
+          form of a ZIP or GZipped TAR file, directly from a URL. You can use
+          a public URL (see <uri>http://gradle.org/downloads.html</uri>), or
+          may prefer to make these installations available on a local server
+          instead.</para>
+
+          <figure id="fig-gradle-plugin">
+            <title>Configuring the Gradle Plugin</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/configureGradle.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>You typically use Freestyle build jobs to configure your
+          Gradle builds. When you add a build step to a Freestyle build job,
+          you will now have a new option called "Invoke Gradle script", which
+          lets you add Gradle specific settings to your build job. </para>
+
+          <para>As an example, here is a very simple Gradle build script. It
+          is a simple Java project that uses a Maven directory structure and a
+          Maven repository manager. There is a custom goal, called
+          'uploadArchives', to deploy the generated archive to the local
+          Enterprise repository manager:</para>
+
+          <para><programlisting>apply plugin:'java'
+apply plugin:'maven'
+
+version='1.0-SNAPSHOT'
+group = "org.acme"
+
+repositories{
+  mavenCentral()
+    mavenRepo urls: 'http://build.server/nexus/content/repositories/public'
+}
+
+dependencies{
+  testCompile "junit:junit:4.8.2"
+}
+
+uploadArchives {
+  repositories.mavenDeployer {
+    configuration = configurations.archives
+      repository(url: "http://build.server/nexus/content/repositories/snapshots") {
+        authentication(userName: "admin", password: "password")
+     }
+  }
+}</programlisting>In <xref linkend="fig-gradle-build-job" />, we use the just
+          configured "Gradle-0.9RC2" instance to run this Gradle build. In
+          this case, we want to run the JUnit tests and upload the build
+          artifacts to our local Maven repository. Furthermore we configure
+          our job to collect the test results from "**/build/test-results",
+          the default directory for storing test results in Gradle.</para>
+
+          <para><figure id="fig-gradle-build-job">
+              <title>Setting up a Gradle build job</title>
+
+              <mediaobject>
+                <imageobject role="web">
+                  <imagedata align="center"
+                             fileref="figs/web/configureGradleJob.png"
+                             width="4.3in" />
+                </imageobject>
+              </mediaobject>
+            </figure></para>
+        </sect4>
+
+        <sect4 id="incremental-builds">
+          <title>Incremental builds</title>
+
+          <para>While running a Gradle build job with unchanged sources,
+          Gradle runs its builds incremental. If the output of a Gradle task
+          is still available and the sources haven't changed since the last
+          build, Gradle is able to skip the task execution and marks the
+          according task as up-to-date. This incremental build feature can
+          decrease the duration of a running build job tremendously.</para>
+
+          <para>If Gradle evaluates the test task as up-to-date even the
+          execution of your unit tests is skipped. This can cause problems
+          when running your Gradle build with Hudson. In our sample build job
+          above we configured a post build action to publish the JUnit reports
+          of our build. If the test task is skipped by Gradle, the Hudson job
+          will be marked as failed with the following message:</para>
+
+          <blockquote>
+            <para>Test reports were found but none of them are new. Did tests
+            run?</para>
+          </blockquote>
+
+          <para>You can easily fix this by invalidating the output and force a
+          re-execution of your tests by adding the following snippet to your
+          Gradle file:</para>
+
+          <screen>test {
+    outputs.upToDateWhen { false }
+}</screen>
+
+          <para>After adding the snippet above to your build file, your job
+          console output should look like the one in <xref
+          linkend="gradle-incremental-build" />.</para>
+
+          <figure id="gradle-incremental-build">
+            <title>Incremental Gradle job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/incrementalBuildJob.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+
+          <para>As you can see, except <emphasis>test</emphasis> and
+          <emphasis>uploadArchives</emphasis> all of the tasks have been
+          marked as up-to-date and not executed.</para>
+        </sect4>
+      </sect3>
+
+      <sect3>
+        <title>Building projects with Visual Studio MSBuild</title>
+
+        <para>Hudson is a Java application, but it also provides excellent
+        support for .NET projects.</para>
+
+        <para>To build .NET projects in Hudson, you need to install the
+        MSBuild plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
+
+        <para>You may also want to install the MSTest plugin
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/MSTest+Plugin</uri>)
+        and the NUnit plugin
+        (<uri>http://wiki.hudson-ci.org//display/HUDSON/NUnit+Plugin</uri>),
+        to display your test results.</para>
+
+        <para>Once you have installed the .NET plugins and restarted Hudson,
+        you need to configure your .NET build tools. Go to the
+        <command>Configure System</command> page and specify the path of the
+        MSBuild executable (see <xref
+        linkend="fig-hudson-msbuild-config" />).</para>
+
+        <para><figure id="fig-hudson-msbuild-config">
+            <title>Configuring .NET build tools in Hudson</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-msbuild-config.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Once you have this set up, you can return to your freestyle
+        project and add your .NET build step configuration.</para>
+
+        <para>Go to the <command>Build</command> section and choose
+        '<command>Build a Visual project or solution using MSBuild</command>'
+        option in the 'Add Build Step' menu. Then enter the path to your
+        MSBuild build script (a <filename>.proj</filename> or
+        <filename>.sln</filename> file), along with any command-line options
+        your build requires (see <xref
+        linkend="fig-hudson-msbuild-step" />).</para>
+
+        <para><figure id="fig-hudson-msbuild-step">
+            <title>A build step using MSBuild</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-msbuild-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Build projects with NAnt</title>
+
+        <para>Another way to build your .NET projects is to use NAnt. NAnt is
+        a .NET version of the Ant build scripting tool widely used in the Java
+        world. NAnt build scripts are XML files (typically with a
+        <filename>.build</filename> extension), with a very similar format to
+        Ant build scripts.</para>
+
+        <para>To build with NAnt in Hudson, you need to install the Hudson
+        NAnt plugin
+        (<uri>http://wiki.hudson-ci.org/display/HUDSON/NAnt+Plugin</uri>).
+        Once you have installed the plugin and restarted Hudson, go to the
+        <command>Configure System</command> page and specify the NAnt
+        installation directory in the <command>Nant Builders</command> section
+        (see <xref linkend="fig-hudson-msbuild-config" />).</para>
+
+        <para>Now go to the <command>Build</command> section of your freestyle
+        project and choose '<command>Execute NAnt build</command>' (see <xref
+        linkend="fig-hudson-nant-step" />). Here you specify your build script
+        and the target you want to invoke. If you click on the
+        '<command>Advanced...</command>' option, you can also set property
+        values to be passed into the NAnt script.</para>
+
+        <para><figure id="fig-hudson-nant-step">
+            <title>A build step using NAnt</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-nant-step.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Build steps for other languages</title>
+
+        <para>As the last few sections illustrate, Hudson provides excellent
+        support for other languages and development environments, including
+        Ruby, .NET, PHP, and many others. We will discuss other aspects of
+        building non-Java projects later on in the book.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Post-build actions</title>
+
+      <para>Once the build is completed, there are still a few things you need
+      to look after. You might want to archive some of the generated
+      artifacts, to report on test results, and to notify people about the
+      results. In this section, we look at some of the more common tasks you
+      need to configure after the build is done.</para>
+
+      <sect3>
+        <title>Reporting on test results</title>
+
+        <para>One of the most obvious requirements of a build job is to report
+        on test results. Not only whether there are any test failures, but
+        also how many tests were executed, how long they took to execute, and
+        so on. In the Java world, JUnit is the most commonly-used testing
+        library around, and the JUnit XML format for test results is widely
+        used and understood by other tools as well.</para>
+
+        <para>Hudson provides great support for test reporting. In a freestyle
+        build job, you need to tick the '<command>Publish JUnit test result
+        report</command>' option, and provide a path to your JUnit report
+        files (see <xref linkend="fig-hudson-build-job-junit" />). You can use
+        a wildcard expression (such as "**/target/surefire-reports/*.xml" in a
+        Maven project) to include JUnit reports from a number of different
+        directories - Hudson will aggregate the results into a single
+        report.</para>
+
+        <para><figure id="fig-hudson-build-job-junit">
+            <title>Reporting on test results</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-junit.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>We look at automated tests in much more detail in <xref
+        linkend="chapter-automated-testing" />.</para>
+      </sect3>
+
+      <sect3>
+        <title>Archiving build results</title>
+
+        <para>With a few exceptions, the principal goal of a build job is
+        generally to build something. In Hudson, we call this something an
+        artifact. An artifact might be a binary executable (a JAR or WAR file
+        for a Java project, for example), or some other related deliverable,
+        such as documentation or source code. A build job can store one or
+        many different artifacts, keeping only the latest copy or every
+        artifact ever built.</para>
+
+        <para>Configuring Hudson to store your artifacts is easy - just tick
+        the 'Archive the artifacts' checkbox in the <command>Post-build
+        Actions</command>, and specify which artifacts you want to store (see
+        <xref
+        linkend="fig-hudson-build-job-artifact-configuration" />).</para>
+
+        <para><figure id="fig-hudson-build-job-artifact-configuration">
+            <title>Build artifacts are displayed on the build results page,
+            and on the build job home page</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-artifact-configuration.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>In the '<command>Files to archive</command>' field, you can
+        provide the full paths of the files you want to archive (relative to
+        the job workspace), or, use Ant-like wild cards (e.g. "**/*.jar", for
+        all the JAR files, anywhere in the workspace). One advantage of using
+        wild cards is that it makes your build less dependent on your version
+        control set up. For example, if you are using Subversion (see <xref
+        linkend="sect-subversion" />), Hudson will check out your project
+        either directly in your workspace, or into a sub-directory, depending
+        on how you set it up. If you use a wild card expression like
+        "**/target/*.war", Hudson will find the file no matter what directory
+        the project is located in.</para>
+
+        <para>As usual, the '<command>Advanced..</command>' button give access
+        to a few extra options. If you are using wild cards to find your
+        artifacts, you might need to exclude certain directories from the
+        search. You can do this by filling in the <command>Excludes</command>
+        field. You enter a pattern to match any files that you
+        <emphasis>don't</emphasis> want to archive, even if they would
+        normally be included by the 'Field to archive' field.</para>
+
+        <para>Archived artifacts can take a lot of disk space, especially if
+        builds are frequent. For this reason, you may want to only keep the
+        last successful one. To do this, just tick the '<command>Discard all
+        but the last successful/stable artifact</command>' option. Hudson will
+        keep artifacts from the last stable build (if there where any). It
+        will also keep the artifacts of the latest unstable build following
+        the stable build (if any), and also from the last failed build that
+        happened.</para>
+
+        <para>Archived build artifacts appear on the build results page (see
+        <xref linkend="fig-hudson-build-artifact" />). The most recent build
+        artifacts are also displayed on the build job home page.</para>
+
+        <para><figure id="fig-hudson-build-artifact">
+            <title>Build artifacts are displayed on the build results page,
+            and on the build job home page</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-artifacts.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>You can also use permanent URLs to access the most recent
+        build artifacts. This is a great way to reuse the latest artifacts
+        from your builds, either in other Hudson build jobs or in external
+        scripts, for example. Three URLs are available: last stable build,
+        last successful build and last completed build.</para>
+
+        <para>Before we look at the URLs, we should discuss the concept of
+        <emphasis>stable</emphasis> and <emphasis>successful</emphasis>
+        builds.</para>
+
+        <para>A build is <emphasis>successful</emphasis> when the compilation
+        reported no errors.</para>
+
+        <para>A build is considered <emphasis>stable</emphasis> if it was
+        built successfully, and no publisher reports it as unstable. For
+        example, depending on your project configuration, unit test failures,
+        insufficient code coverage, or other code quality metrics issues,
+        could cause a build to be marked as unstable. So a stable build is
+        always successful, but the opposite is not necessarily true - a build
+        can be successful without being stable.</para>
+
+        <para>A <emphasis>completed</emphasis> build is simply a build that
+        has finished, no matter what its result. Note that the archiving step
+        will take place no matter what the outcome of the build was.</para>
+
+        <para>The format of the artifact URLs is intuitive, and takes the
+        following form:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Latest Stable Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastStableBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Successful Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastSuccessfulBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Completed Build</term>
+
+            <listitem>
+              <para>&lt;server-url&gt;/job/&lt;build-job&gt;/lastCompletedBuild/artifact/&lt;path-to-artifact&gt;</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>This is best illustrated by some examples. Suppose your Hudson
+        server is running on <uri>http://myserver:8080</uri>, your build job
+        is called <filename>game-of-life</filename>, and you are storing a
+        file called <filename>gameoflife.war</filename>, which is in the
+        target directory of your workspace. The URLs for this artifact would
+        be the following:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Latest Stable Build</term>
+
+            <listitem>
+              <para><uri>http://myserver:8080/job/gameoflife/lastStableBuild/artifact/target/gameoflife.war</uri></para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Successful Build</term>
+
+            <listitem>
+              <para><uri>http://myserver:8080/job/gameoflife/lastSuccessfulBuild/artifact/target/gameoflife.war</uri></para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Latest Completed Build</term>
+
+            <listitem>
+              <para><filename>http://myserver:8080/job/gameoflife/lastCompletedBuild/artifact/target/gameoflife.war</filename></para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>Artifacts don't just have to be executable binaries. Imagine,
+        for example, that your build process involves automatically deploying
+        each build to a test server. For convenience, you want to keep a copy
+        of the exact source code associated with each deployed WAR file. One
+        way to do this would be to generate the source code associated with a
+        build, and archive both this file and the WAR file. We could do this
+        by generating a JAR file containing the application source code (for
+        example, by using the Maven Source Plugin for a Maven project), and
+        then including this in the list of artifacts to store (see <xref
+        linkend="fig-hudson-archiving-source" />).</para>
+
+        <para><figure id="fig-hudson-archiving-source">
+            <title>Archiving source code and a binary package</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-archiving-source.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Of course, this example is a tad academic: it would
+        probably be simpler just to use the revision number for this build
+        (which is displayed on the build result page) to retrieve the source
+        code from your version control system. But you get the idea.</para>
+
+        <para>Note that if you are using an Enterprise Repository Manager such
+        as Nexus or Artifactory to store your binary artifacts, you may not
+        need to keep them on the Hudson server. You may prefer simply to
+        automatically deploy your artifacts to your Enterprise Repository
+        Manager as part of the build job, and retrieve them from here when
+        required.</para>
+      </sect3>
+
+      <sect3>
+        <title>Notifications</title>
+
+        <para>The point of a CI server is to let people know when a build
+        breaks. In Hudson, this comes under the heading of
+        Notification.</para>
+
+        <para>Out of the box, Hudson provides support for email notification.
+        You can activate this by ticking the '<command>E-mail
+        Notification</command>' checkbox in the <command>Post-build
+        Actions</command> (see <xref linkend="fig-hudson-build-job-email" />).
+        Then enter the email addresses of the team members who will need to
+        know when the build breaks. When the build does break, Hudson will
+        send a friendly email message to the users in this list containing a
+        link to the broken build.</para>
+
+        <para><figure id="fig-hudson-build-job-email">
+            <title>Email notification</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/hudson-build-job-email.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>You can also opt to send a separate email to the user who's
+        commit (presumably) broke the build. For this to work, you need to
+        have activated Security on your Hudson server (see chapter <xref
+        linkend="chapter-security" />).</para>
+
+        <para>Normally, Hudson will send an email notification out whenever a
+        build fails (for example, because of a compilation error). It will
+        also send out a notification when the build becomes unstable for the
+        first time (for example, if there are unit test failures). Unless you
+        configure it to do so, Hudson will not send emails for every unstable
+        build, but only for the first one.</para>
+
+        <para>Finally, Hudson will send a message when a previously failing or
+        unstable build succeeds, to let everyone know that the problem has
+        been resolved.</para>
+      </sect3>
+
+      <sect3>
+        <title>Building other projects</title>
+
+        <para>You can also start other build jobs in the Post-build Actions,
+        using the 'Build other projects' option. This is useful if you want to
+        organize your build process in several, smaller steps, rather than one
+        long build job. Just list the projects you want to start after this
+        one. Normally, these projects will only be triggered if the build was
+        stable, but you can optionally trigger another build job even if the
+        current build is unstable. This might be useful, for example, if you
+        wanted to run a code quality metrics reporting build job after a
+        project's main build job, even if there are test failures in the main
+        build.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Running your new build job</title>
+
+      <para>Now all you need to do is save your new build job. You can then
+      trigger the first build manually, or just wait for it to kick off by
+      itself. Once the build is finished, you can click on the build number to
+      see the results of your work.</para>
+
+      <para>In the rest of this chapter, we will have a look at the other most
+      commonly used build job: Maven 2 build jobs.</para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Working with Maven 2 Build Jobs</title>
+
+    <para>Maven 2 build jobs are specifically adapted to Maven 2 builds.
+    Creating a Maven 2 build job requires considerably less work than
+    configuring the equivalent freestyle build job. Maven 2 build jobs support
+    advanced Maven-related features such as incremental builds on multi-module
+    projects and triggering builds from changes in snapshot dependencies, and
+    make configuration and reporting much simpler.</para>
+
+    <para>However, there is a catch: Maven 2 build jobs are less flexible than
+    freestyle build jobs. In addition, at the time of writing, Maven 2 builds
+    will not work with Maven 3.</para>
+
+    <para>In this section, we will investigate how to configure Maven 2
+    builds, when you can use them, as well as their advantages and
+    limitations.</para>
+
+    <para>To create a new Maven 2 build job, just choose the 'Build a maven2
+    project' option in the 'New Job' page (see <xref
+    linkend="fig-hudson-build-job-new-mvn2" />).</para>
+
+    <para><figure id="fig-hudson-build-job-new-mvn2">
+        <title>Creating a new Maven 2 build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-build-job-new-mvn2.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <sect2>
+      <title>Building whenever a SNAPSHOT dependency is built</title>
+
+      <para>At first glance, the Maven 2 build job configuration screen is
+      very similar to the one we saw for freestyle builds in the previous
+      section. The first difference you may notice is in the <command>Build
+      Triggers</command> section. In this section, an extra option is
+      available: '<command>Build whenever a SNAPSHOT dependency is
+      built</command>'. If you select this option, Hudson will examine your
+      <filename>pom.xml</filename> file (or files) to see if any SNAPSHOT
+      dependencies are being built by other build jobs. If any other build
+      jobs update a SNAPSHOT dependency that your project uses, Hudson will
+      build your project as well.</para>
+
+      <para>Typically in Maven, SNAPSHOT dependencies are used to share the
+      latest bleeding-edge version of a library with other projects within the
+      same team. Since they are by definition unstable, it is not recommended
+      practice to rely on SNAPSHOT dependencies from other teams or from
+      external sources.</para>
+
+      <para>For example, imagine that you are working on a new
+      <emphasis>game-of-life</emphasis> web application. You are using Maven 2
+      for this project, so you can use a Maven 2 build job in Hudson. Your
+      team is also working on a reusable library called
+      <emphasis>cooltools</emphasis>. Since these two projects are being
+      developed by the same team, you are using some of the latest
+      <emphasis>cooltools</emphasis> features in the game-of-life web
+      application. So you have a SNAPSHOT dependency in the
+      <code>&lt;dependencies&gt;</code> section of your game-of-life
+      <filename>pom.xml</filename> file:<programlisting>    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.acme.common&lt;/groupId&gt;
+            &lt;artifactId&gt;cooltools&lt;/artifactId&gt;
+            &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        ...
+    &lt;/dependencies&gt;</programlisting></para>
+
+      <para>On your Hudson server, you have set up Maven 2 build jobs for both
+      the <emphasis>cooltools</emphasis> and the
+      <emphasis>game-of-life</emphasis> applications. Since your
+      <emphasis>game-of-life</emphasis> project needs the latest
+      <emphasis>cooltools</emphasis> SNAPSHOT version, you tick the
+      '<command>Build whenever a SNAPSHOT dependency is built</command>'
+      option. This way, whenever the <emphasis>cooltools</emphasis> project is
+      rebuilt, the game-of-life project will automatically be rebuilt as
+      well.</para>
+    </sect2>
+
+    <sect2>
+      <title>Configuring the Maven build</title>
+
+      <para>The next area where you will notice a change is in the
+      <command>Build</command> section. In a Maven 2 build job, the build
+      section is entirely devoted to running a single Maven goal (see <xref
+      linkend="fig-hudson-build-job-maven2" />). In this section, you specify
+      the version of Maven you want to execute (remember, at the time of
+      Maven, this will only work with Maven 2), the location of the
+      <filename>pom.xml</filename> file, and the Maven goal (or goals) to
+      invoke. You can also add any command-line options you need here.</para>
+
+      <para><figure id="fig-hudson-build-job-maven2">
+          <title>Creating a new Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-job-maven2.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In many cases, this is all you need to get your Maven build
+      job configured. However, if you click on the
+      <command>'Advanced...'</command> button, you can take your pick of some
+      more advanced features.</para>
+
+      <para><figure id="fig-hudson-build-job-maven2-advanced">
+          <title>Maven 2 build jobs - advanced options</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-build-job-maven2-advanced.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The "<command>Incremental Build</command>' option comes in
+      very handy for large, multi-module Maven builds. If you tick this
+      option, when a change is made to one of the project modules, Hudson will
+      only rebuild that module and any modules that use the changed module. It
+      performs this magic by using some new Maven features introduced in Maven
+      2.1 (so it won't work if you are using Maven 2.0.x). Hudson detects
+      which modules have been changed, and then uses the
+      <command>-pl</command> (<command>--project-list</command>) option to
+      build only the updated modules, and the <command>-amd</command>
+      (<command>--also-make-dependents</command>) option to build the modules
+      that use the updated modules. If nothing has been changed in the source
+      code, all of the modules are built.</para>
+
+      <para>By default, Hudson will archive all of the artifacts generated by
+      a Maven 2 build job. This can come in handy at times, but it can also be
+      very expensive in disk storage. If you want to turn off this option,
+      just tick the '<command>Disable automatic artifact archiving</command>'
+      option. Alternatively, you can always limit the artifacts stored by
+      using the ' <command>Discard Old Builds</command>' option at the top of
+      the configuration page.</para>
+
+      <para>The '<command>Build modules in parallel</command>' option tells
+      Hudson to run each individual module in parallel as a separate build. In
+      theory, this could speed up your builds quite a bit. In practice, it
+      will only really work if your modules are totally independent (that is,
+      you aren't using aggregation), which is rarely the case. If you think
+      building your modules in parallel could really speed up your
+      multi-module project, you may want to try a freestyle build with Maven 3
+      and its new parallel build feature.</para>
+
+      <para>The last option is to '<command>Use [a] private Maven
+      repository</command>'. Normally, when Hudson runs Maven, it will behave
+      in exactly the same way as Maven on the command line: it will store
+      artifacts in, and retrieve artifacts from the local Maven repository
+      (found in <filename>~/.m2/repository</filename> if you haven't
+      reconfigured it in the <filename>settings.xml</filename> file). This is
+      efficient in terms of disk space, but not always ideal for CI builds.
+      Indeed, if several build jobs are working on and with the same snapshot
+      artifacts, the builds may end up interfering with each other.</para>
+
+      <para>When this option is checked, Hudson will tell Maven to use
+      $WORKSPACE/.repository as the local Maven repository. This means each
+      job will get its own isolated Maven repository just for itself. It fixes
+      the above problems, at the expense of additional disk space
+      consumption.</para>
+
+      <para>With this option, Maven will use a dedicated Maven repository for
+      this build job, located in the <filename>$WORKSPACE/.repository
+      </filename>directory. This takes more disk space, but guarantees a
+      better isolation between build jobs.</para>
+
+      <para>Another way of addressing this problem is to override the default
+      repository location by using the <command>maven.repo.local</command>
+      property, as shown here:<programlisting>$ mvn install -Dmaven.repo.local=~/.m2/staging-repository</programlisting>This
+      approach has the advantage of being able to share a repository across
+      several build jobs, which is useful if you need to do a series of
+      related builds. It will also work with freestyle jobs.</para>
+    </sect2>
+
+    <sect2>
+      <title>Post-build Actions</title>
+
+      <para>The post-build actions in a Maven 2 build job are considerably
+      simpler to configure than in a freestyle job. This is simply because,
+      since this is a Maven build, Hudson knows where to look for a lot of the
+      build output. Artifacts, test reports, Javadoc, and so forth, are all
+      generated in standard directories, which means <emphasis>you</emphasis>
+      don't have to tell Hudson where to find things. So Hudson will find, and
+      report on, JUnit test results automatically, for example. Later on in
+      the book, we will see how the Maven 2 projects also simplify the
+      configuration of many code quality metrics tools and reports.</para>
+
+      <para>Most of the other post-build actions are similar to those we saw
+      in the freestyle build job.</para>
+    </sect2>
+
+    <sect2>
+      <title>Deploying to an Enterprise Repository Manager</title>
+
+      <para>One extra option does appear in the Maven 2 build jobs is the
+      ability to deploy your artifacts to a Maven repository (see <xref
+      linkend="fig-hudson-maven2-deploy" />). An Enterprise Repository Manager
+      is a server that acts as both a proxy/cache for public Maven artifacts,
+      and as a central storage server for your own internal artifacts. Open
+      Source Enterprise Repository Managers like Nexus (from Sonatype) and
+      Artifactory (from JFrog) provide powerful maintenance and administration
+      features that make configuring and maintaining your Maven repositories a
+      lot simpler. Both these products have commercial versions, with
+      additional features aimed at more sophisticated or high-end build
+      infrastructures.</para>
+
+      <para>The advantage of getting Hudson to deploy your artifacts (as
+      opposed to simply running "<command>mvn deploy</command>") is that, if
+      you have a multi-module Maven build, the artifacts will only be deployed
+      once the entire build has finished successfully. For example, suppose
+      you have a multi-module Maven project with five modules. If you run
+      <command>mvn deploy</command>, and the build fails after three modules,
+      the first two modules will have been deployed to your repository, but
+      not the last three, which leaves your repository in an instable state.
+      Getting Hudson to do the deploy ensures that the artifacts are only
+      deployed as a group once the build has successfully finished.</para>
+
+      <para><figure id="fig-hudson-maven2-deploy">
+          <title>Deploying artifacts to a Maven repository</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-maven2-deploy.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>To do this, just tick the '<command>Deploy artifacts to Maven
+      repository</command>' option in the <command>Post-Build
+      actions</command>. You will need to specify the URL of the repository
+      you want to deploy to. This needs to be the full URL to the repository
+      (e.g.
+      <uri>http://nexus.acme.com/nexus/content/repositories/snapshots</uri>,
+      and not just <uri>http://nexus.acme.com/nexus</uri>)</para>
+
+      <para>Most repositories need you to authenticate before letting you
+      deploy artifacts to them. The standard Maven way to do this is to place
+      a <command>&lt;server&gt;</command> entry in your local
+      <filename>settings.xml</filename> file, as shown here:<programlisting>&lt;settings...&gt;
+  &lt;servers&gt;
+    &lt;server&gt;
+      &lt;id&gt;nexus-snapshots&lt;/id&gt;
+      &lt;username&gt;scott&lt;/username&gt;
+      &lt;password&gt;tiger&lt;/password&gt;
+    &lt;/server&gt;
+    &lt;server&gt;
+      &lt;id&gt;nexus-releases&lt;/id&gt;
+      &lt;username&gt;scott&lt;/username&gt;
+      &lt;password&gt;tiger&lt;/password&gt;
+    &lt;/server&gt;
+  &lt;/servers&gt;
+&lt;/settings&gt;</programlisting></para>
+
+      <para>For the more security-minded, you can also encrypt these passwords
+      if required.</para>
+
+      <para>Then, enter the corresponding ID value in the 'Repository ID'
+      field in Hudson. Hudson will then be able to look up the right username
+      and password, and deploy your artifacts. Once the build is finished,
+      your artifacts should be available in your Maven Enterprise Repository
+      (see <xref linkend="fig-nexus-artifact-deployed" />).</para>
+
+      <para><figure id="fig-nexus-artifact-deployed">
+          <title>After deployment the artifact should be available on your
+          Enterprise Repository Manager</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-nexus-artifact-deployed.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Using this option, you always don't have to deploy straight
+      away - you can always come back and deploy the artifacts from a previous
+      build later. Just click on the '<command>Redeploy Artifacts</command>'
+      menu on the left and specify the repository URL you want to deploy your
+      artifact to (see <xref linkend="fig-hudson-redeploy-artifact" />). As in
+      the previous example, the '<command>Advanced</command>' button lets you
+      provide the ID for the <command>&lt;server&gt;</command> entry in your
+      local <filename>settings.xml</filename> file. As we will see later on in
+      the book, you can also use this deployment as part of a build promotion
+      process, configuring an automatic deployment to a different repository
+      when certain quality metrics have been satisfied, for example.</para>
+
+      <para><figure id="fig-hudson-redeploy-artifact">
+          <title>Redeploying an artifact</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-hudson-redeploy-artifact.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>This approach will work fine for any Enterprise Repository
+      manager. However, if you are using Artifactory, you may prefer to
+      install the Hudson Artifactory Plugin
+      (<uri>http://wiki.hudson-ci.org/display/HUDSON/Artifactory+Plugin</uri>),
+      which provides tighter two-way integration with the Artifactory
+      Enterprise Repository Manager. It works by sending additional
+      information to the Artifactory server during the deployment, allowing
+      the server to refer back to the precise build that generated a given
+      artifact. Once you have installed the plugin, you can activate it in
+      your Maven 2 build job by ticking the 'Deploy artifacts to Artifactory'
+      option in the Post-build Actions. Then you choose what repositories your
+      project should deploy to from a list of repositories on the server,
+      along with the username and password required to perform the deployment
+      (see <xref linkend="fig-maven2-artifactory" />).</para>
+
+      <para><figure id="fig-maven2-artifactory">
+          <title>Deploying to Artifactory from Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-artifactory.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Your build job will now automatically deploy to Artifactory.
+      In addition, a link to the artifact on the server will now be displayed
+      on the build job home and build results pages (see <xref
+      linkend="fig-maven2-artifactory-link" />).</para>
+
+      <para><figure id="fig-maven2-artifactory-link">
+          <title>Deploying to Artifactory from Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-artifactory-link.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This link takes you to a page on the Artifactory server
+      containing the deployed artifact (see <xref
+      linkend="fig-artifactory-artifact" />). From this page, there is also a
+      link that takes you back to the build that built the artifact.</para>
+
+      <figure id="fig-artifactory-artifact">
+        <title>Viewing the deployed artifact in Artifactory</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/fig-artifactory-artifact.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
+
+    <sect2>
+      <title>Deploying to commercial Enterprise Repository Managers</title>
+
+      <para>An Enterprise Repository Manager is an essential part of any
+      Maven-based software development infrastructure. They also play a key
+      role for non-Maven projects using tools like Ivy and Gradle, both of
+      which rely on standard Maven repositories.</para>
+
+      <para>Both of the principal Enterprise Repository Managers, Nexus and
+      Artifactory offer professional versions which come with extra
+      integration features with Hudson. Later on in the book, we will discuss
+      how you can use advanced features such as Nexus Pro's staging and
+      release management to implement sophisticated build promotion
+      strategies. On the deployment side of things, the commercial edition of
+      Artifactory (Artifactory Pro Power Pack) extends the two-way integration
+      we saw earlier. When you view an artifact in the repository browser, a
+      'Builds' tab displays details about the Hudson build that created the
+      artifact, and a link to the Hudson build page (see <xref
+      linkend="fig-artifactory-pro-artifact" />). Artifactory also keeps track
+      of the dependencies that were used in the Hudson build, and will warn
+      you if you try to delete them from the repository.</para>
+
+      <para><figure id="fig-artifactory-pro-artifact">
+          <title>Viewing the deployed artifact and the corresponding Hudson
+          build in Artifactory</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-artifactory-pro-artifact.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Managing modules</title>
+
+      <para>When using Maven, it is common to split a project into several
+      modules. Maven 2 build jobs have an intrinsic understand of multi-module
+      projects, and adds a 'Modules' menu item that lets you display the
+      structure of the project at a glance (see <xref
+      linkend="fig-maven2-modules" />).</para>
+
+      <para><figure id="fig-maven2-modules">
+          <title>Managing modules in a Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-maven2-modules.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Clicking on any of the modules will take you to the build
+      page for that module. From here, you can view the detailed build results
+      for each module, trigger a build of that module in isolation, and if
+      necessary fine tune the configuration of individual module, overriding
+      the configuration of the overall project.</para>
+    </sect2>
+
+    <sect2>
+      <title>Extra build steps in your Maven build jobs</title>
+
+      <para>By default, the Maven 2 build job only allows for a single Maven
+      goal. There are times when this is a little limiting, and you would like
+      to add some extra steps before or after the main build. You can do this
+      with the Hudson M2 Extra Steps Plugin
+      (<uri>http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin</uri>).
+      This plugin lets you add normal build steps before and after the main
+      Maven goal, giving you the flexibility of a freestyle build while still
+      having the convenience of the Maven 2 build job configuration.</para>
+
+      <para>Install this plugin and go to the <command>Build
+      Environment</command> section of your build job. Tick the 'Configure
+      Extra M2 Build Steps' option. You should now be able to add build steps
+      that will be executed before and/or after your main Maven goal is
+      executed (see <xref linkend="fig-m2-extra-steps" />).</para>
+
+      <para><figure id="fig-m2-extra-steps">
+          <title>Managing modules in a Maven 2 build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/fig-m2-extra-steps.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Conclusion</title>
 
-    <para>You don't need a great deal of configuration to get started with
-    Hudson. The configuration that is required is fairly straight-forward, and
-    is centralised in the <command>Configure System</command> screen. Once
-    this is done, you are ready to create your first Hudson build job!</para>
+    <para>In this chapter we have covered the basics of creating new build
+    jobs for the most common cases you are likely to encounter. Later on in
+    the book, we will build on these foundations to discuss more advanced
+    options such as parameterized builds, matrix builds, and build promotion
+    strategies.</para>
   </sect1>
 </chapter>

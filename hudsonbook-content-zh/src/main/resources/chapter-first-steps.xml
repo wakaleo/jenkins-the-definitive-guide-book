@@ -24,50 +24,25 @@
     <sect2>
       <title>安装Java</title>
 
-      <para>The first thing you will need to install on your machine is Java.
-      Hudson is a Java web application, so you will need at least the Java
-      Runtime Environment, or JRE<indexterm>
-          <primary>Java</primary>
-        </indexterm><indexterm>
-          <primary>Java</primary>
-
-          <secondary>JRE</secondary>
-        </indexterm> to run it. For the examples in this chapter, you will
-      need a recent version of Java 6 (these examples were written with Java 6
-      update 17, and the latest release at the time of writing was Java 6
-      update 20). If you are not sure, you can check this from the command
-      line (by opening a DOS console on Windows), and running '<command>java
-      -version</command>'. If Java is installed on your machine should get
-      something like this:<screen>$ <command>java -version</command>
-java version "1.6.0_17"
-Java(TM) SE Runtime Environment (build 1.6.0_17-b04-248-10M3025)
-Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></para>
-
       <para>你要在本机安装的第一个东西是Java。Hudson是一个基于Java的web应用程序，因此为了运行Hudson，你至少需要安装最新的Java运行环境，或者说JRE<indexterm>
           <primary>Java</primary>
         </indexterm><indexterm>
           <primary>Java</primary>
 
           <secondary>JRE</secondary>
-        </indexterm>。For the examples in this chapter, you will need a recent
-      version of Java 6 (these examples were written with Java 6 update 17,
-      and the latest release at the time of writing was Java 6 update 19). If
-      you are not sure, you can check this from the command line (by opening a
-      DOS console on Windows), and running '<command>java -version</command>'.
-      If Java is installed on your machine should get something like
-      this:<screen>$ <command>java -version</command>
+        </indexterm>。本章的样例要求你使用Java 6的最新版本（这些样例是基于Java 6 update
+      17编写的，而编写这些内容的时候最新的版本是Java 6 update
+      19）。如果你不确定，可以使用命令行进行确认（在Windows中需要打开DOS终端），运行'<command>java
+      -version</command>'。如果你的机器已经安装了Java，你会看到如下内容：<screen>$ <command>java -version</command>
 java version "1.6.0_17"
 Java(TM) SE Runtime Environment (build 1.6.0_17-b04-248-10M3025)
 Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></para>
 
-      <para>If you don't have a version already installed, or if your version
-      is an older one, download and install the latest JRE installer from the
-      Java web site (<ulink
-      url="http://java.sun.com/javase/downloads/index.jsp"></ulink>) (see
-      <xref linkend="fig-installing-java" />).</para>
+      <para>如果你没有安装Java，或者安装的版本太旧了，则可以从Java站点下载最新的JRE并安装（见 <xref
+      linkend="fig-installing-java" />）。</para>
 
       <figure id="fig-installing-java">
-        <title>Installing Java</title>
+        <title>安装Java</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -79,24 +54,16 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></par
     </sect2>
 
     <sect2>
-      <title>Installing a local Subversion server</title>
+      <title>安装一个本地Subversion服务器</title>
 
-      <para>The examples in this chapter use Subversion, so to run them on
-      your own machine, you will also need to install and run a local
-      Subversion server on your workstation. If this sounds a little daunting,
-      don't worry - it's actually pretty straightforward, and we'll step you
-      through the process. Otherwise, you can follow along without running the
-      examples and still get a good feel for what Hudson can do.</para>
+      <para>本章的样例使用Subversion，因此为了在机器上运行这些样例，你还需要安装并运行一个Subversion服务器。这听起来有点复杂，不过别担心——事实上这是很简单的事情，而且我会一步步指导帮助你。如果你实在不想安装Subversion服务器，那也可以不运行这些样例，直接阅读这些内容后你也能很好地体会到Hudson能做什么。</para>
 
-      <para>Subversion comes pre-installed on Mac OS X and many flavors of
-      Linux. Just make sure you have the Subversion server tools
-      (<command>svnserve</command> in particular) installed. You can check
-      this by running the <indexterm>
+      <para>Mac OS
+      X和许多版本的Linux都预装了Subversion。你需要确认Subversion服务器工具（本书特指<command>svnserve</command>）已经安装了。从命令行或者DOS窗口运行<indexterm>
           <primary>Subversion</primary>
 
           <secondary>svnserve</secondary>
-        </indexterm><command>svnserve</command> command from the command line
-      or in a DOS window as shown here:<screen>$ <command>svnserve --version</command>
+        </indexterm><command>svnserve</command>命令，如：<screen>$ <command>svnserve --version</command>
 svnserve, version 1.6.2 (r37639)
    compiled May 14 2009, 14:34:54
 
@@ -111,37 +78,23 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-      <para>If you get an error, you probably haven't got the Subversion
-      server software installed on your machine. You will need Subversion 1.6
-      or higher to work with the sample repositories, so if you have an older
-      version of Subversion installed, you will also need to upgrade.</para>
+      <para>如果出现了错误，那么很可能Subversion服务器没有得以正确安装。本章的样例仓库需要Subversion
+      1.6或者更高的版本，因此如果你安装的Subversion版本太旧，则需要进行升级。</para>
 
-      <para>You can find the Subversion installation packages, or installation
-      instructions, for your operation system from the Subversion website
-      (<ulink url="http://subversion.apache.org"></ulink>). If you are
-      installing Subversion on Windows, make sure you only install the basic
-      command-line Subversion tools (<command>svn</command> and
-      <command>svnserve</command> in particular). Some of the Windows
-      installation packages, such as those from Collabnet and VisualSVN, will
-      install Subversion as a service on your workstation and set up an empty
-      repository for you. This is great if you are installing a Subversion
-      server, and if you are familiar with Subversion administration, but for
-      our purposes it is overkill, and will interfere with the instructions we
-      provide.</para>
+      <para>你可以从Subversion站点（<ulink
+      url="http://subversion.apache.org"></ulink>）找到与你操作系统相匹配的Subversion安装包及安装指令。如果你是在Windows上安装Subversion，则需要注意你只是安装基本的命令行Subversion工具（特指<command>svn</command>和<command>svnserve</command>）。一些Windows安装包，例如Collabnet和VisualSVN，会将Subversion安装成一个系统服务，然后为你装备一个空的仓库。如果你已经十分熟悉Subversion管理，这将十分有用，但对于我们当前的目的来说，这有点过了，而且无法与本书提供的相关指令保持一致。</para>
 
-      <para>A better choice in this regard is the <indexterm>
+      <para>更好的选择是使用<indexterm>
           <primary>Subversion</primary>
 
           <secondary>SlikSVN</secondary>
-        </indexterm>SlikSVN installer (<ulink
-      url="http://www.sliksvn.com/en/download"></ulink>), which will only
-      install the bare-bones Subversion command-line tools, which suits us
-      just fine. However, be sure to choose the 'Complete' setup type (see
-      <xref linkend="fig-sliksvn-install" />), as this is the only one that
-      includes the <command>svnserve</command> tool.</para>
+        </indexterm>SlikSVN安装包（<ulink
+      url="http://www.sliksvn.com/en/download"></ulink>），它只会安装单纯的Subversion命令行工具，这对于我们来说正好。不过请确认在安装过程中选择“Compelete”（见
+      <xref
+      linkend="fig-sliksvn-install" />），只有这个选项会包含<command>svnserve</command>工具。</para>
 
       <figure id="fig-sliksvn-install">
-        <title>Installing Slik Subversion</title>
+        <title>安装Slik Subversion</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -151,9 +104,10 @@ Cyrus SASL authentication is available.</screen></para>
         </mediaobject>
       </figure>
 
-      <para>Once you have installed Subversion, you should check that it is
-      working properly. Open a command prompt and run <command>svnserve
-      -version</command>. You should now get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
+      <para>安装好Subversion之后，你应该检查它是否能够正常工作。打开命令行并运行<command>svnserve
+      -version</command>。你现在应该能够看到如下的内容：</para>
+
+      <para><screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
 svnserve, version 1.6.9 (SlikSvn:tag/1.6.9@902044) WIN32
    compiled Jan 22 2010, 10:39:27
 
@@ -168,26 +122,20 @@ The following repository back-end (FS) modules are available:
 
 Cyrus SASL authentication is available.</screen></para>
 
-      <para>With Subversion now installed, we can proceed to set up the sample
-      repository containing the project we will be building with
-      Hudson.</para>
+      <para>安装好Subversion之后，你可以继续建立本章的样例仓库，Hudson会构建该仓库包含的项目。</para>
     </sect2>
 
     <sect2>
-      <title>Setting up the sample Subversion repository</title>
+      <title>创建样例Subversion仓库</title>
 
-      <para>All of the <indexterm>
+      <para>读者可以在线获得本书所有的样例项目<indexterm>
           <primary>Sample projects</primary>
-        </indexterm>sample projects used in this book are available online.
-      You can download the Subversion repository used for this chapter from
-      the book web site, which you can find at <ulink
-      url="http://www.continuous-integration-with-hudson.org"></ulink>. Go to
-      this page now and download the book-examples zip file. When you unzip
-      this file, you should see a sub-folder for each chapter of the book (see
-      <xref linkend="fig-first-steps-examples" />).</para>
+        </indexterm>。你可以从本书站点下载到本章使用的Subversion仓库，站点地址是<ulink
+      url="http://www.continuous-integration-with-hudson.org"></ulink>，打开该页面，然后下载名为book-examples的zip文件。解压该文件之后，你应该能够看到每个章节对应的子目录（见<xref
+      linkend="fig-first-steps-examples" />）。</para>
 
       <figure id="fig-first-steps-examples">
-        <title>The Book examples folder on a Windows machine</title>
+        <title>Windows机器上本书的样例文件夹</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -198,35 +146,22 @@ Cyrus SASL authentication is available.</screen></para>
         </mediaobject>
       </figure>
 
-      <para>A Subversion repository is a simple directory structure that can
-      be used on any operating system. In our case, the repository is stored
-      in a directory called <indexterm>
+      <para>一个Subversion仓库是一个可以在任何操作系统上使用的简单目录结构。这里，仓库存储在名为<filename><indexterm>
           <primary>Subversion</primary>
 
           <secondary>svn-repos directory</secondary>
-        </indexterm><filename>svn-repos</filename>, which you will find in the
-      <filename>chapter-first-steps</filename> directory of the book
-      resources. You don't have to worry about the details, though. To start
-      up the Subversion server on your machine, just go to the
-      <filename>chapter-first-steps</filename> directory and run the <ulink
-      url="start-svn.bat"></ulink> script (for Windows) or the <ulink
-      url="start-svn.sh"></ulink> script (on Linux, Mac OS, and so
-      forth).</para>
+        </indexterm>svn-repos</filename>的目录下，你可以在本书资源的<filename>chapter-first-steps</filename>目录下找到它，现在先不要担心细节。要启动Subversion服务器，到目录下<filename>chapter-first-steps</filename>然后运行<ulink
+      url="start-svn.bat"></ulink>脚本（Windows）或者<ulink
+      url="start-svn.bat"></ulink>脚本（Linux、Mac OS、等等）。</para>
 
-      <para>If you are more experienced with Subversion, you might like to
-      start the server manually yourself. In this case, open up a command-line
-      prompt in the <filename>chapter-first-steps</filename> directory and run
-      the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
+      <para>如果你有丰富的Subversion经验，则可以自己手工启动服务器。该例中，打开命令行，进入<filename>chapter-first-steps</filename>目录，然后运行如下命令：<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
 
-      <para>In both cases, you will end up with a Subversion server running on
-      your machine. In a Linux or Mac OS X environment, the process will run
-      as a daemon in the background. On Windows, it will just run in the
-      command prompt until you stop it manually using Control-C (see <xref
-      linkend="fig-running-svnserve" />). If your are running Subversion on
-      Windows, make sure you don't shut this window!</para>
+      <para>无论在哪种操作系统下，执行完该命令后Subversion服务都会在本机上运行。在Linux或者Mac OS
+      X上，该进程会作为一个守护进程在后台运行。在Windows上，它直接在运行在命令行中，知道你手工使用Control-C终止（见<xref
+      linkend="fig-running-svnserve" />）。如果你在Windows上运行Subversion，请不要关闭该窗口！</para>
 
       <figure id="fig-running-svnserve">
-        <title>Running the svnserve Subversion server in Windows</title>
+        <title>在Windows上运行svnserve Subversion服务器</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -236,54 +171,41 @@ Cyrus SASL authentication is available.</screen></para>
         </mediaobject>
       </figure>
 
-      <para>Finally, just to make sure everything is working, open another
-      command prompt and run the <command>svn list</command> command. This
-      will display a listing of the top-level directory in our Subversion
-      repository, which should look something like this:<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
+      <para>最后，为了确保一切正常，打开命令行并运行<command>svn
+      list</command>命令。该命令会列出Subversion仓库中的顶层目录，看起来是这个样子：<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
 .classpath
 .project
 .settings/
 pom.xml
 src/</screen></para>
 
-      <para>This is all you really need to follow along for the rest of the
-      chapter. So now, let's take Hudson for a spin.</para>
+      <para>为了能够演示Hudson的特性，上述的内容就是所有你需要准备的。现在，让我们正式开始Hudson之旅吧。</para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Starting up Hudson</title>
+    <title>启动Hudson</title>
 
     <para><indexterm>
         <primary>Hudson</primary>
 
         <secondary>Staring using Java Web Start</secondary>
-      </indexterm>There are several ways to run Hudson on your machine. One of
-    the easiest way to run Hudson for the first time is to use Java Web Start.
-    Java Web Start is a technology that lets you start up a Java application
-    on your local machine via a URL on a web page - it comes bundled with the
-    Java JRE. In our case, this will start a Hudson server running on your
-    machine, and let you experiment with it as if it were installed locally.
-    In theory all you need for this to work is a recent (Java 6 or later)
-    version of the Java Runtime Environment (JRE), which we installed in the
-    previous section. However, to use Java Web Start, you should make sure
-    that you have the latest version of the Java JRE installed on your browser
-    (1.6.0_20 at the time of writing). This will help minimize any security
-    risks and provide for better performance.</para>
+      </indexterm>在本机运行Hudson有很多种方式。首次运行Hudson最简单的方法是使用Java Web Start。Java Web
+    Start是一种能让你在本地机器通过Web页面的URL启动Java应用的技术，该技术是JRE自带的。在这里，Java Web
+    Start能在你机器上启动一个Hudson服务器，能让你在上面做各种试验，就好像它是本地安装的一样。理论上来说你所需要的全部仅仅是最新版本的（Java
+    6或者更新）JRE，这一点已经上前面的小节讲述。不过，要使用Java Web
+    Start，你还需要确认浏览器安装了最新版本的JRE（本书编写时版本为1.6.0_20）。这样你就能尽可能的降低安全风险并获得更好的性能。</para>
 
-    <para>For convenience, there is a link to the Hudson Java Web Start
-    instance on the book resources page (at <ulink
-    url="http://www.continuous-integration-with-hudson.org"></ulink>). Here
-    you will find a large orange 'Launch' button in the "Book Resources"
-    section (see <xref linkend="fig-hudson-webstart-page" />). You can also
-    find this link on the 'Meet Hudson' page on the Hudson website (<ulink
-    url="http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson"></ulink>),
-    where, if you scroll down far enough, you should find a 'Test Drive'
-    section with an identical 'Launch' button'.</para>
+    <para>为了方便读者，本书的资源页面（<ulink
+    url="http://www.continuous-integration-with-hudson.org"></ulink>）提供了指向Java
+    Web Start实例的链接。在这里的“Book Resources"小节，你能够看到一个大的橙色的“Launch”按钮（见<xref
+    linkend="fig-hudson-webstart-page" />）。在该页面你还能一个看到指向Hudson站点（<ulink
+    url="http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson"></ulink>）的”Meet
+    Hudson“页面的链接。在Hudson站点下，如果你将页面往下拉，就会看到一个”Test
+    Drive"小节，它包含了一个一模一样的“Launch”按钮。</para>
 
     <figure id="fig-hudson-webstart-page">
-      <title>Running Hudson using Java Web Start from the Book web
-      site</title>
+      <title>从本书站点使用Java Web Start运行Hudson</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -293,21 +215,18 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para>Java Web Start seems to work best on Firefox. When you click on the
-    'Launch' button on either of these sites in Firefox, the browser will ask
-    if you want to open a file called 'hudson.jnlp' using Java Web Start.
-    Click on OK - this will download Hudson and start it up on your machine
-    (see <xref linkend="fig-first-steps-downloading-hudson" />).</para>
+    <para>Java Web
+    Start似乎与Firefox工作得最好。当你在上述其中一个站点中点击“Launch”按钮后，浏览器会问题是否使用Java Web
+    Start打开一个名为“Hudson.jnlp”的文件。点击OK——然后Java Web
+    Start会下载Hudson然后在你本机启动之（见<xref
+    linkend="fig-first-steps-downloading-hudson" />）。</para>
 
-    <para>In other browsers, clicking on this button may simply download the
-    JNLP file. In Internet Explorer, you may even need to right click on the
-    link and select 'Save Target As' to save the JNLP file, and then run it
-    from Windows Explorer. However, in both of these cases, when you open the
-    JNLP file, Java Web Start will download and start Hudson.</para>
+    <para>在其它浏览器中，点击按钮仅仅只会下载JNLP文件。在Internet Explorer中，你甚至还需要在链接上右击然后选择“Save
+    Target As”以保存JNLP文件，然后在从Windows资源管理器中运行该文件。然后，不管什么浏览器，当你打开JNLP之后，Java Web
+    Start都会下载并启动Hudson。</para>
 
     <figure id="fig-first-steps-downloading-hudson">
-      <title>Java Web Start will download and run the latest version of
-      Hudson</title>
+      <title>Java Web Start会下载并运行最新版本的Hudson</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -318,21 +237,20 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para>Java Web Start will only need to download a particular version of
-    Hudson once. From then on, when you click on the 'Launch' button again,
-    Java Web Start will use the copy of Hudson it has already downloaded (that
-    is, until the next version comes out). Ignore any messages your operating
-    system or anti-virus software may bring up - it is perfectly safe to run
-    Hudson on your local machine.</para>
+    <para>Java Web Start只会下载一次某个特定版本的Hudson。从那之后，如果你再次点击“Launch”按钮，Java Web
+    Start会重复使用已经下载的Hudson（直到发现新的Hudson版本）。现在忽略所有操作系统或者杀毒软件的提示——在你本机运行Hudson当然是安全的。</para>
 
     <para>Once it has finished downloading, it will start up Hudson on your
     machine. You will be able to see it running in a small window called
     "Hudson Console" (see <xref linkend="fig-first-steps-console" />). To stop
     Hudson at any time, just close this window.</para>
 
+    <para>完成下载后，Java Web Start会在你机器上启动Hudson。你会看到它启动一个名为“Hudson
+    Console”的小窗口（见<xref
+    linkend="fig-first-steps-console" />）。任何时候你都可以关闭该窗口以停止Hudson。</para>
+
     <figure id="fig-first-steps-console">
-      <title>Java Web Start will download and run the latest version of
-      Hudson</title>
+      <title>Java Web Start会下载并运行最新版本的Hudson</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -346,41 +264,26 @@ src/</screen></para>
         <primary>Hudson</primary>
 
         <secondary>Starting from the command line</secondary>
-      </indexterm>If you are an experienced Java user versed in the ways of
-    WAR files, you may prefer to simply download the latest version of Hudson
-    and run it from the command line. Hudson comes in the form of an
-    executable WAR file - you can download the most recent version from the
-    Hudson website home page (<ulink url="http://hudson-ci.org"></ulink>). For
-    convenience, there is also a link to the latest version of Hudson in the
-    Resources section of the book website (at <ulink
-    url="http://www.continuous-integration-with-hudson.org"></ulink>).</para>
+      </indexterm>如果你在WAR文件方面是一个经验丰富的Java用户，你可能会更喜欢直接下载最新版本的Hudson，然后从命令行运行。Hudson提供了可直接运行的WAR文件——你可以从Hudson站点页面（<ulink
+    url="http://hudson-ci.org"></ulink>）下载最新的版本。方便起见，本书站点（<ulink
+    url="http://www.continuous-integration-with-hudson.org"></ulink>）的资源小节也提供了指向最新版本Hudson的链接。</para>
 
-    <para>Once downloaded, you can start Hudson from the command line as shown
-    here:</para>
+    <para>下载完成后，你可以用如下命令行启动Hudson：</para>
 
     <para><screen>$ <command>java -jar hudson.war</command></screen></para>
 
-    <para>Whether you have started Hudson using Java Web Start or from the
-    command line, Hudson should now be running on your local machine. By
-    default, Hudson will be running on port 8080, so you can access Hudson in
-    your web browser on <ulink url="http://localhost:8080"></ulink>.</para>
+    <para>无论你使用Java Web
+    Start还是使用命令行启动Hudson，现在Hudson应该已经在你本机运行了。默认情况Hudson会在8080端口上运行，因此你可以在浏览器中输入地址<ulink
+    url="http://localhost:8080"></ulink>访问Hudson。</para>
 
-    <para>Alternatively, if you are familiar with Java application servers
-    such as Tomcat, you can simply deploy the Hudson war file to your
-    application server - with Tomcat, for example, you could simply place the
-    <filename>hudson.war</filename> file in Tomcat's
-    <filename>webapps</filename> directory. If you are running Hudson on an
-    application server, the URL that you use to access Hudson will be slightly
-    different. On a default Tomcat installation, for example, you can access
-    Hudson in your web browser on <ulink
-    url="http://localhost:8080/hudson"></ulink>.</para>
+    <para>除此之外，如果你熟悉Java应用服务器如Tomcat，你可以直接将Hudson的war文件部署到应用服务器中——以Tomcat为例，你可以将文件<filename>hudson.war</filename>放到Tomcat的<filename>webapps</filename>目录。如果在应用服务器中运行Hudson，访问Hudson的URL会有稍许不同。例如在默认的Tomcat安装情况下，你可以通过地址<ulink
+    url="http://localhost:8080/hudson"></ulink>在浏览器中访问Hudson。</para>
 
-    <para>When you open Hudson in your browser, you should see a screen like
-    the one shown in <xref linkend="fig-hudson-start" os="" />. You are now
-    ready to take your first steps with Hudson!</para>
+    <para>在浏览器中打开Hudson的时候，你应该能够看到如<xref linkend="fig-hudson-start"
+    os="" />的页面。现在你可以正式开始玩转Hudson了！</para>
 
     <figure id="fig-hudson-start">
-      <title>The Hudson start page</title>
+      <title>Hudson的欢迎页面</title>
 
       <mediaobject>
         <imageobject role="web">

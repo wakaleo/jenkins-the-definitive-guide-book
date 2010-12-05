@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-code-quality">
+  <title>Code Quality</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>code quality</primary>
+      </indexterm>Few would deny the importance of writing quality code. High
+    quality code contains less bugs, and is easier to understand and easier to
+    maintain. However, the precise definitions of code quality can be more
+    subjective, varying between organizations, teams, and even individuals
+    within a team.</para>
+
+    <para>This is where coding standards come into play. Coding standards are
+    rules, sometimes relatively arbitrary, that define the coding styles and
+    conventions that are considered acceptable within a team or organization.
+    In many cases, agreeing on a set of standards, and applying them, is more
+    important than the standards themselves. Indeed, one of the most important
+    aspects of quality code is that it is easy to read and to understand. If
+    developers within a team all apply the same coding standards and
+    practices, the code will be more readable, at least for members of that
+    team. And if the standards are commonly used within the industry, the code
+    will also be more readable for new developers arriving on the team.</para>
+
+    <para>Coding standards include both esthetic aspects such as code layout
+    and formatting, naming conventions, and so forth, as well as potentially
+    bad practices such as missing curly brackets after a condition in Java. A
+    consistent coding style lowers maintenance costs, make code clearer and
+    more readable, and makes it easier to work on code written by other team
+    members.</para>
+
+    <para>Only an experienced developer can really judge code quality in all
+    its aspects. That is the role of code reviews and, among other things,
+    practices like pair programming. In particular, only a human eye can
+    decide if a piece of code is truly well written, and if it actually does
+    what the requirements ask of it. However, code quality metrics tools can
+    help a great deal. In fact it is unrealistic to try to enforce coding
+    standards *without* the use of such tools.</para>
+
+    <para>These tools analyze your application source code or byte code, and
+    check whether the code respects certain rules. Code quality metrics can
+    encompass many aspects of code quality, from coding standards and best
+    practices right through to code coverage, with everything from compiler
+    warnings to TODO comments in between. Certain metrics concentrate on
+    measurable characteristics of your code base, such as the number of lines
+    of code (NLOC), average code complexity, or the number of lines per class.
+    Others focus on more sophisticated static analysis, or on looking for
+    potential bugs or poor practices in your code.</para>
+
+    <para>There are a wide range of code quality reporting plugins available
+    for Hudson. Many are for Java static analysis tools, such as Checkstyle,
+    PMD, Findbugs, Cobertura and JDepend. Others, such as fxcop and NCover,
+    are focused on .NET applications.</para>
+
+    <para>With all of these tools, you need to configure your build job to
+    generate the code quality metrics data before Hudson can produce any
+    reports.</para>
+
+    <para>The notable exception to this rule is Sonar. Sonar can extract code
+    quality metrics from any Maven project, with no additional configuration
+    required in your Maven project. This is great when you have large numbers
+    of existing Maven projects that you need to integrate into Hudson, and you
+    want to configure consistent code quality reporting across all of your
+    projects.</para>
+
+    <para>In the rest of this chapter, we will see how to set up code quality
+    reporting in your Hudson builds, and also how you can use it as an
+    effective part of your build process.</para>
+  </sect1>
+
+  <sect1>
+    <title>Code Quality in your build process</title>
+
+    <para>Before we look at how to report on code quality metrics in Hudson,
+    it can be useful to take a step back and look at the larger picture. Code
+    Quality metrics are of limited value in isolation - they need to be part
+    of a broader process improvement strategy.</para>
+
+    <para>TODO: Finish this section</para>
+
+    <para>- Integrate code quality analysis into your IDEs. Checkstyle, PMD
+    and Findbugs all have Eclipse plugins that you can use to get instant
+    feedback on code quality issues. This is a much more efficient way to
+    provide feedback for individual developers</para>
+
+    <para>- Set up a dedicated code quality build, which runs after the normal
+    build and test.</para>
+
+    <para>- Code quality reporting is, by default, a relatively passive
+    process. No one will know the state of the project if they don't seek out
+    the information on the build server. While this is better than
+    nothing,</para>
+
+    <para>- Set up a dedicated code quality build, which runs after the normal
+    build and test.</para>
+
+    <para>- Configure the build to fail if code quality metrics are not at an
+    acceptable level</para>
+
+    <para>- But use failing code quality builds as an indicator, not as a
+    goal</para>
+  </sect1>
+
+  <sect1>
+    <title>Popular Code Quality Analysis tools</title>
+
+    <para>There are many open source tools that can help identify poor coding
+    practices.</para>
+
+    <sect2>
+      <title>Checkstyle</title>
+
+      <para><command>Checkstyle</command>
+      (<uri>http://checkstyle.sourceforge.net/</uri>) is a static analysis
+      tool for Java. Originally designed to enforce a set of
+      highly-configurable coding standards, Checkstyle now also lets you check
+      for poor coding practices, as well as overly complex and duplicated
+      code. Checkstyle is a versatile and flexible tool that should have its
+      place in any Java-based code quality analysis strategy.</para>
+
+      <para>Checkstyle supports a very large number of rules, including ones
+      relating to naming conventions, annotations, javadoc comments, class and
+      method size, code complexity metrics, poor coding practices and many
+      others.</para>
+
+      <para>Duplicated code is another important code quality issue -
+      duplicated or near-duplicated code is harder to maintain and to debug.
+      Checkstyle provides some support for the detection of duplicated code,
+      but more specialized tools such as CPD do a better job in this
+      area.</para>
+
+      <para>One of the nice things about Checkstyle is how easy it is to
+      configure. You can start off with the Sun coding conventions and tweak
+      them to suit your needs, or start from scratch. Using the Eclipse plugin
+      (or even directly in XML), you can pick and choose from several hundred
+      different rules, and fine-tune the settings of the rules you do choose
+      (see <xref linkend="fig-hudson-quality-checkstyle" />). This is
+      important, as different organizations, teams and even projects have
+      different requirements and preferences with regards to coding standards,
+      and it is better to have a precise set of rules that can be adhered to,
+      rather than a broad set of rules that will be ignored. It is especially
+      important where large legacy code bases are involved - in these cases,
+      it is often better to start off with a more limited set of rules than to
+      be overwhelmed with a large number of relatively minor formatting
+      issues.</para>
+
+      <para><figure id="fig-hudson-quality-checkstyle">
+          <title>It is easy to configure Checkstyle rules in Eclipse</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-quality-checkstyle.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Configuring Checkstyle in your build is usually
+      straight-forward. In Maven 2, you would add something like the following
+      to the <code>&lt;reporting&gt;</code> section:<programlisting>&lt;reporting&gt;
+  &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.4&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;configLocation&gt;
+            ${sonar.url}/rules_configuration/export/java/My_Rules/checkstyle.xml
+          &lt;/configLocation&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting></para>
+
+      <para>For a Maven 3 project, you need to add the plugin to the
+      <code>&lt;reportPlugins&gt;</code> element of the
+      <code>&lt;configuration&gt;</code> section of the
+      <code>maven-site-plugin</code>:<programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+          &lt;version&gt;3.0-beta-2&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;reportPlugins&gt;
+              &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.4&lt;/version&gt;
+                &lt;configuration&gt;
+                  &lt;configLocation&gt;
+                    ${sonar.url}/rules_configuration/export/java/My_Rules/checkstyle.xml
+                  &lt;/configLocation&gt;
+                &lt;/configuration&gt;
+              &lt;/plugin&gt;
+            &lt;/reportPlugins&gt;
+          &lt;/configuration&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting></para>
+
+      <para>Now, running <command>mvn checkstyle:checkstyle</command> or
+      <command>mvn site</command> will analyse your source code and generate
+      XML reports that Hudson can use.</para>
+
+      <para>Note that in this example, we are using a Checkstyle ruleset that
+      we have uploaded to a Sonar server (defined by the ${sonar.url}
+      property). This strategy makes it easy to use the same set of Checkstyle
+      rules for Eclipse, Maven, Hudson and Sonar.</para>
+
+      <para>Recent versions of Gradle also offer some integrated Checkstyle
+      support. In Gradle 0.8, you could set up Checkstyle for your builds as
+      shown here:</para>
+
+      <para><programlisting>apply plugin: 'code-quality'</programlisting></para>
+
+      <para>This will use the checkstyle ruleset in
+      <filename>config/checkstyle/checkstyle.xml</filename> by default. You
+      can overrider this with the <code>checkstyleConfigFileName</code>
+      property: at the time of writing, however, you can't get the Gradle code
+      quality plugin to obtain the Checkstyle rules from a URL.</para>
+
+      <para>You can generate the Checkstyle reports here by running
+      <command>gradle checkstyleMain</command> or <command>gradle
+      check</command>.</para>
+    </sect2>
+
+    <sect2>
+      <title>PMD/CPD</title>
+
+      <para>PMD (<uri>http://pmd.sourceforge.org</uri>) is another popular
+      static analysis tool. It focuses on potential coding problems such as
+      unused or sub-optimal code, code size and complexity, and good coding
+      practices. Some typical rules include "Empty If Statement", "Broken Null
+      Check", "Avoid Deeply Nested If Statements", "Switch Statements Should
+      Have Default", and "Logger Is Not Static Final". There is a fair amount
+      of overlap with some of the Checkstyle rules, though PMD does have some
+      more technical rules, and more specialized ones such as rules related to
+      JSF and Android.</para>
+
+      <para>PMD also comes with CPD, a robust open source detector of
+      duplicated and near-duplicated code.</para>
+
+      <para>PMD is a little less flexible than Checkstyle, though you can
+      still pick and choose the rules you want to use in Eclipse, and then
+      export them as an XML file (see <xref
+      linkend="fig-hudson-quality-pmd" />). You can then import this rule set
+      into other Eclipse projects, into Sonar, or use it in your Maven
+      builds.</para>
+
+      <para><figure id="fig-hudson-quality-pmd">
+          <title>Configuring PMD rules in Eclipse</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-quality-pmd.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>You can place this XML ruleset in your project classpath (for
+      example, in <code>src/main/resources</code> for a Maven project), or in
+      a separate module (if you want to share the configuration between
+      projects). An example of how to configure Maven 2 to generate PMD and
+      CPD reports using an exported XML ruleset as shown here:</para>
+
+      <para><programlisting>&lt;reporting&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-pmd-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.5&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;!-- PMD options --&gt;
+        &lt;targetJdk&gt;1.6&lt;/targetJdk&gt;
+        &lt;aggregate&gt;true&lt;/aggregate&gt;
+        &lt;format&gt;xml&lt;/format&gt;
+        &lt;rulesets&gt;
+          &lt;ruleset&gt;/pmd-rules.xml&lt;/ruleset&gt;
+        &lt;/rulesets&gt;
+
+        &lt;!-- CPD options --&gt;
+        &lt;minimumTokens&gt;20&lt;/minimumTokens&gt;
+        &lt;ignoreIdentifiers&gt;true&lt;/ignoreIdentifiers&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting></para>
+
+      <para>If you are using Maven 3, you would place the plugin definition in
+      the <code>&lt;maven-site-plugin&gt;</code> configuration section, as
+      shown below. This example also shows how to use a ruleset in another
+      dependency (in this case the <code>pmd-rules.jar</code> file):</para>
+
+      <para><programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+          &lt;version&gt;3.0-beta-2&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;reportPlugins&gt;
+              &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-pmd-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.5&lt;/version&gt;
+                &lt;configuration&gt;
+                  &lt;!-- PMD options --&gt;
+                  &lt;targetJdk&gt;1.6&lt;/targetJdk&gt;
+                  &lt;aggregate&gt;true&lt;/aggregate&gt;
+                  &lt;format&gt;xml&lt;/format&gt;
+                  &lt;rulesets&gt;
+                    &lt;ruleset&gt;/pmd-rules.xml&lt;/ruleset&gt;
+                  &lt;/rulesets&gt;
+
+                  &lt;!-- CPD options --&gt;
+                  &lt;minimumTokens&gt;50&lt;/minimumTokens&gt;
+                  &lt;ignoreIdentifiers&gt;true&lt;/ignoreIdentifiers&gt;
+                &lt;/configuration&gt;
+              &lt;/plugin&gt;
+            &lt;/reportPlugins&gt;
+          &lt;/configuration&gt;
+          &lt;dependencies&gt;
+            &lt;dependency&gt;
+              &lt;groupId&gt;com.wakaleo.code-quality&lt;/groupId&gt;
+              &lt;artifactId&gt;pmd-rules&lt;/artifactId&gt;
+              &lt;version&gt;1.0.1&lt;/version&gt;
+            &lt;/dependency&gt;
+          &lt;/dependencies&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting></para>
+
+      <para>Now, you can run either <command>mvn site</command> or
+      <command>mvn pmd:pmd pmd:cpd</command> to generate the PMD and CPD
+      reports.</para>
+
+      <para>Unfortunately there is currently no built-in Gradle support for
+      PMD or CPD, so you have to fall back on invoking the PMD Ant plugin
+      directly, as shown here:</para>
+
+      <para><programlisting>configurations {
+    pmdConf
+}
+
+dependencies {
+    pmdConf 'pmd:pmd:4.2.5'
+}
+
+task pmd &lt;&lt; {
+    println 'Running PMD static code analysis'
+    ant {
+        taskdef(name:'pmd', classname:'net.sourceforge.pmd.ant.PMDTask', 
+                classpath: configurations.pmdConf.asPath)
+
+        taskdef(name:'cpd', classname:'net.sourceforge.pmd.cpd.CPDTask', 
+                        classpath: configurations.pmdConf.asPath)
+
+        pmd(shortFilenames:'true', failonruleviolation:'false', 
+            rulesetfiles:'conf/pmd-rules.xml') {
+            formatter(type:'xml', toFile:'build/pmd.xml')
+            fileset(dir: "src/main/java") {
+                include(name: '**/*.java')
+            }
+            fileset(dir: "src/test/java") {
+                include(name: '**/*.java')
+            }
+        }
+
+        cpd(minimumTokenCount:'50', format: 'xml',
+            ignoreIdentifiers: 'true',
+            outputFile:'build/cpd.xml') {
+            fileset(dir: "src/main/java") {
+                include(name: '**/*.java')
+            }
+            fileset(dir: "src/test/java") {
+                include(name: '**/*.java')
+            }        
+        }
+    }
+}</programlisting>This configuration will use the PMD rule set in the
+      <filename>src/config</filename> directory, and generate a PMD XML report
+      called '<filename>pmd.xml</filename>' in the <filename>build</filename>
+      directory. It will also run CPD and generate a CPD XML report called
+      '<filename>cpd.xml</filename>' in the <filename>build</filename>
+      directory.</para>
+    </sect2>
+
+    <sect2>
+      <title>FindBugs</title>
+
+      <para>FindBugs is a code quality analysis tool that checks your
+      application byte code for potential bugs, performance problems, or poor
+      coding habits. Findbugs can detect some fairly significant issues such
+      as null pointer exceptions, infinite loops, and unintentionally
+      accessing the internal state of an object. Unlike many other static
+      analysis tools, Findbugs tends to find a smaller number of issues, but
+      of those issues, a larger proportion will be important.</para>
+
+      <para>FindBugs is less configurable than the other tools we have seen.
+      You can list the individual rules you want to apply, but you can't
+      configure a shared XML file between your Maven builds and your IDE, for
+      example.</para>
+
+      <para>You can configure FindBugs in a Maven build as shown here (for
+      Maven 2):<programlisting>&lt;reporting&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+      &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.2&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;effort&gt;Max&lt;/effort&gt;
+        &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting></para>
+
+      <para>Or for a Maven 3 project:</para>
+
+      <para><programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+          &lt;version&gt;3.0-beta-2&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;reportPlugins&gt;
+                &lt;plugin&gt;
+                  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                  &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+                  &lt;version&gt;2.3.1&lt;/version&gt;
+                  &lt;configuration&gt;
+                    &lt;effort&gt;Max&lt;/effort&gt;
+                    &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+                  &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/reportPlugins&gt;
+          &lt;/configuration&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting>In both cases, you can generate the XML
+      reports by running <command>mvn site</command> or <command>mvn
+      findbugs:findbugs</command>. The XML reports will be placed in the
+      <filename>target</filename> directory.</para>
+
+      <para>At the time of writing there is no special support for FindBugs in
+      Gradle, so you need to invoke the Findbugs Ant plugin.</para>
+    </sect2>
+
+    <sect2>
+      <title>CodeNarc</title>
+
+      <para>TODO</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="sect-build-jobs">
+    <title>Reporting on Code Quality issues with the Violations plugin</title>
+
+    <para>One of the most useful code quality plugins for Hudson is the
+    Violations plugin. This plugin will not analyse your project source code
+    (you need to configure your build to do that), but it does a great job on
+    reporting on the code quality metrics generated for individual builds and
+    trends over time. The plugin caters for reports on code quality metrics
+    coming from a large range of static analysis tools, including:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>For Java</term>
+
+        <listitem>
+          <para>Checkstyle, CPD, PMD and Findbugs, and also jcreport</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>For Groovy</term>
+
+        <listitem>
+          <para>codenarc</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>For JavaScript</term>
+
+        <listitem>
+          <para>jslint</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>For .Net</term>
+
+        <listitem>
+          <para>gendarme and stylecop</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>Installing the plugin is straight-forward. Just go to the 'Plugin
+    Manager' screen and select the 'Hudson Violations plugin'. Once you have
+    installed the plugin and restarted Hudson, you will be able to use it for
+    your projects.</para>
+
+    <para>The Violations plugin does not generate the code quality metrics
+    data itself - you need to configure your built to do that, as shown in the
+    previous section. Once you have done this, you can configure the
+    violations plugin to generate reports and, if required, trigger alerts,
+    based on the report results. Just go to the <command>Post-build
+    Actions</command> and check the 'Report Violations' checkbox. The details
+    of the configuration vary depending on the project type. Lets look at
+    Freestyle build jobs first.</para>
+
+    <sect2>
+      <title>Working with Freestyle build jobs</title>
+
+      <para>Freestyle build jobs allow you the most configuration flexibility,
+      and are your only option for non-Java projects. When you use the
+      Violations plugin with a Freestyle build job, you need to specify the
+      paths to each of the XML reports generated by the static analysis tools
+      you have used (see <xref
+      linkend="fig-hudson-quality-freestyle-violations" />). The plugin can
+      cater for several reports from the same tool, which is useful for Maven
+      multi-module projects - just use a wildcard expression to identify the
+      reports you want (for example,
+      <filename>**/target/checkstyle.xml</filename>)</para>
+
+      <para><figure id="fig-hudson-quality-freestyle-violations">
+          <title>Configuring the violations plugin for a Freestyle
+          project</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-quality-violations.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The Violations plugin will generate a graph tracking the
+      number of each type of issue over time (see TODO). It also lets you
+      drill down into a particular build, to see number of issues raised for
+      that particular build. Finally, you can drill down into a particular
+      class, to display the detailed list of issues, along with where they
+      appear in the source code.</para>
+
+      <para>But the Violations plugins also allows for a more proactive
+      management of code quality. You can use the results of the code quality
+      analysis reports to influence the weather icon on the Hudson dashboard.
+      This weather icon is normally related to the number of failing builds in
+      the previous five builds, but Hudson can also take into account other
+      factors, such as code quality results. Displaying a cloudy or stormy
+      icon for a project on the dashboard is a much better way of raising
+      awareness about code quality issues that simply relying on graphs and
+      reports on the build job page.</para>
+
+      <para>To set this up, you need to go back to the <command>Report
+      Violations</command> section in the <command>Post-build
+      Actions</command>. The first three columns in <xref
+      linkend="fig-hudson-quality-freestyle-violations" /> show a sunny icon,
+      a stormy icon, and a yellow ball. The one with the sunny icon is the
+      maximum number of violations tolerated in order to keep the sunny
+      weather icon on the dashboard page. The second column, with the stormy
+      weather icon, is the number of violations that will cause a stormy icon
+      to appear on the dashboard. If you have a number of violations between
+      these two extremes, you will get one of the cloudy icons. </para>
+
+      <para>You can set different values for different tools. The exact
+      thresholds will vary between teams and between projects, and also
+      between tools. For example, checkstyle will typically raise a lot more
+      issues than FindBugs or CPD, with PMD being somewhere in-between. You
+      need to adjust the values you use to reflect how these tools work on
+      your code base, and your expectations.</para>
+
+      <para>You can take this even further with the third column (the one with
+      the yellow ball). This column lets you set a number of violations that
+      will cause the build to be declared unstable. Remember, when a build
+      becomes unstable Hudson will send out notification messages, so this is
+      an even more proactive strategy.</para>
+
+      <para>For example, in <xref
+      linkend="fig-hudson-quality-freestyle-violations" />, we have configured
+      the minimum number of checkstyle violations to 10, which means that.
+      Now, on the Dashboard page, this project will appear both with a stormy
+      weather icon and as unstable (see <xref
+      linkend="fig-hudson-quality-violations-rollover" />). </para>
+
+      <para><figure id="fig-hudson-quality-violations-rollover">
+          <title>Configuring the violations plugin for a Freestyle
+          project</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-quality-violations-rollover.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Working with Maven build jobs</title>
+
+      <para>- Working with Maven build jobs.</para>
+    </sect2>
+
+    <sect2>
+      <title>Working with multi-module Maven projects</title>
+
+      <para></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>TODO</para>
+  </sect1>
+</chapter>
