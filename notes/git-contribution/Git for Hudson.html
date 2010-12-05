@@ -1,0 +1,179 @@
+<h1>Git Plugin</h1>
+
+<p><a href="http://git-scm.com/">Git</a> is a popular distributed version control system that is a logical successor to <a href="http://subversion.tigris.org/">Subversion</a> and a mind-share competitor to <a href="http://mercurial.selenic.com/">Mercurial</a>. Git support in Hudson is both mature and full-featured. There are a number of plugins that can contribute to the overall story of Git on Hudson. The core Git-supporting plugin, <a href="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin"><em>Git Plugin</em></a> is where we'll begin. I'll discuss the supplemental plugins in a few minutes.</p>
+
+<h2>Installing the Plugin</h2>
+
+<p>The <em>Git Plugin</em> is available on the latest built-in list of plugins in the Hudson UI and is documented on its own <a href="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin">wiki page</a>. Simply check the check box and click the <strong>install</strong> button.</p>
+
+<h3>System-wide Configuration of the Plugin</h3>
+
+<p>After installing the Git Plugin, a small new set of configuration options is available on the <em>Manage Hudson</em> -> <em>Configure System</em> page. This configuration supports satisfies the requirement that a <a href="http://git-scm.com/download"><code>git</code> binary</a> version 1.3.3 or later must be installed and visible to Hudson.</p>
+
+<p><img src="Git_on_Hudson_00_-_Git_Global_Config.png" alt="System-wide configuration of the Git Plugin" title="System-wide configuration of the Git Plugin" /></p>
+
+<h3>SSH Key Setup</h3>
+
+<p>If the Git repository you are accessing uses SSH passphrase-less authentication -- for example, if the access address is similar to <code>git@github.com:matthewmccullough/some-repo.git</code> -- you'll need to provide the private half of the key as file <code>~/.ssh/id_rsa</code> where <code>~</code> is the home directory of the user account under which Hudson is running.</p>
+
+<p>The fingerprint of the remote server will additionally need to be placed in <code>~/.ssh/known_hosts</code> to prevent Hudson from invisibly prompting for authorization to access this git server for the first time.</p>
+
+<p>Alternatively, if logging-in is enabled for the <code>hudson</code> user, SSH into the Hudson machine as <code>hudson</code> and manually attempt to git clone a remote repository. This will test your private key setup and establish the <code>known_hosts</code> file in the <code>~/.ssh</code> directory.</p>
+
+<h2>Using the Plugin</h2>
+
+<p>On either an existing or a new Hudson project, a new <em>Source Code Management</em> option for <em>Git</em> is displayed. Upon making this choice, one or more repository addresses can be entered. Adding a second (optional) repository provides distinct named locations for <code>pull</code> and <code>push</code>.</p>
+
+<p><img src="Git_on_Hudson_01_-_Repo_URL.png" alt="Entering a Git repo URL" title="Entering a Git repo URL" /></p>
+
+<h3>Advanced Per-Project Source Code Management Configuration</h3>
+
+<p>Clicking on the <em>Advanced</em> button on the URL configuration provides more precise control of the <code>pull</code> behavior.</p>
+
+<p>The <em>Name of repository</em> is a shorthand title (a.k.a. <code>remote</code> in git parlance) for a given repository for later reference in the merge action configuration.</p>
+
+<p>The <em>Refspec</em> is a git-specific <a href="http://progit.org/book/ch9-5.html">language</a> for controlling what is retrieved from remote servers and under what namespace it is stored locally.</p>
+
+<p><img src="Git_on_Hudson_02_-_Repo_URL_Advanced,_Name-of-Repo.png" alt="Advanced configuration of a git repo URL" title="Advanced configuration of a git repo URL" /></p>
+
+<h3>Branches to Build</h3>
+
+<p>The branch specifier is the wildcard pattern or specific branch name that should be built by hudson. If left blank, all branches will be built. At the time of this writing, after the first time saving a job with a blank <em>branches to build</em> setting, it is populated with <code>**</code> which equally communicates "build all branches."</p>
+
+<p><img src="Git_on_Hudson_02_-_Repo_URL_Advanced,_Branches-to-Build.png" alt="Advanced configuration of the git branches to build" title="Advanced configuration of the Git branches to build" /></p>
+
+<h3>Excluded Regions</h3>
+
+<p>Regions are named specific or wildcard paths in the codebase that, even when changed, should not trigger a build. Commonly these are non-compiled files such as localization bundles or images, which, understandably might not have an effect on unit or integration tests.</p>
+
+<p><img src="Git_on_Hudson_03_-_Excluded_Regions.png" alt="Branches and Regions" title="Branches and Regions" /></p>
+
+<h3>Excluded Users</h3>
+
+<p>The git plugin allows for certain users to be ignored, even if they make changes to the codebase that would typically trigger a build.</p>
+
+<p>Excluded users are typically automated users, not human developers, that happen to have distinct accounts with commit rights in the source control system. These automated users often are performing small numeric changes such as incrementing version numbers in a pom.xml file, not making actual logic changes. Each excluded username is specified on a separate line.</p>
+
+<h3>Checkout/merge to local branch</h3>
+
+<p>Providing a value for this option causes a local branch to be created from the treeish you've specified to be built rather than a direct <em>detached HEAD</em> checkout of the commit's hash.</p>
+
+<p>Without a local branch specified:</p>
+
+<pre><code>git checkout 73434e4a0af0f51c242f5ae8efc51a88383afc8a
+</code></pre>
+
+<p>versus with a local branch named <code>mylocalbranch</code> specified.</p>
+
+<pre><code>git branch -D mylocalbranch
+git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a
+</code></pre>
+
+<h3>Local subdirectory for repo</h3>
+
+<p>The location on local disk for the clone of the repository can be chosen if a directory other than the default <code>workspace</code> directory is desired.</p>
+
+<h3>Merge before build</h3>
+
+<p>The typical recipe for using this option is to fold a integration branch into a branch more similar to <code>master</code>. Keep in mind that only conflict-less merges will happen automatically. More complex merges that require manual intervention will fail the build.</p>
+
+<p>The resultant merged branch will not automatically be pushed to another repository unless the later <em>push</em> post-build action is enabled.</p>
+
+<h3>Prune remote branches before build</h3>
+
+<p>Pruning removes local copies of remote branches that exist as a remnant of the previous clone, but are no longer present on the remote. In short, this is cleaning the local clone to be in perfect sync with its remote siblings.</p>
+
+<h3>Clean after checkout</h3>
+
+<p>Activate git's facilities for purging any untracked files or folders, returning your working copy to a pristine state.</p>
+
+<h3>Recursively update submodules</h3>
+
+<p>If using git's submodule facilities in the project, ensure that every submodule is up-to-date with an explicit call to <code>update</code>, even if submodules are nested within submodules.</p>
+
+<h3>Use commit author in changelog</h3>
+
+<p>Hudson tracks and displays the author of changed code in a summarized view. Git tracks both the committer and author of code distinctly, and this option lets you toggle which of those two usernames is displayed in the changelog.</p>
+
+<h3>Wipe out workspace</h3>
+
+<p>Typically Hudson will reuse the workspace, merely freshening the checkout as necessary and cleaning untracked files per the aforementioned switch. However, if a completely clean workspace is desired, this option will delete and rebuild it from the ground up. Bear in mind that this may significantly lengthen the time it takes to initialize and build the project.</p>
+
+<h3>Choosing strategy</h3>
+
+<p>Hudson decides which branches to build based on a <em>strategy</em>. Users can influence this branch-search process. The default choice is to search for all branch HEADs. If the Gerrit plugin is installed, additional options for building all Gerrit-notified commits are displayed.</p>
+
+<p><img src="Git_on_Hudson_04b_-_Choosing_Strategy.png" alt="Choosing Strategy" title="Choosing Strategy" /></p>
+
+<h3>Git executable</h3>
+
+<p>In the global options of Hudson, different Git executables can be set up and used on a per-build basis. This is infrequently used, and only when the clone or other git operations are highly sensitive to a particular version of Git. Git tends towards being very version-flexible; Slightly older repositories can easily be cloned with a newer version of git and vice-versa.</p>
+
+<p><img src="Git_on_Hudson_04c_-_GitVersions.png" alt="Git Executable Global Setup" title="Git Executable Global Setup" /></p>
+
+<h3>Repository browser</h3>
+
+<p>Hudson can leverage a user-provided URL for web browser-based review of the source code Hudson detected was changed since the last build. This typically is a Gitorious, Git Web, or GitHub URL.</p>
+
+<p><img src="Git_on_Hudson_04_-_Advanced_Config.png" alt="Repository Browser" title="Repository Browser" /></p>
+
+<h2>Build Triggers</h2>
+
+<p>The basic git plugin offers the ability to <em>Poll SCM</em> on a timed basis, looking for changes since the last inquiry. If changes are found, a build is started. The polling log is accessible via a link on the left hand side of the page in the navigation bar when viewing a specific job. It offers information on the last time the repository was polled and if it replied with a list of changes.</p>
+
+<p><img src="Git_on_Hudson_07_-_Polling_Log.png" alt="Polling Log" title="Polling Log" /></p>
+
+<p>The git polling is distilled into a more developer-useful format that shows commit comments as well as hyperlinking usernames and changed files to more detailed views of each.</p>
+
+<p><img src="Git_on_Hudson_11_-_Git_SCM-Polled_Changes.png" alt="Results of git Polling" title="Results of git Polling" /></p>
+
+<p>Installing the <em>Gerrit Build Trigger</em> adds a <em>Gerrit event</em> option that can be more efficient and precise than simply polling the repository.</p>
+
+<h3>Gerrit Trigger</h3>
+
+<p><a href="http://code.google.com/p/gerrit/">Gerrit</a> is an open source web application that facilitates <a href="https://review.source.android.com/#q,status:open,n,z">code reviews</a> for project source hosted on a git version control system. It reads a traditional git repository, and provides a side by side comparison of changes. As the code is reviewed, Gerrit provides a location to comment and move the patch to an <em>open</em>, <em>merged</em>, or <em>abandoned</em> status.</p>
+
+<p>The <a href="http://wiki.hudson-ci.org/display/HUDSON/Gerrit+Trigger">Gerrit Trigger</a> is a Hudson plugin that can trigger a Hudson build of the code when any user-specified activity happens in a user-specified project in the git repository. It is a alternative to the more typically-used <em>Build periodically</em> or <em>Poll SCM</em>.</p>
+
+<p><img src="Git_on_Hudson_08_-_Gerrit_Build_Trigger.png" alt="Gerrit Trigger" title="Gerrit Trigger" /></p>
+
+<p>The configuration for this plugin is minimal and focused on the <em>Project Type</em> and <em>Pattern</em> and <em>Branch Type</em> and <em>Pattern</em>. In each pair, the <em>type</em> can be <em>Plain</em>, <em>Path</em>, or <em>RegExp</em> -- pattern flavors of what to watch -- and then the value (<em>pattern</em>) to evaluate using the <em>type</em> as the guide.</p>
+
+<h2>Post-build Actions</h2>
+
+<p>The git plugin for Hudson adds git-specific capabilities to the post-processing of the build artifacts. Specifically, the <em>Git Publisher</em> offers merging and pushing actions.</p>
+
+<h3>Push Only If Build Succeeds</h3>
+
+<p>If a merge or other commit-creating action has been taken during the Hudson build, it can be enabled to push to a remote.</p>
+
+<h3>Merge Results</h3>
+
+<p>If pre-build merging is configured, push the merge-resultant branch to its origin.</p>
+
+<h3>Tags</h3>
+
+<p>When pushing tags, each tag can be named and chosen to be created if it does not exist (which fails if it does already exist). Environment variables can be embedded in the tag name. Examples include the process ID such as <code>HUDSON_BUILD_$PPID</code> or even a build number, if that is provided by a Hudson plugin, such as <code>$HUDSON_AUTOTAG_$BUILDNUM</code>. Tags can be targeted to a specific remote such as <code>origin</code> or <code>integrationrepo</code>.</p>
+
+<p><img src="Git_on_Hudson_06_-_Advanced_Git_Publisher,_Branches,_Tags.png" alt="Merge Results" title="Merge Results" /></p>
+
+<h3>Branches</h3>
+
+<p>The current HEAD used in the Hudson build of the application can be pushed to other remotes as an after-step of the build. Merely the destination branch name and remote name need to be provided.</p>
+
+<p><img src="Git_on_Hudson_09_-_Git-Publisher-with-Success.png" alt="Git Publisher" title="Git Publisher" /></p>
+
+<p>Names of remotes are validated against the earlier configuration of the plugin. If the remote doesn't exist, a warning is displayed.
+<img src="Git_on_Hudson_10_-_Git-Publisher-with-Warning.png" alt="Git Publisher With Warning On Commit" title="Git Publisher With Warning On Commit" /></p>
+
+<h1>GitHub Plugin</h1>
+
+<p>The GitHub plugin offers two integration points. First, it offers an optional link to the project's GitHub homepage. Simply enter the URL for the project (without the tree/master or tree/branch part). For example, <code>http://github.com/matthewmccullough/git-workshop</code>.</p>
+
+<p>Second, the GitHub plugin offers per-file-changed links that are wired via the <em>Repository browser</em> section of a job's <em>Source Code Management</em> configuration.</p>
+
+<p><img src="Git_on_Hudson_13_-_GitHub_Repository_Browser.png" alt="GitHub Repository Browser" title="GitHub Repository Browser" /></p>
+
+<p>With the <code>githubweb</code> repository browser chosen, all changed-detected files will be linked to the appropriate GitHub source-viewing web page.</p>
+
+<p><img src="Git_on_Hudson_13_-_GitHubWeb.png" alt="GitHub Repository Browser" title="GitHub Repository Browser" /></p>
