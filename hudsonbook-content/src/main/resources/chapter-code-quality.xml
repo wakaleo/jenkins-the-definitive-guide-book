@@ -777,9 +777,58 @@ task pmd &lt;&lt; {
   <sect1>
     <title>Code complexity</title>
 
-    <para>- Coverage Complexity Scatter Plot</para>
+    <para>Code complexity is another important aspect of code quality. Code
+    complexity is measured in a number of ways, but one commonly used (and
+    easy-to-understand) complexity metric is Cyclometric Complexity, which
+    involves measuring the number of different paths through a method. Using
+    this metric, complex code typically has large numbers of nested
+    conditional statements and loops, which make the code harder to understand
+    and to debug.</para>
 
-    <para>- CCM Plugin for .NET</para>
+    <para>There is also a code quality theory that correlates code complexity
+    and code coverage, to give a general idea of how reliable a particular
+    piece of code is. This is based on the (very understandable) idea that
+    code that is both complex and poorly tested is more likely to contain bugs
+    than simple, well-tested code. </para>
+
+    <para>The 'Coverage Complexity Scatter Plot Plugin' is designed to let you
+    visualize this information in your Hudson builds (see <xref
+    linkend="fig-hudson-coverage-complexity" />). Dangerously complex and/or
+    untested methods will appear high on the graph, where as the more
+    well-written and well-tested methods will appear lower down.</para>
+
+    <para><figure id="fig-hudson-coverage-complexity">
+        <title>A coverage/complexity scatter plot</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-coverage-complexity.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>The scatter graph gives you a good overview of the state of your
+    code in terms of complexity and test coverage, but you can also drill down
+    to investigate further. If you click on any point in the graph, you can
+    see the corresponding methods, with their test coverage and complexity
+    (see <xref linkend="fig-hudson-coverage-complexity-details" />).</para>
+
+    <para><figure id="fig-hudson-coverage-complexity-details">
+        <title>You can click on any point in the graph to investigate
+        further</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-coverage-complexity-details.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>At the time of writing, this plugin requires Clover (so your
+    build needs to have generated a Clover XML coverage report). However
+    support for Cobertura and other tools is planned.</para>
   </sect1>
 
   <sect1>
@@ -791,13 +840,15 @@ task pmd &lt;&lt; {
   <sect1>
     <title>Code Quality on Ruby/Rails projects</title>
 
-    <para></para>
+    <para>- Ruby metrics plugin</para>
   </sect1>
 
   <sect1>
     <title>General project health</title>
 
-    <para>- Task Scanner and Log Parser plugins</para>
+    <para></para>
+
+    <para>Task Scanner and Log Parser plugins</para>
 
     <para></para>
   </sect1>
