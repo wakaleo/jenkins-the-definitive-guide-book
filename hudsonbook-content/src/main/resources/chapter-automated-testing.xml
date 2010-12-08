@@ -121,12 +121,15 @@
     <title>Configuring test reports in Hudson</title>
 
     <para>Once your build generates test results, you need to configure your
-    Hudson build job to display them. For Maven build jobs, no special
-    configuration is required - just make sure you invoke a goal that will run
-    your tests, such as <command>mvn test</command> (for your unit tests) or
-    <command>mvn verify</command> (for unit and integration tests). An example
-    of a Maven build job configuration is shown in <xref
-    linkend="fig-testing-maven-verify-goal" />.</para>
+    Hudson build job to display them. As mentioned above, Hudson will work
+    fine with any xUnit-compatible test reports, no matter what language they
+    are written in.</para>
+
+    <para>For Maven build jobs, no special configuration is required - just
+    make sure you invoke a goal that will run your tests, such as <command>mvn
+    test</command> (for your unit tests) or <command>mvn verify</command> (for
+    unit and integration tests). An example of a Maven build job configuration
+    is shown in <xref linkend="fig-testing-maven-verify-goal" />.</para>
 
     <para><figure id="fig-testing-maven-verify-goal">
         <title>You configure your Hudson installation in the 'Manage Hudson'
@@ -634,7 +637,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         <para>Assuming you have downloaded the latest Cobertura installation
         and placed it within your project in a directory called
         <filename>tools</filename>, you could do something like
-        this:<programlisting>&lt;property name="cobertura.dir" value="&#36;{basedir}/tools/cobertura" /&gt;<co
+        this:<programlisting>&lt;property name="cobertura.dir" value="${basedir}/tools/cobertura" /&gt;<co
               id="co-ch04-cobertura-dir" />
 
 &lt;path id="cobertura.classpath"&gt;<co id="co-ch04-cobertura-path" />
@@ -710,7 +713,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         against the classes in this directory:</para>
 
         <para><programlisting>&lt;target name="test-coverage" depends="instrument"&gt;
-    &lt;junit fork="yes" dir="&#36;{basedir}"&gt;<co id="co-ch04-cobertura-junit" />
+    &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit" />
         &lt;classpath location="${instrumented.dir}" /&gt;
         &lt;classpath location="${classes.dir}" /&gt;
         &lt;classpath refid="cobertura.classpath" /&gt;<co
@@ -885,7 +888,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         metric that you track takes three threshold values.</para>
 
         <para><figure id="fig-hudson-testing-coverage-stabiliy">
-            <title>Configuring the test coverage metrics in Hudson</title>
+            <title>Test coverage results contribute to the project status on
+            the dashboard</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -963,6 +967,87 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         example, an if statement that was only tested with one
         outcome).</para>
       </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Measuring code coverage with Clover</title>
+
+      <para>Clover is an excellent commercial code coverage tool from
+      Atlassian (<uri>http://www.atlassian.com/software/clover</uri>). Clover
+      works well for projects using Ant, Maven and even Grails. The
+      configuration and use of Clover is well documented on the Atlassian web
+      site, so we won't describe these aspects in detail. However, to give
+      some context, here is what a typically Maven 2 configuration of Clover
+      for use with Hudson would look like:<programlisting>      &lt;build&gt;
+        ...
+        &lt;plugins&gt;
+          ...
+          &lt;plugin&gt;
+            &lt;groupId&gt;com.atlassian.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-clover2-plugin&lt;/artifactId&gt;
+            &lt;version&gt;3.0.4&lt;/version&gt;
+            &lt;configuration&gt;
+              &lt;includesTestSourceRoots&gt;false&lt;/includesTestSourceRoots&gt;
+              &lt;generateXml&gt;true&lt;/generateXml&gt;
+            &lt;/configuration&gt;
+          &lt;/plugin&gt;
+        &lt;/plugins&gt;
+      &lt;/build&gt;
+      ...</programlisting></para>
+
+      <para>This will generate both an HTML and XML coverage report, including
+      aggregated data if the Maven project contains multiple modules.</para>
+
+      <para>To integrate Clover into Hudson, you need to install the Hudson
+      Clover plugin in the usual manner using the Plugin Manager screen. Once
+      you have restarted Hudson, you will be able to integrate Clover code
+      coverage into your builds.</para>
+
+      <para>Running Clover on your project is a multi-step project: you
+      instrument your application code, run your tests, aggregate the test
+      data (for multi-module Maven projects) and generate the HTML and XML
+      reports. Since this can be a fairly slow operation, you typically run it
+      as part of a separate build job, and not with your normal tests. You can
+      do this as follows:</para>
+
+      <para><screen>$ <command>clover2:setup test clover2:aggregate clover2:clover</command></screen></para>
+
+      <para>Next, you need to set up the Clover reporting in Hudson. Tick the
+      '<command>Publish Clover Coverage Report</command>' checkbox to set this
+      up. The configuration is similar to that of Cobertura - you need to
+      provide the path to the Clover HTML report directory, and to the XML
+      report file, and you can also define threshold values for sunny and
+      stormy weather, and for unstable builds (see <xref
+      linkend="fig-hudson-clover-config" />).</para>
+
+      <para><figure id="fig-hudson-clover-config">
+          <title>Configuring Clover reporting in Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-clover-config.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once you have done this, Hudson will display the current level of
+      code coverage, as well as a graph of the code coverage over time, on
+      your project build job home pate (see <xref
+      linkend="fig-hudson-clover-config" />).</para>
+
+      <para><figure id="fig-hudson-clover-config">
+          <title>Configuring Clover reporting in Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-clover-report.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
   </sect1>
 
@@ -1133,7 +1218,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     within Maven. A simple Ant script running some JMeter tests is illustrated
     here:<programlisting>&lt;project default="jmeter"&gt;
     &lt;path id="jmeter.lib.path"&gt;
-      &lt;pathelement location="&#36;{basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
+      &lt;pathelement location="${basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
     &lt;/path&gt;
     
     &lt;taskdef name="jmeter"
@@ -1142,9 +1227,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     
 
     &lt;target name="jmeter"&gt;
-      &lt;jmeter jmeterhome="&#36;{basedir}/tools/jmeter"
-              testplan="&#36;{basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="&#36;{basedir}/target/jmeter-results.jtl"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
       &lt;/jmeter&gt;
     &lt;/target&gt;
@@ -1417,23 +1502,23 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <filename>&lt;jmeter&gt;</filename> Ant task to pass the property when you
     run the script. The following Ant target, for example, runs JMeter three
     times, for 200, 500 and 1000 simultaneous users:<programlisting>    &lt;target name="jmeter"&gt;
-      &lt;jmeter jmeterhome="&#36;{basedir}/tools/jmeter"
-              testplan="&#36;{basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="&#36;{basedir}/target/jmeter-results-200-users.jtl"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-200-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="200"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
       &lt;/jmeter&gt;
-      &lt;jmeter jmeterhome="&#36;{basedir}/tools/jmeter"
-              testplan="&#36;{basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="&#36;{basedir}/target/jmeter-results-500-users.jtl"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-500-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="500"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
       &lt;/jmeter&gt;
-      &lt;jmeter jmeterhome="&#36;{basedir}/tools/jmeter"
-              testplan="&#36;{basedir}/src/test/jmeter/gameoflife.jmx"
-              resultlog="&#36;{basedir}/target/jmeter-results-1000-users.jtl"&gt;
+      &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
+              testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
+              resultlog="${basedir}/target/jmeter-results-1000-users.jtl"&gt;
         &lt;jvmarg value="-Xmx512m" /&gt;
         &lt;property name="request.threads" value="1000"/&gt;
         &lt;property name="request.loop" value="20"/&gt;
@@ -1479,10 +1564,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       integration-related bugs, the cost of buying a shiny new build server is
       relatively modest.</para>
 
-      <para>This can also involve distributing your builds across several
-      servers. While this will not in itself speed up your tests, it may
-      result in faster feedback if your build server is under heavy demand,
-      and if build jobs are constantly being queued.</para>
+      <para>Another option is to consider using virtual or cloud-based
+      approach. Later on in the book, we will see how you can use VMWare
+      virtual machines or Amazon Web Services (EC2) instances to increase your
+      build capacity on an "as-needed" basis, without having to invest in
+      permanent new machines.</para>
+
+      <para>This approach can also involve distributing your builds across
+      several servers. While this will not in itself speed up your tests, it
+      may result in faster feedback if your build server is under heavy
+      demand, and if build jobs are constantly being queued.</para>
     </sect2>
 
     <sect2>
