@@ -472,13 +472,13 @@ task pmd &lt;&lt; {
     <sect2>
       <title>CodeNarc</title>
 
-      <para>TODO</para>
-    </sect2>
+      <para>CodeNarc is a static analysis tool for Groovy code, similar to PMD
+      for Java. It checks Groovy source code for potential defects, poor
+      coding practices and styles, overly complex code, and so on. Typical
+      rules include "Constant If Expression", "Empty Else Block", "GString As
+      Map Key", and "Grails Stateless Service".</para>
 
-    <sect2>
-      <title>metric_fu</title>
-
-      <para>TODO</para>
+      <para></para>
     </sect2>
   </sect1>
 
@@ -838,6 +838,12 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1>
+    <title>Code Quality in Gradle</title>
+
+    <para></para>
+  </sect1>
+
+  <sect1>
     <title>Code Quality on Ruby/Rails projects</title>
 
     <para>- Ruby metrics plugin</para>
@@ -846,17 +852,152 @@ task pmd &lt;&lt; {
   <sect1>
     <title>General project health</title>
 
-    <para></para>
+    <para>When it comes to code quality, static analysis is not the only tool
+    you can use. Another indicator of the general health of your project can
+    be found in the number of FIXME, TODO, @deprecated, and similar tags
+    scattered through the source code. If there are a lot of these, it can be
+    a sign that your code base has a lot of unfinished work, and is therefore
+    not in a very finalized state. </para>
 
-    <para>Task Scanner and Log Parser plugins</para>
+    <para>The Hudson Task Scanners plugin lets you keep track of these sorts
+    of tags in your source code, and optionally flag a build with a bad
+    weather icon on the dashboard if there are too many open tasks.</para>
 
-    <para></para>
+    <para>To set this up, you need to install both the ' Static Analysis
+    Utilities' plugin and the 'Task Scanner Plugin'. Once installed, you can
+    activate the plugin in your project by checking the 'Scan workspace for
+    open tasks' checkbox in the <command>Build Settings</command> section of
+    your project job configuration.</para>
+
+    <para>Configuring the Task Scanner plugin is pretty straightforward (see
+    <xref linkend="fig-hudson-task-scanner" />). You simply enter the tags you
+    want to track, with different priorities if you consider certain tags to
+    be more important than others. By default, the plugin will scan all the
+    Java source code in the project, but you can redefine this behavior by
+    entering the 'Files to scan' field. In <xref
+    linkend="fig-hudson-task-scanner" />, for example, we also check XML and
+    JSP files for tags.</para>
+
+    <para><figure id="fig-hudson-task-scanner">
+        <title>Configuring the Task Scanner plugin is straightforward</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-task-scanner.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The 'Advanced' button gives you access to a few more
+    sophisticated options. Probably the most useful are the Health thresholds,
+    which let you define the maximum number of issues tolerated before the
+    build can no longer be considered "sunny", and the minimum number of
+    issues required for "stormy weather" status.</para>
+
+    <para>The plugin generates a graph that shows tag trends by priority (see
+    <xref linkend="hudson-task-scanner-report" />). If you click on the 'Open
+    Tasks' report, you can also see a breakdown of tasks by Maven module,
+    package or file, or even list the open tasks.</para>
+
+    <para><figure id="fig-hudson-task-scanner-report">
+        <title>The Open Tasks Trend graph </title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-task-scanner-report.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </sect1>
 
   <sect1>
     <title>Integrating with Sonar</title>
 
-    <para></para>
+    <para>Sonar (<uri>http://www.sonarsource.org/</uri>) is a tool that
+    centralizes a range of code quality metrics into a single web site (see
+    <xref linkend="fig-hudson-sonar" />). It uses several Maven plugins
+    (Checkstyle, PMD, FindBugs, Cobertura or Clover, and others) to analyse
+    Maven projects and generate comprehensive code quality metrics reports.
+    Sonar reports on code coverage, rule compliance, and documentation, but
+    also on more high-level metrics such as complexity, maintainability and
+    technical debt. The rules used by the various tools are managed and
+    configured on the Sonar web site, and the Maven projects being analysed
+    don't require any particular configuration.</para>
+
+    <para><figure id="fig-hudson-sonar">
+        <title>Code quality reporting by Sonar</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/hudson-sonar.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Sonar works by running a set of Maven code quality related plugins
+    against your Maven project, and storing the results into a database. The
+    Sonar server, which you run separately, then analyses and displays the
+    results as shown in <xref linkend="fig-hudson-sonar" />. </para>
+
+    <para>Hudson integrates well with Sonar. The Hudson Sonar Plugin lets you
+    define Sonar instances for all of your projects, and then activate Sonar
+    in particular builds. </para>
+
+    <para>You install the plugin in the usual way, via the Plugin Manager.
+    Once installed, you configure the Hudson Sonar Plugin in the
+    <command>Configure System</command> screen, in the
+    <command>Sonar</command> section. You can configure as many instances of
+    Sonar as you need. The default configuration assumes that you are running
+    a local instance of Sonar with the default embedded database. This is
+    useful for testing purposes but not very scalable. For a production
+    environment, you will typically run Sonar on a real database such as MySQL
+    or Postgres, you need to configure the JDBC connection to the production
+    Sonar database in Hudson. You do this by clicking on the 'Advanced' button
+    and filling in the appropriate fields (see <xref
+    linkend="fig-hudson-sonar-config" />).</para>
+
+    <para><figure id="fig-hudson-sonar-config">
+        <title>Configuring Sonar in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sonar-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The other thing you need to configure is when the Sonar build
+    will kick off in a Sonar-enabled build job. You usually configure Sonar to
+    run with one of the long-running Hudson build jobs, such as the code
+    quality metrics build. It is not very useful to run the Sonar build more
+    than once a day, as Sonar stores metrics in 24-hour slices. The default
+    configuration will kick off a Sonar build in a Sonar-enabled build job
+    whenever the job is triggered by a periodically scheduled build or by a
+    manual build.</para>
+
+    <para>To activate Sonar in your build job with the system-wide
+    configuration options, just check the 'Sonar' option in the
+    <command>Post-build Actions</command>. If you click on the 'Advanced'
+    button, you can specify other more sophisticated options, such as running
+    your Sonar build on a separate branch, passing Maven additional
+    command-line options (such as extra memory), or overriding the default
+    trigger configuration (see <xref
+    linkend="fig-hudson-sonar-config-job" />). </para>
+
+    <para><figure id="fig-hudson-sonar-config-job">
+        <title>Configuring Sonar in a build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sonar-config-job.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </sect1>
 
   <sect1>
