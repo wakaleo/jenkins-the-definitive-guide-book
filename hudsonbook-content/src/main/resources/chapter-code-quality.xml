@@ -80,29 +80,44 @@
     Quality metrics are of limited value in isolation - they need to be part
     of a broader process improvement strategy.</para>
 
-    <para>TODO: Finish this section</para>
+    <para>The first level of code quality integration should be the IDE.
+    Modern IDEs have great support for many code quality tools - Checkstyle,
+    PMD and Findbugs all have Eclipse plugins that you can use to get instant
+    feedback on code quality issues. This is a much faster and more efficient
+    way to provide feedback for individual developers, and to teach developers
+    about the organizational or project coding standards.</para>
 
-    <para>- Integrate code quality analysis into your IDEs. Checkstyle, PMD
-    and Findbugs all have Eclipse plugins that you can use to get instant
-    feedback on code quality issues. This is a much more efficient way to
-    provide feedback for individual developers</para>
+    <para>The second level is your build server. In addition to your normal
+    unit and integration test build jobs, set up a dedicated code quality
+    build, which runs after the normal build and test. The aim of this process
+    is to produce project-wide code quality metrics, to keep tabs on how the
+    project is doing as a whole, and to address any issues from a high level.
+    The effectiveness of these reports can be increased by a weekly code
+    quality review, in which code quality issues and trends are discussed
+    within the team.</para>
 
-    <para>- Set up a dedicated code quality build, which runs after the normal
-    build and test.</para>
+    <para>It is important to run this job separately, because code coverage
+    analysis and many static analysis tools can be quite slow to run. It is
+    also important to keep any code coverage tests well away from builds, as
+    the code coverage process produces instrumented code which should never be
+    deployed to a repository for production use.</para>
 
-    <para>- Code quality reporting is, by default, a relatively passive
-    process. No one will know the state of the project if they don't seek out
-    the information on the build server. While this is better than
-    nothing,</para>
+    <para>Code quality reporting is, by default, a relatively passive process.
+    No one will know the state of the project if they don't seek out the
+    information on the build server. While this is better than nothing, if you
+    are serious about code quality, there is a better way. Rather than simply
+    reporting on code quality, set up a dedicated code quality build, which
+    runs after the normal build and test, and configure the build to fail if
+    code quality metrics are not at an acceptable level. You can do this in
+    Hudson or in your build script, although one advantage of configuring this
+    outside of your build script is that you can change code quality build
+    failing criteria more easily without changing the project source
+    code.</para>
 
-    <para>- Set up a dedicated code quality build, which runs after the normal
-    build and test.</para>
-
-    <para>- Configure the build to fail if code quality metrics are not at an
-    acceptable level</para>
-
-    <para>- But use failing code quality builds as an indicator, not as a
-    goal</para>
+    <para>As a final word, remember that coding standards are guidelines and
+    recommendations, not absolute rules. Use failing code quality builds and
+    code quality reports as indicators of a possible area of improvement, not
+    as measurements of absolute value.</para>
   </sect1>
 
   <sect1>
@@ -224,7 +239,7 @@
 
       <para>This will use the checkstyle ruleset in
       <filename>config/checkstyle/checkstyle.xml</filename> by default. You
-      can overrider this with the <code>checkstyleConfigFileName</code>
+      can override this with the <code>checkstyleConfigFileName</code>
       property: at the time of writing, however, you can't get the Gradle code
       quality plugin to obtain the Checkstyle rules from a URL.</para>
 
@@ -478,11 +493,49 @@ task pmd &lt;&lt; {
       rules include "Constant If Expression", "Empty Else Block", "GString As
       Map Key", and "Grails Stateless Service".</para>
 
-      <para></para>
+      <para>For Ant or Maven-based projects, the CodeNarc Ant plugin is the
+      simplest option (a Maven plugin is under development at the time of
+      writing). A typical Ant configuration for use with Hudson would like
+      like this:<programlisting>&lt;taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/&gt;
+&lt;target name="runCodeNarc"&gt;
+    &lt;codenarc ruleSetFiles="rulesets/basic.xml,rulesets/exceptions.xml,rulesets/imports.xml"
+              maxPriority1Violations="0"&gt;
+
+        &lt;report type="xml"&gt;
+            &lt;option name="outputFile" value="reports/CodeNarc.xml" /&gt;
+        &lt;/report&gt;
+
+        &lt;fileset dir="src"&gt;
+            &lt;include name="**/*.groovy"/&gt;
+        &lt;/fileset&gt;
+    &lt;/codenarc&gt;
+&lt;/target&gt;</programlisting></para>
+
+      <para>You can integrate CodeNarc into a Grails project simply by
+      installing the CodeNarc Plugin:</para>
+
+      <para><programlisting>$ grails install-plugin codenarc</programlisting>This
+      will configure CodeNarc to analyse the Groovy files in your Grails
+      application code, as well as in the <filename>src/groovy</filename> and
+      <filename>test</filename> directories.</para>
+
+      <para>Gradle 0.8 also provides support for CodeNarc in the code-quality
+      plugin, that you can configure in your builds as shown here:</para>
+
+      <para><programlisting>apply plugin: 'code-quality'</programlisting></para>
+
+      <para>This will use the CodeNarc configuration file in
+      <filename>config/codenarc/codenarc.xml</filename> by default. You can
+      override this with the <code>codeNarcConfigFileName</code>
+      property.</para>
+
+      <para>You can generate the CodeNarc reports here by running
+      <command>gradle codenarcMain</command> or, more simply, <command>gradle
+      check</command>.</para>
     </sect2>
   </sect1>
 
-  <sect1 id="sect-build-jobs">
+  <sect1 id="sect-violations">
     <title>Reporting on Code Quality issues with the Violations plugin</title>
 
     <para>One of the most useful code quality plugins for Hudson is the
@@ -561,7 +614,7 @@ task pmd &lt;&lt; {
       <title>Working with Freestyle build jobs</title>
 
       <para>Freestyle build jobs allow you the most configuration flexibility,
-      and are your only option for non-Java projects. </para>
+      and are your only option for non-Java projects.</para>
 
       <para>When you use the Violations plugin with a Freestyle build job, you
       need to specify the paths to each of the XML reports generated by the
@@ -604,7 +657,7 @@ task pmd &lt;&lt; {
       <para>You can also click on this graph to drill down into a particular
       build. Here, you can see number of issues raised for that particular
       build (see <xref linkend="fig-hudson-quality-violations-build" />), with
-      various breakdowns by violation type, severity, and by file. </para>
+      various breakdowns by violation type, severity, and by file.</para>
 
       <para><figure id="fig-hudson-quality-violations-build">
           <title>Violations for a given build</title>
@@ -661,7 +714,7 @@ task pmd &lt;&lt; {
       violations. If there are more than 10, the weather will degrade
       progressively, until at the 200 violations mark, it will become stormy.
       And if there are 500 or more Checkstyle violations, the project will be
-      flagged as unstable. </para>
+      flagged as unstable.</para>
 
       <para>Now look at the configuration for CPD, the duplicated code
       detector that comes with PMD. In this project, we have adopted a
@@ -669,7 +722,7 @@ task pmd &lt;&lt; {
       set to zero. The stormy icon is set to 10, so if there are 10 or more
       copy-paste violations, the project weather indicator will appear as
       stormy. And if the project has 15 or more copy-paste violations, it will
-      be declared unstable. </para>
+      be declared unstable.</para>
 
       <para>Now, on the Dashboard page, this project will appear both with a
       stormy weather icon and as unstable, even though there are no test
@@ -677,7 +730,7 @@ task pmd &lt;&lt; {
       linkend="fig-hudson-quality-violations-rollover" />). This particular
       build is unstable because there are 16 CPD violations. In addition, if
       you place your mouse over the weather icon, Hudson will display some
-      more details about how it calculated this particular status </para>
+      more details about how it calculated this particular status</para>
 
       <para><figure id="fig-hudson-quality-violations-rollover">
           <title>Configuring the violations plugin for a Freestyle
@@ -752,8 +805,8 @@ task pmd &lt;&lt; {
       project. To do this, click on the module you want to configure in the
       Modules screen, and then click on the 'Configure' menu. Here, you will
       see a small subset of the usual configuration options (see <xref
-      linkend="hudson-violations-module-config" />). Here, you just need to
-      activate the 'Violations' option, and configure the thresholds if
+      linkend="fig-hudson-violations-module-config" />). Here, you just need
+      to activate the 'Violations' option, and configure the thresholds if
       required. On the positive side, this means that you can define different
       threshold values for different modules.</para>
 
@@ -775,7 +828,7 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1>
-    <title>Code complexity</title>
+    <title>Reporting on Code Complexity</title>
 
     <para>Code complexity is another important aspect of code quality. Code
     complexity is measured in a number of ways, but one commonly used (and
@@ -789,7 +842,7 @@ task pmd &lt;&lt; {
     and code coverage, to give a general idea of how reliable a particular
     piece of code is. This is based on the (very understandable) idea that
     code that is both complex and poorly tested is more likely to contain bugs
-    than simple, well-tested code. </para>
+    than simple, well-tested code.</para>
 
     <para>The 'Coverage Complexity Scatter Plot Plugin' is designed to let you
     visualize this information in your Hudson builds (see <xref
@@ -832,32 +885,14 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1>
-    <title>Code Quality on Grails projects</title>
-
-    <para></para>
-  </sect1>
-
-  <sect1>
-    <title>Code Quality in Gradle</title>
-
-    <para></para>
-  </sect1>
-
-  <sect1>
-    <title>Code Quality on Ruby/Rails projects</title>
-
-    <para>- Ruby metrics plugin</para>
-  </sect1>
-
-  <sect1>
-    <title>General project health</title>
+    <title>Reporting on open tasks</title>
 
     <para>When it comes to code quality, static analysis is not the only tool
     you can use. Another indicator of the general health of your project can
     be found in the number of FIXME, TODO, @deprecated, and similar tags
     scattered through the source code. If there are a lot of these, it can be
     a sign that your code base has a lot of unfinished work, and is therefore
-    not in a very finalized state. </para>
+    not in a very finalized state.</para>
 
     <para>The Hudson Task Scanners plugin lets you keep track of these sorts
     of tags in your source code, and optionally flag a build with a bad
@@ -895,12 +930,12 @@ task pmd &lt;&lt; {
     issues required for "stormy weather" status.</para>
 
     <para>The plugin generates a graph that shows tag trends by priority (see
-    <xref linkend="hudson-task-scanner-report" />). If you click on the 'Open
-    Tasks' report, you can also see a breakdown of tasks by Maven module,
-    package or file, or even list the open tasks.</para>
+    <xref linkend="fig-hudson-task-scanner-report" />). If you click on the
+    'Open Tasks' report, you can also see a breakdown of tasks by Maven
+    module, package or file, or even list the open tasks.</para>
 
     <para><figure id="fig-hudson-task-scanner-report">
-        <title>The Open Tasks Trend graph </title>
+        <title>The Open Tasks Trend graph</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -940,11 +975,11 @@ task pmd &lt;&lt; {
     <para>Sonar works by running a set of Maven code quality related plugins
     against your Maven project, and storing the results into a database. The
     Sonar server, which you run separately, then analyses and displays the
-    results as shown in <xref linkend="fig-hudson-sonar" />. </para>
+    results as shown in <xref linkend="fig-hudson-sonar" />.</para>
 
     <para>Hudson integrates well with Sonar. The Hudson Sonar Plugin lets you
     define Sonar instances for all of your projects, and then activate Sonar
-    in particular builds. </para>
+    in particular builds.</para>
 
     <para>You install the plugin in the usual way, via the Plugin Manager.
     Once installed, you configure the Hudson Sonar Plugin in the
@@ -985,7 +1020,7 @@ task pmd &lt;&lt; {
     your Sonar build on a separate branch, passing Maven additional
     command-line options (such as extra memory), or overriding the default
     trigger configuration (see <xref
-    linkend="fig-hudson-sonar-config-job" />). </para>
+    linkend="fig-hudson-sonar-config-job" />).</para>
 
     <para><figure id="fig-hudson-sonar-config-job">
         <title>Configuring Sonar in a build job</title>
@@ -1003,6 +1038,8 @@ task pmd &lt;&lt; {
   <sect1>
     <title>Conclusion</title>
 
-    <para>TODO</para>
+    <para>Code quality is an important part of the build process, and Hudson
+    provides excellent support for the wide range of code quality-related
+    tools out there.</para>
   </sect1>
 </chapter>
