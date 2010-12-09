@@ -954,12 +954,16 @@ task pmd &lt;&lt; {
     centralizes a range of code quality metrics into a single web site (see
     <xref linkend="fig-hudson-sonar" />). It uses several Maven plugins
     (Checkstyle, PMD, FindBugs, Cobertura or Clover, and others) to analyse
-    Maven projects and generate comprehensive code quality metrics reports.
-    Sonar reports on code coverage, rule compliance, and documentation, but
-    also on more high-level metrics such as complexity, maintainability and
-    technical debt. The rules used by the various tools are managed and
-    configured on the Sonar web site, and the Maven projects being analysed
-    don't require any particular configuration.</para>
+    Maven projects and generate a comprehensive set of code quality metrics
+    reports. Sonar reports on code coverage, rule compliance, and
+    documentation, but also on more high-level metrics such as complexity,
+    maintainability and even technical debt. You can use plugins to extend its
+    features and add support for other languages (such as support for CodeNarc
+    for Groovy source code). The rules used by the various tools are managed
+    and configured centrally on the Sonar web site, and the Maven projects
+    being analysed don't require any particular configuration. This makes
+    Sonar a great fit for working on Maven projects where you have limited
+    control over the pom files.</para>
 
     <para><figure id="fig-hudson-sonar">
         <title>Code quality reporting by Sonar</title>
@@ -973,25 +977,42 @@ task pmd &lt;&lt; {
       </figure></para>
 
     <para>Sonar works by running a set of Maven code quality related plugins
-    against your Maven project, and storing the results into a database. The
-    Sonar server, which you run separately, then analyses and displays the
-    results as shown in <xref linkend="fig-hudson-sonar" />.</para>
+    against your Maven project, and storing the results into a relational
+    database. The Sonar server, which you run separately, then analyses and
+    displays the results as shown in <xref
+    linkend="fig-hudson-sonar" />.</para>
 
     <para>Hudson integrates well with Sonar. The Hudson Sonar Plugin lets you
     define Sonar instances for all of your projects, and then activate Sonar
-    in particular builds.</para>
+    in particular builds. You can run your Sonar server on a different machine
+    to your Hudson instance, or on the same. The only constraint is that the
+    Hudson instance must have JDBC access to the Sonar database, as it injects
+    code quality metrics directly into the database, without going through the
+    Sonar web site (see <xref
+    linkend="fig-hudson-sonar-architecture" />).</para>
 
-    <para>You install the plugin in the usual way, via the Plugin Manager.
-    Once installed, you configure the Hudson Sonar Plugin in the
+    <para><figure id="fig-hudson-sonar-architecture">
+        <title>Hudson and Sonar</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sonar-architecture.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>You install the plugin in the usual way, via the Plugin
+    Manager. Once installed, you configure the Hudson Sonar Plugin in the
     <command>Configure System</command> screen, in the
-    <command>Sonar</command> section. You can configure as many instances of
-    Sonar as you need. The default configuration assumes that you are running
-    a local instance of Sonar with the default embedded database. This is
-    useful for testing purposes but not very scalable. For a production
-    environment, you will typically run Sonar on a real database such as MySQL
-    or Postgres, you need to configure the JDBC connection to the production
-    Sonar database in Hudson. You do this by clicking on the 'Advanced' button
-    and filling in the appropriate fields (see <xref
+    <command>Sonar</command> section. This involves defining your Sonar
+    instances - you can configure as many instances of Sonar as you need. The
+    default configuration assumes that you are running a local instance of
+    Sonar with the default embedded database. This is useful for testing
+    purposes but not very scalable. For a production environment, you will
+    typically run Sonar on a real database such as MySQL or Postgres, and you
+    will need to configure the JDBC connection to the production Sonar
+    database in Hudson. You do this by clicking on the 'Advanced' button and
+    filling in the appropriate fields (see <xref
     linkend="fig-hudson-sonar-config" />).</para>
 
     <para><figure id="fig-hudson-sonar-config">
@@ -1011,16 +1032,13 @@ task pmd &lt;&lt; {
     than once a day, as Sonar stores metrics in 24-hour slices. The default
     configuration will kick off a Sonar build in a Sonar-enabled build job
     whenever the job is triggered by a periodically scheduled build or by a
-    manual build.</para>
+    manual build. </para>
 
     <para>To activate Sonar in your build job with the system-wide
     configuration options, just check the 'Sonar' option in the
-    <command>Post-build Actions</command>. If you click on the 'Advanced'
-    button, you can specify other more sophisticated options, such as running
-    your Sonar build on a separate branch, passing Maven additional
-    command-line options (such as extra memory), or overriding the default
-    trigger configuration (see <xref
-    linkend="fig-hudson-sonar-config-job" />).</para>
+    <command>Post-build Actions</command> (see <xref
+    linkend="fig-hudson-sonar-config-job" />). Sonar will run whenever your
+    build is started by one of the trigger mechanisms defined above. </para>
 
     <para><figure id="fig-hudson-sonar-config-job">
         <title>Configuring Sonar in a build job</title>
@@ -1032,7 +1050,34 @@ task pmd &lt;&lt; {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
+      </figure>You typically set up Sonar to run on a regular basis, for
+    example every night or once a week. So you can activate Sonar on your
+    normal unit/integration test build job, simply by adding a (see <xref
+    linkend="fig-hudson-sonar-build-schedule" />). This avoids duplicated
+    configuration details between jobs. Or, if you already have a scheduled
+    build job that runs with an appropriate frequency (such as a dedicated
+    code quality metrics build), you can activate Sonar on this build
+    job.<figure id="fig-hudson-sonar-build-schedule">
+        <title>Scheduling Sonar builds</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sonar-build-schedule.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
       </figure></para>
+
+    <para>If you click on the 'Advanced' button, you can specify other more
+    sophisticated options, such as running your Sonar build on a separate
+    branch, passing Maven additional command-line options (such as extra
+    memory), or overriding the default trigger configuration </para>
+
+    <para>By default, Sonar will run even if the normal build fails. This is
+    usually what you want, as Sonar should record build and test failures as
+    well as successful results. However, if required, you can deactivate this
+    option too in the Advanced options.</para>
   </sect1>
 
   <sect1>
@@ -1040,6 +1085,7 @@ task pmd &lt;&lt; {
 
     <para>Code quality is an important part of the build process, and Hudson
     provides excellent support for the wide range of code quality-related
-    tools out there.</para>
+    tools out there. As a result, Hudson should be a key part of your code
+    quality strategy.</para>
   </sect1>
 </chapter>
