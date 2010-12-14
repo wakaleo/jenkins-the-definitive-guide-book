@@ -53,7 +53,7 @@
 
     <para>There are a wide range of code quality reporting plugins available
     for Hudson. Many are for Java static analysis tools, such as Checkstyle,
-    PMD, Findbugs, Cobertura and JDepend. Others, such as fxcop and NCover,
+    PMD, FindBugs, Cobertura and JDepend. Others, such as fxcop and NCover,
     are focused on .NET applications.</para>
 
     <para>With all of these tools, you need to configure your build job to
@@ -82,10 +82,11 @@
 
     <para>The first level of code quality integration should be the IDE.
     Modern IDEs have great support for many code quality tools - Checkstyle,
-    PMD and Findbugs all have Eclipse plugins that you can use to get instant
-    feedback on code quality issues. This is a much faster and more efficient
-    way to provide feedback for individual developers, and to teach developers
-    about the organizational or project coding standards.</para>
+    PMD and FindBugs all have plugins for Eclipse, NetBeans and IntelliJ,
+    which provide rapid feedback for developers on code quality issues. This
+    is a much faster and more efficient way to provide feedback for individual
+    developers, and to teach developers about the organizational or project
+    coding standards.</para>
 
     <para>The second level is your build server. In addition to your normal
     unit and integration test build jobs, set up a dedicated code quality
@@ -125,6 +126,22 @@
 
     <para>There are many open source tools that can help identify poor coding
     practices.</para>
+
+    <para>In the Java world, three static analysis tools have stood the test
+    of time, and are widely used in very complementary ways. Checkstyle excels
+    at checking coding standards and conventions, coding practices, as well as
+    other metrics such code complexity. PMD is a static analysis tool similar
+    to Checkstyle, more focused on coding and design practices. And FindBugs
+    is an innovative tool issued from the ongoing research work of Bill Pugh
+    and his team at the University of Maryland that focuses on identifying
+    potentially dangerous and buggy code. And if you are working with Groovy
+    or Grails, you can use CodeNarc, which checks Groovy coding practices and
+    convention.</para>
+
+    <para>All of these tools can be easily integrated into your build process.
+    In the following sections, we will look at how to set up these tools to
+    generate the XML reports that Hudson can then use for its own
+    reporting.</para>
 
     <sect2>
       <title>Checkstyle</title>
@@ -174,8 +191,37 @@
             </imageobject>
           </mediaobject>
         </figure>Configuring Checkstyle in your build is usually
-      straight-forward. In Maven 2, you would add something like the following
-      to the <code>&lt;reporting&gt;</code> section:<programlisting>&lt;reporting&gt;
+      straight-forward. If you are using Ant, you need to download the
+      checkstyle jar file from the website
+      (<uri>http://checkstyle.sourceforge.net</uri>) and make it available to
+      Ant. You could place it in your Ant <filename>lib</filename> directory,
+      but this would mean customizing the Ant installation on your build
+      server (and any slave nodes), so it is not a very portable solution. A
+      better approach would be to place the Checkstyle jar file in one of your
+      project directories, or to use Ivy or the Maven Ant Task library to
+      declare a dependency on Checkstyle. If you opt for keeping the
+      Checkstyle JAR file in the project directories, you could declare the
+      Checkstyle task as shown here:</para>
+
+      <para><programlisting><uri>&lt;taskdef resource="checkstyletask.properties"
+         classpath="lib/checkstyle-5.3-all.jar"/&gt;</uri></programlisting></para>
+
+      <para>Then, to generate Checkstyle reports in an XML format that Hudson
+      can use, you could do the following:</para>
+
+      <para><programlisting><uri>&lt;target name="checkstyle"&gt;
+  &lt;checkstyle config="src/main/config/company-checks.xml"&gt;
+    &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+    &lt;formatter type="plain"/&gt; 
+    &lt;formatter type="xml"/&gt;
+  &lt;/checkstyle&gt;
+&lt;/target&gt;</uri></programlisting></para>
+
+      <para>Now, just invoke this task (e.g. <command>ant
+      checkstyle</command>) to generate the Checkstyle reports.</para>
+
+      <para>In Maven 2, you could add something like the following to the
+      <code>&lt;reporting&gt;</code> section:<programlisting>&lt;reporting&gt;
   &lt;plugins&gt;
       &lt;plugin&gt;
         &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
@@ -183,7 +229,7 @@
         &lt;version&gt;2.4&lt;/version&gt;
         &lt;configuration&gt;
           &lt;configLocation&gt;
-            ${sonar.url}/rules_configuration/export/java/My_Rules/checkstyle.xml
+            src/main/config/company-checks.xml
           &lt;/configLocation&gt;
         &lt;/configuration&gt;
       &lt;/plugin&gt;
@@ -194,7 +240,9 @@
       <code>&lt;reportPlugins&gt;</code> element of the
       <code>&lt;configuration&gt;</code> section of the
       <code>maven-site-plugin</code>:<programlisting>&lt;project&gt;
-  ...
+  &lt;properties&gt;
+    &lt;sonar.url&gt;http://buildserver.acme.org:9000&lt;/sonar.url&gt;
+  &lt;/properties&gt;
   &lt;build&gt;
     ...
      &lt;plugins&gt;
@@ -226,7 +274,7 @@
       <command>mvn site</command> will analyse your source code and generate
       XML reports that Hudson can use.</para>
 
-      <para>Note that in this example, we are using a Checkstyle ruleset that
+      <para>Note that in the last example, we used a Checkstyle ruleset that
       we have uploaded to a Sonar server (defined by the ${sonar.url}
       property). This strategy makes it easy to use the same set of Checkstyle
       rules for Eclipse, Maven, Hudson and Sonar.</para>
@@ -268,7 +316,7 @@
       still pick and choose the rules you want to use in Eclipse, and then
       export them as an XML file (see <xref
       linkend="fig-hudson-quality-pmd" />). You can then import this rule set
-      into other Eclipse projects, into Sonar, or use it in your Maven
+      into other Eclipse projects, into Sonar, or use it in your Ant or Maven
       builds.</para>
 
       <para><figure id="fig-hudson-quality-pmd">
@@ -283,11 +331,46 @@
           </mediaobject>
         </figure></para>
 
-      <para>You can place this XML ruleset in your project classpath (for
-      example, in <code>src/main/resources</code> for a Maven project), or in
-      a separate module (if you want to share the configuration between
-      projects). An example of how to configure Maven 2 to generate PMD and
-      CPD reports using an exported XML ruleset as shown here:</para>
+      <para>PMD comes with an Ant task that you can use to generate the PMD
+      and CPD reports. First, though, you need to define these tasks, as shown
+      in the following example:<programlisting>&lt;path id="pmd.classpath"&gt;
+    &lt;pathelement location="${build}"/&gt;
+    &lt;fileset dir="lib/pmd"&gt;
+        &lt;include name="*.jar"/&gt;
+    &lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
+         classpathref="pmd.classpath"/&gt;
+
+ &lt;taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" 
+          classpathref="pmd.classpath"/&gt;</programlisting>Next, you can
+      generate the PMD XML report by invoking the PMD task as illustrated here
+      (using some :</para>
+
+      <para><programlisting>&lt;target name="pmd"&gt;
+ &lt;taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
+          classpathref="pmd.classpath"/&gt;
+
+ &lt;pmd rulesetfiles="basic" shortFilenames="true"&gt;
+  &lt;formatter type="xml" toFile="target/pmd.xml" /&gt;
+  &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+ &lt;/pmd&gt;
+&lt;/target&gt;</programlisting></para>
+
+      <para>And, to generate the CPD XML report, you could do something like
+      this:</para>
+
+      <para><programlisting>&lt;target name="cpd"&gt;
+  &lt;cpd minimumTokenCount="100" format="xml" outputFile="/target/cpd.xml"&gt;
+    &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+  &lt;/cpd&gt;
+&lt;/target&gt;</programlisting>You can place this XML ruleset in your project
+      classpath (for example, in <code>src/main/resources</code> for a Maven
+      project), or in a separate module (if you want to share the
+      configuration between projects).An example of how to configure Maven 2
+      to generate PMD and CPD reports using an exported XML ruleset as shown
+      here:</para>
 
       <para><programlisting>&lt;reporting&gt;
   &lt;plugins&gt;
@@ -419,21 +502,54 @@ task pmd &lt;&lt; {
     <sect2>
       <title>FindBugs</title>
 
-      <para>FindBugs is a code quality analysis tool that checks your
+      <para>FindBugs is a powerful code quality analysis tool that checks your
       application byte code for potential bugs, performance problems, or poor
-      coding habits. Findbugs can detect some fairly significant issues such
-      as null pointer exceptions, infinite loops, and unintentionally
-      accessing the internal state of an object. Unlike many other static
-      analysis tools, Findbugs tends to find a smaller number of issues, but
-      of those issues, a larger proportion will be important.</para>
+      coding habits. FindBugs is the result of research carried out at the
+      University of Maryland lead by Bill Pugh, which studies byte code
+      patterns coming from bugs in large real-world projects, such as the
+      JDKs, Eclipse, and source code from Google applications. FindBugs can
+      detect some fairly significant issues such as null pointer exceptions,
+      infinite loops, and unintentionally accessing the internal state of an
+      object. Unlike many other static analysis tools, FindBugs tends to find
+      a smaller number of issues, but of those issues, a larger proportion
+      will be important.</para>
 
-      <para>FindBugs is less configurable than the other tools we have seen.
-      You can list the individual rules you want to apply, but you can't
-      configure a shared XML file between your Maven builds and your IDE, for
-      example.</para>
+      <para>FindBugs is less configurable than the other tools we have seen,
+      though in practice you generally don't need to fine-tune the rules as
+      much as the other tools we've discussed. You can list the individual
+      rules you want to apply, but you can't configure a shared XML file
+      between your Maven builds and your IDE, for example.</para>
 
-      <para>You can configure FindBugs in a Maven build as shown here (for
-      Maven 2):<programlisting>&lt;reporting&gt;
+      <para>FindBugs comes bundled with an Ant task. You can define the
+      FindBugs task in Ant as shown below. FindBugs needs to refer to the
+      FindBugs home directory, which is where the binary distribution of
+      FindBugs has been unzipped. To make the build more portable, we are
+      storing the FindBugs installation in our project directory structure, in
+      the <filename>tools/findbugs</filename> directory.</para>
+
+      <para><programlisting>&lt;property name="findbugs.home" value="tools/findbugs" /&gt;
+
+&lt;taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" &gt; 
+  &lt;classpath&gt;
+    &lt;fileset dir="${findbugs.home}/lib" includes="**/*.jar"/&gt;
+  &lt;/classpath&gt;
+&lt;/taskdef&gt;</programlisting></para>
+
+      <para>Then, to run FindBugs, you could set up a "findbugs" target as
+      shown below. Note that FindBugs runs against your application byte-code,
+      not your source code, so you need to compile your source code
+      first.</para>
+
+      <para><programlisting>&lt;target name="findbugs" depends="compile"&gt; 
+  &lt;findbugs home="${findbugs.home}" output="xml" outputFile="target/findbugs.xml"&gt;
+    &lt;class location="${classes.dir}" /&gt; 
+    &lt;auxClasspath refId="dependency.classpath" /&gt; 
+    &lt;sourcePath path="src/main/java" /&gt;
+  &lt;/findbugs&gt;
+&lt;/target&gt;</programlisting>If you are using Maven 2, you don't need to
+      keep a local copy of the FindBugs installation. You just need to
+      configure FindBugs in the reporting section as shown
+      here:<programlisting>&lt;reporting&gt;
   &lt;plugins&gt;
     &lt;plugin&gt;
       &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
@@ -481,7 +597,7 @@ task pmd &lt;&lt; {
       <filename>target</filename> directory.</para>
 
       <para>At the time of writing there is no special support for FindBugs in
-      Gradle, so you need to invoke the Findbugs Ant plugin.</para>
+      Gradle, so you need to invoke the FindBugs Ant plugin.</para>
     </sect2>
 
     <sect2>
@@ -550,7 +666,7 @@ task pmd &lt;&lt; {
         <term>For Java</term>
 
         <listitem>
-          <para>Checkstyle, CPD, PMD and Findbugs, and also jcreport</para>
+          <para>Checkstyle, CPD, PMD and FindBugs, and also jcreport</para>
         </listitem>
       </varlistentry>
 
@@ -755,7 +871,7 @@ task pmd &lt;&lt; {
       plugin with a Maven build job, Hudson uses these conventions to reduce
       the amount of work you need to do to configure the plugin. You don't
       need to tell Hudson where to find the XML reports for many of the static
-      analysis tools (for example, Checkstyle, PMD, Findbugs and CPD), as
+      analysis tools (for example, Checkstyle, PMD, FindBugs and CPD), as
       Hudson can figure thia out based from the Maven conventions and plugin
       configurations (see <xref linkend="fig-hudson-maven-violations" />). If
       you do need to override these conventions, you can choose the 'Pattern'
@@ -828,6 +944,92 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1>
+    <title>Using the Checkstyle, PMD and FindBugs reports</title>
+
+    <para>You can also report individually on results from Checkstyle, PMD and
+    FindBugs. In addition to the Violations plugin, there are also Hudson
+    plugins that produce trend graphs and detailed reports for each of these
+    tools individually. We will look at how to do this for Checkstyle, but the
+    same approach also applies for PMD and FindBugs. You can even use the
+    Analysis Collector Plugin to display the combined results in a graph
+    similar to the one produced by the Violations plugin.</para>
+
+    <para>You can install these plugins through the Plugin Manager in the
+    usual way. The plugins in question are called, unsurprisingly, "Checkstyle
+    Plugin", "PMD Plugin", and "FindBugs Plugin". All of these plugins use the
+    Static Analysis Utilities plugin, which you need to install as well (see
+    <xref linkend="fig-hudson-analysis-plugins" />). </para>
+
+    <para><figure id="fig-hudson-analysis-plugins">
+        <title>Installing the Checkstyle and Static Analysis Utilities
+        plugins</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-analysis-plugins.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have installed these plugins, you can set up the
+    reporting in your project configuration. Tick the 'Publish Checkstyle
+    analysis results' checkbox. In a freestyle build, you will need to specify
+    a path pattern to find the Checkstyle XML reports; in a Maven 2 build,
+    Hudson will figure out where to look for them by itself. </para>
+
+    <para>This will provide basic Checkstyle reporting, but as usual you can
+    fine-tune things further by clicking on the 'Advanced' button. In a Maven
+    2 build, you can configure the health threshold values (how many
+    violations will cause the build to go from sunny to stormy), and also
+    filter the priority violations you want to include in this calculation.
+    For example, you may only want high priority issues to be taken into
+    account for the weather icon status.</para>
+
+    <para>The Freestyle builds have a few more options you can configure: in
+    particular, you can cause the build to become unstable (yellow ball) or
+    even to fail (red ball) if there are more than a given number of
+    violations, or if there are more than a given number of new violations
+    (see <xref linkend="fig-hudson-checkstyle-config" />). So, in the
+    configuration in the illustration, if there are more than 50 new
+    checkstyle violations of any priority in a build, the build will be
+    flagged as unstable. This certainly has its uses for Checkstyle, but it
+    can also come in very handy with FindBugs, where high priority issues
+    often represent dangerous and potentially show-stopping bugs.</para>
+
+    <para><figure id="fig-hudson-checkstyle-config">
+        <title>Configuring the Checkstyle plugin</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-checkstyle-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Now, when the build runs, Hudson will now generate a trend
+    graph and detailed reports for the Checkstyle violations (see <xref
+    linkend="fig-hudson-checkstyle-trend" />). From here, you can drill down
+    to see violations per priority, per category, per run type, per package,
+    and so on.</para>
+
+    <para><figure id="fig-hudson-checkstyle-trend">
+        <title>Configuring the Checkstyle plugin</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-checkstyle-trend.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>As we mentioned earlier, the same approach also works with the
+    'PMD Plugin' and the 'FindBugs Plugin'. These plugins are a great way to
+    provide more focused reporting on the results of a particular tool, and
+    also give you more control over the impact that these violations will have
+    on the build results.</para>
+  </sect1>
+
+  <sect1>
     <title>Reporting on Code Complexity</title>
 
     <para>Code complexity is another important aspect of code quality. Code
@@ -879,9 +1081,11 @@ task pmd &lt;&lt; {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>At the time of writing, this plugin requires Clover (so your
-    build needs to have generated a Clover XML coverage report). However
-    support for Cobertura and other tools is planned.</para>
+      </figure>At the time of writing, this plugin requires Clover, so your
+    build needs to have generated a Clover XML coverage report, and you need
+    to have installed and configured the Clover Hudson Plugin (see <xref
+    linkend="sect-clover" />). However support for Cobertura and other tools
+    is planned.</para>
   </sect1>
 
   <sect1>
@@ -1032,13 +1236,13 @@ task pmd &lt;&lt; {
     than once a day, as Sonar stores metrics in 24-hour slices. The default
     configuration will kick off a Sonar build in a Sonar-enabled build job
     whenever the job is triggered by a periodically scheduled build or by a
-    manual build. </para>
+    manual build.</para>
 
     <para>To activate Sonar in your build job with the system-wide
     configuration options, just check the 'Sonar' option in the
     <command>Post-build Actions</command> (see <xref
     linkend="fig-hudson-sonar-config-job" />). Sonar will run whenever your
-    build is started by one of the trigger mechanisms defined above. </para>
+    build is started by one of the trigger mechanisms defined above.</para>
 
     <para><figure id="fig-hudson-sonar-config-job">
         <title>Configuring Sonar in a build job</title>
@@ -1072,7 +1276,7 @@ task pmd &lt;&lt; {
     <para>If you click on the 'Advanced' button, you can specify other more
     sophisticated options, such as running your Sonar build on a separate
     branch, passing Maven additional command-line options (such as extra
-    memory), or overriding the default trigger configuration </para>
+    memory), or overriding the default trigger configuration</para>
 
     <para>By default, Sonar will run even if the normal build fails. This is
     usually what you want, as Sonar should record build and test failures as
