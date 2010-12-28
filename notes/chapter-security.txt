@@ -1,0 +1,120 @@
+# Security in Hudson
+
+## Securing your Hudson instance
+
+- In smaller organizations, where developers work in close proximity, security on your Hudson machine may not be a large concern.
+- For larger organizations,
+- For projects where Hudson is used beyond the development arena, and is also used to help automate deployment to non-development environments (such as testing or production environments)
+- Audit trail
+
+## Enabling Security
+
+You set up security in Hudson in the 'Configure Hudson' screen. First, tick the 'Enable security' checkbox. 
+
+The simplest approach - authenticated users can do anything.
+- Great for teams with a dedicated Hudson instance
+- Can be synchronized with version control users
+
+## Hudson's built-in user database
+
+Hudson maintains a database of the users who have committed changes to projects under its control. This is a good option if you want to keep things simple, as very little setup or configuration is required. Hudson adds users to this database whenever a change is committed. You can view the list of currently known users by clicking on the 'People' menu entry (see figure). Here, you can visualize the users that Hudson currently knows about, and also see the last project they committed changes to.
+
+<figure hudson-security-users>
+
+These users are based on the user names coming from your version control system. However the usernames by themselves are relatively limited -  Hudson can do a lot more if it also knows the corresponding email addresses. And although Hudson cannot 
+
+If you click on a user in the list, Hudson will display the details about this given user, including the user's full name, and the builds this user has contributed too (just click on the 'Builds' menu entry). From here, you also have the option to modify or complete the details about this user, such as their email address.
+
+<figure hudson-security-configure-user>
+
+If your email addresses are synchronized with your version control usernames (for example, if you work at acme.com, and user 'joe' in your version control system has an email address of 'joe@acme.com'), you can get Hudson to derive the email address from a username by adding a suffix that you configure in the 'Email Notification' section (see figure).
+
+<figure security-email-config>
+
+If you activate security using Hudson's internal database, users will still have to sign up with the SCM username to provide a password. This is why it is important to make sure the 'Allow users to sign up' option is checked when using this option. 
+
+When you save your configuration changes, Hudson will now display links at the top of the screen where users can either log in or (if you have checked the option discussed previously) sign up (see figure). Users can sign up with any username, but if the user signs up with an SCM username, this user login will be associated with the corresponding SCM user.
+
+<figure hudson-security-hudsons-database>
+
+Using the internal database is obviously a fairly light-weight approach to security. It is more a convenient way to keep track of which users are working with Hudson.
+
+You can limit user access on a user-by-user basis, using the various authentication schemes that we discuss later on in the chapter.
+
+<figure hudson-security-hudsons-database>
+
+If you forget to do this, you can end up locking yourself out of Hudson. 
+
+
+## Keeping track of user actions
+
+In addition to configuring user accounts and access rights, it can also be useful to keep track of the individual actions that users performed: in other words, who did what to your server configuration. This sort of audit trail facility is even required in many organizations. 
+
+As is often the case, Hudson has a plugin for that. The Audit Trail Plugin keeps track of user actions in a set of rolling log files. 
+
+To set this up, go to the 'Plugin Manager' page and select the 'Audit Trail Plugin' in the list of available plugins. Then, as usual, click on Install and restart Hudson once the plugin has been downloaded.
+
+You can set up the audit trail configuration in the Audit Trail section of the main Hudson configuration page (see figure). The most important field is the Log Location, which is where you indicate the directory in which the log files are to be written. The audit trail is designed to produce system-style log files, which are often placed in a special system directory such as /var/log.  
+
+<figure hudson-security-audit-trail>
+
+By default, the details recorded in the audit logs are fairly sparse - they effectively record key actions performed, such as creating, modifying or deleting job configurations or views, and the user who performed the actions. The log also shows how individual build jobs started. An extract of the default log is shown here:
+
+	Dec 27, 2010 9:16:08 AM /job/game-of-life/configSubmit by johnsmart
+	Dec 27, 2010 9:16:42 AM /view/All/createItem by johnsmart
+	Dec 27, 2010 9:16:57 AM /job/game-of-life-prod-deployment/doDelete by johnsmart
+	Dec 27, 2010 9:24:38 AM job/game-of-life/ #177 Started by user johnsmart
+	Dec 27, 2010 9:25:57 AM job/game-of-life-acceptance-tests/ #107 Started by upstream project "game-of-life" build number 177
+	Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstream project "game-of-life" build number 177
+	Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart
+
+This audit trail is useful, especially to know who created or deleted certain build jobs. However it doesn't provide any information about the exact changes that were made the the Hudson configuration. And one of the most important reasons to keep track of user actions in Hudson is to keep tabs on exactly what changes were made to build job configurations. When something goes wrong, it can be useful to know what changes were done and so be able to undo them. The JobConfigHistory plugin lets you do just this.
+
+The JobConfigHistory plugin is a powerful tool that lets you keep a full history of changes made to both job and system configuration files. You install it from the Plugin Manager in the usual way (see figure). 
+
+<figure hudson-security-jobconfig-plugin>
+
+You can fine-tune the job history configuration in the Manage Hudson screen (see figure). Here, you can configure a number of useful non-standard options. In particular, you should specify a directory where Hudson can store configuration history, in the 'Root history folder' field. This is the directory where Hudson will store a record of both system-related and job-related configuration changes. It can be either an absolute directory (such as '/var/hudson/history'), or a relative directory, calculated from the Hudson home directory (see sec-hudson-home-directory). If you don't do this, job configuration history will be stored with the jobs, and will be lost if you delete a job. 
+
+There are a few other useful options in the 'Advanced' section. The 'Save system configuration changes' lets you keep track of system-wide configuration updates, and not just job-specific ones. And the 'Do not save duplicate history' checkbox allows you to avoid recording configuration updates if no actual changes have been made. If not, a new version of the configuration will be recorded, even if you have only pressed the 'Save' button without making any changes. Hudson can also cause this to happen internally - for example, system configuration settings are all saved whenever the main configuration page is saved, even if no changes have been made.
+
+<figure hudson-security-confighistory-setup>
+
+Once you have set up this plugin, you can access the configuration history both for the whole server, including system configuration updates, as well as the changes made to the configuration of each project. In both cases, you can view these changes by clicking on the 'Job Config History' icon to the right of the screen. 
+
+Clicking on this icon from the Hudson dashboard will display a view of all of your configuration history, including job changes and system-wide changes (see figure). 
+
+<figure hudson-jobconfig-global-history>
+
+If you click on a system-wide change (indicated by the "(system)" suffix in the list), Hudson takes you to a screen that lists all of the versions of that file, and allows you to view the differences between the different versions (see figure hudson-jobconfig-config-history). The differences are displayed as 'diff' files, which is not particularly readable in itself. However, for small changes, the readable XML format of most of the Hudson configuration files makes this sufficient to understand what changes were made. 
+
+<figure hudson-jobconfig-config-history>
+
+The JobConfigHistory plugin is a powerful tool. However, at the time of writing, it does have its limits. As mentioned, the plugin only displays the differences in raw 'diff' format, and you can't restore a previous version of a configuration file (those doing this out of context could be dangerous in some circumstances, particularly for system-wide configuration files). Nevertheless, it gives a very clear picture of the changes that have been made, both to your build jobs and to your system configuration.
+
+- Viewing the list of Hudson users
+- 
+
+- Hudson Security
+
+
+- Hudson security realms - who can use Hudson
+	- Built-in database
+	- LDAP integration
+	- Delegate to servlet container
+	- Unix user/groups
+
+
+	
+- Hudson authorization - who can do what?
+	- Anyone can do anything
+	- Logged-in users can do anything
+	- Matrix-based security - user roles
+	- Project-based security - user roles per project
+
+	
+- Security strategies
+	- Set it up early - hard to retrofit security to existing projects
+	- A different Hudson instance for each team / the same instance for everyone
+	-
+- Setting up security

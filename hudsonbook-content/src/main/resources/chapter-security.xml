@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter>
+  <title>Securing Hudson</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>security</primary>
+      </indexterm>TODO</para>
+  </sect1>
+
+  <sect1>
+    <title>Activating Security in Hudson</title>
+
+    <para>TODO</para>
+
+    <para></para>
+
+    <figure id="fig-hudson-enabling-security">
+      <title>Enabling security in Hudson</title>
+
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/hudson-enabling-security.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+
+  <sect1>
+    <title>Keeping track of user actions</title>
+
+    <para>In addition to configuring user accounts and access rights, it can
+    also be useful to keep track of the individual actions that users
+    performed: in other words, who did what to your server configuration. This
+    sort of audit trail facility is even required in many
+    organizations.</para>
+
+    <para>There are two Hudson plugins that can help you do this. The Audit
+    Trail Plugin keeps a record of user changes in a special log file. And the
+    JobConfigHistory Plugin lets you keep a copy of previous versions of the
+    various system and job configuration files that Hudson uses.</para>
+
+    <para>The <command>Audit Trail Plugin</command> keeps track of the main
+    user actions in a set of rolling log files. To set this up, go to the
+    'Plugin Manager' page and select the 'Audit Trail Plugin' in the list of
+    available plugins. Then, as usual, click on Install and restart Hudson
+    once the plugin has been downloaded.</para>
+
+    <para>You can set up the audit trail configuration in the Audit Trail
+    section of the main Hudson configuration page (see <xref
+    linkend="fig-hudson-security-audit-trail" />). The most important field is
+    the Log Location, which is where you indicate the directory in which the
+    log files are to be written. The audit trail is designed to produce
+    system-style log files, which are often placed in a special system
+    directory such as <filename>/var/log</filename>. You can also configure
+    the number of log files to be maintained, and the (approximate) maximum
+    size of each file. The simplest option is to provide an absolute path
+    (such as <filename>/var/log/hudson.log</filename>), in which case Hudson
+    will write to log files with names like
+    <filename>/var/log/hudson.log.1</filename>,
+    <filename>/var/log/hudson.log.2</filename> and so forth. Of course, you
+    need to ensure that the user running your Hudson instance is allowed to
+    write to this directory.</para>
+
+    <para><figure id="fig-hudson-security-audit-trail">
+        <title>Enabling security in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-audit-trail.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>You can also use the format defined in the Java logging <ulink
+    url="http://download.oracle.com/javase/1.5.0/docs/api/java/util/logging/FileHandler.html">FileHandler</ulink>
+    class for more control over the generated log files. In this format, you
+    can insert variables such as '%h', for the current user's home directory,
+    and '%t', for the system temporary directory, to build a more dynamic file
+    path. </para>
+
+    <para>By default, the details recorded in the audit logs are fairly sparse
+    - they effectively record key actions performed, such as creating,
+    modifying or deleting job configurations or views, and the user who
+    performed the actions. The log also shows how individual build jobs
+    started. An extract of the default log is shown here:</para>
+
+    <para><programlisting>Dec 27, 2010 9:16:08 AM /job/game-of-life/configSubmit by johnsmart
+Dec 27, 2010 9:16:42 AM /view/All/createItem by johnsmart
+Dec 27, 2010 9:16:57 AM /job/game-of-life-prod-deployment/doDelete by johnsmart
+Dec 27, 2010 9:24:38 AM job/game-of-life/ #177 Started by user johnsmart
+Dec 27, 2010 9:25:57 AM job/game-of-life-acceptance-tests/ #107 Started by upstream project 
+"game-of-life" build number 177
+Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstream project 
+"game-of-life" build number 177
+Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
+    trail is useful, but it doesn't provide any information about the exact
+    changes that were made the the Hudson configuration. Nevertheless, one of
+    the most important reasons to keep track of user actions in Hudson is to
+    keep tabs on exactly what changes were made to build job configurations.
+    When something goes wrong, it can be useful to know what changes were done
+    and so be able to undo them. The <command>JobConfigHistory
+    Plugin</command> lets you do just this.</para>
+
+    <para></para>
+
+    <figure id="fig-hudson-enabling-security">
+      <title>Enabling security in Hudson</title>
+
+      <mediaobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/hudson-enabling-security.png"
+                     width="4.3in" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>TODO</para>
+  </sect1>
+</chapter>
