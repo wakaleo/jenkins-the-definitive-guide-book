@@ -98,7 +98,8 @@ Dec 27, 2010 9:25:57 AM job/game-of-life-acceptance-tests/ #107 Started by upstr
 Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstream project 
 "game-of-life" build number 177
 Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
-    trail is useful, but it doesn't provide any information about the exact
+    trail is certainly useful, especially from a system administration
+    perspective. However, it doesn't provide any information about the exact
     changes that were made the the Hudson configuration. Nevertheless, one of
     the most important reasons to keep track of user actions in Hudson is to
     keep tabs on exactly what changes were made to build job configurations.
@@ -106,18 +107,89 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     and so be able to undo them. The <command>JobConfigHistory
     Plugin</command> lets you do just this.</para>
 
-    <para></para>
+    <para>The JobConfigHistory plugin is a powerful tool that lets you keep a
+    full history of changes made to both job and system configuration files.
+    You install it from the Plugin Manager in the usual way. Once installed,
+    you can fine-tune the job history configuration in the <command>Manage
+    Hudson</command> screen (see figure <xref
+    linkend="fig-hudson-security-confighistory-setup" />). </para>
 
-    <figure id="fig-hudson-enabling-security">
-      <title>Enabling security in Hudson</title>
+    <para><figure id="fig-hudson-security-confighistory-setup">
+        <title>Setting up Job Configuration History</title>
 
-      <mediaobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/hudson-enabling-security.png"
-                     width="4.3in" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-confighistory-setup.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Here, you can configure a number of useful non-standard
+    options. In particular, you should specify a directory where Hudson can
+    store configuration history, in the 'Root history folder' field. This is
+    the directory where Hudson will store a record of both system-related and
+    job-related configuration changes. It can be either an absolute directory
+    (such as '/var/hudson/history'), or a relative directory, calculated from
+    the Hudson home directory (see <xref
+    linkend="sec-hudson-home-directory" />). If you don't do this, job
+    configuration history will be stored with the jobs, and will be lost if
+    you delete a job. </para>
+
+    <para>There are a few other useful options in the 'Advanced' section. The
+    'Save system configuration changes' checkbox lets you keep track of
+    system-wide configuration updates, and not just job-specific ones. And the
+    'Do not save duplicate history' checkbox allows you to avoid recording
+    configuration updates if no actual changes have been made. If not, a new
+    version of the configuration will be recorded, even if you have only
+    pressed the 'Save' button without making any changes. Hudson can also
+    cause this to happen internally - for example, system configuration
+    settings are all saved whenever the main configuration page is saved, even
+    if no changes have been made. </para>
+
+    <para>Once you have set up this plugin, you can access the configuration
+    history both for the whole server, including system configuration updates,
+    as well as the changes made to the configuration of each project. In both
+    cases, you can view these changes by clicking on the 'Job Config History'
+    icon to the right of the screen. Clicking on this icon from the Hudson
+    dashboard will display a view of all of your configuration history,
+    including job changes and system-wide changes (see figure <xref
+    linkend="fig-hudson-jobconfig-global-history" />). </para>
+
+    <para><figure id="fig-hudson-security-confighistory-setup">
+        <title>Setting up Job Configuration History</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-jobconfig-global-history.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>If you click on a system-wide change (indicated by the
+    "(system)" suffix in the list), Hudson takes you to a screen that lists
+    all of the versions of that file, and allows you to view the differences
+    between the different versions (see figure <xref
+    linkend="fig-hudson-jobconfig-config-history" />). The differences are
+    displayed as 'diff' files, which is not particularly readable in itself.
+    However, for small changes, the readable XML format of most of the Hudson
+    configuration files makes this sufficient to understand what changes were
+    made. </para>
+
+    <para><figure id="fig-hudson-jobconfig-config-history">
+        <title>Setting up Job Configuration History</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-jobconfig-config-history.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The JobConfigHistory plugin is a powerful tool. However, at the
+    time of writing, it does have its limits. As mentioned, the plugin only
+    displays the differences in raw 'diff' format, and you can't restore a
+    previous version of a configuration file (those doing this out of context
+    could be dangerous in some circumstances, particularly for system-wide
+    configuration files). Nevertheless, it gives a very clear picture of the
+    changes that have been made, both to your build jobs and to your system
+    configuration.</para>
   </sect1>
 
   <sect1>
