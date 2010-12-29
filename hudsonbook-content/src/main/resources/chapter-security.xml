@@ -102,18 +102,358 @@
   </sect1>
 
   <sect1>
-    <title>Role or Matrix-based security</title>
+    <title>Matrix-based security</title>
 
     <para>Letting signed-in users do anything is certainly flexible, and may
     be all you need for a small team. For larger or multiple teams, or cases
     where Hudson is being used outside the development environment, a more
-    sophisticated approach is generally required. </para>
+    sophisticated approach is generally required.</para>
 
-    <para>- Setting up an admin user</para>
+    <para>Matrix-based security is a more sophisticated approach, where
+    different users are assigned different rights, using a role-based
+    approach.</para>
 
-    <para>- Help! I've locked myself out!</para>
+    <sect2>
+      <title>Setting up matrix-based security</title>
 
-    <para>- </para>
+      <para>The first step in setting up matrix-based security in Hudson is to
+      create an administrator. <emphasis>This is an essential step, and must
+      be done before all others.</emphasis> Now your administrator can be an
+      existing user, or one created specially for the purpose. If you want to
+      create a dedicated administrator user, simply create one by signing up
+      in the usual way (see <xref linkend="fig-hudson-user-signup" />). It
+      doesn't have to be associated with an SCM user.</para>
+
+      <para>Once you have your admin user ready, you can activate matrix-based
+      security by selecting 'Matrix-based security' in the 'Authorization'
+      section of the main configuration page. Hudson will display a table
+      containing authorized users, and check boxes corresponding to the
+      various permissions that you can assign to these users (see <xref
+      linkend="hudson-matrix-anonymous" />).</para>
+
+      <para><figure id="fig-hudson-matrix-anonymous">
+          <title>Matrix-based security configuration</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-matrix-anonymous.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The special 'anonymous' user is always present in the table.
+      This user represents unauthenticated users. Typically, you only grant
+      very limited rights to unauthenticated users, such as read-only access
+      (as shown in <xref linkend="hudson-matrix-anonymous" />), or no access
+      at all.</para>
+
+      <para>The first thing you need to do now is to grant administration
+      rights to your administrator. Add your administration user in the
+      'User/group to add' field and click on 'Add'. Your administrator will
+      now appear in the permissions matrix. Now make sure you grant this user
+      every permission (see <xref linkend="fig-hudson-matrix-admin" />), and
+      save your configuration. You should now be able to log in with your
+      administrator account (if you aren't already logged in with this
+      account) and continue to set up your other users.</para>
+
+      <para><figure id="fig-hudson-matrix-admin">
+          <title>Setting up an administrator</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-matrix-admin.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Fine tuning user permissions</title>
+
+      <para>Once you have set up your administrator account, you can add any
+      other users that need to access your Hudson instance. Simply add the
+      user names and tick the permissions you want to grant them (see <xref
+      linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
+      or Unix users and groups as the underlying authentication schema (see
+      <xref linkend="sec-security-ldap" />), you can also configure
+      permissions for groups of users.</para>
+
+      <para><figure id="fig-hudson-matrix-users">
+          <title>Setting up other users</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-matrix-users.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>You can grant a range of permissions, which are organized
+      into several groups: Overall, Slave, Job, Run, View and SCM. Most of the
+      permissions are fairly obvious, but some need a little more explanation.
+      The individual permissions are as follows:</para>
+
+      <variablelist>
+        <varlistentry>
+          <term><emphasis>Overall</emphasis></term>
+
+          <listitem>
+            <para>This group covers basic system-wide permissions:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Administer</term>
+
+                <listitem>
+                  <para>Lets a user make system-wide configuration changes and
+                  other sensitive operation, for example in the main Hudson
+                  configuration pages. This should be reserved for the Hudson
+                  administrator.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Read</term>
+
+                <listitem>
+                  <para>This permission provides read-only access to virtually
+                  all of the pages in Hudson. If you don't want anonymous
+                  users to be able to see build jobs, you simply revoke this
+                  permission for the Anonymous user. If you want all
+                  authenticated users to be able to see build jobs, then add a
+                  special user called 'Authenticated', and grant this user
+                  Overall/Read permission.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis>Slave</emphasis></term>
+
+          <listitem>
+            <para>This group covers permissions about remote build nodes, or
+            slaves:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Configure</term>
+
+                <listitem>
+                  <para>Create and configure new build nodes.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Delete</term>
+
+                <listitem>
+                  <para>Delete build nodes.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis>Job</emphasis></term>
+
+          <listitem>
+            <para>This group covers job-related permissions:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Create</term>
+
+                <listitem>
+                  <para>Create a new build job</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Delete</term>
+
+                <listitem>
+                  <para>Delete an existing build job</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Configure</term>
+
+                <listitem>
+                  <para>Update the configuration of an existing build
+                  jobs</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Read</term>
+
+                <listitem>
+                  <para>View build jobs</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Build</term>
+
+                <listitem>
+                  <para>Start a build job</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Workspace</term>
+
+                <listitem>
+                  <para>View and download the workspace contents for a build
+                  job. Remember, the workspace contains source code and
+                  artifacts, so if you want to protect these from general
+                  access, you should revoke this permission.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Release</term>
+
+                <listitem>
+                  <para>Start a Maven release for a project configured with
+                  the M2Release plugin.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis>Run</emphasis></term>
+
+          <listitem>
+            <para>This group covers rights related to particular builds in the
+            build history:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Delete</term>
+
+                <listitem>
+                  <para>Delete a build from the build history</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Update</term>
+
+                <listitem>
+                  <para>Update the description and other properties of a build
+                  in the build history. This can be useful if a user wants to
+                  leave a note about the cause of a build failure, for
+                  example.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term><emphasis>View</emphasis></term>
+
+          <listitem>
+            <para>This group covers managing views:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Create</term>
+
+                <listitem>
+                  <para>Create a new view</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Delete</term>
+
+                <listitem>
+                  <para>Delete an existing view</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>Configure</term>
+
+                <listitem>
+                  <para>Configure an existing view</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>SCM</term>
+
+          <listitem>
+            <para>Permissions related to your version control system:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Tag</term>
+
+                <listitem>
+                  <para>Create a new tag in the source code repository for a
+                  given build.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>Others</term>
+
+          <listitem>
+            <para>There can also be other permissions available, depending on
+            the plugins installed. Some of the more useful are indicated
+            here:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term>Promote</term>
+
+                <listitem>
+                  <para>If the Promoted Builds plugin is installed, this
+                  permission allows users to manually promote a build.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <sect2>
+      <title>Help! I've locked myself out!</title>
+
+      <para>Now it may happen that, during this process, you may end up
+      locking yourself out of Hudson. This can happen if, for example, you
+      save the matrix configuration without having correctly set up your
+      administrator. If this happens, do not panic - there is an easy fix, as
+      long as you have access to Hudson's home directory, at least. Simply
+      open up the <filename>config.xml</filename> file at the root of the
+      Hudson home directory. This will contain something like this:</para>
+
+      <para><programlisting>&lt;hudson&gt;
+  &lt;version&gt;1.391&lt;/version&gt;
+  &lt;numExecutors&gt;2&lt;/numExecutors&gt;
+  &lt;mode&gt;NORMAL&lt;/mode&gt;
+  &lt;useSecurity&gt;true&lt;/useSecurity&gt;
+  ...</programlisting>The thing to look for is the
+      <code>&lt;useSecurity&gt;</code> element. To restore your access to
+      Hudson, change this value to false, and restart your server. You will
+      now be able to access Hudson again, and set up your security
+      configuration correctly.</para>
+    </sect2>
   </sect1>
 
   <sect1>
@@ -124,8 +464,6 @@
 
   <sect1>
     <title id="sec-identifying-users">Identifying Hudson users</title>
-
-    <para></para>
 
     <sect2 id="hudson-users-internal">
       <title>Using Hudson's built-in user database</title>
@@ -253,13 +591,23 @@
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure></para>
+        </figure>The internal Hudson database is sufficient for many teams and
+      organizations. However, for larger organizations, it may become tedious
+      and repetitive to manage large numbers of user accounts by hand,
+      especially if this information already exists elsewhere. In the
+      following sections, we will look at how to hook Hudson up to other user
+      management systems, such as LDAP repositories and Unix users and groups.
+      </para>
+    </sect2>
 
-      <para> </para>
+    <sect2 id="sec-security-ldap">
+      <title>Using an LDAP repository</title>
+
+      <para></para>
     </sect2>
 
     <sect2>
-      <title>Using an LDAP repository</title>
+      <title>Using Active Directory</title>
 
       <para></para>
     </sect2>
@@ -272,6 +620,12 @@
 
     <sect2>
       <title>Using Unix users and groups</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Integrating with other systems</title>
 
       <para></para>
     </sect2>
