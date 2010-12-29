@@ -9,15 +9,40 @@
 
     <para><indexterm>
         <primary>security</primary>
-      </indexterm>TODO</para>
+      </indexterm>Hudson supports several security models, and can integrate
+    with several user repositories. In smaller organizations, where developers
+    work in close proximity, security on your Hudson machine may not be a
+    large concern - you may simply want to prevent unidentified users
+    tampering with your build job configurations. For larger organizations,
+    with multiple teams, a stricter approach might be required, where only
+    team members and system administrators are allowed to modify their build
+    job configurations. And in situations where the Hudson server may be
+    exposed to a broader audience, such as on an internal corporate website,
+    or even on the internet, certain build jobs may be visible to all users
+    whereas others will need to be hidden to unauthorized users. </para>
+
+    <para>In this chapter, we will look at how to configure different security
+    configurations in Hudson, for different environments and
+    circumstances.</para>
   </sect1>
 
   <sect1>
     <title>Activating Security in Hudson</title>
 
-    <para>TODO</para>
+    <para>Setting up basic security in Hudson is easy enough. Go to the main
+    configuration page and check the 'Enable security' checkbox (see <xref
+    linkend="fig-hudson-enabling-security" />). This will display a number of
+    options, that we will investigate in detail in this chapter. The first
+    section, '<command>Security Realm</command>', determines where Hudson will
+    look for users during authentication, and includes options such as using
+    users stored in an LDAP server, using the underlying Unix user accounts
+    (assuming, of course, that Hudson is running on a Unix machine), or using
+    a simple built-in user database managed by Hudson.</para>
 
-    <para></para>
+    <para>The second section, '<command>Authorization</command>', determines
+    what users can do once they are logged in. This ranges from simple options
+    like 'Anyone can do anything' or 'Logged-in users can do anything', to
+    more sophisticated role and project-based authorization policies.</para>
 
     <figure id="fig-hudson-enabling-security">
       <title>Enabling security in Hudson</title>
@@ -29,6 +54,100 @@
         </imageobject>
       </mediaobject>
     </figure>
+
+    <para>In the remainder of this chapter, we will look at how to configure
+    Hudson security for a number of common scenarios.</para>
+  </sect1>
+
+  <sect1>
+    <title>Simple Security in Hudson</title>
+
+    <para>The most simple usable security model in Hudson involves allowing
+    authenticated users to do anything, whereas non-authenticated users will
+    just have a read-only view of the build jobs. This is great for small
+    teams - developers can manage the build jobs, whereas other users
+    (testers, BAs, project managers and so on) can view the build jobs as
+    required to view the status of the project. Indeed, certain build jobs may
+    be set up just for this purpose, displaying the results of automated
+    acceptance tests or code quality metrics, for example.</para>
+
+    <para>You can set up this sort of configuration is to choose 'Logged-in
+    users can do anything' in the Authorization section. There are several
+    ways that Hudson can authenticate users (see <xref
+    linkend="sec-identifying-users" />), but for this example, we will be
+    using the simplest option, which is to use Hudson's own built in database
+    (see <xref linkend="hudson-users-internal" />).. This is the configuration
+    illustrated in <xref linkend="fig-hudson-enabling-security" />.</para>
+
+    <para>Make sure you tick the 'Allow users to sign up' option. This option
+    will display a 'Sign up' link at the top of the screen to let users create
+    their own user account as required (see <xref
+    linkend="fig-hudson-user-signup" />). It is a good idea for developers to
+    use their SCM username here: in this case, Hudson will be able to work out
+    what users contributed to the SCM changes that triggered a particular
+    build.</para>
+
+    <para><figure id="fig-hudson-user-signup">
+        <title>The Hudson Sign up page</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-user-signup.png" width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>This approach is obviously a little too simple for many
+    situations - it is useful for small teams working in close proximity,
+    where the aim is to know who's changes caused (or broke) a particular
+    build, rather than to manage access in any more restrictive way.</para>
+  </sect1>
+
+  <sect1>
+    <title>Role or Matrix-based security</title>
+
+    <para>Letting signed-in users do anything is certainly flexible, and may
+    be all you need for a small team. approach is usually</para>
+
+    <para>- Setting up an admin user</para>
+
+    <para>- Help! I've locked myself out!</para>
+
+    <para>- </para>
+  </sect1>
+
+  <sect1>
+    <title>Project-based security</title>
+
+    <para></para>
+  </sect1>
+
+  <sect1>
+    <title id="sec-identifying-users">Identifying Hudson users</title>
+
+    <para></para>
+
+    <sect2 id="hudson-users-internal">
+      <title>Using Hudson's built-in user database</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Using an LDAP repository</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Delegating to the servlet container</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Using Unix users and groups</title>
+
+      <para></para>
+    </sect2>
   </sect1>
 
   <sect1>
@@ -154,7 +273,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     including job changes and system-wide changes (see figure <xref
     linkend="fig-hudson-jobconfig-global-history" />). </para>
 
-    <para><figure id="fig-hudson-security-confighistory-setup">
+    <para><figure id="fig-hudson-jobconfig-global-history">
         <title>Setting up Job Configuration History</title>
 
         <mediaobject>

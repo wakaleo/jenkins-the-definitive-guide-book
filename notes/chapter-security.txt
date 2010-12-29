@@ -2,18 +2,30 @@
 
 ## Securing your Hudson instance
 
-- In smaller organizations, where developers work in close proximity, security on your Hudson machine may not be a large concern.
-- For larger organizations,
-- For projects where Hudson is used beyond the development arena, and is also used to help automate deployment to non-development environments (such as testing or production environments)
-- Audit trail
+Hudson supports several security models, and can integrate with several user repositories. In smaller organizations, where developers work in close proximity, security on your Hudson machine may not be a large concern - you may simply want to prevent unidentified users tampering with your build job configurations. For larger organizations, with multiple teams, a stricter approach might be required, where only team members and system administrators are allowed to modify their build job configurations. And in situations where the Hudson server may be exposed to a broader audience, such as on an internal corporate website, or even on the internet, certain build jobs may be visible to all users whereas others will need to be hidden to unauthorized users.
 
-## Enabling Security
+In this chapter, we will look at how to configure different security configurations in Hudson, for different environments and circumstances.
 
-You set up security in Hudson in the 'Configure Hudson' screen. First, tick the 'Enable security' checkbox. 
+- Simple security
+
+- Hudson's built-in user database
+
+- Matrix-level security
+	- Create an admin user
+	
+- Project-level security
+
+## Enabling Security in Hudson
+
+Simple security - allowing users to sign up, any user can do anything
+
+You set up security in Hudson in the 'Configure Hudson' screen. First, tick the 'Enable security' checkbox.
 
 The simplest approach - authenticated users can do anything.
 - Great for teams with a dedicated Hudson instance
 - Can be synchronized with version control users
+
+
 
 ## Hudson's built-in user database
 
@@ -22,6 +34,8 @@ Hudson maintains a database of the users who have committed changes to projects 
 <figure hudson-security-users>
 
 These users are based on the user names coming from your version control system. However the usernames by themselves are relatively limited -  Hudson can do a lot more if it also knows the corresponding email addresses. And although Hudson cannot 
+
+If a change is committed to the version control system by a user unknown to Hudson, Hudson will simply mark the corresponding build jobs as having been 'started by an SCM change'.
 
 If you click on a user in the list, Hudson will display the details about this given user, including the user's full name, and the builds this user has contributed too (just click on the 'Builds' menu entry). From here, you also have the option to modify or complete the details about this user, such as their email address.
 
@@ -39,6 +53,8 @@ When you save your configuration changes, Hudson will now display links at the t
 
 Using the internal database is obviously a fairly light-weight approach to security. It is more a convenient way to keep track of which users are working with Hudson.
 
+This strategy is usually a little bit *too* simple in most cases - in fact it is only really suitable if all you need to do is to keep track of who did what. 
+
 You can limit user access on a user-by-user basis, using the various authentication schemes that we discuss later on in the chapter.
 
 <figure hudson-security-hudsons-database>
@@ -54,7 +70,7 @@ As is often the case, Hudson has a plugin for that. The Audit Trail Plugin keeps
 
 To set this up, go to the 'Plugin Manager' page and select the 'Audit Trail Plugin' in the list of available plugins. Then, as usual, click on Install and restart Hudson once the plugin has been downloaded.
 
-You can set up the audit trail configuration in the Audit Trail section of the main Hudson configuration page (see figure). The most important field is the Log Location, which is where you indicate the directory in which the log files are to be written. The audit trail is designed to produce system-style log files, which are often placed in a special system directory such as /var/log.  
+You can set up the audit trail configuration in the Audit Trail section of the main Hudson configuration page (see figure). The most important field is the Log Location, which is where you indicate the directory in which the log files are to be written. The audit trail is designed to produce system-style log files, which are often placed in a special system directory such as /var/log.
 
 <figure hudson-security-audit-trail>
 
