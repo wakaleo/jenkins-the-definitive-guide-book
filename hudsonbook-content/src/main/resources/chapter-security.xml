@@ -59,7 +59,7 @@
     Hudson security for a number of common scenarios.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="hudson-security-simple">
     <title>Simple Security in Hudson</title>
 
     <para>The most simple usable security model in Hudson involves allowing
@@ -105,7 +105,9 @@
     <title>Role or Matrix-based security</title>
 
     <para>Letting signed-in users do anything is certainly flexible, and may
-    be all you need for a small team. approach is usually</para>
+    be all you need for a small team. For larger or multiple teams, or cases
+    where Hudson is being used outside the development environment, a more
+    sophisticated approach is generally required. </para>
 
     <para>- Setting up an admin user</para>
 
@@ -128,7 +130,132 @@
     <sect2 id="hudson-users-internal">
       <title>Using Hudson's built-in user database</title>
 
-      <para></para>
+      <para>The easiest way to manage user accounts in Hudson is to use
+      Hudson's internal user database. This is a good option if you want to
+      keep things simple, as very little setup or configuration is required.
+      Users who need to log on to the Hudson server can sign up and create an
+      account for themselves, and, depending on the security model chosen, an
+      administrator can then decide what these users are allowed to do.</para>
+
+      <para>Hudson automatically adds all SCM users to this database whenever
+      a change is committed to source code monitored by Hudson. These user
+      names are used mainly to record who is responsible for each build job.
+      You can view the list of currently known users by clicking on the
+      'People' menu entry (see <xref linkend="fig-hudson-user-list" />). Here,
+      you can visualize the users that Hudson currently knows about, and also
+      see the last project they committed changes to. Note that this list
+      contains all of the users who have ever committed changes to the
+      projects that Hudson monitors - they may not be (and usually aren't) all
+      active Hudson users who are able to log on to the Hudson server.</para>
+
+      <para><figure id="fig-hudson-user-list">
+          <title>You can also manage Hudson users from the Hudson
+          configuration page</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-user-list.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>If you click on a user in this list, Hudson takes you to a page
+      displaying various details about this user, including the user's full
+      name and the build jobs they have contributed to (see <xref
+      linkend="fig-hudson-user-builds" />). From here, you can also modify or
+      complete the details about this user, such as their password or email
+      address.</para>
+
+      <para><figure id="fig-hudson-user-builds">
+          <title>You can also manage Hudson users from the Hudson
+          configuration page</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-user-builds.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>A user appearing in this list cannot necessarily log on to Hudson.
+      To be able to log on to Hudson, the user account needs to be set up with
+      a password. There are essentially two ways to do this. If you have
+      activated the 'Allow users to sign up' option, users can simply sign up
+      with their SCM user name and provide their email address and a password
+      (see <xref linkend="hudson-security-simple" />). Alternatively, you can
+      activate a user by clicking on the 'Configure' menu option in the user
+      details screen, and provide an email address and password yourself, as
+      discussed earlier (see <xref linkend="fig-hudson-edit-user" />).</para>
+
+      <para><figure id="fig-hudson-edit-user">
+          <title>You can also manage Hudson users from the Hudson
+          configuration page</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-edit-user.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>It is worth noting that, if your email addresses are synchronized
+      with your version control user names (for example, if you work at
+      acme.com, and user 'joe' in your version control system has an email
+      address of 'joe@acme.com'), you can get Hudson to derive the email
+      address from a user name by adding a suffix that you configure in the
+      'Email Notification' section (see <xref
+      linkend="fig-security-email-config" />). If you have set up this sort of
+      configuration, you don't need to specify the email address for new users
+      unless it does not respect this convention.</para>
+
+      <para><figure id="fig-security-email-config">
+          <title>Synchronizing email addresses</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/security-email-config.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Another way to manage the current active users (those who can
+      actually log on to Hudson) is by clicking on the 'Manage Users' in the
+      main Hudson configuration page (see <xref
+      linkend="fig-hudson-manage-users" />).</para>
+
+      <para><figure id="fig-hudson-manage-users">
+          <title>You can also manage Hudson users from the Hudson
+          configuration page</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-manage-users.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>From here, you can view and edit the users who can log in to
+      Hudson (see <xref linkend="fig-hudson-user-database" />). This includes
+      both users that have signed up manually (if this option has been
+      activated) and SCM users that you have activated by configuring them
+      with a password. You can also edit a user's details (for example
+      modifying their email address or resetting their password), or even
+      remove them from the list of active users. Doing this will not remove
+      them from the overall user list (their name will still appear in the
+      build history, for example), but they will no longer be able to log on
+      to the Hudson server.</para>
+
+      <para><figure id="fig-hudson-user-database">
+          <title>The Hudson user database</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-user-database.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para> </para>
     </sect2>
 
     <sect2>
