@@ -19,7 +19,7 @@
     job configurations. And in situations where the Hudson server may be
     exposed to a broader audience, such as on an internal corporate website,
     or even on the internet, certain build jobs may be visible to all users
-    whereas others will need to be hidden to unauthorized users. </para>
+    whereas others will need to be hidden to unauthorized users.</para>
 
     <para>In this chapter, we will look at how to configure different security
     configurations in Hudson, for different environments and
@@ -101,7 +101,7 @@
     build, rather than to manage access in any more restrictive way.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sec-matrix-security">
     <title>Matrix-based security</title>
 
     <para>Letting signed-in users do anything is certainly flexible, and may
@@ -129,7 +129,7 @@
       section of the main configuration page. Hudson will display a table
       containing authorized users, and check boxes corresponding to the
       various permissions that you can assign to these users (see <xref
-      linkend="hudson-matrix-anonymous" />).</para>
+      linkend="fig-hudson-matrix-anonymous" />).</para>
 
       <para><figure id="fig-hudson-matrix-anonymous">
           <title>Matrix-based security configuration</title>
@@ -142,9 +142,9 @@
           </mediaobject>
         </figure>The special 'anonymous' user is always present in the table.
       This user represents unauthenticated users. Typically, you only grant
-      very limited rights to unauthenticated users, such as read-only access
-      (as shown in <xref linkend="hudson-matrix-anonymous" />), or no access
-      at all.</para>
+      very limited rights to unauthenticated users, such as read-only access,
+      or no access at all (as shown in <xref
+      linkend="fig-hudson-matrix-anonymous" />).</para>
 
       <para>The first thing you need to do now is to grant administration
       rights to your administrator. Add your administration user in the
@@ -216,12 +216,14 @@
 
                 <listitem>
                   <para>This permission provides read-only access to virtually
-                  all of the pages in Hudson. If you don't want anonymous
-                  users to be able to see build jobs, you simply revoke this
-                  permission for the Anonymous user. If you want all
-                  authenticated users to be able to see build jobs, then add a
-                  special user called 'Authenticated', and grant this user
-                  Overall/Read permission.</para>
+                  all of the pages in Hudson. If you want anonymous users to
+                  be able to view build jobs freely, but not to be able to
+                  modify or start them, grant the Read role to the special
+                  'anonymous' user. If not, simply revoke this permission for
+                  the Anonymous user. And if you want all authenticated users
+                  to be able to see build jobs, then add a special user called
+                  'authenticated', and grant this user Overall/Read
+                  permission.</para>
                 </listitem>
               </varlistentry>
             </variablelist>
@@ -459,7 +461,210 @@
   <sect1>
     <title>Project-based security</title>
 
-    <para></para>
+    <para>Project-based security lets you build on the matrix-based security
+    model we just discussed, and apply it to individual projects. Not only can
+    you assign system-wide roles for your users, you can also configure more
+    specific rights for certain individual projects. </para>
+
+    <para>To activate project-level security, select 'Project-based Matrix
+    Authorization Strategy' in the Authorisation section of the main
+    configuration screen (see <xref
+    linkend="fig-hudson-project-based-security" />). Here, you set up the
+    default rights for users and groups, as we saw with Matrix-based security
+    (see <xref linkend="sec-matrix-security" />). </para>
+
+    <para><figure id="fig-hudson-project-based-security">
+        <title>Project-based security</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-project-based-security.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>These are the default permissions, that apply to all projects
+    that have not been specially configured. However, when you use
+    project-based security, you can also set up special project-specific
+    permissions. You do this by selecting 'Enable project-based security' in
+    the project configuration screen (see <xref
+    linkend="fig-hudson-security-project-anon" />). Hudson will display a
+    table of project-specific permissions. You can configure these permissions
+    for different users and groups just like on the system-wide configuration
+    page. These permissions will be added to the system-wide permissions to
+    produce a project-specific set of permissions applicable for this project.
+    </para>
+
+    <para><figure id="fig-hudson-security-project-anon">
+        <title>Project-based security</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-project-anon.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The way this works is easiest to understand with a few
+    practical examples. In <xref
+    linkend="fig-hudson-project-based-security" />, for instance, no
+    permissions have been granted to the anonymous user, so by default all
+    build jobs will remain invisible until a user signs on. However, we are
+    using project-based security, so we can override this on a
+    project-by-project basis. In <xref
+    linkend="fig-hudson-security-project-anon" />, for example, we have set up
+    the game-of-life project to have read-only access for the special
+    'anonymous' user. </para>
+
+    <para>When you save this configuration, unauthenticated users will be able
+    to see the game-of-life project in read-only mode (see <xref
+    linkend="fig-hudson-security-readonly-project" />). This same principle
+    applies with all of the project-specific permissions.</para>
+
+    <para><figure id="fig-hudson-security-readonly-project">
+        <title>Viewing a project </title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-readonly-project.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Note that Hudson permissions are cumulative - at the time of
+    writing, there is no way to revoke a system-wide permission for a
+    particular project. For example, if the anonymous user has read-access to
+    build jobs at the system level, you can't revoke read-only access for an
+    individual project. So when using project-based security, use the system
+    level matrix to define minimum default permissions applicable across all
+    of your projects, and set up projects with additional project-specific
+    authorizations.</para>
+
+    <para>There are many approaches to managing project permissions, and they
+    depend as much on organization culture as on technical considerations. One
+    common strategy approach is to allow team members to have full access to
+    their own projects, and read-only access to other projects. The
+    '<command>Extended Read Permission Plugin</command>' is a useful extension
+    to have for this scenario. This plugin lets you let users from other teams
+    see a read-only view of your project configuration, without being able to
+    modify anything (see <xref
+    linkend="fig-hudson-security-extended-read" />). This is a great way to
+    share build configuration practices and tips with other teams without
+    letting them tamper with your builds.</para>
+
+    <para><figure id="fig-hudson-security-extended-read">
+        <title>Setting up Extended Read Permissions</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-extended-read.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>It is worth noting that, whenever large and/or multiple teams are
+    involved, the internal Hudson database reaches its limits quite quickly,
+    and it is worth considering integrating with a more specialized directory
+    service such as an LDAP server, Active Directory or Atlassian Crowd, or
+    possibly a more sophisticated permission system such as role-based
+    security, discussed in the following chapter.</para>
+  </sect1>
+
+  <sect1>
+    <title>Role-based security</title>
+
+    <para>Sometimes managing user permissions individually can be cumbersome,
+    and you may not want to integrate with an LDAP server to set up groups
+    that way. A more recent alternative option is to use the 'Role Strategy
+    Plugin', which allows you to define global and project-level roles, and
+    assign these roles to users.</para>
+
+    <para>You install the plugin in the usual way, via the Plugin Manager.
+    Once installed, you can activate this authorization strategy in the main
+    configuration page (see <xref
+    linkend="fig-hudson-security-role-based" />).</para>
+
+    <para><figure id="fig-hudson-security-role-based">
+        <title>Setting up Role-based security</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-role-based.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have set this up, you can define roles that regroup
+    sets of related permissions. You set up and configure your roles, and
+    assign these roles to your users, in the Manage Roles screen, which you
+    can access in the Manage Hudson screen (see <xref
+    linkend="fig-hudson-security-manage-roles-menu" />).</para>
+
+    <para><figure id="fig-hudson-security-manage-roles-menu">
+        <title>The Manage Roles configuration menu</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-manage-roles-menu.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>In the 'Manage Roles' screen, you can set up global and
+    project-level permissions. Global permissions apply across all projects,
+    and are typically system-wide administration or general access permissions
+    (see <xref linkend="fig-hudson-security-global-roles" />). Setting these
+    roles up is intuitive and similar to setting up user permissions in the
+    other security models we have seen.</para>
+
+    <para><figure id="fig-hudson-security-global-roles">
+        <title>Managing global roles</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-global-roles.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Project roles are slightly more complicated. A project role
+    regroups a set of permissions that are applicable to one or more
+    (presumably related) projects. You define the relevant projects using a
+    regular expression, so it helps to have a clear and consistent set of
+    naming conventions in place for your project names (see <xref
+    linkend="fig-hudson-security-project-roles" />). For example, you may wish
+    to create roles distinguishing developers with full configuration rights
+    on their own project from users who can simply trigger a build and view
+    the build results, or create roles where developers can configure certain
+    automated deployment build jobs, but only production teams are allowed to
+    execute these jobs.</para>
+
+    <para><figure id="fig-hudson-security-project-roles">
+        <title>Managing project roles</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-project-roles.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have defined these roles, you can go to the 'Assign
+    Roles' screen to set up individual users or groups with these roles (see
+    <xref linkend="fig-hudson-security-assign-roles" />).</para>
+
+    <para><figure id="fig-hudson-security-assign-roles">
+        <title>Assigning roles to users</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-security-assign-roles.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Role-based strategy is relatively new in Hudson, but it is an
+    excellent way to simplify the task of managing permissions in large,
+    multi-team and multi-project organizations.</para>
   </sect1>
 
   <sect1>
@@ -596,8 +801,8 @@
       and repetitive to manage large numbers of user accounts by hand,
       especially if this information already exists elsewhere. In the
       following sections, we will look at how to hook Hudson up to other user
-      management systems, such as LDAP repositories and Unix users and groups.
-      </para>
+      management systems, such as LDAP repositories and Unix users and
+      groups.</para>
     </sect2>
 
     <sect2 id="sec-security-ldap">
@@ -681,7 +886,7 @@
     class for more control over the generated log files. In this format, you
     can insert variables such as '%h', for the current user's home directory,
     and '%t', for the system temporary directory, to build a more dynamic file
-    path. </para>
+    path.</para>
 
     <para>By default, the details recorded in the audit logs are fairly sparse
     - they effectively record key actions performed, such as creating,
@@ -712,7 +917,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     You install it from the Plugin Manager in the usual way. Once installed,
     you can fine-tune the job history configuration in the <command>Manage
     Hudson</command> screen (see figure <xref
-    linkend="fig-hudson-security-confighistory-setup" />). </para>
+    linkend="fig-hudson-security-confighistory-setup" />).</para>
 
     <para><figure id="fig-hudson-security-confighistory-setup">
         <title>Setting up Job Configuration History</title>
@@ -732,7 +937,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     the Hudson home directory (see <xref
     linkend="sec-hudson-home-directory" />). If you don't do this, job
     configuration history will be stored with the jobs, and will be lost if
-    you delete a job. </para>
+    you delete a job.</para>
 
     <para>There are a few other useful options in the 'Advanced' section. The
     'Save system configuration changes' checkbox lets you keep track of
@@ -743,7 +948,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     pressed the 'Save' button without making any changes. Hudson can also
     cause this to happen internally - for example, system configuration
     settings are all saved whenever the main configuration page is saved, even
-    if no changes have been made. </para>
+    if no changes have been made.</para>
 
     <para>Once you have set up this plugin, you can access the configuration
     history both for the whole server, including system configuration updates,
@@ -752,7 +957,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     icon to the right of the screen. Clicking on this icon from the Hudson
     dashboard will display a view of all of your configuration history,
     including job changes and system-wide changes (see figure <xref
-    linkend="fig-hudson-jobconfig-global-history" />). </para>
+    linkend="fig-hudson-jobconfig-global-history" />).</para>
 
     <para><figure id="fig-hudson-jobconfig-global-history">
         <title>Setting up Job Configuration History</title>
@@ -771,7 +976,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     displayed as 'diff' files, which is not particularly readable in itself.
     However, for small changes, the readable XML format of most of the Hudson
     configuration files makes this sufficient to understand what changes were
-    made. </para>
+    made.</para>
 
     <para><figure id="fig-hudson-jobconfig-config-history">
         <title>Setting up Job Configuration History</title>
