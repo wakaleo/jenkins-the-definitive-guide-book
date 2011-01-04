@@ -18,7 +18,7 @@
     team members and system administrators are allowed to modify their build
     job configurations. And in situations where the Hudson server may be
     exposed to a broader audience, such as on an internal corporate website,
-    or even on the internet, certain build jobs may be visible to all users
+    or even on the Internet, certain build jobs may be visible to all users
     whereas others will need to be hidden to unauthorized users.</para>
 
     <para>In this chapter, we will look at how to configure different security
@@ -808,7 +808,71 @@
     <sect2 id="sec-security-ldap">
       <title>Using an LDAP repository</title>
 
-      <para></para>
+      <para>Many organizations use LDAP directories to store user accounts and
+      passwords across applications. Hudson integrates well with LDAP, with no
+      special plugins required. It can authenticate users using the LDAP
+      repository, check group membership, and retrieve the email address of
+      authenticated users.</para>
+
+      <para>To integrate Hudson with your LDAP repository, Just select 'LDAP'
+      in the Security Realm section, and fill in the appropriate details about
+      your LDAP server (see <xref linkend="fig-hudson-security-ldap" />). The
+      most important field is the repository server. If you are using a
+      non-standard port, you will need to provide this as well (for example,
+      <filename>ldap.acme.org:1389</filename>). Or, if you are using LDAPS,
+      you will need to specify this as well (for example,
+      <filename>ldaps://ldap.acme.org</filename>)</para>
+
+      <para>If your server supports anonymous binding, this will probably be
+      enough to get you started. If not, you can use the 'Advanced' options to
+      fine-tune your configuration. </para>
+
+      <para>Most of the Advanced fields can safely be left blank unless you
+      have a good reason to change them. If your repository is extremely
+      large, you may want to specify a root DN value (e.g. 'dc=acme, dc=com')
+      and/or a User and Group search base (e.g. 'ou=people') to narrow down
+      the scope of user queries. This is not usually required unless you
+      notice performance issues. Or, if your server does not support anonymous
+      binding, you will need to provide a 'Manager DN' and a 'Manager DN
+      password', so that Hudson can connect to the server to perform its
+      queries.</para>
+
+      <para><figure id="fig-hudson-security-ldap">
+          <title>Configuring LDAP in Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-ldap.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once you have set up LDAP as your Security Realm, you can
+      configure your favorite security model as described previously. When
+      users log on to Hudson, they will be authenticated against the LDAP
+      repository.</para>
+
+      <para>You can also use LDAP groups, though the configuration is not
+      immediately obvious. Suppose you have defined a group called
+      'HudsonAdmin' in your LDAP repository, with a DN of
+      '<code>cn=HudsonAdmin, ou-Groups, dc=acme, dc=com</code>'. To refer to
+      this group in Hudson, you need to take the common name (cn) in
+      uppercase, and prefix it with 'ROLE_'. So <code>cn=HudsonAdmin</code>
+      becomes <code>ROLE_HUDSONADMIN</code>. You can see an example of LDAP
+      groups used in this way in <xref
+      linkend="fig-hudson-security-ldap-groups" />.</para>
+
+      <para><figure id="fig-hudson-security-ldap-groups">
+          <title>Using LDAP Groups in Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-ldap-groups.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
 
     <sect2>
@@ -818,33 +882,124 @@
       Hudson to use the user and group accounts defined on this machine. In
       this case, users will log into Hudson using their Unix account logins
       and passwords. This uses PAM (Pluggable Authentication Modules), and
-      also works fine with NIS.</para>
+      also works fine with NIS. </para>
 
       <para>In its most basic form, this is somewhat cumbersome, as it
       requires new user accounts to be set up and configured for each new
       Hudson user. It is only really useful if these accounts need to be set
       up for other purposes.</para>
+
+      <para>TODO: complete this section</para>
     </sect2>
 
     <sect2>
-      <title>Delegating to the servlet container</title>
+      <title>Delegating to the Servlet container</title>
 
-      <para></para>
+      <para>TODO</para>
     </sect2>
 
     <sect2>
       <title>Using Microsoft Active Directory</title>
 
-      <para></para>
+      <para>Microsoft Active Directory is directory service product widely
+      used in Microsoft architectures. Although Active Directory does provide
+      an LDAP service, it can be a little tricky to set up, and it is simpler
+      to get Hudson to talk directly to the Active Directory server.
+      Fortunately, there's a plugin for that.</para>
+
+      <para>The 'Hudson Active Directory Plugin' lets you configure Hudson to
+      authenticate against a Microsoft Active Directory server.</para>
+
+      <para>The nice thing about this plugin is that it works both in a
+      Windows environment and in a Unix environment. So if Hudson is running
+      on a Unix server, it can still authenticate against a Microsoft Active
+      Directory service running on another machine.</para>
+
+      <para>More precisely, if Hudson is running on a Windows machine and you
+      do not specify a domain, that machine must be a member of the domain you
+      wish to authenticate against. Hudson will use ADSI to figure out all the
+      details, so no additional configuration is required.</para>
+
+      <para>On a non-Windows machine (or you specify one or more domains), you
+      need to tell Hudson the name of Active Directory domain(s) to
+      authenticate with. Hudson then uses DNS SRV records and LDAP service of
+      Active Directory to authenticate users. </para>
+
+      <para>Hudson can determine which groups in Active Directory that the
+      user belongs to, so you can use these as part of your authorisation
+      strategy. For example, you can use these groups in matrix-based
+      security, or allow "Domain Admins" to administer Hudson.</para>
     </sect2>
 
     <sect2>
       <title>Using Atlassian Crowd</title>
 
       <para>If your organization is using Atlassian products such as JIRA and
-      Confluence, you may also be using Crowd, Atlassian's Single-Sign On
-      (SSO) solution that lets you manage single user accounts across multiple
-      products.</para>
+      Confluence, you may also be using Crowd. Crowd is a commercial Identity
+      Management and Single-Sign On (SSO) application from Atlassian that lets
+      you manage single user accounts across multiple products. It lets you
+      manage both an internal database of users, groups and roles, and
+      integrate with external directories such as LDAP directories or custom
+      user stores.</para>
+
+      <para>Using the <command>Hudson Crowd Plugin</command>, you can use
+      Atlassian Crowd as the source of your Hudson users and groups. Before
+      you start, you need to set up a new application in Crowd (see <xref
+      linkend="fig-hudson-security-cloud-app" />). Just set up a new Generic
+      Application called 'hudson' (or something similar), and step through the
+      tabs. In the 'Connections' tab, you need to provide the IP address of
+      your Hudson server. Then map the Crowd directories that you will be
+      using to retrieve Hudson user accounts and group information. Finally,
+      you will need to tell Crowd which users from these directories can
+      connect to Hudson. One option is to allow all users to authenticate, and
+      let Hudson sort out the details. Alternatively, you can list the Crown
+      user groups who are allowed to connect to Hudson.</para>
+
+      <para><figure id="fig-hudson-security-cloud-app">
+          <title>Using Atlassian Crowd as the Hudson Security Realm</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-cloud-app.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once you have set this up, you need to install the Hudson Crowd
+      Plugin, which you do as usual via the Hudson Plugin Manager. Once you
+      have installed the plugin and restarted Hudson, you can define 'Crowd'
+      as your Security Realm in the main Hudson configuration screen (see
+      <xref linkend="fig-hudson-security-crowd" />).</para>
+
+      <para><figure id="fig-hudson-security-crowd">
+          <title>Using Atlassian Crowd as the Hudson Security Realm</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-crowd.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>With this plugin installed and configured, you can use users and
+      groups from Crowd for any of the Hudson Authorization strategies we
+      discussed earlier on in the chapter. For example, in <xref
+      linkend="fig-hudson-security-crowd-groups-matrix" />, we are using user
+      groups defined in Crowd to set up Matrix-based security in the main
+      configuration screen.</para>
+
+      <para><figure id="fig-hudson-security-crowd-groups-matrix">
+          <title>Using Atlassian Crowd groups in Hudson</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-crowd-groups-matrix.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
 
     <sect2>
