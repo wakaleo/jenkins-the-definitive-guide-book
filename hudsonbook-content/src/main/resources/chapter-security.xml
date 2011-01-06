@@ -50,7 +50,7 @@
       <mediaobject>
         <imageobject role="web">
           <imagedata fileref="figs/web/hudson-enabling-security.png"
-                     width="4.3in" />
+                     width="9.3in" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -98,577 +98,15 @@
       </figure>This approach is obviously a little too simple for many
     situations - it is useful for small teams working in close proximity,
     where the aim is to know who's changes caused (or broke) a particular
-    build, rather than to manage access in any more restrictive way.</para>
-  </sect1>
-
-  <sect1 id="sec-matrix-security">
-    <title>Matrix-based security</title>
-
-    <para>Letting signed-in users do anything is certainly flexible, and may
-    be all you need for a small team. For larger or multiple teams, or cases
-    where Hudson is being used outside the development environment, a more
-    sophisticated approach is generally required.</para>
-
-    <para>Matrix-based security is a more sophisticated approach, where
-    different users are assigned different rights, using a role-based
-    approach.</para>
-
-    <sect2>
-      <title>Setting up matrix-based security</title>
-
-      <para>The first step in setting up matrix-based security in Hudson is to
-      create an administrator. <emphasis>This is an essential step, and must
-      be done before all others.</emphasis> Now your administrator can be an
-      existing user, or one created specially for the purpose. If you want to
-      create a dedicated administrator user, simply create one by signing up
-      in the usual way (see <xref linkend="fig-hudson-user-signup" />). It
-      doesn't have to be associated with an SCM user.</para>
-
-      <para>Once you have your admin user ready, you can activate matrix-based
-      security by selecting 'Matrix-based security' in the 'Authorization'
-      section of the main configuration page. Hudson will display a table
-      containing authorized users, and check boxes corresponding to the
-      various permissions that you can assign to these users (see <xref
-      linkend="fig-hudson-matrix-anonymous" />).</para>
-
-      <para><figure id="fig-hudson-matrix-anonymous">
-          <title>Matrix-based security configuration</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-matrix-anonymous.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure>The special 'anonymous' user is always present in the table.
-      This user represents unauthenticated users. Typically, you only grant
-      very limited rights to unauthenticated users, such as read-only access,
-      or no access at all (as shown in <xref
-      linkend="fig-hudson-matrix-anonymous" />).</para>
-
-      <para>The first thing you need to do now is to grant administration
-      rights to your administrator. Add your administration user in the
-      'User/group to add' field and click on 'Add'. Your administrator will
-      now appear in the permissions matrix. Now make sure you grant this user
-      every permission (see <xref linkend="fig-hudson-matrix-admin" />), and
-      save your configuration. You should now be able to log in with your
-      administrator account (if you aren't already logged in with this
-      account) and continue to set up your other users.</para>
-
-      <para><figure id="fig-hudson-matrix-admin">
-          <title>Setting up an administrator</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-matrix-admin.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </sect2>
-
-    <sect2>
-      <title>Fine tuning user permissions</title>
-
-      <para>Once you have set up your administrator account, you can add any
-      other users that need to access your Hudson instance. Simply add the
-      user names and tick the permissions you want to grant them (see <xref
-      linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
-      or Unix users and groups as the underlying authentication schema (see
-      <xref linkend="sec-security-ldap" />), you can also configure
-      permissions for groups of users.</para>
-
-      <para><figure id="fig-hudson-matrix-users">
-          <title>Setting up other users</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-matrix-users.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure>You can grant a range of permissions, which are organized
-      into several groups: Overall, Slave, Job, Run, View and SCM. Most of the
-      permissions are fairly obvious, but some need a little more explanation.
-      The individual permissions are as follows:</para>
-
-      <variablelist>
-        <varlistentry>
-          <term><emphasis>Overall</emphasis></term>
-
-          <listitem>
-            <para>This group covers basic system-wide permissions:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Administer</term>
-
-                <listitem>
-                  <para>Lets a user make system-wide configuration changes and
-                  other sensitive operation, for example in the main Hudson
-                  configuration pages. This should be reserved for the Hudson
-                  administrator.</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Read</term>
-
-                <listitem>
-                  <para>This permission provides read-only access to virtually
-                  all of the pages in Hudson. If you want anonymous users to
-                  be able to view build jobs freely, but not to be able to
-                  modify or start them, grant the Read role to the special
-                  'anonymous' user. If not, simply revoke this permission for
-                  the Anonymous user. And if you want all authenticated users
-                  to be able to see build jobs, then add a special user called
-                  'authenticated', and grant this user Overall/Read
-                  permission.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><emphasis>Slave</emphasis></term>
-
-          <listitem>
-            <para>This group covers permissions about remote build nodes, or
-            slaves:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Configure</term>
-
-                <listitem>
-                  <para>Create and configure new build nodes.</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Delete</term>
-
-                <listitem>
-                  <para>Delete build nodes.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><emphasis>Job</emphasis></term>
-
-          <listitem>
-            <para>This group covers job-related permissions:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Create</term>
-
-                <listitem>
-                  <para>Create a new build job</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Delete</term>
-
-                <listitem>
-                  <para>Delete an existing build job</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Configure</term>
-
-                <listitem>
-                  <para>Update the configuration of an existing build
-                  jobs</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Read</term>
-
-                <listitem>
-                  <para>View build jobs</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Build</term>
-
-                <listitem>
-                  <para>Start a build job</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Workspace</term>
-
-                <listitem>
-                  <para>View and download the workspace contents for a build
-                  job. Remember, the workspace contains source code and
-                  artifacts, so if you want to protect these from general
-                  access, you should revoke this permission.</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Release</term>
-
-                <listitem>
-                  <para>Start a Maven release for a project configured with
-                  the M2Release plugin.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><emphasis>Run</emphasis></term>
-
-          <listitem>
-            <para>This group covers rights related to particular builds in the
-            build history:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Delete</term>
-
-                <listitem>
-                  <para>Delete a build from the build history</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Update</term>
-
-                <listitem>
-                  <para>Update the description and other properties of a build
-                  in the build history. This can be useful if a user wants to
-                  leave a note about the cause of a build failure, for
-                  example.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term><emphasis>View</emphasis></term>
-
-          <listitem>
-            <para>This group covers managing views:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Create</term>
-
-                <listitem>
-                  <para>Create a new view</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Delete</term>
-
-                <listitem>
-                  <para>Delete an existing view</para>
-                </listitem>
-              </varlistentry>
-
-              <varlistentry>
-                <term>Configure</term>
-
-                <listitem>
-                  <para>Configure an existing view</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>SCM</term>
-
-          <listitem>
-            <para>Permissions related to your version control system:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Tag</term>
-
-                <listitem>
-                  <para>Create a new tag in the source code repository for a
-                  given build.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>Others</term>
-
-          <listitem>
-            <para>There can also be other permissions available, depending on
-            the plugins installed. Some of the more useful are indicated
-            here:</para>
-
-            <variablelist>
-              <varlistentry>
-                <term>Promote</term>
-
-                <listitem>
-                  <para>If the Promoted Builds plugin is installed, this
-                  permission allows users to manually promote a build.</para>
-                </listitem>
-              </varlistentry>
-            </variablelist>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </sect2>
-
-    <sect2>
-      <title>Help! I've locked myself out!</title>
-
-      <para>Now it may happen that, during this process, you may end up
-      locking yourself out of Hudson. This can happen if, for example, you
-      save the matrix configuration without having correctly set up your
-      administrator. If this happens, do not panic - there is an easy fix, as
-      long as you have access to Hudson's home directory, at least. Simply
-      open up the <filename>config.xml</filename> file at the root of the
-      Hudson home directory. This will contain something like this:</para>
-
-      <para><programlisting>&lt;hudson&gt;
-  &lt;version&gt;1.391&lt;/version&gt;
-  &lt;numExecutors&gt;2&lt;/numExecutors&gt;
-  &lt;mode&gt;NORMAL&lt;/mode&gt;
-  &lt;useSecurity&gt;true&lt;/useSecurity&gt;
-  ...</programlisting>The thing to look for is the
-      <code>&lt;useSecurity&gt;</code> element. To restore your access to
-      Hudson, change this value to false, and restart your server. You will
-      now be able to access Hudson again, and set up your security
-      configuration correctly.</para>
-    </sect2>
+    build, rather than to manage access in any more restrictive way. In the
+    following sections, we will discuss the two orthogonal aspects of Hudson
+    security: identifying your users (Security Realms) and determining what
+    they are allowed to to (Authorization).</para>
   </sect1>
 
   <sect1>
-    <title>Project-based security</title>
-
-    <para>Project-based security lets you build on the matrix-based security
-    model we just discussed, and apply it to individual projects. Not only can
-    you assign system-wide roles for your users, you can also configure more
-    specific rights for certain individual projects.</para>
-
-    <para>To activate project-level security, select 'Project-based Matrix
-    Authorization Strategy' in the Authorisation section of the main
-    configuration screen (see <xref
-    linkend="fig-hudson-project-based-security" />). Here, you set up the
-    default rights for users and groups, as we saw with Matrix-based security
-    (see <xref linkend="sec-matrix-security" />).</para>
-
-    <para><figure id="fig-hudson-project-based-security">
-        <title>Project-based security</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-project-based-security.png "
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>These are the default permissions, that apply to all projects
-    that have not been specially configured. However, when you use
-    project-based security, you can also set up special project-specific
-    permissions. You do this by selecting 'Enable project-based security' in
-    the project configuration screen (see <xref
-    linkend="fig-hudson-security-project-anon" />). Hudson will display a
-    table of project-specific permissions. You can configure these permissions
-    for different users and groups just like on the system-wide configuration
-    page. These permissions will be added to the system-wide permissions to
-    produce a project-specific set of permissions applicable for this
-    project.</para>
-
-    <para><figure id="fig-hudson-security-project-anon">
-        <title>Project-based security</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-project-anon.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>The way this works is easiest to understand with a few
-    practical examples. In <xref
-    linkend="fig-hudson-project-based-security" />, for instance, no
-    permissions have been granted to the anonymous user, so by default all
-    build jobs will remain invisible until a user signs on. However, we are
-    using project-based security, so we can override this on a
-    project-by-project basis. In <xref
-    linkend="fig-hudson-security-project-anon" />, for example, we have set up
-    the game-of-life project to have read-only access for the special
-    'anonymous' user.</para>
-
-    <para>When you save this configuration, unauthenticated users will be able
-    to see the game-of-life project in read-only mode (see <xref
-    linkend="fig-hudson-security-readonly-project" />). This same principle
-    applies with all of the project-specific permissions.</para>
-
-    <para><figure id="fig-hudson-security-readonly-project">
-        <title>Viewing a project</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-readonly-project.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-
-    <para>Note that Hudson permissions are cumulative - at the time of
-    writing, there is no way to revoke a system-wide permission for a
-    particular project. For example, if the anonymous user has read-access to
-    build jobs at the system level, you can't revoke read-only access for an
-    individual project. So when using project-based security, use the system
-    level matrix to define minimum default permissions applicable across all
-    of your projects, and set up projects with additional project-specific
-    authorizations.</para>
-
-    <para>There are many approaches to managing project permissions, and they
-    depend as much on organization culture as on technical considerations. One
-    common strategy approach is to allow team members to have full access to
-    their own projects, and read-only access to other projects. The
-    '<command>Extended Read Permission Plugin</command>' is a useful extension
-    to have for this scenario. This plugin lets you let users from other teams
-    see a read-only view of your project configuration, without being able to
-    modify anything (see <xref
-    linkend="fig-hudson-security-extended-read" />). This is a great way to
-    share build configuration practices and tips with other teams without
-    letting them tamper with your builds.</para>
-
-    <para><figure id="fig-hudson-security-extended-read">
-        <title>Setting up Extended Read Permissions</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-extended-read.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-
-    <para>It is worth noting that, whenever large and/or multiple teams are
-    involved, the internal Hudson database reaches its limits quite quickly,
-    and it is worth considering integrating with a more specialized directory
-    service such as an LDAP server, Active Directory or Atlassian Crowd, or
-    possibly a more sophisticated permission system such as role-based
-    security, discussed in the following chapter.</para>
-  </sect1>
-
-  <sect1>
-    <title>Role-based security</title>
-
-    <para>Sometimes managing user permissions individually can be cumbersome,
-    and you may not want to integrate with an LDAP server to set up groups
-    that way. A more recent alternative option is to use the 'Role Strategy
-    Plugin', which allows you to define global and project-level roles, and
-    assign these roles to users.</para>
-
-    <para>You install the plugin in the usual way, via the Plugin Manager.
-    Once installed, you can activate this authorization strategy in the main
-    configuration page (see <xref
-    linkend="fig-hudson-security-role-based" />).</para>
-
-    <para><figure id="fig-hudson-security-role-based">
-        <title>Setting up Role-based security</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-role-based.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>Once you have set this up, you can define roles that regroup
-    sets of related permissions. You set up and configure your roles, and
-    assign these roles to your users, in the Manage Roles screen, which you
-    can access in the Manage Hudson screen (see <xref
-    linkend="fig-hudson-security-manage-roles-menu" />).</para>
-
-    <para><figure id="fig-hudson-security-manage-roles-menu">
-        <title>The Manage Roles configuration menu</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-manage-roles-menu.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-
-    <para>In the 'Manage Roles' screen, you can set up global and
-    project-level permissions. Global permissions apply across all projects,
-    and are typically system-wide administration or general access permissions
-    (see <xref linkend="fig-hudson-security-global-roles" />). Setting these
-    roles up is intuitive and similar to setting up user permissions in the
-    other security models we have seen.</para>
-
-    <para><figure id="fig-hudson-security-global-roles">
-        <title>Managing global roles</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-global-roles.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>Project roles are slightly more complicated. A project role
-    regroups a set of permissions that are applicable to one or more
-    (presumably related) projects. You define the relevant projects using a
-    regular expression, so it helps to have a clear and consistent set of
-    naming conventions in place for your project names (see <xref
-    linkend="fig-hudson-security-project-roles" />). For example, you may wish
-    to create roles distinguishing developers with full configuration rights
-    on their own project from users who can simply trigger a build and view
-    the build results, or create roles where developers can configure certain
-    automated deployment build jobs, but only production teams are allowed to
-    execute these jobs.</para>
-
-    <para><figure id="fig-hudson-security-project-roles">
-        <title>Managing project roles</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-project-roles.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>Once you have defined these roles, you can go to the 'Assign
-    Roles' screen to set up individual users or groups with these roles (see
-    <xref linkend="fig-hudson-security-assign-roles" />).</para>
-
-    <para><figure id="fig-hudson-security-assign-roles">
-        <title>Assigning roles to users</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-security-assign-roles.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-
-    <para>Role-based strategy is relatively new in Hudson, but it is an
-    excellent way to simplify the task of managing permissions in large,
-    multi-team and multi-project organizations.</para>
-  </sect1>
-
-  <sect1>
-    <title id="sec-identifying-users">Identifying Hudson users</title>
+    <title id="sec-identifying-users">Security Realms - identifying Hudson
+    users</title>
 
     <sect2 id="hudson-users-internal">
       <title>Using Hudson's built-in user database</title>
@@ -825,7 +263,7 @@
 
       <para>If your server supports anonymous binding, this will probably be
       enough to get you started. If not, you can use the 'Advanced' options to
-      fine-tune your configuration. </para>
+      fine-tune your configuration.</para>
 
       <para>Most of the Advanced fields can safely be left blank unless you
       have a good reason to change them. If your repository is extremely
@@ -876,29 +314,6 @@
     </sect2>
 
     <sect2>
-      <title>Using Unix users and groups</title>
-
-      <para>If you are running Hudson on a Unix machine, you can also ask
-      Hudson to use the user and group accounts defined on this machine. In
-      this case, users will log into Hudson using their Unix account logins
-      and passwords. This uses PAM (Pluggable Authentication Modules), and
-      also works fine with NIS. </para>
-
-      <para>In its most basic form, this is somewhat cumbersome, as it
-      requires new user accounts to be set up and configured for each new
-      Hudson user. It is only really useful if these accounts need to be set
-      up for other purposes.</para>
-
-      <para>TODO: complete this section</para>
-    </sect2>
-
-    <sect2>
-      <title>Delegating to the Servlet container</title>
-
-      <para>TODO</para>
-    </sect2>
-
-    <sect2>
       <title>Using Microsoft Active Directory</title>
 
       <para>Microsoft Active Directory is directory service product widely
@@ -907,10 +322,37 @@
       to get Hudson to talk directly to the Active Directory server.
       Fortunately, there's a plugin for that.</para>
 
-      <para>The 'Hudson Active Directory Plugin' lets you configure Hudson to
-      authenticate against a Microsoft Active Directory server.</para>
+      <para>The '<command>Hudson Active Directory Plugin</command>' lets you
+      configure Hudson to authenticate against a Microsoft Active Directory
+      server. You can both authenticate users, and retrieve their groups for
+      Matrix and Project-based authorization. Note that, unlike the
+      conventional LDAP integration (see <xref
+      linkend="sec-security-ldap" />), there is no need to prefix group names
+      with "ROLE_" - you can use Active Directory groups (such as "Domain
+      Admins") directory.</para>
 
-      <para>The nice thing about this plugin is that it works both in a
+      <para>To configure the plugin, you need to provide the full domain name
+      of your Active Directory server. If you have more than one domain, you
+      can provide a comma-separated list. If you provide the forest name (say
+      acme.com instead of europe.acme.com), then the search will be done
+      against the global catalog. Note that if you do this without specifying
+      the bind DN (see below), the user would have to login as "europe\joe" or
+      "joe@europe". </para>
+
+      <para>The advanced options let you specify a site name (to improve
+      performance by restricting the domain controllers that Hudson queries),
+      and a Binding DN and password, which come in handy if you are connecting
+      to a multi-domain forest. You need to provide a valid Binding DN and
+      password values, that Hudson can use to connect to your server so that
+      it can establish the full identity of the user being authenticated. This
+      way, the user can simply type in "jack" or "jill", and have the system
+      automatically figure out that they are "jack@europe.acme.com" or
+      "jack@asia.acme.com". You need to provide the full user principal name
+      with domain name, like "admin@europe.acme.com", or a LDAP-style
+      distinguished name, such as
+      "CN=Administrator,OU=europe,DC=acme,DC=com".</para>
+
+      <para>Another nice thing about this plugin is that it works both in a
       Windows environment and in a Unix environment. So if Hudson is running
       on a Unix server, it can still authenticate against a Microsoft Active
       Directory service running on another machine.</para>
@@ -923,12 +365,57 @@
       <para>On a non-Windows machine (or you specify one or more domains), you
       need to tell Hudson the name of Active Directory domain(s) to
       authenticate with. Hudson then uses DNS SRV records and LDAP service of
-      Active Directory to authenticate users. </para>
+      Active Directory to authenticate users.</para>
 
       <para>Hudson can determine which groups in Active Directory that the
       user belongs to, so you can use these as part of your authorisation
       strategy. For example, you can use these groups in matrix-based
       security, or allow "Domain Admins" to administer Hudson.</para>
+    </sect2>
+
+    <sect2>
+      <title>Using Unix users and groups</title>
+
+      <para>If you are running Hudson on a Unix machine, you can also ask
+      Hudson to use the user and group accounts defined on this machine. In
+      this case, users will log into Hudson using their Unix account logins
+      and passwords. This uses PAM (Pluggable Authentication Modules), and
+      also works fine with NIS.</para>
+
+      <para>In its most basic form, this is somewhat cumbersome, as it
+      requires new user accounts to be set up and configured for each new
+      Hudson user. It is only really useful if these accounts need to be set
+      up for other purposes.</para>
+    </sect2>
+
+    <sect2>
+      <title>Delegating to the Servlet container</title>
+
+      <para>Another way to identify Hudson users is to let your Servlet
+      container do it for you. This approach is useful if you are running
+      Hudson on a Servlet container such as Tomcat or Glassfish, and you
+      already have an established way to integrate the Servlet container with
+      your local enterprise user directory. Tomcat, for example, allows you to
+      authenticate users against a relational database (using direct JDBC or a
+      DataSource), JNDI, JAAS, or an XML configuration file. You can also use
+      the roles defined in the Servlet container's user directory for use with
+      Matrix and Project-based authorization strategies.</para>
+
+      <para>In Hudson, this is easy to configure - just select this option in
+      the Security Realm section (see <xref
+      linkend="fig-hudson-security-container" />). Once you have done this,
+      Hudson will let the server take care of everything.</para>
+
+      <para><figure id="fig-hudson-security-container">
+          <title>The Hudson Sign up page\</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-container.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
 
     <sect2>
@@ -1005,12 +492,657 @@
     <sect2>
       <title>Integrating with other systems</title>
 
-      <para></para>
+      <para>In addition to the authentication strategies discussed here, there
+      are a number of other plugins that allow Hudson to authenticate against
+      other systems. At the time of writing, these include CAS (Central
+      Authentication Service, an open source single sign-on tool) and the
+      Collabnet Source Forge Enterprise Edition (SFEE) server. </para>
+
+      <para>If no plugin is available, you can also write your own custom
+      authentication script. To do this, you need to install the
+      <command>Script Security Realm</command> plugin. Once you have installed
+      the script and restarted Hudson, you can write two scripts in your
+      favorite scripting language. One script authenticates users, whereas the
+      other determines the groups of a given user (see <xref
+      linkend="fig-hudson-security-scripts" />).</para>
+
+      <para><figure id="fig-hudson-security-scripts">
+          <title>Using custom scripts to handle authentication</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-scripts.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Before invoking the authentication script, Hudson sets two
+      environment variables: 'U', containing the username, and 'P', containing
+      the password. This script uses these environment variables to
+      authenticate using the specified username and password, returning 0 if
+      the authentication is successful, and some other value otherwise. If
+      authentication fails, the output from the process will be reported in
+      the error message displayed to the user. Here is a simple Groovy
+      authentication script:</para>
+
+      <para><programlisting>def env = System.getenv()
+def username = env['U']
+def password = env['P']
+
+println "Authenticating user $username"
+
+if (authenticate(username, password)) {
+    System.exit 0
+} else {
+    System.exit 1
+}
+
+def authenticate(def username, def password) {
+    def userIsAuthenticated = true
+    // Authentication logic goes here
+    return userIsAuthenticated
+}</programlisting></para>
+
+      <para>This script is enough if all you have to deal with is basic
+      authentication without groups. If you want to use groups from your
+      custom authentication source in your Matrix-based or Project-based
+      authorizations (see <xref linkend="sect-authorization" />), you can
+      write a second script, which determines the groups for a given user.
+      This groups uses the 'U' environment variable to determine which user is
+      trying to log on, and prints a comma-separated list of groups for this
+      user to the standard output. If you don't like commas, you can override
+      the separating character in the configuration. A simple Groovy script to
+      do this job is shown here:<programlisting>def env = System.getenv()
+def username = env['U'] 
+
+println findGroupsFor(username)
+
+System.exit 0
+
+def findGroupsFor(def username) {
+    return "admin,game-of-life-developer"
+}</programlisting>Both these scripts must return 0 when called for a user to
+      be authenticated.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="sect-authorization">
+    <title>Authorization - who can do what</title>
+
+    <sect2 id="sec-matrix-security">
+      <title>Matrix-based security</title>
+
+      <para>Letting signed-in users do anything is certainly flexible, and may
+      be all you need for a small team. For larger or multiple teams, or cases
+      where Hudson is being used outside the development environment, a more
+      sophisticated approach is generally required.</para>
+
+      <para>Matrix-based security is a more sophisticated approach, where
+      different users are assigned different rights, using a role-based
+      approach.</para>
+
+      <sect3>
+        <title>Setting up matrix-based security</title>
+
+        <para>The first step in setting up matrix-based security in Hudson is
+        to create an administrator. <emphasis>This is an essential step, and
+        must be done before all others.</emphasis> Now your administrator can
+        be an existing user, or one created specially for the purpose. If you
+        want to create a dedicated administrator user, simply create one by
+        signing up in the usual way (see <xref
+        linkend="fig-hudson-user-signup" />). It doesn't have to be associated
+        with an SCM user.</para>
+
+        <para>Once you have your admin user ready, you can activate
+        matrix-based security by selecting 'Matrix-based security' in the
+        'Authorization' section of the main configuration page. Hudson will
+        display a table containing authorized users, and check boxes
+        corresponding to the various permissions that you can assign to these
+        users (see <xref linkend="fig-hudson-matrix-anonymous" />).</para>
+
+        <para><figure id="fig-hudson-matrix-anonymous">
+            <title>Matrix-based security configuration</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata fileref="figs/web/hudson-matrix-anonymous.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The special 'anonymous' user is always present in the
+        table. This user represents unauthenticated users. Typically, you only
+        grant very limited rights to unauthenticated users, such as read-only
+        access, or no access at all (as shown in <xref
+        linkend="fig-hudson-matrix-anonymous" />).</para>
+
+        <para>The first thing you need to do now is to grant administration
+        rights to your administrator. Add your administration user in the
+        'User/group to add' field and click on 'Add'. Your administrator will
+        now appear in the permissions matrix. Now make sure you grant this
+        user every permission (see <xref
+        linkend="fig-hudson-matrix-admin" />), and save your configuration.
+        You should now be able to log in with your administrator account (if
+        you aren't already logged in with this account) and continue to set up
+        your other users.</para>
+
+        <para><figure id="fig-hudson-matrix-admin">
+            <title>Setting up an administrator</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata fileref="figs/web/hudson-matrix-admin.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3>
+        <title>Fine tuning user permissions</title>
+
+        <para>Once you have set up your administrator account, you can add any
+        other users that need to access your Hudson instance. Simply add the
+        user names and tick the permissions you want to grant them (see <xref
+        linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
+        or Unix users and groups as the underlying authentication schema (see
+        <xref linkend="sec-security-ldap" />), you can also configure
+        permissions for groups of users.</para>
+
+        <para><figure id="fig-hudson-matrix-users">
+            <title>Setting up other users</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata fileref="figs/web/hudson-matrix-users.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>You can grant a range of permissions, which are organized
+        into several groups: Overall, Slave, Job, Run, View and SCM. Most of
+        the permissions are fairly obvious, but some need a little more
+        explanation. The individual permissions are as follows:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term><emphasis>Overall</emphasis></term>
+
+            <listitem>
+              <para>This group covers basic system-wide permissions:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Administer</term>
+
+                  <listitem>
+                    <para>Lets a user make system-wide configuration changes
+                    and other sensitive operation, for example in the main
+                    Hudson configuration pages. This should be reserved for
+                    the Hudson administrator.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Read</term>
+
+                  <listitem>
+                    <para>This permission provides read-only access to
+                    virtually all of the pages in Hudson. If you want
+                    anonymous users to be able to view build jobs freely, but
+                    not to be able to modify or start them, grant the Read
+                    role to the special 'anonymous' user. If not, simply
+                    revoke this permission for the Anonymous user. And if you
+                    want all authenticated users to be able to see build jobs,
+                    then add a special user called 'authenticated', and grant
+                    this user Overall/Read permission.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><emphasis>Slave</emphasis></term>
+
+            <listitem>
+              <para>This group covers permissions about remote build nodes, or
+              slaves:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Configure</term>
+
+                  <listitem>
+                    <para>Create and configure new build nodes.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Delete</term>
+
+                  <listitem>
+                    <para>Delete build nodes.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><emphasis>Job</emphasis></term>
+
+            <listitem>
+              <para>This group covers job-related permissions:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Create</term>
+
+                  <listitem>
+                    <para>Create a new build job</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Delete</term>
+
+                  <listitem>
+                    <para>Delete an existing build job</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Configure</term>
+
+                  <listitem>
+                    <para>Update the configuration of an existing build
+                    jobs</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Read</term>
+
+                  <listitem>
+                    <para>View build jobs</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Build</term>
+
+                  <listitem>
+                    <para>Start a build job</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Workspace</term>
+
+                  <listitem>
+                    <para>View and download the workspace contents for a build
+                    job. Remember, the workspace contains source code and
+                    artifacts, so if you want to protect these from general
+                    access, you should revoke this permission.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Release</term>
+
+                  <listitem>
+                    <para>Start a Maven release for a project configured with
+                    the M2Release plugin.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><emphasis>Run</emphasis></term>
+
+            <listitem>
+              <para>This group covers rights related to particular builds in
+              the build history:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Delete</term>
+
+                  <listitem>
+                    <para>Delete a build from the build history</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Update</term>
+
+                  <listitem>
+                    <para>Update the description and other properties of a
+                    build in the build history. This can be useful if a user
+                    wants to leave a note about the cause of a build failure,
+                    for example.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term><emphasis>View</emphasis></term>
+
+            <listitem>
+              <para>This group covers managing views:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Create</term>
+
+                  <listitem>
+                    <para>Create a new view</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Delete</term>
+
+                  <listitem>
+                    <para>Delete an existing view</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>Configure</term>
+
+                  <listitem>
+                    <para>Configure an existing view</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>SCM</term>
+
+            <listitem>
+              <para>Permissions related to your version control system:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Tag</term>
+
+                  <listitem>
+                    <para>Create a new tag in the source code repository for a
+                    given build.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Others</term>
+
+            <listitem>
+              <para>There can also be other permissions available, depending
+              on the plugins installed. Some of the more useful are indicated
+              here:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>Promote</term>
+
+                  <listitem>
+                    <para>If the Promoted Builds plugin is installed, this
+                    permission allows users to manually promote a
+                    build.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </sect3>
+
+      <sect3>
+        <title>Help! I've locked myself out!</title>
+
+        <para>Now it may happen that, during this process, you may end up
+        locking yourself out of Hudson. This can happen if, for example, you
+        save the matrix configuration without having correctly set up your
+        administrator. If this happens, do not panic - there is an easy fix,
+        as long as you have access to Hudson's home directory, at least.
+        Simply open up the <filename>config.xml</filename> file at the root of
+        the Hudson home directory. This will contain something like
+        this:</para>
+
+        <para><programlisting>&lt;hudson&gt;
+	&lt;version&gt;1.391&lt;/version&gt;
+	&lt;numExecutors&gt;2&lt;/numExecutors&gt;
+	&lt;mode&gt;NORMAL&lt;/mode&gt;
+	&lt;useSecurity&gt;true&lt;/useSecurity&gt;
+	...</programlisting>The thing to look for is the
+        <code>&lt;useSecurity&gt;</code> element. To restore your access to
+        Hudson, change this value to false, and restart your server. You will
+        now be able to access Hudson again, and set up your security
+        configuration correctly.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Project-based security</title>
+
+      <para>Project-based security lets you build on the matrix-based security
+      model we just discussed, and apply it to individual projects. Not only
+      can you assign system-wide roles for your users, you can also configure
+      more specific rights for certain individual projects.</para>
+
+      <para>To activate project-level security, select 'Project-based Matrix
+      Authorization Strategy' in the Authorisation section of the main
+      configuration screen (see <xref
+      linkend="fig-hudson-project-based-security" />). Here, you set up the
+      default rights for users and groups, as we saw with Matrix-based
+      security (see <xref linkend="sec-matrix-security" />).</para>
+
+      <para><figure id="fig-hudson-project-based-security">
+          <title>Project-based security</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-project-based-security.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>These are the default permissions, that apply to all projects
+      that have not been specially configured. However, when you use
+      project-based security, you can also set up special project-specific
+      permissions. You do this by selecting 'Enable project-based security' in
+      the project configuration screen (see <xref
+      linkend="fig-hudson-security-project-anon" />). Hudson will display a
+      table of project-specific permissions. You can configure these
+      permissions for different users and groups just like on the system-wide
+      configuration page. These permissions will be added to the system-wide
+      permissions to produce a project-specific set of permissions applicable
+      for this project.</para>
+
+      <para><figure id="fig-hudson-security-project-anon">
+          <title>Project-based security</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-project-anon.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The way this works is easiest to understand with a few
+      practical examples. In <xref
+      linkend="fig-hudson-project-based-security" />, for instance, no
+      permissions have been granted to the anonymous user, so by default all
+      build jobs will remain invisible until a user signs on. However, we are
+      using project-based security, so we can override this on a
+      project-by-project basis. In <xref
+      linkend="fig-hudson-security-project-anon" />, for example, we have set
+      up the game-of-life project to have read-only access for the special
+      'anonymous' user.</para>
+
+      <para>When you save this configuration, unauthenticated users will be
+      able to see the game-of-life project in read-only mode (see <xref
+      linkend="fig-hudson-security-readonly-project" />). This same principle
+      applies with all of the project-specific permissions.</para>
+
+      <para><figure id="fig-hudson-security-readonly-project">
+          <title>Viewing a project</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-readonly-project.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Note that Hudson permissions are cumulative - at the time of
+      writing, there is no way to revoke a system-wide permission for a
+      particular project. For example, if the anonymous user has read-access
+      to build jobs at the system level, you can't revoke read-only access for
+      an individual project. So when using project-based security, use the
+      system level matrix to define minimum default permissions applicable
+      across all of your projects, and set up projects with additional
+      project-specific authorizations.</para>
+
+      <para>There are many approaches to managing project permissions, and
+      they depend as much on organization culture as on technical
+      considerations. One common strategy approach is to allow team members to
+      have full access to their own projects, and read-only access to other
+      projects. The '<command>Extended Read Permission Plugin</command>' is a
+      useful extension to have for this scenario. This plugin lets you let
+      users from other teams see a read-only view of your project
+      configuration, without being able to modify anything (see <xref
+      linkend="fig-hudson-security-extended-read" />). This is a great way to
+      share build configuration practices and tips with other teams without
+      letting them tamper with your builds.</para>
+
+      <para><figure id="fig-hudson-security-extended-read">
+          <title>Setting up Extended Read Permissions</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-extended-read.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>It is worth noting that, whenever large and/or multiple teams are
+      involved, the internal Hudson database reaches its limits quite quickly,
+      and it is worth considering integrating with a more specialized
+      directory service such as an LDAP server, Active Directory or Atlassian
+      Crowd, or possibly a more sophisticated permission system such as
+      role-based security, discussed in the following chapter.</para>
+    </sect2>
+
+    <sect2>
+      <title>Role-based security</title>
+
+      <para>Sometimes managing user permissions individually can be
+      cumbersome, and you may not want to integrate with an LDAP server to set
+      up groups that way. A more recent alternative option is to use the 'Role
+      Strategy Plugin', which allows you to define global and project-level
+      roles, and assign these roles to users.</para>
+
+      <para>You install the plugin in the usual way, via the Plugin Manager.
+      Once installed, you can activate this authorization strategy in the main
+      configuration page (see <xref
+      linkend="fig-hudson-security-role-based" />).</para>
+
+      <para><figure id="fig-hudson-security-role-based">
+          <title>Setting up Role-based security</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-role-based.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have set this up, you can define roles that regroup
+      sets of related permissions. You set up and configure your roles, and
+      assign these roles to your users, in the Manage Roles screen, which you
+      can access in the Manage Hudson screen (see <xref
+      linkend="fig-hudson-security-manage-roles-menu" />).</para>
+
+      <para><figure id="fig-hudson-security-manage-roles-menu">
+          <title>The Manage Roles configuration menu</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-manage-roles-menu.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>In the 'Manage Roles' screen, you can set up global and
+      project-level permissions. Global permissions apply across all projects,
+      and are typically system-wide administration or general access
+      permissions (see <xref linkend="fig-hudson-security-global-roles" />).
+      Setting these roles up is intuitive and similar to setting up user
+      permissions in the other security models we have seen.</para>
+
+      <para><figure id="fig-hudson-security-global-roles">
+          <title>Managing global roles</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-global-roles.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Project roles are slightly more complicated. A project role
+      regroups a set of permissions that are applicable to one or more
+      (presumably related) projects. You define the relevant projects using a
+      regular expression, so it helps to have a clear and consistent set of
+      naming conventions in place for your project names (see <xref
+      linkend="fig-hudson-security-project-roles" />). For example, you may
+      wish to create roles distinguishing developers with full configuration
+      rights on their own project from users who can simply trigger a build
+      and view the build results, or create roles where developers can
+      configure certain automated deployment build jobs, but only production
+      teams are allowed to execute these jobs.</para>
+
+      <para><figure id="fig-hudson-security-project-roles">
+          <title>Managing project roles</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-project-roles.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have defined these roles, you can go to the 'Assign
+      Roles' screen to set up individual users or groups with these roles (see
+      <xref linkend="fig-hudson-security-assign-roles" />).</para>
+
+      <para><figure id="fig-hudson-security-assign-roles">
+          <title>Assigning roles to users</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-security-assign-roles.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Role-based strategy is relatively new in Hudson, but it is an
+      excellent way to simplify the task of managing permissions in large,
+      multi-team and multi-project organizations.</para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Keeping track of user actions</title>
+    <title>Auditing - keeping track of user actions</title>
 
     <para>In addition to configuring user accounts and access rights, it can
     also be useful to keep track of the individual actions that users
@@ -1173,6 +1305,14 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
   <sect1>
     <title>Conclusion</title>
 
-    <para>TODO</para>
+    <para>In this chapter we have looked at a variety of ways to configure
+    security in Hudson. The Hudson security model, with the two orthogonal
+    concepts of Authentication and Authorization, is flexible and extensible.
+    For a Hudson installation of any size, you should try to integrate your
+    Hudson security strategy with the organization as a whole. This can go
+    from simply integrating with your local LDAP repository to setting up or
+    using a full-blown SSO solution such as Crown or CAS. In either case, it
+    will make the system considerably easier to administrate in the long
+    run.</para>
   </sect1>
 </chapter>
