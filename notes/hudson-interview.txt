@@ -1,0 +1,54 @@
+# Can you introduce yourself (and your experience) to the readers?
+
+Hi! I'm an independent consultant - my main interest is helping Java developers around the world to get their jobs done more easily. I've been involved in Java development and Agile practices for over a decade, and in software development even longer. I've played many roles over the years: developer, architect, project manager, product manager, author, speaker. My first book, Java Power Tools was published in 2008 by O'Reilly and crystalized a lot of my experience with open source Java SDLC tools. Nowadays I focus on different aspects of software craftsmanship and other ways of streamlining the software development process. This includes helping folks set up or improve their software development infrastructure, including in particular Continuous Integration and Deployment environments, but also training and mentoring teams in build automation, good development practices, TDD, BDD, ATDD and test automation in general. I also spend a lot of time dabbling in Java-related technologies, writing, and contributing to open source projects like easyb and SchemaSpy.
+
+# Just in case people are unaware of the technology, can you give a short paragraph introduction into Hudson?
+
+Hudson is an Open Source Continuous Integration (CI) tool. Most people nowadays are familiar with the basic concepts of Continuous Integration. In a nutshell, Continuous Integration provides quick feedback on the state of health of your project, in order to reduce the time and money it takes to fix quality-related issues. Whenever you commit a change to your version control system, Hudson will kick off a series of automated builds, tests and quality control checks. So, if your latest changes broken something, you should ideally know about it within minutes.
+
+CI is closely related to other quality-related practices such as automated testing, automated deployment, code quality metrics, and also as a platform for Continuous Deployment. Continuous Deployment occurs when you have so much confidence in your automated tests, that you can deploy to testing, UAT or even production environments automatically, whenever a new change is ready. 
+
+But Continuous Integration is much more than just a tool - it is a mindset. Continuous Integration involves continuously improving the flow of information about project risks and quality issues from many different perspectives, in order to isolate and address them one by one. This often involves automation: as I always say, never send a developer to do a machine's job. Automated tests play an important role, of course, but so do other metrics such as code coverage, coding standards, potential bugs in the code, and the number of pending verses implemented features or user stories. This all fits in very closely with the notion of Continuous Improvement (or Kaizen) popularized by lean methodologies such as Kanban. Continuous Integration without Continuous Improvement is like sparring without a partner - sooner or later, you end up just going through the motions.
+
+# So these days everyone must be doing CI, right? 
+
+Well, no, actually, not exactly. Many teams are, but many are still not, or are simply scheduling nightly builds, which is not really CI. Many teams are still running CruiseControl, which was great in its day, but is a bit of a dinosaur now. I'm convinced that not everyone is getting all they can out of CI. This book focuses on getting more out of CI using Hudson, but many of the general ideas, such as automated/continuous deployment, build pipelines and build promotion are also applicable for other modern CI tools.
+
+# What inspired you to write this book?
+
+Hudson has been increasing in popularity over the past few years, and has been the most popular CI tool by far for some time now. And yet it has no dedicated book. If there's any open source tool that deserves a book, it's Hudson. Sure, the documentation on the Hudson web site is decent enough, but I wanted to write a book that could serve both as a comprehensive guide to Hudson, and also as a practical handbook for implementing Continuous Integration principles using Hudson. So this book goes beyond basic Hudson usage, and discusses how to use Hudson in real-world scenarios, getting the most out of all the available plugins. There are so many plugins available for Hudson, in many different areas, and it's hard to know what exists and where they can help. I also wanted to make the book open source and freely available in the electronic format; O'Reilly will also be publishing the printed version.
+
+# How are you able to fund an open source book?
+
+Books, like software projects, always end up taking much more time than expected. The work for this book is primarily funded by my own company (Wakaleo Consulting) and written in my own spare time, but it is also funded by sponsorship from a few open-source-friendly companies. In addition, once published, all the royalties from the printed edition will go towards maintaining the online book and keeping it up to date. The book is still open to sponsorship (check out the book website for details), so if any other organizations want some extra exposure in this space and to contribute to a great cause, just give a yell!
+
+# Have you received many contributions from others?
+
+More and more! I always welcome people's experiences with Hudson in areas that I don't work with myself, such as .NET, Ruby and PHP. Some of the contributions, such as Matthew McCullogh's contribution on configuring Hudson with Git and Github, is already integrated, whereas many others are in the pipelines. 
+
+# Why choose Hudson as your continuous integration technology? What makes it better than the rest?
+
+Hudson has democratized CI. More than any previous CI tool, Hudson has made it easy for teams to set up a Continuous Integration environment, and to tailor it to their needs. Hudson is easy to use, it is easy to customize, the reporting features are excellent, and there are literally hundreds of plugins to help you integrate it into the rest of your development infrastructure. 
+
+# Are there situations that distributed builds don't make sense in? Does my application need to be broken up into distinct modules for this to work?
+
+Distributed builds are to Continuous Integration what multi-core processors are to the CPU industry. They can be very useful, but you have to know how to use them to get the most leverage.
+
+There are actually two aspects to distributed builds that you need to consider:
+	1) The first is speeding up throughput. Effective CI needs to be fast. Indeed, the primary goal of CI is to provide super-fast feedback. A build that takes 3 hours to complete is bad. Ten builds that take three hours each to run can clog up a single build server, and mean that you don't get notification of a build failure until the following day. Worse still, by this time, many other changes will have been made, so it becomes much harder to identify the problem. Distributed builds are an effective way to get around this issue. However, if you have lots of builds, you can still find yourself limited during peak build periods if you have a fixed number of build servers to work with. Virtual/elastic build servers, using either virtual machines or cloud-based solutions, are even better - with these, you just bring up new build servers as you need them. 
+	
+	2) The second aspect is speeding up individual builds. This is harder, and depends a great deal on your builds. But you can get a lot of leverage here if you are clever. For example, functional tests are a good candidate - you can set up your automated web tests to run in parallel on separate browsers, or configure integration tests for an Android app to run on several different emulated devices in parallel. 
+	
+	Another idea is to run some of your unit or integration tests in parallel. This is easy enough to do with modern testing frameworks, as long as your tests are independent enough to support it, but it does not lend itself well to distributed builds. So often you do need to break your application into modules. However, if your application is well-designed, this is often the case anyway. Real-world Maven projects are generally split into many modules with well-defined dependencies between the various modules. When Hudson builds a Maven project, it can split the individual module builds across several distributed build agents, which can speed things up considerably. 
+
+# What is your favorite Hudson feature?
+
+Probably the plugin architecture, not because of its technical merits, but because it exists, and is so easy to use. By leveraging the Open Source developer community, the Hudson Plugin architecture has multiplied Hudson's features by several orders of magnitude.
+
+# What was (or is) the most difficult chapter to write?
+
+Each chapter has its surprises.   But the most involved will probably be the advanced build promotions and pipelines chapter - this will combine a lot of techniques explained in other chapters, and discuss how to orchestrate them into an organized build and deployment process. 
+
+# Would you like to encourage more contributions or reviews of the book?
+
+Yes, absolutely! 

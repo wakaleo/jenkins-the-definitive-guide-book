@@ -1,0 +1,72 @@
+# Monitoring your build jobs
+
+## Introduction
+
+The fine art of notification
+
+## Email notification 
+	- Easy to ignore
+	- Necessary
+
+	
+Email notification is the most obvious and most common form of CI notification. Email is well-known, ubiquitous, easy to use and easy to configure (see sect-configuration-email).
+
+You activate email notification in Hudson by ticking the 'E-mail Notification' checkbox and providing the list of email addresses of the people who need to be notified. By default, Hudson will send an email for every failed or unstable build. Remember, It will also send a new email for the first successful build after a series of failed or unstable builds, to indicate that the issue has been fixed. 
+
+Normally a build should not take took many tries to get working again - developers should diagnose and reproduce the issue locally, fix it locally, and only then commit their fix to version control. Repeated build failures usually indicate either a chronic configuration issue or poor developer practices (developers committing changes without checking that it works locally first). 
+
+You can also opt to send a separate email to any developers who have committed changes to the broken build. This is generally a good idea, as developers who have committed changes since the last build are naturally the people who should be the most interested in the build results. Hudson will get the email address of the user from the currently-configured security realm (see sect-security-realms), or by deriving the email address from the SCM username if you have set this up (see sect-configuration-email). 
+
+If you use this option, it may be less useful to include the entire team in the main distribution list. You may want to simply include people who will interested in monitoring the result of every build (such as technical leads), and let Hudson inform contributing developers directly.
+
+This assumes of course that the changes caused the build failure, which is generally (but not always) the case. However, if the builds are infrequent (for example, nightly builds, or if a build is queued for several hours before finally kicking off), many changes may have been committed, and it is hard to know which one was actually responsible for the build failure. 
+
+All builds are not alike when it comes to email notification. Developers committing changes are particularly interested in the results of the unit and integration test builds, whereas BAs and testers might be more interested in keeping tabs on the status of the automated acceptance tests. So the exact email notification setup for each build job will be different. In fact, it is useful to define an email notification strategy. An example of an email notification strategy is outlined here:
+	- fast build (unit/integration tests, runs in less than 5 minutes): team lead and contributors
+	- acceptance tests builds (run after the fast builds): team lead, testers and contributors
+	- nightly builds (QA metrics, only run if the other builds work): all team members - provide a snapshot picture of project health before the daily status meeting.
+
+By default, Hudson email notification is a rather blunt tool. Notification messages are always sent to basically the same group of people. You cannot send messages to different people depending on what went wrong, or implement any sort of escalation policy. It would be useful, for example, to be able to notify the developers who committed changes the first time a build breaks, and send a different message to the team lead or the entire team if the build breaks a second time.
+
+The 'Email-ext plugin' lets you define a more refined email notification strategy. You can fine-tune the contents of the email message, and also define a more precise notification strategy with different messages and recipient lists for different events. This plugin is designed to replace the standard Hudson email notification - once you install and configure it, you can deactivate the normal 'E-mail Notification' configuration.
+
+The notification strategy used by this plugin is based on the concept of triggers. 
+- Configuring triggers
+- Different recipient lists for different events
+-  
+
+- Customizing the email messages
+- Using tokens
+
+However, as a notification strategy, email is not without its faults.
+
+Some developers shut down their email clients at times to avoid being interrupted. In large organizations, the number of email messages arriving each day can be considerable, and build failure notifications can be hidden among a host of other less important messages. So build failures may not always get the high-priority attention they require in a finely-tuned CI environment. In the following sections, we will look at some other notification strategies that can be used to raise team awareness of failed builds and encourage developers to get them fixed faster.
+
+	
+## Instant Messaging
+	- Useful if they are used in the org
+	
+## The build radiator - transparent build results
+
+## Desktop notifiers - hard to ignore
+
+
+============
+
+- Email
+	- Pros and cons
+	- Extended Email features
+- Build radiator
+- Playing sounds
+- Instant Messaging (Jabber)
+- Desktop notification
+- Lava Lamps and Nabaztags
+- Creating a JIRA issue if the build fails
+
+===========
+
+- Kaizen, Kanban, and Continuous Improvement
+- Toyota fixing assembly line problems.
+
+
+In a well-tuned Continuous Integration environment, fixing a failing build should take the highest priority. 

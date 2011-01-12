@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter>
+  <title>Notification</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>notification</primary>
+      </indexterm>TODO</para>
+  </sect1>
+
+  <sect1>
+    <title>Email Notification</title>
+
+    <para>Email notification is the most obvious and most common form of CI
+    notification. Email is well-known, ubiquitous, easy to use and easy to
+    configure (see <xref linkend="sect-configuration-email" />). So, when
+    teams set up their first Continuous Integration environment, it is usually
+    the most common initial notification strategy they try.</para>
+
+    <para>You activate email notification in Hudson by ticking the 'E-mail
+    Notification' checkbox and providing the list of email addresses of the
+    people who need to be notified (see <xref
+    linkend="fig-hudson-email-configuration" />). By default, Hudson will send
+    an email for every failed or unstable build. Remember, It will also send a
+    new email for the first successful build after a series of failed or
+    unstable builds, to indicate that the issue has been fixed. </para>
+
+    <para><figure id="fig-hudson-email-configuration">
+        <title>Configuring email notification</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-email-configuration.png"
+                       width="9.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Normally a build should not take took many tries to get working
+    again - developers should diagnose and reproduce the issue locally, fix it
+    locally, and only then commit their fix to version control. Repeated build
+    failures usually indicate either a chronic configuration issue or poor
+    developer practices (developers committing changes without checking that
+    it works locally first). </para>
+
+    <para>You can also opt to send a separate email to any developers who have
+    committed changes to the broken build. This is generally a good idea, as
+    developers who have committed changes since the last build are naturally
+    the people who should be the most interested in the build results. Hudson
+    will get the email address of the user from the currently-configured
+    security realm (see <xref linkend="sect-security-realms" />), or by
+    deriving the email address from the SCM username if you have set this up
+    (see <xref linkend="sect-configuration-email" />).</para>
+
+    <para>If you use this option, it may be less useful to include the entire
+    team in the main distribution list. You may want to simply include people
+    who will interested in monitoring the result of every build (such as
+    technical leads), and let Hudson inform contributing developers
+    directly.</para>
+
+    <para>This assumes of course that the changes caused the build failure,
+    which is generally (but not always) the case. However, if the builds are
+    infrequent (for example, nightly builds, or if a build is queued for
+    several hours before finally kicking off), many changes may have been
+    committed, and it is hard to know which one was actually responsible for
+    the build failure.</para>
+
+    <para>Not all builds are alike when it comes to email notification.
+    Developers committing changes are particularly interested in the results
+    of the unit and integration test builds (especially those triggered by
+    their own changes), whereas BAs and testers might be more interested in
+    keeping tabs on the status of the automated acceptance tests. So the exact
+    email notification setup for each build job will be different. In fact, it
+    is useful to define an email notification strategy. A sample of such an
+    email notification strategy is outlined here:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Fast builds (unit/integration tests, runs in less than 5
+        minutes): notification is sent to the team lead and to developers
+        having committed changes</para>
+      </listitem>
+
+      <listitem>
+        <para>Slow builds (acceptance tests builds, run after the fast
+        builds): notification is sent to team lead, testers and developers
+        having committed changes</para>
+      </listitem>
+
+      <listitem>
+        <para>Nightly builds (QA metrics, performance tests and so on; only
+        run if the other builds work): all team members - these provide a
+        snapshot picture of project health before the daily status
+        meeting.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Indeed, you should consider what notification strategy is
+    appropriate for each build job on a case-by-case basis, rather than
+    applying a blanket policy for all build jobs.</para>
+  </sect1>
+
+  <sect1>
+    <title>More Advanced Email Notification</title>
+
+    <para>By default, Hudson email notification is a rather blunt tool.
+    Notification messages are always sent to basically the same group of
+    people. You cannot send messages to different people depending on what
+    went wrong, or implement any sort of escalation policy. It would be
+    useful, for example, to be able to notify the developers who committed
+    changes the first time a build breaks, and send a different message to the
+    team lead or the entire team if the build breaks a second time</para>
+
+    <para>The <command>Email-ext plugin</command> lets you define a more
+    refined email notification strategy. This plugin adds an 'Editable Email
+    Notification' checkbox (see <xref
+    linkend="fig-hudson-email-ext-configuration" />), which effectively
+    replaces the standard Hudson email notification. Here, you can define a
+    default recipient list and fine-tune the contents of the email message,
+    and also define a more precise notification strategy with different
+    messages and recipient lists for different events. Note that once you have
+    installed and configured this plugin for your build job, you can
+    deactivate the normal 'E-mail Notification' configuration.</para>
+
+    <para><figure id="fig-hudson-email-configuration">
+        <title>Configuring email notification</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-email-ext-configuration.png"
+                       width="9.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>This plugin has two related but distinct functionalities.
+    Firstly, it lets you customize the email notification message. You can
+    choose from a large number of pre-defined tokens to create your own
+    customized message title and body. You include a token in your message
+    template using the familiar dollar notation (e.g.
+    <command>${BUILD_NUMBER}</command> or <command>$BUILD_NUMBER)</command>.
+    Some of the tokens accept parameters, which you can specify using a
+    'name=value' format (e.g. <command>${BUILD_LOG, maxLines=100}</command> or
+    <command>${ENV, var="PATH"}</command>). Among the more useful tokens
+    are:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>${DEFAULT_SUBJECT}</term>
+
+        <listitem>
+          <para>The default email subject configured in the Hudson system
+          configuration page</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${DEFAULT_CONTENT}</term>
+
+        <listitem>
+          <para>The default email content configured in the Hudson system
+          configuration page </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${PROJECT_NAME}</term>
+
+        <listitem>
+          <para>The project's name</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${BUILD_NUMBER}</term>
+
+        <listitem>
+          <para>Current build number</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${BUILD_STATUS}</term>
+
+        <listitem>
+          <para>Current build status (failing, success, etc.)</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${CAUSE}</term>
+
+        <listitem>
+          <para>The cause of the build</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${BUILD_URL}</term>
+
+        <listitem>
+          <para>A link to the corresponding build job page on Hudson</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${FAILED_TESTS}</term>
+
+        <listitem>
+          <para>Shows information about failing unit tests, if any have
+          failed</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${CHANGES}</term>
+
+        <listitem>
+          <para>Displays the changes made since the last build</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>${CHANGES_SINCE_LAST_SUCCESS}</term>
+
+        <listitem>
+          <para>All the changes made since the last successful build</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>You can get a full list of the available tokens, and the options for
+    those that accept parameters, by clicking on the Help icon opposite the
+    'Context Token Reference' label.</para>
+
+    <para><figure id="fig-hudson-email-configuration">
+        <title>Custom email notifications</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-email-ext-configuration.png"
+                       width="9.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The Advanced button lets you define a more sophisticated
+    notification strategy, based on the concept of triggers (see <xref
+    linkend="fig-email-notification-triggers" />). Triggers determine when
+    email notification messages should be sent out. The supported triggers
+    include the following:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>Failure</term>
+
+        <listitem>
+          <para>Any time the build fails.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Still Failing</term>
+
+        <listitem>
+          <para>Any successive build failures</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Unstable</term>
+
+        <listitem>
+          <para>Any time a build is unstable</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Still Unstable</term>
+
+        <listitem>
+          <para>Any successive unstable builds</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Success</term>
+
+        <listitem>
+          <para>Any successful build</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Fixed</term>
+
+        <listitem>
+          <para>When the build changes from Failure or Unstable to
+          Successful</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Before Build</term>
+
+        <listitem>
+          <para>Sent before every build begins</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para><figure id="fig-email-notification-triggers">
+        <title>Configuring email notification triggers</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/email-notification-triggers.png"
+                       width="9.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>You can set up as many (or as few) triggers as you like. The
+    recipients list and message template can be customized for each trigger -
+    for example, by using the 'Still Failing' and 'Still Unstable' triggers,
+    you can set up a notification strategy that only notifies developer having
+    committed changes the first time a build job fails, but proceeds to notify
+    the team leader if it fails a second time. You can choose to send the
+    message only to the developers who have committed to this build ('Send to
+    committers'), or to also include everyone who has committed since the last
+    successful build. This helps ensures that everyone who may be involved in
+    causing the build to break will be notified appropriately.</para>
+
+    <para>You can also customize the content of the message by clicking on the
+    'More Configuration' option (as shown for the 'Still Failing' trigger in
+    <xref linkend="fig-email-notification-triggers" />). This way, you can
+    customize different messages to be sent for different occasions. </para>
+
+    <para>The triggers interact intelligently. So if you configure both the
+    'Failing' and the 'Still Failing' triggers, only the 'Still Failing'
+    trigger will be activated on the second build failure. </para>
+
+    <para>An example of such a customized message is illustrated in <xref
+    linkend="fig-hudson-email-notification-message" />.</para>
+
+    <para><figure id="fig-hudson-email-notification-message">
+        <title>Customized notification message</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-email-notification-message.png"
+                       width="9.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Overall, however, as a notification strategy, email is not without
+    its faults. Some developers shut down their email clients at times to
+    avoid being interrupted. In large organizations, the number of email
+    messages arriving each day can be considerable, and build failure
+    notifications can be hidden among a host of other less important messages.
+    So build failures may not always get the high-priority attention they
+    require in a finely-tuned CI environment. In the following sections, we
+    will look at some other notification strategies that can be used to raise
+    team awareness of failed builds and encourage developers to get them fixed
+    faster. </para>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>In this chapter we have looked at a variety of ways to configure
+    security in Hudson. The Hudson security model, with the two orthogonal
+    concepts of Authentication and Authorization, is flexible and extensible.
+    For a Hudson installation of any size, you should try to integrate your
+    Hudson security strategy with the organization as a whole. This can go
+    from simply integrating with your local LDAP repository to setting up or
+    using a full-blown SSO solution such as Crown or CAS. In either case, it
+    will make the system considerably easier to administrate in the long
+    run.</para>
+  </sect1>
+</chapter>
