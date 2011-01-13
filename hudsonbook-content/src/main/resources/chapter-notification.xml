@@ -10,6 +10,22 @@
     <para><indexterm>
         <primary>notification</primary>
       </indexterm>TODO</para>
+
+    <para></para>
+
+    <para>There are two main classes of notification strategies, which I call
+    <emphasis>passive</emphasis> and <emphasis>active</emphasis> (or
+    <emphasis>pull</emphasis>/<emphasis>push</emphasis>). Passive notification
+    (pull) requires the developers to consciously consult the latest build
+    status, and includes RSS feeds, build radiators, and (to a certain extent)
+    emails. Active notification (push) will pro-actively alert the developers
+    when a build fails, and includes methods such as desktop notifiers, chat,
+    and SMS. Both approaches have their good and bad points. Passive
+    notification strategies such as build radiators can raise general
+    awareness about failed builds, and help install a team culture where
+    fixing broken builds takes a high priority. More direct forms of
+    notification can actively encourage developers to take matters into their
+    own hands and fix broken builds more quickly.</para>
   </sect1>
 
   <sect1>
@@ -130,7 +146,7 @@
         <mediaobject>
           <imageobject role="web">
             <imagedata fileref="figs/web/hudson-email-ext-configuration.png"
-                       width="9.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>This plugin has two related but distinct functionalities.
@@ -239,7 +255,7 @@
         <mediaobject>
           <imageobject role="web">
             <imagedata fileref="figs/web/hudson-email-ext-configuration.png"
-                       width="9.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>The Advanced button lets you define a more sophisticated
@@ -313,7 +329,7 @@
         <mediaobject>
           <imageobject role="web">
             <imagedata fileref="figs/web/email-notification-triggers.png"
-                       width="9.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -347,7 +363,7 @@
         <mediaobject>
           <imageobject role="web">
             <imagedata fileref="figs/web/hudson-email-notification-message.png"
-                       width="9.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -362,6 +378,130 @@
     will look at some other notification strategies that can be used to raise
     team awareness of failed builds and encourage developers to get them fixed
     faster. </para>
+  </sect1>
+
+  <sect1>
+    <title>Claiming builds</title>
+
+    <para>When a build does fail, it can be useful to know that someone has
+    spotted the issue and is working on it. This avoids having more than one
+    developer waste time by trying to fix the same problem separately. </para>
+
+    <para>The Claim plugin lets developers indicate that they have taken
+    ownership of the broken build, and are attempting to fix it. You can
+    install this plugin in the usual way. Once installed, developers can claim
+    a failed build as their own, and optionally add a comment to explain the
+    suspected cause of the build and what the developer intends to do about
+    it. The claimed build will then be marked as such in the build history, so
+    that fellow developers can avoid wasting time with unnecessary
+    investigation.</para>
+
+    <para>To activate claiming for a build job, you need to tick the 'Allow
+    broken build claiming' option in the build job configuration page. From
+    this point on, you will be able to claim a broken build in the build
+    details page (see <xref linkend="fig-hudson-notification-claim" />).
+    Claimed builds will display an icon in the build history indicating that
+    they have been claimed. You can also make a build claim 'sticky', so that
+    all subsequent build failures for this job will also be automatically
+    claimed by this developer, until the issue is resolved.</para>
+
+    <para><figure id="fig-hudson-notification-claim">
+        <title>Claiming a failed build</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-notification-claim.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Build Radiators</title>
+
+    <para>The concept of information radiators is commonly used in Agile
+    circles. According to Agile guru Alistair Cockburn: </para>
+
+    <para><quote>An Information radiator is a display posted in a place where
+    people can see it as they work or walk by. It shows readers information
+    they care about without having to ask anyone a question. This means more
+    communication with fewer interruptions.</quote></para>
+
+    <para>In the context of a CI server, an information radiator is a
+    prominent device or display that allows team members and others to easily
+    see if any builds are currently broken. It typically shows either a
+    summary of all the current build results, or of just the failing ones, and
+    is displayed on a large, prominently located wall mounted flat screen.
+    This sort of specialized information radiator is often known as a 'build
+    radiator'. </para>
+
+    <para>When used well, build radiators are among the most effective of the
+    passive notification strategies. They are very effective at ensuring that
+    everyone is aware of failing builds. In addition, unlike some of the
+    Extreme Feedback Devices that we discuss later on in this chapter, a build
+    radiator can cater for many build jobs, including many failing build jobs,
+    and so can still be effectively used in a multi-team context. </para>
+
+    <para>There are several build radiator solutions for Hudson. One of the
+    easiest to use is the 'Hudson Radiator View Plugin'. This plugin adds a
+    new type of job that you can create: the (see <xref
+    linkend="fig-hudson-notification-radiator-job" />). </para>
+
+    <para><figure id="fig-hudson-notification-radiator-job">
+        <title>Creating a build radiator view</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-radiator-job.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Configuring the build radiator view is similar to configuring
+    the more conventional list views - you just specify the build jobs you
+    want included in the view, either by choosing them individually or by
+    using a regular expression.</para>
+
+    <para>Since the build radiator view takes up the entire screen, modifying
+    or deleting a build radiator is a bit tricky. In fact, the only way to
+    open the view configuration screen is to append "/configure" to the view
+    URL: so if your build radiator is called 'build-radiator, you can edit the
+    view configuration by opening
+    <uri>http://my.hudson.server/view/build-radiator/configure</uri>.</para>
+
+    <para><figure id="fig-hudson-notification-radiator-job">
+        <title>Creating a build radiator view</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-radiator-job.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>The build radiator view (see <xref
+    linkend="fig-hudson-notification-radiator" />) displays a large red or
+    yellow box for each failing or unstable build, with the build job name in
+    prominent letters, as well as some other details. You can configure the
+    build radiator view to display passing builds as well as failing ones
+    (they will be displayed in small green boxes). However a good build
+    radiator should really only display the failing builds, unless all the
+    builds are passing.</para>
+
+    <para><figure id="fig-hudson-notification-radiator">
+        <title>Creating a build radiator view</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-radiator.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </sect1>
 
   <sect1>
