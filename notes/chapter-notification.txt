@@ -42,6 +42,27 @@ However, as a notification strategy, email is not without its faults.
 Some developers shut down their email clients at times to avoid being interrupted. In large organizations, the number of email messages arriving each day can be considerable, and build failure notifications can be hidden among a host of other less important messages. So build failures may not always get the high-priority attention they require in a finely-tuned CI environment. In the following sections, we will look at some other notification strategies that can be used to raise team awareness of failed builds and encourage developers to get them fixed faster.
 
 	
+When a build does fail, it can be useful to know that someone has spotted the issue and is working on it. The Clai
+
+## Build Radiators
+
+The concept of information radiators is commonly used in Agile circles. According to Agile guru Alistair Cockburn:
+"An Information radiator is a display posted in a place where people can see it as they work or walk by. It shows readers information they care about without having to ask anyone a question. This means more communication with fewer interruptions."
+
+In the context of a CI server, an information radiator is a prominent device or display that allows team members and others to easily see if any builds are currently broken. It typically shows either a summary of all the current build results, or of just the failing ones, and is displayed on a large, prominently located wall mounted flat screen. This sort of specialized information radiator is often known as a 'build radiator'. 
+
+When used well, build radiators are among the most effective of the passive notification strategies. A build radiator raises awareness . Unlike some of the Extreme Feedback Devices that we discuss later on in this chapter, a build radiator can cater for many build jobs, including many failing build jobs, and so can still be effectively used in a multi-team context.
+
+There are several build radiator solutions for Hudson. One of the easiest to use is the 'Hudson Radiator View Plugin'
+
+Since the build radiator view takes up the entire screen, modifying or deleting a build radiator is a bit tricky.
+
+Another similar plugin is the 'eXtreme Feedback Panel Plugin'. 
+
+Another approach is to use a separate application to publish your build results.
+
+The eXtreme Feedback Device (XFD) is a simple web page
+
 ## Instant Messaging
 	- Useful if they are used in the org
 	
@@ -49,15 +70,28 @@ Some developers shut down their email clients at times to avoid being interrupte
 
 ## Desktop notifiers - hard to ignore
 
+## Instant Messaging
 
+First, you need to install both the Hudson instant-messaging plugin and the Hudson Jabber notifier plugin in the plugin manager page and restart hudson (see fig-email-notification-jabber-plugins)
+
+email-notification-jabber-plugins
+
+Once this is done, you need to configure your Instant Messaging server. Any Jabber server will do. You can use a public service like Google Chat, or set up your own internal Jabber server (the open source chat server OpenFire (http://www.igniterealtime.org/projects/openfire/index.jsp) is a good choice). However, using a public service for internal communications may be frowned upon by system administrators, and may have difficulty getting through corporate firewalls. Setting up your own internal chat service, on the other hand, makes great sense for a development team or organization in general, as it provides another channel of communication that works well for technical questions or comments between developers. The following examples will be using a local OpenFire server, but the general approach will work for any Jabber-compatible server.
+
+First of all, you need to create a dedicated account on your Jabber server for Hudson. This is just an ordinary chat account, but it needs to be distinct from your developer accounts.
+
+
+First of all, you define a recipient list for the messages. You can send messages to individuals (just use the corresponding Jabber ID, such as joe@jabber.acme.com) or to chat rooms that you have set up. For chat rooms, you normally need to add a '*' to the start of the chat room ID (e.g. '*gameoflife@conference.jabber.acme.org'). However, if the chat room ID contains '@conference.', Hudson will work out that it is a chat room and append the '*' automatically. The chat room approach is more flexible, though you do have to trust developers to be connected permanently to the chat room for this strategy to be truly effective.
+
+
+
+## XFD
 ============
 
-- Email
-	- Pros and cons
-	- Extended Email features
-- Build radiator
 - Playing sounds
 - Instant Messaging (Jabber)
+
+
 - Desktop notification
 - Lava Lamps and Nabaztags
 - JIRA integration

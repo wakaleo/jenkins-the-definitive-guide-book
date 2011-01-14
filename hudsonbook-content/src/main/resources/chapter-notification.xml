@@ -11,7 +11,15 @@
         <primary>notification</primary>
       </indexterm>TODO</para>
 
-    <para></para>
+    <para>While it is important to get your build server building your
+    software, it is even more important to get your build server to let people
+    know when it can't do so. A crucial part of the value proposition of any
+    Continuous Integration environment is to improve the flow of information
+    about the health of your project, be it failing unit tests or regressions
+    in the integration test suite, or other quality related issues such as a
+    drop in code coverage or code quality metrics. In all cases, a CI server
+    must let the right people know about any new issues, and it must be able
+    to do so fast. This is what we call Notification.</para>
 
     <para>There are two main classes of notification strategies, which I call
     <emphasis>passive</emphasis> and <emphasis>active</emphasis> (or
@@ -118,7 +126,7 @@
     applying a blanket policy for all build jobs.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-notification-advanced-email">
     <title>More Advanced Email Notification</title>
 
     <para>By default, Hudson email notification is a rather blunt tool.
@@ -502,6 +510,301 @@
           </imageobject>
         </mediaobject>
       </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Instant messaging</title>
+
+    <para>Instant messaging (or IM) is widely used today as a fast,
+    lightweight medium for both professional and personal communication.
+    Instant messaging is, well, instant, which gives it an edge over email
+    when it comes to fast notification. It is also 'push' rather than 'pull' -
+    when you receive a message, it will pop up on your screen and demand your
+    attention. This makes it a little harder to ignore or put off than a
+    simple email message.</para>
+
+    <para>Many instant messaging servers today are based on Jabber, an open
+    source, XML-based instant messaging protocol. Hudson provides good support
+    for Jabber instant messaging, so that developers can receive real-time
+    notification of build failures. In addition, the plugin runs an 'IM bot'
+    that listens to the chat channels and lets developers run commands on the
+    Hudson server via chat messages.</para>
+
+    <para>Setting up IM support in Hudson is straight-forward. First, you need
+    to install both the Hudson instant-messaging plugin and the Hudson Jabber
+    notifier plugin using the standard plugin manager page and restart Hudson
+    (see <xref linkend="fig-email-notification-jabber-plugins" />).</para>
+
+    <para><figure id="fig-email-notification-jabber-plugins">
+        <title>Installing the Hudson IM plugins</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/email-notification-jabber-plugins.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once this is done, you need to configure your Instant Messaging
+    server. Any Jabber server will do. You can use a public service like
+    Google Chat, or set up your own internal messaging server locally (the
+    Java-based open source chat server <ulink
+    url="http://www.igniterealtime.org/projects/openfire/index.jsp">OpenFire</ulink>
+    is a good choice). Using a public service for internal communications may
+    be frowned upon by system administrators, and may have difficulty getting
+    through corporate firewalls. Setting up your own internal chat service, on
+    the other hand, makes great sense for a development team or organization
+    in general, as it provides another channel of communication that works
+    well for technical questions or comments between developers. The following
+    examples will be using a local OpenFire server, but the general approach
+    will work for any Jabber-compatible server.</para>
+
+    <para>The first step involves create a dedicated account on your Jabber
+    server for Hudson. This is just an ordinary chat account, but it needs to
+    be distinct from your developer accounts (see <xref
+    linkend="fig-hudson-notification-im-users" />).</para>
+
+    <para><figure id="fig-hudson-notification-im-users">
+        <title>Hudson needs its own dedicated IM user account</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-im-users.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Once you have set up an IM account, you need to configure Hudson to
+    send IM notifications via this account. Go to the main configuration page
+    and tick the 'Enable Jabber Notification' checkbox (see <xref
+    linkend="hudson-notification-jabber-basic" />). Here, you provide the
+    Jabber ID and password for your IM account. Hudson can usually figure out
+    the IM server from the Jabber ID (if it is different, you can override
+    this in the Advanced options). If you are using group chat rooms (another
+    useful communication strategy for development teams), you can provide the
+    name of these chat rooms here too. This way, Hudson will be able to
+    process instructions posted into the chat rooms as well as those received
+    as direct messages.</para>
+
+    <para><figure id="fig-hudson-notification-jabber-basic">
+        <title>Setting up basic Jabber notification in Hudson</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-jabber-basic.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>This is all you need for a basic setup. However, you may need
+    to provide some extra details in the 'Advanced' sector for details that
+    are specific to your installation (see <xref
+    linkend="fig-hudson-notification-jabber-advanced" />). Here, you can
+    specify the name and port of your Jabber server, if these cannot be
+    derived from the Hudson Jabber ID. You can also provide a default suffix
+    that can be applied to Hudson user IDs to generate the corresponding
+    Jabber IDs. Most importantly, if you have secured your Hudson server, you
+    will need to provide a proper Hudson username and password so that the IM
+    bot can respond to instructions correctly.</para>
+
+    <para><figure id="fig-hudson-notification-jabber-advanced">
+        <title>Advanced Jabber configuration</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-jabber-advanced.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once this is configured, you need to set up a Jabber
+    notification strategy for each of your build jobs. Open the build job
+    configuration page and click on the 'Jabber Notification' option. </para>
+
+    <para>First of all, you define a recipient list for the messages. You can
+    send messages to individuals (just use the corresponding Jabber ID, such
+    as joe@jabber.acme.com) or to chat rooms that you have set up. For chat
+    rooms, you normally need to add a '*' to the start of the chat room ID
+    (e.g. '*gameoflife@conference.jabber.acme.org'). However, if the chat room
+    ID contains '@conference.', Hudson will work out that it is a chat room
+    and append the '*' automatically. The chat room approach is more flexible,
+    though you do have to trust developers to be connected permanently to the
+    chat room for this strategy to be truly effective.</para>
+
+    <para>You also need to define a notification strategy. This determines
+    which build results will cause a message to be sent out. Options
+    include:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>all</term>
+
+        <listitem>
+          <para>Send a notification for every build</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>failure</term>
+
+        <listitem>
+          <para>Only send notifications for failed or unstable builds</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>failure and fixed</term>
+
+        <listitem>
+          <para>Send notifications for every failed or unstable builds, and
+          the first successful build following a failed or unstable
+          one.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>change</term>
+
+        <listitem>
+          <para>Send notification whenever the build outcome changes.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>If you are using chat rooms, you can also ask Hudson to send
+    notifications to the chat rooms whenever a build starts (using the 'Notify
+    on build starts' option).</para>
+
+    <para>For SCM-triggered builds, Hudson can also notify additional
+    recipients, using the default suffix discussed earlier to build the Jabber
+    ID from the SCM username. You can opt to notify:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>SCM committers</term>
+
+        <listitem>
+          <para>All users having committed changes for the current build, and
+          therefore suspected of breaking the build</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>SCM culprits</term>
+
+        <listitem>
+          <para>SCM committers of all builds since the last successful
+          one</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>SCM fixers</term>
+
+        <listitem>
+          <para>Commiters to the first successful build after a failed or
+          unstable one</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Upstream committers</term>
+
+        <listitem>
+          <para>Also notifiers committers to upstream builds as well as the
+          current one. This works automatically for Maven build jobs, but
+          needs fingerprinting to be activated for other build types.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>At the time of writing, you can only have one notification strategy,
+    so some of the advanced options we saw in <xref
+    linkend="sect-notification-advanced-email" /> are not yet possible with
+    IM.</para>
+
+    <para><figure id="fig-hudson-notification-jabber-advanced">
+        <title>Advanced Jabber configuration</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-jabber-advanced.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Developers will be notified via their favorite IM client (see
+    <xref linkend="fig-hudson-notification-im-messages" />). Developers can
+    also interact with the build server via the chat session, using a set of
+    simple commands. Some examples of a few of the more useful commands are
+    shown here: </para>
+
+    <itemizedlist>
+      <listitem>
+        <para><command>!build game-of-life</command> - Start the game-of-life
+        build immediately</para>
+      </listitem>
+
+      <listitem>
+        <para><command>!build game-of-life 15m</command> - Start the
+        game-of-life build in 15 minutes</para>
+      </listitem>
+
+      <listitem>
+        <para><command>!comment game-of-life 207 'oops'</command> - Add a
+        build description to a given build</para>
+      </listitem>
+
+      <listitem>
+        <para><command>!status game-of-life</command> - display the status of
+        the latest build for this build job</para>
+      </listitem>
+
+      <listitem>
+        <para><command>!testresult game-of-life</command> - display the full
+        test results for the latest build</para>
+      </listitem>
+
+      <listitem>
+        <para><command>!health game-of-life</command> - display a more
+        complete summary of the health status of the latest build</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>You can get a full list of commands by sending the "!help" message
+    to the Hudson user.</para>
+
+    <para><figure id="fig-hudson-notification-im-messages">
+        <title>Hudson Jabber messages in action</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-notification-im-messages.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Desktop notifiers</title>
+
+    <para></para>
+  </sect1>
+
+  <sect1>
+    <title>Making Noise</title>
+
+    <para></para>
+  </sect1>
+
+  <sect1>
+    <title>Extreme Feedback Devices</title>
+
+    <para></para>
   </sect1>
 
   <sect1>
