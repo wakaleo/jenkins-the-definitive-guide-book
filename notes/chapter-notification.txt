@@ -83,7 +83,34 @@ First of all, you need to create a dedicated account on your Jabber server for H
 
 First of all, you define a recipient list for the messages. You can send messages to individuals (just use the corresponding Jabber ID, such as joe@jabber.acme.com) or to chat rooms that you have set up. For chat rooms, you normally need to add a '*' to the start of the chat room ID (e.g. '*gameoflife@conference.jabber.acme.org'). However, if the chat room ID contains '@conference.', Hudson will work out that it is a chat room and append the '*' automatically. The chat room approach is more flexible, though you do have to trust developers to be connected permanently to the chat room for this strategy to be truly effective.
 
+You can get a full list of commands by sending the "!help" message to the Hudson user. Some examples of a few of the more useful commands are shown here:
 
+build
+	!build game-of-life - Start the game-of-life build immediately
+	!build game-of-life 15m - Start the game-of-life build in 15 minutes 
+
+	!comment game-of-life 207 'oops' - add a build description to a given build
+	
+	!status game-of-life - display the status of the latest build for this build job
+	
+	!testresult game-of-life - display the full test results for the latest build
+	!health game-of-life - display a more complete summary of the health status of the latest build
+
+abort <job> - specify which job to abort
+alias [<alias> [<command>]] - defines a new alias, deletes one or lists all existing aliases
+botsnack [<snack>] - om nom nom
+build <job> [now|<delay>[s|m|h]] [<parameterkey>=<value>]* - schedule a job build, with standard, custom or no quiet period
+comment <job> <build-#> <comment> - adds a description to a build
+h [<job>|-v <view>] - show the health of a specific job, jobs in a view or all jobs
+health [<job>|-v <view>] - show the health of a specific job, jobs in a view or all jobs
+jobs [<job>|-v <view>] - show the status of a specific job, jobs in a view or all jobs
+q - show the state of the build queue
+queue - show the state of the build queue
+s [<job>|-v <view>] - show the status of a specific job, jobs in a view or all jobs
+schedule <job> [now|<delay>[s|m|h]] [<parameterkey>=<value>]* - schedule a job build, with standard, custom or no quiet period
+status [<job>|-v <view>] - show the status of a specific job, jobs in a view or all jobs
+testresult [<job>|-v <view>] - show the test results of a specific job, jobs in a view or all jobs
+userstat <username> - prints information about a Hudson user
 
 ## XFD
 ============
@@ -103,3 +130,16 @@ First of all, you define a recipient list for the messages. You can send message
 
 
 In a well-tuned Continuous Integration environment, fixing a failing build should take the highest priority. 
+
+http://notifo.com/service/console_subscribe
+-----------
+
+Notifo (notifo.com) is a very economical service to send real-time notifications to your smart phone or desktop. In the context of a Hudson server, you can use it to set up real-time notification for your Hudson build results (check the Notifo web site for details of their pricing plan, but at the time of writing up to 10,000 notifications per month were free). One of the strong points of a real-time notification service like Notifo is that notification messages can be sent to the same users on different devices: smart phones and desk top clients, in particular.
+
+Setting up Hudson notification with Notifo is relatively straightforward. First, go to the Notifio web site and sign up to create an account. Each team member who wants to be notified will need their own Notifo account. They will also need to install the Notifo client on each device on which they need to receive notification messages. At the time of writing, Notifo clients were available for Windows and Mac OS X desktops, and iPhones, with support for Linux and other smart phones on the way.
+
+Next, you need to set up a Notifo service account for your Hudson server. You can do this with one of your developer accounts, or create a new account for the purpose. Log on to the Notifo web site, and go to the 'My Services' menu (http://notifo.com/user/my_services). Here, click on 'Create Service' (see figure 'hudson-notification-notifo-create-service'), and fill in the fields. The most important is the Service Username, which needs to be unique. You can also specify the Site URL and the Default Notification URL to point to your Hudson instance, so that users can open the Hudson console by clicking on the notification message.
+
+To receive notification messages from the Hudson server, developers now need to subscribe to this service. You can then add developers to the list of subscribers in the service 'Subscribers' page, by sending them subscription requests. 
+
+Once the service has been created and the users are all subscribed, you can configure your project to send out Notifo notifications. You need the provide the API username of the Hudson service you set up, as well as the API Secret, both of which you can see in the Notifo Service Dashboard. At the time of writing, sophisticated notification strategies are not supported - you just provide a list of Notifo usernames who need to be notified. Nevertheless, this remains a very effective notification tool for front-line developers.
