@@ -978,7 +978,7 @@
     Sound' button in the 'Advanced' section.</para>
 
     <para><figure id="fig-hudson-sounds-config">
-        <title>Hudson Jabber messages in action</title>
+        <title>Configuring Hudson Sounds</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -994,7 +994,53 @@
     They will then be a bit more receptive when the more detailed
     notifications follow.</para>
 
-    <para></para>
+    <para>Another option is the <command>Hudson Speaks</command> plugin. With
+    this plugin, you can get Hudson to broadcast a customized announcement (in
+    a very robotic voice) when your build fails (see <xref
+    linkend="fig-hudson-speaks" />). You can configure the exact message using
+    Jelly. Jelly is an XML-based scripting language used widely in the lower
+    levels of Hudson. </para>
+
+    <para><figure id="fig-hudson-speaks">
+        <title>Configuring Hudson Speaks</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/hudson-speaks.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Jelly is a flexible, if somewhat cumbersome, scripting
+    language. The advantage of this approach lies in it's precision: since you
+    can use Hudson variables in the Jelly script, you can get Hudson to say
+    just about anything you want about the state of the build. Here is a
+    simple example:</para>
+
+    <para><programlisting>&lt;j:choose&gt;
+  &lt;j:when test="${build.result!='SUCCESS'}"&gt;
+    Your attention please. Project ${build.project.name} has failed
+    &lt;j:if test="${build.project.lastBuild.result!='SUCCESS'}"&gt; again&lt;/j:if&gt;
+  &lt;/j:when&gt;
+  &lt;j:otherwise&gt;&lt;!-- Say nothing --&gt;&lt;/j:otherwise&gt;
+&lt;/j:choose&gt;</programlisting>If you leave this field blank, the plugin
+    will use a default template that you can configure in the System
+    Configuration page. In fact, it is usually a good idea to do this, and
+    only to use a project-specific script if you really need to. </para>
+
+    <para>The disadvantage is that the robotic voice can make it a little hard
+    to understand. For this reason, it is a good idea to start your
+    announcement with a generic phrase such as "Your attention please", or to
+    combine it with the <command>Hudson Sounds</command> plugin, so that you
+    have developers' attention before the actual message is broadcast. Using
+    hyphens in your project names (e.g. 'game-of-life' rather then
+    'gameoflife') will also help the plugin know how to pronounce your project
+    names.</para>
+
+    <para>Both these approaches are useful for small teams, but can be limited
+    for larger ones, when the server is not physically located in close
+    proximity to the development team. Future versions may support playing
+    sounds on a separate machine, but at the time of writing this feature was
+    not available.</para>
   </sect1>
 
   <sect1>
