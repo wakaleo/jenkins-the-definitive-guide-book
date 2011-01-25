@@ -9,9 +9,7 @@
 
     <para><indexterm>
         <primary>notification</primary>
-      </indexterm>TODO</para>
-
-    <para>While it is important to get your build server building your
+      </indexterm>While it is important to get your build server building your
     software, it is even more important to get your build server to let people
     know when it can't do so. A crucial part of the value proposition of any
     Continuous Integration environment is to improve the flow of information
@@ -148,7 +146,7 @@
     installed and configured this plugin for your build job, you can
     deactivate the normal 'E-mail Notification' configuration.</para>
 
-    <para><figure id="fig-hudson-email-configuration">
+    <para><figure id="fig-hudson-email-ext-configuration">
         <title>Configuring email notification</title>
 
         <mediaobject>
@@ -257,16 +255,7 @@
     those that accept parameters, by clicking on the Help icon opposite the
     'Context Token Reference' label.</para>
 
-    <para><figure id="fig-hudson-email-configuration">
-        <title>Custom email notifications</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-email-ext-configuration.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>The Advanced button lets you define a more sophisticated
+    <para>The Advanced button lets you define a more sophisticated
     notification strategy, based on the concept of triggers (see <xref
     linkend="fig-email-notification-triggers" />). Triggers determine when
     email notification messages should be sent out. The supported triggers
@@ -478,18 +467,6 @@
     view configuration by opening
     <uri>http://my.hudson.server/view/build-radiator/configure</uri>.</para>
 
-    <para><figure id="fig-hudson-notification-radiator-job">
-        <title>Creating a build radiator view</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata align="center"
-                       fileref="figs/web/hudson-notification-radiator-job.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure></para>
-
     <para>The build radiator view (see <xref
     linkend="fig-hudson-notification-radiator" />) displays a large red or
     yellow box for each failing or unstable build, with the build job name in
@@ -552,12 +529,12 @@
     url="http://www.igniterealtime.org/projects/openfire/index.jsp">OpenFire</ulink>
     is a good choice). Using a public service for internal communications may
     be frowned upon by system administrators, and may have difficulty getting
-    through corporate firewalls. Setting up your own internal chat service, on
-    the other hand, makes great sense for a development team or organization
-    in general, as it provides another channel of communication that works
-    well for technical questions or comments between developers. The following
-    examples will be using a local OpenFire server, but the general approach
-    will work for any Jabber-compatible server.</para>
+    through corporate fire walls. Setting up your own internal chat service,
+    on the other hand, makes great sense for a development team or
+    organization in general, as it provides another channel of communication
+    that works well for technical questions or comments between developers.
+    The following examples will be using a local OpenFire server, but the
+    general approach will work for any Jabber-compatible server.</para>
 
     <para>The first step involves create a dedicated account on your Jabber
     server for Hudson. This is just an ordinary chat account, but it needs to
@@ -579,7 +556,7 @@
     <para>Once you have set up an IM account, you need to configure Hudson to
     send IM notifications via this account. Go to the main configuration page
     and tick the 'Enable Jabber Notification' checkbox (see <xref
-    linkend="hudson-notification-jabber-basic" />). Here, you provide the
+    linkend="fig-hudson-notification-jabber-basic" />). Here, you provide the
     Jabber ID and password for your IM account. Hudson can usually figure out
     the IM server from the Jabber ID (if it is different, you can override
     this in the Advanced options). If you are using group chat rooms (another
@@ -725,21 +702,11 @@
     linkend="sect-notification-advanced-email" /> are not yet possible with
     IM.</para>
 
-    <para><figure id="fig-hudson-notification-jabber-advanced">
-        <title>Advanced Jabber configuration</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata align="center"
-                       fileref="figs/web/hudson-notification-jabber-advanced.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>Developers will be notified via their favorite IM client (see
-    <xref linkend="fig-hudson-notification-im-messages" />). Developers can
-    also interact with the build server via the chat session, using a set of
-    simple commands. Some examples of a few of the more useful commands are
-    shown here:</para>
+    <para>Developers will be notified via their favorite IM client (see <xref
+    linkend="fig-hudson-notification-im-messages" />). Developers can also
+    interact with the build server via the chat session, using a set of simple
+    commands. Some examples of a few of the more useful commands are shown
+    here:</para>
 
     <itemizedlist>
       <listitem>
@@ -840,6 +807,10 @@
         </mediaobject>
       </figure>For Android phones, you can also install the 'Hudson Mood'
     widget will also provide updates and alerts about build failures.</para>
+
+    <para>Note that these mobile applications rely on a data connection, so
+    while they will typically work well locally, you should not rely on them
+    if the developer in question is out of the country. </para>
   </sect1>
 
   <sect1 id="sect-notifo">
@@ -894,11 +865,11 @@
     by sending them subscription requests. Once the service has been created
     and the users are all subscribed, you can configure your project to send
     out Notifo notifications (see <xref
-    linkend="fig-hudson-notification-notifo-service" />). You need the provide
+    linkend="fig-hudson-notification-notifo-config" />). You need the provide
     the API username of the Hudson service you set up, as well as the API
-    Secret, both of which you can see in the Notifo Service Dashboard. </para>
+    Secret, both of which you can see in the Notifo Service Dashboard.</para>
 
-    <para><figure id="fig-hudson-notification-notifo-service">
+    <para><figure id="fig-hudson-notification-notifo-config">
         <title>Configuring Notifo notifications in your Hudson build
         job</title>
 
@@ -929,7 +900,7 @@
     <para>At the time of writing, sophisticated notification strategies are
     not supported - you just provide a list of Notifo usernames who need to be
     notified. Nevertheless, this remains a very effective notification tool
-    for front-line developers. </para>
+    for front-line developers.</para>
   </sect1>
 
   <sect1>
@@ -955,7 +926,75 @@
 
     <para>If you have your Hudson instance running on a machine that is
     physically located in proximity to the development team, you may also want
-    to add sounds into the mix of notification strategies.</para>
+    to add sounds into the mix of notification strategies. This can be an
+    effective strategy for small co-located teams, though it becomes trickier
+    if the build server is set up on a virtual machine or elsewhere in the
+    building.</para>
+
+    <para>There are two ways to integrate audio feedback into your build
+    process in Hudson: the <command>Hudson Sounds</command> plugin and the
+    <command>Hudson Speaks</command> plugin. Both can be installed via the
+    'Plugin Manager' page in the usual manner.</para>
+
+    <para>The <command>Hudson Sounds</command> plugin is the most flexible of
+    the two. It allows you to build a detailed notification strategy based on
+    the latest build result and also (optionally) on the previous build result
+    as well (see <xref linkend="fig-hudson-sounds" />). For example, you can
+    configure Hudson to play one sound the first time a build fails, a
+    different sound if the build fails a second time, and yet another sound
+    when the build is fixed.</para>
+
+    <para><figure id="fig-hudson-sounds">
+        <title>Configuring Hudson Sounds rules in a build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/hudson-sounds.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>To set this up, you need to tick the 'Hudson Sounds' checkbox
+    in the Post-build actions section of your build job configuration page.
+    You can add as many sound configuration rules as you like. Adding a rule
+    is simple enough. First, you need to choose which build result will
+    trigger the sound. You also need to specify the previous build results for
+    which this rule is applicable: Not Build (NB), Aborted (Ab), Failed (Fa),
+    Unsuccessful (Un) or Successful (Su). </para>
+
+    <para>The <command>Hudson Sounds</command> plugin proposes a large list of
+    pre-defined sounds, which usually offer plenty of choice for even the most
+    discerning build administrator, but you can add your own to the list if
+    you really want to. Sounds are stored as a zip or jar file containing
+    sound files in a flat directory structure (i.e. no sub-directories). The
+    list of sounds proposed by the plugin is simply the list of filenames,
+    minus the extensions. The plugin supports AIFF, AU and WAV files. </para>
+
+    <para>In the System Configuration page, you can give Hudson a new sound
+    archive file, using the <filename>http://</filename> notation if your
+    sound archive file is available on a local web server, or the
+    <filename>file://</filename> notation if it is available locally (see
+    <xref linkend="fig-hudson-sounds-config" />). Once you have saved the
+    configuration, you can test the sounds in your sound archive via the 'Test
+    Sound' button in the 'Advanced' section.</para>
+
+    <para><figure id="fig-hudson-sounds-config">
+        <title>Hudson Jabber messages in action</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sounds-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The <command>Hudson Sounds</command> plugin is an excellent
+    choice if you want to complement your more conventional notification
+    techniques. Short, recognizable sounds are a great way to grab a
+    developer's attention and let the team know that something needs fixing.
+    They will then be a bit more receptive when the more detailed
+    notifications follow.</para>
+
+    <para></para>
   </sect1>
 
   <sect1>
