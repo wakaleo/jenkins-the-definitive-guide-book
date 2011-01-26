@@ -907,12 +907,50 @@
     desks.</para>
 
     <para><ulink url="http://en.wikipedia.org/wiki/SMS_gateway">SMS
-    gateways</ulink> are services that let you send SMS notifications via an
-    email address. Many mobile vendors provide this service, as do many
-    third-party service providers.</para>
+    gateways</ulink> are services that let you send SMS notifications via
+    specially-formatted email addresses (for example,
+    123456789@mysmsgateway.com might send an SMS message to 123456789). Many
+    mobile vendors provide this service, as do many third-party service
+    providers. There is no built-in support for SMS Gateways in Hudson, but
+    the basic functionality of these gateways makes integration relatively
+    easy: you simply add the special email addresses to the normal
+    notification list. Alternatively, using the advanced email configuration,
+    you can set up a separate rule containing only the SMS email addresses
+    (see <xref linkend="fig-hudson-sms-notification-config" />). Doing this
+    makes it easier to fine-tune the message contents to suit an SMS message
+    format.</para>
 
-    <para>TODO: Example of a working SMS notification with an SMS
-    provider.</para>
+    <para><figure id="fig-hudson-sms-notification-config">
+        <title>Sending SMS notifications via an SMS Gateway Service</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sms-notification-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>Once you have done this, your users will receive prompt
+    notification of build results in the form of SMS messages (see <xref
+    linkend="fig-hudson-sms-notification" />). The main disadvantage of
+    approach is arguably that it is not free, and requires the use of a
+    third-party commercial service. That said, it is really the only
+    notification technique capable of reaching developers when they are out of
+    internet range or who do not have a data-enabled smart phone. Indeed, this
+    technique is popular among system administrators, and can be very useful
+    for certain critical build jobs.</para>
+
+    <para><figure id="fig-hudson-sms-notification">
+        <title>Receiving notification via SMS</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-sms-notification.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </sect1>
 
   <sect1>
