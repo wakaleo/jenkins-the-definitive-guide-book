@@ -254,8 +254,24 @@ Finished: SUCCESS</screen></para>
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>Finally, it can be very useful to know what parameters were
-    used to run a particular parameterized build. For example, in an automated
+      </figure></para>
+
+    <para>You can also start a parameterized build job remotely, by invoking
+    the URL of the build job. The typical form of a parameterized build job
+    URL is illustrated here:<programlisting>http://hudson.acme.org/job/myjob/buildWithParameters?PARAMETER=Value</programlisting></para>
+
+    <para>So, in the example shown above, you could trigger a build like this:
+    <programlisting>http://hudson.acme.org/job/parameterized-build/buildWithParameters?VERSION=1.2.3</programlisting></para>
+
+    <para>When you use a URL to start a build job in this way, remember that
+    the parameter names are case-sensitive, and that the values need to be
+    escaped (just like any other HTTP parameter). And if you are using a Run
+    parameter, you need to provide the name of the build job
+    <emphasis>and</emphasis> the run number (e.g. game-of-life#197) and not
+    just the run number.</para>
+
+    <para>Finally, it can be very useful to know what parameters were used to
+    run a particular parameterized build. For example, in an automated
     deployment build job, it is useful to know exactly what version was
     actually deployed. Fortunately, Hudson stores these values in the build
     history (see <xref linkend="fig-hudson-build-parameter-history" />), so
