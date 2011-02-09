@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter>
+  <title>Advanced Builds</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>Advanced builds</primary>
+      </indexterm>In this chapter, we will look at some more advanced build
+    job setups.</para>
+  </sect1>
+
+  <sect1>
+    <title>Parameterized build jobs</title>
+
+    <para>Parameterized builds are a powerful concept that enable you to add
+    another dimension to your build jobs. </para>
+
+    <para>The <command>Parameterized Build</command> plugin lets you configure
+    parameters for your build job, that can be either entered by the user when
+    the build job is triggered, or (as we will see later) from another build
+    job.</para>
+
+    <para>For example, you might have a deployment build job, where you want
+    to choose the target environment in a drop-down list when you start the
+    build job. Or you may want to specify the version of the application you
+    want to deploy. Or, when running a build job involving web tests, you
+    might want to specify the browser to run your Selenium or WebDriver tests
+    in. You can even upload a file to be used by the build job.</para>
+
+    <para>You install the Parameterized Build plugin as usual, via the Plugin
+    Manager screen. Once you have done this, configuring a parameterized build
+    job is straight-forward. Just tick the 'This build is parameterized'
+    option and click 'Add Parameter' to add a new build job parameter (see
+    <xref linkend="fig-hudson-parameterized-build" />). You can add parameters
+    to any sort of build, and you can add as many parameters as you want for a
+    given build job.</para>
+
+    <para><figure id="fig-hudson-parameterized-build">
+        <title>Creating a parameterized build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-parameterized-build.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>To add a parameter to your build job, just pick the parameter type
+    in the drop-down list. This will let you configure the details of your
+    parameter (see <xref linkend="fig-hudson-string-build-parameter" />). You
+    can choose from several different parameter types, such as Strings,
+    Booleans, and drop-down lists. Depending on the type you choose, you will
+    have to enter slightly different configuration values, but the basic
+    process is identical. All parameter types, with the exception of the File
+    parameter (see below), have a name and a description, and most often a
+    default value. </para>
+
+    <para>In <xref linkend="fig-hudson-enter-string-parameter" />, for
+    example, we are adding a parameter called <command>version</command> to a
+    deployment build job. The default value ("RELEASE") will be initially
+    displayed when Hudson prompts the user for this parameter, so if the user
+    doesn't change anything, this value will be used. </para>
+
+    <para><figure id="fig-hudson-string-build-parameter">
+        <title>Adding a parameter to the build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-string-build-parameter.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>When the user starts a parameterized build job (parameterized
+    build jobs are very often started manually), Hudson will propose a page
+    where the user can enter values for each of the build job's parameters
+    (see <xref linkend="fig-hudson-enter-string-parameter" />). </para>
+
+    <para><figure id="fig-hudson-enter-string-parameter">
+        <title>Adding a parameter to the build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-enter-string-parameter.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The parameter name is important, as this is also the name of
+    the variable that Hudson will pass through as an environment variable when
+    it runs the build job. To illustrate this, consider the very basic build
+    job configuration in <xref linkend="fig-hudson-parameterized-shell" />,
+    where we are simply echoing the build parameter back out to the console.
+    Note that, to make the environment variables more portable across
+    operating systems, it is good practice to put them all in upper
+    case.</para>
+
+    <para><figure id="fig-hudson-parameterized-shell">
+        <title>Demonstrating a build parameter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-parameterized-shell.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>When we run this, we would get a console output along the
+    following lines:<screen>Started by user anonymous
+Building on master
+[workspace] $ /bin/sh -xe /var/folders/y+/y+a+wZ-jG6WKHEm9KwnSvE+++TI/-Tmp-/hudson5862957776458050998.sh
+<command>+ echo Version=1.2.3</command>
+<command>Version=1.2.3</command>
+Notifying upstream projects of job completion
+Finished: SUCCESS</screen></para>
+
+    <para>You can also use these environment variables from within your build
+    scripts. For example, in an Ant or Maven build, you can use the special
+    <command>env</command> property to access the current environment
+    variables:</para>
+
+    <para><programlisting>&lt;target name="printversion"&gt;
+  &lt;property environment="env" /&gt;
+  &lt;echo message="${env.VERSION}"/&gt;
+&lt;/target&gt;</programlisting>Another option is to pass the parameter into
+    the build script as a property value. The following is a more involved
+    example from a Maven POM file. In this example, Maven is configured to
+    deploy a specific WAR file. We provide the version of the WAR file to be
+    deployed in the <command>target.version</command> property, which is used
+    in the dependency declaration, as shown below:</para>
+
+    <para><programlisting>  ...
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+      &lt;artifactId&gt;gameoflife-web&lt;/artifactId&gt;
+      &lt;type&gt;war&lt;/type&gt;
+      &lt;version&gt;<command>${target.version}</command>&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;properties&gt;
+    <command>&lt;target.version&gt;RELEASE&lt;/target.version&gt;</command>
+    ...
+  &lt;/properties&gt;</programlisting></para>
+
+    <para>When we invoke Maven, we pass in the parameter as one of the build
+    properties (see <xref linkend="fig-hudson-inject-parameter-maven" />). We
+    can then use a tool like Cargo to do the actual deployment - Maven will
+    download the requested version of the WAR file from the local Enterprise
+    Repository Manager, and deploy it to an application server.</para>
+
+    <para><figure id="fig-hudson-inject-parameter-maven">
+        <title>Adding a parameter to a Maven build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-inject-parameter-maven.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>That, in a nutshell, is how you can integrate build job
+    parameters into your build. In addition to plain old String parameters,
+    however, there are a few more sophisticated parameter types, that we will
+    look at in the following paragraphs (see <xref
+    linkend="fig-hudson-build-parameter-types" />).</para>
+
+    <para><figure id="fig-hudson-build-parameter-types">
+        <title>Many different types of parameters are available</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-parameter-types.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para><command>Password Parameters</command> are, as you would expect,
+    very similar to String parameters, except that they are displayed as a
+    password field.</para>
+
+    <para>There are many cases where you which to present a limited set of
+    parameter options. In a deployment build, you might want to let the user
+    choose one of a number of target servers. Or you may want to present a
+    list of supported browsers for a suite of acceptance tests.
+    <command>Choice Parameters</command> let you define a set of values that
+    will be displayed as a drop-down list (see <xref
+    linkend="fig-hudson-build-parameter-choice" />). You need to provide a
+    list of possible values, one per line, starting with the default value.
+    </para>
+
+    <para><figure id="fig-hudson-build-parameter-choice">
+        <title>Configuring a Choice parameter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-parameter-choice.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure><command>Boolean parameters</command> are, as you would expect,
+    parameters that take a value of <command>true</command> or
+    <command>false</command>. They are presented as check boxes.</para>
+
+    <para>Two more exotic parameter types, which behave a little differently
+    to the others, are <command>Run Parameters</command> and <command>File
+    Parameters</command>. </para>
+
+    <para><command>Run Parameters</command> let you select a particular run
+    (or build) of a given build job (see <xref
+    linkend="fig-hudson-build-parameter-run-param" />). The user picks from a
+    list of build run numbers. The URL of the corresponding build run is
+    stored in the specified parameter.</para>
+
+    <para><figure id="fig-hudson-build-parameter-run-param">
+        <title>Configuring a Run parameter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-parameter-run-param.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>The URL (which will look something like
+    <uri>http://hudson.myorg.com/job/game-of-life/197/</uri>) can be used to
+    obtain information or artifacts from that build run. For example, you
+    could obtain the JAR or WAR file archived in a previous build and run
+    further tests with this particular binary in a separate build job. For
+    example, to access the WAR file of a previous build in a multi-module
+    Maven project, the URL would look something like this:<programlisting>http://hudson.myorg.com/job/game-of-life/197/artifact/gameoflife-web/target/gameoflife.war</programlisting></para>
+
+    <para>So, using the parameter configured in <xref
+    linkend="fig-hudson-build-parameter-run-param" />, you could access this
+    WAR file using the following expression:<programlisting>${RELEASE_BUILD}gameoflife-web/target/gameoflife.war</programlisting></para>
+
+    <para><command>File Parameters</command> let you upload a file into the
+    build job workspace, so that it can then be used by the build script (see
+    <xref linkend="fig-hudson-build-parameter-file" />). Hudson will store the
+    file into the specified location in the project workspace, where you can
+    access it in your build scripts. You can use the
+    <command>WORKSPACE</command> variable to refer to the current Hudson
+    workspace directory, so you could manipulate the file uploaded in <xref
+    linkend="fig-hudson-build-parameter-file" /> by using the expression
+    <command>${WORKSPACE}/deploy/app.war</command>. </para>
+
+    <para><figure id="fig-hudson-build-parameter-file">
+        <title>Configuring a File parameter</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-parameter-file.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>You can also start a parameterized build job remotely, by invoking
+    the URL of the build job. The typical form of a parameterized build job
+    URL is illustrated here:<programlisting>http://hudson.acme.org/job/myjob/buildWithParameters?PARAMETER=Value</programlisting></para>
+
+    <para>So, in the example shown above, you could trigger a build like this:
+    <programlisting>http://hudson.acme.org/job/parameterized-build/buildWithParameters?VERSION=1.2.3</programlisting></para>
+
+    <para>When you use a URL to start a build job in this way, remember that
+    the parameter names are case-sensitive, and that the values need to be
+    escaped (just like any other HTTP parameter). And if you are using a Run
+    parameter, you need to provide the name of the build job
+    <emphasis>and</emphasis> the run number (e.g. game-of-life#197) and not
+    just the run number.</para>
+
+    <para>Finally, it can be very useful to know what parameters were used to
+    run a particular parameterized build. For example, in an automated
+    deployment build job, it is useful to know exactly what version was
+    actually deployed. Fortunately, Hudson stores these values in the build
+    history (see <xref linkend="fig-hudson-build-parameter-history" />), so
+    you can always go back and take a look.</para>
+
+    <para><figure id="fig-hudson-build-parameter-history">
+        <title>Hudson stores what parameter values where used for each
+        build</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-parameter-history.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>TODO</para>
+  </sect1>
+</chapter>
