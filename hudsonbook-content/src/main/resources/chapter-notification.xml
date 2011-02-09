@@ -489,7 +489,7 @@
       </figure></para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-notification-instant-messaging">
     <title>Instant messaging</title>
 
     <para>Instant messaging (or IM) is widely used today as a fast,
@@ -754,6 +754,127 @@
           </imageobject>
         </mediaobject>
       </figure></para>
+  </sect1>
+
+  <sect1 id="sect-notification-irc">
+    <title>IRC Notification</title>
+
+    <para>Internet Relay Chat (or IRC) is a popular form of instant messaging,
+    and it's mainly designed for group communication in channels. For example,
+    Hudson has <ulink url="http://jenkins-ci.org/content/chat">a channel set
+    up on Freenode</ulink> so user and developers can go here and discuss
+    Hudson related topics. You will see many users ask questions and most of
+    the time they can get good answers from some other kind guys.</para>
+
+    <para>Just like instant messaging through Jabber, you can configure Hudson
+    to 'push' notification through IRC. Some IRC clients like <ulink
+    url="http://xchat.org/">xchat</ulink> supports alerts configuration so
+    when message comes, it can blink the tray iron or make a beep sound. To
+    set up IRC support on Hudson, first you need to install the <ulink
+    url="http://wiki.hudson-ci.org/display/HUDSON/IRC+Plugin">IRC
+    Plugin</ulink> and the <ulink
+    url="http://wiki.hudson-ci.org/display/HUDSON/Instant+Messaging+Plugin">Instance
+    Messaging Plugin</ulink>. Simply go to the standard plugin manager, tick
+    their checkbox and then restart Hudson (see <xref
+    linkend="hudson-notification-irc-plugins-install" />).<figure
+        id="hudson-notification-irc-plugins-install">
+        <title>Install the Hudson IRC plugins</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="figs/web/notification-irc-plugins-install.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Once it's done, you need to enable the IRC plugin and configure it
+    to fit into your own environment. Basically it would be providing the
+    hostname and port of the IRC server you are using, a dedicated IRC
+    channel, and a nickname for the IRC plugin. It's a good practice to set up
+    a dedicated channel for CI notification, so while people are chatting in
+    other channels, they won't be disturbed. You may also want to configure
+    extra details in the 'Advanced' sector. All of these are available in the
+    'Configure System' page (see <xref
+    linkend="hudson-notification-irc-advanced" />).<figure
+        id="hudson-notification-irc-advanced">
+        <title>Advanced IRC Notification Configuration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="figs/web/notification-irc-advanced.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>In addition to the hostname, port, channel, and nickname we metioned
+    earlier, you can also configure IRC server password or NIckServ password
+    if your environment requires them. Command prefix needs to be configured
+    if you want to interact with the server via IRC messages. This is
+    basically the same as using Jabber, which you can get more details from
+    <xref linkend="sect-notification-instant-messaging" />. Hudson username
+    and password were explained in that section as well. Finally, you may want
+    to let the IRC plugin to use <command>/notice</command> command instead of
+    the default <command>/msg</command> command. <command>/notice</command> is
+    the same as <command>/msg</command> except that the message will be
+    contained in dashes, which will prevent a response from most
+    robots.</para>
+
+    <para>Once the global configuration is ready, you can enable IRC
+    notification for each build job and set up a notification strategy. Open
+    the build job configuration page, go to the 'Post-build Actions' section
+    and click on the 'IRC Notification' option. If you want to set up a
+    notification strategy other than using the default one, click the
+    'Advanced...' button (see <xref
+    linkend="hudson-notification-irc-job" />).<figure
+        id="hudson-notification-irc-job">
+        <title>Advanced Build Job IRC Notification Configuration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="figs/web/notification-irc-job.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>When to send notification and whom to send notification were already
+    explained in <xref linkend="sect-notification-instant-messaging" />. Both
+    Jabber plugin and IRC plugin depend on the Instant messaging plugin, so
+    you can see they share some common features. Some options are special to
+    IRC plugin, however. Here you can define a customized channel if you don't
+    like the global default. Finally, for channel notification message, you
+    can choose what to notify. Options are build summary, SCM changes and
+    failed tests.</para>
+
+    <para>Save the configuration and now IRC should serve you. Based on what
+    you've configured, this plugin will join some IRC channels and send
+    notification message for build jobs (see <xref
+    linkend="hudson-notification-irc-xchat" />).<figure
+        id="hudson-notification-irc-xchat">
+        <title>IRC Notification Messages In Action</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="figs/web/notification-irc-xchat.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Here the IRC plugin joins the #ci-book channel on freenode. First,
+    user juven commited some change with scm message 'feature x added' and IRC
+    plugin notified the build is successful. Then juven commited another
+    change for feature y, but this time build failed. John noticed it and
+    fixed the build error. IRC plugin happily said 'Yipple, build fixed!'.
+    Note that some lines in this screen are highlighted, this is becaused I
+    logged in as user 'juven' and I configured my XChat IRC client to
+    highlight messages containing my nickname.</para>
   </sect1>
 
   <sect1>
