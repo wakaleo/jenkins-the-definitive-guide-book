@@ -832,15 +832,18 @@
   <sect1 id="sect-notification-irc">
     <title>IRC Notification</title>
 
+    <para><emphasis>Contributed by Juven Xu</emphasis></para>
+
     <para>Internet Relay Chat (or IRC) is a popular form of instant messaging,
-    and it's mainly designed for group communication in channels. For example,
+    primarily designed for group communication in channels. For example,
     Hudson has <ulink url="http://jenkins-ci.org/content/chat">a channel set
-    up on Freenode</ulink> so user and developers can go here and discuss
-    Hudson related topics. You will see many users ask questions and most of
-    the time they can get good answers from some other kind guys.</para>
+    up on Freenode</ulink> (http://jenkins-ci.org/content/chat) so user and
+    developers can discuss Hudson related topics. You will see many users ask
+    questions and most of the time more experienced users are prompt to
+    provide useful answers.</para>
 
     <para>Just like instant messaging through Jabber, you can configure Hudson
-    to 'push' notification through IRC. Some IRC clients like <ulink
+    to 'push' notification through IRC. Some IRC clients such as <ulink
     url="http://xchat.org/">xchat</ulink> supports alerts configuration so
     when message comes, it can blink the tray iron or make a beep sound. To
     set up IRC support on Hudson, first you need to install the <ulink
@@ -863,7 +866,7 @@
       </figure></para>
 
     <para>Once it's done, you need to enable the IRC plugin and configure it
-    to fit into your own environment. Basically it would be providing the
+    to fit into your own environment. Basically, this involves providing the
     hostname and port of the IRC server you are using, a dedicated IRC
     channel, and a nickname for the IRC plugin. It's a good practice to set up
     a dedicated channel for CI notification, so while people are chatting in
@@ -883,16 +886,15 @@
         </mediaobject>
       </figure></para>
 
-    <para>In addition to the hostname, port, channel, and nickname we metioned
-    earlier, you can also configure IRC server password or NIckServ password
-    if your environment requires them. Command prefix needs to be configured
-    if you want to interact with the server via IRC messages. This is
-    basically the same as using Jabber, which you can get more details from
-    <xref linkend="sect-notification-instant-messaging" />. Hudson username
-    and password were explained in that section as well. Finally, you may want
-    to let the IRC plugin to use <command>/notice</command> command instead of
-    the default <command>/msg</command> command. <command>/notice</command> is
-    the same as <command>/msg</command> except that the message will be
+    <para>In addition to the hostname, port, channel, and nickname we
+    mentioned earlier, you can also configure IRC server password or NIckServ
+    password if your environment requires them. Command prefixes needs to be
+    configured if you want to interact with the server via IRC messages. This
+    is basically the same as using Jabber (see <xref
+    linkend="sect-notification-instant-messaging" />). Finally, you may want
+    to let the IRC plugin use the <command>/notice</command> command instead
+    of the default <command>/msg</command> command. <command>/notice</command>
+    is the same as <command>/msg</command> except that the message will be
     contained in dashes, which will prevent a response from most
     robots.</para>
 
@@ -915,19 +917,19 @@
         </mediaobject>
       </figure></para>
 
-    <para>When to send notification and whom to send notification were already
-    explained in <xref linkend="sect-notification-instant-messaging" />. Both
-    Jabber plugin and IRC plugin depend on the Instant messaging plugin, so
-    you can see they share some common features. Some options are special to
-    IRC plugin, however. Here you can define a customized channel if you don't
-    like the global default. Finally, for channel notification message, you
-    can choose what to notify. Options are build summary, SCM changes and
-    failed tests.</para>
+    <para>Notification strategies (when to send notification messages, and to
+    whom) are discussed in <xref
+    linkend="sect-notification-instant-messaging" />. Both Jabber plugin and
+    IRC plugin depend on the Instant Messaging Plugin, so they share a number
+    of common core features. Some options are specific to IRC plugin, however.
+    Here, for example, you can define a customized channel if you don't like
+    the global default. Finally, for channel notification message, you can
+    choose what information to send in the notification messages. Options are
+    build summary, SCM changes and failed tests.</para>
 
-    <para>Save the configuration and now IRC should serve you. Based on what
-    you've configured, this plugin will join some IRC channels and send
-    notification message for build jobs (see <xref
-    linkend="hudson-notification-irc-xchat" />).<figure
+    <para>Once you save the configuration, you should be good to go. Based on
+    what you've configured, this plugin will join the appropriate IRC channels
+    and send notification message for build jobs.<figure
         id="hudson-notification-irc-xchat">
         <title>IRC Notification Messages In Action</title>
 
@@ -935,19 +937,20 @@
           <imageobject>
             <imagedata align="center"
                        fileref="figs/web/notification-irc-xchat.png"
-                       width="4.3in" />
+                       width="10.3in" />
           </imageobject>
         </mediaobject>
       </figure></para>
 
-    <para>Here the IRC plugin joins the #ci-book channel on freenode. First,
-    user juven commited some change with scm message 'feature x added' and IRC
-    plugin notified the build is successful. Then juven commited another
-    change for feature y, but this time build failed. John noticed it and
-    fixed the build error. IRC plugin happily said 'Yipple, build fixed!'.
-    Note that some lines in this screen are highlighted, this is becaused I
-    logged in as user 'juven' and I configured my XChat IRC client to
-    highlight messages containing my nickname.</para>
+    <para>In <xref linkend="hudson-notification-irc-xchat" />, for example,
+    the IRC plugin joins the #ci-book channel on freenode. First, user juven
+    committed some change with scm message 'feature x added' and IRC plugin
+    let everyone on the channel know that the build was successful. Then juven
+    committed another change for feature y, but this time build failed. John
+    noticed it and fixed the build error. The IRC plugin now happily said
+    'Yipple, build fixed!'. Note that some lines in this screen are
+    highlighted, this is because I logged in as user 'juven' and I configured
+    my XChat IRC client to highlight messages containing my nickname.</para>
   </sect1>
 
   <sect1>
