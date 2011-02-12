@@ -475,24 +475,6 @@ Finished: SUCCESS</screen></para>
     values. Jenkins will then run the build job for each possible database and
     each possible operating system.</para>
 
-    <para>Lets look at the types of axis you can define.</para>
-
-    <para>hudson-build-multi-config</para>
-
-    <para></para>
-
-    <para>build-multi-config-slaves</para>
-
-    <para></para>
-
-    <para>- Custom axis - add your own variables</para>
-
-    <para>- Running each configuration separately</para>
-
-    <para>- Combination filter</para>
-
-    <para>- Touchstone builds</para>
-
     <sect2>
       <title>Setting up a multi-configuration build</title>
 
@@ -517,7 +499,7 @@ Finished: SUCCESS</screen></para>
       builds.</para>
 
       <para><figure id="fig-hudson-build-multi-config">
-          <title>Creating a multi-configuration build job</title>
+          <title>Adding an axis to a multi-configuration build</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -608,7 +590,7 @@ Finished: SUCCESS</screen></para>
       linkend="fig-hudson-build-mulit-config-custom" />).</para>
 
       <para><figure id="fig-hudson-build-mulit-config-custom">
-          <title>Defining a user-defined</title>
+          <title>Defining a user-defined axis</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -624,15 +606,14 @@ Finished: SUCCESS</screen></para>
 
       <para>Once you have set up the axes, you can run your
       multi-configuration build just like any other. However, Jenkins will
-      treat each combination of variables as a separate build job, running
-      them in parallel as much as possible. Hudson displays the aggregate
-      results in a table, where all of the combinations are shown (see <xref
-      linkend="fig-hudson-build-mulit-config-custom" />). If you click on any
-      of the balls, Jenkins will take you to the detailed results for that
-      particular build.</para>
+      treat each combination of variables as a separate build job. Hudson
+      displays the aggregate results in a table, where all of the combinations
+      are shown (see <xref linkend="fig-hudson-build-mulit-config-custom" />).
+      If you click on any of the balls, Jenkins will take you to the detailed
+      results for that particular build.</para>
 
       <para><figure id="fig-hudson-build-mulit-config-custom">
-          <title>Defining a user-defined</title>
+          <title>Multi-configuration build results</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -640,9 +621,90 @@ Finished: SUCCESS</screen></para>
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure></para>
+        </figure>By default, Jenkins will run the build jobs in parallel.
+      However there are some cases where this is not a good idea. For example,
+      many Java web applications use Selenium or WebDriver tests running
+      against a local instance of Jetty that is automatically started by the
+      build job. Build scripts like this need to be specially configured to be
+      able to run in parallel on the same machine, to avoid port conflicts.
+      Concurrent database access during tests can be another source of
+      problems if concurrency is not designed into the tests. If your builds
+      are not designed to run in parallel, you can force Jenkins to run the
+      tests sequentially by ticking the 'Run each configuration sequentially'
+      checkbox at the bottom of the <command>Configuration Matrix</command>
+      section.</para>
 
-      <para></para>
+      <para>By default, Jenkins will run all possible combinations of the
+      different axes. So, in the above example, we have three environments,
+      two JDKs, and four databases. This results in a total of 24 builds.
+      However, in some cases, it may not make sense (or be possible) to run
+      certain combinations. For example, suppose you have a build job that
+      runs automated web tests. If one axis contains the web browsers to be
+      tested (Firefox, Internet Explorer, Chrome,...) and another the
+      Operating Systems (Linux, Windows, Mac OS), it would make little sense
+      to run Internet Explorer with Linux or Mac OS. </para>
+
+      <para>The <command>Combination Filter</command> option lets you set up
+      rules about which combinations of variables are valid. This field is a
+      Groovy boolean expression that uses the names of the variables you
+      defined for each axis. The expression must evaluate to true for the
+      build to execute. For example, suppose you have a build job running web
+      tests in different browsers on different operating systems (see <xref
+      linkend="fig-hudson-build-multi-config-filters" />). The tests need to
+      run Firefox, Internet Explorer and Chrome, on Windows, Mac OS X and
+      Linux. However Internet Explorer only runs on Windows, and Chrome does
+      not run on Linux. </para>
+
+      <para><figure id="fig-hudson-build-multi-config-filters">
+          <title>Setting up a combination filter</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-multi-config-filters.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>To set this up with a Combination Filter, we could use an
+      expression like the following:</para>
+
+      <programlisting>(browser=="firefox") 
+|| (browser=="iexplorer" &amp;&amp; os=="windows") 
+|| (browser=="chrome" &amp;&amp; os != "linux") </programlisting>
+
+      <para>This would result in only the correct browser/operating system
+      combinations being executed (see <xref
+      linkend="fig-hudson-multi-config-filter-result" />). Executed builds are
+      displayed in the usual colors, whereas skipped builds are shown in
+      grey.</para>
+
+      <para><figure id="fig-hudson-multi-config-filter-result">
+          <title>Build results using a combination filter</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-multi-config-filter-result.png "
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Another reason to use a build filter is that there are simply
+      too many valid combinations to run in a reasonable time. In this case,
+      the best solution may be to upscale your build server. The second-best
+      solution, on the other hand, might be to only run a sub-set of the
+      combinations, possibly running the full set of combinations on a nightly
+      basis. You can do this by using the special <code>index</code> variable.
+      If you include the expression <code>(index%2 == 0)</code>, for example,
+      will ensure that only one build job in two is actually executed.</para>
+
+      <para>You may also want certain builds to be executed before the others,
+      as a sanity check. For example, you might want to run the default (and,
+      theoretically, the most reliable) configuration for your application
+      first, before continuing on to more exotic combinations. To do this, you
+      can use the 'Execute touchstone builds first' option. Here, you enter a
+      filter value (like the one seen above) to define the first build or
+      builds to be executed. You can also specify if the build should proceed
+      only if these builds are successful, or even if they are unsuccessful.
+      Once these builds have completed as expected, Jenkins will proceed with
+      the other combinations.</para>
     </sect2>
   </sect1>
 
