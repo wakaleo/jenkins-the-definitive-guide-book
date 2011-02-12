@@ -709,6 +709,146 @@ Finished: SUCCESS</screen></para>
   </sect1>
 
   <sect1>
+    <title>Organizing your build jobs</title>
+
+    <para>Depending on the size of your team and organization, the number of
+    build jobs that your Jenkins server will host can vary a great deal. As
+    the number of build jobs grows, the Jenkins dashboard can become
+    cluttered. In this section we will look at how to use views to group and
+    organize your build jobs.</para>
+
+    <para>- nested views</para>
+
+    <para>- dependency graph</para>
+
+    <sect2>
+      <title>Views</title>
+
+      <para>Views are the simplest way to organize your build jobs. A view
+      lets you display a subset of the build jobs on your server, either by
+      picking them individually, or by defining a regular expression. Views
+      are often used on larger servers to group build jobs by project,
+      application, or team.</para>
+
+      <para>Views are easy to set up. Just click on the '+' icon at the top of
+      the page, and choose a name for your new view (see <xref
+      linkend="fig-hudson-view-new" />). The name you choose will appear in
+      the tabs on the Jenkins home page, and in the URLs accessing the build
+      job pages - for this reason, I generally avoid spaces.</para>
+
+      <para>You also need to choose the type of view you want to create. By
+      default, only the standard 'list' view is available, but many more are
+      available through additional plugins, as we will see further on.</para>
+
+      <para><figure id="fig-hudson-view-new">
+          <title>Creating a new view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-view-new.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once you have created your new view, you need to tell Jenkins what
+      build jobs will figure in it, and what other associated information will
+      be displayed (see <xref linkend="fig-hudson-view-new-details" />). The
+      simplest way to choose the jobs to be displayed one by one, simply by
+      ticking them in the Jobs list.</para>
+
+      <para><figure id="fig-hudson-view-new-details">
+          <title>Creating a new view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-view-new-details.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>A more robust approach, however, is to use a regular expression to
+      define the names of the build jobs to be displayed (see <xref
+      linkend="fig-build-view-regex" />). For example, the expression
+      <code>game-of-life.*</code> will display all of the build jobs whose
+      name starts with "game-of-life". If the names of your build jobs follow
+      some well-defined convention (as they should), this is an excellent way
+      to make maintaining your views a lot easier.</para>
+
+      <para>Another useful option, if your build server hosts a large number
+      of build jobs, is to filter the build queue and build executors so that
+      only the activity of build jobs displayed in your build will appear in
+      the build queue or executors, while you are in this view. This avoids
+      unnecessary pollution about irrelevant builds whilst you are in this
+      view, though you can always get a full picture of all of the build jobs
+      on the dashboard page. You can configure this towards the two check
+      boxes at the top of the build configuration page. </para>
+
+      <para><figure id="fig-build-view-regex">
+          <title>Using a regular expression to define the jobs to be
+          displayed</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/build-view-regex.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>By default, the view will contain the same columns as appear on
+      the main dashboard. This is usually fine, but you do have the option of
+      adding, deleting or changing the order of the columns that appear in the
+      view (see <xref linkend="fig-hudson-view-add-column" />). </para>
+
+      <para><figure id="fig-hudson-view-add-column">
+          <title>Using a regular expression to define the jobs to be
+          displayed</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-view-add-column.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you are happy with the configuration of your view, save
+      your changes. Your view will now appear as an additional tab on the
+      dashboard, displaying only the jobs you specified (see <xref
+      linkend="fig-hudson-display-view" />). When you are in a view, Jenkins
+      will also display menu options allowing you to edit or delete the
+      view.</para>
+
+      <para><figure id="fig-hudson-view-add-column">
+          <title>The final view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-view-display.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Nested Views</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Build job dependency graphs</title>
+
+      <para></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Build promotions</title>
+
+    <para></para>
+  </sect1>
+
+  <sect1>
     <title>Conclusion</title>
 
     <para>TODO</para>
