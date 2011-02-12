@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<chapter>
+<chapter id="chapter-advanced-builds">
   <title>Advanced Builds</title>
 
   <sect1>
@@ -424,6 +424,226 @@ Finished: SUCCESS</screen></para>
           </imageobject>
         </mediaobject>
       </figure></para>
+  </sect1>
+
+  <sect1>
+    <title>Multi-configuration build jobs</title>
+
+    <para>Multi-configuration build jobs are an extremely powerful feature of
+    Jenkins. A multi-configuration build job can be thought of as a
+    parameterized build job that can be automatically run with all the
+    possible combinations of parameters that it can accept. They are
+    particularly useful for tests, where you can test your application using a
+    single build job, but under a wide variety of conditions (browsers,
+    databases, and so forth).</para>
+
+    <para>To create a new multi-configuration build job, simply choose this
+    option on the 'New Job' page (see <xref
+    linkend="hudson-build-multi-configuration" />). </para>
+
+    <para><figure id="fig-hudson-build-multi-configuration">
+        <title>Creating a multi-configuration build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-multi-configuration.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>A multi-configuration build job is just like any other build
+    job, but with one very important additional element: the
+    <command>Configuration Matrix</command> (see <xref
+    linkend="fig-hudson-build-multi-config" />). This is where you define the
+    different configurations that will be used to run your builds.</para>
+
+    <para><figure id="fig-hudson-build-multi-config">
+        <title>Creating a multi-configuration build job</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-build-multi-config.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>You can define different axes of configuration options,
+    including running the build job on different slaves or on different JDKs,
+    or providing your own custom properties to the build. For example, in the
+    build jobs discussed earlier, we might want to test our application for
+    different databases and different operating systems. We could define one
+    axis defining slave machines with different operating systems we wanted
+    our build to run on, and another axis defining all the possible database
+    values. Jenkins will then run the build job for each possible database and
+    each possible operating system.</para>
+
+    <para>Lets look at the types of axis you can define.</para>
+
+    <para>hudson-build-multi-config</para>
+
+    <para></para>
+
+    <para>build-multi-config-slaves</para>
+
+    <para></para>
+
+    <para>- Custom axis - add your own variables</para>
+
+    <para>- Running each configuration separately</para>
+
+    <para>- Combination filter</para>
+
+    <para>- Touchstone builds</para>
+
+    <sect2>
+      <title>Setting up a multi-configuration build</title>
+
+      <para>To create a new multi-configuration build job, simply choose this
+      option on the 'New Job' page (see <xref
+      linkend="hudson-build-multi-configuration" />).</para>
+
+      <para><figure id="fig-hudson-build-multi-configuration">
+          <title>Creating a multi-configuration build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-multi-configuration.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>A multi-configuration build job is just like any other build
+      job, but with one very important additional element: the
+      <command>Configuration Matrix</command> (see <xref
+      linkend="fig-hudson-build-multi-config" />). This is where you define
+      the different configurations that will be used to run your
+      builds.</para>
+
+      <para><figure id="fig-hudson-build-multi-config">
+          <title>Creating a multi-configuration build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-multi-config.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>You can define different axes of configuration options,
+      including running the build job on different slaves or on different
+      JDKs, or providing your own custom properties to the build. For example,
+      in the build jobs discussed earlier, we might want to test our
+      application for different databases and different operating systems. We
+      could define one axis defining slave machines with different operating
+      systems we wanted our build to run on, and another axis defining all the
+      possible database values. Jenkins will then run the build job for each
+      possible database and each possible operating system.</para>
+
+      <para>Lets look at the types of axis you can define.</para>
+    </sect2>
+
+    <sect2>
+      <title>Configuring a Slave axis</title>
+
+      <para>The first option is to configure your build to run simultaneously
+      on different slave machines. Now of course, the idea of having a set of
+      slave machines is usually that you can run your build job on any of
+      them. But there are cases where it makes sense to be a little more
+      choosy. For example, you might want your tests to run on Windows, Mac OS
+      X, and Linux. In this case, you create a new axis for your slave nodes,
+      as shown in <xref linkend="fig-build-multi-config-slaves" />. You can
+      choose the nodes you want to use in two ways: by label or by individual
+      node. Using labels lets you identify categories of build nodes (for
+      example, Windows machines), without tying the build to any one machine.
+      This is a more flexible option, and makes it easier to expand your build
+      capacity as required. Sometimes, however, you may really want to run a
+      build on a specific machine. In this case, you can use the 'Individual
+      nodes' option, and choose the machine in this list. We will discuss
+      working with slave nodes and distributed builds in more detail in <xref
+      linkend="chapter-distributed-builds" />.</para>
+
+      <para><figure id="fig-build-multi-config-slaves">
+          <title>Defining an axis of slave nodes</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/build-multi-config-slaves.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Configuring a JDK axis</title>
+
+      <para>If you are deploying your application to a broad client base where
+      you have limited control over the target environment, you may need to
+      test your application using different versions of Java. In cases like
+      this it is useful to be able to set up a JDK axis in a
+      multi-configuration build. When you add a JDK axis, Jenkins will
+      automatically propose the list of JDK versions that it knows about (see
+      <xref linkend="???" />). If you need to use additional JDKs, just add
+      them to your Jenkins configuration page.</para>
+
+      <para><figure id="fig-hudson-build-multi-config-jdk">
+          <title>Defining an axis of JDK versions</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-multi-config-jdk.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Custom axis</title>
+
+      <para>The third type of axis lets you define different ways to run your
+      build job, based on arbitrary variables that you define. For example,
+      you might provide a list of databases you need to test against, or a
+      list of browsers to use in your web tests. These are like parameters for
+      a parameterized build job, except that you provide the complete list of
+      possible values, and rather than prompting for you to enter a value,
+      Jenkins will run the build with <emphasis>all</emphasis> of the values
+      you provide (<xref
+      linkend="fig-hudson-build-mulit-config-custom" />).</para>
+
+      <para><figure id="fig-hudson-build-mulit-config-custom">
+          <title>Defining a user-defined</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-mulit-config-custom.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Running a multi-configuration build</title>
+
+      <para>Once you have set up the axes, you can run your
+      multi-configuration build just like any other. However, Jenkins will
+      treat each combination of variables as a separate build job, running
+      them in parallel as much as possible. Hudson displays the aggregate
+      results in a table, where all of the combinations are shown (see <xref
+      linkend="fig-hudson-build-mulit-config-custom" />). If you click on any
+      of the balls, Jenkins will take you to the detailed results for that
+      particular build.</para>
+
+      <para><figure id="fig-hudson-build-mulit-config-custom">
+          <title>Defining a user-defined</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-multi-config-results.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para></para>
+    </sect2>
   </sect1>
 
   <sect1>
