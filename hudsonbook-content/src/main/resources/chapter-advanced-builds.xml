@@ -426,7 +426,7 @@ Finished: SUCCESS</screen></para>
       </figure></para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-multi-configuration-build-jobs">
     <title>Multi-configuration build jobs</title>
 
     <para>Multi-configuration build jobs are an extremely powerful feature of
@@ -717,10 +717,6 @@ Finished: SUCCESS</screen></para>
     cluttered. In this section we will look at how to use views to group and
     organize your build jobs.</para>
 
-    <para>- nested views</para>
-
-    <para>- dependency graph</para>
-
     <sect2>
       <title>Views</title>
 
@@ -832,20 +828,175 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Nested Views</title>
 
+      <para>Most Jenkins instances host between a dozen and a hundred or so
+      build jobs. However some host a great deal more than that, and once the
+      number of build jobs gets beyond a few dozen, things start to become
+      very crowded on the Jenkins home page.</para>
+
+      <para>One solution to this issue would be to regroup your build jobs
+      into folders. Jenkins does not support this feature out of the box.
+      However, the <command>Nested View</command> plugin does let you create
+      folders of build jobs. Once you install this plugin, you can choose the
+      'Nested View' option when you create a new view (see <xref
+      linkend="fig-hudson-nested-view-new" />).</para>
+
+      <para><figure id="fig-hudson-nested-view-new">
+          <title>Creating a new Nested View</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-nested-view-new.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This doesn't do much in itself. After a page where you enter
+      a description of your build and the filtering options we saw in the
+      standard view, it will essentially create an empty view (see <xref
+      linkend="fig-hudson-nested-view-empty" />). From here, you can add new
+      view that will be nested inside this one by clicking on the 'New View'
+      menu option.</para>
+
+      <para><figure id="fig-hudson-nested-view-empty">
+          <title>Creating a new Nested View</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-nested-view-empty.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>You can add any view you want to a nested view, even another
+      nested view. The views you define are displayed as folders on the view
+      home page (see <xref
+      linkend="fig-hudson-nested-view-summary" />).</para>
+
+      <para><figure id="fig-hudson-nested-view-summary">
+          <title>Nested views in action</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-nested-view-summary.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Coordinating your builds</title>
+
+    <para>Triggering downstream build jobs is easy enough. However, when
+    setting up larger and more complicated build job setups, you sometimes
+    would like builds to be able to run concurrently, or possibly wait for
+    certain build jobs to finish before proceeding. In this section, we will
+    look at techniques and plugins that can help you do this. </para>
+
+    <sect2>
+      <title>Parallel builds in Jenkins</title>
+
+      <para>Jenkins has built-in support for parallel builds - when a build
+      job starts, Jenkins will assign it to the first available build node, so
+      you can potentially have as many parallel builds running as you have
+      build nodes available. </para>
+
+      <para>If you need to run slight variations of the same build job in
+      parallel, multi-configuration build jobs (see <xref
+      linkend="sect-multi-configuration-build-jobs" />) are an excellent
+      option. This can come in handy as a way of accelerating your build
+      process. A typical application of multi-configuration build jobs in this
+      context is to run integration tests in parallel. One strategy is to set
+      up an integration test build job that can be run in different ways to
+      execute different subsets of the integration tests. You could define
+      separate Maven profiles, for example, or configure your build to use a
+      command-line parameter to decide which tests to run. Once you have set
+      up your build script in this way, it is easy to configure a
+      multi-configuration build job to run the subsets of your integration
+      tests in parallel.</para>
+
+      <para>You can also get Hudson to trigger several downstream builds in
+      parallel, simply by listing them all in the 'Build other projects' field
+      (see <xref linkend="hudson-build-other-projects" />). The subsequent
+      build jobs will be executed in parallel as much as possible. However, as
+      we will see further on, this may not always be exactly what you
+      need.</para>
+
+      <para><figure id="fig-hudson-build-other-projects">
+          <title>Triggering several other builds after a build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-other-projects.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Dependency Graphs</title>
+
+      <para>Before we investigate the finer points of parallel builds, it is
+      useful to be able to visualise the relationships between your build
+      jobs. The Dependency Graph View plugin analyzes your build jobs and
+      displays a graph describing the upstream and downstream connections
+      between your jobs. This plugin uses graphviz (<ulink
+      url="???">http://www.graphviz.org/</ulink>), which you will need to
+      install on your server if you don't already have it. </para>
+
+      <para>This plugin added a Dependency Graph icon in the main menu, which
+      displays the a graph showing the relationships between the all the build
+      jobs in your project (at the dashboard level), or all of the build jobs
+      related to the current build job (when you are inside a particular
+      project (see <xref linkend="fig-hudson-dependency-graph" />). What's
+      more, if you click on a build job in the graph, Jenkins will take you
+      directly to the project page of that build job.</para>
+
+      <para><figure id="fig-hudson-dependency-graph">
+          <title>Triggering several other builds after a build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-dependency-graph.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Locks and Latches</title>
+
       <para></para>
     </sect2>
 
     <sect2>
-      <title>Build job dependency graphs</title>
+      <title>Joins</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Fingerprints</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Aggregating downstream test results</title>
 
       <para></para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Build promotions</title>
+    <title>Build pipelines and promotions</title>
 
-    <para></para>
+    <para>- M2Release plugin</para>
+
+    <para>- Copying artifacts</para>
+
+    <para>- Build Promotion plugin</para>
   </sect1>
 
   <sect1>
