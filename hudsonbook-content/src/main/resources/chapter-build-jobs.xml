@@ -27,19 +27,19 @@
     metrics, or generates technical documentation, before finally bundling up
     your web application and deploying it to a test server.</para>
 
-    <para>In Hudson, build jobs are easy to set up. In this chapter, we will
+    <para>In Jenkins, build jobs are easy to set up. In this chapter, we will
     look at the main types of build jobs and how to configure them. In later
     chapters, we will take things further, looking at how to organize multiple
     build jobs, how to set up build promotion pipelines, and how to automate
     the deployment process. But, for now, lets start off with how to set up
-    your basic build jobs in Hudson.</para>
+    your basic build jobs in Jenkins.</para>
   </sect1>
 
   <sect1 id="sect-build-jobs">
-    <title>Hudson build jobs</title>
+    <title>Jenkins build jobs</title>
 
-    <para>Creating a new build job in Hudson is simple: just click on the
-    '<command>New Job</command>' menu item on the Hudson dashboard. Hudson
+    <para>Creating a new build job in Jenkins is simple: just click on the
+    '<command>New Job</command>' menu item on the Jenkins dashboard. Jenkins
     supports several different types of build job, which are presented to you
     when you choose to create a new job (see <xref
     linkend="fig-hudson-build-types" />).<variablelist>
@@ -65,7 +65,7 @@
 
                 <secondary>maven2</secondary>
               </indexterm>The 'maven2 project' is a build job specially
-            adapted to Maven projects. Hudson understands Maven
+            adapted to Maven projects. Jenkins understands Maven
             <filename>pom</filename> files and project structures, and can use
             the information gleaned from the <filename>pom</filename> file to
             reduce the work you need to do to set up your project.</para>
@@ -106,7 +106,7 @@
       </variablelist></para>
 
     <para><figure id="fig-hudson-build-types">
-        <title>Hudson supports four main types of build job.</title>
+        <title>Jenkins supports four main types of build job.</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -180,15 +180,15 @@
 
       <para>The <command>Discard Old Builds</command> option lets you limit
       the number of builds you record in the build history. You can either
-      tell Hudson to only keep recent builds (Hudson will delete builds after
-      a certain number of days), or to keep no more than a specified number of
-      builds. If a certain build has particular sentimental value, you can
-      always tell Hudson to keep it forever. In addition, Hudson will never
-      delete the last stable and successful builds, no matter how old they
-      are. For example, if you limit Hudson to only keep the last twenty
-      builds, and your last successful build was thirty builds ago, Hudson
-      will still keep the successful build job as well as the last twenty
-      failing builds.</para>
+      tell Jenkins to only keep recent builds (Jenkins will delete builds
+      after a certain number of days), or to keep no more than a specified
+      number of builds. If a certain build has particular sentimental value,
+      you can always tell Jenkins to keep it forever. In addition, Jenkins
+      will never delete the last stable and successful builds, no matter how
+      old they are. For example, if you limit Jenkins to only keep the last
+      twenty builds, and your last successful build was thirty builds ago,
+      Jenkins will still keep the successful build job as well as the last
+      twenty failing builds.</para>
 
       <para>You also have the option to disable the build. A disabled build
       will not be executed until you enable it again. Using this option when
@@ -219,7 +219,7 @@
           </mediaobject>
         </figure>The <command>Quiet Period</command> option in the build job
       configuration simply lets you override the system-wide quiet period
-      defined in the Hudson System Configuration screen (see <xref
+      defined in the Jenkins System Configuration screen (see <xref
       linkend="sect-configuration-system" />). This option is mainly used for
       version control systems that don't support atomic commits, such as CVS,
       but it is also sometimes used in teams where developers have the habit
@@ -228,7 +228,7 @@
       <para>The <command>Block build when upstream project is
       building</command> option is useful when several related projects are
       affected by a single commit, but they must be built in a specific order.
-      If you activate this option, Hudson will wait until any upstream build
+      If you activate this option, Jenkins will wait until any upstream build
       jobs (see <xref linkend="sect-build-triggers" />) have finished before
       starting this build.</para>
 
@@ -253,9 +253,9 @@
       application would never be built if changes where made that only
       affected it, and not the core module. A better approach is to use the
       <command>Block build when upstream project</command>. In this case, when
-      the version numbers are updated in version control, Hudson will schedule
-      both builds to be executed. However it will wait until the core build
-      has finished before starting the web application build.</para>
+      the version numbers are updated in version control, Jenkins will
+      schedule both builds to be executed. However it will wait until the core
+      build has finished before starting the web application build.</para>
 
       <para><figure id="fig-hudson-new-job-version-updates">
           <title>The 'Block build when upstream project is building' option is
@@ -271,18 +271,18 @@
           </mediaobject>
         </figure></para>
 
-      <para>You can also override the default workspace used by Hudson to
-      check out the source code and build your project. Normally, Hudson will
+      <para>You can also override the default workspace used by Jenkins to
+      check out the source code and build your project. Normally, Jenkins will
       create a special workspace directory for your project, which can be
       found in the project's build job directory (see <xref
       linkend="sec-hudson-home-directory-contents" />). This works fine in
       almost all cases. However, there are times when you need to override
-      this option, and force Hudson to use a special directory. One common
+      this option, and force Jenkins to use a special directory. One common
       example of this is if you want several build jobs to all work
       successively in the same directory. You can override the default
       directory by ticking the <command>Use custom workspace</command> option,
       and providing the path yourself. The path can be either absolute, or
-      relative to Hudson's home directory.</para>
+      relative to Jenkins's home directory.</para>
 
       <para>We will look at some of the other more advanced options that
       appear in this section later on in the book.</para>
@@ -298,7 +298,7 @@
       version of your source code on a regular basis. In either case, tight
       integration with your version control system is essential.</para>
 
-      <para>Hudson supports CVS and Subversion out-of-the-box, and also
+      <para>Jenkins supports CVS and Subversion out-of-the-box, and also
       integrates with a large number of other version control systems via
       plugins. At the time of writing, SCM plugin support includes Accurev,
       Bazaar, BitKeeper, ClearCase, CMVC, Dimensions, Git, CA Harvest,
@@ -311,18 +311,18 @@
         <title>Working with Subversion</title>
 
         <para>Subversion is one of the most widely used version control
-        systems, and Hudson comes bundled with full Subversion support (see
+        systems, and Jenkins comes bundled with full Subversion support (see
         <xref linkend="fig-hudson-new-job-svn" />). To use source code from a
         Subversion repository, you simply provide the corresponding Subversion
         URL - it will work fine with any of the three Subversion protocols of
-        (http, svn or file). Hudson will check that the URL is valid as soon
-        as you enter it. If the repository requires authentication, Hudson
+        (http, svn or file). Jenkins will check that the URL is valid as soon
+        as you enter it. If the repository requires authentication, Jenkins
         will prompt you for the corresponding credentials automatically, and
         store them for any other build jobs that access this
         repository.</para>
 
         <para><figure id="fig-hudson-new-job-svn">
-            <title>Hudson provides built-in support for Subversion</title>
+            <title>Jenkins provides built-in support for Subversion</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -331,15 +331,16 @@
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure>By default, Hudson will check out the repository contents
+          </figure>By default, Jenkins will check out the repository contents
         into a sub-directory of your workspace, whose name will match the last
         element in the Subversion URL, So if your Subversion URL is
-        <uri>svn://localhost/gameoflife/trunk</uri>, Hudson will check out the
-        repository contents to directory called <filename>trunk</filename> in
-        the build job workspace. If you would prefer another directory name,
-        just enter the directory name you want in the <command>Local module
-        directory</command> field. Place a period (".") here if you want
-        Hudson to check the source code directly into the workspace.</para>
+        <uri>svn://localhost/gameoflife/trunk</uri>, Jenkins will check out
+        the repository contents to directory called <filename>trunk</filename>
+        in the build job workspace. If you would prefer another directory
+        name, just enter the directory name you want in the <command>Local
+        module directory</command> field. Place a period (".") here if you
+        want Jenkins to check the source code directly into the
+        workspace.</para>
 
         <para>Occasionally you may need to get source code from more than one
         Subversion URL. In this case, just use the <command>Add more
@@ -361,7 +362,7 @@
         the presence of temporary files, both have the potential of
         compromising this.</para>
 
-        <para>Normally, Hudson will check out a clean copy of the source code
+        <para>Normally, Jenkins will check out a clean copy of the source code
         for each build. If your project is well-behaved, however, you may be
         able to use the <command>Use update</command> option, which speeds
         things up substantially by using the <command>svn update</command>
@@ -372,18 +373,18 @@
         remove any new files that have been created during the build
         process.</para>
 
-        <para>Another very useful feature is Hudson's integration with source
+        <para>Another very useful feature is Jenkins's integration with source
         code browsers. A good source code browser is an important part of your
         Continuous Integration setup. It lets you see at a glance what changes
         triggered a given build, which is very useful when it comes to
         trouble-shooting broken builds (see <xref
-        linkend="fig-hudson-new-job-diff" />). Hudson integrates with most of
+        linkend="fig-hudson-new-job-diff" />). Jenkins integrates with most of
         the major source code browsers, including open source tools such as
         WebSVN and Sventon, and commercial ones like Atlassian's
         FishEye.</para>
 
         <para><figure id="fig-hudson-new-job-diff">
-            <title>Hudson provides built-in support for Subversion</title>
+            <title>Jenkins provides built-in support for Subversion</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -392,14 +393,14 @@
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure>Hudson also lets you refine the changes that will trigger a
-        build. In the Advanced section, you can use the <command>Excluded
-        Regions</command> field to tell Hudson not to trigger a build if only
+          </figure>Jenkins also lets you refine the changes that will trigger
+        a build. In the Advanced section, you can use the <command>Excluded
+        Regions</command> field to tell Jenkins not to trigger a build if only
         certain files were changed. This field takes a list of regular
         expressions, which identify files that should <emphasis>not</emphasis>
-        trigger a build. For example, suppose you don't want Hudson to start a
-        new build if only images have been changed. To do this, you could use
-        a set of regular expressions like the following:<programlisting>/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.jpg
+        trigger a build. For example, suppose you don't want Jenkins to start
+        a new build if only images have been changed. To do this, you could
+        use a set of regular expressions like the following:<programlisting>/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.jpg
 /trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.gif
 /trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.png</programlisting></para>
 
@@ -429,15 +430,15 @@
 
         <para>Now suppose you have a special build job for generating a new
         release using this process. The many commits generated by the Maven
-        Release Plugin would normally trigger off build jobs in Hudson.
+        Release Plugin would normally trigger off build jobs in Jenkins.
         However, since the release build job is already compiling and testing
-        this version of your application, you don't need Hudson to do it again
-        in a separate build job. To ensure that Hudson does not trigger a
-        build for this case, you can use the <command>Excluded Commit
+        this version of your application, you don't need Jenkins to do it
+        again in a separate build job. To ensure that Jenkins does not trigger
+        a build for this case, you can use the <command>Excluded Commit
         Messages</command> field with the following value:</para>
 
         <para><programlisting>[maven-release-plugin] prepare release.*</programlisting>This
-        will ensure that Hudson skips the changes corresponding to the new
+        will ensure that Jenkins skips the changes corresponding to the new
         release version, but not those corresponding to the next snapshot
         version.</para>
       </sect3>
@@ -452,23 +453,24 @@
         <ulink url="http://subversion.tigris.org/">Subversion</ulink> and a
         mind-share competitor to <ulink
         url="http://mercurial.selenic.com/">Mercurial</ulink>. Git support in
-        Hudson is both mature and full-featured. There are a number of plugins
-        that can contribute to the overall story of Git on Hudson. We will
-        begin by looking at the Git Plugin, which provides core Git support in
-        Hudson. We'll discuss the supplemental plugins shortly.</para>
+        Jenkins is both mature and full-featured. There are a number of
+        plugins that can contribute to the overall story of Git on Jenkins. We
+        will begin by looking at the Git Plugin, which provides core Git
+        support in Jenkins. We'll discuss the supplemental plugins
+        shortly.</para>
 
         <sect4 id="installing-the-plugin">
           <title>Installing the Plugin</title>
 
-          <para>The <emphasis>Git Plugin</emphasis> is available in the Hudson
-          Plugin Manager and is documented on its own <ulink
+          <para>The <emphasis>Git Plugin</emphasis> is available in the
+          Jenkins Plugin Manager and is documented on its own <ulink
           url="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin">wiki
           page</ulink>. The plugin assumes that git (version 1.3.3 or later)
           has already been installed on your build server, so you will need to
           make sure that this is the case. You can do this by running the
           following command on your build server:<screen>$ <command>git --version</command>
-git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
-          check box in the Hudson Plugin Manager page and click the <emphasis
+git version 1.7.1</screen>Next, go back to Jenkins, check the corresponding
+          check box in the Jenkins Plugin Manager page and click the <emphasis
           role="strong">install</emphasis> button.</para>
 
           <sect5 id="system-wide-configuration-of-the-plugin">
@@ -476,7 +478,7 @@ git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
 
             <para>After installing the Git Plugin, a small new set of
             configuration options will be available on the <emphasis>Manage
-            Hudson</emphasis> -&gt; <emphasis>Configure System</emphasis>
+            Jenkins</emphasis> -&gt; <emphasis>Configure System</emphasis>
             page. In particular, you need to provide the path to your git
             executable. If git is already installed on the system path, just
             put 'git' here.</para>
@@ -507,17 +509,17 @@ git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
             <literal>git@github.com:matthewmccullough/some-repo.git</literal>
             -- you'll need to provide the private half of the key as file
             <literal>~/.ssh/id_rsa</literal> where <literal>~</literal> is the
-            home directory of the user account under which Hudson is
+            home directory of the user account under which Jenkins is
             running.</para>
 
             <para>The fingerprint of the remote server will additionally need
             to be placed in <literal>~/.ssh/known_hosts</literal> to prevent
-            Hudson from invisibly prompting for authorization to access this
+            Jenkins from invisibly prompting for authorization to access this
             git server for the first time.</para>
 
             <para>Alternatively, if logging-in is enabled for the
-            <literal>hudson</literal> user, SSH into the Hudson machine as
-            <literal>hudson</literal> and manually attempt to git clone a
+            <literal>jenkins</literal> user, SSH into the Jenkins machine as
+            <literal>jenkins</literal> and manually attempt to git clone a
             remote repository. This will test your private key setup and
             establish the <literal>known_hosts</literal> file in the
             <literal>~/.ssh</literal> directory. This is probably the simplest
@@ -529,7 +531,7 @@ git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
         <sect4 id="using-the-plugin">
           <title>Using the Plugin</title>
 
-          <para>On either an existing or a new Hudson project, a new
+          <para>On either an existing or a new Jenkins project, a new
           <emphasis>Source Code Management</emphasis> option for
           <emphasis>Git</emphasis> will be displayed. From here, you can
           configure one or more repository addresses. One repository is
@@ -594,7 +596,7 @@ git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
             <title>Branches to Build</title>
 
             <para>The branch specifier is the wildcard pattern or specific
-            branch name that should be built by Hudson. If left blank, all
+            branch name that should be built by Jenkins. If left blank, all
             branches will be built. At the time of this writing, after the
             first time saving a job with a blank <emphasis>branches to
             build</emphasis> setting, it is populated with
@@ -678,7 +680,7 @@ git version 1.7.1</screen>Next, go back to Hudson, check the corresponding
             <screen>git checkout 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
 
             <para>On the other hand, if you use a local branch named
-            <literal>mylocalbranch</literal>, Hudson would do the
+            <literal>mylocalbranch</literal>, Jenkins would do the
             following:</para>
 
             <screen>git branch -D mylocalbranch
@@ -688,7 +690,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           <sect5 id="local-subdirectory-for-repo">
             <title>Local subdirectory for repo</title>
 
-            <para>By default, Hudson will clone the Git repository directly
+            <para>By default, Jenkins will clone the Git repository directly
             into the build job workspace. If you prefer to use a different
             directory, you can specify it here. Note that the directory you
             specify is relative to the build job workspace.</para>
@@ -736,7 +738,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           <sect5 id="use-commit-author-in-changelog">
             <title>Use commit author in changelog</title>
 
-            <para>Hudson tracks and displays the author of changed code in a
+            <para>Jenkins tracks and displays the author of changed code in a
             summarized view. Git tracks both the committer and author of code
             distinctly, and this option lets you toggle which of those two
             usernames is displayed in the changelog.</para>
@@ -745,19 +747,20 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           <sect5 id="wipe-out-workspace">
             <title>Wipe out workspace</title>
 
-            <para>Typically Hudson will reuse the workspace, merely freshening
-            the checkout as necessary and, if you activated the 'Clean after
-            checkout' option, cleaning up untracked files. However, if you
-            prefer to have a completely clean workspace, you can use the 'Wipe
-            out workspace' option to delete and rebuild the workspace from the
-            ground up. Bear in mind that this may significantly lengthen the
-            time it takes to initialize and build the project.</para>
+            <para>Typically Jenkins will reuse the workspace, merely
+            freshening the checkout as necessary and, if you activated the
+            'Clean after checkout' option, cleaning up untracked files.
+            However, if you prefer to have a completely clean workspace, you
+            can use the 'Wipe out workspace' option to delete and rebuild the
+            workspace from the ground up. Bear in mind that this may
+            significantly lengthen the time it takes to initialize and build
+            the project.</para>
           </sect5>
 
           <sect5 id="choosing-strategy">
             <title>Choosing strategy</title>
 
-            <para>Hudson decides which branches to build based on a
+            <para>Jenkins decides which branches to build based on a
             <emphasis>strategy</emphasis>. Users can influence this
             branch-search process. The default choice is to search for all
             branch HEADs. If the Gerrit plugin is installed (see below),
@@ -784,7 +787,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           <sect5 id="git-executable">
             <title>Git executable</title>
 
-            <para>In the global options of Hudson, different Git executables
+            <para>In the global options of Jenkins, different Git executables
             can be set up and used on a per-build basis. This is infrequently
             used, and only when the clone or other git operations are highly
             sensitive to a particular version of Git. Git tends to be very
@@ -814,7 +817,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
             <para>Like Subversion, Git has several source code browsers that
             you can use. The most common ones are Gitorious, Git Web, or
             Github. If you provide the URL to the corresponding repository
-            browser, Hudson will be able to display a link to the source code
+            browser, Jenkins will be able to display a link to the source code
             changes that triggered a build.</para>
 
             <figure>
@@ -901,8 +904,8 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
 
             <para>The <ulink
             url="http://wiki.hudson-ci.org/display/HUDSON/Gerrit+Trigger">Gerrit
-            Trigger</ulink> is a Hudson plugin that can trigger a Hudson build
-            of the code when any user-specified activity happens in a
+            Trigger</ulink> is a Jenkins plugin that can trigger a Jenkins
+            build of the code when any user-specified activity happens in a
             user-specified project in the git repository. It is a alternative
             to the more typically-used <emphasis>Build periodically</emphasis>
             or <emphasis>Poll SCM</emphasis>.</para>
@@ -938,7 +941,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         <sect4 id="post-build-actions">
           <title>Post-build Actions</title>
 
-          <para>The git plugin for Hudson adds git-specific capabilities to
+          <para>The git plugin for Jenkins adds git-specific capabilities to
           the post-processing of the build artifacts. Specifically, the
           <emphasis>Git Publisher</emphasis> offers merging and pushing
           actions. Check the <emphasis>Git Publisher</emphasis> checkbox to
@@ -948,7 +951,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
             <title>Push Only If Build Succeeds</title>
 
             <para>If a merge or other commit-creating action has been taken
-            during the Hudson build, it can be enabled to push to a
+            during the Jenkins build, it can be enabled to push to a
             remote.</para>
           </sect5>
 
@@ -967,7 +970,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
             exist). Environment variables can be embedded in the tag name.
             Examples include the process ID such as
             <literal>HUDSON_BUILD_$PPID</literal> or even a build number, if
-            that is provided by a Hudson plugin, such as
+            that is provided by a Jenkins plugin, such as
             <literal>$HUDSON_AUTOTAG_$BUILDNUM</literal>. Tags can be targeted
             to a specific remote such as <literal>origin</literal> or
             <literal>integrationrepo</literal>.</para>
@@ -992,10 +995,10 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           <sect5 id="branches">
             <title>Branches</title>
 
-            <para>The current HEAD used in the Hudson build of the application
-            can be pushed to other remotes as an after-step of the build. You
-            only need to provide the destination branch name and remote
-            name.</para>
+            <para>The current HEAD used in the Jenkins build of the
+            application can be pushed to other remotes as an after-step of the
+            build. You only need to provide the destination branch name and
+            remote name.</para>
 
             <figure>
               <title>Git Publisher</title>
@@ -1086,7 +1089,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       <title>Build Triggers</title>
 
       <para>Once you have configured your version control system, you need to
-      tell Hudson when to kick off a build. You set this up in the
+      tell Jenkins when to kick off a build. You set this up in the
       <command>Build Triggers</command> section.</para>
 
       <para>In a Freestyle build, there are three basic ways a build job can
@@ -1108,7 +1111,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       </orderedlist>
 
       <para><figure id="fig-hudson-new-job-triggers">
-          <title>There are many ways that you can configure Hudson to start a
+          <title>There are many ways that you can configure Jenkins to start a
           build job</title>
 
           <mediaobject>
@@ -1182,7 +1185,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         data per day, so running Sonar builds more frequently than this is not
         useful.</para>
 
-        <para>For all scheduling tasks, Hudson uses a cron-style syntax,
+        <para>For all scheduling tasks, Jenkins uses a cron-style syntax,
         consisting of five fields separated by white space in the following
         format:<blockquote>
             <para>MINUTE HOUR DOM MONTH DOW</para>
@@ -1280,24 +1283,24 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
 
         <para>Polling involves asking the version control server at regular
         intervals if any changes have been committed. If any changes have been
-        made to the source code in the project, Hudson kicks off a build.
+        made to the source code in the project, Jenkins kicks off a build.
         Polling is usually a relatively cheap operation, so you can poll
         frequently to ensure that a build kicks off rapidly after changes have
         been committed. The more frequent the polling is, the faster the build
         jobs will start, and the more accurate the feedback about what change
         broke the build will be.</para>
 
-        <para>In Hudson, SCM polling is easy to configure, and uses the same
+        <para>In Jenkins, SCM polling is easy to configure, and uses the same
         cron syntax we discussed previously.</para>
 
         <para>The natural temptation for SCM polling is to poll as often as
         possible (for example, using "* * * * *", or once every minute). Since
-        Hudson will simply queries the version control system, and only kicks
+        Jenkins will simply queries the version control system, and only kicks
         off a build if the source code has been modified, this approach is
         often reasonable for small projects. It shows its limits if there are
         a very large number of build jobs, as this may saturate the SCM server
         and the network with queries, many of them unnecessary. In this case,
-        a more precise approach is better, where the Hudson build job is
+        a more precise approach is better, where the Jenkins build job is
         triggered by the SCM when it receives a change. We discuss this option
         in <xref linkend="sect-build-trigger-remote" />.</para>
 
@@ -1322,18 +1325,18 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         with large numbers of build jobs, it is wasteful of network resources,
         and there is always a small delay between the code change being
         committed and the build job starting. A more precise strategy is to
-        get the SCM system to trigger the Hudson build whenever a change is
+        get the SCM system to trigger the Jenkins build whenever a change is
         committed.</para>
 
-        <para>It is easy to start a Hudson build job remotely. You simply
+        <para>It is easy to start a Jenkins build job remotely. You simply
         invoke a URL of the following form:<blockquote>
-            <para>http://SERVER/hudson/job/PROJECTNAME/build</para>
+            <para>http://SERVER/jenkins/job/PROJECTNAME/build</para>
           </blockquote></para>
 
-        <para>For example, if my Hudson server was running on
-        http://myserver:8080/hudson, I could start the 'gameoflife' build job
+        <para>For example, if my Jenkins server was running on
+        http://myserver:8080/jenkins, I could start the 'gameoflife' build job
         by invoking the following URL using a tool like
-        <command>wget</command> or <command>curl</command>:<screen>$ wget http://myserver:8080/hudson/job/gameoflife/build</screen></para>
+        <command>wget</command> or <command>curl</command>:<screen>$ wget http://myserver:8080/jenkins/job/gameoflife/build</screen></para>
 
         <para>The trick, then, is to get your version control server to do
         this whenever a change is committed. The details of how to do this are
@@ -1344,7 +1347,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         <command>wget</command> operation on the URL of the corresponding
         build job.</para>
 
-        <programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+        <programlisting>HUDSON_SERVER=http://myserver:8080/jenkins
 REPOS="$1"
 PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
             id="svn-hook-1" />
@@ -1358,8 +1361,8 @@ PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
           </calloutlist>However, this approach will only trigger one
         particular build, and relies on a convention that the default build
         job is based on the repository name in Subversion. A more flexible
-        approach with Subversion is to use the Hudson Subversion API directly,
-        as shown here:<programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+        approach with Subversion is to use the Jenkins Subversion API
+        directly, as shown here:<programlisting>HUDSON_SERVER=http://myserver:8080/hudson
 REPOS="$1"
 REV="$2"
 UUID=`svnlook uuid $REPOS`
@@ -1370,15 +1373,15 @@ UUID=`svnlook uuid $REPOS`
   --timeout=2 \
   $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
 
-        <para>This would automatically start any Hudson build jobs monitoring
+        <para>This would automatically start any Jenkins build jobs monitoring
         this Subversion repository.</para>
 
-        <para>If you have activated Hudson security, things become a little
+        <para>If you have activated Jenkins security, things become a little
         more complicated. In the simplest case (where any user can do
         anything), you need to activate the 'Trigger builds remotely' option
         (see <xref linkend="fig-hudson-builds-tokens" />), and provide a
         special string that can be used in the URL.<blockquote>
-            <para>http://SERVER/hudson/job/PROJECTNAME/build?token=DOIT</para>
+            <para>http://SERVER/jenkins/job/PROJECTNAME/build?token=DOIT</para>
           </blockquote></para>
 
         <para><figure id="fig-hudson-builds-tokens">
@@ -1398,9 +1401,9 @@ UUID=`svnlook uuid $REPOS`
         this case, you will need to provide a user name and password, as shown
         in the following example:</para>
 
-        <para><screen>$ wget http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen>or</para>
+        <para><screen>$ wget http://scott:tiger@myserver:8080/jenkins/job/gameoflife/build</screen>or</para>
 
-        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/hudson/job/gameoflife/build</screen></para>
+        <para><screen>$ curl -u scott:tiger http://scott:tiger@myserver:8080/jenkins/job/gameoflife/build</screen></para>
       </sect3>
 
       <sect3>
@@ -1418,22 +1421,23 @@ UUID=`svnlook uuid $REPOS`
     <sect2>
       <title>Build steps</title>
 
-      <para>Now Hudson should know where and how often to obtain the project
-      source code. The next thing you need to explain to Hudson is what it
+      <para>Now Jenkins should know where and how often to obtain the project
+      source code. The next thing you need to explain to Jenkins is what it
       what to do with the source code. In a freestyle build, you do this by
       defining build steps. Build steps are the basic building blocks for the
-      Hudson freestyle build process. They are what let you tell Hudson
+      Jenkins freestyle build process. They are what let you tell Jenkins
       exactly <emphasis>how</emphasis> you want your project built.</para>
 
       <para>A build job may have one step, or more. It may even occasionally
       have none. In a freestyle build, you can add as many build steps as you
       want to the <command>Build</command> section of your project
       configuration (see <xref linkend="fig-hudson-build-steps" />). In a
-      basic Hudson installation, you will be able to add steps to invoke Maven
-      and Ant, as well as running OS-specific shell or Windows batch commands.
-      And by installing additional plugins, you can also integrate other build
-      tools, such as Groovy, Gradle, Grails, Jython, MSBuild, Phing, Python,
-      Rake, and Ruby, just to name some of the more well-known tools.</para>
+      basic Jenkins installation, you will be able to add steps to invoke
+      Maven and Ant, as well as running OS-specific shell or Windows batch
+      commands. And by installing additional plugins, you can also integrate
+      other build tools, such as Groovy, Gradle, Grails, Jython, MSBuild,
+      Phing, Python, Rake, and Ruby, just to name some of the more well-known
+      tools.</para>
 
       <para><figure id="fig-hudson-build-steps">
           <title>Adding a build step to a freestyle build job</title>
@@ -1451,11 +1455,11 @@ UUID=`svnlook uuid $REPOS`
       <sect3>
         <title>Maven build steps</title>
 
-        <para>Hudson has excellent Maven support, and Maven build steps are
+        <para>Jenkins has excellent Maven support, and Maven build steps are
         easy to configure and very flexible. Just pick 'Invoke top-level Maven
         targets' from the build step lists, pick a version of Maven to run (if
         you have multiple versions installed), and enter the Maven goals you
-        want to run. Hudson freestyle build jobs work fine with both Maven 2
+        want to run. Jenkins freestyle build jobs work fine with both Maven 2
         and Maven 3.</para>
 
         <para>Just like on the command line, you can specify as many
@@ -1469,7 +1473,7 @@ UUID=`svnlook uuid $REPOS`
             <listitem>
               <para>This option tells Maven not to prompt for any input from
               the user, just using the default values if any are required. If
-              Maven does prompt for any input during the Hudson build, the
+              Maven does prompt for any input during the Jenkins build, the
               build will get stuck indefinitely.</para>
             </listitem>
           </varlistentry>
@@ -1494,7 +1498,7 @@ UUID=`svnlook uuid $REPOS`
               console, rather than to text files in the target directory as it
               normally would. This way, any test failure details are directly
               visible in the build job console output. The XML files that
-              Hudson needs for its test reporting will still be
+              Jenkins needs for its test reporting will still be
               generated.</para>
             </listitem>
           </varlistentry>
@@ -1591,7 +1595,7 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
         perform a low-level operation that is most easily done with an
         OS-level command.</para>
 
-        <para>You can do this in Hudson with the <command>Execute
+        <para>You can do this in Jenkins with the <command>Execute
         Shell</command> (for Unix) or <command>Execute Windows Batch</command>
         command (for Windows). As an example, in <xref
         linkend="fig-hudson-build-shell-step" /> we have added a step to
@@ -1609,7 +1613,7 @@ selenium.broswer=firefox</programlisting>These properties are passed to Maven
             </mediaobject>
           </figure>The output from this build step is shown here:</para>
 
-        <para><programlisting>[workspace] $ /bin/sh -xe /var/folders/.../hudson2542160238803334344.sh
+        <para><programlisting>[workspace] $ /bin/sh -xe /var/folders/.../jenkins2542160238803334344.sh
 + ls -al
 total 64
 drwxr-xr-x  14 johnsmart  staff   476 30 Oct 15:21 .
@@ -1639,7 +1643,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
         output. If any of the executed commands return a non-zero value, the
         build will fail.</para>
 
-        <para>When Hudson executes a script, it sets a number of environment
+        <para>When Jenkins executes a script, it sets a number of environment
         variables that you can use within the script. We discuss these
         variable in more detail in <xref
         linkend="sect-hudson-environment-variables" />.</para>
@@ -1654,11 +1658,11 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
       </sect3>
 
       <sect3 id="sect-hudson-environment-variables">
-        <title>Using Hudson environment variables in your builds</title>
+        <title>Using Jenkins environment variables in your builds</title>
 
         <para>One useful trick that can be used in virtually any build step is
-        to obtain information from Hudson about the current build job. In
-        fact, when Hudson starts a build step, it makes the following
+        to obtain information from Jenkins about the current build job. In
+        fact, when Jenkins starts a build step, it makes the following
         environment variables available to the build script:</para>
 
         <variablelist>
@@ -1692,8 +1696,8 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>A convenient way to identify the current build job, in the
-              form of "hudson-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
-              "hudson-game-of-life-2010-10-30_23-59-59").</para>
+              form of "jenkins-${JOB_NAME}-${BUILD_NUMBER}" (e.g.
+              "jenkins-game-of-life-2010-10-30_23-59-59").</para>
             </listitem>
           </varlistentry>
 
@@ -1750,8 +1754,8 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
             <term>HUDSON_URL</term>
 
             <listitem>
-              <para>The full URL of the Hudson server, for example
-              <filename>http://ci.acme.com:8080/hudson/</filename>.</para>
+              <para>The full URL of the Jenkins server, for example
+              <filename>http://ci.acme.com:8080/jenkins/</filename>.</para>
             </listitem>
           </varlistentry>
 
@@ -1760,7 +1764,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>The full URL for this build job, for example
-              <filename>http://ci.acme.com:8080/hudson/game-of-life</filename>.</para>
+              <filename>http://ci.acme.com:8080/jenkins/game-of-life</filename>.</para>
             </listitem>
           </varlistentry>
 
@@ -1769,7 +1773,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 
             <listitem>
               <para>The full URL for this build, for example
-              <filename>http://ci.acme.com:8080/hudson/game-of-life/20</filename>.</para>
+              <filename>http://ci.acme.com:8080/jenkins/game-of-life/20</filename>.</para>
             </listitem>
           </varlistentry>
 
@@ -1801,9 +1805,9 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools
 &lt;/target&gt;</programlisting></para>
 
         <para>In Maven, you can access the variables either in the same way
-        (using the "env." prefix), or directly using the Hudson environment
+        (using the "env." prefix), or directly using the Jenkins environment
         variable. For example, in the following pom.xml file, the project URL
-        will point to the Hudson build job that ran the <command>mvn
+        will point to the Jenkins build job that ran the <command>mvn
         site</command> build:</para>
 
         <para><programlisting>&lt;project...&gt;
@@ -1848,10 +1852,10 @@ Archiver-Version: Plexus Archiver
 Created-By: Apache Maven
 Built-By: johnsmart
 Build-Jdk: 1.6.0_22
-Hudson-Build-Number: 63
-Hudson-Project: game-of-life
-Hudson-Version: 1.382
-Implementation-Version: hudson-game-of-life-63
+Jenkins-Build-Number: 63
+Jenkins-Project: game-of-life
+Jenkins-Version: 1.382
+Implementation-Version: jenkins-game-of-life-63
 Specification-Title: gameoflife-web
 Specification-Version: 0.0.55-SNAPSHOT</programlisting></para>
 
@@ -1867,9 +1871,9 @@ println env['BUILD_NUMBER']</programlisting></para>
         <title>Running Groovy scripts</title>
 
         <para>Groovy is not only a popular JVM dynamic language, it is also a
-        convenient language for low-level scripting. The Hudson
+        convenient language for low-level scripting. The Jenkins
         <command>Groovy Plugin</command>
-        (<uri>http://wiki.hudson-ci.org//display/HUDSON/Groovy+Plugin</uri>)
+        (<uri>http://wiki.jenkins-ci.org//display/HUDSON/Groovy+Plugin</uri>)
         lets you run arbitrary Groovy commands, or invoke Groovy scripts, as
         part of your build process.</para>
 
@@ -1879,7 +1883,7 @@ println env['BUILD_NUMBER']</programlisting></para>
         linkend="fig-hudson-groovy-installation" />).</para>
 
         <para><figure id="fig-hudson-groovy-installation">
-            <title>Adding a Groovy installation to Hudson</title>
+            <title>Adding a Groovy installation to Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -1894,8 +1898,8 @@ println env['BUILD_NUMBER']</programlisting></para>
         script'. The first option is generally what you want - this will
         simply execute a Groovy script in a separate JVM, as if you were
         invoking Groovy from the command line. The second option runs Groovy
-        commands within Hudson's own JVM, with full access to Hudson's
-        internals, and is mainly used to manipulate the Hudson build jobs or
+        commands within Jenkins's own JVM, with full access to Jenkins's
+        internals, and is mainly used to manipulate the Jenkins build jobs or
         build process itself. This is a more advanced topic that we will
         discuss later on in the book.</para>
 
@@ -1952,17 +1956,17 @@ println env['BUILD_NUMBER']</programlisting></para>
         on Groovy and many well-established open source Java frameworks such
         as Spring and Hibernate.</para>
 
-        <para>Hudson provides excellent support for Grails builds. First, you
-        need to install the Hudson Grails Plugin
-        (<uri>http://wiki.hudson-ci.org/display/HUDSON/Grails+Plugin</uri>).
-        Once you have installed this and restarted Hudson, you will need to
-        provide at least one version of Grails for Hudson to use in the
+        <para>Jenkins provides excellent support for Grails builds. First, you
+        need to install the Jenkins Grails Plugin
+        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/Grails+Plugin</uri>).
+        Once you have installed this and restarted Jenkins, you will need to
+        provide at least one version of Grails for Jenkins to use in the
         <command>Grails Builder</command> section of the <command>Configure
         System</command> screen (see <xref
         linkend="fig-hudson-build-job-grails-builder" />).</para>
 
         <para><figure id="fig-hudson-build-job-grails-builder">
-            <title>Adding a Grails installation to Hudson</title>
+            <title>Adding a Grails installation to Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -2024,19 +2028,19 @@ println env['BUILD_NUMBER']</programlisting></para>
         Maven.</para>
 
         <para>There are two different ways to run your Gradle builds with
-        Hudson. You can either use the Gradle plugin for Hudson or the Gradle
-        wrapper functionality.</para>
+        Jenkins. You can either use the Gradle plugin for Jenkins or the
+        Gradle wrapper functionality.</para>
 
         <sect4 id="the-gradle-plugin-for-hudson">
-          <title>The Gradle plugin for Hudson</title>
+          <title>The Gradle plugin for Jenkins</title>
 
           <para>You can install the Gradle plugin in the usual way - just go
-          to the 'Manage Plugins' screen and select the 'Hudson Gradle plugin.
-          Click 'Install' and restart your Hudson instance.</para>
+          to the 'Manage Plugins' screen and select the 'Jenkins Gradle
+          plugin. Click 'Install' and restart your Jenkins instance.</para>
 
-          <para>Once Hudson has restarted, you will need to configure your new
-          Gradle plugin. You should now find a new "Gradle" section in your
-          'Configure System' screen. Here you will need to add the Gradle
+          <para>Once Jenkins has restarted, you will need to configure your
+          new Gradle plugin. You should now find a new "Gradle" section in
+          your 'Configure System' screen. Here you will need to add the Gradle
           installation you want to use. The process is similar to that used
           for the other tool installations. First, click the 'Add Gradle'
           button to add a new Gradle installation, and enter an appropriate
@@ -2126,9 +2130,9 @@ uploadArchives {
 
           <para>If Gradle evaluates the test task as up-to-date even the
           execution of your unit tests is skipped. This can cause problems
-          when running your Gradle build with Hudson. In our sample build job
+          when running your Gradle build with Jenkins. In our sample build job
           above we configured a post build action to publish the JUnit reports
-          of our build. If the test task is skipped by Gradle, the Hudson job
+          of our build. If the test task is skipped by Gradle, the Jenkins job
           will be marked as failed with the following message:</para>
 
           <blockquote>
@@ -2169,27 +2173,27 @@ uploadArchives {
       <sect3>
         <title>Building projects with Visual Studio MSBuild</title>
 
-        <para>Hudson is a Java application, but it also provides excellent
+        <para>Jenkins is a Java application, but it also provides excellent
         support for .NET projects.</para>
 
-        <para>To build .NET projects in Hudson, you need to install the
+        <para>To build .NET projects in Jenkins, you need to install the
         MSBuild plugin
-        (<uri>http://wiki.hudson-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
+        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
 
         <para>You may also want to install the MSTest plugin
-        (<uri>http://wiki.hudson-ci.org//display/HUDSON/MSTest+Plugin</uri>)
+        (<uri>http://wiki.jenkins-ci.org//display/HUDSON/MSTest+Plugin</uri>)
         and the NUnit plugin
-        (<uri>http://wiki.hudson-ci.org//display/HUDSON/NUnit+Plugin</uri>),
+        (<uri>http://wiki.jenkins-ci.org//display/HUDSON/NUnit+Plugin</uri>),
         to display your test results.</para>
 
-        <para>Once you have installed the .NET plugins and restarted Hudson,
+        <para>Once you have installed the .NET plugins and restarted Jenkins,
         you need to configure your .NET build tools. Go to the
         <command>Configure System</command> page and specify the path of the
         MSBuild executable (see <xref
         linkend="fig-hudson-msbuild-config" />).</para>
 
         <para><figure id="fig-hudson-msbuild-config">
-            <title>Configuring .NET build tools in Hudson</title>
+            <title>Configuring .NET build tools in Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -2231,10 +2235,10 @@ uploadArchives {
         <filename>.build</filename> extension), with a very similar format to
         Ant build scripts.</para>
 
-        <para>To build with NAnt in Hudson, you need to install the Hudson
+        <para>To build with NAnt in Jenkins, you need to install the Jenkins
         NAnt plugin
-        (<uri>http://wiki.hudson-ci.org/display/HUDSON/NAnt+Plugin</uri>).
-        Once you have installed the plugin and restarted Hudson, go to the
+        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/NAnt+Plugin</uri>).
+        Once you have installed the plugin and restarted Jenkins, go to the
         <command>Configure System</command> page and specify the NAnt
         installation directory in the <command>Nant Builders</command> section
         (see <xref linkend="fig-hudson-msbuild-config" />).</para>
@@ -2262,7 +2266,7 @@ uploadArchives {
       <sect3>
         <title>Build steps for other languages</title>
 
-        <para>As the last few sections illustrate, Hudson provides excellent
+        <para>As the last few sections illustrate, Jenkins provides excellent
         support for other languages and development environments, including
         Ruby, .NET, PHP, and many others. We will discuss other aspects of
         building non-Java projects later on in the book.</para>
@@ -2288,14 +2292,14 @@ uploadArchives {
         library around, and the JUnit XML format for test results is widely
         used and understood by other tools as well.</para>
 
-        <para>Hudson provides great support for test reporting. In a freestyle
-        build job, you need to tick the '<command>Publish JUnit test result
-        report</command>' option, and provide a path to your JUnit report
-        files (see <xref linkend="fig-hudson-build-job-junit" />). You can use
-        a wildcard expression (such as "**/target/surefire-reports/*.xml" in a
-        Maven project) to include JUnit reports from a number of different
-        directories - Hudson will aggregate the results into a single
-        report.</para>
+        <para>Jenkins provides great support for test reporting. In a
+        freestyle build job, you need to tick the '<command>Publish JUnit test
+        result report</command>' option, and provide a path to your JUnit
+        report files (see <xref linkend="fig-hudson-build-job-junit" />). You
+        can use a wildcard expression (such as
+        "**/target/surefire-reports/*.xml" in a Maven project) to include
+        JUnit reports from a number of different directories - Jenkins will
+        aggregate the results into a single report.</para>
 
         <para><figure id="fig-hudson-build-job-junit">
             <title>Reporting on test results</title>
@@ -2315,14 +2319,14 @@ uploadArchives {
         <title>Archiving build results</title>
 
         <para>With a few exceptions, the principal goal of a build job is
-        generally to build something. In Hudson, we call this something an
+        generally to build something. In Jenkins, we call this something an
         artifact. An artifact might be a binary executable (a JAR or WAR file
         for a Java project, for example), or some other related deliverable,
         such as documentation or source code. A build job can store one or
         many different artifacts, keeping only the latest copy or every
         artifact ever built.</para>
 
-        <para>Configuring Hudson to store your artifacts is easy - just tick
+        <para>Configuring Jenkins to store your artifacts is easy - just tick
         the 'Archive the artifacts' checkbox in the <command>Post-build
         Actions</command>, and specify which artifacts you want to store (see
         <xref
@@ -2345,10 +2349,10 @@ uploadArchives {
         all the JAR files, anywhere in the workspace). One advantage of using
         wild cards is that it makes your build less dependent on your version
         control set up. For example, if you are using Subversion (see <xref
-        linkend="sect-subversion" />), Hudson will check out your project
+        linkend="sect-subversion" />), Jenkins will check out your project
         either directly in your workspace, or into a sub-directory, depending
         on how you set it up. If you use a wild card expression like
-        "**/target/*.war", Hudson will find the file no matter what directory
+        "**/target/*.war", Jenkins will find the file no matter what directory
         the project is located in.</para>
 
         <para>As usual, the '<command>Advanced..</command>' button give access
@@ -2362,9 +2366,9 @@ uploadArchives {
         <para>Archived artifacts can take a lot of disk space, especially if
         builds are frequent. For this reason, you may want to only keep the
         last successful one. To do this, just tick the '<command>Discard all
-        but the last successful/stable artifact</command>' option. Hudson will
-        keep artifacts from the last stable build (if there where any). It
-        will also keep the artifacts of the latest unstable build following
+        but the last successful/stable artifact</command>' option. Jenkins
+        will keep artifacts from the last stable build (if there where any).
+        It will also keep the artifacts of the latest unstable build following
         the stable build (if any), and also from the last failed build that
         happened.</para>
 
@@ -2385,7 +2389,7 @@ uploadArchives {
             </mediaobject>
           </figure>You can also use permanent URLs to access the most recent
         build artifacts. This is a great way to reuse the latest artifacts
-        from your builds, either in other Hudson build jobs or in external
+        from your builds, either in other Jenkins build jobs or in external
         scripts, for example. Three URLs are available: last stable build,
         last successful build and last completed build.</para>
 
@@ -2437,7 +2441,7 @@ uploadArchives {
           </varlistentry>
         </variablelist>
 
-        <para>This is best illustrated by some examples. Suppose your Hudson
+        <para>This is best illustrated by some examples. Suppose your Jenkins
         server is running on <uri>http://myserver:8080</uri>, your build job
         is called <filename>game-of-life</filename>, and you are storing a
         file called <filename>gameoflife.war</filename>, which is in the
@@ -2498,7 +2502,7 @@ uploadArchives {
 
         <para>Note that if you are using an Enterprise Repository Manager such
         as Nexus or Artifactory to store your binary artifacts, you may not
-        need to keep them on the Hudson server. You may prefer simply to
+        need to keep them on the Jenkins server. You may prefer simply to
         automatically deploy your artifacts to your Enterprise Repository
         Manager as part of the build job, and retrieve them from here when
         required.</para>
@@ -2508,15 +2512,15 @@ uploadArchives {
         <title>Notifications</title>
 
         <para>The point of a CI server is to let people know when a build
-        breaks. In Hudson, this comes under the heading of
+        breaks. In Jenkins, this comes under the heading of
         Notification.</para>
 
-        <para>Out of the box, Hudson provides support for email notification.
+        <para>Out of the box, Jenkins provides support for email notification.
         You can activate this by ticking the '<command>E-mail
         Notification</command>' checkbox in the <command>Post-build
         Actions</command> (see <xref linkend="fig-hudson-build-job-email" />).
         Then enter the email addresses of the team members who will need to
-        know when the build breaks. When the build does break, Hudson will
+        know when the build breaks. When the build does break, Jenkins will
         send a friendly email message to the users in this list containing a
         link to the broken build.</para>
 
@@ -2532,18 +2536,18 @@ uploadArchives {
             </mediaobject>
           </figure>You can also opt to send a separate email to the user who's
         commit (presumably) broke the build. For this to work, you need to
-        have activated Security on your Hudson server (see chapter <xref
+        have activated Security on your Jenkins server (see chapter <xref
         linkend="chapter-security" />).</para>
 
-        <para>Normally, Hudson will send an email notification out whenever a
+        <para>Normally, Jenkins will send an email notification out whenever a
         build fails (for example, because of a compilation error). It will
         also send out a notification when the build becomes unstable for the
         first time (for example, if there are unit test failures). Unless you
-        configure it to do so, Hudson will not send emails for every unstable
+        configure it to do so, Jenkins will not send emails for every unstable
         build, but only for the first one.</para>
 
-        <para>Finally, Hudson will send a message when a previously failing or
-        unstable build succeeds, to let everyone know that the problem has
+        <para>Finally, Jenkins will send a message when a previously failing
+        or unstable build succeeds, to let everyone know that the problem has
         been resolved.</para>
       </sect3>
 
@@ -2618,10 +2622,10 @@ uploadArchives {
       section. The first difference you may notice is in the <command>Build
       Triggers</command> section. In this section, an extra option is
       available: '<command>Build whenever a SNAPSHOT dependency is
-      built</command>'. If you select this option, Hudson will examine your
+      built</command>'. If you select this option, Jenkins will examine your
       <filename>pom.xml</filename> file (or files) to see if any SNAPSHOT
       dependencies are being built by other build jobs. If any other build
-      jobs update a SNAPSHOT dependency that your project uses, Hudson will
+      jobs update a SNAPSHOT dependency that your project uses, Jenkins will
       build your project as well.</para>
 
       <para>Typically in Maven, SNAPSHOT dependencies are used to share the
@@ -2632,7 +2636,7 @@ uploadArchives {
 
       <para>For example, imagine that you are working on a new
       <emphasis>game-of-life</emphasis> web application. You are using Maven
-      for this project, so you can use a Maven build job in Hudson. Your team
+      for this project, so you can use a Maven build job in Jenkins. Your team
       is also working on a reusable library called
       <emphasis>cooltools</emphasis>. Since these two projects are being
       developed by the same team, you are using some of the latest
@@ -2649,7 +2653,7 @@ uploadArchives {
         ...
     &lt;/dependencies&gt;</programlisting></para>
 
-      <para>On your Hudson server, you have set up Maven build jobs for both
+      <para>On your Jenkins server, you have set up Maven build jobs for both
       the <emphasis>cooltools</emphasis> and the
       <emphasis>game-of-life</emphasis> applications. Since your
       <emphasis>game-of-life</emphasis> project needs the latest
@@ -2699,18 +2703,18 @@ uploadArchives {
           </mediaobject>
         </figure>The "<command>Incremental Build</command>' option comes in
       very handy for large, multi-module Maven builds. If you tick this
-      option, when a change is made to one of the project modules, Hudson will
-      only rebuild that module and any modules that use the changed module. It
-      performs this magic by using some new Maven features introduced in Maven
-      2.1 (so it won't work if you are using Maven 2.0.x). Hudson detects
-      which modules have been changed, and then uses the
+      option, when a change is made to one of the project modules, Jenkins
+      will only rebuild that module and any modules that use the changed
+      module. It performs this magic by using some new Maven features
+      introduced in Maven 2.1 (so it won't work if you are using Maven 2.0.x).
+      Jenkins detects which modules have been changed, and then uses the
       <command>-pl</command> (<command>--project-list</command>) option to
       build only the updated modules, and the <command>-amd</command>
       (<command>--also-make-dependents</command>) option to build the modules
       that use the updated modules. If nothing has been changed in the source
       code, all of the modules are built.</para>
 
-      <para>By default, Hudson will archive all of the artifacts generated by
+      <para>By default, Jenkins will archive all of the artifacts generated by
       a Maven build job. This can come in handy at times, but it can also be
       very expensive in disk storage. If you want to turn off this option,
       just tick the '<command>Disable automatic artifact archiving</command>'
@@ -2719,8 +2723,8 @@ uploadArchives {
       the configuration page.</para>
 
       <para>The '<command>Build modules in parallel</command>' option tells
-      Hudson to run each individual module in parallel as a separate build. In
-      theory, this could speed up your builds quite a bit. In practice, it
+      Jenkins to run each individual module in parallel as a separate build.
+      In theory, this could speed up your builds quite a bit. In practice, it
       will only really work if your modules are totally independent (that is,
       you aren't using aggregation), which is rarely the case. If you think
       building your modules in parallel could really speed up your
@@ -2728,7 +2732,7 @@ uploadArchives {
       and its new parallel build feature.</para>
 
       <para>The last option is to '<command>Use [a] private Maven
-      repository</command>'. Normally, when Hudson runs Maven, it will behave
+      repository</command>'. Normally, when Jenkins runs Maven, it will behave
       in exactly the same way as Maven on the command line: it will store
       artifacts in, and retrieve artifacts from the local Maven repository
       (found in <filename>~/.m2/repository</filename> if you haven't
@@ -2737,7 +2741,7 @@ uploadArchives {
       Indeed, if several build jobs are working on and with the same snapshot
       artifacts, the builds may end up interfering with each other.</para>
 
-      <para>When this option is checked, Hudson will tell Maven to use
+      <para>When this option is checked, Jenkins will tell Maven to use
       $WORKSPACE/.repository as the local Maven repository. This means each
       job will get its own isolated Maven repository just for itself. It fixes
       the above problems, at the expense of additional disk space
@@ -2761,13 +2765,14 @@ uploadArchives {
 
       <para>The post-build actions in a Maven build job are considerably
       simpler to configure than in a freestyle job. This is simply because,
-      since this is a Maven build, Hudson knows where to look for a lot of the
-      build output. Artifacts, test reports, Javadoc, and so forth, are all
-      generated in standard directories, which means <emphasis>you</emphasis>
-      don't have to tell Hudson where to find things. So Hudson will find, and
-      report on, JUnit test results automatically, for example. Later on in
-      the book, we will see how the Maven projects also simplify the
-      configuration of many code quality metrics tools and reports.</para>
+      since this is a Maven build, Jenkins knows where to look for a lot of
+      the build output. Artifacts, test reports, Javadoc, and so forth, are
+      all generated in standard directories, which means
+      <emphasis>you</emphasis> don't have to tell Jenkins where to find
+      things. So Jenkins will find, and report on, JUnit test results
+      automatically, for example. Later on in the book, we will see how the
+      Maven projects also simplify the configuration of many code quality
+      metrics tools and reports.</para>
 
       <para>Most of the other post-build actions are similar to those we saw
       in the freestyle build job.</para>
@@ -2788,7 +2793,7 @@ uploadArchives {
       additional features aimed at more sophisticated or high-end build
       infrastructures.</para>
 
-      <para>The advantage of getting Hudson to deploy your artifacts (as
+      <para>The advantage of getting Jenkins to deploy your artifacts (as
       opposed to simply running "<command>mvn deploy</command>") is that, if
       you have a multi-module Maven build, the artifacts will only be deployed
       once the entire build has finished successfully. For example, suppose
@@ -2796,7 +2801,7 @@ uploadArchives {
       <command>mvn deploy</command>, and the build fails after three modules,
       the first two modules will have been deployed to your repository, but
       not the last three, which leaves your repository in an instable state.
-      Getting Hudson to do the deploy ensures that the artifacts are only
+      Getting Jenkins to do the deploy ensures that the artifacts are only
       deployed as a group once the build has successfully finished.</para>
 
       <para><figure id="fig-hudson-maven2-deploy">
@@ -2841,10 +2846,10 @@ uploadArchives {
       if required.</para>
 
       <para>Then, enter the corresponding ID value in the 'Repository ID'
-      field in Hudson. Hudson will then be able to look up the right username
-      and password, and deploy your artifacts. Once the build is finished,
-      your artifacts should be available in your Maven Enterprise Repository
-      (see <xref linkend="fig-nexus-artifact-deployed" />).</para>
+      field in Jenkins. Jenkins will then be able to look up the right
+      username and password, and deploy your artifacts. Once the build is
+      finished, your artifacts should be available in your Maven Enterprise
+      Repository (see <xref linkend="fig-nexus-artifact-deployed" />).</para>
 
       <para><figure id="fig-nexus-artifact-deployed">
           <title>After deployment the artifact should be available on your
@@ -2883,8 +2888,8 @@ uploadArchives {
 
       <para>This approach will work fine for any Enterprise Repository
       manager. However, if you are using Artifactory, you may prefer to
-      install the Hudson Artifactory Plugin
-      (<uri>http://wiki.hudson-ci.org/display/HUDSON/Artifactory+Plugin</uri>),
+      install the Jenkins Artifactory Plugin
+      (<uri>http://wiki.jenkins-ci.org/display/HUDSON/Artifactory+Plugin</uri>),
       which provides tighter two-way integration with the Artifactory
       Enterprise Repository Manager. It works by sending additional
       information to the Artifactory server during the deployment, allowing
@@ -2897,7 +2902,7 @@ uploadArchives {
       (see <xref linkend="fig-maven2-artifactory" />).</para>
 
       <para><figure id="fig-maven2-artifactory">
-          <title>Deploying to Artifactory from Hudson</title>
+          <title>Deploying to Artifactory from Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -2912,7 +2917,7 @@ uploadArchives {
       linkend="fig-maven2-artifactory-link" />).</para>
 
       <para><figure id="fig-maven2-artifactory-link">
-          <title>Deploying to Artifactory from Hudson</title>
+          <title>Deploying to Artifactory from Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -2949,20 +2954,20 @@ uploadArchives {
 
       <para>Both of the principal Enterprise Repository Managers, Nexus and
       Artifactory offer professional versions which come with extra
-      integration features with Hudson. Later on in the book, we will discuss
+      integration features with Jenkins. Later on in the book, we will discuss
       how you can use advanced features such as Nexus Pro's staging and
       release management to implement sophisticated build promotion
       strategies. On the deployment side of things, the commercial edition of
       Artifactory (Artifactory Pro Power Pack) extends the two-way integration
       we saw earlier. When you view an artifact in the repository browser, a
-      'Builds' tab displays details about the Hudson build that created the
-      artifact, and a link to the Hudson build page (see <xref
+      'Builds' tab displays details about the Jenkins build that created the
+      artifact, and a link to the Jenkins build page (see <xref
       linkend="fig-artifactory-pro-artifact" />). Artifactory also keeps track
-      of the dependencies that were used in the Hudson build, and will warn
+      of the dependencies that were used in the Jenkins build, and will warn
       you if you try to delete them from the repository.</para>
 
       <para><figure id="fig-artifactory-pro-artifact">
-          <title>Viewing the deployed artifact and the corresponding Hudson
+          <title>Viewing the deployed artifact and the corresponding Jenkins
           build in Artifactory</title>
 
           <mediaobject>
@@ -3007,11 +3012,10 @@ uploadArchives {
       <para>By default, the Maven build job only allows for a single Maven
       goal. There are times when this is a little limiting, and you would like
       to add some extra steps before or after the main build. You can do this
-      with the Hudson M2 Extra Steps Plugin
-      (<uri>http://wiki.hudson-ci.org/display/HUDSON/M2+Extra+Steps+Plugin</uri>).
-      This plugin lets you add normal build steps before and after the main
-      Maven goal, giving you the flexibility of a freestyle build while still
-      having the convenience of the Maven build job configuration.</para>
+      with the Hudson M2 Extra Steps Plugin. This plugin lets you add normal
+      build steps before and after the main Maven goal, giving you the
+      flexibility of a freestyle build while still having the convenience of
+      the Maven build job configuration.</para>
 
       <para>Install this plugin and go to the <command>Build
       Environment</command> section of your build job. Tick the 'Configure

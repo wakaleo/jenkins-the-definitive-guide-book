@@ -2,42 +2,42 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter>
-  <title>Securing Hudson</title>
+  <title>Securing Jenkins</title>
 
   <sect1>
     <title>Introduction</title>
 
     <para><indexterm>
         <primary>security</primary>
-      </indexterm>Hudson supports several security models, and can integrate
+      </indexterm>Jenkins supports several security models, and can integrate
     with several user repositories. In smaller organizations, where developers
-    work in close proximity, security on your Hudson machine may not be a
+    work in close proximity, security on your Jenkins machine may not be a
     large concern - you may simply want to prevent unidentified users
     tampering with your build job configurations. For larger organizations,
     with multiple teams, a stricter approach might be required, where only
     team members and system administrators are allowed to modify their build
-    job configurations. And in situations where the Hudson server may be
+    job configurations. And in situations where the Jenkins server may be
     exposed to a broader audience, such as on an internal corporate website,
     or even on the Internet, certain build jobs may be visible to all users
     whereas others will need to be hidden to unauthorized users.</para>
 
     <para>In this chapter, we will look at how to configure different security
-    configurations in Hudson, for different environments and
+    configurations in Jenkins, for different environments and
     circumstances.</para>
   </sect1>
 
   <sect1>
-    <title>Activating Security in Hudson</title>
+    <title>Activating Security in Jenkins</title>
 
-    <para>Setting up basic security in Hudson is easy enough. Go to the main
+    <para>Setting up basic security in Jenkins is easy enough. Go to the main
     configuration page and check the 'Enable security' checkbox (see <xref
     linkend="fig-hudson-enabling-security" />). This will display a number of
     options, that we will investigate in detail in this chapter. The first
-    section, '<command>Security Realm</command>', determines where Hudson will
-    look for users during authentication, and includes options such as using
-    users stored in an LDAP server, using the underlying Unix user accounts
-    (assuming, of course, that Hudson is running on a Unix machine), or using
-    a simple built-in user database managed by Hudson.</para>
+    section, '<command>Security Realm</command>', determines where Jenkins
+    will look for users during authentication, and includes options such as
+    using users stored in an LDAP server, using the underlying Unix user
+    accounts (assuming, of course, that Jenkins is running on a Unix machine),
+    or using a simple built-in user database managed by Jenkins.</para>
 
     <para>The second section, '<command>Authorization</command>', determines
     what users can do once they are logged in. This ranges from simple options
@@ -45,7 +45,7 @@
     more sophisticated role and project-based authorization policies.</para>
 
     <figure id="fig-hudson-enabling-security">
-      <title>Enabling security in Hudson</title>
+      <title>Enabling security in Jenkins</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -56,13 +56,13 @@
     </figure>
 
     <para>In the remainder of this chapter, we will look at how to configure
-    Hudson security for a number of common scenarios.</para>
+    Jenkins security for a number of common scenarios.</para>
   </sect1>
 
   <sect1 id="hudson-security-simple">
-    <title>Simple Security in Hudson</title>
+    <title>Simple Security in Jenkins</title>
 
-    <para>The most simple usable security model in Hudson involves allowing
+    <para>The most simple usable security model in Jenkins involves allowing
     authenticated users to do anything, whereas non-authenticated users will
     just have a read-only view of the build jobs. This is great for small
     teams - developers can manage the build jobs, whereas other users
@@ -73,9 +73,9 @@
 
     <para>You can set up this sort of configuration is to choose 'Logged-in
     users can do anything' in the Authorization section. There are several
-    ways that Hudson can authenticate users (see <xref
+    ways that Jenkins can authenticate users (see <xref
     linkend="sec-identifying-users" />), but for this example, we will be
-    using the simplest option, which is to use Hudson's own built in database
+    using the simplest option, which is to use Jenkins's own built in database
     (see <xref linkend="hudson-users-internal" />).. This is the configuration
     illustrated in <xref linkend="fig-hudson-enabling-security" />.</para>
 
@@ -83,12 +83,12 @@
     will display a 'Sign up' link at the top of the screen to let users create
     their own user account as required (see <xref
     linkend="fig-hudson-user-signup" />). It is a good idea for developers to
-    use their SCM username here: in this case, Hudson will be able to work out
-    what users contributed to the SCM changes that triggered a particular
+    use their SCM username here: in this case, Jenkins will be able to work
+    out what users contributed to the SCM changes that triggered a particular
     build.</para>
 
     <para><figure id="fig-hudson-user-signup">
-        <title>The Hudson Sign up page</title>
+        <title>The Jenkins Sign up page</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -99,38 +99,39 @@
     situations - it is useful for small teams working in close proximity,
     where the aim is to know who's changes caused (or broke) a particular
     build, rather than to manage access in any more restrictive way. In the
-    following sections, we will discuss the two orthogonal aspects of Hudson
+    following sections, we will discuss the two orthogonal aspects of Jenkins
     security: identifying your users (Security Realms) and determining what
     they are allowed to to (Authorization).</para>
   </sect1>
 
   <sect1 id="sect-security-realms">
-    <title id="sec-identifying-users">Security Realms - identifying Hudson
+    <title id="sec-identifying-users">Security Realms - identifying Jenkins
     users</title>
 
     <sect2 id="hudson-users-internal">
-      <title>Using Hudson's built-in user database</title>
+      <title>Using Jenkins's built-in user database</title>
 
-      <para>The easiest way to manage user accounts in Hudson is to use
-      Hudson's internal user database. This is a good option if you want to
+      <para>The easiest way to manage user accounts in Jenkins is to use
+      Jenkins's internal user database. This is a good option if you want to
       keep things simple, as very little setup or configuration is required.
-      Users who need to log on to the Hudson server can sign up and create an
+      Users who need to log on to the Jenkins server can sign up and create an
       account for themselves, and, depending on the security model chosen, an
       administrator can then decide what these users are allowed to do.</para>
 
-      <para>Hudson automatically adds all SCM users to this database whenever
-      a change is committed to source code monitored by Hudson. These user
+      <para>Jenkins automatically adds all SCM users to this database whenever
+      a change is committed to source code monitored by Jenkins. These user
       names are used mainly to record who is responsible for each build job.
       You can view the list of currently known users by clicking on the
       'People' menu entry (see <xref linkend="fig-hudson-user-list" />). Here,
-      you can visualize the users that Hudson currently knows about, and also
+      you can visualize the users that Jenkins currently knows about, and also
       see the last project they committed changes to. Note that this list
       contains all of the users who have ever committed changes to the
-      projects that Hudson monitors - they may not be (and usually aren't) all
-      active Hudson users who are able to log on to the Hudson server.</para>
+      projects that Jenkins monitors - they may not be (and usually aren't)
+      all active Jenkins users who are able to log on to the Jenkins
+      server.</para>
 
       <para><figure id="fig-hudson-user-list">
-          <title>You can also manage Hudson users from the Hudson
+          <title>You can also manage Jenkins users from the Jenkins
           configuration page</title>
 
           <mediaobject>
@@ -140,7 +141,7 @@
           </mediaobject>
         </figure></para>
 
-      <para>If you click on a user in this list, Hudson takes you to a page
+      <para>If you click on a user in this list, Jenkins takes you to a page
       displaying various details about this user, including the user's full
       name and the build jobs they have contributed to (see <xref
       linkend="fig-hudson-user-builds" />). From here, you can also modify or
@@ -148,7 +149,7 @@
       address.</para>
 
       <para><figure id="fig-hudson-user-builds">
-          <title>You can also manage Hudson users from the Hudson
+          <title>You can also manage Jenkins users from the Jenkins
           configuration page</title>
 
           <mediaobject>
@@ -159,18 +160,19 @@
           </mediaobject>
         </figure></para>
 
-      <para>A user appearing in this list cannot necessarily log on to Hudson.
-      To be able to log on to Hudson, the user account needs to be set up with
-      a password. There are essentially two ways to do this. If you have
-      activated the 'Allow users to sign up' option, users can simply sign up
-      with their SCM user name and provide their email address and a password
-      (see <xref linkend="hudson-security-simple" />). Alternatively, you can
-      activate a user by clicking on the 'Configure' menu option in the user
-      details screen, and provide an email address and password yourself, as
-      discussed earlier (see <xref linkend="fig-hudson-edit-user" />).</para>
+      <para>A user appearing in this list cannot necessarily log on to
+      Jenkins. To be able to log on to Jenkins, the user account needs to be
+      set up with a password. There are essentially two ways to do this. If
+      you have activated the 'Allow users to sign up' option, users can simply
+      sign up with their SCM user name and provide their email address and a
+      password (see <xref linkend="hudson-security-simple" />). Alternatively,
+      you can activate a user by clicking on the 'Configure' menu option in
+      the user details screen, and provide an email address and password
+      yourself, as discussed earlier (see <xref
+      linkend="fig-hudson-edit-user" />).</para>
 
       <para><figure id="fig-hudson-edit-user">
-          <title>You can also manage Hudson users from the Hudson
+          <title>You can also manage Jenkins users from the Jenkins
           configuration page</title>
 
           <mediaobject>
@@ -183,7 +185,7 @@
       <para>It is worth noting that, if your email addresses are synchronized
       with your version control user names (for example, if you work at
       acme.com, and user 'joe' in your version control system has an email
-      address of 'joe@acme.com'), you can get Hudson to derive the email
+      address of 'joe@acme.com'), you can get Jenkins to derive the email
       address from a user name by adding a suffix that you configure in the
       'Email Notification' section (see <xref
       linkend="fig-security-email-config" />). If you have set up this sort of
@@ -200,12 +202,12 @@
             </imageobject>
           </mediaobject>
         </figure>Another way to manage the current active users (those who can
-      actually log on to Hudson) is by clicking on the 'Manage Users' in the
-      main Hudson configuration page (see <xref
+      actually log on to Jenkins) is by clicking on the 'Manage Users' in the
+      main Jenkins configuration page (see <xref
       linkend="fig-hudson-manage-users" />).</para>
 
       <para><figure id="fig-hudson-manage-users">
-          <title>You can also manage Hudson users from the Hudson
+          <title>You can also manage Jenkins users from the Jenkins
           configuration page</title>
 
           <mediaobject>
@@ -215,7 +217,7 @@
             </imageobject>
           </mediaobject>
         </figure>From here, you can view and edit the users who can log in to
-      Hudson (see <xref linkend="fig-hudson-user-database" />). This includes
+      Jenkins (see <xref linkend="fig-hudson-user-database" />). This includes
       both users that have signed up manually (if this option has been
       activated) and SCM users that you have activated by configuring them
       with a password. You can also edit a user's details (for example
@@ -223,10 +225,10 @@
       remove them from the list of active users. Doing this will not remove
       them from the overall user list (their name will still appear in the
       build history, for example), but they will no longer be able to log on
-      to the Hudson server.</para>
+      to the Jenkins server.</para>
 
       <para><figure id="fig-hudson-user-database">
-          <title>The Hudson user database</title>
+          <title>The Jenkins user database</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -234,11 +236,11 @@
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure>The internal Hudson database is sufficient for many teams and
-      organizations. However, for larger organizations, it may become tedious
-      and repetitive to manage large numbers of user accounts by hand,
+        </figure>The internal Jenkins database is sufficient for many teams
+      and organizations. However, for larger organizations, it may become
+      tedious and repetitive to manage large numbers of user accounts by hand,
       especially if this information already exists elsewhere. In the
-      following sections, we will look at how to hook Hudson up to other user
+      following sections, we will look at how to hook Jenkins up to other user
       management systems, such as LDAP repositories and Unix users and
       groups.</para>
     </sect2>
@@ -247,12 +249,12 @@
       <title>Using an LDAP repository</title>
 
       <para>Many organizations use LDAP directories to store user accounts and
-      passwords across applications. Hudson integrates well with LDAP, with no
-      special plugins required. It can authenticate users using the LDAP
+      passwords across applications. Jenkins integrates well with LDAP, with
+      no special plugins required. It can authenticate users using the LDAP
       repository, check group membership, and retrieve the email address of
       authenticated users.</para>
 
-      <para>To integrate Hudson with your LDAP repository, Just select 'LDAP'
+      <para>To integrate Jenkins with your LDAP repository, Just select 'LDAP'
       in the Security Realm section, and fill in the appropriate details about
       your LDAP server (see <xref linkend="fig-hudson-security-ldap" />). The
       most important field is the repository server. If you are using a
@@ -272,11 +274,11 @@
       the scope of user queries. This is not usually required unless you
       notice performance issues. Or, if your server does not support anonymous
       binding, you will need to provide a 'Manager DN' and a 'Manager DN
-      password', so that Hudson can connect to the server to perform its
+      password', so that Jenkins can connect to the server to perform its
       queries.</para>
 
       <para><figure id="fig-hudson-security-ldap">
-          <title>Configuring LDAP in Hudson</title>
+          <title>Configuring LDAP in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -288,21 +290,21 @@
 
       <para>Once you have set up LDAP as your Security Realm, you can
       configure your favorite security model as described previously. When
-      users log on to Hudson, they will be authenticated against the LDAP
+      users log on to Jenkins, they will be authenticated against the LDAP
       repository.</para>
 
       <para>You can also use LDAP groups, though the configuration is not
       immediately obvious. Suppose you have defined a group called
-      'HudsonAdmin' in your LDAP repository, with a DN of
-      '<code>cn=HudsonAdmin, ou-Groups, dc=acme, dc=com</code>'. To refer to
-      this group in Hudson, you need to take the common name (cn) in
-      uppercase, and prefix it with 'ROLE_'. So <code>cn=HudsonAdmin</code>
+      'JenkinsAdmin' in your LDAP repository, with a DN of
+      '<code>cn=JenkinsAdmin, ou-Groups, dc=acme, dc=com</code>'. To refer to
+      this group in Jenkins, you need to take the common name (cn) in
+      uppercase, and prefix it with 'ROLE_'. So <code>cn=JenkinsAdmin</code>
       becomes <code>ROLE_HUDSONADMIN</code>. You can see an example of LDAP
       groups used in this way in <xref
       linkend="fig-hudson-security-ldap-groups" />.</para>
 
       <para><figure id="fig-hudson-security-ldap-groups">
-          <title>Using LDAP Groups in Hudson</title>
+          <title>Using LDAP Groups in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -319,11 +321,11 @@
       <para>Microsoft Active Directory is directory service product widely
       used in Microsoft architectures. Although Active Directory does provide
       an LDAP service, it can be a little tricky to set up, and it is simpler
-      to get Hudson to talk directly to the Active Directory server.
+      to get Jenkins to talk directly to the Active Directory server.
       Fortunately, there's a plugin for that.</para>
 
-      <para>The '<command>Hudson Active Directory Plugin</command>' lets you
-      configure Hudson to authenticate against a Microsoft Active Directory
+      <para>The '<command>Jenkins Active Directory Plugin</command>' lets you
+      configure Jenkins to authenticate against a Microsoft Active Directory
       server. You can both authenticate users, and retrieve their groups for
       Matrix and Project-based authorization. Note that, unlike the
       conventional LDAP integration (see <xref
@@ -340,10 +342,10 @@
       "joe@europe".</para>
 
       <para>The advanced options let you specify a site name (to improve
-      performance by restricting the domain controllers that Hudson queries),
+      performance by restricting the domain controllers that Jenkins queries),
       and a Binding DN and password, which come in handy if you are connecting
       to a multi-domain forest. You need to provide a valid Binding DN and
-      password values, that Hudson can use to connect to your server so that
+      password values, that Jenkins can use to connect to your server so that
       it can establish the full identity of the user being authenticated. This
       way, the user can simply type in "jack" or "jill", and have the system
       automatically figure out that they are "jack@europe.acme.com" or
@@ -353,47 +355,47 @@
       "CN=Administrator,OU=europe,DC=acme,DC=com".</para>
 
       <para>Another nice thing about this plugin is that it works both in a
-      Windows environment and in a Unix environment. So if Hudson is running
+      Windows environment and in a Unix environment. So if Jenkins is running
       on a Unix server, it can still authenticate against a Microsoft Active
       Directory service running on another machine.</para>
 
-      <para>More precisely, if Hudson is running on a Windows machine and you
+      <para>More precisely, if Jenkins is running on a Windows machine and you
       do not specify a domain, that machine must be a member of the domain you
-      wish to authenticate against. Hudson will use ADSI to figure out all the
-      details, so no additional configuration is required.</para>
+      wish to authenticate against. Jenkins will use ADSI to figure out all
+      the details, so no additional configuration is required.</para>
 
       <para>On a non-Windows machine (or you specify one or more domains), you
-      need to tell Hudson the name of Active Directory domain(s) to
-      authenticate with. Hudson then uses DNS SRV records and LDAP service of
+      need to tell Jenkins the name of Active Directory domain(s) to
+      authenticate with. Jenkins then uses DNS SRV records and LDAP service of
       Active Directory to authenticate users.</para>
 
-      <para>Hudson can determine which groups in Active Directory that the
+      <para>Jenkins can determine which groups in Active Directory that the
       user belongs to, so you can use these as part of your authorisation
       strategy. For example, you can use these groups in matrix-based
-      security, or allow "Domain Admins" to administer Hudson.</para>
+      security, or allow "Domain Admins" to administer Jenkins.</para>
     </sect2>
 
     <sect2>
       <title>Using Unix users and groups</title>
 
-      <para>If you are running Hudson on a Unix machine, you can also ask
-      Hudson to use the user and group accounts defined on this machine. In
-      this case, users will log into Hudson using their Unix account logins
+      <para>If you are running Jenkins on a Unix machine, you can also ask
+      Jenkins to use the user and group accounts defined on this machine. In
+      this case, users will log into Jenkins using their Unix account logins
       and passwords. This uses PAM (Pluggable Authentication Modules), and
       also works fine with NIS.</para>
 
       <para>In its most basic form, this is somewhat cumbersome, as it
       requires new user accounts to be set up and configured for each new
-      Hudson user. It is only really useful if these accounts need to be set
+      Jenkins user. It is only really useful if these accounts need to be set
       up for other purposes.</para>
     </sect2>
 
     <sect2>
       <title>Delegating to the Servlet container</title>
 
-      <para>Another way to identify Hudson users is to let your Servlet
+      <para>Another way to identify Jenkins users is to let your Servlet
       container do it for you. This approach is useful if you are running
-      Hudson on a Servlet container such as Tomcat or Glassfish, and you
+      Jenkins on a Servlet container such as Tomcat or Glassfish, and you
       already have an established way to integrate the Servlet container with
       your local enterprise user directory. Tomcat, for example, allows you to
       authenticate users against a relational database (using direct JDBC or a
@@ -401,13 +403,13 @@
       the roles defined in the Servlet container's user directory for use with
       Matrix and Project-based authorization strategies.</para>
 
-      <para>In Hudson, this is easy to configure - just select this option in
+      <para>In Jenkins, this is easy to configure - just select this option in
       the Security Realm section (see <xref
       linkend="fig-hudson-security-container" />). Once you have done this,
-      Hudson will let the server take care of everything.</para>
+      Jenkins will let the server take care of everything.</para>
 
       <para><figure id="fig-hudson-security-container">
-          <title>The Hudson Sign up page\</title>
+          <title>The Jenkins Sign up page\</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -429,21 +431,21 @@
       integrate with external directories such as LDAP directories or custom
       user stores.</para>
 
-      <para>Using the <command>Hudson Crowd Plugin</command>, you can use
-      Atlassian Crowd as the source of your Hudson users and groups. Before
+      <para>Using the <command>Jenkins Crowd Plugin</command>, you can use
+      Atlassian Crowd as the source of your Jenkins users and groups. Before
       you start, you need to set up a new application in Crowd (see <xref
       linkend="fig-hudson-security-cloud-app" />). Just set up a new Generic
       Application called 'hudson' (or something similar), and step through the
       tabs. In the 'Connections' tab, you need to provide the IP address of
-      your Hudson server. Then map the Crowd directories that you will be
-      using to retrieve Hudson user accounts and group information. Finally,
+      your Jenkins server. Then map the Crowd directories that you will be
+      using to retrieve Jenkins user accounts and group information. Finally,
       you will need to tell Crowd which users from these directories can
-      connect to Hudson. One option is to allow all users to authenticate, and
-      let Hudson sort out the details. Alternatively, you can list the Crown
-      user groups who are allowed to connect to Hudson.</para>
+      connect to Jenkins. One option is to allow all users to authenticate,
+      and let Jenkins sort out the details. Alternatively, you can list the
+      Crown user groups who are allowed to connect to Jenkins.</para>
 
       <para><figure id="fig-hudson-security-cloud-app">
-          <title>Using Atlassian Crowd as the Hudson Security Realm</title>
+          <title>Using Atlassian Crowd as the Jenkins Security Realm</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -453,14 +455,14 @@
           </mediaobject>
         </figure></para>
 
-      <para>Once you have set this up, you need to install the Hudson Crowd
-      Plugin, which you do as usual via the Hudson Plugin Manager. Once you
-      have installed the plugin and restarted Hudson, you can define 'Crowd'
-      as your Security Realm in the main Hudson configuration screen (see
+      <para>Once you have set this up, you need to install the Jenkins Crowd
+      Plugin, which you do as usual via the Jenkins Plugin Manager. Once you
+      have installed the plugin and restarted Jenkins, you can define 'Crowd'
+      as your Security Realm in the main Jenkins configuration screen (see
       <xref linkend="fig-hudson-security-crowd" />).</para>
 
       <para><figure id="fig-hudson-security-crowd">
-          <title>Using Atlassian Crowd as the Hudson Security Realm</title>
+          <title>Using Atlassian Crowd as the Jenkins Security Realm</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -471,14 +473,14 @@
         </figure></para>
 
       <para>With this plugin installed and configured, you can use users and
-      groups from Crowd for any of the Hudson Authorization strategies we
+      groups from Crowd for any of the Jenkins Authorization strategies we
       discussed earlier on in the chapter. For example, in <xref
       linkend="fig-hudson-security-crowd-groups-matrix" />, we are using user
       groups defined in Crowd to set up Matrix-based security in the main
       configuration screen.</para>
 
       <para><figure id="fig-hudson-security-crowd-groups-matrix">
-          <title>Using Atlassian Crowd groups in Hudson</title>
+          <title>Using Atlassian Crowd groups in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -493,7 +495,7 @@
       <title>Integrating with other systems</title>
 
       <para>In addition to the authentication strategies discussed here, there
-      are a number of other plugins that allow Hudson to authenticate against
+      are a number of other plugins that allow Jenkins to authenticate against
       other systems. At the time of writing, these include CAS (Central
       Authentication Service, an open source single sign-on tool) and the
       Collabnet Source Forge Enterprise Edition (SFEE) server.</para>
@@ -501,7 +503,7 @@
       <para>If no plugin is available, you can also write your own custom
       authentication script. To do this, you need to install the
       <command>Script Security Realm</command> plugin. Once you have installed
-      the script and restarted Hudson, you can write two scripts in your
+      the script and restarted Jenkins, you can write two scripts in your
       favorite scripting language. One script authenticates users, whereas the
       other determines the groups of a given user (see <xref
       linkend="fig-hudson-security-scripts" />).</para>
@@ -517,7 +519,7 @@
           </mediaobject>
         </figure></para>
 
-      <para>Before invoking the authentication script, Hudson sets two
+      <para>Before invoking the authentication script, Jenkins sets two
       environment variables: 'U', containing the username, and 'P', containing
       the password. This script uses these environment variables to
       authenticate using the specified username and password, returning 0 if
@@ -575,7 +577,7 @@ def findGroupsFor(def username) {
 
       <para>Letting signed-in users do anything is certainly flexible, and may
       be all you need for a small team. For larger or multiple teams, or cases
-      where Hudson is being used outside the development environment, a more
+      where Jenkins is being used outside the development environment, a more
       sophisticated approach is generally required.</para>
 
       <para>Matrix-based security is a more sophisticated approach, where
@@ -585,7 +587,7 @@ def findGroupsFor(def username) {
       <sect3>
         <title>Setting up matrix-based security</title>
 
-        <para>The first step in setting up matrix-based security in Hudson is
+        <para>The first step in setting up matrix-based security in Jenkins is
         to create an administrator. <emphasis>This is an essential step, and
         must be done before all others.</emphasis> Now your administrator can
         be an existing user, or one created specially for the purpose. If you
@@ -596,7 +598,7 @@ def findGroupsFor(def username) {
 
         <para>Once you have your admin user ready, you can activate
         matrix-based security by selecting 'Matrix-based security' in the
-        'Authorization' section of the main configuration page. Hudson will
+        'Authorization' section of the main configuration page. Jenkins will
         display a table containing authorized users, and check boxes
         corresponding to the various permissions that you can assign to these
         users (see <xref linkend="fig-hudson-matrix-anonymous" />).</para>
@@ -642,7 +644,7 @@ def findGroupsFor(def username) {
         <title>Fine tuning user permissions</title>
 
         <para>Once you have set up your administrator account, you can add any
-        other users that need to access your Hudson instance. Simply add the
+        other users that need to access your Jenkins instance. Simply add the
         user names and tick the permissions you want to grant them (see <xref
         linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
         or Unix users and groups as the underlying authentication schema (see
@@ -677,8 +679,8 @@ def findGroupsFor(def username) {
                   <listitem>
                     <para>Lets a user make system-wide configuration changes
                     and other sensitive operation, for example in the main
-                    Hudson configuration pages. This should be reserved for
-                    the Hudson administrator.</para>
+                    Jenkins configuration pages. This should be reserved for
+                    the Jenkins administrator.</para>
                   </listitem>
                 </varlistentry>
 
@@ -687,7 +689,7 @@ def findGroupsFor(def username) {
 
                   <listitem>
                     <para>This permission provides read-only access to
-                    virtually all of the pages in Hudson. If you want
+                    virtually all of the pages in Jenkins. If you want
                     anonymous users to be able to view build jobs freely, but
                     not to be able to modify or start them, grant the Read
                     role to the special 'anonymous' user. If not, simply
@@ -910,12 +912,12 @@ def findGroupsFor(def username) {
         <title>Help! I've locked myself out!</title>
 
         <para>Now it may happen that, during this process, you may end up
-        locking yourself out of Hudson. This can happen if, for example, you
+        locking yourself out of Jenkins. This can happen if, for example, you
         save the matrix configuration without having correctly set up your
         administrator. If this happens, do not panic - there is an easy fix,
-        as long as you have access to Hudson's home directory, at least.
+        as long as you have access to Jenkins's home directory, at least.
         Simply open up the <filename>config.xml</filename> file at the root of
-        the Hudson home directory. This will contain something like
+        the Jenkins home directory. This will contain something like
         this:</para>
 
         <para><programlisting>&lt;hudson&gt;
@@ -925,8 +927,8 @@ def findGroupsFor(def username) {
 	&lt;useSecurity&gt;true&lt;/useSecurity&gt;
 	...</programlisting>The thing to look for is the
         <code>&lt;useSecurity&gt;</code> element. To restore your access to
-        Hudson, change this value to false, and restart your server. You will
-        now be able to access Hudson again, and set up your security
+        Jenkins, change this value to false, and restart your server. You will
+        now be able to access Jenkins again, and set up your security
         configuration correctly.</para>
       </sect3>
     </sect2>
@@ -960,7 +962,7 @@ def findGroupsFor(def username) {
       project-based security, you can also set up special project-specific
       permissions. You do this by selecting 'Enable project-based security' in
       the project configuration screen (see <xref
-      linkend="fig-hudson-security-project-anon" />). Hudson will display a
+      linkend="fig-hudson-security-project-anon" />). Jenkins will display a
       table of project-specific permissions. You can configure these
       permissions for different users and groups just like on the system-wide
       configuration page. These permissions will be added to the system-wide
@@ -1003,7 +1005,7 @@ def findGroupsFor(def username) {
           </mediaobject>
         </figure></para>
 
-      <para>Note that Hudson permissions are cumulative - at the time of
+      <para>Note that Jenkins permissions are cumulative - at the time of
       writing, there is no way to revoke a system-wide permission for a
       particular project. For example, if the anonymous user has read-access
       to build jobs at the system level, you can't revoke read-only access for
@@ -1036,8 +1038,8 @@ def findGroupsFor(def username) {
         </figure></para>
 
       <para>It is worth noting that, whenever large and/or multiple teams are
-      involved, the internal Hudson database reaches its limits quite quickly,
-      and it is worth considering integrating with a more specialized
+      involved, the internal Jenkins database reaches its limits quite
+      quickly, and it is worth considering integrating with a more specialized
       directory service such as an LDAP server, Active Directory or Atlassian
       Crowd, or possibly a more sophisticated permission system such as
       role-based security, discussed in the following chapter.</para>
@@ -1069,7 +1071,7 @@ def findGroupsFor(def username) {
         </figure>Once you have set this up, you can define roles that regroup
       sets of related permissions. You set up and configure your roles, and
       assign these roles to your users, in the Manage Roles screen, which you
-      can access in the Manage Hudson screen (see <xref
+      can access in the Manage Jenkins screen (see <xref
       linkend="fig-hudson-security-manage-roles-menu" />).</para>
 
       <para><figure id="fig-hudson-security-manage-roles-menu">
@@ -1135,7 +1137,7 @@ def findGroupsFor(def username) {
           </mediaobject>
         </figure></para>
 
-      <para>Role-based strategy is relatively new in Hudson, but it is an
+      <para>Role-based strategy is relatively new in Jenkins, but it is an
       excellent way to simplify the task of managing permissions in large,
       multi-team and multi-project organizations.</para>
     </sect2>
@@ -1150,19 +1152,19 @@ def findGroupsFor(def username) {
     sort of audit trail facility is even required in many
     organizations.</para>
 
-    <para>There are two Hudson plugins that can help you do this. The Audit
+    <para>There are two Jenkins plugins that can help you do this. The Audit
     Trail Plugin keeps a record of user changes in a special log file. And the
     JobConfigHistory Plugin lets you keep a copy of previous versions of the
-    various system and job configuration files that Hudson uses.</para>
+    various system and job configuration files that Jenkins uses.</para>
 
     <para>The <command>Audit Trail Plugin</command> keeps track of the main
     user actions in a set of rolling log files. To set this up, go to the
     'Plugin Manager' page and select the 'Audit Trail Plugin' in the list of
-    available plugins. Then, as usual, click on Install and restart Hudson
+    available plugins. Then, as usual, click on Install and restart Jenkins
     once the plugin has been downloaded.</para>
 
     <para>You can set up the audit trail configuration in the Audit Trail
-    section of the main Hudson configuration page (see <xref
+    section of the main Jenkins configuration page (see <xref
     linkend="fig-hudson-security-audit-trail" />). The most important field is
     the Log Location, which is where you indicate the directory in which the
     log files are to be written. The audit trail is designed to produce
@@ -1170,15 +1172,15 @@ def findGroupsFor(def username) {
     directory such as <filename>/var/log</filename>. You can also configure
     the number of log files to be maintained, and the (approximate) maximum
     size of each file. The simplest option is to provide an absolute path
-    (such as <filename>/var/log/hudson.log</filename>), in which case Hudson
+    (such as <filename>/var/log/hudson.log</filename>), in which case Jenkins
     will write to log files with names like
     <filename>/var/log/hudson.log.1</filename>,
     <filename>/var/log/hudson.log.2</filename> and so forth. Of course, you
-    need to ensure that the user running your Hudson instance is allowed to
+    need to ensure that the user running your Jenkins instance is allowed to
     write to this directory.</para>
 
     <para><figure id="fig-hudson-security-audit-trail">
-        <title>Enabling security in Hudson</title>
+        <title>Enabling security in Jenkins</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1210,8 +1212,8 @@ Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstrea
 Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     trail is certainly useful, especially from a system administration
     perspective. However, it doesn't provide any information about the exact
-    changes that were made the the Hudson configuration. Nevertheless, one of
-    the most important reasons to keep track of user actions in Hudson is to
+    changes that were made the the Jenkins configuration. Nevertheless, one of
+    the most important reasons to keep track of user actions in Jenkins is to
     keep tabs on exactly what changes were made to build job configurations.
     When something goes wrong, it can be useful to know what changes were done
     and so be able to undo them. The <command>JobConfigHistory
@@ -1221,7 +1223,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     full history of changes made to both job and system configuration files.
     You install it from the Plugin Manager in the usual way. Once installed,
     you can fine-tune the job history configuration in the <command>Manage
-    Hudson</command> screen (see figure <xref
+    Jenkins</command> screen (see figure <xref
     linkend="fig-hudson-security-confighistory-setup" />).</para>
 
     <para><figure id="fig-hudson-security-confighistory-setup">
@@ -1234,12 +1236,12 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
           </imageobject>
         </mediaobject>
       </figure>Here, you can configure a number of useful non-standard
-    options. In particular, you should specify a directory where Hudson can
+    options. In particular, you should specify a directory where Jenkins can
     store configuration history, in the 'Root history folder' field. This is
-    the directory where Hudson will store a record of both system-related and
+    the directory where Jenkins will store a record of both system-related and
     job-related configuration changes. It can be either an absolute directory
     (such as '/var/hudson/history'), or a relative directory, calculated from
-    the Hudson home directory (see <xref
+    the Jenkins home directory (see <xref
     linkend="sec-hudson-home-directory" />). If you don't do this, job
     configuration history will be stored with the jobs, and will be lost if
     you delete a job.</para>
@@ -1250,7 +1252,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     'Do not save duplicate history' checkbox allows you to avoid recording
     configuration updates if no actual changes have been made. If not, a new
     version of the configuration will be recorded, even if you have only
-    pressed the 'Save' button without making any changes. Hudson can also
+    pressed the 'Save' button without making any changes. Jenkins can also
     cause this to happen internally - for example, system configuration
     settings are all saved whenever the main configuration page is saved, even
     if no changes have been made.</para>
@@ -1259,7 +1261,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     history both for the whole server, including system configuration updates,
     as well as the changes made to the configuration of each project. In both
     cases, you can view these changes by clicking on the 'Job Config History'
-    icon to the right of the screen. Clicking on this icon from the Hudson
+    icon to the right of the screen. Clicking on this icon from the Jenkins
     dashboard will display a view of all of your configuration history,
     including job changes and system-wide changes (see figure <xref
     linkend="fig-hudson-jobconfig-global-history" />).</para>
@@ -1274,12 +1276,12 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
           </imageobject>
         </mediaobject>
       </figure>If you click on a system-wide change (indicated by the
-    "(system)" suffix in the list), Hudson takes you to a screen that lists
+    "(system)" suffix in the list), Jenkins takes you to a screen that lists
     all of the versions of that file, and allows you to view the differences
     between the different versions (see figure <xref
     linkend="fig-hudson-jobconfig-config-history" />). The differences are
     displayed as 'diff' files, which is not particularly readable in itself.
-    However, for small changes, the readable XML format of most of the Hudson
+    However, for small changes, the readable XML format of most of the Jenkins
     configuration files makes this sufficient to understand what changes were
     made.</para>
 
@@ -1306,10 +1308,10 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>This audit
     <title>Conclusion</title>
 
     <para>In this chapter we have looked at a variety of ways to configure
-    security in Hudson. The Hudson security model, with the two orthogonal
+    security in Jenkins. The Jenkins security model, with the two orthogonal
     concepts of Authentication and Authorization, is flexible and extensible.
-    For a Hudson installation of any size, you should try to integrate your
-    Hudson security strategy with the organization as a whole. This can go
+    For a Jenkins installation of any size, you should try to integrate your
+    Jenkins security strategy with the organization as a whole. This can go
     from simply integrating with your local LDAP repository to setting up or
     using a full-blown SSO solution such as Crown or CAS. In either case, it
     will make the system considerably easier to administrate in the long

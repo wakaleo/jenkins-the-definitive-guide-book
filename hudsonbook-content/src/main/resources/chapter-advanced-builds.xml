@@ -958,6 +958,68 @@ Finished: SUCCESS</screen></para>
           <mediaobject>
             <imageobject role="web">
               <imagedata fileref="figs/web/hudson-dependency-graph.png"
+                         width="12.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Joins</title>
+
+      <para>When setting up more complicated build pipelines, you frequently
+      come across situations where a build job cannot proceed until a number
+      of other build jobs have been completed, but that these upstream build
+      jobs do not need to be executed sequentially. For example, in <xref
+      linkend="fig-hudson-dependency-graph" />, imagine that the
+      <command>phoenix-deploy-to-uat</command> build job actually requires
+      three jobs to succeed before it can be executed:
+      <command>phoenix-compatibility-tests</command>,
+      <command>phoenix-load-tests</command> and
+      <command>phoenix-performance-tests</command>. </para>
+
+      <para>We can set this up by using the <command>Joins Plugin</command>,
+      which you will need to install in the usual way via the Update center.
+      Once installed, you configure a join in the build job that initiates the
+      join process (in our example, this would be
+      <command>phoenix-web-tests</command>). In our example, we need to modify
+      the <command>phoenix-web-tests</command> build job so that it triggers
+      the <command>phoenix-compatibility-tests</command>,
+      <command>phoenix-load-tests</command> and
+      <command>phoenix-performance-tests</command> first, and then, if these
+      three succeed, the <command>phoenix-deploy-to-uat</command> build job.
+      </para>
+
+      <para>We do this by simply configuring the <command>Join
+      Trigger</command> field with the name of the
+      <command>phoenix-deploy-to-uat</command> build job (see <xref
+      linkend="fig-hudson-build-join" />). The <command>Build other
+      Projects</command> field is not modified, and still lists the build jobs
+      to be triggered immediately after the current one. The <command>Join
+      Trigger</command> field contains the build jobs to be built once all of
+      the immediate downstream build jobs have finished.</para>
+
+      <para><figure id="fig-hudson-build-join">
+          <title>Configuring a join in the phoenix-web-tests build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/hudson-build-join.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>As a result, you no longer need the original build trigger
+      for the final build job, as it is now redundant.</para>
+
+      <para>This new flow shows up nicely in the dependency graphs as
+      illustrated in <xref linkend="build-dependency-graph-join" />.</para>
+
+      <para><figure id="fig-build-dependency-graph-join">
+          <title>Configuring a join in the phoenix-web-tests build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/build-dependency-graph-join.png"
                          width="4.3in" />
             </imageobject>
           </mediaobject>
@@ -967,13 +1029,11 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Locks and Latches</title>
 
-      <para></para>
-    </sect2>
-
-    <sect2>
-      <title>Joins</title>
-
-      <para></para>
+      <para>In other situations, you might be able to run a series of builds
+      in parallel to some degree, but certain build jobs cannot be run in
+      parallel because they access concurrent resources (the same test
+      database, for example). The <command>Locks and Latches</command> plugin
+      lets you get around this problem to some extent.</para>
     </sect2>
 
     <sect2>
