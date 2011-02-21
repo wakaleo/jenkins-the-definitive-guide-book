@@ -1111,6 +1111,151 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Managing Maven Releases with the M2Release plugin</title>
 
+      <para>If you are working with Maven projects, using the Maven Release
+      Plugin to handle version numbers comes as a highly recommended practice.
+      </para>
+
+      <para>Maven projects use well-defined and well-structured version
+      numbers. A typical version number is made up of three digits (e.g.
+      "1.0.1"). Developers work on SNAPSHOT versions (e.g. "1.0.1-SNAPSHOT"),
+      which, as the name would indicate, are not designed to be definitive.
+      The definitive releases (e.g. "1.0.1") are built once and deployed to
+      the local enterprise repository (or the central Maven repository for
+      open source libraries), where they can be used in turn by other
+      projects. The version numbers used in Maven artifacts are a critical
+      part of Maven's dependency management system, and it is strongly advised
+      to stick to the Maven conventions. </para>
+
+      <para>The Maven Release Plugin helps automates the process of updating
+      Maven version numbers in your projects. In a nutshell, it verifies,
+      builds and tests your application, bumps up the version numbers, updates
+      your version control system with the appropriate tags, and deploys the
+      released versions of your artifacts to your Maven repository. This is a
+      tedious task to do by hand, so the Maven Release Plugin is an excellent
+      way to automate things.</para>
+
+      <para>However the Maven Release Plugin can be fickle, too. Uncommitted
+      or modified local files can cause the process to fail, for example. The
+      process is also time-consuming and CPU intensive, especially for large
+      projects: it builds the application and runs the entire set of unit and
+      integration tests several times, checks out a fresh copy of the source
+      code from the repository, and uploads many artifacts to the Enterprise
+      repository. Indeed, this is not the sort of thing you want running on a
+      developer machine.</para>
+
+      <para>So it makes good sense to run this process on your build server.
+      </para>
+
+      <para>One way to do this is to set up a special manual build job to
+      invoke the Maven Release Plugin. However, the <command>M2Release
+      plugin</command> proposes a simpler approach. Using this plugin, you can
+      add the ability to build a Maven release version in an existing build
+      job. This way you can avoid duplicating build jobs unnecessarily, making
+      build job maintenance easier.</para>
+
+      <para>Once you have installed this plugin, you can define any build job
+      to also propose a manual Maven Release step. You do this by ticking the
+      'Maven release build' checkbox in the Build Environment section (see
+      <xref linkend="fig-build-m2release-plugin" />). Here, you define the
+      goals you want to execute to trigger the build (typically
+      "<command>release:prepare release:perform</command>").</para>
+
+      <para><figure id="fig-build-m2release-plugin">
+          <title>Configuring a Maven release using the M2Release
+          plugin</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/build-m2release-plugin.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once you have set this up, you can trigger a Maven release
+      manually using a new menu option called 'Perform Maven Release' (see
+      <xref linkend="fig-jenkins-m2-release-menu" />). </para>
+
+      <para><figure id="fig-build-m2release-plugin">
+          <title>The 'Perform Maven Release' menu option</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-m2-release-menu.png"
+                         width="2.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This will kick off a special build job using the goals you
+      provided in the plugin configuration (see <xref
+      linkend="fig-jenkins-perform-release" />). Jenkins gives you the option
+      to either use the default version numbers provided by Maven (for
+      example, version 1.0.1-SNAPSHOT will be released as version 1.0.1, and
+      the development version number bumped up to 1.0.2-SNAPSHOT), or to
+      provide your own custom numbers. If you want to release a major version,
+      for example, you might choose to manually specify 1.1.0 as the release
+      version number and 1.1.1-SNAPSHOT as the next development version
+      number. </para>
+
+      <para>If you have a multi-module Maven project, you can choose to
+      provide a single version number configuration for all modules, or
+      provide a different version number update for each module.</para>
+
+      <para><figure id="fig-jenkins-perform-release">
+          <title>The 'Perform Maven Release' menu option</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-perform-release.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Depending on your SCM configuration, you may also need to provide
+      a valid SCM username and password to allow Maven to create tags in your
+      source code repository.</para>
+
+      <para>The professional edition of the Nexus Enterprise Repository
+      provides a feature called Staging Repositories, which is a way of
+      deploying artifacts to a special staging area for further tests before
+      releasing them officially. If you are using this feature, you need to
+      fine-tune your build server configuration for best results.</para>
+
+      <para>Nexus Professional works by creating a new staging area for each
+      unique IP Address, deploy users and HTTP User agent. A given Jenkins
+      build machine will always have the same IP address and user. However,
+      you will typically want to have a separate staging area for each build.
+      The trick, then, is to configure configure Maven to use a unique HTTP
+      User-Agent for the deployment process. You can do this by configuring
+      the <filename>settings.xml</filename> file on your build server to
+      contain something along the following lines (the id must match the id
+      for the release repository in the deployment section of your
+      project):</para>
+
+      <para><programlisting> &lt;server&gt;
+    &lt;id&gt;nexus&lt;/id&gt;
+    &lt;username&gt;my_login&lt;/username&gt;
+    &lt;password&gt;my_password&lt;/password&gt;
+    &lt;configuration&gt;
+      &lt;httpHeaders&gt;
+        &lt;property&gt;
+          &lt;name&gt;User-Agent&lt;/name&gt;
+          &lt;value&gt;Maven m2Release (java:${java.vm.version} ${env.BUILD_TAG }&lt;/value&gt;
+        &lt;/property&gt;
+      &lt;/httpHeaders&gt;
+    &lt;/configuration&gt;
+  &lt;/server&gt;</programlisting></para>
+    </sect2>
+
+    <sect2>
+      <title>Copying artifacts</title>
+
+      <para></para>
+    </sect2>
+
+    <sect2>
+      <title>Build promotions</title>
+
       <para></para>
     </sect2>
   </sect1>
