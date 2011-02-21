@@ -324,7 +324,7 @@ Finished: SUCCESS</screen></para>
     application that needs to be tested against several different databases.
     As we have seen, you could do this by setting up a parameterized build job
     that accepts the target database as a parameter. You may want to kick of a
-    series of builds, all of which will need this parameter. </para>
+    series of builds, all of which will need this parameter.</para>
 
     <para>If you try to do this using the conventional 'Build other projects'
     option in the Post-Build Actions section, it won't work. In fact, you
@@ -439,7 +439,7 @@ Finished: SUCCESS</screen></para>
 
     <para>To create a new multi-configuration build job, simply choose this
     option on the 'New Job' page (see <xref
-    linkend="hudson-build-multi-configuration" />). </para>
+    linkend="hudson-build-multi-configuration" />).</para>
 
     <para><figure id="fig-hudson-build-multi-configuration">
         <title>Creating a multi-configuration build job</title>
@@ -642,7 +642,7 @@ Finished: SUCCESS</screen></para>
       runs automated web tests. If one axis contains the web browsers to be
       tested (Firefox, Internet Explorer, Chrome,...) and another the
       Operating Systems (Linux, Windows, Mac OS), it would make little sense
-      to run Internet Explorer with Linux or Mac OS. </para>
+      to run Internet Explorer with Linux or Mac OS.</para>
 
       <para>The <command>Combination Filter</command> option lets you set up
       rules about which combinations of variables are valid. This field is a
@@ -653,7 +653,7 @@ Finished: SUCCESS</screen></para>
       linkend="fig-hudson-build-multi-config-filters" />). The tests need to
       run Firefox, Internet Explorer and Chrome, on Windows, Mac OS X and
       Linux. However Internet Explorer only runs on Windows, and Chrome does
-      not run on Linux. </para>
+      not run on Linux.</para>
 
       <para><figure id="fig-hudson-build-multi-config-filters">
           <title>Setting up a combination filter</title>
@@ -778,7 +778,7 @@ Finished: SUCCESS</screen></para>
       unnecessary pollution about irrelevant builds whilst you are in this
       view, though you can always get a full picture of all of the build jobs
       on the dashboard page. You can configure this towards the two check
-      boxes at the top of the build configuration page. </para>
+      boxes at the top of the build configuration page.</para>
 
       <para><figure id="fig-build-view-regex">
           <title>Using a regular expression to define the jobs to be
@@ -794,7 +794,7 @@ Finished: SUCCESS</screen></para>
       <para>By default, the view will contain the same columns as appear on
       the main dashboard. This is usually fine, but you do have the option of
       adding, deleting or changing the order of the columns that appear in the
-      view (see <xref linkend="fig-hudson-view-add-column" />). </para>
+      view (see <xref linkend="fig-hudson-view-add-column" />).</para>
 
       <para><figure id="fig-hudson-view-add-column">
           <title>Using a regular expression to define the jobs to be
@@ -890,7 +890,7 @@ Finished: SUCCESS</screen></para>
     setting up larger and more complicated build job setups, you sometimes
     would like builds to be able to run concurrently, or possibly wait for
     certain build jobs to finish before proceeding. In this section, we will
-    look at techniques and plugins that can help you do this. </para>
+    look at techniques and plugins that can help you do this.</para>
 
     <sect2>
       <title>Parallel builds in Jenkins</title>
@@ -898,7 +898,7 @@ Finished: SUCCESS</screen></para>
       <para>Jenkins has built-in support for parallel builds - when a build
       job starts, Jenkins will assign it to the first available build node, so
       you can potentially have as many parallel builds running as you have
-      build nodes available. </para>
+      build nodes available.</para>
 
       <para>If you need to run slight variations of the same build job in
       parallel, multi-configuration build jobs (see <xref
@@ -942,7 +942,7 @@ Finished: SUCCESS</screen></para>
       displays a graph describing the upstream and downstream connections
       between your jobs. This plugin uses graphviz (<ulink
       url="???">http://www.graphviz.org/</ulink>), which you will need to
-      install on your server if you don't already have it. </para>
+      install on your server if you don't already have it.</para>
 
       <para>This plugin added a Dependency Graph icon in the main menu, which
       displays the a graph showing the relationships between the all the build
@@ -976,7 +976,7 @@ Finished: SUCCESS</screen></para>
       three jobs to succeed before it can be executed:
       <command>phoenix-compatibility-tests</command>,
       <command>phoenix-load-tests</command> and
-      <command>phoenix-performance-tests</command>. </para>
+      <command>phoenix-performance-tests</command>.</para>
 
       <para>We can set this up by using the <command>Joins Plugin</command>,
       which you will need to install in the usual way via the Update center.
@@ -987,8 +987,8 @@ Finished: SUCCESS</screen></para>
       the <command>phoenix-compatibility-tests</command>,
       <command>phoenix-load-tests</command> and
       <command>phoenix-performance-tests</command> first, and then, if these
-      three succeed, the <command>phoenix-deploy-to-uat</command> build job.
-      </para>
+      three succeed, the <command>phoenix-deploy-to-uat</command> build
+      job.</para>
 
       <para>We do this by simply configuring the <command>Join
       Trigger</command> field with the name of the
@@ -1020,7 +1020,7 @@ Finished: SUCCESS</screen></para>
           <mediaobject>
             <imageobject role="web">
               <imagedata fileref="figs/web/build-dependency-graph-join.png"
-                         width="4.3in" />
+                         width="9.3in" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -1031,9 +1031,59 @@ Finished: SUCCESS</screen></para>
 
       <para>In other situations, you might be able to run a series of builds
       in parallel to some degree, but certain build jobs cannot be run in
-      parallel because they access concurrent resources (the same test
-      database, for example). The <command>Locks and Latches</command> plugin
-      lets you get around this problem to some extent.</para>
+      parallel because they access concurrent resources. Of course,
+      well-designed build jobs should strive to be as independent as possible,
+      but sometimes this can be difficult, especially with legacy projects.
+      For example, different build jobs may need to access the same test
+      database or files on the hard disk, and doing so simultaneously could
+      potentially compromise the results of the tests. Or a performance build
+      job may need exclusive access to the test server, in order to have
+      consistent results each time.</para>
+
+      <para>The <command>Locks and Latches</command> plugin lets you get
+      around this problem to some extent. This plugin lets you set up "locks"
+      for certain resources, in a similar way to locks in multi-threaded
+      programming. Suppose, for example, in the build jobs depicted in <xref
+      linkend="fig-build-dependency-graph-join" />, that the load tests and
+      the performance tests run against a dedicated server, but only one build
+      job can run against this server at any one time. Imagine furthermore
+      that the performance tests for other projects also run against this
+      server.</para>
+
+      <para>To avoid contention over the performance server, you could use the
+      Locks and Latches plugin to set up a "lock" reserving access to this
+      server to a single build job at a time. First, in the System
+      Configuration page, you need to add a new lock in the Locks section (see
+      <xref linkend="fig-jenkins-build-lock" />). This lock will then be
+      available to all build jobs on the server.</para>
+
+      <para><figure id="fig-jenkins-build-lock">
+          <title>Configuring a join in the phoenix-web-tests build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-lock.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Next, you need to set up each build job that will be using
+      the contended resource. In the <command>Build Environment</command>
+      section, you will find a <command>Locks</command> field. Tick the
+      checkbox and select the lock you just created (see <xref
+      linkend="fig-jenkins-build-locks" />). Once you do this for each of the
+      build jobs that need to access the resource in question, only one of
+      these build jobs will ever be able to run at a given time.</para>
+
+      <para><figure id="fig-jenkins-build-locks">
+          <title>Configuring a join in the phoenix-web-tests build job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-locks.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
 
     <sect2>
@@ -1057,6 +1107,12 @@ Finished: SUCCESS</screen></para>
     <para>- Copying artifacts</para>
 
     <para>- Build Promotion plugin</para>
+
+    <sect2>
+      <title>Managing Maven Releases with the M2Release plugin</title>
+
+      <para></para>
+    </sect2>
   </sect1>
 
   <sect1>
