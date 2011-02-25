@@ -1087,33 +1087,23 @@ Finished: SUCCESS</screen></para>
     </sect2>
 
     <sect2>
-      <title>Fingerprints</title>
-
-      <para></para>
-    </sect2>
-
-    <sect2>
       <title>Aggregating downstream test results</title>
 
-      <para></para>
+      <para>TODO</para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Build pipelines and promotions</title>
 
-    <para>- M2Release plugin</para>
-
-    <para>- Copying artifacts</para>
-
-    <para>- Build Promotion plugin</para>
+    <para>TODO - introduction</para>
 
     <sect2>
       <title>Managing Maven Releases with the M2Release plugin</title>
 
       <para>If you are working with Maven projects, using the Maven Release
-      Plugin to handle version numbers comes as a highly recommended practice.
-      </para>
+      Plugin to handle version numbers comes as a highly recommended
+      practice.</para>
 
       <para>Maven projects use well-defined and well-structured version
       numbers. A typical version number is made up of three digits (e.g.
@@ -1124,7 +1114,7 @@ Finished: SUCCESS</screen></para>
       open source libraries), where they can be used in turn by other
       projects. The version numbers used in Maven artifacts are a critical
       part of Maven's dependency management system, and it is strongly advised
-      to stick to the Maven conventions. </para>
+      to stick to the Maven conventions.</para>
 
       <para>The Maven Release Plugin helps automates the process of updating
       Maven version numbers in your projects. In a nutshell, it verifies,
@@ -1143,8 +1133,8 @@ Finished: SUCCESS</screen></para>
       repository. Indeed, this is not the sort of thing you want running on a
       developer machine.</para>
 
-      <para>So it makes good sense to run this process on your build server.
-      </para>
+      <para>So it makes good sense to run this process on your build
+      server.</para>
 
       <para>One way to do this is to set up a special manual build job to
       invoke the Maven Release Plugin. However, the <command>M2Release
@@ -1174,7 +1164,7 @@ Finished: SUCCESS</screen></para>
 
       <para>Once you have set this up, you can trigger a Maven release
       manually using a new menu option called 'Perform Maven Release' (see
-      <xref linkend="fig-jenkins-m2-release-menu" />). </para>
+      <xref linkend="fig-jenkins-m2-release-menu" />).</para>
 
       <para><figure id="fig-build-m2release-plugin">
           <title>The 'Perform Maven Release' menu option</title>
@@ -1194,7 +1184,7 @@ Finished: SUCCESS</screen></para>
       provide your own custom numbers. If you want to release a major version,
       for example, you might choose to manually specify 1.1.0 as the release
       version number and 1.1.1-SNAPSHOT as the next development version
-      number. </para>
+      number.</para>
 
       <para>If you have a multi-module Maven project, you can choose to
       provide a single version number configuration for all modules, or
@@ -1250,11 +1240,120 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Copying artifacts</title>
 
+      <para>During a build process involving several build jobs, such as the
+      one illustrated in <xref linkend="fig-build-dependency-graph-join" />,
+      it can sometimes be useful to reuse artifacts produced by one build job
+      in a subsequent build job. For example, you may want to run a series of
+      web tests in parallel on separate machines, using local application
+      servers for improved performance. In this case, it makes sense to
+      retrieve the exact binary artifact that was produced in the previous
+      build, rather than rebuilding it each time or, if you are using Maven,
+      relying on a SNAPSHOT build deployed to your enterprise repository. In
+      fact, this can sometimes lead to inconsistent build results: if you use
+      a SNAPSHOT from the enterprise repository, you will be using the latest
+      SNAPSHOT build, which may not necessarily be the one built in the
+      upstream build job.</para>
+
+      <para>The <command>Copy Artifact Plugin</command> lets you copy
+      artifacts from an upstream build and reuse them in your current build.
+      Once you have installed this plugin and restarted Jenkins, you will be
+      able to add a new type of build step called 'Copy artifacts from another
+      project' to your freestyle build jobs (see <xref
+      linkend="fig-build-copy-artifacts" />).</para>
+
+      <para><figure id="fig-build-copy-artifacts">
+          <title>Adding a 'Copy artifacts from another project' build
+          step</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/fig-build-copy-artifacts.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This new build step lets you copy artifacts from another
+      project into the workspace of the current project. You can specify any
+      other project, though most typically it will be one of the upstream
+      build jobs. And of course you can specify, with a great deal of
+      flexibility and precision, the exact artifacts that you want to
+      copy.</para>
+
+      <para>You need to specify where to find the files you want in the other
+      build's workspace, and where Jenkins should put them in your current
+      project's workspace. This can be a flexible regular expression (such as
+      '<filename>**/*.war</filename>', for any WAR file produced by the build
+      job), or it can be much more precise. Note that by default, Jenkins will
+      copy the directory structure along with the file you retrieve, so if the
+      WAR file you are after is nested inside the <filename>target</filename>
+      directory of the <filename>gameoflife-web</filename> module, Jenkins
+      will place it inside the <filename>gameoflife-web/target</filename>
+      directory in your current workspace. If this is not to your tastes, you
+      can tick the 'Flatten directories' option to tell Jenkins to put all of
+      the artifacts at the root of the directory you specify (or, by default,
+      in your project workpace). </para>
+
+      <para>In many cases, you will simply want to retrieve artifacts from the
+      most recent successful build. However, sometimes you may want more
+      precision. The 'Which builds' field lets you specify where to look for
+      artifacts in a number of other ways, including the latest saved build
+      (builds which have been marked to "keep forever"), the latest successful
+      build, or even a specific build number.</para>
+
+      <para>If you have installed the Build Promotion plugin (see <xref
+      linkend="sect-build-promotion" />), you can also select the latest
+      promoted artifact in a particular promotion process. To do this, choose
+      'Specify by permalink', then choose the appropriate build promotion
+      process. This is an excellent way of ensuring a consistent and reliable
+      build pipeline. For example, you can configure a build promotion process
+      to trigger a build that copies a generated WAR file from the latest
+      promoted build and deploys it to a particular server. This ensures that
+      you deploy precisely the right binary file, even if other builds have
+      occurred since.</para>
+
+      <para>If you are copying artifacts from a multi-module Maven build job,
+      Jenkins will, by default, copy all of the artifacts from that build.
+      However oftentimes you are only interested in one specific artifact
+      (such as the WAR artifact in a web application, for example.</para>
+
+      <para>You may want to run functional or performance tests on your web
+      application. It can be a useful strategy to place these tests in a
+      separate project, and not as part of your main build process. This makes
+      it easier to run these tests against different servers or run the tests
+      in parallel, all the while using the same binary artifact to deploy and
+      test.</para>
+
+      <para>- Copy WAR file</para>
+
+      <para>- Deploy with Cargo</para>
+
+      <para>- Run test project</para>
+
+      <para>You can also copy artifacts from multi-configuration build jobs
+      (see <xref linkend="sect-multi-configuration-build-jobs" />). Artifacts
+      from each executed configuration will be copied into the current
+      workspace, each in its own directory. Jenkins will build a directory
+      structure using the axes that were used in the multi-configuration
+      build. TODO: Examples</para>
+
+      <para>You can also copy artifacts from parameterized builds. Even
+      better, you can filter the builds to retrieve only artifacts matching
+      certain parameter values. TODO: Example</para>
+
       <para></para>
     </sect2>
 
-    <sect2>
+    <sect2 id="sect-build-promotion">
       <title>Build promotions</title>
+
+      <para>Build</para>
+
+      <para></para>
+
+      <para>- Manual promotions</para>
+    </sect2>
+
+    <sect2>
+      <title>Build pipelines</title>
 
       <para></para>
     </sect2>
