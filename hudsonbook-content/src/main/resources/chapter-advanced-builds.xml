@@ -10,7 +10,14 @@
     <para><indexterm>
         <primary>Advanced builds</primary>
       </indexterm>In this chapter, we will look at some more advanced build
-    job setups.</para>
+    job setups. We will discuss parameterized builds, which allows Jenkins to
+    prompt the user for additional parameters that will be passed in to the
+    build job, and multi-configuration build jobs, which let you run a single
+    build job though a large number of variations. We will look at how to run
+    build jobs in parallel, and wait for the outcome of one or more build jobs
+    before continuing. And we will see how to implement build promotion
+    strategies and build pipelines so that Jenkins can be used not only as a
+    build server, but also as a deployment server.</para>
   </sect1>
 
   <sect1>
@@ -1401,7 +1408,7 @@ Finished: SUCCESS</screen></para>
       trigger actions on these builds. For example, you may build a web
       application in on build job, run a series of automated web tests in a
       subsequent build, and then deploy the WAR file generated to the UAT
-      server for further manual testing. </para>
+      server for further manual testing.</para>
 
       <para>Let's see how this works in practice. In the project illustrated
       above, a default build job (<command>phoenix-default</command>) runs
@@ -1452,7 +1459,7 @@ Finished: SUCCESS</screen></para>
         </figure></para>
 
       <para>Let's look at configuring the automated 'promote-to-test' build
-      process. </para>
+      process.</para>
 
       <para>The first thing you need to define is how this build promotion
       process will be triggered. Build promotion can be either automatic,
@@ -1482,7 +1489,7 @@ Finished: SUCCESS</screen></para>
       linkend="sect-copying-artifacts" />) to retrieve precisely the right
       file. In this case, you will be copying artifacts that you have
       configured Jenkins to conserve, rather than copying the files directly
-      from the workspace. </para>
+      from the workspace.</para>
 
       <para><indexterm>
           <primary>Fingerprints</primary>
@@ -1537,7 +1544,7 @@ Finished: SUCCESS</screen></para>
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure> </para>
+        </figure></para>
 
       <para>This is not quite all we need to do for the integration tests,
       however. The <command>phoenix-integration</command> build job is
@@ -1709,13 +1716,126 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Build pipelines</title>
 
-      <para></para>
+      <para>The final plugin we will be looking at in this section is the
+      Build Pipeline plugin. The Build Pipelines plugin takes the idea of
+      build promotion further, and helps you design and monitor deployment
+      pipelines. A deployment pipeline is a way of orchestrating your build
+      through a series of quality gates, with automated or manual approval
+      processes at each stage, culminating with deployment into
+      production.</para>
+
+      <para>The Build Pipeline plugin provides an alternative way to define
+      downstream build jobs. A build pipeline, unlike conventional downstream
+      dependencies, is considered to be a linear process, a series of build
+      jobs executed in sequence.</para>
+
+      <para>To use this plugin, start by configuring the downstream build jobs
+      for each build job in the pipeline, using the 'Build other projects'
+      field just as you would normally do. The Build Pipelines plugin uses the
+      standard upstream and downstream build configurations, and for automatic
+      steps this is all you need to do. However the Build Pipeline plugin also
+      supports manual build steps, where a user has to manually approve the
+      next step. For manual steps, you also need to configure In the
+      <command>Post-build Actions</command> of your upstream build job: just
+      tick the 'Build Pipeline Plugin -&gt; Specify Downstream Project',
+      select the next step in your project, and tick the 'Require manual build
+      executor' option(see <xref
+      linkend="fig-jenkins-build-pipeline-downstream" />).</para>
+
+      <para><figure id="fig-jenkins-build-pipeline-downstream">
+          <title>Configuring a manual step in the build pipeline</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-pipeline-downstream.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have set up your build process to your satisfaction,
+      you can configure the build pipeline view. You can create this view just
+      like any other view (see <xref
+      linkend="fig-jenkins-build-pipeline-view" />).</para>
+
+      <para><figure id="fig-jenkins-build-pipeline-view">
+          <title>Creating a Build Pipeline view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-pipeline-view.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>There is a trick when it comes to configuring the view,
+      however. At the time of writing, there is no menu option or button that
+      lets you configure the view directly. In fact, you need to enter the URL
+      manually. Fortunately, this is not difficult: just add
+      "<filename>/configure</filename>" to the end of the URL shown when you
+      are displaying this view. For example, if you have named your view
+      "phoenix-build-pipeline", as shown here, the URL to configure this view
+      would be
+      "<filename>http://my_hudson_server/view/phoenix-build-pipeline</filename>".
+      (see <xref linkend="fig-jenkins-build-pipeline-configure" />).</para>
+
+      <para><figure id="fig-jenkins-build-pipeline-configure">
+          <title>Configuring a Build Pipeline view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-pipeline-configure.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The most important thing to configure in this screen is the
+      initial job. This marks the starting point of your build pipeline. You
+      can define multiple build pipeline views, each with a different starting
+      job. You can also configure the maximum number of build sequences to
+      appear on the screen at once.</para>
+
+      <para>Once you have configured the starting point, you can return to the
+      view to see the current state of your build pipeline. Jenkins displays
+      the successive related build jobs horizontally, using a color to
+      indicate the outcome of each build (<xref
+      linkend="fig-jenkins-build-pipeline" />). There is a column for each
+      build job in the pipeline. Whenever the initial build job kicks off, a
+      new row appears on this page. As the build progresses through the
+      successive build jobs in the pipeline, Jenkins will add a colored box in
+      the successive columns, indicating the outcome of each stage. You can
+      click on the box to drill down into a particular build result for more
+      details. Finally, if a manual execution is required, a button will be
+      displayed where the user can trigger the job.</para>
+
+      <para><figure id="fig-jenkins-build-pipeline">
+          <title>Configuring a Build Pipeline view</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-build-pipeline.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>This plugin is still relatively new, and does not integrate
+      with all of the other plugins we have seen here. In particular, it is
+      really designed for a linear build pipeline, and does not cope well with
+      branches or parallel build jobs. Nevertheless, it does give an excellent
+      global vision of a build pipeline.</para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Conclusion</title>
 
-    <para>TODO</para>
+    <para>Continuous Integration build jobs are much more than simply the
+    scheduled execution of build scripts. In this chapter we have reviewed a
+    number of tools and techniques enabling you to go beyond your typical
+    build jobs, combining them so that they can work together as part of a
+    larger process. We have seen how parameterized and multi-configuration
+    build jobs add an element of flexibility to ordinary build jobs by
+    allowing you to run the same build job with different sets of parameters.
+    Other tools help coordinate and orchestrate groups of related build jobs.
+    The Joins and Locks and Latches Plugins helps you coordinate build jobs
+    running in parallel. And the Build Promotions and Build Pipelines plugins,
+    with the help of the Copy Artifacts plugin, make it relatively easy to
+    design and configure complex build promotion strategies for your
+    projects.</para>
   </sect1>
 </chapter>
