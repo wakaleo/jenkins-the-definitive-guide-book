@@ -14,8 +14,8 @@
     - CI without automated tests is really just a small improvement on
     automatically scheduled builds. Now don't get me wrong, if you're coming
     from nothing, that's already a great step forward - but you can do much
-    better. In short, if you are using Hudson without any automated tests, you
-    are not getting anywhere near as much value out of your Continuous
+    better. In short, if you are using Jenkins without any automated tests,
+    you are not getting anywhere near as much value out of your Continuous
     Integration infrastructure as you should.</para>
 
     <para>One of the basic principles of Continuous Integration is that a
@@ -35,25 +35,25 @@
     that the code does indeed implement this behaviour. Focusing on testing
     the expected behaviour, rather than the implementation, of your code also
     makes for more comprehensive and more accurate tests, and thus helps
-    Hudson to provide more relevant feedback.</para>
+    Jenkins to provide more relevant feedback.</para>
 
     <para>Of course, more classical unit testing, done once the code has been
     implemented, is also another commonly-used approach, and is certainly
     better than no tests at all.</para>
 
-    <para>Hudson is not limited to unit testing, though. There are many other
+    <para>Jenkins is not limited to unit testing, though. There are many other
     types of automated testing that you should consider, depending on the
     nature of your application, including integration testing, web testing,
     functional testing, performance testing, load testing and so on. All of
     these have their place in an automated build setup.</para>
 
-    <para>Hudson can also be used, in conjunction with techniques like
+    <para>Jenkins can also be used, in conjunction with techniques like
     Behaviour-Driven Development and Acceptance Test Driven Development, as a
     communications tool aimed at both developers and other project
     stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
     Cucumber, and many others, try to present acceptance tests in terms that
     testers, product owners and end users can understand. With the use of such
-    tools, Hudson can report on project progress in business terms, and so
+    tools, Jenkins can report on project progress in business terms, and so
     facilitate communication between developers and non-developers within a
     team.</para>
 
@@ -71,7 +71,7 @@
     effective and relatively cost-efficient way to integrate automated
     regression testing into an existing application.</para>
 
-    <para>In this chapter, we will see how Hudson helps you keep track of
+    <para>In this chapter, we will see how Jenkins helps you keep track of
     automated test results, and how you can use this information to monitor
     and dissect your build process.</para>
   </sect1>
@@ -80,11 +80,11 @@
     <title>Automating your unit and integration tests</title>
 
     <para>The first thing we will look at is how to integrate your unit tests
-    into Hudson. Whether you are practicing Test-Driven Development, or
+    into Jenkins. Whether you are practicing Test-Driven Development, or
     writing unit tests using a more conventional approach, these are probably
-    the first tests that you will want to automate with Hudson.</para>
+    the first tests that you will want to automate with Jenkins.</para>
 
-    <para>Hudson does an excellent job of reporting on your test results.
+    <para>Jenkins does an excellent job of reporting on your test results.
     However, it is up to you to write the appropriate tests and to configure
     your build script to run them automatically. Fortunately integrating unit
     tests into your automated builds is generally relatively easy.</para>
@@ -104,7 +104,7 @@
     Development and automated Acceptance-Test tools such as easyb, Fitnesse,
     Concordion are also xUnit-friendly. In the following sections we make no
     distinction between these different types of test, as, from a
-    configuration point of view, they are treated by Hudson in exactly the
+    configuration point of view, they are treated by Jenkins in exactly the
     same manner. However, you will almost certainly need to make the
     distinction in your build jobs. In order to get the fastest possible
     feedback loop, your tests should be grouped into well-defined categories,
@@ -118,10 +118,10 @@
   </sect1>
 
   <sect1>
-    <title>Configuring test reports in Hudson</title>
+    <title>Configuring test reports in Jenkins</title>
 
     <para>Once your build generates test results, you need to configure your
-    Hudson build job to display them. As mentioned above, Hudson will work
+    Jenkins build job to display them. As mentioned above, Jenkins will work
     fine with any xUnit-compatible test reports, no matter what language they
     are written in.</para>
 
@@ -132,7 +132,7 @@
     is shown in <xref linkend="fig-testing-maven-verify-goal" />.</para>
 
     <para><figure id="fig-testing-maven-verify-goal">
-        <title>You configure your Hudson installation in the 'Manage Hudson'
+        <title>You configure your Jenkins installation in the 'Manage Jenkins'
         screen</title>
 
         <mediaobject>
@@ -146,7 +146,7 @@
 
     <para>For free-style build jobs, you need to do a little more
     configuration work. In addition to ensuring that your build actually runs
-    the tests, you need to tell Hudson to publish the JUnit test report. You
+    the tests, you need to tell Jenkins to publish the JUnit test report. You
     configure this in the <command>Post-build Actions</command> section (see
     <xref linkend="fig-testing-freestyle-junit-config" />). Here, you provide
     a path to the JUnit or TestNG XML reports. Their exact location will
@@ -166,16 +166,16 @@
           </imageobject>
         </mediaobject>
       </figure>For Java projects, whether they are using JUnit or TestNG,
-    Hudson does an excellent job out of the box. If you are using Hudson for
+    Jenkins does an excellent job out of the box. If you are using Jenkins for
     non-Java projects, you might need the xUnit Plugin. This plugin lets
-    Hudson process test reports from non-Java tools in a consistent way. It
+    Jenkins process test reports from non-Java tools in a consistent way. It
     provides support for MSUnit and NUnit (for C# and other .NET languages),
     UnitTest++ and Boost Test (for C++), PHPUnit (for PHP), as well as a few
     other xUnit libraries via additional plugins (see <xref
     linkend="fig-hudson-xunit-plugin" />).</para>
 
     <para><figure id="fig-hudson-xunit-plugin">
-        <title>Hudson displays test result trends on the project home
+        <title>Jenkins displays test result trends on the project home
         page</title>
 
         <mediaobject>
@@ -190,11 +190,11 @@
     build Actions'. Check the 'Publish testing tools result report' checkbox,
     and enter the path to the XML reports generated by your testing library
     (see <xref linkend="fig-hudson-xunit-plugin-config" />). When the build
-    job runs, Hudson will convert these reports to JUnit reports so that they
-    can be displayed in Hudson.</para>
+    job runs, Jenkins will convert these reports to JUnit reports so that they
+    can be displayed in Jenkins.</para>
 
     <para><figure id="fig-hudson-xunit-plugin-config">
-        <title>Hudson displays test result trends on the project home
+        <title>Jenkins displays test result trends on the project home
         page</title>
 
         <mediaobject>
@@ -210,12 +210,12 @@
   <sect1>
     <title>Displaying test results</title>
 
-    <para>Once Hudson knows where to find the test reports, it does a great
-    job of reporting on them. Indeed, one of Hudson's main jobs is to detect
+    <para>Once Jenkins knows where to find the test reports, it does a great
+    job of reporting on them. Indeed, one of Jenkins's main jobs is to detect
     and to report on build failures. And a failing unit test is one of the
     most obvious symptoms.</para>
 
-    <para>Hudson makes the distinction between <emphasis>failed</emphasis>
+    <para>Jenkins makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
     by a red ball) indicates test failures, or a build job that is broken in
     some brutal manner, such as a compilation error. An unstable build, on the
@@ -227,7 +227,7 @@
     <emphasis>failed</emphasis> builds.</para>
 
     <para>In <xref linkend="fig-testing-maven-test-failure-dashboard" /> we
-    can see how Hudson displays a Maven build job containing test failures.
+    can see how Jenkins displays a Maven build job containing test failures.
     This is the build job home page, which should be your first port of call
     when a build breaks. When a build results in failing tests, the 'Latest
     Test Result' link will indicate the current number of test failures in
@@ -238,7 +238,7 @@
     the 'Test Result Trend' graph.</para>
 
     <para><figure id="fig-testing-maven-test-failure-dashboard">
-        <title>Hudson displays test result trends on the project home
+        <title>Jenkins displays test result trends on the project home
         page</title>
 
         <mediaobject>
@@ -248,26 +248,26 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>If you click on the 'Latest Test Result link, Hudson will give
+      </figure>If you click on the 'Latest Test Result link, Jenkins will give
     you a rundown of the current test results (see <xref
-    linkend="fig-testing-test-result-details" />). Hudson understands Maven
-    multi-module project structures, and for a Maven build job, Hudson will
+    linkend="fig-testing-test-result-details" />). Jenkins understands Maven
+    multi-module project structures, and for a Maven build job, Jenkins will
     initially display a summary view of test results per module. For more
     details about the failing tests in a particular module, just click on the
     module you are interest in.</para>
 
-    <para>For freestyle build jobs, Hudson will directly give you a summary of
-    your test results, but organized by high-level packages rather than
+    <para>For freestyle build jobs, Jenkins will directly give you a summary
+    of your test results, but organized by high-level packages rather than
     modules.</para>
 
-    <para>In both cases, Hudson starts off by presenting a summary of test
+    <para>In both cases, Jenkins starts off by presenting a summary of test
     results for each package. From here, you can drill down, seeing test
     results for each test class and then finally the tests within the test
     classes themselves. And if there are any failed tests, these will be
     prominently displayed at the top of the page.</para>
 
     <para><figure id="fig-testing-test-result-details">
-        <title>Hudson displays a summary of the test results</title>
+        <title>Jenkins displays a summary of the test results</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -318,7 +318,7 @@
     is a good idea to regularly check how long your unit tests are taking to
     run, and if necessary investigate why they are taking so long.</para>
 
-    <para>Luckily, Hudson can easily tell you how long your tests have been
+    <para>Luckily, Jenkins can easily tell you how long your tests have been
     taking to run over time. On the build job home page, click on the "trend"
     link in the <command>Build History</command> box on the left of the
     screen. This will give you a graph along the lines of the one in <xref
@@ -349,7 +349,7 @@
     when a general optimization of your unit tests is required.</para>
 
     <para><figure id="fig-testing-test-result-history">
-        <title>Hudson also lets you see how long your tests take to
+        <title>Jenkins also lets you see how long your tests take to
         run</title>
 
         <mediaobject>
@@ -365,7 +365,7 @@
   <sect1>
     <title>Ignoring Tests</title>
 
-    <para>Hudson distinguishes between test failures and skipped tests.
+    <para>Jenkins distinguishes between test failures and skipped tests.
     Skipped tests are ones that have been deactivated, for example by using
     the <command>@Ignore</command> annotation in JUnit 4:</para>
 
@@ -384,7 +384,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     don't want to be distracted by the failing acceptance test, but you don't
     want to forget that the test exists either. Using techniques such as the
     <command>@Ignore</command> annotation are better than simply commenting
-    out the test or renaming it (in JUnit 3), as it lets Hudson keep tabs on
+    out the test or renaming it (in JUnit 3), as it lets Jenkins keep tabs on
     the ignored tests for you.</para>
 
     <para>In TestNG, you can also skip tests, using the 'enabled'
@@ -408,7 +408,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     if the first test (serverStartedOk()) fails, the following test will be
     skipped.</para>
 
-    <para>In all of these cases, Hudson will mark the tests that were not run
+    <para>In all of these cases, Jenkins will mark the tests that were not run
     as yellow, both in the overall test results trend, and in the test details
     (see <xref linkend="fig-testing-test-skipped" />). Skipped tests are not
     as bad as test failures, but it is important not to get into the habit of
@@ -418,7 +418,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     for too long is a bad smell.</para>
 
     <para><figure id="fig-testing-test-skipped">
-        <title>Hudson displays skipped tests as yellow</title>
+        <title>Jenkins displays skipped tests as yellow</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -446,11 +446,11 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
     <para>Code coverage analysis is a CPU and memory-intensive process, and
     will slow down your build job significantly. For this reason, you will
-    typically run code coverage metrics in a separate Hudson build job, to be
+    typically run code coverage metrics in a separate Jenkins build job, to be
     run after your unit and integration tests are successful.</para>
 
     <para>There are many code coverage tools available, and several are
-    supported in Hudson, all through dedicated plugins. Java developers can
+    supported in Jenkins, all through dedicated plugins. Java developers can
     pick between Cobertura and Emma, two popular open source code coverage
     tools, or Clover, a powerful commercial code coverage tool from Atlassian.
     For .NET projects, you can use NCover.</para>
@@ -463,15 +463,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
       <para>Cobertura (<ulink url="http://cobertura.sourceforge.net"></ulink>)
       is an open source code coverage tool that is easy to use and integrates
-      well with both Maven and Hudson.</para>
+      well with both Maven and Jenkins.</para>
 
-      <para>Like almost all of the Hudson code quality metrics
+      <para>Like almost all of the Jenkins code quality metrics
       plugins<footnote>
           <para>With the notable exception of Sonar, which we will look at
           later on in the book.</para>
-        </footnote>, the Cobertura plugin for Hudson will not run any test
+        </footnote>, the Cobertura plugin for Jenkins will not run any test
       coverage metrics for you. It is left up to you to generate the raw code
-      coverage data as part of your automated build process. Hudson, on the
+      coverage data as part of your automated build process. Jenkins, on the
       other hand, does an excellent job of <emphasis>reporting</emphasis> on
       the code coverage metrics, including keeping track of code coverage over
       time, and providing aggregate coverage across multiple application
@@ -602,7 +602,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         module. However if you generate HTML code coverage reports in the
         Maven web site (using the <command>mvn site</command> command), the
         reports will only detail coverage for each individual module, not for
-        the project as a whole. This is not an issue for Hudson - the Hudson
+        the project as a whole. This is not an issue for Jenkins - the Jenkins
         Cobertura plugin is happy to take coverage data from several files and
         combine them into a single aggregate report.</para>
 
@@ -628,8 +628,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         integrate Cobertura into your Ant builds. You will need to download
         the latest Cobertura distribution, and unzip it somewhere on your hard
         disk. To make your build more portable, and therefore easier to deploy
-        onto Hudson, it is a good idea to place the Cobertura distribution you
-        are using within your project directory, and to save it in your
+        onto Jenkins, it is a good idea to place the Cobertura distribution
+        you are using within your project directory, and to save it in your
         version control system. This way it is easier to ensure that the build
         will use the same version of Cobertura no matter where it is
         run.</para>
@@ -740,8 +740,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </calloutlist></para>
 
         <para>This will produce the raw test coverage data we need to produce
-        the XML test coverage reports that Hudson can use. To actually produce
-        these reports, we need to invoke another task, as shown here:</para>
+        the XML test coverage reports that Jenkins can use. To actually
+        produce these reports, we need to invoke another task, as shown
+        here:</para>
 
         <para><programlisting>&lt;target name="coverage-report" depends="test-coverage"&gt;
     &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="xml" /&gt;
@@ -757,25 +758,25 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;delete file="cobertura.log" /&gt;
     &lt;delete file="cobertura.ser" /&gt;
 &lt;/target&gt;</programlisting>Once this is done, you are ready to integrate
-        your coverage reports into Hudson.</para>
+        your coverage reports into Jenkins.</para>
       </sect3>
 
       <sect3>
         <title>Installing the Cobertura code coverage plugin</title>
 
         <para>Once code coverage data is being generated as part of your build
-        process, you can configure Hudson to report on it. This involves
-        installing the Hudson Cobertura plugin. We went through this process
+        process, you can configure Jenkins to report on it. This involves
+        installing the Jenkins Cobertura plugin. We went through this process
         in <xref linkend="sect-first-steps-metrics" />, but we'll run through
-        it again to refresh your memory. Go to the 'Manage Hudson' screen, and
-        click on 'Manage Plugins'. This will take you to the Plugin Manager
-        screen. If Cobertura has not been installed, you will find the
+        it again to refresh your memory. Go to the 'Manage Jenkins' screen,
+        and click on 'Manage Plugins'. This will take you to the Plugin
+        Manager screen. If Cobertura has not been installed, you will find the
         Cobertura Plugin in the 'Available' tab, in the 'Build Reports'
         section (see <xref linkend="fig-hudson-cobertura-plugin" />). To
         install it, just tick the checkbox and press enter (or scroll down to
-        the bottom of the screen and click on the 'Install' button). Hudson
+        the bottom of the screen and click on the 'Install' button). Jenkins
         will download and install the plugin for you. Once the downloading is
-        done, you will need to restart your Hudson server.</para>
+        done, you will need to restart your Jenkins server.</para>
 
         <para><figure id="fig-hudson-cobertura-plugin">
             <title>Installing the Cobertura plugin</title>
@@ -804,7 +805,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         executors free for build jobs that can benefit from snappy
         feedback.</para>
 
-        <para>As we mentioned earlier, Hudson does not do any code coverage
+        <para>As we mentioned earlier, Jenkins does not do any code coverage
         analysis itself - you need to configure your build to produce the
         Cobertura <filename>coverage.xml</filename> file (or files) before you
         can generate any nice graphs or reports, typically using one of the
@@ -830,7 +831,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         linkend="fig-hudson-coverage-config" />.</para>
 
         <para><figure id="fig-hudson-coverage-config">
-            <title>Configuring the test coverage metrics in Hudson</title>
+            <title>Configuring the test coverage metrics in Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -873,16 +874,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         methods in the application were exercised by the tests), classes and
         packages.</para>
 
-        <para>Hudson lets you define which of these metrics you want to track.
-        By default, the Cobertura plugin will record Conditional, Line, and
-        Method coverage, which is usually plenty. However it is easy to add
-        other coverage metrics if you think this might be useful for your
+        <para>Jenkins lets you define which of these metrics you want to
+        track. By default, the Cobertura plugin will record Conditional, Line,
+        and Method coverage, which is usually plenty. However it is easy to
+        add other coverage metrics if you think this might be useful for your
         team.</para>
 
-        <para>Hudson code quality metrics are not simply a passive reporting
-        process - Hudson lets you define how these metrics affect the build
+        <para>Jenkins code quality metrics are not simply a passive reporting
+        process - Jenkins lets you define how these metrics affect the build
         outcome. You can define threshold values for the coverage metrics that
-        affect both the build outcome and the weather reports on the Hudson
+        affect both the build outcome and the weather reports on the Jenkins
         dashboard (see <xref
         linkend="fig-hudson-testing-coverage-stabiliy" />). Each coverage
         metric that you track takes three threshold values.</para>
@@ -901,7 +902,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </figure>The first (the one with the sunny icon) is the minimum
         value necessary for the build to have a sunny weather icon. The second
         indicates the value below which the build will be attributed a stormy
-        weather icon. Hudson will extrapolate between these values for the
+        weather icon. Jenkins will extrapolate between these values for the
         other more nuanced weather icons.</para>
 
         <para>The last threshold value is simply the value below which a build
@@ -920,8 +921,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <sect3>
         <title>Interpreting code coverage metrics</title>
 
-        <para>Hudson displays your code coverage reports on the build job home
-        page. The first time it runs, it produces a simple bar chart (see
+        <para>Jenkins displays your code coverage reports on the build job
+        home page. The first time it runs, it produces a simple bar chart (see
         <xref linkend="fig-hudson-initial-coverage-report" />). From the
         second build onwards, a graph is shown, indicating the various types
         of coverage that you are tracking over time (see <xref
@@ -930,7 +931,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         build.</para>
 
         <para><figure id="fig-hudson-code-coverage-graph-over-time">
-            <title>Configuring the test coverage metrics in Hudson</title>
+            <title>Configuring the test coverage metrics in Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -939,16 +940,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure>Hudson also does a great job letting you drill down into
+          </figure>Jenkins also does a great job letting you drill down into
         the coverage metrics, displaying coverage breakdowns for packages,
         classes within a package, and lines of code within a class (see <xref
         linkend="fig-hudson-code-coverage-package" />). No matter what level
-        of detail you are viewing, Hudson will display a graph at the top of
+        of detail you are viewing, Jenkins will display a graph at the top of
         the page showing the code coverage trend over time. Further down, you
         will find the breakdown by package or class.</para>
 
         <para><figure id="fig-hudson-code-coverage-package">
-            <title>Configuring the test coverage metrics in Hudson</title>
+            <title>Configuring the test coverage metrics in Jenkins</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -957,7 +958,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure>Once you get to the class details level, Hudson will also
+          </figure>Once you get to the class details level, Jenkins will also
         display the source code of the class, with the lines color-coded
         according to their level of coverage. Lines that have been completely
         executed during the tests are green, and lines that were never
@@ -978,7 +979,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       configuration and use of Clover is well documented on the Atlassian web
       site, so we won't describe these aspects in detail. However, to give
       some context, here is what a typically Maven 2 configuration of Clover
-      for use with Hudson would look like:<programlisting>      &lt;build&gt;
+      for use with Jenkins would look like:<programlisting>      &lt;build&gt;
         ...
         &lt;plugins&gt;
           ...
@@ -998,9 +999,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <para>This will generate both an HTML and XML coverage report, including
       aggregated data if the Maven project contains multiple modules.</para>
 
-      <para>To integrate Clover into Hudson, you need to install the Hudson
+      <para>To integrate Clover into Jenkins, you need to install the Jenkins
       Clover plugin in the usual manner using the Plugin Manager screen. Once
-      you have restarted Hudson, you will be able to integrate Clover code
+      you have restarted Jenkins, you will be able to integrate Clover code
       coverage into your builds.</para>
 
       <para>Running Clover on your project is a multi-step project: you
@@ -1012,7 +1013,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
       <para><screen>$ <command>clover2:setup test clover2:aggregate clover2:clover</command></screen></para>
 
-      <para>Next, you need to set up the Clover reporting in Hudson. Tick the
+      <para>Next, you need to set up the Clover reporting in Jenkins. Tick the
       '<command>Publish Clover Coverage Report</command>' checkbox to set this
       up. The configuration is similar to that of Cobertura - you need to
       provide the path to the Clover HTML report directory, and to the XML
@@ -1021,7 +1022,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       linkend="fig-hudson-clover-config" />).</para>
 
       <para><figure id="fig-hudson-clover-config">
-          <title>Configuring Clover reporting in Hudson</title>
+          <title>Configuring Clover reporting in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -1032,13 +1033,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </mediaobject>
         </figure></para>
 
-      <para>Once you have done this, Hudson will display the current level of
+      <para>Once you have done this, Jenkins will display the current level of
       code coverage, as well as a graph of the code coverage over time, on
       your project build job home pate (see <xref
       linkend="fig-hudson-clover-report" />).</para>
 
       <para><figure id="fig-hudson-clover-report">
-          <title>Configuring Clover reporting in Hudson</title>
+          <title>Configuring Clover reporting in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -1075,7 +1076,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     public-facing nature of Acceptance Tests. Many behaviour-driven
     development tools used for automated Acceptance Tests, such as JBehave and
     Concordion, produce JUnit-compatible reports that can be understood
-    directly by Hudson. Others, like easyb, generate HTML reports with a
+    directly by Jenkins. Others, like easyb, generate HTML reports with a
     specific layout that is well-suited to non-developers.</para>
 
     <para>As a rule, your Acceptance Tests should be displayed separately from
@@ -1106,10 +1107,10 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
     <para>If you are using a tool that generates HTML reports, you can display
     them in the same build as your conventional tests, as long as they appear
-    in a separate report. Hudson provides a very convenient plugin for this
+    in a separate report. Jenkins provides a very convenient plugin for this
     sort of HTML report, called the HTML Publisher plugin (see <xref
     linkend="fig-hudson-html-publisher-plugin" />). While it is still your job
-    to ensure that your build produces the right reports, Hudson can display
+    to ensure that your build produces the right reports, Jenkins can display
     the reports on your build job page, making them easily accessible to all
     team members.</para>
 
@@ -1125,9 +1126,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </mediaobject>
       </figure>This plugin is easy to configure. Just go to the 'Post-build
     actions' section and tick the 'Publish HTML reports' checkbox (see <xref
-    linkend="fig-hudson-html-reports" />). Next, give Hudson the directory
+    linkend="fig-hudson-html-reports" />). Next, give Jenkins the directory
     your HTML reports were generated to, an index page, and a title for your
-    report. You can also ask Hudson to store the reports generated for each
+    report. You can also ask Jenkins to store the reports generated for each
     build, or only keep the latest one.</para>
 
     <para><figure id="fig-hudson-html-reports">
@@ -1140,13 +1141,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>Once this is done, Hudson will display a special icon on your
+      </figure>Once this is done, Jenkins will display a special icon on your
     build job home page, with a link to your HTML report. In <xref
     linkend="fig-hudson-easyb-report" />, you can see the easyb reports we
     configured previously in action.</para>
 
     <para><figure id="fig-hudson-easyb-report">
-        <title>Hudson displays a special link on the build job home page for
+        <title>Jenkins displays a special link on the build job home page for
         your report</title>
 
         <mediaobject>
@@ -1209,7 +1210,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
     <para>What we are interested in here is the process of automating these
     performance tests. There are several ways to integrate JMeter tests into
-    your Hudson build process. Although at the time of writing, there was no
+    your Jenkins build process. Although at the time of writing, there was no
     official JMeter plugin for Maven available in the Maven repositories,
     there is an Ant plugin. So the simplest approach is to write an Ant script
     to run your performance tests, and then either call this Ant script
@@ -1239,7 +1240,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <filename>tools</filename> directory of your project. Placing tools such
     as JMeter within your project structure is a good habit, as it makes your
     build scripts more portable and easier to run on any machine, which is
-    precisely what we need to run them on Hudson.</para>
+    precisely what we need to run them on Jenkins.</para>
 
     <para>Note that we are also using the optional
     <filename>&lt;jvmarg&gt;</filename> tag to provide JMeter with an ample
@@ -1253,7 +1254,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     the tests. For most applications this is not usually too difficult - the
     Maven Cargo plugin, for example, lets you automate the deployment process
     to a variety of local and remote servers. We will also see how to do this
-    in Hudson later on in the book.</para>
+    in Jenkins later on in the book.</para>
 
     <para>Alternatively, if you are using Maven for a web application, you can
     use the Jetty or Cargo plugin to ensure that the application is deployed
@@ -1350,12 +1351,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <command>verify</command> Maven lifecycle phase, e.g.<screen>$ <command>mvn verify -Pperformance</command></screen></para>
 
     <para>Once you have configured your build script to handle JMeter, you can
-    set up a performance test build in Hudson. For this, we will use the
-    Performance Test Hudson plugin, which understands JMeter logs and can
+    set up a performance test build in Jenkins. For this, we will use the
+    Performance Test Jenkins plugin, which understands JMeter logs and can
     generate nice statistics and graphs using this data. So go to the 'Plugin
-    Manager' screen on your Hudson server and install this plugin (see <xref
+    Manager' screen on your Jenkins server and install this plugin (see <xref
     linkend="fig-hudson-installing-performance-plugin" />). When you have
-    installed the plugin, you will need to restart Hudson.</para>
+    installed the plugin, you will need to restart Jenkins.</para>
 
     <para><figure id="fig-hudson-installing-performance-plugin">
         <title>Preparing a performance test script in JMeter</title>
@@ -1368,7 +1369,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </imageobject>
         </mediaobject>
       </figure>Once you have the plugin installed, you can set up a
-    performance build job in Hudson. This build job will typically be fairly
+    performance build job in Jenkins. This build job will typically be fairly
     separate from your other builds. In <xref
     linkend="fig-hudson-midnight-build" />, we have set up the performance
     build to run on a nightly basis, which is probably enough for a
@@ -1408,7 +1409,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 
     <para>To set up performance reporting, just tick the 'Publish Performance
     test result report' option in the Post-build Actions section. You will
-    need to tell Hudson where to find your JMeter test results (the output
+    need to tell Jenkins where to find your JMeter test results (the output
     files, not the test scripts). The Performance plugin is happy to process
     multiple JMeter results, so you can put wildcards in the path to make sure
     all of your JMeter reports are displayed.</para>
@@ -1448,7 +1449,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     'Performance Trend' menu item.</para>
 
     <para><figure id="fig-hudson-performance-trend">
-        <title>The Hudson Performance plugin keeps track of response time and
+        <title>The Jenkins Performance plugin keeps track of response time and
         errors</title>
 
         <mediaobject>
@@ -1487,9 +1488,10 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <para>With some minor variations, a JMeter test script basically works by
     simulating a given number of simultaneous users. Typically, however, you
     will want to see how your application performs for different numbers of
-    users. The Hudson Performance plugin handles this quite well, and can
+    users. The Jenkins Performance plugin handles this quite well, and can
     process graphs for multiple JMeter reports. Just make sure you use a
-    wildcard expression when you tell Hudson where to find the reports.</para>
+    wildcard expression when you tell Jenkins where to find the
+    reports.</para>
 
     <para>Of course, it would be nice to be able to reuse the same JMeter test
     script for each test run. JMeter supports parameters, so you can easily
@@ -1613,7 +1615,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <para>There are several strategies you can try, and your mileage will
       probably vary depending on the nature of your application. One approach,
       for example, is to set up several build jobs to run different subsets of
-      your functional tests, and to run these jobs in parallel. Hudson lets
+      your functional tests, and to run these jobs in parallel. Jenkins lets
       you aggregate test results. This is a good way to take advantage of a
       distributed build architecture to speed up your builds even further.
       Essential to this strategy is the ability to run subsets of your tests

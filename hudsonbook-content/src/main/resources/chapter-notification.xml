@@ -43,13 +43,13 @@
     teams set up their first Continuous Integration environment, it is usually
     the most common initial notification strategy they try.</para>
 
-    <para>You activate email notification in Hudson by ticking the 'E-mail
+    <para>You activate email notification in Jenkins by ticking the 'E-mail
     Notification' checkbox and providing the list of email addresses of the
     people who need to be notified (see <xref
-    linkend="fig-hudson-email-configuration" />). By default, Hudson will send
-    an email for every failed or unstable build. Remember, It will also send a
-    new email for the first successful build after a series of failed or
-    unstable builds, to indicate that the issue has been fixed.</para>
+    linkend="fig-hudson-email-configuration" />). By default, Jenkins will
+    send an email for every failed or unstable build. Remember, It will also
+    send a new email for the first successful build after a series of failed
+    or unstable builds, to indicate that the issue has been fixed.</para>
 
     <para><figure id="fig-hudson-email-configuration">
         <title>Configuring email notification</title>
@@ -70,7 +70,7 @@
     <para>You can also opt to send a separate email to any developers who have
     committed changes to the broken build. This is generally a good idea, as
     developers who have committed changes since the last build are naturally
-    the people who should be the most interested in the build results. Hudson
+    the people who should be the most interested in the build results. Jenkins
     will get the email address of the user from the currently-configured
     security realm (see <xref linkend="sect-security-realms" />), or by
     deriving the email address from the SCM username if you have set this up
@@ -79,7 +79,7 @@
     <para>If you use this option, it may be less useful to include the entire
     team in the main distribution list. You may want to simply include people
     who will interested in monitoring the result of every build (such as
-    technical leads), and let Hudson inform contributing developers
+    technical leads), and let Jenkins inform contributing developers
     directly.</para>
 
     <para>This assumes of course that the changes caused the build failure,
@@ -127,7 +127,7 @@
   <sect1 id="sect-notification-advanced-email">
     <title>More Advanced Email Notification</title>
 
-    <para>By default, Hudson email notification is a rather blunt tool.
+    <para>By default, Jenkins email notification is a rather blunt tool.
     Notification messages are always sent to basically the same group of
     people. You cannot send messages to different people depending on what
     went wrong, or implement any sort of escalation policy. It would be
@@ -139,7 +139,7 @@
     refined email notification strategy. This plugin adds an 'Editable Email
     Notification' checkbox (see <xref
     linkend="fig-hudson-email-ext-configuration" />), which effectively
-    replaces the standard Hudson email notification. Here, you can define a
+    replaces the standard Jenkins email notification. Here, you can define a
     default recipient list and fine-tune the contents of the email message,
     and also define a more precise notification strategy with different
     messages and recipient lists for different events. Note that once you have
@@ -171,7 +171,7 @@
         <term>${DEFAULT_SUBJECT}</term>
 
         <listitem>
-          <para>The default email subject configured in the Hudson system
+          <para>The default email subject configured in the Jenkins system
           configuration page</para>
         </listitem>
       </varlistentry>
@@ -180,7 +180,7 @@
         <term>${DEFAULT_CONTENT}</term>
 
         <listitem>
-          <para>The default email content configured in the Hudson system
+          <para>The default email content configured in the Jenkins system
           configuration page</para>
         </listitem>
       </varlistentry>
@@ -221,7 +221,7 @@
         <term>${BUILD_URL}</term>
 
         <listitem>
-          <para>A link to the corresponding build job page on Hudson</para>
+          <para>A link to the corresponding build job page on Jenkins</para>
         </listitem>
       </varlistentry>
 
@@ -417,7 +417,7 @@
   <sect1>
     <title>RSS Feeds</title>
 
-    <para>Hudson also provides convenient RSS feeds for its build results,
+    <para>Jenkins also provides convenient RSS feeds for its build results,
     both for overall build results across all of your builds (or just the
     builds on a particular view), or build results for a specific build. RSS
     Feed icons are available at the bottom of build dashboards (see <xref
@@ -426,7 +426,7 @@
     either all of the build results, or just the failing builds.</para>
 
     <para><figure id="fig-hudson-notification-rss-view">
-        <title>RSS Feeds in Hudson</title>
+        <title>RSS Feeds in Jenkins</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -435,20 +435,20 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>The URLs for RSS feeds are simple, and works for any Hudson
+      </figure>The URLs for RSS feeds are simple, and works for any Jenkins
     page displaying a set of build results. You just need to append
     '<filename>/rssAll</filename>' to get an RSS feed of all of the build
     results on a page, or '<filename>/rssFailed</filename>' to only get the
     failing builds. And '<filename>/rssLatest</filename>' will provide you
     with a feed containing only the latest build results. But the simplest way
     to obtain the URL is just to click on the RSS icon in the corresponding
-    Hudson screen.</para>
+    Jenkins screen.</para>
 
     <para>There are an abundance of RSS readers out there, both commercial and
     open source, available for virtually every platform and device, so this
     can be a great choice to keep tabs on build results. Many common browsers
     (Firefox in particular) and email clients also support RSS feeds. Some
-    readers have trouble with authentication, however, so if your Hudson
+    readers have trouble with authentication, however, so if your Jenkins
     instance is secured, you may need to do a little extra configuration to
     see your build results.</para>
 
@@ -486,8 +486,8 @@
     radiator can cater for many build jobs, including many failing build jobs,
     and so can still be effectively used in a multi-team context.</para>
 
-    <para>There are several build radiator solutions for Hudson. One of the
-    easiest to use is the 'Hudson Radiator View Plugin'. This plugin adds a
+    <para>There are several build radiator solutions for Jenkins. One of the
+    easiest to use is the 'Jenkins Radiator View Plugin'. This plugin adds a
     new type of job that you can create: the (see <xref
     linkend="fig-hudson-notification-radiator-job" />).</para>
 
@@ -546,29 +546,29 @@
     attention. This makes it a little harder to ignore or put off than a
     simple email message.</para>
 
-    <para>Hudson provides good support for notification via Instant Messaging.
-    The Instant Messaging plugin provides generic support for communicating
-    with Hudson using IM. Protocol-specific plugins can then be added for the
-    various IM protocols such as Jabber and IRC.</para>
+    <para>Jenkins provides good support for notification via Instant
+    Messaging. The Instant Messaging plugin provides generic support for
+    communicating with Jenkins using IM. Protocol-specific plugins can then be
+    added for the various IM protocols such as Jabber and IRC.</para>
 
     <sect2>
       <title>IM Notification with Jabber</title>
 
       <para>Many instant messaging servers today are based on Jabber, an open
-      source, XML-based instant messaging protocol. Hudson provides good
+      source, XML-based instant messaging protocol. Jenkins provides good
       support for Jabber instant messaging, so that developers can receive
       real-time notification of build failures. In addition, the plugin runs
       an 'IM bot' that listens to the chat channels and lets developers run
-      commands on the Hudson server via chat messages.</para>
+      commands on the Jenkins server via chat messages.</para>
 
-      <para>Setting up IM support in Hudson is straight-forward. First, you
-      need to install both the Hudson instant-messaging plugin and the Hudson
-      Jabber notifier plugin using the standard plugin manager page and
-      restart Hudson (see <xref
+      <para>Setting up IM support in Jenkins is straight-forward. First, you
+      need to install both the Jenkins instant-messaging plugin and the
+      Jenkins Jabber notifier plugin using the standard plugin manager page
+      and restart Jenkins (see <xref
       linkend="fig-email-notification-jabber-plugins" />).</para>
 
       <para><figure id="fig-email-notification-jabber-plugins">
-          <title>Installing the Hudson IM plugins</title>
+          <title>Installing the Jenkins IM plugins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -592,12 +592,12 @@
       general approach will work for any Jabber-compatible server.</para>
 
       <para>The first step involves create a dedicated account on your Jabber
-      server for Hudson. This is just an ordinary chat account, but it needs
+      server for Jenkins. This is just an ordinary chat account, but it needs
       to be distinct from your developer accounts (see <xref
       linkend="fig-hudson-notification-im-users" />).</para>
 
       <para><figure id="fig-hudson-notification-im-users">
-          <title>Hudson needs its own dedicated IM user account</title>
+          <title>Jenkins needs its own dedicated IM user account</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -608,20 +608,20 @@
           </mediaobject>
         </figure></para>
 
-      <para>Once you have set up an IM account, you need to configure Hudson
+      <para>Once you have set up an IM account, you need to configure Jenkins
       to send IM notifications via this account. Go to the main configuration
       page and tick the 'Enable Jabber Notification' checkbox (see <xref
       linkend="fig-hudson-notification-jabber-basic" />). Here, you provide
-      the Jabber ID and password for your IM account. Hudson can usually
+      the Jabber ID and password for your IM account. Jenkins can usually
       figure out the IM server from the Jabber ID (if it is different, you can
       override this in the Advanced options). If you are using group chat
       rooms (another useful communication strategy for development teams), you
-      can provide the name of these chat rooms here too. This way, Hudson will
-      be able to process instructions posted into the chat rooms as well as
-      those received as direct messages.</para>
+      can provide the name of these chat rooms here too. This way, Jenkins
+      will be able to process instructions posted into the chat rooms as well
+      as those received as direct messages.</para>
 
       <para><figure id="fig-hudson-notification-jabber-basic">
-          <title>Setting up basic Jabber notification in Hudson</title>
+          <title>Setting up basic Jabber notification in Jenkins</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -635,11 +635,12 @@
       are specific to your installation (see <xref
       linkend="fig-hudson-notification-jabber-advanced" />). Here, you can
       specify the name and port of your Jabber server, if these cannot be
-      derived from the Hudson Jabber ID. You can also provide a default suffix
-      that can be applied to Hudson user IDs to generate the corresponding
-      Jabber IDs. Most importantly, if you have secured your Hudson server,
-      you will need to provide a proper Hudson username and password so that
-      the IM bot can respond to instructions correctly.</para>
+      derived from the Jenkins Jabber ID. You can also provide a default
+      suffix that can be applied to Jenkins user IDs to generate the
+      corresponding Jabber IDs. Most importantly, if you have secured your
+      Jenkins server, you will need to provide a proper Jenkins username and
+      password so that the IM bot can respond to instructions
+      correctly.</para>
 
       <para><figure id="fig-hudson-notification-jabber-advanced">
           <title>Advanced Jabber configuration</title>
@@ -660,7 +661,7 @@
       such as joe@jabber.acme.com) or to chat rooms that you have set up. For
       chat rooms, you normally need to add a '*' to the start of the chat room
       ID (e.g. '*gameoflife@conference.jabber.acme.org'). However, if the chat
-      room ID contains '@conference.', Hudson will work out that it is a chat
+      room ID contains '@conference.', Jenkins will work out that it is a chat
       room and append the '*' automatically. The chat room approach is more
       flexible, though you do have to trust developers to be connected
       permanently to the chat room for this strategy to be truly
@@ -706,11 +707,11 @@
         </varlistentry>
       </variablelist>
 
-      <para>If you are using chat rooms, you can also ask Hudson to send
+      <para>If you are using chat rooms, you can also ask Jenkins to send
       notifications to the chat rooms whenever a build starts (using the
       'Notify on build starts' option).</para>
 
-      <para>For SCM-triggered builds, Hudson can also notify additional
+      <para>For SCM-triggered builds, Jenkins can also notify additional
       recipients, using the default suffix discussed earlier to build the
       Jabber ID from the SCM username. You can opt to notify:</para>
 
@@ -797,10 +798,10 @@
       </itemizedlist>
 
       <para>You can get a full list of commands by sending the "!help" message
-      to the Hudson user.</para>
+      to the Jenkins user.</para>
 
       <para><figure id="fig-hudson-notification-im-messages">
-          <title>Hudson Jabber messages in action</title>
+          <title>Jenkins Jabber messages in action</title>
 
           <mediaobject>
             <imageobject role="web">
@@ -821,8 +822,8 @@
       popular form of communication for developers, particularly in the Open
       Source world.</para>
 
-      <para>The <command>Hudson IRC Plugin</command> lets you interact with
-      your Hudson server via an IRC channel, both to receive notification
+      <para>The <command>Jenkins IRC Plugin</command> lets you interact with
+      your Jenkins server via an IRC channel, both to receive notification
       messages and to issue commands to the server. Like the Jabber plugin,
       you also need to install the Instant Messaging plugin for this to
       work.</para>
@@ -836,25 +837,25 @@
 
     <para>Internet Relay Chat (or IRC) is a popular form of instant messaging,
     primarily designed for group communication in channels. For example,
-    Hudson has <ulink url="http://jenkins-ci.org/content/chat">a channel set
+    Jenkins has <ulink url="http://jenkins-ci.org/content/chat">a channel set
     up on Freenode</ulink> (http://jenkins-ci.org/content/chat) so user and
-    developers can discuss Hudson related topics. You will see many users ask
+    developers can discuss Jenkins related topics. You will see many users ask
     questions and most of the time more experienced users are prompt to
     provide useful answers.</para>
 
-    <para>Just like instant messaging through Jabber, you can configure Hudson
-    to 'push' notification through IRC. Some IRC clients such as <ulink
-    url="http://xchat.org/">xchat</ulink> supports alerts configuration so
-    when message comes, it can blink the tray iron or make a beep sound. To
-    set up IRC support on Hudson, first you need to install the <ulink
+    <para>Just like instant messaging through Jabber, you can configure
+    Jenkins to 'push' notification through IRC. Some IRC clients such as
+    <ulink url="http://xchat.org/">xchat</ulink> supports alerts configuration
+    so when message comes, it can blink the tray iron or make a beep sound. To
+    set up IRC support on Jenkins, first you need to install the <ulink
     url="http://wiki.hudson-ci.org/display/HUDSON/IRC+Plugin">IRC
     Plugin</ulink> and the <ulink
     url="http://wiki.hudson-ci.org/display/HUDSON/Instant+Messaging+Plugin">Instance
     Messaging Plugin</ulink>. Simply go to the standard plugin manager, tick
-    their checkbox and then restart Hudson (see <xref
+    their checkbox and then restart Jenkins (see <xref
     linkend="hudson-notification-irc-plugins-install" />).<figure
         id="hudson-notification-irc-plugins-install">
-        <title>Install the Hudson IRC plugins</title>
+        <title>Install the Jenkins IRC plugins</title>
 
         <mediaobject>
           <imageobject>
@@ -966,18 +967,18 @@
     either as an independent application or widget, or as part of the
     developer's IDE.</para>
 
-    <para>If you are using Eclipse, the Hudson Eclipse plugin (<ulink
+    <para>If you are using Eclipse, the Jenkins Eclipse plugin (<ulink
     url="???">http://code.google.com/p/hudson-eclipse/</ulink>) displays a
     health icon at the bottom of the Eclipse window. If you click on the icon,
-    you can see a detailed view of the Hudson projects (see <xref
+    you can see a detailed view of the Jenkins projects (see <xref
     linkend="fig-hudson-notification-eclipse" />). In the Eclipse preferences,
-    you provide the URL of your Hudson server along with any required
+    you provide the URL of your Jenkins server along with any required
     authentication details. The configuration is fairly simple, however, and
-    you can only connect to a single Hudson instance for a given Eclipse
+    you can only connect to a single Jenkins instance for a given Eclipse
     workspace.</para>
 
     <para><figure id="fig-hudson-notification-eclipse">
-        <title>Hudson notifications in Eclipse</title>
+        <title>Jenkins notifications in Eclipse</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -988,12 +989,12 @@
         </mediaobject>
       </figure></para>
 
-    <para>The Hudson Tray Application Plugin (see <xref
+    <para>The Jenkins Tray Application Plugin (see <xref
     linkend="fig-hudson-tray-launch" />) lets you start up a small Java client
-    application using Java Web Start from your Hudson dashboard.</para>
+    application using Java Web Start from your Jenkins dashboard.</para>
 
     <para><figure id="fig-hudson-tray-launch">
-        <title>Launching the Hudson Tray Application</title>
+        <title>Launching the Jenkins Tray Application</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1009,7 +1010,7 @@
     linkend="fig-hudson-tray" />).</para>
 
     <para><figure id="fig-hudson-tray">
-        <title>Running the Hudson Tray Application</title>
+        <title>Running the Jenkins Tray Application</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1018,13 +1019,13 @@
           </imageobject>
         </mediaobject>
       </figure>This is certainly a useful application, but it suffers from a
-    few limitations. At the time of writing, the Hudson Tray Application did
-    not support accessing secured Hudson servers. In addition, the developer
+    few limitations. At the time of writing, the Jenkins Tray Application did
+    not support accessing secured Jenkins servers. In addition, the developer
     needs to remember to restart it each morning. This may seem a minor issue,
     but in general, when it comes to notification strategies, the less you
     have to ask of your developers the better.</para>
 
-    <para>One of the best options for Hudson desktop notification is to use a
+    <para>One of the best options for Jenkins desktop notification is to use a
     service like Notifo (see <xref linkend="sect-notifo" />), which provides
     both desktop and mobile clients. We will see how this works in detail in
     the next section.</para>
@@ -1035,19 +1036,19 @@
 
     <para>Notifo (<ulink url="http://www.notifo.com">notifo.com</ulink>) is a
     fast and economical service to send real-time notifications to your smart
-    phone or desktop. In the context of a Hudson server, you can use it to set
-    up free or low-cost real-time notification for your Hudson build results.
-    Individual accounts (which you need to be able to receive notifications)
-    are free. You need to set up a service account to send notification
-    messages from your Hudson server. This is where Notifo earn their keep,
-    though at the time of writing a service account can send up to 10,000
-    notifications per month free of charge, which is usually plenty for an
-    average Hudson instance. One of the strong points of a real-time
+    phone or desktop. In the context of a Jenkins server, you can use it to
+    set up free or low-cost real-time notification for your Jenkins build
+    results. Individual accounts (which you need to be able to receive
+    notifications) are free. You need to set up a service account to send
+    notification messages from your Jenkins server. This is where Notifo earn
+    their keep, though at the time of writing a service account can send up to
+    10,000 notifications per month free of charge, which is usually plenty for
+    an average Jenkins instance. One of the strong points of a real-time
     notification service like Notifo is that notification messages can be sent
     to the same users on different devices: smart phones and desk top clients,
     in particular.</para>
 
-    <para>Setting up Hudson notification with Notifo is relatively
+    <para>Setting up Jenkins notification with Notifo is relatively
     straightforward. First, go to the Notifio web site and sign up to create
     an account. Each team member who wants to be notified will need their own
     Notifo account. They will also need to install the Notifo client on each
@@ -1056,18 +1057,18 @@
     and iPhones, with support for Linux and other smart phones on the
     way.</para>
 
-    <para>Next, you need to set up a Notifo service account for your Hudson
+    <para>Next, you need to set up a Notifo service account for your Jenkins
     server. You can do this with one of your developer accounts, or create a
     new account for the purpose. Log on to the Notifo web site, and go to the
     'My Services' menu. Here, click on 'Create Service' (see <xref
     linkend="fig-hudson-notification-notifo-service" />), and fill in the
     fields. The most important is the Service Username, which needs to be
     unique. You can also specify the Site URL and the Default Notification URL
-    to point to your Hudson instance, so that users can open the Hudson
+    to point to your Jenkins instance, so that users can open the Jenkins
     console by clicking on the notification message.</para>
 
     <para><figure id="fig-hudson-notification-notifo-service">
-        <title>Creating a Notifo service for your Hudson instance</title>
+        <title>Creating a Notifo service for your Jenkins instance</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1076,18 +1077,18 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>To receive notification messages from the Hudson server,
+      </figure>To receive notification messages from the Jenkins server,
     developers now need to subscribe to this service. You can then add
     developers to the list of subscribers in the service 'Subscribers' page,
     by sending them subscription requests. Once the service has been created
     and the users are all subscribed, you can configure your project to send
     out Notifo notifications (see <xref
     linkend="fig-hudson-notification-notifo-config" />). You need the provide
-    the API username of the Hudson service you set up, as well as the API
+    the API username of the Jenkins service you set up, as well as the API
     Secret, both of which you can see in the Notifo Service Dashboard.</para>
 
     <para><figure id="fig-hudson-notification-notifo-config">
-        <title>Configuring Notifo notifications in your Hudson build
+        <title>Configuring Notifo notifications in your Jenkins build
         job</title>
 
         <mediaobject>
@@ -1097,7 +1098,7 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>Once this is set up, Hudson will send almost real-time
+      </figure>Once this is set up, Jenkins will send almost real-time
     notifications of build failures to any Notifo clients the developer is
     running, whether it is on a desk top or on a mobile device (see <xref
     linkend="fig-hudson-notifo-iphone" />).</para>
@@ -1123,9 +1124,9 @@
   <sect1>
     <title>Mobile notification</title>
 
-    <para>If your Hudson server is visible on the internet (even if you have
-    set up authentication on your Hudson server), you can also monitor your
-    builds via your iPhone or Android mobile device. The free <command>Hudson
+    <para>If your Jenkins server is visible on the internet (even if you have
+    set up authentication on your Jenkins server), you can also monitor your
+    builds via your iPhone or Android mobile device. The free <command>Jenkins
     Helper</command> application (see <xref
     linkend="fig-hudson-notification-iphone" />), for example, lets you list
     your current build jobs (either all of the build jobs on the server, or
@@ -1134,7 +1135,7 @@
     build time, and even start and stop builds.</para>
 
     <para><figure id="fig-hudson-notification-iphone">
-        <title>Using the Hudson Helper iPhone app</title>
+        <title>Using the Jenkins Helper iPhone app</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1143,7 +1144,7 @@
                        width="2.3in" />
           </imageobject>
         </mediaobject>
-      </figure>For Android phones, you can also install the 'Hudson Mood'
+      </figure>For Android phones, you can also install the 'Jenkins Mood'
     widget will also provide updates and alerts about build failures.</para>
 
     <para>Note that these mobile applications rely on a data connection, so
@@ -1165,7 +1166,7 @@
     specially-formatted email addresses (for example,
     123456789@mysmsgateway.com might send an SMS message to 123456789). Many
     mobile vendors provide this service, as do many third-party service
-    providers. There is no built-in support for SMS Gateways in Hudson, but
+    providers. There is no built-in support for SMS Gateways in Jenkins, but
     the basic functionality of these gateways makes integration relatively
     easy: you simply add the special email addresses to the normal
     notification list. Alternatively, using the advanced email configuration,
@@ -1210,7 +1211,7 @@
   <sect1 id="sect-notification-noise">
     <title>Making Noise</title>
 
-    <para>If you have your Hudson instance running on a machine that is
+    <para>If you have your Jenkins instance running on a machine that is
     physically located in proximity to the development team, you may also want
     to add sounds into the mix of notification strategies. This can be an
     effective strategy for small co-located teams, though it becomes trickier
@@ -1218,20 +1219,20 @@
     building.</para>
 
     <para>There are two ways to integrate audio feedback into your build
-    process in Hudson: the <command>Hudson Sounds</command> plugin and the
-    <command>Hudson Speaks</command> plugin. Both can be installed via the
+    process in Jenkins: the <command>Jenkins Sounds</command> plugin and the
+    <command>Jenkins Speaks</command> plugin. Both can be installed via the
     'Plugin Manager' page in the usual manner.</para>
 
-    <para>The <command>Hudson Sounds</command> plugin is the most flexible of
+    <para>The <command>Jenkins Sounds</command> plugin is the most flexible of
     the two. It allows you to build a detailed notification strategy based on
     the latest build result and also (optionally) on the previous build result
     as well (see <xref linkend="fig-hudson-sounds" />). For example, you can
-    configure Hudson to play one sound the first time a build fails, a
+    configure Jenkins to play one sound the first time a build fails, a
     different sound if the build fails a second time, and yet another sound
     when the build is fixed.</para>
 
     <para><figure id="fig-hudson-sounds">
-        <title>Configuring Hudson Sounds rules in a build job</title>
+        <title>Configuring Jenkins Sounds rules in a build job</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1239,7 +1240,7 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>To set this up, you need to tick the 'Hudson Sounds' checkbox
+      </figure>To set this up, you need to tick the 'Jenkins Sounds' checkbox
     in the Post-build actions section of your build job configuration page.
     You can add as many sound configuration rules as you like. Adding a rule
     is simple enough. First, you need to choose which build result will
@@ -1247,15 +1248,15 @@
     which this rule is applicable: Not Build (NB), Aborted (Ab), Failed (Fa),
     Unsuccessful (Un) or Successful (Su).</para>
 
-    <para>The <command>Hudson Sounds</command> plugin proposes a large list of
-    pre-defined sounds, which usually offer plenty of choice for even the most
-    discerning build administrator, but you can add your own to the list if
-    you really want to. Sounds are stored as a zip or jar file containing
+    <para>The <command>Jenkins Sounds</command> plugin proposes a large list
+    of pre-defined sounds, which usually offer plenty of choice for even the
+    most discerning build administrator, but you can add your own to the list
+    if you really want to. Sounds are stored as a zip or jar file containing
     sound files in a flat directory structure (i.e. no sub-directories). The
     list of sounds proposed by the plugin is simply the list of filenames,
     minus the extensions. The plugin supports AIFF, AU and WAV files.</para>
 
-    <para>In the System Configuration page, you can give Hudson a new sound
+    <para>In the System Configuration page, you can give Jenkins a new sound
     archive file, using the <filename>http://</filename> notation if your
     sound archive file is available on a local web server, or the
     <filename>file://</filename> notation if it is available locally (see
@@ -1264,7 +1265,7 @@
     Sound' button in the 'Advanced' section.</para>
 
     <para><figure id="fig-hudson-sounds-config">
-        <title>Configuring Hudson Sounds</title>
+        <title>Configuring Jenkins Sounds</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1273,22 +1274,22 @@
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>The <command>Hudson Sounds</command> plugin is an excellent
+      </figure>The <command>Jenkins Sounds</command> plugin is an excellent
     choice if you want to complement your more conventional notification
     techniques. Short, recognizable sounds are a great way to grab a
     developer's attention and let the team know that something needs fixing.
     They will then be a bit more receptive when the more detailed
     notifications follow.</para>
 
-    <para>Another option is the <command>Hudson Speaks</command> plugin. With
-    this plugin, you can get Hudson to broadcast a customized announcement (in
-    a very robotic voice) when your build fails (see <xref
+    <para>Another option is the <command>Jenkins Speaks</command> plugin. With
+    this plugin, you can get Jenkins to broadcast a customized announcement
+    (in a very robotic voice) when your build fails (see <xref
     linkend="fig-hudson-speaks" />). You can configure the exact message using
     Jelly. Jelly is an XML-based scripting language used widely in the lower
-    levels of Hudson.</para>
+    levels of Jenkins.</para>
 
     <para><figure id="fig-hudson-speaks">
-        <title>Configuring Hudson Speaks</title>
+        <title>Configuring Jenkins Speaks</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1298,7 +1299,7 @@
         </mediaobject>
       </figure>Jelly is a flexible, if somewhat cumbersome, scripting
     language. The advantage of this approach lies in it's precision: since you
-    can use Hudson variables in the Jelly script, you can get Hudson to say
+    can use Jenkins variables in the Jelly script, you can get Jenkins to say
     just about anything you want about the state of the build. Here is a
     simple example:</para>
 
@@ -1316,7 +1317,7 @@
     <para>The disadvantage is that the robotic voice can make it a little hard
     to understand. For this reason, it is a good idea to start your
     announcement with a generic phrase such as "Your attention please", or to
-    combine it with the <command>Hudson Sounds</command> plugin, so that you
+    combine it with the <command>Jenkins Sounds</command> plugin, so that you
     have developers' attention before the actual message is broadcast. Using
     hyphens in your project names (e.g. 'game-of-life' rather then
     'gameoflife') will also help the plugin know how to pronounce your project
@@ -1339,11 +1340,11 @@
     The Build Radiator (see <xref linkend="sect-build-radiator" />) also falls
     into this category if you project it onto a big enough screen.</para>
 
-    <para>One device that integrates very nicely with Hudson is the Nabaztag.
+    <para>One device that integrates very nicely with Jenkins is the Nabaztag.
     The Nabaztag is a popular WIFI-enabled robotic rabbit that can flash
     colored lights, play music, or even speak. Once advantage of the Nabaztag
     is that, since it works via WIFI, it is not constrained to be located near
-    the build server, and so will work even if your Hudson instance is in a
+    the build server, and so will work even if your Jenkins instance is in a
     server room or on a virtual machine. So as far as extreme feedback devices
     go, these little fellows are hard to beat.</para>
 
@@ -1358,9 +1359,9 @@
         </mediaobject>
       </figure></para>
 
-    <para>And best of all, there is a Hudson Plugin available for the
+    <para>And best of all, there is a Jenkins Plugin available for the
     Nabaztag. Once you have installed the Nabaztag plugin and restarted
-    Hudson, it is easy to configure. In Hudson's main Configuration page, go
+    Jenkins, it is easy to configure. In Jenkins's main Configuration page, go
     to the Global Nabaztag Settings section and enter the serial number and
     secret token for your electronic bunny (see <xref
     linkend="fig-hudson-nabaztag-config" />). You can also provide some
@@ -1384,7 +1385,7 @@
           </imageobject>
         </mediaobject>
       </figure>With the notable exception of the build radiator, many of these
-    devices have similar limitations to the Hudson Speaks and Hudson Sounds
+    devices have similar limitations to the Jenkins Speaks and Jenkins Sounds
     plugins (see <xref linkend="sect-notification-noise" />) - they are best
     suited for small, co-located teams, working on a limited number of
     projects. Nevertheless, when they work, they can be a useful addition to
