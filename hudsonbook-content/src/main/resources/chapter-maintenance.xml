@@ -2,7 +2,7 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter>
-  <title>Maintaining Hudson</title>
+  <title>Maintaining Jenkins</title>
 
   <section>
     <title>Introduction</title>
@@ -10,9 +10,9 @@
     <para><indexterm>
         <primary>maintenance</primary>
       </indexterm>In this chapter, we will be discussing a few tips and tricks
-    that you might find useful when maintaining a large Hudson instance. We
+    that you might find useful when maintaining a large Jenkins instance. We
     will look at things like how to limit, and keep tabs on, disk usage, how
-    to give Hudson enough memory and to archive build jobs or migrate them
+    to give Jenkins enough memory and to archive build jobs or migrate them
     from one server to another. Some of these topics are discussed elsewhere
     in the book, but here we will be looking at things from the point of view
     of the system administrator.</para>
@@ -21,22 +21,22 @@
   <section>
     <title>Monitoring Disk Space</title>
 
-    <para>Build History takes disk space. In addition, Hudson analyses the
+    <para>Build History takes disk space. In addition, Jenkins analyses the
     build records when it loads a project configuration, so a build job with a
     thousand archived builds is going to take a lot longer to load than one
-    with only fifty. If you have a large Hudson server with tens or hundreds
+    with only fifty. If you have a large Jenkins server with tens or hundreds
     of build jobs, multiply this accordingly.</para>
 
     <para>Probably the simplest way to keep a cap on disk usage is to limit
     the number of builds a project maintains in its history. You can configure
     this by ticking the 'Discard Old Builds' checkbox at the top of the
     project configuration page (see <xref
-    linkend="fig-maintenance-discard-old-builds" />). If you tell Hudson to
+    linkend="fig-maintenance-discard-old-builds" />). If you tell Jenkins to
     only keep the last 20 builds, it will start discarding (and deleting)
     older build jobs once it reaches this number. You can limit them by number
     (i.e. no more than 20 builds) or by date (i.e. builds no older than 30
     days). It does this intelligently, though: if there has ever been a
-    successful build, Hudson will always keep at least the latest succesful
+    successful build, Jenkins will always keep at least the latest succesful
     build as part of its build history, so you will never loose your last
     successful build.</para>
 
@@ -55,22 +55,22 @@
           </imageobject>
         </mediaobject>
       </figure>The problem with discarding old builds is that you loose the
-    build history at the same time. Hudson uses the build records to produce
+    build history at the same time. Jenkins uses the build records to produce
     graphs of test results and build metrics. If you limit the number of
-    builds to be kept to twenty, for example, Hudson will only display graphs
+    builds to be kept to twenty, for example, Jenkins will only display graphs
     containing the last twenty data points, which can be a bit limited. This
     sort of information can be very useful to the developers, but it is often
     good to be able to see how the project metrics are doing throughout the
     whole life of the project, not just over the last week or two.</para>
 
-    <para>Fortunately, Hudson has a work-around that can keep both developers
+    <para>Fortunately, Jenkins has a work-around that can keep both developers
     and system administrators happy. In general, the things that takes up the
     most disk space are the build artifacts: JAR files, WAR files, and so on.
     The build history itself is mostly XML log files, which don't take up too
-    much space. If you click on the 'Advanced...' button, Hudson will let you
+    much space. If you click on the 'Advanced...' button, Jenkins will let you
     discard the artifacts, but not the build data. In <xref
     linkend="fig-maintenance-discard-old-builds-advanced" />, for example, we
-    have configured Hudson to keep artifacts for a maximum of 7 days, . This
+    have configured Jenkins to keep artifacts for a maximum of 7 days, . This
     is a great option if you need to put a cap on disk usage, but still want
     to provide a full scope of build metrics for the development teams.</para>
 
@@ -91,17 +91,17 @@
       </figure></para>
 
     <para>Don't hesitate about being ruthless, and keeping the maximum number
-    of builds with artifacts quite low. Remember, Hudson will always keep the
+    of builds with artifacts quite low. Remember, Jenkins will always keep the
     last stable and the last successful builds, no matter what you tell it, so
     you will always have at least one working artifact (unless of course the
-    project has yet to successfully build). Hudson also lets you to mark an
+    project has yet to successfully build). Jenkins also lets you to mark an
     individual build as 'Keep this log forever', to exclude certain important
-    builds from being discarded automatically. </para>
+    builds from being discarded automatically.</para>
 
     <section>
       <title>Using the Disk Usage plugin</title>
 
-      <para>One of the most useful tools in the Hudson administrator's tool
+      <para>One of the most useful tools in the Jenkins administrator's tool
       box is the Disk Usage plugin. This plugin records and reports on the
       amount of disk space used by your projects. It lets you isolate and fix
       projects that are using too much disk space,</para>
@@ -124,9 +124,9 @@
                          scalefit="0" width="100%" wordsize="" />
             </imageobject>
           </mediaobject>
-        </figure>Once you have installed the plugin and restarted Hudson, the
+        </figure>Once you have installed the plugin and restarted Jenkins, the
       Disk Usage plugin will record the amount of disk space used by each
-      project. It will also add a 'Disk Usage' link on the 'Manage Hudson'
+      project. It will also add a 'Disk Usage' link on the 'Manage Jenkins'
       screen, which you can use to display the overall disk usage for your
       projects (see <xref linkend="fig-maintenance-disk-usage" />).</para>
 
@@ -203,18 +203,18 @@
     </section>
 
     <section>
-      <title>Disk usage and the Hudson Maven project type</title>
+      <title>Disk usage and the Jenkins Maven project type</title>
 
-      <para>If you are using the Hudson Maven build jobs, there are some
-      additional details you should know about. In Hudson, Maven build jobs
+      <para>If you are using the Jenkins Maven build jobs, there are some
+      additional details you should know about. In Jenkins, Maven build jobs
       will automatically archive your build artifacts by default. This may not
       be what you intend.</para>
 
       <para>The problem is that these SNAPSHOT artifacts take up space - a lot
-      of it. On an active project, Hudson might be running several builds per
+      of it. On an active project, Jenkins might be running several builds per
       hour, so permanently storing the generated JAR files for each build can
       be very costly. The problem is accentuated if you have multi-module
-      projects, as Hudson will archive the artifacts generated for each
+      projects, as Jenkins will archive the artifacts generated for each
       module.</para>
 
       <para>In fact, if you need to archive your Maven SNAPSHOT artifacts, it
@@ -222,7 +222,7 @@
       repository manager. Nexus Pro, for example, can be configured to and
       Artifactory can be configured to delete old snapshot artifacts.</para>
 
-      <para>Fortunatly, you can configure Hudson to this, go to the 'Build'
+      <para>Fortunatly, you can configure Jenkins to this, go to the 'Build'
       section of your build job configuration screen and click on the
       'Advanced' button. This will display some extra fields, as shown
       below:</para>
@@ -230,14 +230,14 @@
       <para>&lt;&lt;hudson-maven-artifacts.png&gt;&gt;</para>
 
       <para>If you tick the "Disable automatic artifact archiving" checkbox,
-      Hudson will refrain from storing the jar files your project build
+      Jenkins will refrain from storing the jar files your project build
       generates. This is a good way of making your friendly system
       administrator happy.</para>
     </section>
   </section>
 
   <section>
-    <title>How much memory does Hudson need?</title>
+    <title>How much memory does Jenkins need?</title>
 
     <para></para>
   </section>
@@ -251,7 +251,7 @@
   <section>
     <title>Managing slave nodes</title>
 
-    <para>TODO: Discuss how Hudson deactivates nodes that don't have enough
+    <para>TODO: Discuss how Jenkins deactivates nodes that don't have enough
     resources</para>
   </section>
 
@@ -263,10 +263,10 @@
     easily restore it later if you need to consult the project data or
     artifacts. Archiving a project is simple: just move the build project
     directory out of the job directory. Of course, typically, you would
-    compress it into a ZIP file or a tarball first. </para>
+    compress it into a ZIP file or a tarball first.</para>
 
     <para>In the following example, we want to archive the tweeter-default
-    project. So first we go to the Hudson <filename>jobs</filename> directory
+    project. So first we go to the Jenkins <filename>jobs</filename> directory
     and create a tarball (compressed archive) of the
     <filename>tweeter-default</filename> build job directory:</para>
 
@@ -285,7 +285,7 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
 </command></screen></para>
 
     <para>Once you have done this, you can simply reload the configuration
-    from the disk in the 'Manage Hudson' screen (see <xref
+    from the disk in the 'Manage Jenkins' screen (see <xref
     linkend="fig-maintenance-reload-configuration" />). The archived project
     will promptly dissapear from your dashboard.</para>
 
@@ -311,35 +311,35 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
   <section>
     <title>Migrating build jobs</title>
 
-    <para>There are times when you need to move or copy Hudson build jobs from
-    one Hudson instance to another, without copying the entire Hudson
+    <para>There are times when you need to move or copy Jenkins build jobs
+    from one Jenkins instance to another, without copying the entire Jenkins
     configuration. For example, you might be migrating your build jobs to a
-    Hudson instance on a brand new box, with system configuration details that
-    vary from the original machine. Or you might be restoring an old build job
-    that you have archived.</para>
+    Jenkins instance on a brand new box, with system configuration details
+    that vary from the original machine. Or you might be restoring an old
+    build job that you have archived.</para>
 
-    <para>As we have seen, Hudson stores all of the data it needs for a
+    <para>As we have seen, Jenkins stores all of the data it needs for a
     project in a sub-directory of the <filename>jobs</filename> directory in
-    your Hudson home directory. This sub-directory is easy to identify - it
+    your Jenkins home directory. This sub-directory is easy to identify - it
     has the same name as your project. Incidently, this is one reason why your
-    project names really shouldn't contain spaces, particularly if Hudson is
+    project names really shouldn't contain spaces, particularly if Jenkins is
     running under Unix or Linux - it makes maintenance and admin tasks a lot
     easier if the project names are also well-behaved unix filenames.</para>
 
     <para>You can copy or move build jobs between instances of projects simply
-    enough by copying or moving the build job directories to the new Hudson
+    enough by copying or moving the build job directories to the new Jenkins
     instance. The project job directory is self-contained - it contains both
     the full project configuration and all the build history. It is safe
-    enough to copy build job directories to a running Hudson instance, though
+    enough to copy build job directories to a running Jenkins instance, though
     if you are also deleting them from the original server, you should shut
-    this one down first. You don't even need to restart the new Hudson
+    this one down first. You don't even need to restart the new Jenkins
     instance to see the results of your import - just go to the 'Manage
-    Hudson' screen and click on 'Reload Configuration From Disk'. This will
-    load the new jobs and make them immediately visible on the Hudson
+    Jenkins' screen and click on 'Reload Configuration From Disk'. This will
+    load the new jobs and make them immediately visible on the Jenkins
     dashboard.</para>
 
     <para>There are a few gotchas, however. If you are migrating your jobs to
-    a brand new Hudson configuration, remember to install, or migrate, the
+    a brand new Jenkins configuration, remember to install, or migrate, the
     plugins from your original server. The plugins can be found in the
     <filename>plugins</filename> directory, so you can simply copy everything
     from this directory to the corresponding directory in your new
@@ -347,7 +347,7 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
 
     <para>Of course, you might be migrating the build jobs to a new instance
     precisely <emphasis>because</emphasis> the plugin configuration on the
-    original box is a mess. Some Hudson plugins can be a bit buggy sometimes,
+    original box is a mess. Some Jenkins plugins can be a bit buggy sometimes,
     and you may want to move to a clean installation with a well-known,
     well-defined set of vetted plugins. In this case, you may need to rework
     some of your project configurations once they have been imported.</para>
@@ -355,25 +355,25 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
     <para>The reason for this is straightforward. When you use a plugin in a
     project, the project's config.xml will be updated with plugin-specific
     configuration fields. If for some reason you need to migrate projects
-    selectively to a Hudson installation *without* these plugins installed,
-    Hudson will no longer understand these parts of the project configuration.
-    The same thing can also sometimes happen if the plugin versions are very
-    different on the machines, and the data format used by the plugin has
-    changed.</para>
+    selectively to a Jenkins installation *without* these plugins installed,
+    Jenkins will no longer understand these parts of the project
+    configuration. The same thing can also sometimes happen if the plugin
+    versions are very different on the machines, and the data format used by
+    the plugin has changed.</para>
 
-    <para>If you are migrating jobs to a Hudson instance with a different
+    <para>If you are migrating jobs to a Jenkins instance with a different
     configuration, it also pays to keep an eye on the system logs. Invalid
     plugin configurations will usually through warnings or exceptions. While
     not always fatal, these error messages often mean that the plugin will not
     work as expected, or at all.</para>
 
-    <para>Hudson provides some useful features to help you migrate your
-    project configurations. If Hudson finds data that it thinks is out of date
-    or invalid, it will tell you so. On the 'Manage Hudson' screen, you will
-    get a message like the one in Figure 1.</para>
+    <para>Jenkins provides some useful features to help you migrate your
+    project configurations. If Jenkins finds data that it thinks is out of
+    date or invalid, it will tell you so. On the 'Manage Jenkins' screen, you
+    will get a message like the one in Figure 1.</para>
 
     <para><figure id="fig-hudson-home-page">
-        <title>You can download Hudson from the Hudson website</title>
+        <title>You can download Jenkins from the Jenkins website</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -389,14 +389,14 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
       </figure></para>
 
     <para>From here, you can choose to either leave the configuration as it is
-    (just in case you roll back to a previous version of your Hudson instance,
-    for example), or let Hudson discard the fields it cannot read. If you
-    choose this option, Hudson will bring up a screen containing more details
-    about the error, and can even help tidy up your project configuration
-    files if you wish (see Figure ???).</para>
+    (just in case you roll back to a previous version of your Jenkins
+    instance, for example), or let Jenkins discard the fields it cannot read.
+    If you choose this option, Jenkins will bring up a screen containing more
+    details about the error, and can even help tidy up your project
+    configuration files if you wish (see Figure ???).</para>
 
     <para><figure id="fig-hudson-home-page">
-        <title>You can download Hudson from the Hudson website</title>
+        <title>You can download Jenkins from the Jenkins website</title>
 
         <mediaobject>
           <imageobject role="web" security="">
@@ -415,15 +415,16 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
     originally created the data, you can safely remove the redundant fields by
     clicking on the 'Discard Unreadable Data' button. Alternatively, you may
     decide that the fields belong to a useful plugin that hasn't yet been
-    installed on the new Hudson instance. In this case, install the plugin and
-    all should be well. Finally, you can always choose to leave the redundant
-    data and live with the error message, at least until you are sure that you
-    won't need to migrate the job back to the old server some day.</para>
+    installed on the new Jenkins instance. In this case, install the plugin
+    and all should be well. Finally, you can always choose to leave the
+    redundant data and live with the error message, at least until you are
+    sure that you won't need to migrate the job back to the old server some
+    day.</para>
 
-    <para>However, Hudson doesn't always detect all of the errors or
+    <para>However, Jenkins doesn't always detect all of the errors or
     inconsistancies - it still pays to keep one eye on the system logs when
     you migrate your build jobs. For example, the following is a real example
-    from a Hudson log file showing what can happen during the migration
+    from a Jenkins log file showing what can happen during the migration
     process:<screen>Mar 16, 2010 2:05:06 PM hudson.util.CopyOnWriteList$ConverterImpl unmarshal
 WARNING: Failed to resolve class
 com.thoughtworks.xstream.mapper.CannotResolveClassException: hudson.plugins.ciga
@@ -441,7 +442,7 @@ roxyMapper.java:71)
     called hudson.plugins.cigame.GamePublisher. In fact, the target
     installation is missing the "CI Game" plugin. And in this case (as
     sometimes happens), no warning messages where appearing on the 'Manage
-    Hudson' page, so Hudson was unable to correct the configuration files
+    Jenkins' page, so Jenkins was unable to correct the configuration files
     itself.</para>
 
     <para>The simplest solution in this case would be to install the CI Game
@@ -485,9 +486,9 @@ project-c/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;</screen>In
     config.xml files are quite readable, and updating them by hand isn't too
     hard.</para>
 
-    <para>So, all in all, migrating build jobs between Hudson instances isn't
+    <para>So, all in all, migrating build jobs between Jenkins instances isn't
     all that hard - you just need to know a couple of tricks for the corner
-    cases, and if you know where to look Hudson provides some nice tools to
+    cases, and if you know where to look Jenkins provides some nice tools to
     make the process smoother.</para>
   </section>
 
@@ -495,6 +496,6 @@ project-c/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;</screen>In
     <title>Conclusion</title>
 
     <para>In this chapter, we looked at a number of considerations that you
-    should be aware of if your job is to maintain your Hudson server.</para>
+    should be aware of if your job is to maintain your Jenkins server.</para>
   </section>
 </chapter>

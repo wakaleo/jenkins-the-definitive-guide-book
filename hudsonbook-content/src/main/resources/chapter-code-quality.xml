@@ -52,30 +52,30 @@
     potential bugs or poor practices in your code.</para>
 
     <para>There are a wide range of code quality reporting plugins available
-    for Hudson. Many are for Java static analysis tools, such as Checkstyle,
+    for Jenkins. Many are for Java static analysis tools, such as Checkstyle,
     PMD, FindBugs, Cobertura and JDepend. Others, such as fxcop and NCover,
     are focused on .NET applications.</para>
 
     <para>With all of these tools, you need to configure your build job to
-    generate the code quality metrics data before Hudson can produce any
+    generate the code quality metrics data before Jenkins can produce any
     reports.</para>
 
     <para>The notable exception to this rule is Sonar. Sonar can extract code
     quality metrics from any Maven project, with no additional configuration
     required in your Maven project. This is great when you have large numbers
-    of existing Maven projects that you need to integrate into Hudson, and you
-    want to configure consistent code quality reporting across all of your
+    of existing Maven projects that you need to integrate into Jenkins, and
+    you want to configure consistent code quality reporting across all of your
     projects.</para>
 
     <para>In the rest of this chapter, we will see how to set up code quality
-    reporting in your Hudson builds, and also how you can use it as an
+    reporting in your Jenkins builds, and also how you can use it as an
     effective part of your build process.</para>
   </sect1>
 
   <sect1>
     <title>Code Quality in your build process</title>
 
-    <para>Before we look at how to report on code quality metrics in Hudson,
+    <para>Before we look at how to report on code quality metrics in Jenkins,
     it can be useful to take a step back and look at the larger picture. Code
     Quality metrics are of limited value in isolation - they need to be part
     of a broader process improvement strategy.</para>
@@ -110,9 +110,9 @@
     reporting on code quality, set up a dedicated code quality build, which
     runs after the normal build and test, and configure the build to fail if
     code quality metrics are not at an acceptable level. You can do this in
-    Hudson or in your build script, although one advantage of configuring this
-    outside of your build script is that you can change code quality build
-    failing criteria more easily without changing the project source
+    Jenkins or in your build script, although one advantage of configuring
+    this outside of your build script is that you can change code quality
+    build failing criteria more easily without changing the project source
     code.</para>
 
     <para>As a final word, remember that coding standards are guidelines and
@@ -140,7 +140,7 @@
 
     <para>All of these tools can be easily integrated into your build process.
     In the following sections, we will look at how to set up these tools to
-    generate the XML reports that Hudson can then use for its own
+    generate the XML reports that Jenkins can then use for its own
     reporting.</para>
 
     <sect2>
@@ -206,7 +206,7 @@
       <para><programlisting><uri>&lt;taskdef resource="checkstyletask.properties"
          classpath="lib/checkstyle-5.3-all.jar"/&gt;</uri></programlisting></para>
 
-      <para>Then, to generate Checkstyle reports in an XML format that Hudson
+      <para>Then, to generate Checkstyle reports in an XML format that Jenkins
       can use, you could do the following:</para>
 
       <para><programlisting><uri>&lt;target name="checkstyle"&gt;
@@ -272,12 +272,12 @@
 
       <para>Now, running <command>mvn checkstyle:checkstyle</command> or
       <command>mvn site</command> will analyse your source code and generate
-      XML reports that Hudson can use.</para>
+      XML reports that Jenkins can use.</para>
 
       <para>Note that in the last example, we used a Checkstyle ruleset that
       we have uploaded to a Sonar server (defined by the ${sonar.url}
       property). This strategy makes it easy to use the same set of Checkstyle
-      rules for Eclipse, Maven, Hudson and Sonar.</para>
+      rules for Eclipse, Maven, Jenkins and Sonar.</para>
 
       <para>Recent versions of Gradle also offer some integrated Checkstyle
       support. In Gradle 0.8, you could set up Checkstyle for your builds as
@@ -611,7 +611,7 @@ task pmd &lt;&lt; {
 
       <para>For Ant or Maven-based projects, the CodeNarc Ant plugin is the
       simplest option (a Maven plugin is under development at the time of
-      writing). A typical Ant configuration for use with Hudson would like
+      writing). A typical Ant configuration for use with Jenkins would like
       like this:<programlisting>&lt;taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/&gt;
 &lt;target name="runCodeNarc"&gt;
     &lt;codenarc ruleSetFiles="rulesets/basic.xml,rulesets/exceptions.xml,rulesets/imports.xml"
@@ -654,7 +654,7 @@ task pmd &lt;&lt; {
   <sect1 id="sect-violations">
     <title>Reporting on Code Quality issues with the Violations plugin</title>
 
-    <para>One of the most useful code quality plugins for Hudson is the
+    <para>One of the most useful code quality plugins for Jenkins is the
     Violations plugin. This plugin will not analyse your project source code
     (you need to configure your build to do that), but it does a great job on
     reporting on the code quality metrics generated for individual builds and
@@ -696,8 +696,8 @@ task pmd &lt;&lt; {
     </variablelist>
 
     <para>Installing the plugin is straight-forward. Just go to the 'Plugin
-    Manager' screen and select the 'Hudson Violations plugin'. Once you have
-    installed the plugin and restarted Hudson, you will be able to use it for
+    Manager' screen and select the 'Jenkins Violations plugin'. Once you have
+    installed the plugin and restarted Jenkins, you will be able to use it for
     your projects.</para>
 
     <para>The Violations plugin does not generate the code quality metrics
@@ -791,9 +791,9 @@ task pmd &lt;&lt; {
 
       <para>But the Violations plugins also allows for a more proactive
       management of code quality. You can use the results of the code quality
-      analysis reports to influence the weather icon on the Hudson dashboard.
+      analysis reports to influence the weather icon on the Jenkins dashboard.
       This weather icon is normally related to the number of failing builds in
-      the previous five builds, but Hudson can also take into account other
+      the previous five builds, but Jenkins can also take into account other
       factors, such as code quality results. Displaying a cloudy or stormy
       icon for a project on the dashboard is a much better way of raising
       awareness about code quality issues that simply relying on graphs and
@@ -820,7 +820,7 @@ task pmd &lt;&lt; {
       <para>You can take this even further with the third column (the one with
       the yellow ball). This column lets you set a number of violations that
       will cause the build to be declared unstable. Remember, when a build
-      becomes unstable Hudson will send out notification messages, so this is
+      becomes unstable Jenkins will send out notification messages, so this is
       an even more proactive strategy.</para>
 
       <para>For example, in <xref
@@ -845,7 +845,7 @@ task pmd &lt;&lt; {
       failures (see <xref
       linkend="fig-hudson-quality-violations-rollover" />). This particular
       build is unstable because there are 16 CPD violations. In addition, if
-      you place your mouse over the weather icon, Hudson will display some
+      you place your mouse over the weather icon, Jenkins will display some
       more details about how it calculated this particular status</para>
 
       <para><figure id="fig-hudson-quality-violations-rollover">
@@ -865,18 +865,19 @@ task pmd &lt;&lt; {
     <sect2>
       <title>Working with Maven build jobs</title>
 
-      <para>Maven build jobs in Hudson use the Maven conventions and
+      <para>Maven build jobs in Jenkins use the Maven conventions and
       information in the project <filename>pom.xml</filename> file to make
       configuration easier and more light-weight. When you use the Violations
-      plugin with a Maven build job, Hudson uses these conventions to reduce
+      plugin with a Maven build job, Jenkins uses these conventions to reduce
       the amount of work you need to do to configure the plugin. You don't
-      need to tell Hudson where to find the XML reports for many of the static
-      analysis tools (for example, Checkstyle, PMD, FindBugs and CPD), as
-      Hudson can figure thia out based from the Maven conventions and plugin
-      configurations (see <xref linkend="fig-hudson-maven-violations" />). If
-      you do need to override these conventions, you can choose the 'Pattern'
-      option in the 'XML filename pattern' drop-down list, and enter a path as
-      you do for freestyle build jobs.</para>
+      need to tell Jenkins where to find the XML reports for many of the
+      static analysis tools (for example, Checkstyle, PMD, FindBugs and CPD),
+      as Jenkins can figure thia out based from the Maven conventions and
+      plugin configurations (see <xref
+      linkend="fig-hudson-maven-violations" />). If you do need to override
+      these conventions, you can choose the 'Pattern' option in the 'XML
+      filename pattern' drop-down list, and enter a path as you do for
+      freestyle build jobs.</para>
 
       <para><figure id="fig-hudson-maven-violations">
           <title>Configuring the violations plugin for a Maven project</title>
@@ -898,7 +899,7 @@ task pmd &lt;&lt; {
       results for that build job.</para>
 
       <para><figure id="fig-hudson-maven-modules">
-          <title>Hudson Maven build jobs understand Maven multi-module
+          <title>Jenkins Maven build jobs understand Maven multi-module
           structures</title>
 
           <mediaobject>
@@ -938,8 +939,8 @@ task pmd &lt;&lt; {
             </imageobject>
           </mediaobject>
         </figure>Once you have done this, when you click on the violations
-      aggregate graph on the project build job home page, Hudson will list the
-      individual violations graphs for each module.</para>
+      aggregate graph on the project build job home page, Jenkins will list
+      the individual violations graphs for each module.</para>
     </sect2>
   </sect1>
 
@@ -947,7 +948,7 @@ task pmd &lt;&lt; {
     <title>Using the Checkstyle, PMD and FindBugs reports</title>
 
     <para>You can also report individually on results from Checkstyle, PMD and
-    FindBugs. In addition to the Violations plugin, there are also Hudson
+    FindBugs. In addition to the Violations plugin, there are also Jenkins
     plugins that produce trend graphs and detailed reports for each of these
     tools individually. We will look at how to do this for Checkstyle, but the
     same approach also applies for PMD and FindBugs. You can even use the
@@ -958,7 +959,7 @@ task pmd &lt;&lt; {
     usual way. The plugins in question are called, unsurprisingly, "Checkstyle
     Plugin", "PMD Plugin", and "FindBugs Plugin". All of these plugins use the
     Static Analysis Utilities plugin, which you need to install as well (see
-    <xref linkend="fig-hudson-analysis-plugins" />). </para>
+    <xref linkend="fig-hudson-analysis-plugins" />).</para>
 
     <para><figure id="fig-hudson-analysis-plugins">
         <title>Installing the Checkstyle and Static Analysis Utilities
@@ -975,7 +976,7 @@ task pmd &lt;&lt; {
     reporting in your project configuration. Tick the 'Publish Checkstyle
     analysis results' checkbox. In a freestyle build, you will need to specify
     a path pattern to find the Checkstyle XML reports; in a Maven 2 build,
-    Hudson will figure out where to look for them by itself. </para>
+    Jenkins will figure out where to look for them by itself.</para>
 
     <para>This will provide basic Checkstyle reporting, but as usual you can
     fine-tune things further by clicking on the 'Advanced' button. In a Maven
@@ -1006,7 +1007,7 @@ task pmd &lt;&lt; {
                        width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>Now, when the build runs, Hudson will now generate a trend
+      </figure>Now, when the build runs, Jenkins will now generate a trend
     graph and detailed reports for the Checkstyle violations (see <xref
     linkend="fig-hudson-checkstyle-trend" />). From here, you can drill down
     to see violations per priority, per category, per run type, per package,
@@ -1047,7 +1048,7 @@ task pmd &lt;&lt; {
     than simple, well-tested code.</para>
 
     <para>The 'Coverage Complexity Scatter Plot Plugin' is designed to let you
-    visualize this information in your Hudson builds (see <xref
+    visualize this information in your Jenkins builds (see <xref
     linkend="fig-hudson-coverage-complexity" />). Dangerously complex and/or
     untested methods will appear high on the graph, where as the more
     well-written and well-tested methods will appear lower down.</para>
@@ -1083,7 +1084,7 @@ task pmd &lt;&lt; {
         </mediaobject>
       </figure>At the time of writing, this plugin requires Clover, so your
     build needs to have generated a Clover XML coverage report, and you need
-    to have installed and configured the Clover Hudson Plugin (see <xref
+    to have installed and configured the Clover Jenkins Plugin (see <xref
     linkend="sect-clover" />). However support for Cobertura and other tools
     is planned.</para>
   </sect1>
@@ -1098,7 +1099,7 @@ task pmd &lt;&lt; {
     a sign that your code base has a lot of unfinished work, and is therefore
     not in a very finalized state.</para>
 
-    <para>The Hudson Task Scanners plugin lets you keep track of these sorts
+    <para>The Jenkins Task Scanners plugin lets you keep track of these sorts
     of tags in your source code, and optionally flag a build with a bad
     weather icon on the dashboard if there are too many open tasks.</para>
 
@@ -1186,17 +1187,17 @@ task pmd &lt;&lt; {
     displays the results as shown in <xref
     linkend="fig-hudson-sonar" />.</para>
 
-    <para>Hudson integrates well with Sonar. The Hudson Sonar Plugin lets you
-    define Sonar instances for all of your projects, and then activate Sonar
-    in particular builds. You can run your Sonar server on a different machine
-    to your Hudson instance, or on the same. The only constraint is that the
-    Hudson instance must have JDBC access to the Sonar database, as it injects
-    code quality metrics directly into the database, without going through the
-    Sonar web site (see <xref
+    <para>Jenkins integrates well with Sonar. The Jenkins Sonar Plugin lets
+    you define Sonar instances for all of your projects, and then activate
+    Sonar in particular builds. You can run your Sonar server on a different
+    machine to your Jenkins instance, or on the same. The only constraint is
+    that the Jenkins instance must have JDBC access to the Sonar database, as
+    it injects code quality metrics directly into the database, without going
+    through the Sonar web site (see <xref
     linkend="fig-hudson-sonar-architecture" />).</para>
 
     <para><figure id="fig-hudson-sonar-architecture">
-        <title>Hudson and Sonar</title>
+        <title>Jenkins and Sonar</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1206,7 +1207,7 @@ task pmd &lt;&lt; {
           </imageobject>
         </mediaobject>
       </figure>You install the plugin in the usual way, via the Plugin
-    Manager. Once installed, you configure the Hudson Sonar Plugin in the
+    Manager. Once installed, you configure the Jenkins Sonar Plugin in the
     <command>Configure System</command> screen, in the
     <command>Sonar</command> section. This involves defining your Sonar
     instances - you can configure as many instances of Sonar as you need. The
@@ -1215,12 +1216,12 @@ task pmd &lt;&lt; {
     purposes but not very scalable. For a production environment, you will
     typically run Sonar on a real database such as MySQL or Postgres, and you
     will need to configure the JDBC connection to the production Sonar
-    database in Hudson. You do this by clicking on the 'Advanced' button and
+    database in Jenkins. You do this by clicking on the 'Advanced' button and
     filling in the appropriate fields (see <xref
     linkend="fig-hudson-sonar-config" />).</para>
 
     <para><figure id="fig-hudson-sonar-config">
-        <title>Configuring Sonar in Hudson</title>
+        <title>Configuring Sonar in Jenkins</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -1231,7 +1232,7 @@ task pmd &lt;&lt; {
         </mediaobject>
       </figure>The other thing you need to configure is when the Sonar build
     will kick off in a Sonar-enabled build job. You usually configure Sonar to
-    run with one of the long-running Hudson build jobs, such as the code
+    run with one of the long-running Jenkins build jobs, such as the code
     quality metrics build. It is not very useful to run the Sonar build more
     than once a day, as Sonar stores metrics in 24-hour slices. The default
     configuration will kick off a Sonar build in a Sonar-enabled build job
@@ -1287,9 +1288,9 @@ task pmd &lt;&lt; {
   <sect1>
     <title>Conclusion</title>
 
-    <para>Code quality is an important part of the build process, and Hudson
+    <para>Code quality is an important part of the build process, and Jenkins
     provides excellent support for the wide range of code quality-related
-    tools out there. As a result, Hudson should be a key part of your code
+    tools out there. As a result, Jenkins should be a key part of your code
     quality strategy.</para>
   </sect1>
 </chapter>

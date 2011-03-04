@@ -2,16 +2,16 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-first-steps">
-  <title>Your first steps with Hudson</title>
+  <title>Your first steps with Jenkins</title>
 
   <sect1>
     <title>Introduction</title>
 
     <para>In this chapter, we are going to take a quick guided tour through
     some of Hudson's key features. You'll get to see first-hand just how easy
-    it is to install Hudson and set up your first Hudson automated build job.
-    We won't dwell on the details too much - there are more details to come in
-    the following chapters, as well as a detailed chapter on Hudson
+    it is to install Jenkins and set up your first Jenkins automated build
+    job. We won't dwell on the details too much - there are more details to
+    come in the following chapters, as well as a detailed chapter on Jenkins
     Administration at the end of the book. This chapter is just an
     introduction. Still, by the end of the chapter, you will also be keeping
     tabs on test results, generating javadoc and publishing code coverage
@@ -22,7 +22,7 @@
     <title>Preparing your environment</title>
 
     <para>There are two ways you can tackle this chapter. You can read through
-    it without touching a keyboard, just to get an overview of what Hudson is
+    it without touching a keyboard, just to get an overview of what Jenkins is
     about. Or you can get your hands dirty, and follow along on your own
     machine.</para>
 
@@ -36,7 +36,7 @@
     Subversion repository from the book website. We'll explain how to set it
     all up in great detail further on.</para>
 
-    <para>In this chapter, we'll be using Hudson to build a Java application
+    <para>In this chapter, we'll be using Jenkins to build a Java application
     using Maven. <indexterm>
         <primary>maven</primary>
       </indexterm>Maven is a widely-used build tool in the Java world, with
@@ -45,14 +45,14 @@
     mentioned earlier, we'll also be using a Subversion repository to store
     the source code. For our build, we will also be using recent versions of
     the Java Development Kit (JDK) and Maven, but if you don't have these
-    installed on your machine, don't fret! As we will see, Hudson will install
-    them for you.</para>
+    installed on your machine, don't fret! As we will see, Jenkins will
+    install them for you.</para>
 
     <sect2>
       <title>Installing Java</title>
 
       <para>The first thing you will need to install on your machine is Java.
-      Hudson is a Java web application, so you will need at least the Java
+      Jenkins is a Java web application, so you will need at least the Java
       Runtime Environment, or JRE<indexterm>
           <primary>Java</primary>
         </indexterm><indexterm>
@@ -96,7 +96,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></par
       Subversion server on your workstation. If this sounds a little daunting,
       don't worry - it's actually pretty straightforward, and we'll step you
       through the process. Otherwise, you can follow along without running the
-      examples and still get a good feel for what Hudson can do.</para>
+      examples and still get a good feel for what Jenkins can do.</para>
 
       <para>Subversion comes pre-installed on Mac OS X and many flavors of
       Linux. Just make sure you have the Subversion server tools
@@ -180,7 +180,7 @@ Cyrus SASL authentication is available.</screen></para>
 
       <para>With Subversion now installed, we can proceed to set up the sample
       repository containing the project we will be building with
-      Hudson.</para>
+      Jenkins.</para>
     </sect2>
 
     <sect2>
@@ -257,39 +257,39 @@ pom.xml
 src/</screen></para>
 
       <para>This is all you really need to follow along for the rest of the
-      chapter. So now, let's take Hudson for a spin.</para>
+      chapter. So now, let's take Jenkins for a spin.</para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Starting up Hudson</title>
+    <title>Starting up Jenkins</title>
 
     <para><indexterm>
-        <primary>Hudson</primary>
+        <primary>Jenkins</primary>
 
         <secondary>Staring using Java Web Start</secondary>
-      </indexterm>There are several ways to run Hudson on your machine. One of
-    the easiest way to run Hudson for the first time is to use Java Web Start.
-    Java Web Start is a technology that lets you start up a Java application
-    on your local machine via a URL on a web page - it comes bundled with the
-    Java JRE. In our case, this will start a Hudson server running on your
-    machine, and let you experiment with it as if it were installed locally.
-    All you need for this to work is a recent (Java 6 or later) version of the
-    Java Runtime Environment (JRE), which we installed in the previous
-    section.</para>
+      </indexterm>There are several ways to run Jenkins on your machine. One
+    of the easiest way to run Jenkins for the first time is to use Java Web
+    Start. Java Web Start is a technology that lets you start up a Java
+    application on your local machine via a URL on a web page - it comes
+    bundled with the Java JRE. In our case, this will start a Jenkins server
+    running on your machine, and let you experiment with it as if it were
+    installed locally. All you need for this to work is a recent (Java 6 or
+    later) version of the Java Runtime Environment (JRE), which we installed
+    in the previous section.</para>
 
-    <para>For convenience, there is a link to the Hudson Java Web Start
+    <para>For convenience, there is a link to the Jenkins Java Web Start
     instance on the book resources page (at <ulink
     url="http://www.continuous-integration-with-hudson.org"></ulink>). Here
     you will find a large orange 'Launch' button in the "Book Resources"
     section (see <xref linkend="fig-hudson-webstart-page" />). You can also
-    find this link on the 'Meet Hudson' page on the Hudson website (<ulink
+    find this link on the 'Meet Jenkins' page on the Jenkins website (<ulink
     url="http://wiki.hudson-ci.org/display/HUDSON/Meet+Hudson"></ulink>),
     where, if you scroll down far enough, you should find a 'Test Drive'
     section with an identical 'Launch' button.</para>
 
     <figure id="fig-hudson-webstart-page">
-      <title>Running Hudson using Java Web Start from the Book web
+      <title>Running Jenkins using Java Web Start from the Book web
       site</title>
 
       <mediaobject>
@@ -303,18 +303,18 @@ src/</screen></para>
     <para>Java Web Start seems to work best on Firefox. When you click on the
     'Launch' button on either of these sites in Firefox, the browser will ask
     if you want to open a file called 'hudson.jnlp' using Java Web Start.
-    Click on OK - this will download Hudson and start it up on your machine
+    Click on OK - this will download Jenkins and start it up on your machine
     (see <xref linkend="fig-first-steps-downloading-hudson" />).</para>
 
     <para>In other browsers, clicking on this button may simply download the
     JNLP file. In Internet Explorer, you may even need to right click on the
     link and select 'Save Target As' to save the JNLP file, and then run it
     from Windows Explorer. However, in both of these cases, when you open the
-    JNLP file, Java Web Start will download and start Hudson.</para>
+    JNLP file, Java Web Start will download and start Jenkins.</para>
 
     <figure id="fig-first-steps-downloading-hudson">
       <title>Java Web Start will download and run the latest version of
-      Hudson</title>
+      Jenkins</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -326,20 +326,19 @@ src/</screen></para>
     </figure>
 
     <para>Java Web Start will only need to download a particular version of
-    Hudson once. From then on, when you click on the 'Launch' button again,
-    Java Web Start will use the copy of Hudson it has already downloaded (that
-    is, until the next version comes out). Ignore any messages your operating
-    system or anti-virus software may bring up - it is perfectly safe to run
-    Hudson on your local machine.</para>
+    Jenkins once. From then on, when you click on the 'Launch' button again,
+    Java Web Start will use the copy of Jenkins it has already downloaded
+    (that is, until the next version comes out). Ignore any messages your
+    operating system or anti-virus software may bring up - it is perfectly
+    safe to run Jenkins on your local machine.</para>
 
-    <para>Once it has finished downloading, it will start up Hudson on your
+    <para>Once it has finished downloading, it will start up Jenkins on your
     machine. You will be able to see it running in a small window called
-    "Hudson Console" (see <xref linkend="fig-first-steps-console" />). To stop
-    Hudson at any time, just close this window.</para>
+    "Jenkins Console" (see <xref linkend="fig-first-steps-console" />). To
+    stop Jenkins at any time, just close this window.</para>
 
     <figure id="fig-first-steps-console">
-      <title>Java Web Start will download and run the latest version of
-      Hudson</title>
+      <title>Java Web Start running Jenkins</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -350,48 +349,48 @@ src/</screen></para>
     </figure>
 
     <para><indexterm>
-        <primary>Hudson</primary>
+        <primary>Jenkins</primary>
 
         <secondary>Starting from the command line</secondary>
       </indexterm>If you are an experienced Java user versed in the ways of
-    WAR files, you may prefer to simply download the latest version of Hudson
-    and run it from the command line. Hudson comes in the form of an
+    WAR files, you may prefer to simply download the latest version of Jenkins
+    and run it from the command line. Jenkins comes in the form of an
     executable WAR file - you can download the most recent version from the
-    Hudson website home page (<ulink url="http://hudson-ci.org"></ulink>). For
-    convenience, there is also a link to the latest version of Hudson in the
-    Resources section of the book website (at <ulink
+    Jenkins website home page (<ulink url="http://hudson-ci.org"></ulink>).
+    For convenience, there is also a link to the latest version of Jenkins in
+    the Resources section of the book website (at <ulink
     url="http://www.continuous-integration-with-hudson.org"></ulink>).</para>
 
-    <para>Once downloaded, you can start Hudson from the command line as shown
-    here:</para>
+    <para>Once downloaded, you can start Jenkins from the command line as
+    shown here:</para>
 
-    <para><screen>$ <command>java -jar hudson.war</command></screen></para>
+    <para><screen>$ <command>java -jar jenkins.war</command></screen></para>
 
-    <para>Whether you have started Hudson using Java Web Start or from the
-    command line, Hudson should now be running on your local machine. By
-    default, Hudson will be running on port 8080, so you can access Hudson in
-    your web browser on <ulink url="http://localhost:8080"></ulink>.</para>
+    <para>Whether you have started Jenkins using Java Web Start or from the
+    command line, Jenkins should now be running on your local machine. By
+    default, Jenkins will be running on port 8080, so you can access Jenkins
+    in your web browser on <ulink url="http://localhost:8080"></ulink>.</para>
 
     <para>Alternatively, if you are familiar with Java application servers
-    such as Tomcat, you can simply deploy the Hudson war file to your
+    such as Tomcat, you can simply deploy the Jenkins war file to your
     application server - with Tomcat, for example, you could simply place the
-    <filename>hudson.war</filename> file in Tomcat's
-    <filename>webapps</filename> directory. If you are running Hudson on an
-    application server, the URL that you use to access Hudson will be slightly
-    different. On a default Tomcat installation, for example, you can access
-    Hudson in your web browser on <ulink
+    <filename>jenkins.war</filename> file in Tomcat's
+    <filename>webapps</filename> directory. If you are running Jenkins on an
+    application server, the URL that you use to access Jenkins will be
+    slightly different. On a default Tomcat installation, for example, you can
+    access Jenkins in your web browser on <ulink
     url="http://localhost:8080/hudson"></ulink>.</para>
 
-    <para>When you open Hudson in your browser, you should see a screen like
+    <para>When you open Jenkins in your browser, you should see a screen like
     the one shown in <xref linkend="fig-hudson-start" os="" />. You are now
-    ready to take your first steps with Hudson!</para>
+    ready to take your first steps with Jenkins!</para>
 
     <figure id="fig-hudson-start">
-      <title>The Hudson start page</title>
+      <title>The Jenkins start page</title>
 
       <mediaobject>
         <imageobject role="web">
-          <imagedata align="center" fileref="figs/web/hudson-start.png"
+          <imagedata align="center" fileref="figs/web/jenkins-home.png"
                      width="4.3in" />
         </imageobject>
       </mediaobject>
@@ -402,34 +401,34 @@ src/</screen></para>
     <title>Configuring the tools</title>
 
     <para>Before we get started, we do need to do a little configuration. More
-    precisely, we need to tell Hudson about the build tools and JDK versions
+    precisely, we need to tell Jenkins about the build tools and JDK versions
     we will be using for our builds.</para>
 
     <para>Click on the <indexterm>
-        <primary>Hudson</primary>
+        <primary>Jenkins</primary>
 
-        <secondary>Manage Hudson screen</secondary>
-      </indexterm>'Manage Hudson' link on the home page (see <xref
+        <secondary>Manage Jenkins screen</secondary>
+      </indexterm>'Manage Jenkins' link on the home page (see <xref
     linkend="fig-hudson-start" os="" />). This will take you to the 'Manage
-    Hudson' page, the central one-stop-shop for all your Hudson configuration.
-    From this screen, you can configure your Hudson server, install and
-    upgrade plugins, keep track of system load, manage distributed build
-    servers, and more! For now, however, we'll keep it simple. Just click on
-    the 'Configuring System' link at the top of the list (see <xref
+    Jenkins' page, the central one-stop-shop for all your Jenkins
+    configuration. From this screen, you can configure your Jenkins server,
+    install and upgrade plugins, keep track of system load, manage distributed
+    build servers, and more! For now, however, we'll keep it simple. Just
+    click on the 'Configuring System' link at the top of the list (see <xref
     linkend="fig-hudson-manage" />).</para>
 
     <figure id="fig-hudson-manage">
-      <title>The Manage Hudson screen</title>
+      <title>The Manage Jenkins screen</title>
 
       <mediaobject>
         <imageobject role="web">
-          <imagedata align="center" fileref="figs/web/hudson-manage.png"
-                     width="4.3in" />
+          <imagedata align="center"
+                     fileref="figs/web/hudson-manage-hudson.png" width="4.3in" />
         </imageobject>
       </mediaobject>
     </figure>
 
-    <para>This will take you to Hudson's main configuration screen (see <xref
+    <para>This will take you to Jenkins's main configuration screen (see <xref
     linkend="fig-hudson-configure" />). From here you can configure everything
     from security configuration and build tools to email servers, version
     control systems and integration with third-party software. The screen
@@ -437,11 +436,12 @@ src/</screen></para>
     default values, so you can safely ignore them for now.</para>
 
     <figure id="fig-hudson-configure">
-      <title>The Configure Hudson screen</title>
+      <title>The Configure Jenkins screen</title>
 
       <mediaobject>
         <imageobject role="web">
-          <imagedata align="center" fileref="figs/web/hudson-configure.png"
+          <imagedata align="center"
+                     fileref="figs/web/hudson-system-configuration.png"
                      width="4.3in" />
         </imageobject>
       </mediaobject>
@@ -453,30 +453,30 @@ src/</screen></para>
     set up a recent JDK and Maven installation.</para>
 
     <para>However before we start, take a look at the little blue question
-    mark icons lined to the right of the screen. These are Hudson's contextual
-    help buttons. If you are curious about a particular field, click on the
-    help icon next to it and Hudson will display a very detailed description
-    about what it is and how it works.</para>
+    mark icons lined to the right of the screen. These are Jenkins's
+    contextual help buttons. If you are curious about a particular field,
+    click on the help icon next to it and Jenkins will display a very detailed
+    description about what it is and how it works.</para>
 
     <para><indexterm>
         <primary>Maven</primary>
-      </indexterm>Let's configure Maven first. Hudson provides great
+      </indexterm>Let's configure Maven first. Jenkins provides great
     out-of-the-box support for Maven. Scroll down until you reach the 'Maven'
     section in the 'Configure System' screen (see <xref lang=""
     linkend="fig-hudson-maven" />).</para>
 
-    <para>Hudson provides several options when it comes to configuring Maven.
+    <para>Jenkins provides several options when it comes to configuring Maven.
     If you already have Maven installed on your machine, you can simply
     provide the path in the MAVEN_HOME field. Alternatively, you can install a
     Maven distribution by extracting a zip file located in a shared directory,
-    or execute a home-rolled installation script. Or you can let Hudson do all
-    the hard work and download Maven for you. To choose this option, just tick
-    the 'Install automatically' check box. Hudson will download and install
-    Maven from the Apache web site the first time a build job needs it. Just
-    choose the Maven version you want to install and Hudson will do the rest.
-    You will also need to give a name for your Maven version (imaginatively
-    called "Maven 2.2.1" in the example), so that you can refer to it in your
-    build jobs.</para>
+    or execute a home-rolled installation script. Or you can let Jenkins do
+    all the hard work and download Maven for you. To choose this option, just
+    tick the 'Install automatically' check box. Jenkins will download and
+    install Maven from the Apache web site the first time a build job needs
+    it. Just choose the Maven version you want to install and Jenkins will do
+    the rest. You will also need to give a name for your Maven version
+    (imaginatively called "Maven 2.2.1" in the example), so that you can refer
+    to it in your build jobs.</para>
 
     <para>For this to work, you need to have an Internet connection. If you
     are behind a proxy, you'll need to provide your proxy information - we
@@ -495,13 +495,13 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para>One of the nice things about the Hudson Maven installation process
+    <para>One of the nice things about the Jenkins Maven installation process
     is how well it works with remote build agents. Later on in the book, we'll
-    see how Hudson can also run builds on remote build servers. You can define
-    a standard way of installing Maven for all of your build servers
+    see how Jenkins can also run builds on remote build servers. You can
+    define a standard way of installing Maven for all of your build servers
     (downloading from the internet, unzipping a distribution bundle on a
     shared server,...) - all of these options will work when you add a new
-    remote build agent or set up a new build server using this Hudson
+    remote build agent or set up a new build server using this Jenkins
     configuration.</para>
 
     <para><indexterm>
@@ -512,10 +512,10 @@ src/</screen></para>
     a Java Runtime Environment - the JDK contains extra development tools such
     as the Java compiler) already installed on your workstation, you can
     simply provide the path to your JDK in the JAVA_HOME field. Otherwise, you
-    can ask Hudson to download the JDK from the <ulink
+    can ask Jenkins to download the JDK from the <ulink
     url="http://java.sun.com"></ulink> website the first time a build job
     requires it. This is similar to the automatic Maven installation feature -
-    just pick the JDK version you need and Hudson will take care of all the
+    just pick the JDK version you need and Jenkins will take care of all the
     logistics. However, for licensing reasons, you will also need to tick a
     check box to indicate that you agree with the Java SDK License
     Agreement.</para>
@@ -532,7 +532,7 @@ src/</screen></para>
     </figure>
 
     <para>The last thing you would typically set up is notification. When a
-    Hudson build breaks, and when it works again, it can send out email
+    Jenkins build breaks, and when it works again, it can send out email
     messages to the team to spread the word. Using plugins, you can also get
     it to send instant messages or SMS messages, post entries on Twitter, or
     get people notified in a few other ways. It all depends on what works best
@@ -541,15 +541,15 @@ src/</screen></para>
 
     <para>That is all we need to configure at this stage. Go to the bottom of
     the screen and click on the 'Save' button. You are now ready to set up
-    your first Hudson build job!</para>
+    your first Jenkins build job!</para>
   </sect1>
 
   <sect1>
-    <title>Your first Hudson build job</title>
+    <title>Your first Jenkins build job</title>
 
-    <para>Build jobs are at the heart of the Hudson build process. Simply put,
-    you can think of a Hudson build job as a particular task or step in your
-    build process. This may involve simply compiling your source code and
+    <para>Build jobs are at the heart of the Jenkins build process. Simply
+    put, you can think of a Jenkins build job as a particular task or step in
+    your build process. This may involve simply compiling your source code and
     running your unit tests. Or you might want a build job to do other related
     tasks, such as running your integration tests, measuring code coverage or
     code quality metrics, generating technical documentation, or even
@@ -593,15 +593,15 @@ src/</screen></para>
     <para>Our application is a Java module, built using Maven, that implements
     the core business logic of the Game of Life. We'll worry about the user
     interfaces later on. For now, let's see how we can automate this build in
-    Hudson. If you are not familiar with Maven, or prefer Ant or another build
-    framework - don't worry! The examples don't require much knowledge of
-    Maven, and we'll be looking at plenty of examples of using other build
+    Jenkins. If you are not familiar with Maven, or prefer Ant or another
+    build framework - don't worry! The examples don't require much knowledge
+    of Maven, and we'll be looking at plenty of examples of using other build
     tools later on in the book.</para>
 
     <para>For our first build job, we will keep it simple: we are just going
     to compile and test our sample application. Click on the 'New Job' link.
     You should get to a screen similar to <xref
-    linkend="fig-first-build-job" />. Hudson supports several different types
+    linkend="fig-first-build-job" />. Jenkins supports several different types
     of build job. The two most commonly-used are the free-style builds and the
     Maven 2 builds. The free-style projects allow you to configure just about
     any sort of build job: they are highly flexible and very configurable. The
@@ -618,7 +618,7 @@ src/</screen></para>
     our Game Of Life project.</para>
 
     <para><figure id="fig-first-build-job">
-        <title>Setting up your first build job in Hudson</title>
+        <title>Setting up your first build job in Jenkins</title>
 
         <mediaobject>
           <imageobject role="web">
@@ -628,16 +628,25 @@ src/</screen></para>
         </mediaobject>
       </figure></para>
 
-    <para>Once you click on OK, Hudson will display the project configuration
+    <para>Once you click on OK, Jenkins will display the project configuration
     screen (see <xref linkend="fig-new-job-svn" />).</para>
 
-    <para>In a nutshell, Hudson works by checking out the source code of your
-    project and building it in it's own workspace. So the next thing you need
-    to do is to tell Hudson where it can find the source code for your
-    project. You do this in the 'Source Code Managment' section. Hudson
-    provides support for CVS and Subversion out of the box, and many others
-    such as Git, Mercurial, ClearCase, Perforce and many more via
-    plugins.</para>
+    <para><figure id="fig-first-build-job">
+        <title>Setting up your first build job in Jenkins</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center" fileref="figs/web/hudson-new-job.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>In a nutshell, Jenkins works by checking out the source code of
+    your project and building it in it's own workspace. So the next thing you
+    need to do is to tell Jenkins where it can find the source code for your
+    project. You do this in the 'Source Code Managment' section (see <xref
+    linkend="fig-new-job-svn" />). Jenkins provides support for CVS and
+    Subversion out of the box, and many others such as Git, Mercurial,
+    ClearCase, Perforce and many more via plugins.</para>
 
     <para><indexterm>
         <primary>SCM</primary>
@@ -646,11 +655,11 @@ src/</screen></para>
       </indexterm>For this project, we will be getting the source code from
     the local Subversion repository we set up earlier (so make sure you have
     this Subversion repository up and running, as we described in <xref
-    linkend="sect-first-steps-environment" />). On the Hudson screen, choose
+    linkend="sect-first-steps-environment" />). On the Jenkins screen, choose
     'Subversion' and enter <ulink
     url="svn://localhost/gameoflife/trunk"></ulink> as the Repository URL (see
     <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
-    Directory Module' field. This makes Hudson check out the source code
+    Directory Module' field. This makes Jenkins check out the source code
     directly into the build job's workspace. If you don't do this, Subversion
     will check the source code out to a subdirectory called
     <filename>trunk</filename>. Using the build job's workspace makes some of
@@ -658,7 +667,7 @@ src/</screen></para>
     other options up until here with their default values.</para>
 
     <figure id="fig-new-job-svn">
-      <title>Telling Hudson where to find the source code</title>
+      <title>Telling Jenkins where to find the source code</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -668,9 +677,9 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para>Once we have told Hudson where to find the source code for our
+    <para>Once we have told Jenkins where to find the source code for our
     application, we need to tell it how often it should check for updates. We
-    want Hudson to monitor the repository and start a build whenever any
+    want Jenkins to monitor the repository and start a build whenever any
     changes have been committed. This is a common way to set up a build job in
     a Continuous Integration context, as it provides fast feedback if the
     build fails. Other approaches include building on regular intervals (for
@@ -684,7 +693,7 @@ src/</screen></para>
         <secondary>Configuring in Freestyle build jobs</secondary>
       </indexterm>We configure all of this in the 'Build Triggers' section
     (see <xref linkend="fig-new-job-triggers" />). Pick the 'Poll SCM' option
-    and enter '* * * * *' (that's five asterisks) in the Schedule box. Hudson
+    and enter '* * * * *' (that's five asterisks) in the Schedule box. Jenkins
     schedules are configured using the <command>cron</command> syntax,
     well-known in the Unix world. The <command>cron</command> syntax consists
     of five fields separated by white space, indicating respectivly the minute
@@ -699,7 +708,7 @@ src/</screen></para>
     "@hourly".</para>
 
     <para>Don't worry if your Unix skills are a little rusty - if you click on
-    the blue question mark icon on the side of the schedule box, Hudson will
+    the blue question mark icon on the side of the schedule box, Jenkins will
     bring up a very complete refresher.</para>
 
     <figure id="fig-new-job-triggers">
@@ -721,7 +730,7 @@ src/</screen></para>
     step, and then tag the build in a second step if all of the functional
     tests succeed. In technical terms, a build step might involve invoking an
     Ant task or a Maven target, or running a shell script. There are also
-    Hudson plugins that let you use additional types of build steps: Gant,
+    Jenkins plugins that let you use additional types of build steps: Gant,
     Grails, Gradle, Rake, Ruby, MSBuild and many other build tools are all
     supported.</para>
 
@@ -751,20 +760,21 @@ src/</screen></para>
 
     <para>By default, this build job will fail if the code does not compile or
     if any of the unit tests fail. That's the most fundamental thing that
-    you'd expect of any build server. But Hudson also does a great job of
+    you'd expect of any build server. But Jenkins also does a great job of
     helping you display your test results and test result trends.</para>
 
     <para>The defacto standard for test reporting in the Java world is an XML
     format used by JUnit. This format is also used by many other Java testing
-    tools, such as TestNG, Spock and Easyb. Hudson understands this format, so
-    if your build produces JUnit XML test results, Hudson can generate nice
-    graphical test reports and statistics on test results over time, and also
-    let you view the details of any test failures. Hudson also keeps track of
-    how long your tests take to run, both globally, and per test - this can
-    come in handy if you need to track down performance issues.</para>
+    tools, such as TestNG, Spock and Easyb. Jenkins understands this format,
+    so if your build produces JUnit XML test results, Jenkins can generate
+    nice graphical test reports and statistics on test results over time, and
+    also let you view the details of any test failures. Jenkins also keeps
+    track of how long your tests take to run, both globally, and per test -
+    this can come in handy if you need to track down performance
+    issues.</para>
 
-    <para>So the next thing we need to do is to get Hudson to keep tabs on our
-    unit tests.</para>
+    <para>So the next thing we need to do is to get Jenkins to keep tabs on
+    our unit tests.</para>
 
     <para><indexterm>
         <primary>JUnit reports</primary>
@@ -777,20 +787,20 @@ src/</screen></para>
     <filename>surefire-reports</filename> in the <filename>target</filename>
     directory. So enter "**/target/surefire-reports/*.xml" in the 'Test report
     XMLs' field. The two asterisks at the start of the path ('**') are a best
-    practice to make the configuration a bit more robust: they allow Hudson to
-    find the target directory no matter how we have configured Subversion to
-    check out the source code.</para>
+    practice to make the configuration a bit more robust: they allow Jenkins
+    to find the target directory no matter how we have configured Subversion
+    to check out the source code.</para>
 
     <para>Another thing you often want to do is to archive your build results.
-    Hudson can store a copy of the binary artifacts generated by your build,
+    Jenkins can store a copy of the binary artifacts generated by your build,
     allowing you to download the binaries produced by a build directly from
     the build results page. It will also post the latest binary artifacts on
     the project home page, which is a convenient way to distribute the latest
     and greatest version of your application. You can activate this option by
     ticking the 'Archive the artifacts' checkbox and indicating which binary
-    artifacts you want Hudson to archive. In <xref
+    artifacts you want Jenkins to archive. In <xref
     linkend="fig-new-job-test-reports" />, for example, we have configured
-    Hudson to store all of the JAR files generated by this build job.</para>
+    Jenkins to store all of the JAR files generated by this build job.</para>
 
     <figure id="fig-new-job-test-reports">
       <title>Configuring JUnit test reports and artifact archiving</title>
@@ -812,9 +822,9 @@ src/</screen></para>
   <sect1>
     <title>Our first build job in action</title>
 
-    <para>Once you save your new build job, Hudson will display the home page
+    <para>Once you save your new build job, Jenkins will display the home page
     for this job (see <xref linkend="fig-new-job-running" />). This is where
-    Hudson displays details about the latest build results and the build
+    Jenkins displays details about the latest build results and the build
     history.</para>
 
     <para>If you wait a minute or so, the build should kick off automatically
@@ -835,15 +845,15 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para>The build will also now figure proudly on your Hudson server's home
+    <para>The build will also now figure proudly on your Jenkins server's home
     page (see <xref linkend="fig-hudson-dashboard" />). This page shows a
     summary of all of your build jobs, including the current build status and
     general state of heath of each of your builds. It tells you when each
     build ran successfully for the last time, and when it last failed, and
     also the result of the last build.</para>
 
-    <para>Once of Hudson's specialities is the way it lets you get an idea of
-    build behaviour over time. For example, Hudson uses a weather metaphor to
+    <para>Once of Jenkins's specialities is the way it lets you get an idea of
+    build behaviour over time. For example, Jenkins uses a weather metaphor to
     help give you an idea of the stability of your builds. Essentially, the
     more your builds fail, the worse the weather gets. This helps you get an
     idea of whether a particular broken build is an isolated event, or if the
@@ -855,7 +865,7 @@ src/</screen></para>
     on top of a clock).</para>
 
     <figure id="fig-hudson-dashboard">
-      <title>The Hudson dashboard</title>
+      <title>The Jenkins dashboard</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -910,8 +920,8 @@ Checked out revision 6.</screen></para>
 
     <para>This will download the source code for our demo project into the
     <filename>gameoflife</filename> directory. Now, if we make any changes, we
-    will be able to push them onto the Subversion repository and see if Hudson
-    can pick them up.</para>
+    will be able to push them onto the Subversion repository and see if
+    Jenkins can pick them up.</para>
 
     <para>So let's make a change. The idea is to introduce a code change that
     will cause the unit tests to fail. If your Java is a bit rusty, don't
@@ -922,8 +932,8 @@ Checked out revision 6.</screen></para>
     describes this behaviour. Then you would verify that the test fails with
     the existing code, and implement the code to ensure that the test passes.
     <emphasis>Then</emphasis> you would commit your changes to Subversion,
-    allowing Hudson to build them. However this would be a poor demonstration
-    of how Hudson handles unit test failures. So in this example, we will,
+    allowing Jenkins to build them. However this would be a poor demonstration
+    of how Jenkins handles unit test failures. So in this example, we will,
     against all best practices, simply modify the application code
     directly.</para>
 
@@ -1005,7 +1015,7 @@ Committed revision 7.</screen></para>
 
     <para><indexterm>
         <primary>Build failures</primary>
-      </indexterm>Now go back to the Hudson web page. After a minute or so, a
+      </indexterm>Now go back to the Jenkins web page. After a minute or so, a
     new build should kick off, and fail. In fact, there are several other
     places which are affected by this change, and the regression tests related
     to these features are now failing. On the build job home page, you will
@@ -1030,10 +1040,10 @@ Committed revision 7.</screen></para>
       </mediaobject>
     </figure>
 
-    <para>If you click on the new build history entry, Hudson will give you
+    <para>If you click on the new build history entry, Jenkins will give you
     some more details about what went wrong (see <xref
-    linkend="fig-new-job-failure-details" />). Hudson tells us that there were
-    11 new test failures in this build, something which can be seen at a
+    linkend="fig-new-job-failure-details" />). Jenkins tells us that there
+    were 11 new test failures in this build, something which can be seen at a
     glance in the <indexterm>
         <primary>Test Result Trend</primary>
       </indexterm>Test Result Trend graph - red indicates test failures. You
@@ -1053,8 +1063,8 @@ Committed revision 7.</screen></para>
     </figure>
 
     <para>If you want to know exactly what went wrong, that's easy enough to
-    figure out as well. If you click on the failed test classes, Hudson brings
-    up the actual details of the test failures (see <xref
+    figure out as well. If you click on the failed test classes, Jenkins
+    brings up the actual details of the test failures (see <xref
     linkend="fig-hudson-new-job-test-failure-details" />), which is a great
     help when it comes to reproducing and fixing the issue.</para>
 
@@ -1070,7 +1080,7 @@ Committed revision 7.</screen></para>
       </mediaobject>
     </figure>
 
-    <para>Hudson displays a host of information about the failed test in a
+    <para>Jenkins displays a host of information about the failed test in a
     very readable form, including the error message the test produced, the
     stack trace, how long the test has been broken, and how long it took to
     run. Often, this in itself is enough to put a developer on the right track
@@ -1110,13 +1120,13 @@ Committed revision 7.</screen></para>
     <para>When you've done this, commit your changes again:<screen>$ <command>svn commit -m "Fixed broken unit tests"</command>
 Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
 Transmitting file data .
-Committed revision 8.</screen>Once you've committed these changes, Hudson
+Committed revision 8.</screen>Once you've committed these changes, Jenkins
     should pick them up and kick off a build. Once this is done, you will be
     able to see the fruit of your work on the build job home page (see <xref
     linkend="fig-new-job-fixed-build" />) - the build status is blue again and
     all is well. Also notice the way we are building up a trend graph showing
     the number of succeeding unit tests over time - this sort of report really
-    is one of Hudson's strong points.</para>
+    is one of Jenkins's strong points.</para>
 
     <figure id="fig-new-job-fixed-build">
       <title>Now the build is back to normal</title>
@@ -1142,9 +1152,9 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     This sort of technical documentation has the advantage of being cheap to
     produce, accurate and always up-to-date.</para>
 
-    <para>Hudson can integrate Javadoc API documentation directly into the
-    Hudson web site. This way, everyone can find the latest Javadoc easily, in
-    a well known place. Often, this sort of task is performed in a separate
+    <para>Jenkins can integrate Javadoc API documentation directly into the
+    Jenkins web site. This way, everyone can find the latest Javadoc easily,
+    in a well known place. Often, this sort of task is performed in a separate
     build job, but for simplicity we are going to add another build step to
     the gameoflife-default build job to generate and display Javadoc
     documention for the Game Of Life API.</para>
@@ -1171,13 +1181,13 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     <para>Now go to the 'Post-build Action' and tick the 'Publish Javadoc'
     checkbox. In the 'Javadoc directory' field, enter
     <filename>target/site/apidocs</filename> - this is where Maven will place
-    the Javadocs it generates. Hudson may display an error message saying that
-    this directory doesn't exist. Hudson is correct - this directory won't
-    exist until we run the <command>javadoc:javadoc</command> goal, but since
-    we haven't run this command yet we can safely ignore the message at this
-    stage.</para>
+    the Javadocs it generates. Jenkins may display an error message saying
+    that this directory doesn't exist. Jenkins is correct - this directory
+    won't exist until we run the <command>javadoc:javadoc</command> goal, but
+    since we haven't run this command yet we can safely ignore the message at
+    this stage.</para>
 
-    <para>If you tick 'Retain Javadoc for each successful build, Hudson will
+    <para>If you tick 'Retain Javadoc for each successful build, Jenkins will
     also keep track of the Javadocs for previous builds - not always useful,
     but it can come in handy at times.</para>
 
@@ -1188,11 +1198,11 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     this link will open the latest version of the Javadoc documentation (see
     <xref linkend="fig-hudson-javadoc-results" />). You will also see this
     link on the build details page, where it will point to the Javadoc for
-    that particular build, if you have asked Hudson to store Javadoc for each
+    that particular build, if you have asked Jenkins to store Javadoc for each
     build.</para>
 
     <figure id="fig-hudson-javadoc-results">
-      <title>Hudson will add a Javadoc link to your build results</title>
+      <title>Jenkins will add a Javadoc link to your build results</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -1209,16 +1219,16 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
 
     <para><indexterm>
         <primary>Code Coverage</primary>
-      </indexterm>Reporting is one of Hudson's strong points. We have seen how
-    easy it is to display test results and to publish Javadocs, but you can
-    publish a large number of other very useful reports using Hudson's
+      </indexterm>Reporting is one of Jenkins's strong points. We have seen
+    how easy it is to display test results and to publish Javadocs, but you
+    can publish a large number of other very useful reports using Jenkins's
     plugins.</para>
 
-    <para>Plugins are another one of Hudson's selling points - there are
+    <para>Plugins are another one of Jenkins's selling points - there are
     plugins for doing just about anything, from integrating new build tools or
     version control systems to notification mechanisms and reporting. In
-    addition, Hudson plugins are very easy to install and integrate smoothly
-    into the existing Hudson architecture.</para>
+    addition, Jenkins plugins are very easy to install and integrate smoothly
+    into the existing Jenkins architecture.</para>
 
     <para>To see how the plugins work, we are going to integrate code coverage
     metrics using the Cobertura plugin. Code coverage is an indication of how
@@ -1230,13 +1240,13 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
 
     <para>Cobertura (<ulink url="http://cobertura.sourceforge.net"></ulink>)
     is an open source code coverage tool that works well with both Maven and
-    Hudson. Our Maven demonstration project is already configured to record
-    code coverage metrics, so all we need to do is to install the Hudson
-    Cobertura plugin and generate the code coverage metrics for Hudson to
+    Jenkins. Our Maven demonstration project is already configured to record
+    code coverage metrics, so all we need to do is to install the Jenkins
+    Cobertura plugin and generate the code coverage metrics for Jenkins to
     record and display.</para>
 
     <figure id="fig-hudson-plugin-manager">
-      <title>Hudson has a large range of plugins available</title>
+      <title>Jenkins has a large range of plugins available</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -1247,12 +1257,12 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
       </mediaobject>
     </figure>
 
-    <para>To install a new plugin, go to the 'Manage Hudson' page and click on
-    the 'Manage Plugins' entry. This will display a list of the available
+    <para>To install a new plugin, go to the 'Manage Jenkins' page and click
+    on the 'Manage Plugins' entry. This will display a list of the available
     plugins as well as the plugins already installed on your server (see <xref
     linkend="fig-hudson-plugin-manager" />). If your build server doesn't have
     an internet connection, you can also manually install a plugin by
-    downloading the plugin file elsewhere and uploading it to your Hudson
+    downloading the plugin file elsewhere and uploading it to your Jenkins
     installation (just open the 'Advanced' tab in <xref
     linkend="fig-hudson-plugin-manager" />), or by copying the plugin to the
     <filename>$HUDSON_HOME/plugins</filename> directory.</para>
@@ -1263,8 +1273,8 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     on the 'Install' button at the bottom of the screen.</para>
 
     <para>This will download and install the plugin for you. Once it is done,
-    you will need to restart your Hudson instance to see the fruits of your
-    labor. When you have restarted Hudson, go back to the 'Manage Plugins'
+    you will need to restart your Jenkins instance to see the fruits of your
+    labor. When you have restarted Jenkins, go back to the 'Manage Plugins'
     screen and click on the 'Installed' tab - there should now be a 'Cobertura
     Plugin' entry in the list of installed plugins on this page.</para>
 
@@ -1273,18 +1283,18 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
 
     <para>To set up code coverage metrics in our project, we need to do two
     things. First we need to generate the Cobertura coverage data in an XML
-    form that Hudson can use; then we need to configure Hudson to display the
-    coverage reports.</para>
+    form that Jenkins can use; then we need to configure Jenkins to display
+    the coverage reports.</para>
 
     <para>Our Game Of Life project already has been configured to generate XML
     code coverage reports if we ask it. All you need to do is to run
     <command>mvn cobertura:cobertura</command> to generate the reports in XML
     form. Cobertura can also generate HTML reports, but in our case we will be
-    letting Hudson take care of the reporting, so we can save on build time by
-    not generating the For this example, for simplicity, we will just add the
-    <command>cobertura:cobertura</command> goal to the second build step (see
-    <xref linkend="fig-hudson-cobertura-build-step" />). You could also add a
-    new build step just for the code coverage metrics. In a real-world
+    letting Jenkins take care of the reporting, so we can save on build time
+    by not generating the For this example, for simplicity, we will just add
+    the <command>cobertura:cobertura</command> goal to the second build step
+    (see <xref linkend="fig-hudson-cobertura-build-step" />). You could also
+    add a new build step just for the code coverage metrics. In a real-world
     project, code quality metrics like this are typically placed in a distinct
     build job, which is run less frequently than the default build.</para>
 
@@ -1301,25 +1311,25 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
       </mediaobject>
     </figure>
 
-    <para>Next, we need to tell Hudson to keep track of our code coverage
+    <para>Next, we need to tell Jenkins to keep track of our code coverage
     metrics. Scroll down to the 'Post-build Actions' section. You should see a
-    new check box labeled 'Publish Cobertura Reports'. Hudson will often add
+    new check box labeled 'Publish Cobertura Reports'. Jenkins will often add
     UI elements like this when you install a new plugin. When you tick this
-    box, Hudson will display the configuration options for the Cobertura
+    box, Jenkins will display the configuration options for the Cobertura
     plugin that we installed earlier (see <xref
     linkend="fig-hudson-cobertura-config" />).</para>
 
-    <para>Like most of the code-quality related plugins in Hudson, the
-    Cobertura plugin lets you fine-tune not only the way Hudson displays the
+    <para>Like most of the code-quality related plugins in Jenkins, the
+    Cobertura plugin lets you fine-tune not only the way Jenkins displays the
     report data, but also how it interprets the data. In the 'Coverage Metrics
     Targets' section, you can define what you consider to be the minimum
     acceptable levels of code coverage. In <xref
-    linkend="fig-hudson-cobertura-config" />, we have configured Hudson to
+    linkend="fig-hudson-cobertura-config" />, we have configured Jenkins to
     list any builds with less than 50% test coverage as "unstable" (indicated
     by a yellow ball), and notify the team accordingly.</para>
 
     <figure id="fig-hudson-cobertura-config">
-      <title>Configuring the test coverage metrics in Hudson</title>
+      <title>Configuring the test coverage metrics in Jenkins</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -1349,7 +1359,7 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     displayed as red and green bars.</para>
 
     <figure id="fig-hudson-initial-coverage-report">
-      <title>Hudson displays code coverage metrics on the build home
+      <title>Jenkins displays code coverage metrics on the build home
       page</title>
 
       <mediaobject>
@@ -1365,11 +1375,11 @@ Committed revision 8.</screen>Once you've committed these changes, Hudson
     for each package in your application, and even drill down to see the code
     coverage (or lack thereof) for an individual class (see <xref
     linkend="fig-hudson-code-coverage-class" />). When you get to this level,
-    Hudson displays both the overall coverage statistics for the class, and
+    Jenkins displays both the overall coverage statistics for the class, and
     also highlights the lines that were executed in green, and those that
     weren't in red.</para>
 
-    <para>This reporting gets better with time. Hudson not only reports
+    <para>This reporting gets better with time. Jenkins not only reports
     metrics data for the latest build, but also keeps track of metrics over
     time, so that you can see how they evolve throughout the life of the
     project.</para>
@@ -1399,7 +1409,7 @@ Transmitting file data ..
 Committed revision 8.</screen></para>
 
     <figure id="fig-hudson-code-coverage-class">
-      <title>Hudson lets you display code coverage metrics for packages and
+      <title>Jenkins lets you display code coverage metrics for packages and
       classes</title>
 
       <mediaobject>
@@ -1412,7 +1422,7 @@ Committed revision 8.</screen></para>
     </figure>
 
     <para>This will trigger another build, which should result in slightly
-    better code coverage statistics. You will also notice that Hudson is now
+    better code coverage statistics. You will also notice that Jenkins is now
     displaying a graph of code coverage over time, not just the latest results
     (see <xref lang="" linkend="fig-hudson-code-coverage-graph" />).</para>
 
@@ -1425,11 +1435,11 @@ Committed revision 8.</screen></para>
     itself.</para>
 
     <para>Nevertheless, metrics like this can give you a great insight into
-    the health of your project, and Hudson presents them in a particularly
+    the health of your project, and Jenkins presents them in a particularly
     accessible way.</para>
 
     <figure id="fig-hudson-code-coverage-graph">
-      <title>Hudson also displays a graph of code coverage over time</title>
+      <title>Jenkins also displays a graph of code coverage over time</title>
 
       <mediaobject>
         <imageobject role="web">
@@ -1437,15 +1447,11 @@ Committed revision 8.</screen></para>
                      fileref="figs/web/hudson-code-coverage-graph.png"
                      width="4.3in" />
         </imageobject>
-
-        <!-- v
-          
--->
       </mediaobject>
     </figure>
 
     <para>This is just one of the code quality metrics plugins that have been
-    written for Hudson. There are many more (over fifty reporting plugins
+    written for Jenkins. There are many more (over fifty reporting plugins
     alone at the time of writing). We'll look at some more of them in the
     chapter on Continuous Code Quality.</para>
   </sect1>
@@ -1454,11 +1460,11 @@ Committed revision 8.</screen></para>
     <title>Conclusion</title>
 
     <para>In this chapter, we have gone through what you need to know to get
-    started with Hudson. You should be able to set up a new build job, and
+    started with Jenkins. You should be able to set up a new build job, and
     setting up reporting on JUnit test results and javadocs. And you have seen
     how to add a reporting pluging and keep tabs on code coverage. Well done!
-    But there's still a lot more to learn about Hudson - in the following
-    chapters, we will be looking at how Hudson can help you improve your build
-    automation process in many other areas as well.</para>
+    But there's still a lot more to learn about Jenkins - in the following
+    chapters, we will be looking at how Jenkins can help you improve your
+    build automation process in many other areas as well.</para>
   </sect1>
 </chapter>
