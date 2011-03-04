@@ -397,10 +397,10 @@ Finished: SUCCESS</screen></para>
 
     <para>Naturally, the build job that you trigger must be a parameterized
     build job (as illustrated in <xref
-    linkend="fig-hudson-build-parameters-unit-test" />), and you must pass
-    through all of the parameters it requires.</para>
+    linkend="fig-hudson-build-parameters-interation-test" />), and you must
+    pass through all of the parameters it requires.</para>
 
-    <para><figure id="fig-hudson-build-parameters-unit-test">
+    <para><figure id="fig-hudson-build-parameters-integration-test">
         <title>The build job you trigger must also be a parameterized build
         job.</title>
 
@@ -443,44 +443,6 @@ Finished: SUCCESS</screen></para>
     particularly useful for tests, where you can test your application using a
     single build job, but under a wide variety of conditions (browsers,
     databases, and so forth).</para>
-
-    <para>To create a new multi-configuration build job, simply choose this
-    option on the 'New Job' page (see <xref
-    linkend="hudson-build-multi-configuration" />).</para>
-
-    <para><figure id="fig-hudson-build-multi-configuration">
-        <title>Creating a multi-configuration build job</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-build-multi-configuration.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>A multi-configuration build job is just like any other build
-    job, but with one very important additional element: the
-    <command>Configuration Matrix</command> (see <xref
-    linkend="fig-hudson-build-multi-config" />). This is where you define the
-    different configurations that will be used to run your builds.</para>
-
-    <para><figure id="fig-hudson-build-multi-config">
-        <title>Creating a multi-configuration build job</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/hudson-build-multi-config.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>You can define different axes of configuration options,
-    including running the build job on different slaves or on different JDKs,
-    or providing your own custom properties to the build. For example, in the
-    build jobs discussed earlier, we might want to test our application for
-    different databases and different operating systems. We could define one
-    axis defining slave machines with different operating systems we wanted
-    our build to run on, and another axis defining all the possible database
-    values. Jenkins will then run the build job for each possible database and
-    each possible operating system.</para>
 
     <sect2>
       <title>Setting up a multi-configuration build</title>
@@ -615,11 +577,11 @@ Finished: SUCCESS</screen></para>
       multi-configuration build just like any other. However, Jenkins will
       treat each combination of variables as a separate build job. Jenkins
       displays the aggregate results in a table, where all of the combinations
-      are shown (see <xref linkend="fig-hudson-build-mulit-config-custom" />).
+      are shown (see <xref linkend="fig-hudson-build-multi-config-custom-results" />).
       If you click on any of the balls, Jenkins will take you to the detailed
       results for that particular build.</para>
 
-      <para><figure id="fig-hudson-build-mulit-config-custom">
+      <para><figure id="fig-hudson-build-multi-config-results">
           <title>Multi-configuration build results</title>
 
           <mediaobject>
@@ -816,11 +778,11 @@ Finished: SUCCESS</screen></para>
         </figure>Once you are happy with the configuration of your view, save
       your changes. Your view will now appear as an additional tab on the
       dashboard, displaying only the jobs you specified (see <xref
-      linkend="fig-hudson-display-view" />). When you are in a view, Jenkins
+      linkend="fig-hudson-view-display" />). When you are in a view, Jenkins
       will also display menu options allowing you to edit or delete the
       view.</para>
 
-      <para><figure id="fig-hudson-view-add-column">
+      <para><figure id="fig-hudson-view-display">
           <title>The final view</title>
 
           <mediaobject>
@@ -1167,7 +1129,7 @@ Finished: SUCCESS</screen></para>
       manually using a new menu option called 'Perform Maven Release' (see
       <xref linkend="fig-jenkins-m2-release-menu" />).</para>
 
-      <para><figure id="fig-build-m2release-plugin">
+      <para><figure id="fig-jenkins-m2-release-menu">
           <title>The 'Perform Maven Release' menu option</title>
 
           <mediaobject>
