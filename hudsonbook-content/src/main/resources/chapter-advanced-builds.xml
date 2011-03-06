@@ -577,9 +577,10 @@ Finished: SUCCESS</screen></para>
       multi-configuration build just like any other. However, Jenkins will
       treat each combination of variables as a separate build job. Jenkins
       displays the aggregate results in a table, where all of the combinations
-      are shown (see <xref linkend="fig-hudson-build-multi-config-custom-results" />).
-      If you click on any of the balls, Jenkins will take you to the detailed
-      results for that particular build.</para>
+      are shown (see <xref
+      linkend="fig-hudson-build-multi-config-custom-results" />). If you click
+      on any of the balls, Jenkins will take you to the detailed results for
+      that particular build.</para>
 
       <para><figure id="fig-hudson-build-multi-config-results">
           <title>Multi-configuration build results</title>
@@ -1059,7 +1060,21 @@ Finished: SUCCESS</screen></para>
   <sect1>
     <title>Build pipelines and promotions</title>
 
-    <para>TODO - introduction</para>
+    <para>Continuous Integration is not just about automatically building and
+    testing software, but can also help in the broader context of the software
+    product development and release life cycle. In many organizations, the
+    life of a particular version of an application or product starts out in
+    development. When it is deemed ready, it is passed on to a QA team for
+    testing. If they consider the version acceptable, they pass it on to
+    selected users for more testing in a UAT (User Acceptance Testing)
+    environment. And if the users are happy, it is shipped out into
+    production. Of course, there are almost as many variations on this as
+    there are software development teams, but one common principle is that
+    specific versions of your software are selected, according to certain
+    quality-related criteria, to be "promoted" to the next stage of the life
+    cycle. This is known as build promotion, and the broader process is known
+    as a build pipeline. In this section, we will look at how you can
+    implement build pipelines using Jenkins.</para>
 
     <sect2>
       <title>Managing Maven Releases with the M2Release plugin</title>
@@ -1382,8 +1397,9 @@ Finished: SUCCESS</screen></para>
       automated web tests, we would like to deploy the application to a
       functional testing environment where it can be tested by human testers.
       The deployment to this environment is implemented in the
-      <command>phoenix-deploy-to-test</command> build job. This promotion
-      strategy is illustrated in <xref
+      <command>phoenix-test-deploy</command> build job. Once the testers have
+      validated a version, it can be promoted into UAT, and then into
+      production. The full promotion strategy is illustrated in <xref
       linkend="fig-jenkins-build-promotion-jobs" />.</para>
 
       <para><figure id="fig-jenkins-build-promotion-jobs">
@@ -1431,7 +1447,51 @@ Finished: SUCCESS</screen></para>
       automated web tests (executed by the
       <command>phoenix-web-tests</command> build job) are successful.</para>
 
-      <para>Next you need to tell Jenkins what to do when the build is
+      <para>You can also have certain build jobs that can only be promoted
+      manually, as illustrated in <xref
+      linkend="fig-jenkins-manual-build-promotion" />. Manual build promotion
+      is used for cases where human intervention is needed to approve a build
+      promotion. Deployment to UAT or production are common examples of this.
+      Another example is where you want to temporarily suspend automatic build
+      promotions for a short period, such as nearing a release. </para>
+
+      <para>Manual builds, as the name suggests, need to be manually approved
+      to be executed. If the promotion process is to trigger a parameterized
+      build job, you can also provide parameters that the approver will need
+      to enter when approving. In some cases, it can also be useful to
+      designate certain users who are allowed to activate the manual
+      promotion. You can do this by specifying a list of users or groups in
+      the 'Approvers' list. </para>
+
+      <para><figure id="fig-jenkins-manual-build-promotion">
+          <title>Configuring a manual build promotion process</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-manual-build-promotion.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Sometimes, it is useful to give some context to the person
+      approving a promotion. When you set up a manual promotion process, you
+      can also specify other conditions which must be met, in particular
+      downstream (or upstream) build jobs which must have been built
+      successfully. These will appear in the 'Met Qualifications' (for the
+      successful build jobs) and in 'Unmet Qualifications' (for the build jobs
+      that failed or have not been executed yet).</para>
+
+      <para><figure id="fig-jenkins-promotion-details">
+          <title>Viewing the details of a build promotion</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-promotion-details.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Next you need to tell Jenkins what to do when the build is
       promoted. You do this by adding actions, just like in a freestyle build
       job. This makes build promotions extremely flexible, as you can add
       virtually any action available to a normal freestyle build job,
@@ -1606,24 +1666,13 @@ Finished: SUCCESS</screen></para>
                          width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure>You can also use the 'Promotion Status' menu entry to view
-      the details of a particular build promotion, and even to rerun a
-      promotion manually (see <xref
-      linkend="fig-jenkins-promotion-details" />). Any build promotion can be
-      triggered manually, by clicking on the 'Force Promotion' (if this build
-      job has never been promoted) or 'Re-execute promotion' (if it
+        </figure>You can also use the 'Promotion Status' menu entry (or click
+      on the colored star in the build history) to view the details of a
+      particular build promotion, and even to rerun a promotion manually (see
+      <xref linkend="fig-jenkins-promotion-details" />). Any build promotion
+      can be triggered manually, by clicking on the 'Force Promotion' (if this
+      build job has never been promoted) or 'Re-execute promotion' (if it
       has).</para>
-
-      <para><figure id="fig-jenkins-promotion-details">
-          <title>Viewing the details of a build promotion</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/jenkins-promotion-details.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
     </sect2>
 
     <sect2>
