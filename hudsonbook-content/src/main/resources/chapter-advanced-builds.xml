@@ -853,6 +853,110 @@ Finished: SUCCESS</screen></para>
     </sect2>
   </sect1>
 
+    
+  <sect1>
+    <title>Generating your build jobs</title>
+
+    <para>As mentioned in the previous section, the number of build jobs that your Jenkins server will host can vary.
+    As the number of build jobs grows, it becomes harder not only view in Jenkins dashborad, but to configure them as well.
+    Just imagine what would it take configuring 20 or 50 Jenkins jobs visiting them one-by-one. The situation becomes
+    even more trickier when some of those jobs have much details in common, such as Maven goals or build memory settings.
+    If one day you decide to run "mvn clean install" instead of "mvn clean deploy" for your release jobs and switch
+    to alternative deployment methods, such as those provided by Artifactory plugin (http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin),
+    you'll have no choice but to visit all relevant jobs and update them manually.
+
+    Alternatively, you could take an advantage of the fact that Jenkins keeps all its definitions in plain files on the disk and
+    update jobs' "config.xml" files where their configurations are kept. It will work as well but but this solution is still
+    far from ideal as it involves quite a lot of manual picking and replacing into Jenkins XMLs.
+
+    There is a third way to achieve a nirvana of massive job updates and it is to generate them using some sort of definition file.
+    Maven Jenkins plugin (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) does exactly that, it generates "config.xml" files for all jobs
+    using standard Maven definitions kept in a single POM file.
+    </para>
+
+    <sect2>
+      <title>Examples</title>
+
+      Let's see a quick example of how this plugin can be configured to generate a Jenkins job:
+
+      <screen>
+        <![CDATA[
+            <plugin>
+                <groupId>com.goldin.plugins</groupId>
+                <artifactId>maven-jenkins-plugin</artifactId>
+                <version>0.2.2</version>
+                <executions>
+                    <execution>
+                        <id>gcommons-job</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${user.home}/.jenkins/jobs</outputDirectory>
+                            <generationPom>http://github.com/evgeny-goldin/maven-plugins-test/blob/master/maven-jenkins-plugin/jenkins-book/pom.xml</generationPom>
+                            <jenkinsUrl>http://evgeny-goldin.org/jenkins</jenkinsUrl>
+                            <timestamp>false</timestamp>
+                            <job>
+                                <id>maven-plugins</id>
+                                <scmType>git</scmType>
+                                <mavenName>apache-maven-3</mavenName>
+                                <jdkName>jdk1.6.0</jdkName>
+                                <repository>
+                                    <remote>git://github.com/evgeny-goldin/maven-plugins.git</remote>
+                                </repository>
+                            </job>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        ]]>
+      </screen>
+
+      You can see this sample job online at GitHib (http://goo.gl/qLryN) and resulting job generated at
+      http://evgeny-goldin.org/jenkins/job/maven-plugins/. As you see it doesn't take much to define a job, the plugins
+      only requires a number of parameters specified: job id, maven name, JDK name, SCM type and repository URL.
+
+      When you run it, it generates "${user.home}/.jenkins/jobs/maven-plugins/config.xml" file and if you restart Jenkins
+      or visit "Manage Jenkins" => "Reload Configuration from Disk" you will see this new job added to Jenkins dashboard.
+
+     <figure id="jenkins-plugin-jobs-list">
+        <title>List of Jenkins jobs with the new job added</title>
+
+        <mediaobject>
+            <imageobject role="web">
+                <imagedata fileref="figs/web/jenkins-plugin-jobs-list.png" width="4.3in"/>
+            </imageobject>
+         </mediaobject>
+     </figure>
+
+     If you go into job details, you will see a summary table of major job configurations.
+
+     <figure id="jenkins-plugin-job-details">
+       <title>New Jenkins job with description table</title>
+
+       <mediaobject>
+           <imageobject role="web">
+               <imagedata fileref="figs/web/jenkins-plugin-job-details.png" width="4.3in"/>
+           </imageobject>
+        </mediaobject>
+     </figure>
+
+
+     If you configure the job, you will see same parameters that were specified in Maven POM.
+
+     <figure id="jenkins-plugin-job-configure">
+      <title>Configuring new Jenkins job</title>
+
+      <mediaobject>
+          <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-plugin-job-configure.png" width="4.3in"/>
+          </imageobject>
+       </mediaobject>
+     </figure>
+    </sect2>
+  </sect1>
+
   <sect1>
     <title>Coordinating your builds</title>
 
