@@ -47,12 +47,6 @@
           <imageobject role="web" security="">
             <imagedata fileref="figs/web/maintenance-discard-old-builds.png" />
           </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/maintenance-discard-old-builds.pdf"
-                       scalefit="0" width="100%" wordsize="" />
-          </imageobject>
         </mediaobject>
       </figure>The problem with discarding old builds is that you loose the
     build history at the same time. Jenkins uses the build records to produce
@@ -74,24 +68,17 @@
     is a great option if you need to put a cap on disk usage, but still want
     to provide a full scope of build metrics for the development teams.</para>
 
-    <para><figure id="fig-maintenance-discard-old-builds-advanced" label="">
+    <para><figure id="fig-maintenance-discard-old-builds-advanced">
         <title>Discarding old builds - advanced options</title>
 
         <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/maintenance-discard-old-builds-advanced.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
-            <imagedata align="center"
-                       fileref="figs/print/maintenance-discard-old-builds-advanced.pdf"
-                       scalefit="0" width="100%" wordsize="" />
+          <imageobject role="web">
+            <imagedata fileref="figs/web/maintenance-discard-old-builds-advanced.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure></para>
-
-    <para>Don't hesitate about being ruthless, and keeping the maximum number
-    of builds with artifacts quite low. Remember, Jenkins will always keep the
+      </figure>Don't hesitate to be ruthless, keeping the maximum number of
+    builds with artifacts quite low. Remember, Jenkins will always keep the
     last stable and the last successful builds, no matter what you tell it, so
     you will always have at least one working artifact (unless of course the
     project has yet to successfully build). Jenkins also lets you to mark an
@@ -99,7 +86,7 @@
     builds from being discarded automatically.</para>
 
     <section>
-      <title>Using the Disk Usage plugin</title>
+      <title>Using the Disk Usage Plugin</title>
 
       <para>One of the most useful tools in the Jenkins administrator's tool
       box is the Disk Usage plugin. This plugin records and reports on the
@@ -107,32 +94,25 @@
       projects that are using too much disk space,</para>
 
       <para>You can install the Disk Usage plugin in the usual way, from the
-      Plugin Manager screen (see <xref
-      linkend="fig-maintenance-disk-usage-plugin" />)</para>
+      Plugin Manager screen. Once you have installed the plugin and restarted
+      Jenkins, the Disk Usage plugin will record the amount of disk space used
+      by each project. It will also add a 'Disk Usage' link on the 'Manage
+      Jenkins' screen, which you can use to display the overall disk usage for
+      your projects (see <xref
+      linkend="fig-maintenance-disk-usage" />).</para>
 
-      <para><figure id="fig-maintenance-disk-usage-plugin" label="">
-          <title>Installing the Disk Usage plugin</title>
+      <para><figure id="fig-maintenance-disk-usage">
+          <title>Viewing disk usage</title>
 
           <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/maintenance-disk-usage-plugin.png" />
-            </imageobject>
-
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/maintenance-disk-usage-plugin.pdf"
-                         scalefit="0" width="100%" wordsize="" />
+            <imageobject role="web">
+              <imagedata fileref="figs/web/maintenance-disk-usage.png"
+                         width="4.3in" />
             </imageobject>
           </mediaobject>
-        </figure>Once you have installed the plugin and restarted Jenkins, the
-      Disk Usage plugin will record the amount of disk space used by each
-      project. It will also add a 'Disk Usage' link on the 'Manage Jenkins'
-      screen, which you can use to display the overall disk usage for your
-      projects (see <xref linkend="fig-maintenance-disk-usage" />).</para>
-
-      <para>This list is sorted by overall disk usage, so the projects using
-      the most disk space are at the top. The list provides two values for
-      each project - the Builds column indicates the total amount of space
+        </figure>This list is sorted by overall disk usage, so the p\ojects
+      using the most disk space are at the top. The list provides two values
+      for each project - the Builds column indicates the total amount of space
       used by all of the project's build history, whereas the Workspace column
       is the amount of space used to build the project. For ongoing projects,
       the <command>Workspace</command> value tends to be relatively stable (a
@@ -143,60 +123,37 @@
       builds being kept for a project, and by being careful about what
       artifacts are being stored.</para>
 
-      <para><figure floatstyle="" id="fig-maintenance-disk-usage" label="">
-          <title>Viewing disk usage</title>
-
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/maintenance-disk-usage.png" />
-            </imageobject>
-
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/maintenance-disk-usage.pdf"
-                         scalefit="0" width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure>To get an idea of how fast the disk space is being used up,
-      you can also display the amount of disk space used in each project over
+      <para>To get an idea of how fast the disk space is being used up, you
+      can also display the amount of disk space used in each project over
       time. To do this, you need to activate the plugin in the 'System
       Configuration' screen (see <xref
       linkend="maintenance-activating-disk-usage" />).</para>
 
-      <para><figure id="fig-maintenance-disk-usage-plugin" label="">
-          <title>Installing the Disk Usage plugin</title>
+      <figure id="fig-maintenance-disk-usage">
+        <title>Displaying disk usage for a project</title>
 
-          <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/maintenance-activating-disk-usage.png" />
-            </imageobject>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/maintenance-activating-disk-usage.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/maintenance-activating-disk-usage.pdf"
-                         scalefit="0" width="100%" wordsize="" />
-            </imageobject>
-          </mediaobject>
-        </figure>This will record and display how much space your projects are
+      <para>This will record and display how much space your projects are
       using over time. The Disk Usage plugin displays a graph of disk usage
       over time (see <xref linkend="fig-maintenance-project-disk-usage" />),
       which can give you a great view of how fast your project is filling up
       the disk, or, on the contrary, if the disk usage is stable over
       time.</para>
 
-      <para><figure floatstyle="" id="fig-maintenance-project-disk-usage"
-          label="">
-          <title>Installing the Disk Usage plugin</title>
+      <para><figure id="fig-maintenance-project-disk-usage">
+          <title>Displaying project disk usage over time</title>
 
           <mediaobject>
-            <imageobject role="web" security="">
-              <imagedata fileref="figs/web/maintenance-project-disk-usage.png" />
-            </imageobject>
-
-            <imageobject role="print" security="">
-              <imagedata align="center"
-                         fileref="figs/print/maintenance-project-disk-usage.pdf"
-                         scalefit="0" width="100%" wordsize="" />
+            <imageobject role="web">
+              <imagedata fileref="figs/web/maintenance-project-disk-usage.png"
+                         width="4.3in" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -222,7 +179,7 @@
       repository manager. Nexus Pro, for example, can be configured to and
       Artifactory can be configured to delete old snapshot artifacts.</para>
 
-      <para>Fortunatly, you can configure Jenkins to this, go to the 'Build'
+      <para>Fortunately, you can configure Jenkins to this, go to the 'Build'
       section of your build job configuration screen and click on the
       'Advanced' button. This will display some extra fields, as shown
       below:</para>
