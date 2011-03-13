@@ -637,8 +637,8 @@ Finished: SUCCESS</screen></para>
         </figure>To set this up with a Combination Filter, we could use an
       expression like the following:</para>
 
-      <programlisting>(browser=="firefox") 
-|| (browser=="iexplorer" &amp;&amp; os=="windows") 
+      <programlisting>(browser=="firefox")
+|| (browser=="iexplorer" &amp;&amp; os=="windows")
 || (browser=="chrome" &amp;&amp; os != "linux") </programlisting>
 
       <para>This would result in only the correct browser/operating system
@@ -851,6 +851,171 @@ Finished: SUCCESS</screen></para>
           </mediaobject>
         </figure></para>
     </sect2>
+  </sect1>
+
+
+  <sect1>
+    <title>Generating your build jobs</title>
+
+    <para>As mentioned in the previous section, the number of build jobs that your Jenkins server will host can vary.
+    As the number of build jobs grows, it becomes harder not only view them in Jenkins dashborad, but to configure them as well.
+    Just imagine what would it take to configuring 20 or 50 Jenkins jobs visiting them one-by-one! The situation becomes
+    even trickier when some of those jobs have many common configurations, such as Maven goals or build memory settings.
+    </para>
+
+    <para>
+    If one day you decide to run <command>"mvn clean install"</command> instead of <command>"mvn clean deploy"</command>
+    for your release jobs and switch to alternative deployment methods, such as those provided by Artifactory plugin
+    (http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin), you'll have no choice but to visit all relevant jobs
+    and update them manually.
+    </para>
+
+    <para>
+    Alternatively, you could take an advantage of the fact that Jenkins is a simple and straightforward tool, it keeps
+    all its definitions in plain files on the disk. So you can update jobs' "config.xml" files in ".jenkins/jobs" directory where
+    their configurations are kept. It will work as well but this solution is still far from ideal as it involves quite a
+    lot of manual picking and fragile replacements in Jenkins XMLs.
+    </para>
+
+    <para>
+    There is a third way to achieve a nirvana of massive job updates and it is to generate them using some sort of definition file.
+    Maven Jenkins plugin (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) does exactly that, it generates "config.xml"
+    files for all jobs using standard Maven definitions kept in a single POM file.
+    </para>
+
+    <sect2>
+      <title>Quick Example</title>
+
+      Let's see a quick example of how this plugin can be configured to generate a Jenkins job:
+
+      <screen>
+        <![CDATA[
+<plugin>
+    <groupId>com.goldin.plugins</groupId>
+    <artifactId>maven-jenkins-plugin</artifactId>
+    <version>0.2.2</version>
+    <executions>
+        <execution>
+            <id>generate-maven-plugins-job</id>
+            <phase>compile</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${user.home.dir}/.jenkins/jobs</outputDirectory>
+                <generationPom>http://goo.gl/qLryN</generationPom>
+                <jenkinsUrl>http://evgeny-goldin.org/jenkins</jenkinsUrl>
+                <job>
+                    <id>maven-plugins</id>
+                    <scmType>git</scmType>
+                    <mavenName>apache-maven-3</mavenName>
+                    <jdkName>jdk1.6.0</jdkName>
+                    <repository>
+                        <remote>
+                            git://github.com/evgeny-goldin/maven-plugins.git
+                        </remote>
+                    </repository>
+                </job>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+            ]]>
+</screen>
+
+     <para>
+      You can see this sample job online at GitHib (http://goo.gl/qLryN) and resulting job generated at
+      http://evgeny-goldin.org/jenkins/job/maven-plugins/. As you see it doesn't take much to define a job, the plugin
+      only requires a number of parameters specified: job id, maven name, JDK name, SCM type and repository URL.
+     </para>
+
+     <para>
+      When you run it, it generates "${user.home.dir}/.jenkins/jobs/maven-plugins/config.xml" file and if you restart Jenkins
+      or visit "Manage Jenkins" => "Reload Configuration from Disk" you will see this new job added to Jenkins dashboard.
+     </para>
+
+
+     <figure id="jenkins-plugin-jobs-list">
+        <title>List of Jenkins jobs with the new job added.</title>
+
+        <mediaobject>
+            <imageobject role="web">
+                <imagedata fileref="figs/web/jenkins-plugin-jobs-list.png" width="4.3in"/>
+            </imageobject>
+         </mediaobject>
+     </figure>
+
+     In job's page you will see a summary table of its major configurations.
+
+     <figure id="jenkins-plugin-job-details">
+       <title>New Jenkins job and description table.</title>
+
+       <mediaobject>
+           <imageobject role="web">
+               <imagedata fileref="figs/web/jenkins-plugin-job-details.png" width="4.3in"/>
+           </imageobject>
+        </mediaobject>
+     </figure>
+
+     If you "Configure" the job now, you will see same parameters that were specified in Maven POM: Git repository and Maven name.
+     You will also see that other parameters use sensible default values like "-e clean install" for Maven goals and "pom.xml"
+     for project's root POM.
+
+     <figure id="jenkins-plugin-job-configure">
+      <title>Configuring new Jenkins job.</title>
+
+      <mediaobject>
+          <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-plugin-job-configure.png" width="4.3in"/>
+          </imageobject>
+       </mediaobject>
+     </figure>
+
+      <para>
+      If you change job configurations now manually and then re-run the generating POM above, all you changes will be lost and
+      overwritten by the plugin. Therefore it is best to choose only one way to configure a job to avoid confusion and
+      configurations losses. For people that may be not familiar with the fact that a certain job is auto-generated there's
+      a corresponding warning on the top of job's page.
+      </para>
+
+    </sect2>
+
+
+      <sect2>
+        <title>Configuring a job</title>
+        <para>
+            Desciption of what can be configured in a job.
+        </para>
+      </sect2>
+
+
+      <sect2>
+        <title>Reusing job configuration - meet jobs inheritance</title>
+        <para>
+            Desciption of how jobs can inherit each other, reuse configuration and form hierarchies.
+        </para>
+      </sect2>
+
+      <sect2>
+        <title>Invoking other jobs</title>
+        <para>
+            Desciption of how jobs can invoke each other conditionally and the way plugin allows to specify that easily.
+        </para>
+      </sect2>
+
+      <sect2>
+        <title>Deploying artifacts to Artifactory</title>
+        <para>
+            Desciption of how jobs can deploy their artifacts to Artifactory and why it is better than doing it after each Maven module.
+        </para>
+      </sect2>
+
+      <sect2>
+        <title>Free-style jobs</title>
+        <para>
+            Desciption of how plugin allows a definion of a free-style jobs.
+        </para>
+      </sect2>
   </sect1>
 
   <sect1>
