@@ -36,7 +36,7 @@
     older build jobs once it reaches this number. You can limit them by number
     (i.e. no more than 20 builds) or by date (i.e. builds no older than 30
     days). It does this intelligently, though: if there has ever been a
-    successful build, Jenkins will always keep at least the latest succesful
+    successful build, Jenkins will always keep at least the latest successful
     build as part of its build history, so you will never loose your last
     successful build.</para>
 
@@ -45,17 +45,20 @@
 
         <mediaobject>
           <imageobject role="web" security="">
-            <imagedata fileref="figs/web/maintenance-discard-old-builds.png" />
+            <imagedata fileref="figs/web/maintenance-discard-old-builds.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
-      </figure>The problem with discarding old builds is that you loose the
-    build history at the same time. Jenkins uses the build records to produce
-    graphs of test results and build metrics. If you limit the number of
-    builds to be kept to twenty, for example, Jenkins will only display graphs
-    containing the last twenty data points, which can be a bit limited. This
-    sort of information can be very useful to the developers, but it is often
-    good to be able to see how the project metrics are doing throughout the
-    whole life of the project, not just over the last week or two.</para>
+      </figure></para>
+
+    <para>The problem with discarding old builds is that you loose the build
+    history at the same time. Jenkins uses the build records to produce graphs
+    of test results and build metrics. If you limit the number of builds to be
+    kept to twenty, for example, Jenkins will only display graphs containing
+    the last twenty data points, which can be a bit limited. This sort of
+    information can be very useful to the developers, but it is often good to
+    be able to see how the project metrics are doing throughout the whole life
+    of the project, not just over the last week or two.</para>
 
     <para>Fortunately, Jenkins has a work-around that can keep both developers
     and system administrators happy. In general, the things that takes up the
@@ -181,35 +184,192 @@
 
       <para>Fortunately, you can configure Jenkins to this, go to the 'Build'
       section of your build job configuration screen and click on the
-      'Advanced' button. This will display some extra fields, as shown
-      below:</para>
+      'Advanced' button. This will display some extra fields, as shown in
+      <xref linkend="fig-jenkins-maven-no-archives" />.</para>
 
-      <para>&lt;&lt;hudson-maven-artifacts.png&gt;&gt;</para>
+      <para><figure id="fig-jenkins-maven-no-archives">
+          <title>Maven build jobs - advanced options</title>
 
-      <para>If you tick the "Disable automatic artifact archiving" checkbox,
-      Jenkins will refrain from storing the jar files your project build
-      generates. This is a good way of making your friendly system
-      administrator happy.</para>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-maven-no-archives.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>If you tick the "Disable automatic artifact archiving"
+      checkbox here, Jenkins will refrain from storing the jar files your
+      project build generates. This is a good way of making your friendly
+      system administrator happy. </para>
+
+      <para>Note that sometimes you <emphasis>do</emphasis> need to store the
+      Maven artifacts. For example, they often come in handy when implementing
+      a build pipeline (see <xref linkend="sect-build-pipelines" />). In this
+      case, you can always choose to archive the artifacts you need manually,
+      and then use the 'Discard old builds' option to refine how long you keep
+      them for.</para>
     </section>
-  </section>
-
-  <section>
-    <title>How much memory does Jenkins need?</title>
-
-    <para></para>
   </section>
 
   <section>
     <title>Monitoring the server load</title>
 
-    <para>TODO</para>
+    <para>Jenkins provides build-in monitoring of server activity. On the
+    <command>Manage Jenkins</command> screen, click on the 'Load Statistics'
+    icon. This will display a graph of the server load over time for the
+    master node (see <xref linkend="fig-jenkins-load-statistics" />). This
+    graph keeps track of three metrics: Total number of executors, Number of
+    busy executors, and Queue length.</para>
+
+    <para>The <command>total number of executors</command> (the blue line)
+    includes the executors on the master and on the slave nodes. This can vary
+    when slaves are brought on and offline, and can be a useful indicator of
+    how well your dynamic provisioning of slave nodes is working.</para>
+
+    <para>The <command>number of busy executors</command> (the red line)
+    indicates how many of your executors are occupied executing builds. You
+    should make sure you have enough spare capacity here to absorb spikes in
+    build jobs. If all of your executors are permanently occupied running
+    build jobs, you should add more executors and/or slave nodes.</para>
+
+    <para>The <command>queue length</command> (the grey line) is the number of
+    build jobs awaiting executing. Build jobs are queued when all of the
+    executors are occupied. This metric does not include jobs that are waiting
+    for an upstream build job to finish, so it gives a reasonable idea of when
+    your server could benefit from extra capacity.</para>
+
+    <para><figure id="fig-jenkins-load-statistics">
+        <title>Jenkins Load Statistics</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/jenkins-load-statistics.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>You can get a similar graph for slave nodes, using the 'Load
+    Statistics' icon in the slave node details page.</para>
+
+    <para>Another option is to install the Monitoring plugin. This plugin uses
+    JavaMelody to produce comprehensive HTML reports about the state of your
+    build server, including CPU and system load, average response time, and
+    memory usage (see <xref linkend="fig-jenkins-monitoring-pluging" />). Once
+    you have installed this plugin, you can access the JavaMelody graphs from
+    the 'Manage Hudson' screen, using the 'Monitoring of Hudson/Jenkins
+    master' or 'Hudson/Jenkins nodes' menu entries. </para>
+
+    <para><figure id="fig-jenkins-monitoring-pluging">
+        <title>The Jenkins Monitoring plugin</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/jenkins-monitoring-plugin.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
   </section>
 
   <section>
-    <title>Managing slave nodes</title>
+    <title>Backing up your configuration</title>
 
-    <para>TODO: Discuss how Jenkins deactivates nodes that don't have enough
-    resources</para>
+    <para>Backing up your data is a universally recommended practice, and your
+    Jenkins server should be no exception. Fortunately, backing up Jenkins is
+    relatively easy. In the simplest of configurations, all you need to do is
+    to periodically back up your JENKINS_HOME directory. This contains all of
+    your build jobs configurations, your slave node configurations, and your
+    build history. This will also work fine while Jenkins is running - there
+    is no need to shut down your server while doing your backup.</para>
+
+    <para>The downside of this approach is that the JENKINS_HOME directory can
+    contain a very large amount of data (see <xref
+    linkend="sec-hudson-home-directory-contents" />). If this becomes an
+    issue, you can save a little by not backing up the following directories,
+    which contain data that can be easily recreated on-the-fly by
+    Jenkins:</para>
+
+    <variablelist>
+      <varlistentry>
+        <term><filename>$JENKINS_HOME/war</filename></term>
+
+        <listitem>
+          <para>The exploded WAR file</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><filename>$JENKINS_HOME/cache</filename></term>
+
+        <listitem>
+          <para>Downloaded tools</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><filename>$JENKINS_HOME/tools</filename></term>
+
+        <listitem>
+          <para>Extracted tools</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>You can also be selective about what you back up in your build jobs
+    data. The <filename>$JENKINS_HOME/jobs</filename> directory contains job
+    configuration, build history and archived files for each of your build
+    jobs. The structure of a build job directory is illustrated in <xref
+    linkend="fig-jenkins-build-directory" />.</para>
+
+    <para><figure id="fig-jenkins-build-directory">
+        <title>The builds directory</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata fileref="figs/web/hudson-job-directory-details.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>To understand how to optimize your Jenkins backups, you need to
+    understand how the build job directories are organized. Within the jobs
+    <filename>directory</filename> there is a subdirec ytory for each build
+    job. This subdirectory contains two subdirectories of its own:
+    <filename>builds</filename> and <filename>workspace</filename>. There is
+    no need to backup the <filename>workspace</filename> directory, as it will
+    simply be restored with a clean checkout if Jenkins finds it missing.
+    </para>
+
+    <para>The <filename>builds</filename> directory, on the other hand, needs
+    more attention. This directory contains the history of your build results
+    and previously-generated artifacts, with a time-stamped directory for each
+    previous build. If you are not interested in restoring build history or
+    past artifacts, you don't need to store this directory. If you are, read
+    on! In each of these directories, you will find the build history (stored
+    in the form of XML files such as junit test results) and archived
+    artifacts. Jenkins uses the XML and text files to produce the graphs it
+    displays on the build job dashboard, so if these are important to you, you
+    should store these files. The <filename>archive</filename> directory
+    contains binary files that were generated and stored by previous builds.
+    These binaries may or may not be important to you, but they can take up a
+    lot of space, so if you exclude them from your backups, you may be able to
+    save a considerable amount of space.</para>
+
+    <para>Just as it is wise to make frequent backups, it is also wise to test
+    your backup procedure. With Jenkins, this is easy to do. Jenkins home
+    directories are totally portable, so all you need to do to test your
+    backup is to extract your backup into a temporary directory and run an
+    instance of Jenkins against it. For example, imagine we have extracted our
+    backup into a temporary directory called
+    <filename>/tmp/jenkins-backup</filename>. To test this backup, first set
+    the JENKINS_HOME directory to this temporary directory:<programlisting>$ export JENKINS_HOME=/tmp/jenkins-backup </programlisting></para>
+
+    <para>Then simply start Jenkins on a different port and see if it
+    works:</para>
+
+    <para><programlisting>$ java -jar jenkins.war --httpPort=8888 </programlisting>You
+    can now view Jenkins running on this port and make sure that your backup
+    worked correctly.</para>
   </section>
 
   <section>
@@ -244,21 +404,16 @@ gameoflife-default      tweeter-default         tweeter-default.tgz
     <para>Once you have done this, you can simply reload the configuration
     from the disk in the 'Manage Jenkins' screen (see <xref
     linkend="fig-maintenance-reload-configuration" />). The archived project
-    will promptly dissapear from your dashboard.</para>
+    will promptly disappear from your dashboard.</para>
 
-    <para><figure floatstyle="" id="fig-maintenance-reload-configuration"
-        label="">
+    <para><figure id="fig-jenkins-load-statistics">
         <title>Reloading the configuration from disk</title>
 
         <mediaobject>
-          <imageobject role="web" security="">
-            <imagedata fileref="figs/web/maintenance-reload-configuration.png" />
-          </imageobject>
-
-          <imageobject role="print" security="">
+          <imageobject role="web">
             <imagedata align="center"
-                       fileref="figs/print/maintenance-reload-configuration.pdf"
-                       scalefit="0" width="100%" wordsize="" />
+                       fileref="figs/web/maintenance-reload-configuration.png"
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>On a Windows machine, you can do exactly the same thing by
@@ -412,7 +567,7 @@ roxyMapper.java:71)
     configuration files by hand. On this Unix box, I just used grep to find
     all the configuration files containin a reference to 'cigame':</para>
 
-    <para><screen>$ cd $HUDSON_HOME/jobs
+    <para><screen>$ cd $JENKINS_HOME/jobs
 $ grep cigame */config.xml
 project-a/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
 project-b/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
