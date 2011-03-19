@@ -879,7 +879,7 @@ Finished: SUCCESS</screen></para>
 
     <para>
     There is a third way to achieve a nirvana of massive job updates and it is to generate them using some sort of definition file.
-    Maven Jenkins plugin (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) does exactly that, it generates "config.xml"
+    "maven-jenkins-plugin" (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) does exactly that, it generates "config.xml"
     files for all jobs using standard Maven definitions kept in a single POM file.
     </para>
 
@@ -1100,10 +1100,73 @@ Finished: SUCCESS</screen></para>
 
 
       <sect2>
-        <title>Reusing job configuration - meet jobs inheritance</title>
+        <title>Reusing job configuration with inheritance</title>
         <para>
-            Desciption of how jobs can inherit each other, reuse configuration and form hierarchies.
+            Being able to generate Jenkins jobs using centralized configuration, such as Maven POM, solves the problem of
+            creating and updating many jobs at once. All one has to do now is modify job definitions, re-run the plugin and
+            load definitions updated with "Manage Jenkins" => "Reload Configuration from Disk".
         </para>
+
+        <para>
+            But we still didn't solve the problem of maintaining jobs that share a number of identical properties,
+            such as Maven goals, e-mail recipients or code repository URL. For that "maven-jenkins-plugin" provides
+            jobs inheritance, demonstrated in the following example:
+        </para>
+
+          <screen><![CDATA[
+<jobs>
+    <job>
+        <id>google-guice-inheritance-base</id>
+        <abstract>true</abstract>
+        <jdkName>jdk1.6.0</jdkName>
+        <mavenName>apache-maven-3</mavenName>
+        <daysToKeep>5</daysToKeep>
+        <useUpdate>true</useUpdate>
+        <mavenGoals>-B -e -U clean install</mavenGoals>
+        <mail><recipients>jenkins@evgeny-goldin.org</recipients></mail>
+    </job>
+
+    <job>
+        <id>google-guice-inheritance-trunk</id>
+        <parent>google-guice-inheritance-base</parent>
+        <repository>
+            <remote>http://google-guice.googlecode.com/svn/trunk/</remote>
+        </repository>
+    </job>
+
+    <job>
+        <id>google-guice-inheritance-3.0-rc3</id>
+        <parent>google-guice-inheritance-base</parent>
+        <repository>
+            <remote>http://google-guice.googlecode.com/svn/tags/3.0-rc3/</remote>
+        </repository>
+    </job>
+
+    <job>
+        <id>google-guice-inheritance-2.0-maven</id>
+        <parent>google-guice-inheritance-base</parent>
+        <mavenName>apache-maven-2.2.1</mavenName>
+        <repository>
+            <remote>http://google-guice.googlecode.com/svn/branches/2.0-maven/</remote>
+        </repository>
+    </job>
+</jobs>]]></screen>
+
+          <para>
+              "google-guice-inheritance-base" is an abstract parent job holding all common properties: JDK name, Maven name,
+              days to keep the logs, SVN update policy, Maven goals, and mail recipients. Three following jobs specify that
+              they extend this parent job with a &lt;parent&gt; tag; when generated they indeed have all properties from the
+              parent job applied to them. Any property inherited can be overridden, as demonstrated in "google-guice-inheritance-2.0-maven"
+              job where Maven 2 is used instead of Maven 3.
+          </para>
+
+          <para>
+              Jobs inheritance is a very powerful concept, it allows jobs to form hierarchical groups of any kind and for any purpose.
+              You can group your CI, nightly or release jobs this way, providing common cron triggers, Maven goals or mail recipients
+              for each abstract parent job. This approach borrowed from an OOP world finally solves the problem of maintaining jobs
+              sharing a number of identical properties.
+          </para>
+
       </sect2>
 
       <sect2>
