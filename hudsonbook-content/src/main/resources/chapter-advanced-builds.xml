@@ -972,7 +972,7 @@ Finished: SUCCESS</screen></para>
      </figure>
 
       <para>
-      If you change job configurations now manually and then re-run the generating POM above, all you changes will be lost and
+      If you change job configurations now manually and then re-run the generating POM above, all your changes will be lost and
       overwritten by the plugin. Therefore it is best to choose only one way to configure a job to avoid confusion and
       configurations losses. For people that may be not familiar with the fact that a certain job is auto-generated there's
       a corresponding warning on the top of job's page.
@@ -984,8 +984,89 @@ Finished: SUCCESS</screen></para>
       <sect2>
         <title>Configuring a job</title>
         <para>
-            Desciption of what can be configured in a job.
+            When configuring a single job with the plugin, you can use various options, such as Maven goals,
+            POM location, repository URLs, e-mail addresses, number of days to keep the logs, etc. The plugin tries to bring
+            you as close to possible to Jenkin's usual way of configuring a job manually.
         </para>
+
+        <para>
+            Plugin's documentation (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) provides a detailed reference of all
+            settings that can be configured.
+        </para>
+
+        <para>
+            Let's take a look on a Google Guice (http://code.google.com/p/google-guice/) build job.
+        </para>
+
+            <screen><![CDATA[
+<job>
+    <id>google-guice-trunk</id>
+    <description>Building Google Guice trunk</description>
+    <descriptionTable>
+        <row>
+            <key>Project Page</key>
+            <value>
+                <a href="http://code.google.com/p/google-guice/">
+                    <b><code>code.google.com/p/google-guice</code></b>
+                </a>
+            </value>
+            <escapeHTML>false</escapeHTML>
+            <bottom>false</bottom>
+        </row>
+    </descriptionTable>
+    <jdkName>jdk1.6.0</jdkName>
+    <mavenName>apache-maven-3</mavenName>
+    <mavenOpts>-Xmx256m -XX:MaxPermSize=128m</mavenOpts>
+    <daysToKeep>5</daysToKeep>
+    <useUpdate>false</useUpdate>
+    <mavenGoals>-e clean install</mavenGoals>
+    <trigger>
+        <type>timer</type>
+        <expression>0 0 * * *</expression>
+    </trigger>
+    <repository>
+        <remote>http://google-guice.googlecode.com/svn/trunk/</remote>
+    </repository>
+    <mail>
+        <recipients>jenkins@evgeny-goldin.org</recipients>
+    </mail>
+</job>]]></screen>
+
+          <para>
+              This job uses a number of standard configurations such as &lt;jdkName&gt;, &lt;mavenName&gt;, &lt;mavenOpts&gt; and others.
+              SVN code repository is specified with &lt;repository&gt;, cron scheduler expression to run the job nightly at 00:00 with
+              &lt;trigger&gt; and e-mail notifications will be sent to people specified in &lt;mail&gt; section. It also adds a link
+              back to the project's page in the description table that is generated automatically for each job, as was mentioned earlier.
+          </para>
+
+          <para>
+              You can see this job at GitHub (http://goo.gl/qLryN) and the result job at http://evgeny-goldin.org/jenkins/job/google-guice-trunk/.
+              Here's another Git-based job that builds Jenkins master branch. It is shorter since it relies more on default values.
+          </para>
+
+          <screen><![CDATA[
+<job>
+    <id>jenkins-master</id>
+    <jdkName>jdk1.6.0</jdkName>
+    <numToKeep>5</numToKeep>
+    <mavenName>apache-maven-3</mavenName>
+    <trigger>
+        <type>timer</type>
+        <expression>0 1 * * *</expression>
+    </trigger>
+    <scmType>git</scmType>
+    <repository>
+        <remote>git://github.com/jenkinsci/jenkins.git</remote>
+    </repository>
+    <mail>
+        <recipients>jenkins@evgeny-goldin.org</recipients>
+        <sendForUnstable>false</sendForUnstable>
+    </mail>
+</job>]]></screen>
+
+          <para>
+              You can see this job at GitHub (http://goo.gl/qLryN) and the result job at http://evgeny-goldin.org/jenkins/job/jenkins-master/.
+          </para>
       </sect2>
 
 
@@ -1007,6 +1088,8 @@ Finished: SUCCESS</screen></para>
         <title>Deploying artifacts to Artifactory</title>
         <para>
             Desciption of how jobs can deploy their artifacts to Artifactory and why it is better than doing it after each Maven module.
+
+            Support of other plugins planned: a list.
         </para>
       </sect2>
 
