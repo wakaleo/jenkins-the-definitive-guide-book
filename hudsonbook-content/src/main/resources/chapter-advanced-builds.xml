@@ -866,7 +866,7 @@ Finished: SUCCESS</screen></para>
     <para>
     If one day you decide to run <command>"mvn clean install"</command> instead of <command>"mvn clean deploy"</command>
     for your release jobs and switch to alternative deployment methods, such as those provided by Artifactory plugin
-    (http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin), you'll have no choice but to visit all relevant jobs
+    (<uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri>), you'll have no choice but to visit all relevant jobs
     and update them manually.
     </para>
 
@@ -879,7 +879,7 @@ Finished: SUCCESS</screen></para>
 
     <para>
     There is a third way to achieve a nirvana of massive job updates and it is to generate them using some sort of definition file.
-    "maven-jenkins-plugin" (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin) does exactly that, it generates "config.xml"
+    &quot;maven-jenkins-plugin&quot; (<uri>http://evgeny-goldin.com/wiki/Maven-jenkins-plugin</uri>) does exactly that, it generates "config.xml"
     files for all jobs using standard Maven definitions kept in a single POM file.
     </para>
 
@@ -888,9 +888,7 @@ Finished: SUCCESS</screen></para>
 
       Let's see a quick example of how this plugin can be configured to generate a Jenkins job:
 
-      <screen>
-        <![CDATA[
-<plugin>
+      <screen><![CDATA[<plugin>
     <groupId>com.goldin.plugins</groupId>
     <artifactId>maven-jenkins-plugin</artifactId>
     <version>0.2.2</version>
@@ -922,11 +920,11 @@ Finished: SUCCESS</screen></para>
 </plugin>]]></screen>
 
      <para>
-      All jobs shown in this section are available at GitHub - http://goo.gl/qLryN.
+      All jobs shown in this section are available at GitHub (<uri>http://goo.gl/qLryN</uri>).
      </para>
 
      <para>
-      You can see the job generated at http://evgeny-goldin.org/jenkins/job/maven-plugins/. As you see it doesn't take much
+      You can see the job generated at <uri>http://evgeny-goldin.org/jenkins/job/maven-plugins/</uri>. As you see it doesn't take much
       to define a job, the plugin only requires a number of parameters specified: job id, maven name, JDK name, SCM type and repository URL.
      </para>
 
@@ -992,11 +990,10 @@ Finished: SUCCESS</screen></para>
         </para>
 
         <para>
-            Let's take a look on a Google Guice (http://code.google.com/p/google-guice/) build job.
+            Let's take a look on a Google Guice (<uri>http://code.google.com/p/google-guice/</uri>) build job.
         </para>
 
-            <screen><![CDATA[
-<job>
+            <screen><![CDATA[<job>
     <id>google-guice-trunk</id>
     <description>Building Google Guice trunk.</description>
     <descriptionTable>
@@ -1037,7 +1034,7 @@ Finished: SUCCESS</screen></para>
           </para>
 
           <para>
-              You can see the job generated at http://evgeny-goldin.org/jenkins/job/google-guice-trunk/.
+              You can see the job generated at <uri>http://evgeny-goldin.org/jenkins/job/google-guice-trunk/</uri>.
           </para>
 
           <para>
@@ -1056,8 +1053,7 @@ Finished: SUCCESS</screen></para>
               Here's another job building Jenkins master branch at GitHub.
           </para>
 
-          <screen><![CDATA[
-<job>
+          <screen><![CDATA[<job>
     <id>jenkins-master</id>
     <jdkName>jdk1.6.0</jdkName>
     <numToKeep>5</numToKeep>
@@ -1077,7 +1073,7 @@ Finished: SUCCESS</screen></para>
 </job>]]></screen>
 
           <para>
-              You can see the job generated at http://evgeny-goldin.org/jenkins/job/jenkins-master/.
+              You can see the job generated at <uri>http://evgeny-goldin.org/jenkins/job/jenkins-master/</uri>.
           </para>
 
           <para>
@@ -1093,7 +1089,7 @@ Finished: SUCCESS</screen></para>
           </para>
 
           <para>
-              Plugin's documentation (http://evgeny-goldin.com/wiki/Maven-jenkins-plugin#.3Cjob.3E) provides a detailed reference of all
+              Plugin's documentation (<uri>http://evgeny-goldin.com/wiki/Maven-jenkins-plugin#.3Cjob.3E</uri>) provides a detailed reference of all
               settings that can be configured.
           </para>
       </sect2>
@@ -1103,18 +1099,17 @@ Finished: SUCCESS</screen></para>
         <title>Reusing job configuration with inheritance</title>
         <para>
             Being able to generate Jenkins jobs using centralized configuration, such as Maven POM, solves the problem of
-            creating and updating many jobs at once. All one has to do now is modify job definitions, re-run the plugin and
+            creating and updating many jobs at once. All one has to do now is to modify job definitions, re-run the plugin and
             load definitions updated with "Manage Jenkins" => "Reload Configuration from Disk".
         </para>
 
         <para>
             But we still didn't solve the problem of maintaining jobs that share a number of identical properties,
-            such as Maven goals, e-mail recipients or code repository URL. For that "maven-jenkins-plugin" provides
+            such as Maven goals, e-mail recipients or code repository URL. For that &quot;maven-jenkins-plugin&quot; provides
             jobs inheritance, demonstrated in the following example:
         </para>
 
-          <screen><![CDATA[
-<jobs>
+          <screen><![CDATA[<jobs>
     <job>
         <id>google-guice-inheritance-base</id>
         <abstract>true</abstract>
@@ -1145,7 +1140,7 @@ Finished: SUCCESS</screen></para>
     <job>
         <id>google-guice-inheritance-2.0-maven</id>
         <parent>google-guice-inheritance-base</parent>
-        <mavenName>apache-maven-2.2.1</mavenName>
+        <mavenName>apache-maven-2</mavenName>
         <repository>
             <remote>http://google-guice.googlecode.com/svn/branches/2.0-maven/</remote>
         </repository>
@@ -1154,35 +1149,144 @@ Finished: SUCCESS</screen></para>
 
           <para>
               "google-guice-inheritance-base" is an abstract parent job holding all common properties: JDK name, Maven name,
-              days to keep the logs, SVN update policy, Maven goals, and mail recipients. Three following jobs specify that
-              they extend this parent job with a &lt;parent&gt; tag; when generated they indeed have all properties from the
-              parent job applied to them. Any property inherited can be overridden, as demonstrated in "google-guice-inheritance-2.0-maven"
-              job where Maven 2 is used instead of Maven 3.
+              days to keep the logs, SVN update policy, Maven goals, and mail recipients. Three following jobs are very short,
+              they only specify that they extend a &lt;parent&gt; job and add any missing configurations, repository URLs in this case.
+              When generated they have all properties from the parent job applied automatically.
+          </para>
+
+          <para>
+              Any property inherited can be overridden, as demonstrated in "google-guice-inheritance-2.0-maven" job where
+              Maven 2 is used instead of Maven 3. If you want to &quot;cancel&quot; an inherited property, you will need to override
+              it with an empty value.
           </para>
 
           <para>
               Jobs inheritance is a very powerful concept, it allows jobs to form hierarchical groups of any kind and for any purpose.
-              You can group your CI, nightly or release jobs this way, providing common cron triggers, Maven goals or mail recipients
-              for each abstract parent job. This approach borrowed from an OOP world finally solves the problem of maintaining jobs
-              sharing a number of identical properties.
+              You can group your CI, nightly or release jobs this way, centralizing shared execution triggers, Maven goals or mail recipients
+              in parent jobs. This approach borrowed from an OOP world solves the problem of maintaining jobs sharing a number of
+              identical properties.
           </para>
 
       </sect2>
 
       <sect2>
-        <title>Invoking other jobs</title>
+        <title>Plugins support</title>
         <para>
-            Desciption of how jobs can invoke each other conditionally and the way plugin allows to specify that easily.
+            In addition to configuring a job and reusing its definitions, you can apply a special support for a number
+            of Jenkins plugins. Right now, a simplified usage of Parameterized Trigger and Artifactory plugins is provided,
+            support for other popular plugins will be added in future versions.
         </para>
-      </sect2>
 
-      <sect2>
-        <title>Deploying artifacts to Artifactory</title>
         <para>
-            Desciption of how jobs can deploy their artifacts to Artifactory and why it is better than doing it after each Maven module.
-
-            Support of other plugins planned: a list.
+            Below is an example of invoking jobs with Parameterized Trigger plugin. Using this option assumes you have this
+            plugin installed already.
         </para>
+
+        <screen><![CDATA[<job>
+    <id>google-guice-inheritance-trunk</id>
+    ...
+    <invoke>
+        <jobs>
+            google-guice-inheritance-3.0-rc3,
+            google-guice-inheritance-2.0-maven
+        </jobs>
+    </invoke>
+</job>
+
+<job>
+    <id>google-guice-inheritance-3.0-rc3</id>
+    ...
+</job>
+
+<job>
+    <id>google-guice-inheritance-2.0-maven</id>
+    ...
+</job>]]></screen>
+
+          <para>
+              &lt;invoke&gt; allows to invoke other jobs each time the current one finishes successfully. You can create a
+              pipeline of jobs this way, making sure each job in a pipeline invokes the following one. Note that
+              if there is more than one Jenkins executor available at the moment of invocation, all jobs specified will
+              start running in parallel. For serial execution you'll need to connect each upstream job to a downstream
+              one with &lt;invoke&gt;.
+          </para>
+
+          <para>
+              By default invocation happens only when the current job is stable. This can be modified, as shown in the following examples.
+          </para>
+
+          <screen><![CDATA[<invoke>
+    <jobs>jobA, jobB, jobC</jobs>
+    <always>true</always>
+</invoke>
+
+<invoke>
+    <jobs>jobA, jobB, jobC</jobs>
+    <unstable>true</unstable>
+</invoke>
+
+<invoke>
+    <jobs>jobA, jobB, jobC</jobs>
+    <stable>false</stable>
+    <unstable>false</unstable>
+    <failed>true</failed>
+</invoke>]]></screen>
+
+          <para>
+              First invocation in the example above always invokes downstream jobs. It can be used for a pipeline of jobs
+              that should always be executed even if some of them or their tests fail.
+          </para>
+
+          <para>
+              Second invocation in the example above invokes downstream jobs even if an upstream job is unstable, the invocation
+              happens regardless of test results. It can be used for a pipeline of jobs that are less sensitive to tests and their failures.
+          </para>
+
+          <para>
+              Third invocation in the example above invokes downstream jobs only when an upstream job fails but not when it is stable or unstable.
+              You can find this configuration useful when a failing job needs to perform additional actions beyond traditional
+              e-mail notifications.
+          </para>
+
+          <para>
+              Artifactory (<uri>http://jfrog.org</uri>) is a general purpose binaries repository that can be used as a Maven repository manager.
+              Jenkins Artifactory plugin (<uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri>) provides a number of benefits to
+              a Jenkins job. We have already reviewed some of them in &quot;Deploying to an Enterprise Repository Manager&quot; section like
+              an ability to deploy artifacts upon job completion or to send builds environment info together with artifacts for their better traceability.
+          </para>
+
+          <para>
+          <figure id="jenkins-plugin-artifactory">
+           <title>Artifactory Jenkins plugin configuration.</title>
+
+           <mediaobject>
+               <imageobject role="web">
+                   <imagedata fileref="figs/web/jenkins-plugin-artifactory.png" width="4.3in"/>
+               </imageobject>
+            </mediaobject>
+          </figure>
+          </para>
+
+          <para>
+              Configuring Artifactory Jenkins plugin with &quot;maven-jenkins-plugin&quot; is demonstrated in the following example.
+          </para>
+
+          <screen><![CDATA[<job>
+    ...
+    <artifactory>
+        <name>http://artifactory-server/</name>
+        <deployArtifacts>true</deployArtifacts>
+        <includeEnvVars>true</includeEnvVars>
+        <evenIfUnstable>true</evenIfUnstable>
+    </artifactory>
+</job>
+]]></screen>
+
+          <para>
+              Default deployment credentials are specified when Jenkins is configured in "Manage Jenkins" => "Configure System". Default
+              repositories are "libs-releases-local" and "libs-snapshots-local". See plugin's documentation at
+              <uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri> for more details.
+          </para>
       </sect2>
 
       <sect2>
