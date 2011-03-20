@@ -1283,17 +1283,41 @@ Finished: SUCCESS</screen></para>
 ]]></screen>
 
           <para>
-              Default deployment credentials are specified when Jenkins is configured in "Manage Jenkins" => "Configure System". Default
-              repositories are "libs-releases-local" and "libs-snapshots-local". See plugin's documentation at
-              <uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri> for more details.
+              Default deployment credentials are specified when Jenkins is configured in "Manage Jenkins" => "Configure System".
+              They can be also specified per each Jenkins job. Default Maven repositories are "libs-releases-local" and "libs-snapshots-local".
+              See plugin's documentation at <uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri> for more details.
           </para>
       </sect2>
 
       <sect2>
         <title>Free-style jobs</title>
         <para>
-            Desciption of how plugin allows a definion of a free-style jobs.
+            In addition to Maven jobs, &quot;maven-jenkins-plugin&quot; allows to configure Jenkins free-style jobs that
+            are described in &quot;Working with free-style build jobs&quot; chapter. Below is an example free-style job.
         </para>
+
+        <screen><![CDATA[<job>
+    <id>free-style</id>
+    <jobType>free</jobType>
+    <scmType>git</scmType>
+    <repository>
+        <remote>git://github.com/evgeny-goldin/maven-plugins-test.git</remote>
+    </repository>
+    <tasks>
+        <maven>
+            <mavenName>apache-maven-3</mavenName>
+            <jvmOptions>-Xmx128m -XX:MaxPermSize=128m -ea</jvmOptions>
+            <properties>plugins-version = 0.2.2</properties>
+        </maven>
+        <shell><command>pwd; ls -al; du -hs .</command></shell>
+    </tasks>
+</job>]]></screen>
+
+          <para>
+              Free-style jobs allow one to execute a shell or batch command, run Maven or Ant and invoke other jobs.
+              They provide a convenient run-time environment for system scripts or any other kind of activity not readily
+              available with Jenkins or one of its plugins.
+          </para>
       </sect2>
   </sect1>
 
