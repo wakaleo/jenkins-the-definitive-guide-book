@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
-<chapter>
+<chapter id="chapter-installing">
   <title>Installing Jenkins</title>
 
-  <sect1>
+  <sect1 id="chapter-installing-introduction">
     <title>Introduction</title>
 
     <para><indexterm>
@@ -21,7 +21,7 @@
     and upgrades.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="chapter-installing-downloading">
     <title>Downloading and Installing Jenkins</title>
 
     <para>Jenkins is easy to install, and can run just about anywhere. You can
@@ -47,9 +47,10 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Jenki
 
     <para>At the time of writing, there was no slick graphical installer for
     Jenkins, even for Windows - installation remains a largely manual process.
-    There are however native packages for several Linux distributions,
-    including Ubuntu, RedHat (including CentOS and Fedora) and OpenSolaris. We
-    discuss how to install Jenkins on Ubuntu and Redhat below.</para>
+    There are however excellent native packages for most of the major Linux
+    distributions, including Ubuntu, RedHat (including CentOS and Fedora) and
+    OpenSolaris. We discuss how to install Jenkins on Ubuntu and Redhat
+    below.</para>
 
     <para>If you are not installing Jenkins using one of the native packages,
     you simply download the latest binary distribution from the Jenkins
@@ -75,7 +76,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>Jenki
       </mediaobject>
     </figure>
 
-    <para>Before we go any further, let's just start up Hudson and take a
+    <para>Before we go any further, let's just start up Jenkins and take a
     look. If you didn't try this out in the previous chapter, now is the time
     to get your hands dirty. Open a console in the directory containing the
     <filename>jenkins.war</filename> file and run the following
@@ -104,7 +105,7 @@ isabled
     </figure>
   </sect1>
 
-  <sect1>
+  <sect1 id="chapter-installing-build-server">
     <title>Preparing a build server for Jenkins</title>
 
     <para>Installing Jenkins on your local development machine is one thing,
@@ -163,7 +164,7 @@ isabled
     being used by the Jenkins builds, and to troubleshoot problematic builds
     in real conditions. The native binary installation packages discussed
     below do this for you. If you did not use one of these, you can create a
-    dedicated jenkins user from the command line as shown here:</para>
+    dedicated Jenkins user from the command line as shown here:</para>
 
     <para><screen>$ <command>sudo groupadd build</command>
 $ <command>sudo useradd --create-home --shell /bin/bash --groups build jenkins</command></screen></para>
@@ -225,9 +226,9 @@ export PATH=$JAVA_HOME/bin:$PATH</programlisting>
     needs to be in the <filename>/data/jenkins</filename> directory, you might
     write a startup script along the following lines:</para>
 
-    <programlisting>export JENKINS_BASE=/usr/local/hudson
-export JENKINS_HOME=/var/hudson-data
-java -jar ${JENKINS_BASE}/hudson.war</programlisting>
+    <programlisting>export JENKINS_BASE=/usr/local/jenkins
+export JENKINS_HOME=/var/jenkins-data
+java -jar ${JENKINS_BASE}/jenkins.war</programlisting>
 
     <para>If you are running Jenkins in a Java EE container such as Tomcat or
     JBoss, you can configure the webapp to expose its own environments
@@ -237,7 +238,7 @@ java -jar ${JENKINS_BASE}/hudson.war</programlisting>
 
     <para><programlisting>&lt;Context docBase="../jenkins.war"&gt;
   &lt;Environment name="JENKINS_HOME" type="java.lang.String" 
-               value="/data/hudson" override="true"/&gt;
+               value="/data/jenkins" override="true"/&gt;
 &lt;/Context&gt;</programlisting>In a previous life, Jenkins was known as
     Hudson. Jenkins remains compatible with previous Hudson installations, and
     upgrading from Hudson to Jenkins can be as simple as replacing the old
@@ -282,8 +283,8 @@ java -jar ${JENKINS_BASE}/hudson.war</programlisting>
     </orderedlist>
   </sect1>
 
-  <sect1>
-    <title>Installing Hudson on Debian or Ubuntu</title>
+  <sect1 id="sect-installing-debian">
+    <title>Installing Jenkins on Debian or Ubuntu</title>
 
     <para><indexterm>
         <primary>installation</primary>
@@ -301,20 +302,22 @@ java -jar ${JENKINS_BASE}/hudson.war</programlisting>
     convenient to install the native binary package for these platforms. This
     is easy enough to do, though these binaries are not provided in the
     standard repositories because of the high frequency of updates. First, you
-    need to add the key to your system as shown here:<screen>$ <command>sudo su -
-</command># <command>echo "deb http://jenkins.gotdns.com/debian binary/" &gt; /etc/apt/sources.list.d/jenkins</command></screen>Now,
-    update the Debian package repository:<screen># <command>aptitude update</command></screen></para>
+    need to add the key to your system as shown here:<screen>$ <command>wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key \
+  | sudo apt-key add -</command>
+$ <command>sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" &gt; \
+  /etc/apt/sources.list.d/jenkins.list
+</command></screen>Now, update the Debian package repository:<screen>$ <command>sudo aptitude update</command></screen></para>
 
-    <para>Once this is done, you can install Hudson using the
-    <command>aptitude</command> tool:<screen>$ <command>aptitude install -y jenkins</command></screen></para>
+    <para>Once this is done, you can install Jenkins using the
+    <command>aptitude</command> tool:<screen>$ <command>sudo aptitude install -y jenkins</command></screen></para>
 
     <para>This will install Jenkins as a service, with a correctly configured
-    startup script in <filename>/etc/init.d/hudson</filename> and a
+    startup script in <filename>/etc/init.d/jenkins</filename> and a
     corresponding system user called '<filename>jenkins</filename>'. If you
     didn't already have Java installed on your server, it will also install
-    the OpenJDK version of Java. By default, you will find the Hudson WAR file
-    in the<filename>/usr/share/jenkins</filename> directory, and the Jenkins
-    home directory in <filename>/var/lib/jenkins</filename>.</para>
+    the OpenJDK version of Java. By default, you will find the Jenkins WAR
+    file in the<filename>/usr/share/jenkins</filename> directory, and the
+    Jenkins home directory in <filename>/var/lib/jenkins</filename>.</para>
 
     <para>The installation process should have started Jenkins. In general, to
     start Jenkins, simply invoke this script:<screen>$ <command>sudo /etc/init.d/jenkins start</command>
@@ -328,7 +331,7 @@ java -jar ${JENKINS_BASE}/hudson.war</programlisting>
     <para>Jenkins will write log files to
     <filename>/var/log/jenkins/jenkins.log</filename>. You can also fine-tune
     the configuration parameters in the
-    <filename>/etc/default/hudson</filename> file. This is useful if you need
+    <filename>/etc/default/jenkins</filename> file. This is useful if you need
     to modify the Java startup arguments (JAVA_ARGS). You can also use this
     file to configure arguments that will be passed to Jenkins in this file,
     such as the HTTP port or web application context (see <xref
@@ -358,7 +361,7 @@ java -jar ${JENKINS_BASE}/hudson.war</programlisting>
     Fedora and CentOS. First you need to set up the repository as
     follows:<screen>$ <command>sudo wget -O /etc/yum.repos.d/jenkins.repo \
   http://jenkins-ci.org/redhat/jenkins.repo</command>
-$ <command>sudo rpm --import http://jenkins-ci.org/redhat/jenkins-ci.org.key</command></screen></para>
+$ <command>sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key</command></screen></para>
 
     <para>On a fresh installation, you may need to install the JDK:<screen>$ <command>sudo yum install java-1.6.0-openjdk</command></screen></para>
 
@@ -384,7 +387,7 @@ $ <command>sudo rpm --import http://jenkins-ci.org/redhat/jenkins-ci.org.key</co
     <itemizedlist>
       <listitem>
         <para>JENKINS_JAVA_CMD: The version of Java you want to use to run
-        Hudson;</para>
+        Jenkins;</para>
       </listitem>
 
       <listitem>
@@ -398,49 +401,31 @@ $ <command>sudo rpm --import http://jenkins-ci.org/redhat/jenkins-ci.org.key</co
     </itemizedlist>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-install-jenkins-suse">
     <title>Installing Jenkins on SUSE or OpenSUSE</title>
 
     <para>Binary packages are also available for SUSE and OpenSUSE, so the
     installation process on these platforms is straightforward. First, you
-    need to add the Jenkins repository to the SUSE repository list:<screen>$ <command>sudo rpm --import http://jenkins-ci.org/redhat/jenkins-ci.org.key</command></screen></para>
+    need to add the Jenkins repository to the SUSE repository list:<screen>$ <command>sudo zypper addrepo http://pkg.jenkins-ci.org/opensuse/ jenkins</command></screen></para>
 
-    <para>Then you need to download the latest Jenkins RPM package from the
-    Hudson web site:</para>
-
-    <para><screen>$ <command>sudo wget -O /tmp/hudson.rpm http://hudson-ci.org/latest/opensuse/hudson.rpm</command></screen>Finally,
-    you simply install the Hudson RPM file using the <command>zypper</command>
-    command:<screen>$ <command>sudo zypper install /tmp/hudson.rpm</command>
-Loading repository data...
-Reading installed packaged...
-Resolving package dependencies...
-
-The following NEW packages are going to be installed:
-  jenkins java-1.6.0-sun
-
-
-2 new packages to install.
-...
-Continue? [y/n/?] (y):
-...
-Installing hudson-1.360-1.1 [done]
-Additional rpm output:
-jenkins                   0:off  1:off  2:off  3:on   4:off  5:on   6:off</screen></para>
+    <para>Finally, you simply install Jenkins using the
+    <command>zypper</command> command:<screen>$ <command>sudo zypper install jenkins</command>
+</screen></para>
 
     <para>As you can gather from the console output, this will install both
-    Hudson and the latest JDK from Sun, if the latter is not already
+    Jenkins and the latest JDK from Sun, if the latter is not already
     installed. OpenSuse installations typically have the OpenJDK version of
-    Java, but Hudson prefers the Sun variety. When it downloads the Sun JDK,
+    Java, but Jenkins prefers the Sun variety. When it downloads the Sun JDK,
     it will prompt you to validate the Sun Java license before continuing with
     the installation.</para>
 
     <para>This installation process will also create a
-    <filename>jenkins</filename> user and install Hudson as a service, so that
-    it will start up automatically whenever the machine boots. To start Hudson
-    manually, you can invoke the jenkins startup script in the
-    <filename>/etc/init.d</filename> directory:<screen>$ <command>sudo /etc/init.d/hudson jenkins start</command></screen></para>
+    <filename>jenkins</filename> user and install Jenkins as a service, so
+    that it will start up automatically whenever the machine boots. To start
+    Jenkins manually, you can invoke the jenkins startup script in the
+    <filename>/etc/init.d</filename> directory:<screen>$ <command>sudo /etc/init.d/jenkins jenkins start</command></screen></para>
 
-    <para>Hudson will now be running on the default port of 8080 (<ulink
+    <para>Jenkins will now be running on the default port of 8080 (<ulink
     url="http://localhost:8080/"></ulink>).</para>
 
     <para>The configuration options are similar to the Redhat installation
@@ -448,7 +433,7 @@ jenkins                   0:off  1:off  2:off  3:on   4:off  5:on   6:off</scree
     number of configuration variables in the
     <filename>/etc/sysconfig/jenkins</filename> file, but for any advanced
     configuration options, you need to modify the startup script in
-    <filename>/etc/init.d/hudson</filename>.</para>
+    <filename>/etc/init.d/jenkins</filename>.</para>
 
     <para>The <command>zypper</command> tool also makes it easy to update your
     Jenkins instance:</para>
@@ -484,32 +469,31 @@ jenkins                   0:off  1:off  2:off  3:on   4:off  5:on   6:off</scree
     screens.</para>
 
     <para>To run Jenkins using the embedded servlet container, just go to the
-    command line and type the following:<screen>C:\Program Files\Hudson&gt;<command>java -jar hudson.war</command>
-[Winstone 2008/07/01 20:54:53] - Beginning extraction from war file
-[Winstone 2008/07/01 20:55:07] - No webapp classes folder found - C:\Users\john\.hudson
+    command line and type the following:<screen>C:\Program Files\Jenkins&gt;<command>java -jar jenkins.war</command>
+[Winstone 2011/07/01 20:54:53] - Beginning extraction from war file
+[Winstone 2011/07/01 20:55:07] - No webapp classes folder found - C:\Users\john\.jenkins
 \war\WEB-INF\classes
-jenkins home directory: C:\Users\john\.hudson
+jenkins home directory: C:\Users\john\.jenkins
 ...
-1/07/2008 20:55:08 hudson.model.Hudson load
 INFO: Took 35 ms to load
 ...
-[Winstone 2008/07/01 20:55:08] - HTTP Listener started: port=8080
-[Winstone 2008/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: controlPort=d
+[Winstone 2011/07/01 20:55:08] - HTTP Listener started: port=8080
+[Winstone 2011/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: controlPort=d
 isabled
-[Winstone 2008/07/01 20:55:08] - AJP13 Listener started: port=8009</screen></para>
+[Winstone 2011/07/01 20:55:08] - AJP13 Listener started: port=8009</screen></para>
 
     <para>In a Linux environment, the procedure is similar. Note how we start
-    the Jenkins server from with the 'hudson' user account we created
+    the Jenkins server from with the 'jenkins' user account we created
     earlier.<screen>john@lambton:~$ <command>sudo su - jenkins</command>
-hudson@lambton:~$ <command>java -jar /usr/local/hudson/hudson.war</command> 
-[Winstone 2008/07/16 02:11:24] - Beginning extraction from war file
-[Winstone 2008/07/16 02:11:27] - No webapp classes folder found - /home/hudson/.hudson/
+jenkins@lambton:~$ <command>java -jar /usr/local/jeknins/jenkins.war</command> 
+[Winstone 2011/07/16 02:11:24] - Beginning extraction from war file
+[Winstone 2011/07/16 02:11:27] - No webapp classes folder found - /home/jenkins/.jenkins/
 war/WEB-INF/classes
-jenkins home directory: /home/hudson/.hudson
+jenkins home directory: /home/jenkins/.jenkins
 ...
-[Winstone 2008/07/16 02:11:31] - HTTP Listener started: port=8080
-[Winstone 2008/07/16 02:11:31] - AJP13 Listener started: port=8009
-[Winstone 2008/07/16 02:11:31] - Winstone Servlet Engine v0.9.10 running: controlPort=d
+[Winstone 2011/07/16 02:11:31] - HTTP Listener started: port=8080
+[Winstone 2011/07/16 02:11:31] - AJP13 Listener started: port=8009
+[Winstone 2011/07/16 02:11:31] - Winstone Servlet Engine v0.9.10 running: controlPort=d
 isabled</screen></para>
 
     <para>This will start the embedded servlet engine in the console window.
@@ -518,7 +502,7 @@ isabled</screen></para>
     context, so you access Jenkins directly using the server URL (e.g. <ulink
     url="http://localhost:8080"></ulink>).</para>
 
-    <para>To stop Hudson, just press Control-C.</para>
+    <para>To stop Jenkins, just press Control-C.</para>
 
     <para><indexterm>
         <primary>configuration</primary>
@@ -526,7 +510,7 @@ isabled</screen></para>
         <secondary>--httpPort</secondary>
       </indexterm>By default, Jenkins will run on the 8080 port. If this
     doesn't suit your environment, you can specify the port manually, using
-    the <command>--httpPort</command> option:<screen>$ java -jar hudson.war --httpPort=8081</screen></para>
+    the <command>--httpPort</command> option:<screen>$ java -jar jenkins.war --httpPort=8081</screen></para>
 
     <para>In a real-world architecture, Jenkins may not be the only web
     application running on your build server. Depending on the capacity of
@@ -537,7 +521,7 @@ isabled</screen></para>
         <primary>configuration</primary>
 
         <secondary>--ajp13Port</secondary>
-      </indexterm><command>--ajp13Port</command> option:<screen>$ java -jar hudson.war --httpPort=8081 --ajp13Port=8010</screen></para>
+      </indexterm><command>--ajp13Port</command> option:<screen>$ java -jar jenkins.war --httpPort=8081 --ajp13Port=8010</screen></para>
 
     <para>Some other useful options are:<variablelist>
         <varlistentry>
@@ -556,7 +540,7 @@ isabled</screen></para>
             Jenkins server. By default Jenkins will run on the port 8080 with
             no context path (<ulink url="http://localhost:8080"></ulink>).
             However, if you use this option, you can force Jenkins to use
-            whatever context path suits you, e.g:<screen>$ java -jar hudson.war --prefix=hudson</screen>In
+            whatever context path suits you, e.g:<screen>$ java -jar jenkins.war --prefix=jenkins</screen>In
             this case, Jenkins will be accessible on <ulink
             url="http://localhost:8080/hudson"></ulink>.</para>
 
@@ -590,7 +574,7 @@ isabled</screen></para>
               </indexterm>By default, Jenkins writes its logfile into the
             current directory. However, on a server, you often need to write
             your log files into a predetermined directory. You can use this
-            option to redirect your messages to some other file: <screen>$ java -jar hudson.war --logfile=/var/log/hudson.log</screen></para>
+            option to redirect your messages to some other file: <screen>$ java -jar jenkins.war --logfile=/var/log/jenkins.log</screen></para>
           </listitem>
         </varlistentry>
       </variablelist></para>
@@ -602,12 +586,12 @@ isabled</screen></para>
     <para>If you are running Jenkins using the embedded Winstone application
     server, you can also restart and shutdown Jenkins elegantly by calling the
     Winstone server directly. To do this, you need to specify the controlPort
-    option when you start Hudson, as shown here:<screen>$ java -jar hudson.war --controlPort=8001</screen></para>
+    option when you start Jenkins, as shown here:<screen>$ java -jar jenkins.war --controlPort=8001</screen></para>
 
     <para>A slightly more complete example in a Unix environment might look
     like this:</para>
 
-    <para><screen>$ nohup java -jar hudson.war --controlPort=8001 &gt; /var/log/hudson.log 2&gt;&amp;1 &amp;</screen>The
+    <para><screen>$ nohup java -jar jenkins.war --controlPort=8001 &gt; /var/log/jenkins.log 2&gt;&amp;1 &amp;</screen>The
     key here is the <command>controlPort</command> option. This option gives
     you the means of stopping or restarting Jenkins directly via the Winstone
     tools. The only problem is that you need a matching version of the
@@ -616,10 +600,12 @@ isabled</screen></para>
 
     <para>To restart the server, you can run the following command:</para>
 
-    <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl reload: --host=localhost --port=8001 </screen>And
-    to shut it down completely, you can use the following:</para>
+    <para><screen>$ java -cp $JENKINS_HOME/war/winstone.jar winstone.tools.WinstoneControl reload: \
+  --host=localhost --port=8001 </screen>And to shut it down completely, you
+    can use the following:</para>
 
-    <para><screen>$ java -cp $HUDSON_HOME/war/winstone.jar winstone.tools.WinstoneControl shutdown --host=localhost --port=8001 </screen></para>
+    <para><screen>$ java -cp $JENKINS_HOME/war/winstone.jar winstone.tools.WinstoneControl shutdown \
+  --host=localhost --port=8001 </screen></para>
 
     <para>Another way to shut down Jenkins cleanly is to invoke the special
     "/exit" URL, as shown here:</para>
@@ -639,7 +625,7 @@ isabled</screen></para>
     cleanly (more so than killing the process directly, for example), they
     will interrupt any builds in progress. So it is recommended practice to
     prepare the shutdown cleanly by using the 'Prepare for Shutdown' button on
-    the 'Manage Hudson' screen (see <xref
+    the 'Manage Jenkins' screen (see <xref
     linkend="sect-configuration-manage-hudson" />).</para>
 
     <para>Running Jenkins as a stand-alone application may not be to
@@ -654,7 +640,7 @@ isabled</screen></para>
     section.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-jenkins-apache">
     <title>Running Jenkins behind an Apache server</title>
 
     <para>If you are running Jenkins in a Unix environment, you may want to
@@ -690,10 +676,10 @@ isabled</screen></para>
     suffix in the public-facing URL you want to use. So if you want to access
     Jenkins via the URL <ulink
     url="http://myserver.myorg.com/hudson"></ulink>,you will need to provide
-    'hudson' as a prefix:<screen>$ java -jar hudson.war --httpPort=8081 --ajp13Port=8010 --prefix=hudson</screen></para>
+    'jenkins' as a prefix:<screen>$ java -jar jenkins.war --httpPort=8081 --ajp13Port=8010 --prefix=jenkins</screen></para>
 
     <para>If you are running Jenkins on an application server such as Tomcat,
-    it will already be running under a particular web context ("/hudson" by
+    it will already be running under a particular web context ("/jenkins" by
     default).</para>
 
     <para>Next, make sure the <command>mod_proxy</command> and
@@ -705,14 +691,14 @@ isabled</screen></para>
     <para><screen>LoadModule proxy_module modules/mod_proxy.so</screen>The
     proxy is actually configured in the <filename>proxy_ajp.conf</filename>
     file (often in the <filename>/etc/httpd/conf.d</filename> directory). Note
-    that the name of the proxy path ("/hudson" in this example) must match the
-    prefix or web context that Jenkins is using. An example of such a
+    that the name of the proxy path ("/jenkins" in this example) must match
+    the prefix or web context that Jenkins is using. An example of such a
     configuration file is given here:</para>
 
     <para><screen>LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
 
-ProxyPass         /hudson  http://localhost:8081/hudson
-ProxyPassReverse  /hudson  http://localhost:8081/hudson
+ProxyPass         /jenkins  http://localhost:8081/jenkins
+ProxyPassReverse  /jenkins  http://localhost:8081/jenkins
 ProxyRequests     Off</screen>Once this is done, you just need to restart your
     Apache server:<screen>$ sudo /etc/init.d/httpd restart
 Stopping httpd:                                            [  OK  ]
@@ -722,7 +708,7 @@ Starting httpd:                                            [  OK  ]</screen></pa
     like <ulink url="http://myserver.myorg.com/hudson"></ulink>.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-jenkins-app-server">
     <title>Running Jenkins on an application server</title>
 
     <para><indexterm>
@@ -734,7 +720,7 @@ Starting httpd:                                            [  OK  ]</screen></pa
     Jetty or Glassfish. Running Jenkins on an application server is arguably
     more complicated to setup and to maintain. You also loose certain nice
     administration features such as the ability to upgrade Jenkins or restart
-    the server directly from within Hudson. On the other hand, your system
+    the server directly from within Jenkins. On the other hand, your system
     administrators might be more familiar with maintaining an application
     running on Tomcat or Glassfish than on the more obscure Winstone
     server.</para>
@@ -742,7 +728,7 @@ Starting httpd:                                            [  OK  ]</screen></pa
     <para>Let's look at how you would typically deploy Jenkins onto a Tomcat
     server. The easiest approach is undoubtedly to simply unzip the Tomcat
     binary distribution onto your disk (if it is not already installed) and
-    copy the <filename>hudson.war</filename> file into the Tomcat
+    copy the <filename>jenkins.war</filename> file into the Tomcat
     <filename>webapps</filename> directory. You can download the Tomcat
     binaries from the Tomcat web site (<ulink
     url="http://tomcat.apache.org"></ulink>).</para>
@@ -751,7 +737,7 @@ Starting httpd:                                            [  OK  ]</screen></pa
     <filename>startup.sh</filename> script in the Tomcat bin directory.
     Jenkins will be available when you start Tomcat. You should note that, in
     this case, Jenkins will be executed in its own web application context
-    (typically "hudson"), so you will need to include this in the URL you use
+    (typically "jenkins"), so you will need to include this in the URL you use
     to access your Jenkins server (e.g. <ulink
     url="http://localhost:8080/hudson"></ulink>).</para>
 
@@ -776,7 +762,7 @@ Starting httpd:                                            [  OK  ]</screen></pa
     large number of build processes, it is not enough just to give Jenkins a
     lot of memory. In fact Jenkins spans a new Java process each time it kicks
     off a build, so during a large build, the build process needs the memory,
-    not Hudson.</para>
+    not Jenkins.</para>
 
     <para>You can define build-specific memory options for your Jenkins build
     jobs - we will see how to do this later on in the book. However if you
@@ -789,12 +775,12 @@ Starting httpd:                                            [  OK  ]</screen></pa
     <para>Here is an example of how these variables might be configured on a
     Unix machine in the <filename>.profile</filename> file:</para>
 
-    <programlisting>export JAVA_OPTS=-Djava.awt.headless=true -Xmx512m -DHUDSON_HOME=/data/hudson
+    <programlisting>export JAVA_OPTS=-Djava.awt.headless=true -Xmx512m -DJENKINS_HOME=/data/jenkins
 export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-windows-service">
     <title>Installing Jenkins as a Windows service</title>
 
     <para>If you are running a production installation of Jenkins on a Windows
@@ -816,7 +802,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     The simplest approach is to run Jenkins using Java Web Start (see <xref
     linkend="fig-hudson-java-web-start" />). Alternatively, you can do this by
     downloading Jenkins and running it from the command line, as we discussed
-    earlier:<screen>C:\hudson&gt; <command>java -jar hudson.war</command></screen></para>
+    earlier:<screen>C:\jenkins&gt; <command>java -jar jenkins.war</command></screen></para>
 
     <para>This second option is useful if the default Jenkins port (8080) is
     already being used by another application. It doesn't actually matter
@@ -839,17 +825,18 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     linkend="fig-hudson-windows-service" />).</para>
 
     <para>Jenkins will prompt you for an installation directory. This will be
-    the Jenkins home directory (HUDSON_HOME). The default value is the default
-    HUDSON_HOME value: a directory called ".hudson" in the current user's home
-    directory. This is often not a good choice for a Windows installation.
-    When running Jenkins on Windows XP, you should avoid installing your
-    Jenkins home directory anywhere near your "<filename>C:\Documents And
-    Settings</filename>" directory - not only is it a ridiculously long name,
-    the spaces can wreak havoc with your Ant and Maven builds and any tests
-    using classpath-based resources. It is much better to use a short and
-    sensible name such as "<filename>C:\hudson</filename>". The Vista and
-    Windows 7 home directory paths like <filename>"C:\Users\john"</filename>
-    will also work fine.</para>
+    the Jenkins home directory (JENKINS_HOME). The default value is the
+    default JENKINS_HOME value: a directory called ".jenkins" in the current
+    user's home directory. This is often not a good choice for a Windows
+    installation. When running Jenkins on Windows XP, you should avoid
+    installing your Jenkins home directory anywhere near your
+    "<filename>C:\Documents And Settings</filename>" directory - not only is
+    it a ridiculously long name, the spaces can wreak havoc with your Ant and
+    Maven builds and any tests using classpath-based resources. It is much
+    better to use a short and sensible name such as
+    "<filename>C:\jenkins</filename>". The Vista and Windows 7 home directory
+    paths like <filename>"C:\Users\john"</filename> will also work
+    fine.</para>
 
     <figure id="fig-hudson-windows-service">
       <title>Installing Jenkins as a Windows Service</title>
@@ -868,15 +855,16 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     nested Jenkins work directory and a deep class path, you can often overrun
     this, which will result in very obscure build errors. To minimize the
     risks of over-running the Windows file path limits, you need to redefine
-    the HUDSON_HOME environment variable to point to a shorter path in the
-    <filename>hudson.xml</filename> file, as we discussed above.</para>
+    the JENKINS_HOME environment variable to point to a shorter path, as we
+    discussed above.</para>
 
     <para>This approach won't always work with Windows Vista or Windows 7. An
-    alternative strategy is to use the hudson.exe program that the Web Start
-    installation process will have installed in the directory you specified
-    above. Open the command line prompt as an administrator (right-click, "Run
-    as administrator") and run the <filename>hudson.exe</filename> executable
-    with the "install" option:<screen>C:\hudson&gt; <command>hudson.exe install</command></screen></para>
+    alternative strategy is to use the <filename>jenkins.exe</filename>
+    program that the Web Start installation process will have installed in the
+    directory you specified above. Open the command line prompt as an
+    administrator (right-click, "Run as administrator") and run the
+    <filename>jenkins.exe</filename> executable with the "install"
+    option:<screen>C:\jenkins&gt; <command>jenkins.exe install</command></screen></para>
 
     <para>This basic installation will work fine in a simple context, but you
     will often need to fine-tune your service. For example, by default, the
@@ -905,25 +893,25 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     </figure>
 
     <para>You configure the finer details of the Jenkins service in a file
-    called <filename>hudson.xml</filename>, in the same directory as your
-    <filename>hudson.war</filename> file. Here you can configure (or
+    called <filename>jenkins.xml</filename>, in the same directory as your
+    <filename>jenkins.war</filename> file. Here you can configure (or
     re-configure) ports, JVM options, an the Jenkins work directory. In the
     following example, we give Jenkins a bit more memory and get it to run on
     port 8081:</para>
 
     <programlisting>&lt;service&gt;
-  &lt;id&gt;hudson&lt;/id&gt;
-  &lt;name&gt;Hudson&lt;/name&gt;
+  &lt;id&gt;jenkins&lt;/id&gt;
+  &lt;name&gt;Jenkins&lt;/name&gt;
   &lt;description&gt;This service runs the Jenkins continuous integration system&lt;/description&gt;
-  &lt;env name="HUDSON_HOME" value="D:\hdn" /&gt;
+  &lt;env name="JENKINS_HOME" value="D:\jenkins" /&gt;
   &lt;executable&gt;java&lt;/executable&gt;
   &lt;arguments&gt;-Xrs -Xmx512m -Dhudson.lifecycle=hudson.lifecycle.WindowsServiceLifecycle 
-  -jar "%BASE%\hudson.war" --httpPort=8081 --ajp13Port=8010&lt;/arguments&gt;
+  -jar "%BASE%\jenkins.war" --httpPort=8081 --ajp13Port=8010&lt;/arguments&gt;
 &lt;/service&gt;</programlisting>
 
     <para>Finally, if you need to uninstall the Jenkins service, you can do
     one of two things. The simplest is to run the Jenkins executable with the
-    "uninstall" option: <screen>C:/hudson&gt;<command>hudson.exe uninstall</command></screen></para>
+    "uninstall" option: <screen>C:/jenkins&gt;<command>jenkins.exe uninstall</command></screen></para>
 
     <para>The other option is to use the Windows service tool
     <command>sc</command>:<screen>C:/&gt;<command>sc delete jenkins</command></screen></para>
@@ -938,7 +926,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
         <primary>JENKINS_HOME</primary>
       </indexterm>The Jenkins home directory contains all the details of your
     Jenkins server configuration, details that you configure in the "Manage
-    Hudson" screen. These configuration details are stored in the form of a
+    Jenkins" screen. These configuration details are stored in the form of a
     set of XML files. Much of the core configuration, for example, is stored
     in the <filename>config.xml</filename> file. Other tools-specific
     configuration is stored in other appropriately-named XML files: the
@@ -950,7 +938,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     <para>The Jenkins home directory also contains a number of sub-directories
     (see <xref lang="" linkend="fig-hudson-home-directory" />). Not all of the
     files and directories will be present after a fresh installation, as some
-    are created when required by Hudson. And if you look at an existing
+    are created when required by Jenkins. And if you look at an existing
     Jenkins installation, you will see additional XML files relating to
     Jenkins configuration and plugins.</para>
 
@@ -985,7 +973,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
 
           <tbody>
             <row>
-              <entry>.hudson</entry>
+              <entry>.jenkins</entry>
 
               <entry>The default Jenkins home directory</entry>
             </row>
@@ -1072,16 +1060,16 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     </figure>
 
     <para>This directory contains a sub-directory for each Jenkins build job
-    being managed by this instance of Hudson. Each job directory in turn
+    being managed by this instance of Jenkins. Each job directory in turn
     contains two sub-directories: <filename>builds</filename> and
     <filename>workspace</filename>, along with some other files. In
     particular, it contains the build job <filename>config.xml</filename>
     file, which contains, as you might expect, the configuration details for
-    this build job. There are also some other files used internally by Hudson,
-    that you usually wouldn't touch, such as the nextBuildNumber file (which
-    contains the number that will be assigned to the next build in this build
-    job), as well as symbolic links to the most recent successful build and
-    the last stable one. A successful build is one that does not have any
+    this build job. There are also some other files used internally by
+    Jenkins, that you usually wouldn't touch, such as the nextBuildNumber file
+    (which contains the number that will be assigned to the next build in this
+    build job), as well as symbolic links to the most recent successful build
+    and the last stable one. A successful build is one that does not have any
     compilation errors. A stable build is a successful build that has passed
     whatever quality criteria you may have configured, such as unit tests,
     code coverage and so forth.</para>
@@ -1149,7 +1137,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     what you are doing.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-jenkins-backing-up-data">
     <title>Backing up your Jenkins data</title>
 
     <para><indexterm>
@@ -1163,7 +1151,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     environment.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-installation-upgrading">
     <title>Upgrading your Jenkins installation</title>
 
     <para><indexterm>
@@ -1173,7 +1161,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
 
         <secondary>upgrading</secondary>
       </indexterm>Upgrading Jenkins is easy - you simply replace your local
-    copy of the <filename>hudson.war</filename> file and restart Hudson.
+    copy of the <filename>jenkins.war</filename> file and restart Jenkins.
     However you should make sure there are no builds running when you restart
     your server. Since your build environment configuration details, plugins
     and build history are stored in the Jenkins home directory, upgrading your
@@ -1182,10 +1170,14 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     referring to the version number in the bottom right corner of every
     screen.</para>
 
+    <para>If you have installed Jenkins using one of the Linux packages,
+    Jenkins can be upgraded using the same process as the other system
+    packages on the server.</para>
+
     <para>If you are running Jenkins as a stand-alone instance, you can also
     upgrade your Jenkins installation directly from the web interface, in the
-    'Manage Hudson' section. Jenkins will indicate if a more recent version is
-    available, and give you the option to either download it manually or
+    'Manage Jenkins' section. Jenkins will indicate if a more recent version
+    is available, and give you the option to either download it manually or
     upgrade automatically (see <xref lang=""
     linkend="fig-hudson-upgrade" />).</para>
 
@@ -1201,10 +1193,10 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
 
     <para>Once Jenkins has downloaded the upgrade, you can also tell it to
     restart when no jobs are running. This is probably the most convenient way
-    to upgrade Hudson, although it will not work in all environments. In
+    to upgrade Jenkins, although it will not work in all environments. In
     particular, you need to be running Jenkins as a stand-alone application,
     and the user running Jenkins needs to have read-write access to the
-    <filename>hudson.war</filename> file.</para>
+    <filename>jenkins.war</filename> file.</para>
 
     <para>If you are running Jenkins on an application server such as Tomcat
     or JBoss, you might need to do a bit more tidying up when you upgrade your
@@ -1220,7 +1212,7 @@ export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
     detail further on in this book.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-installation-conclusion">
     <title>Conclusion</title>
 
     <para>In this chapter, we have seen how to install and run Jenkins in
