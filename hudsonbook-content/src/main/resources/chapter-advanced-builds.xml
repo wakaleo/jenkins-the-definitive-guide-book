@@ -29,7 +29,7 @@
     <para>The <command>Parameterized Build</command> plugin lets you configure
     parameters for your build job, that can be either entered by the user when
     the build job is triggered, or (as we will see later) from another build
-    job.</para>
+    job. </para>
 
     <para>For example, you might have a deployment build job, where you want
     to choose the target environment in a drop-down list when you start the
@@ -37,6 +37,11 @@
     want to deploy. Or, when running a build job involving web tests, you
     might want to specify the browser to run your Selenium or WebDriver tests
     in. You can even upload a file to be used by the build job.</para>
+
+    <para>Note that it is the job of the build script to analyse and process
+    the parameter values correctly - Jenkins simply provides a user interface
+    for users to enter values for the parameters, and passes these parameters
+    to the build script.</para>
 
     <sect2>
       <title>Creating a parameterized build jobs</title>
@@ -107,10 +112,10 @@
       scripts</title>
 
       <para>Once you have added a parameter, you need to configure your build
-      scripts to use it. Choosing the parameter name wellis important here, as
-      this is also the name of the variable that Jenkins will pass through as
-      an environment variable when it runs the build job. To illustrate this,
-      consider the very basic build job configuration in <xref
+      scripts to use it. Choosing the parameter name well is important here,
+      as this is also the name of the variable that Jenkins will pass through
+      as an environment variable when it runs the build job. To illustrate
+      this, consider the very basic build job configuration in <xref
       linkend="fig-hudson-parameterized-shell" />, where we are simply echoing
       the build parameter back out to the console. Note that, to make the
       environment variables more portable across operating systems, it is good
@@ -301,8 +306,8 @@ Finished: SUCCESS</screen></para>
     <sect2>
       <title>Parameterized build job history</title>
 
-      <para>Finally, it can be very useful to know what parameters were used
-      to run a particular parameterized build. For example, in an automated
+      <para>Finally, it is indispensable to know what parameters were used to
+      run a particular parameterized build. For example, in an automated
       deployment build job, it is useful to know exactly what version was
       actually deployed. Fortunately, Jenkins stores these values in the build
       history (see <xref linkend="fig-hudson-build-parameter-history" />), so
@@ -381,7 +386,7 @@ Finished: SUCCESS</screen></para>
         <mediaobject>
           <imageobject role="web">
             <imagedata fileref="figs/web/hudson-build-parameters-trigger.png"
-                       width="10.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>In this case, we are simple passing through the current build
@@ -999,7 +1004,7 @@ Finished: SUCCESS</screen></para>
           <mediaobject>
             <imageobject role="web">
               <imagedata fileref="figs/web/hudson-dependency-graph.png"
-                         width="12.3in" />
+                         width="4.3in" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -1053,7 +1058,8 @@ Finished: SUCCESS</screen></para>
       for the final build job, as it is now redundant.</para>
 
       <para>This new flow shows up nicely in the dependency graphs as
-      illustrated in <xref linkend="build-dependency-graph-join" />.</para>
+      illustrated in <xref
+      linkend="fig-build-dependency-graph-join" />.</para>
 
       <para><figure id="fig-build-dependency-graph-join">
           <title>Configuring a join in the phoenix-web-tests build job</title>
@@ -1061,7 +1067,7 @@ Finished: SUCCESS</screen></para>
           <mediaobject>
             <imageobject role="web">
               <imagedata fileref="figs/web/build-dependency-graph-join.png"
-                         width="9.3in" />
+                         width="4.3in" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -1074,12 +1080,11 @@ Finished: SUCCESS</screen></para>
       in parallel to some degree, but certain build jobs cannot be run in
       parallel because they access concurrent resources. Of course,
       well-designed build jobs should strive to be as independent as possible,
-      but sometimes this can be difficult, especially with legacy projects.
-      For example, different build jobs may need to access the same test
-      database or files on the hard disk, and doing so simultaneously could
-      potentially compromise the results of the tests. Or a performance build
-      job may need exclusive access to the test server, in order to have
-      consistent results each time.</para>
+      but sometimes this can be difficult. For example, different build jobs
+      may need to access the same test database or files on the hard disk, and
+      doing so simultaneously could potentially compromise the results of the
+      tests. Or a performance build job may need exclusive access to the test
+      server, in order to have consistent results each time.</para>
 
       <para>The <command>Locks and Latches</command> plugin lets you get
       around this problem to some extent. This plugin lets you set up "locks"
@@ -1128,7 +1133,7 @@ Finished: SUCCESS</screen></para>
     </sect2>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-build-pipelines">
     <title>Build pipelines and promotions</title>
 
     <para>Continuous Integration is not just about automatically building and
@@ -1237,7 +1242,9 @@ Finished: SUCCESS</screen></para>
 
       <para>If you have a multi-module Maven project, you can choose to
       provide a single version number configuration for all modules, or
-      provide a different version number update for each module.</para>
+      provide a different version number update for each module. Note that it
+      is generally not recommended practice to provide different version
+      numbers for different modules in a multi-module project.</para>
 
       <para><figure id="fig-jenkins-perform-release">
           <title>The 'Perform Maven Release' menu option</title>
