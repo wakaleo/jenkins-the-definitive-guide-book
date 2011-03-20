@@ -4,7 +4,7 @@
 <chapter id="chapter-advanced-builds">
   <title>Advanced Builds</title>
 
-  <sect1>
+  <sect1 id="sect-advanced-builds-introduction">
     <title>Introduction</title>
 
     <para><indexterm>
@@ -20,7 +20,7 @@
     build server, but also as a deployment server.</para>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-advanced-builds-parameterized">
     <title>Parameterized build jobs</title>
 
     <para>Parameterized builds are a powerful concept that enable you to add
@@ -29,7 +29,7 @@
     <para>The <command>Parameterized Build</command> plugin lets you configure
     parameters for your build job, that can be either entered by the user when
     the build job is triggered, or (as we will see later) from another build
-    job. </para>
+    job.</para>
 
     <para>For example, you might have a deployment build job, where you want
     to choose the target environment in a drop-down list when you start the
@@ -327,7 +327,7 @@ Finished: SUCCESS</screen></para>
     </sect2>
   </sect1>
 
-  <sect1>
+  <sect1 id="sect-advanced-builds-triggers">
     <title>Parameterized triggers</title>
 
     <para>When you trigger another build job from within a parameterized build
@@ -684,253 +684,392 @@ Finished: SUCCESS</screen></para>
   </sect1>
 
   <sect1>
-    <title>Organizing your build jobs</title>
+    <title>Generating your Maven build jobs automatically</title>
 
-    <para>Depending on the size of your team and organization, the number of
-    build jobs that your Jenkins server will host can vary a great deal. As
-    the number of build jobs grows, the Jenkins dashboard can become
-    cluttered. In this section we will look at how to use views to group and
-    organize your build jobs.</para>
-
-    <sect2>
-      <title>Views</title>
-
-      <para>Views are the simplest way to organize your build jobs. A view
-      lets you display a subset of the build jobs on your server, either by
-      picking them individually, or by defining a regular expression. Views
-      are often used on larger servers to group build jobs by project,
-      application, or team.</para>
-
-      <para>Views are easy to set up. Just click on the '+' icon at the top of
-      the page, and choose a name for your new view (see <xref
-      linkend="fig-hudson-view-new" />). The name you choose will appear in
-      the tabs on the Jenkins home page, and in the URLs accessing the build
-      job pages - for this reason, I generally avoid spaces.</para>
-
-      <para>You also need to choose the type of view you want to create. By
-      default, only the standard 'list' view is available, but many more are
-      available through additional plugins, as we will see further on.</para>
-
-      <para><figure id="fig-hudson-view-new">
-          <title>Creating a new view</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-view-new.png" width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <para>Once you have created your new view, you need to tell Jenkins what
-      build jobs will figure in it, and what other associated information will
-      be displayed (see <xref linkend="fig-hudson-view-new-details" />). The
-      simplest way to choose the jobs to be displayed one by one, simply by
-      ticking them in the Jobs list.</para>
-
-      <para><figure id="fig-hudson-view-new-details">
-          <title>Creating a new view</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-view-new-details.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <para>A more robust approach, however, is to use a regular expression to
-      define the names of the build jobs to be displayed (see <xref
-      linkend="fig-build-view-regex" />). For example, the expression
-      <code>game-of-life.*</code> will display all of the build jobs whose
-      name starts with "game-of-life". If the names of your build jobs follow
-      some well-defined convention (as they should), this is an excellent way
-      to make maintaining your views a lot easier.</para>
-
-      <para>Another useful option, if your build server hosts a large number
-      of build jobs, is to filter the build queue and build executors so that
-      only the activity of build jobs displayed in your build will appear in
-      the build queue or executors, while you are in this view. This avoids
-      unnecessary pollution about irrelevant builds whilst you are in this
-      view, though you can always get a full picture of all of the build jobs
-      on the dashboard page. You can configure this towards the two check
-      boxes at the top of the build configuration page.</para>
-
-      <para><figure id="fig-build-view-regex">
-          <title>Using a regular expression to define the jobs to be
-          displayed</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/build-view-regex.png" width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <para>By default, the view will contain the same columns as appear on
-      the main dashboard. This is usually fine, but you do have the option of
-      adding, deleting or changing the order of the columns that appear in the
-      view (see <xref linkend="fig-hudson-view-add-column" />).</para>
-
-      <para><figure id="fig-hudson-view-add-column">
-          <title>Using a regular expression to define the jobs to be
-          displayed</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-view-add-column.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure>Once you are happy with the configuration of your view, save
-      your changes. Your view will now appear as an additional tab on the
-      dashboard, displaying only the jobs you specified (see <xref
-      linkend="fig-hudson-view-display" />). When you are in a view, Jenkins
-      will also display menu options allowing you to edit or delete the
-      view.</para>
-
-      <para><figure id="fig-hudson-view-display">
-          <title>The final view</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-view-display.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </sect2>
-
-    <sect2>
-      <title>Nested Views</title>
-
-      <para>Most Jenkins instances host between a dozen and a hundred or so
-      build jobs. However some host a great deal more than that, and once the
-      number of build jobs gets beyond a few dozen, things start to become
-      very crowded on the Jenkins home page.</para>
-
-      <para>One solution to this issue would be to regroup your build jobs
-      into folders. Jenkins does not support this feature out of the box.
-      However, the <command>Nested View</command> plugin does let you create
-      folders of build jobs. Once you install this plugin, you can choose the
-      'Nested View' option when you create a new view (see <xref
-      linkend="fig-hudson-nested-view-new" />).</para>
-
-      <para><figure id="fig-hudson-nested-view-new">
-          <title>Creating a new Nested View</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-nested-view-new.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure>This doesn't do much in itself. After a page where you enter
-      a description of your build and the filtering options we saw in the
-      standard view, it will essentially create an empty view (see <xref
-      linkend="fig-hudson-nested-view-empty" />). From here, you can add new
-      view that will be nested inside this one by clicking on the 'New View'
-      menu option.</para>
-
-      <para><figure id="fig-hudson-nested-view-empty">
-          <title>Creating a new Nested View</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-nested-view-empty.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure>You can add any view you want to a nested view, even another
-      nested view. The views you define are displayed as folders on the view
-      home page (see <xref
-      linkend="fig-hudson-nested-view-summary" />).</para>
-
-      <para><figure id="fig-hudson-nested-view-summary">
-          <title>Nested views in action</title>
-
-          <mediaobject>
-            <imageobject role="web">
-              <imagedata fileref="figs/web/hudson-nested-view-summary.png"
-                         width="4.3in" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-    </sect2>
-  </sect1>
-
-  <sect1>
-    <title>Generating your build jobs</title>
+    <para><emphasis>Contributed by Evgeny Goldin</emphasis></para>
 
     <para>As mentioned in the previous section, the number of build jobs that
     your Jenkins server will host can vary. As the number of build jobs grows,
     it becomes harder not only view them in Jenkins dashboard, but to
-    configure them as well. Just imagine what would it take to configuring 20
-    or 50 Jenkins jobs visiting them one-by-one! The situation becomes even
-    trickier when some of those jobs have many common configurations, such as
-    Maven goals or build memory settings.</para>
+    configure them as well. Imagine what would it take to configure 20 to 50
+    Jenkins jobs one-by-one! In addition, many of those jobs may have common
+    configuration elements, such as Maven goals or build memory settings,
+    which results in duplicated configuration and higher maintenance
+    overhead.</para>
 
-    <para>If one day you decide to run <command>"mvn clean install"</command>
-    instead of <command>"mvn clean deploy"</command> for your release jobs and
-    switch to alternative deployment methods, such as those provided by
-    Artifactory plugin
+    <para>For example, if you decide to run <command>"mvn clean
+    install"</command> instead of <command>"mvn clean deploy"</command> for
+    your release jobs and switch to alternative deployment methods, such as
+    those provided by Artifactory plugin
     (<uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri>),
     you'll have no choice but to visit all relevant jobs and update them
     manually.</para>
 
     <para>Alternatively, you could take an advantage of the fact that Jenkins
-    is a simple and straightforward tool that keeps all its definitions in
-    plain text files on the disk. So you can update the corresponding
-    <filename>config.xml</filename> files in
-    <filename>.jenkins/jobs</filename> directory where their configurations
-    are kept. It will work as well but this solution is still far from ideal
-    as it involves quite a lot of manual picking and fragile replacements in
-    Jenkins XML files.</para>
+    is a simple and straightforward tool that keeps all if its definitions in
+    plain files on the disk. Indeed you can update the
+    <filename>config.xml</filename> files of your jobs directly in the
+    <filename>.jenkins/jobs</filename> directory where they are kept. While
+    this approach will work, it is still far from ideal as it involves quite a
+    lot of manual picking and fragile replacements in Jenkins XML
+    files.</para>
 
-    <para>There is a third way to achieve a nirvana of massive job updates,
-    which involves generating them using some sort of definition file. The
-    <command>Maven Jenkins Plugin</command>
+    <para>There is a third way to achieve the nirvana of massive job updates:
+    generate your configuration files automatically using some sort of
+    definition file. The Maven Jenkins Plugin
     (<uri>http://evgeny-goldin.com/wiki/Maven-jenkins-plugin</uri>) does
-    exactly that. This plugin generates <filename>config.xml</filename> files
-    for all jobs using standard Maven definitions kept in a single POM
-    file.</para>
+    exactly that, generating <filename>config.xml</filename> files for all
+    jobs using standard Maven definitions kept in a single
+    <filename>pom.xml</filename> file.</para>
 
     <sect2>
       <title>Configuring a job</title>
 
-      <para>Desciption of what can be configured in a job.</para>
+      <para>When configuring a single job with the Maven Jenkins Plugin, you
+      can define all the usual Jenkins configuration elements, such as Maven
+      goals, POM location, repository URLs, e-mail addresses, number of days
+      to keep the logs, and so on. The plugin tries to bring you as close to
+      possible to Jenkin's usual way of configuring a job manually.</para>
+
+      <para>Let's take a look on a Google Guice
+      (<uri>http://code.google.com/p/google-guice/</uri>) build job.</para>
+
+      <screen>&lt;job&gt;
+    &lt;id&gt;google-guice-trunk&lt;/id&gt;
+    &lt;description&gt;Building Google Guice trunk.&lt;/description&gt;
+    &lt;descriptionTable&gt;
+        &lt;row&gt;
+            &lt;key&gt;Project Page&lt;/key&gt;
+            &lt;value&gt;
+                &lt;a href="http://code.google.com/p/google-guice/"&gt;
+                    &lt;b&gt;&lt;code&gt;code.google.com/p/google-guice&lt;/code&gt;&lt;/b&gt;
+                &lt;/a&gt;
+            &lt;/value&gt;
+            &lt;escapeHTML&gt;false&lt;/escapeHTML&gt;
+            &lt;bottom&gt;false&lt;/bottom&gt;
+        &lt;/row&gt;
+    &lt;/descriptionTable&gt;
+    &lt;jdkName&gt;jdk1.6.0&lt;/jdkName&gt;
+    &lt;mavenName&gt;apache-maven-3&lt;/mavenName&gt;
+    &lt;mavenOpts&gt;-Xmx256m -XX:MaxPermSize=128m&lt;/mavenOpts&gt;
+    &lt;daysToKeep&gt;5&lt;/daysToKeep&gt;
+    &lt;useUpdate&gt;false&lt;/useUpdate&gt;
+    &lt;mavenGoals&gt;-e clean install&lt;/mavenGoals&gt;
+    &lt;trigger&gt;
+        &lt;type&gt;timer&lt;/type&gt;
+        &lt;expression&gt;0 0 * * *&lt;/expression&gt;
+    &lt;/trigger&gt;
+    &lt;repository&gt;
+        &lt;remote&gt;http://google-guice.googlecode.com/svn/trunk/&lt;/remote&gt;
+    &lt;/repository&gt;
+    &lt;mail&gt;
+        &lt;recipients&gt;jenkins@evgeny-goldin.org&lt;/recipients&gt;
+    &lt;/mail&gt;
+&lt;/job&gt;</screen>
+
+      <para>This job uses a number of standard configurations such as
+      <command>&lt;jdkName&gt;</command>,
+      <command>&lt;mavenName&gt;</command>, and
+      <command>&lt;mavenOpts&gt;</command>. The code is checked out from a
+      Subversion repository (defined in the
+      <command>&lt;repository&gt;</command> element), and a cron
+      <command>&lt;trigger&gt;</command> runs the job nightly at 00:00. E-mail
+      notifications are sent to people specified with the
+      <command>&lt;mail&gt;</command> element. This configuration also adds a
+      link back to the project's page in the description table that is
+      generated automatically for each job.</para>
+
+      <para>The generated job is displayed in your Jenkins server as
+      illustrated in <xref
+      linkend="jenkins-plugin-google-guice-trunk-job" />.</para>
+
+      <para><figure id="jenkins-plugin-google-guice-trunk-job">
+          <title>A job generated by the Maven Jenkins Plugin</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-plugin-google-guice-trunk-job.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Here's another job building the Jenkins master branch at
+      GitHub.</para>
+
+      <screen>&lt;job&gt;
+    &lt;id&gt;jenkins-master&lt;/id&gt;
+    &lt;jdkName&gt;jdk1.6.0&lt;/jdkName&gt;
+    &lt;numToKeep&gt;5&lt;/numToKeep&gt;
+    &lt;mavenName&gt;apache-maven-3&lt;/mavenName&gt;
+    &lt;trigger&gt;
+        &lt;type&gt;timer&lt;/type&gt;
+        &lt;expression&gt;0 1 * * *&lt;/expression&gt;
+    &lt;/trigger&gt;
+    &lt;scmType&gt;git&lt;/scmType&gt;
+    &lt;repository&gt;
+        &lt;remote&gt;git://github.com/jenkinsci/jenkins.git&lt;/remote&gt;
+    &lt;/repository&gt;
+    &lt;mail&gt;
+        &lt;recipients&gt;jenkins@evgeny-goldin.org&lt;/recipients&gt;
+        &lt;sendForUnstable&gt;false&lt;/sendForUnstable&gt;
+    &lt;/mail&gt;
+&lt;/job&gt;</screen>
+
+      <para>This would generate the job shown in <xref
+      linkend="jenkins-plugin-jenkins-master-job" />. </para>
+
+      <para><figure id="jenkins-plugin-jenkins-master-job">
+          <title>"jenkins-master" job generated.</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-plugin-jenkins-master-job.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>The plugin's documentation
+      (<uri>http://evgeny-goldin.com/wiki/Maven-jenkins-plugin#.3Cjob.3E</uri>)
+      provides a detailed reference of all settings that can be
+      configured.</para>
     </sect2>
 
     <sect2>
-      <title>Reusing job configuration - meet jobs inheritance</title>
+      <title>Reusing job configuration with inheritance</title>
 
-      <para>Desciption of how jobs can inherit each other, reuse configuration
-      and form hierarchies.</para>
+      <para>Being able to generate Jenkins jobs using centralized
+      configuration, such as Maven POM, solves the problem of creating and
+      updating many jobs at once. All you has to do now is to modify the job
+      definitions, re-run the plugin and load definitions updated with "Manage
+      Jenkins" =&gt; "Reload Configuration from Disk". This approach also has
+      the advantage of making it easy to store your job configurations in your
+      version control system, which in turn makes it easier to keep track of
+      changes made to the build configurations.</para>
+
+      <para>But we still didn't solve the problem of maintaining jobs that
+      share a number of identical properties, such as Maven goals, e-mail
+      recipients or code repository URL. For that, the Maven Jenkins Plugin"
+      provides jobs inheritance, demonstrated in the following example:</para>
+
+      <screen>&lt;jobs&gt;
+    &lt;job&gt;
+        &lt;id&gt;google-guice-inheritance-base&lt;/id&gt;
+        &lt;abstract&gt;true&lt;/abstract&gt;
+        &lt;jdkName&gt;jdk1.6.0&lt;/jdkName&gt;
+        &lt;mavenName&gt;apache-maven-3&lt;/mavenName&gt;
+        &lt;daysToKeep&gt;5&lt;/daysToKeep&gt;
+        &lt;useUpdate&gt;true&lt;/useUpdate&gt;
+        &lt;mavenGoals&gt;-B -e -U clean install&lt;/mavenGoals&gt;
+        &lt;mail&gt;&lt;recipients&gt;jenkins@evgeny-goldin.org&lt;/recipients&gt;&lt;/mail&gt;
+    &lt;/job&gt;
+ 
+    &lt;job&gt;
+        &lt;id&gt;google-guice-inheritance-trunk&lt;/id&gt;
+        &lt;parent&gt;google-guice-inheritance-base&lt;/parent&gt;
+        &lt;repository&gt;
+            &lt;remote&gt;http://google-guice.googlecode.com/svn/trunk/&lt;/remote&gt;
+        &lt;/repository&gt;
+    &lt;/job&gt;
+ 
+    &lt;job&gt;
+        &lt;id&gt;google-guice-inheritance-3.0-rc3&lt;/id&gt;
+        &lt;parent&gt;google-guice-inheritance-base&lt;/parent&gt;
+        &lt;repository&gt;
+            &lt;remote&gt;http://google-guice.googlecode.com/svn/tags/3.0-rc3/&lt;/remote&gt;
+        &lt;/repository&gt;
+    &lt;/job&gt;
+ 
+    &lt;job&gt;
+        &lt;id&gt;google-guice-inheritance-2.0-maven&lt;/id&gt;
+        &lt;parent&gt;google-guice-inheritance-base&lt;/parent&gt;
+        &lt;mavenName&gt;apache-maven-2&lt;/mavenName&gt;
+        &lt;repository&gt;
+            &lt;remote&gt;http://google-guice.googlecode.com/svn/branches/2.0-maven/&lt;/remote&gt;
+        &lt;/repository&gt;
+    &lt;/job&gt;
+&lt;/jobs&gt;</screen>
+
+      <para>In this configuration, "google-guice-inheritance-base" is an
+      abstract parent job holding all common properties: JDK name, Maven name,
+      days to keep the logs, SVN update policy, Maven goals, and mail
+      recipients. The three following jobs are very short, merely specifying
+      that they extend a &lt;parent&gt; job and add any missing configurations
+      (repository URLs in this case). When generated, they inherit all of the
+      properties from the parent job automatically.</para>
+
+      <para>Any inherited property can be overridden, as demonstrated in
+      "google-guice-inheritance-2.0-maven" job where Maven 2 is used instead
+      of Maven 3. If you want to "cancel" an inherited property, you will need
+      to override it with an empty value.</para>
+
+      <para>Jobs inheritance is a very powerful concept that allows jobs to
+      form hierarchical groups of any kind and for any purpose. You can group
+      your CI, nightly or release jobs this way, centralizing shared execution
+      triggers, Maven goals or mail recipients in parent jobs. This approach
+      borrowed from an OOP world solves the problem of maintaining jobs
+      sharing a number of identical properties.</para>
     </sect2>
 
     <sect2>
-      <title>Invoking other jobs</title>
+      <title>Plugin support</title>
 
-      <para>Desciption of how jobs can invoke each other conditionally and the
-      way plugin allows to specify that easily.</para>
-    </sect2>
+      <para>In addition to configuring a job and reusing its definitions, you
+      can apply special support for a number of Jenkins plugins. Right now, a
+      simplified usage of Parameterized Trigger and Artifactory plugins is
+      provided, with support for other popular plugins planned for future
+      versions.</para>
 
-    <sect2>
-      <title>Deploying artifacts to Artifactory</title>
+      <para>Below is an example of invoking jobs with the Parameterized
+      Trigger plugin. Using this option assumes you have this plugin installed
+      already.</para>
 
-      <para>Desciption of how jobs can deploy their artifacts to Artifactory
-      and why it is better than doing it after each Maven module.</para>
+      <screen>&lt;job&gt;
+    &lt;id&gt;google-guice-inheritance-trunk&lt;/id&gt;
+    ...
+    &lt;invoke&gt;
+        &lt;jobs&gt;
+            google-guice-inheritance-3.0-rc3,
+            google-guice-inheritance-2.0-maven
+        &lt;/jobs&gt;
+    &lt;/invoke&gt;
+&lt;/job&gt;
+ 
+&lt;job&gt;
+    &lt;id&gt;google-guice-inheritance-3.0-rc3&lt;/id&gt;
+    ...
+&lt;/job&gt;
+ 
+&lt;job&gt;
+    &lt;id&gt;google-guice-inheritance-2.0-maven&lt;/id&gt;
+    ...
+&lt;/job&gt;</screen>
+
+      <para>The <command>&lt;invoke&gt;</command> element lets you invoke
+      other jobs each time the current job finishes successfully. You can
+      create a pipeline of jobs this way, making sure each job in a pipeline
+      invokes the following one. Note that if there are more than one Jenkins
+      executors available at the moment of invocation, the specified jobs will
+      start running in parallel. For serial execution you'll need to connect
+      each upstream job to a downstream one with &lt;invoke&gt;.</para>
+
+      <para>By default invocation happens only when the current job is stable.
+      This can be modified, as shown in the following examples.</para>
+
+      <screen>&lt;invoke&gt;
+    &lt;jobs&gt;jobA, jobB, jobC&lt;/jobs&gt;
+    &lt;always&gt;true&lt;/always&gt;
+&lt;/invoke&gt;
+ 
+&lt;invoke&gt;
+    &lt;jobs&gt;jobA, jobB, jobC&lt;/jobs&gt;
+    &lt;unstable&gt;true&lt;/unstable&gt;
+&lt;/invoke&gt;
+ 
+&lt;invoke&gt;
+    &lt;jobs&gt;jobA, jobB, jobC&lt;/jobs&gt;
+    &lt;stable&gt;false&lt;/stable&gt;
+    &lt;unstable&gt;false&lt;/unstable&gt;
+    &lt;failed&gt;true&lt;/failed&gt;
+&lt;/invoke&gt;</screen>
+
+      <para>The first invocation in the example above always invokes the
+      downstream jobs. It can be used for a pipeline of jobs that should
+      always be executed even if some of them or their tests fail.</para>
+
+      <para>The second invocation in the example above invokes downstream jobs
+      even if an upstream job is unstable: the invocation happens regardless
+      of test results. It can be used for a pipeline of jobs that are less
+      sensitive to tests and their failures.</para>
+
+      <para>The third invocation in the example above invokes downstream jobs
+      only when an upstream job fails but not when it is stable or unstable.
+      You can find this configuration useful when a failing job needs to
+      perform additional actions beyond traditional e-mail
+      notifications.</para>
+
+      <para>Artifactory (<uri>http://jfrog.org</uri>) is a general purpose
+      binaries repository that can be used as a Maven repository manager. The
+      Jenkins Artifactory plugin
+      (<uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri>)
+      provides a number of benefits for Jenkins build jobs. We have already
+      reviewed some of them in <xref
+      linkend="sect-builds-deploy-enterprise-repository" />, including an
+      ability to deploy artifacts upon job completion or to send builds
+      environment info together with artifacts for their better
+      traceability.</para>
+
+      <para><figure id="jenkins-plugin-artifactory">
+          <title>Artifactory Jenkins plugin configuration.</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata fileref="figs/web/jenkins-plugin-artifactory.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>You can also use the Artifactory Jenkins plugin in conjunction
+      with the Maven Jenkins Plugin to deploy artifacts to Artifactory, as
+      shown in the following example:</para>
+
+      <screen>&lt;job&gt;
+    ...
+    &lt;artifactory&gt;
+        &lt;name&gt;http://artifactory-server/&lt;/name&gt;
+        &lt;deployArtifacts&gt;true&lt;/deployArtifacts&gt;
+        &lt;includeEnvVars&gt;true&lt;/includeEnvVars&gt;
+        &lt;evenIfUnstable&gt;true&lt;/evenIfUnstable&gt;
+    &lt;/artifactory&gt;
+&lt;/job&gt;
+</screen>
+
+      <para>Default deployment credentials are specified when Jenkins is
+      configured in the "Manage Jenkins &gt; Configure System" screen. They
+      can be also specified for each Jenkins job. The default Maven
+      repositories are "libs-releases-local" and "libs-snapshots-local". You
+      can find more details in the plugin's documentation at
+      <uri>http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin</uri>.</para>
     </sect2>
 
     <sect2>
       <title>Free-style jobs</title>
 
-      <para>Desciption of how plugin allows a definion of a free-style
-      jobs.</para>
+      <para>In addition to Maven jobs, the Maven Jenkins Plugin allows you to
+      configure Jenkins free-style jobs. An example is shown here:</para>
+
+      <screen>&lt;job&gt;
+    &lt;id&gt;free-style&lt;/id&gt;
+    &lt;jobType&gt;free&lt;/jobType&gt;
+    &lt;scmType&gt;git&lt;/scmType&gt;
+    &lt;repository&gt;
+        &lt;remote&gt;git://github.com/evgeny-goldin/maven-plugins-test.git&lt;/remote&gt;
+    &lt;/repository&gt;
+    &lt;tasks&gt;
+        &lt;maven&gt;
+            &lt;mavenName&gt;apache-maven-3&lt;/mavenName&gt;
+            &lt;jvmOptions&gt;-Xmx128m -XX:MaxPermSize=128m -ea&lt;/jvmOptions&gt;
+            &lt;properties&gt;plugins-version = 0.2.2&lt;/properties&gt;
+        &lt;/maven&gt;
+        &lt;shell&gt;&lt;command&gt;pwd; ls -al; du -hs .&lt;/command&gt;&lt;/shell&gt;
+    &lt;/tasks&gt;
+&lt;/job&gt;</screen>
+
+      <para>Free-style jobs let you execute a shell or batch command, run
+      Maven or Ant and invoke other jobs. They provide a convenient run-time
+      environment for system scripts or any other kind of activity not readily
+      available with Jenkins or one of its plugins. Using this approach, you
+      can generate Free-style build job configuration files in a similar way
+      to the approach we have seen for Maven build jobs, which can help make
+      your build environment more consistent and maintainable.</para>
     </sect2>
   </sect1>
 
   <sect1>
-    <title>Coordinating your builds</title>
+    <title id="sect-advanced-builds-coordinating">Coordinating your
+    builds</title>
 
     <para>Triggering downstream build jobs is easy enough. However, when
     setting up larger and more complicated build job setups, you sometimes
