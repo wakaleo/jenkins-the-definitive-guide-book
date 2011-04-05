@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-build-jobs">
+  <title>Distributed builds</title>
+
+  <sect1 id="sect-build-jobs-introduction">
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>distributed build</primary>
+      </indexterm>Arguably one of the more powerful features of Jenkins is its
+    ability to dispatch build jobs across a large number of machines. It is
+    quite easy to set up a farm of build servers, either to share the load
+    across multiple machines, or to run build jobs in different environments.
+    This is a very effective strategy which can potentially increase the
+    capacity of your CI infrastructure dramatically.</para>
+
+    <para>Distributed builds are generally used either to absorb extra load,
+    for example absorbing spikes in build activity by dynamically adding extra
+    machines as required, or to run specialized build jobs in specific
+    operating systems or environments. For example, you may need to run
+    particular build jobs on a particular machine or operating system. For
+    example, if you need to run web tests using Internet Explorer, you will
+    need to be use a Windows machine. Or one of your build jobs may be
+    particularly resource-heavy, and need to be run on its own dedicated
+    machine so as not to penalize your other build jobs.</para>
+
+    <para>Demand for build servers can also fluctuate over time. If you are
+    working with product release cycles, you may need to run a much higher
+    number of builds jobs towards the end of the cycle, for example, when more
+    comprehensive functional and regression test suites may be more
+    frequent.</para>
+
+    <para>In this chapter, we will discuss how to set up and manage a farm of
+    build servers using Hudson.</para>
+  </sect1>
+
+  <sect1 id="sect-build-jobs">
+    <title>The Jenkins Distributed Build Architecture</title>
+
+    <para>Jenkins uses a master/slave architecture to manage distributed
+    builds. Your main Jenkins server (the one we have been using up until
+    present) is the master. In a nutshell, the master's job is to handle
+    scheduling build jobs, dispatching builds to the slaves for the actual
+    execution, monitor the slaves (possibly taking them on and off-line as
+    required) and recording and presenting the build results. Even in a
+    distributed architecture, a master instance of Jenkins can also execute
+    build jobs directly.</para>
+
+    <para>The job of the slaves is to do as they are told, which involves
+    executing build jobs dispatched by the master. You can configure a project
+    to always run on a particular slave machine, or a particular type of slave
+    machine, or simply let Jenkins pick the next available slave.</para>
+
+    <para>A slave is a small Java executable that runs on a remote machine and
+    listens for requests from the Jenkins master instance. Slaves can (and
+    usually do) run on a variety of operation systems. The slave instance can
+    be started in a number of different ways, depending on the operating
+    system and network architecture. Once the slave instance is running, it
+    communicates with the master instance over a TCP/IP connection. We will
+    look at different setups in the rest of this chapter.</para>
+  </sect1>
+
+  <sect1>
+    <title>Master/Slave strategies in Jenkins</title>
+
+    <para>There are a number of different ways that you can set up a
+    distributed build farm using Hudson, depending on your operating systems
+    and network architecture. In all cases, the fact that a build job is being
+    run on a slave, and how that slave is managed, is transparent for the
+    end-user: the build results and artifacts will always end up on the master
+    server.</para>
+
+    <para>Creating a new Jenkins slave node is a straight-forward process.
+    First, go to the Manage Jenkins screen and click on 'Manage Nodes'. This
+    screen displays the list of slave agents (also known as 'Nodes' in more
+    politically correct terms) (see <xref
+    linkend="fig-jenkins-manage-nodes" />). From here, you can set up new
+    nodes by clicking on the 'New Node' button. You can also configure some of
+    the parameters related to your distributed build setup (see <xref
+    linkend="node-monitoring" />).</para>
+
+    <para><figure id="fig-jenkins-manage-nodes">
+        <title>Jenkins supports four main types of build job.</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/jenkins-manage-nodes.png"
+                       width="12.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>There are several different strategies when it comes to
+    managing Jenkins slave nodes, depending on your target operating systems
+    and other architectural considerations. These strategies affect the way
+    you configure your slave nodes, so we need to consider them separately.
+    The main approaches are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>The master starts the slave agents via ssh</para>
+      </listitem>
+
+      <listitem>
+        <para>The master starts the slave agents as a remote Windows
+        service</para>
+      </listitem>
+
+      <listitem>
+        <para>You start the slave agent manually using Java Web Start</para>
+      </listitem>
+
+      <listitem>
+        <para>You write your own script to start the slave agents from the
+        master machine</para>
+      </listitem>
+
+      <listitem>
+        <para>You start the slave agent directly from the command line on the
+        slave machine</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Each of these strategies has its uses, advantages and
+    inconveniences. Let's look at each in turn.</para>
+
+    <sect2>
+      <title>The master starts the slave agent using SSH</title>
+
+      <para>If you are working in a Unix environment, the most convenient way
+      to start a Jenkins slave is undoubtedly to use SSH. Jenkins has its own
+      build-in SSH client, and almost all Unix environments support SSH
+      (usually <command>sshd</command>) out of the box. </para>
+
+      <para>To create a Unix-based slave, click on the 'New Node' button as we
+      mentioned above. This will prompt you to enter the name of your slave,
+      and it's type (see <xref linkend="fig-jenkins-new-slave" />). At the
+      time of writing, only 'Dumb slaves' are supported out-of-the-box: "dumb"
+      slaves are passive beasts, that simply respond to build job requests
+      from the master node. This is the most common way to set up a
+      distributed build architecture, and the only option available in a
+      default installation.</para>
+
+      <para><figure id="fig-jenkins-new-slave">
+          <title>Creating a new slave node</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-new-slave.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>In this screen, you simply need to provide a name for your slave.
+      When you click on 'OK', Jenkins will let you provide more specific
+      details about your slave machine (see <xref
+      linkend="fig-jenkins-slave-ssh" />). </para>
+
+      <para><figure id="fig-jenkins-slave-ssh">
+          <title>Creating a Unix slave node</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-ssh.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The name is simply a unique way of identifying your slave
+      machine. It can be anything, but it may help if the name reminds you of
+      the physical machine it is running on. The description is also purely
+      for human consumption, and can be used to indicate why you would use
+      this slave rather than another.</para>
+
+      <para>Like on the main Jenkins configuration screen, the number of
+      executors lets your define how many concurrent build job this node can
+      execute.</para>
+
+      <para>Every Jenkins slave node also needs a place that it can call home,
+      or, more precisely, a dedicated directory on the slave machine that the
+      slave agent can use to run build jobs. You define this directory in the
+      Remote FS root field. You need to provide a local, OS-specific path,
+      such as <filename>/var/jenkins</filename> for a Unix machine, or
+      <filename>C:\jenkins</filename> on Windows. Nothing mission-critical is
+      stored in this directory - everything important is transferred back to
+      the master machine once the build is done. So you usually don't need to
+      be so concerned with backing up these directories as you should be with
+      the master.</para>
+
+      <para>Labels are a particularly useful concept when your distributed
+      build architecture begins to grow in size. You can define labels, or
+      tags, to each build node, and then configure a build job to run only on
+      a slave node with a particular label. Labels might relate to operating
+      systems (unix, windows, macosx,...), environments (staging, uat,
+      development,...) or any criteria that you find useful. For example, you
+      could configure your automated WebDriver/Selenium tests to run using
+      Internet Explorer, but only on slave nodes with the 'windows'
+      label.</para>
+
+      <para>The 'Usage' field lets you configure how intensively Hudson will
+      use this slave. You have the choice of two options: use it as much as
+      possible, or reserve it for dedicated build jobs. The first option,
+      'Utilize this slave as much as possible', tells Jenkins to use this
+      slave freely as soon as it becomes available, for any build job that it
+      can run. This is by far the most commonly used one, and is generally
+      what you want.</para>
+
+      <para>There are times, however, when this second option comes in handy.
+      In the project configuration, you can tie a build job to a specific node
+      - this is useful when a particular task, such as automated deployment or
+      a performance test suite, needs to be executed on a specific machine. In
+      this case, the 'Leave this machine for tied jobs only' option makes good
+      sense. You can take this further by setting the maximum number of
+      Executors to 1. In this case, not only will this slave be reserved for a
+      particular type of job, but it will only ever be able be able to run one
+      of these build jobs at any one time. This is a very useful configuration
+      for performance and load tests, where you need to reserve the machine so
+      that it can execute its tests without interference.</para>
+
+      <para>The launch method is where you decide how Hudson will start the
+      node, as we mentioned earlier. For the configuration we are discussing
+      here, you would choose 'Launch slave agents on Unix machines via SSH'.
+      The 'Advanced' button lets you enter the additional details that Jenkins
+      needs to connect to the Unix slave machine: a host name, a login and
+      password, and a port number. You can also provide a path to the SSH
+      private key file on the master machine (e.g. id_dsa or id_rsa) to use
+      for "password-less" Public/Private Key authentication.</para>
+
+      <para>You can also configure when Jenkins starts and stops the slave. By
+      default, Jenkins will simply keep the slave running and use it whenever
+      required (the 'Keep this slave on-line as much as possible' option). If
+      Jenkins notices that the slave has gone offline (for example due to a
+      server reboot), it will attempt to restart it if it can. Alternatively,
+      Jenkins can be more conservative with your system resources, and take
+      the slave offline when it doesn't need it. To do this, simple choose the
+      'Take this slave on-line when in demand and off-line when idle' option.
+      This is useful if you have regular spikes and lulls of build activity,
+      as an unused slave can be taken offline to conserve system resources for
+      other tasks, and brought back online when required.</para>
+
+      <para>Jenkins also needs to know where it can find the build tools it
+      needs for your build jobs on the slave machines. This includes JDKs as
+      well as build tools such as Maven, Ant and Gradle. If you have
+      configured your build tools to be automatically installed, you will
+      usually have no extra configuration to do for your slave machines:
+      Jenkins will download and install the tools as required. On the other
+      hand, if your build tools are installed locally on the slave machine,
+      you will need to tell Jenkins where it can find them. You do this by
+      ticking the 'Tool Locations' checkbox, and providing the local paths for
+      each of the tools you will need for your build jobs (see <xref
+      linkend="sect-configuration-jdk" />).</para>
+
+      <para><figure id="fig-jenkins-slave-nodes">
+          <title>Configuring tool locations</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-tools.png"
+                         width="9.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>You can also specify environment variables. These will be
+      passed into your build jobs, and can be a good way to allow your build
+      jobs to behave differently depending on where they are being
+      executed.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="node-monitoring">
+    <title>Node monitoring</title>
+
+    <para>Jenkins doesn't just dispatch build jobs to slave agents and hope
+    for the best: it pro-actively monitors your slave machines, and will take
+    a node offline if it considers that the node is incapable of safely
+    performing a build. You can fine-tune exactly what Jenkins monitors int
+    the 'Manage Nodes' screen (see <xref
+    linkend="fig-jenkins-node-monitoring" />). Jenkins monitors the slave
+    agents in several different ways. It monitors the response time: an overly
+    slow response time can indicate either a network problem or that the slave
+    machine is down. It also monitors the amount of disk space, temporary
+    directory space and swap space available to the Jenkins user on the slave
+    machine, since build jobs can be notoriously disk-hungry. It also keeps
+    tabs on the system clocks, as if the cocks are not correctly synchronized,
+    odd errors can sometimes happen. If any of these criteria is not up to
+    scratch, Jenkins will automatically take the server offline.</para>
+
+    <para><figure id="fig-jenkins-node-monitoring">
+        <title>Jenkins pro-actively monitors your build agents</title>
+
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/jenkins-node-monitoring.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+  </sect1>
+
+  <sect1 id="sect-build-jobs-conclusion">
+    <title>Conclusion</title>
+
+    <para>In this chapter we have covered the basics of creating new build
+    jobs for the most common cases you are likely to encounter. Later on in
+    the book, we will build on these foundations to discuss more advanced
+    options such as parameterized builds, matrix builds, and build promotion
+    strategies.</para>
+  </sect1>
+</chapter>

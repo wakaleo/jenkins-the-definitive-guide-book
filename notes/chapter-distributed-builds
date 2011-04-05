@@ -1,0 +1,69 @@
+Distributed builds
+------------------
+
+Arguably one of the more powerful features of Jenkins is its ability to dispatch build jobs across a large number of machines. It is quite easy to set up a farm of build servers, either to share the load across multiple machines, or to run build jobs in different environments. This is a very effective strategy which can potentially increase the capacity of your CI infrastructure dramatically. 
+
+Distributed builds are generally used either to absorb extra load, for example absorbing spikes in build activity by dynamically adding extra machines as required, or to run specialized build jobs in specific operating systems or environments. For example, you may need to run particular build jobs on a particular machine or operating system. For example, if you need to run web tests using Internet Explorer, you will need to be use a Windows machine. Or one of your build jobs may be particularly resource-heavy, and need to be run on its own dedicated machine so as not to penalize your other build jobs. 
+
+Demand for build servers can also fluctuate over time. If you are working with product release cycles, you may need to run a much higher number of builds jobs towards the end of the cycle, for example, when more comprehensive functional and regression test suites may be more frequent.
+
+
+- Why do distributed builds?
+	- Multi-platform builds
+	- Faster builds
+	- Elastic capacity
+
+## The Jenkins Distributed build architecture
+
+Jenkins uses a master/slave architecture to manage distributed builds. Your main Jenkins server (the one we have been using up until present) is the master. In a nutshell, the master's job is to handle scheduling build jobs, dispatching builds to the slaves for the actual execution, monitor the slaves (possibly taking them on and off-line as required) and recording and presenting the build results. Even in a distributed architecture, a master instance of Jenkins can also execute build jobs directly.
+
+The job of the slaves is to do as they are told, which involves executing build jobs dispatched by the master.
+
+A slave is a small Java executable that runs on a remote machine and listens for requests from the Jenkins master instance. Slaves can (and usually do) run on a variety of operation systems. The slave instance can be started in a number of different ways, depending on the operating system and network architecture. Once the slave instance is running, it communicates with the master instance over a TCP/IP connection. We will look at different setups in the rest of this chapter.
+
+Master-slave strategies
+
+There are a number of different ways that you can set up a distributed build farm using Hudson, depending on your operating systems and network architecture. The main approaches are:
+  - The master starts the slave agents via ssh
+  - The master starts the slave agents as a remote Windows service
+  - You start the slave agent manually using Java Web Start
+  - You start the slave agent directly from the command line
+  - You write your own script to start the slave agents from the master machine
+
+ird gst 0800377776
+
+Let's look at each of these strategies in turn.
+
+The master Jenkins instance communicates with th
+
+
+	- Master and slaves
+	- Configuring slaves
+		- JDK directories
+		- Tools directories
+		- Auto install for tools
+		
+- Windows slaves
+	-
+## Unix slaves
+
+Setting up a Jenkins Unix slave using SSH is usually a very simple process.
+
+	- Starting slaves using SSH
+	- Connecting to slaves without SSH
+	- Writing your own script
+
+- Starting slave agents with Java Web Start	
+
+- Keeping slave configurations and software installs in an SCM
+
+- Monitoring slaves - bringing slaves up and down
+
+- Using labels
+
+- Example: Setting up tests to run across several slaves
+	- Build WAR file with fingerprint
+	- Run functional tests using a parameter to determine a subset of the tests to run (or a target configuration)
+	- 
+	
+- Elastic build capacity - Jenkins slaves on the cloud
