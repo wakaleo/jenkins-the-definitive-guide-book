@@ -88,7 +88,7 @@
           <imageobject role="web">
             <imagedata align="center"
                        fileref="figs/web/jenkins-manage-nodes.png"
-                       width="12.3in" />
+                       width="4.3in" />
           </imageobject>
         </mediaobject>
       </figure>There are several different strategies when it comes to
@@ -103,22 +103,22 @@
       </listitem>
 
       <listitem>
+        <para>You start the slave agent manually using Java Web Start</para>
+      </listitem>
+
+      <listitem>
+        <para>You start the slave agent directly from the command line on the
+        slave machine from the command line</para>
+      </listitem>
+
+      <listitem>
         <para>The master starts the slave agents as a remote Windows
         service</para>
       </listitem>
 
       <listitem>
-        <para>You start the slave agent manually using Java Web Start</para>
-      </listitem>
-
-      <listitem>
         <para>You write your own script to start the slave agents from the
         master machine</para>
-      </listitem>
-
-      <listitem>
-        <para>You start the slave agent directly from the command line on the
-        slave machine</para>
       </listitem>
     </itemizedlist>
 
@@ -131,7 +131,7 @@
       <para>If you are working in a Unix environment, the most convenient way
       to start a Jenkins slave is undoubtedly to use SSH. Jenkins has its own
       build-in SSH client, and almost all Unix environments support SSH
-      (usually <command>sshd</command>) out of the box. </para>
+      (usually <command>sshd</command>) out of the box.</para>
 
       <para>To create a Unix-based slave, click on the 'New Node' button as we
       mentioned above. This will prompt you to enter the name of your slave,
@@ -157,7 +157,7 @@
       <para>In this screen, you simply need to provide a name for your slave.
       When you click on 'OK', Jenkins will let you provide more specific
       details about your slave machine (see <xref
-      linkend="fig-jenkins-slave-ssh" />). </para>
+      linkend="fig-jenkins-slave-ssh" />).</para>
 
       <para><figure id="fig-jenkins-slave-ssh">
           <title>Creating a Unix slave node</title>
@@ -171,9 +171,14 @@
           </mediaobject>
         </figure>The name is simply a unique way of identifying your slave
       machine. It can be anything, but it may help if the name reminds you of
-      the physical machine it is running on. The description is also purely
-      for human consumption, and can be used to indicate why you would use
-      this slave rather than another.</para>
+      the physical machine it is running on. It also helps if the name is
+      file-system and URL-friendly. It will work with spaces, but you will
+      make life easier for yourself if you avoid them. So "slave-1" is better
+      than "Slave 1".</para>
+
+      <para>The description is also purely for human consumption, and can be
+      used to indicate why you would use this slave rather than
+      another.</para>
 
       <para>Like on the main Jenkins configuration screen, the number of
       executors lets your define how many concurrent build job this node can
@@ -260,13 +265,207 @@
             <imageobject role="web">
               <imagedata align="center"
                          fileref="figs/web/jenkins-slave-tools.png"
-                         width="9.3in" />
+                         width="4.3in" />
             </imageobject>
           </mediaobject>
         </figure>You can also specify environment variables. These will be
       passed into your build jobs, and can be a good way to allow your build
       jobs to behave differently depending on where they are being
       executed.</para>
+    </sect2>
+
+    <sect2>
+      <title>Starting the slave agent manually using Java Web Start</title>
+
+      <para>Another option is to start a slave agent from the slave machine
+      itself using Java Web Start (JNLP). This approach is useful if the
+      server cannot connect to the slave, for example if the slave machine is
+      running on the other side of a firewall. It works no matter what
+      operating system your slave is running on, however it is more commonly
+      used for Windows slaves. It does suffer from a few major drawbacks: the
+      slave node cannot be started, or restarted, automatically by Jenkins.
+      So, if the slave goes down, the master instance cannot restart
+      it.</para>
+
+      <para>When you do this on a Windows machine, you need to start the
+      Jenkins slave manually at least once. This involves opening a browser on
+      the machine, opening the slave node page on the Jenkins master, and
+      launching the slave using a very visible JNLP icon. However, once you
+      have launched the slave, you can install it as a Windows service.</para>
+
+      <para>There are also times when you need to do this from the command
+      line, in a Unix environment. You may need to do this because of
+      firewalls or other networking issues, or because SSH is not available in
+      your environment.</para>
+
+      <para>Lets step through both these processes. </para>
+
+      <para>The first thing you need to do in all cases is create a new slave.
+      As for any other slave node, you do this by clicking on the 'New Node'
+      menu entry in the Nodes screen. When entering the details concerning
+      your slave node, make sure you choose 'Launch slave agents via JNLP' in
+      the <command>Launch Method</command> field (see <xref
+      linkend="fig-jenkins-jnlp-slave" />). Also remember that if this is to
+      be a Windows slave node, the Remote FS root needs to be a Windows path
+      (such as <filename>C:\jenkins-slave</filename>). This directory does not
+      have to exist: Jenkins will create it automatically if it is
+      missing.</para>
+
+      <para><figure id="fig-jenkins-jnlp-slave">
+          <title>Creating a slave node for JNLP</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-jnlp.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have saved this configuration, Next, log on to the
+      slave machine and open the Slave node screen in a browser, as shown in
+      <xref linkend="fig-jenkins-launch-jnlp" />. You will see a large orange
+      Launch button: if you click on this button, you should be able to start
+      a slave agent directly from within your browser.</para>
+
+      <para><figure id="fig-jenkins-launch-jnlp">
+          <title>Launching a slave via Java Web Start</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-launch-jnlp.png"
+                         width="12.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>If all goes well, this will open up a small window indicating that
+      your slave agent is now running (see <xref
+      linkend="fig-jenkins-slave-agent" />).</para>
+
+      <para><figure id="fig-jenkins-slave-agent">
+          <title>The Jenkins slave agent in action</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-agent.png"
+                         width="2.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Browsers are fickle, however, and Java Web Start is not
+      always easy to use. This approach usually works best with Firefox,
+      although you must have installed the Java JRE beforehand to make Firefox
+      Java-aware. Using JNLP with Internet Explorer requires some
+      (considerable) fiddling to associate <filename>*.jnlp</filename> files
+      with the Java Web Start executable, a file called
+      <command>javaws</command>, which you will find in the Java
+      <filename>bin</filename> directory. In fact it is probably easier just
+      to start it from the command line as discussed below.</para>
+
+      <para>A more reliable, albeit low-level, approach is to start the slave
+      from the command line. To do this, simply invoke the
+      <command>javaws</command> executable from a command window as shown
+      here:</para>
+
+      <para><screen>C:&gt; javaws http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp</screen>The
+      exact command that you need to execute, including the correct URL, is
+      conveniently displayed on the Jenkins slave node window just below the
+      JNLP launch button (see <xref
+      linkend="fig-jenkins-launch-jnlp" />).</para>
+
+      <para>If security is activated on your Jenkins server, Jenkins will
+      communicate with the slave on a specific non-standard port. If for some
+      reason this port is inaccessible, the slave node will fail to start and
+      will display an error message similar to the one shown in <xref
+      linkend="fig-jenkins-slave-unable-to-connect" />.</para>
+
+      <para><figure id="fig-jenkins-slave-agent">
+          <title>The Jenkins slave agent in action</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-unable-to-connect.png"
+                         width="2.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>This is usually a sign that a firewall is blocking a port. By
+      default, Jenkins picks a random port to use for TCP communication with
+      it's slaves. However you can force Jenkins to use a fixed port in the
+      System configuration screen by selecting 'Fixed' in the <command>TCP
+      port for JNLP slave agents</command>, as shown in <xref
+      linkend="fig-jenkins-tcp-ports" />. </para>
+
+      <para><figure id="fig-jenkins-tcp-ports">
+          <title>The Jenkins slave agent in action</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-tcp-ports.png"
+                         width="8.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have the slave up and running on your Windows
+      machine, you can save yourself the bother of having to restart it
+      manually each time your machine reboots by installing it as a Windows
+      service. To do this, select the 'Install as Windows Service' menu option
+      in the File menu of the slave agent window (see <xref
+      linkend="fig-jenkins-install-slave-service" />). </para>
+
+      <para><figure id="fig-jenkins-install-slave-service">
+          <title>Installing the Jenkins slave as a Windows service</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-install-slave-service.png"
+                         width="2.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>Once this is done, your Jenkins slave node will start
+      automatically whenever the machine starts up, and can be administered
+      just like any other Windows service (see <xref
+      linkend="fig-jenkins-slave-service-installed" />).</para>
+
+      <para><figure id="fig-jenkins-slave-service-installed">
+          <title>Installing the Jenkins slave as a Windows service</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-slave-service-installed.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Starting the slave node in headless mode</title>
+
+      <para>You can also start a slave agent in headless mode, directly from
+      the command line. This is useful if you don't have a user interface
+      available, for example if you are starting a JNLP slave node on a Unix
+      machine. If you are working with Unix machines, it is generally easier
+      and more flexible just to use an SSH connection, but there are sometimes
+      network or architecture constraints that prevent you from using SSH. In
+      cases like this, it is still possible to run a slave node from the
+      command line. </para>
+
+      <para>To start the slave node this way, you need to use Jenkin's
+      <filename>slave.jar</filename> file. You can find this in
+      <filename>JENKINS_HOME/war/WEB-INF/slave.jar</filename>. Once you have
+      located this file, you can run it as follows:<screen>java -jar slave.jar \
+ -jnlpUrl http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp</screen></para>
+
+      <para>And if your Jenkins server requires authentication, just pass in
+      the <command>-auth username:password</command> option.</para>
     </sect2>
   </sect1>
 
