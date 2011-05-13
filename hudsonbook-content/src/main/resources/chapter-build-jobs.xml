@@ -328,7 +328,7 @@
               <imageobject role="web">
                 <imagedata align="center"
                            fileref="figs/web/hudson-new-job-svn.png"
-                           width="4.3in" />
+                           width="9.3in" />
               </imageobject>
             </mediaobject>
           </figure>By default, Jenkins will check out the repository contents
@@ -362,16 +362,22 @@
         the presence of temporary files, both have the potential of
         compromising this.</para>
 
-        <para>Normally, Jenkins will check out a clean copy of the source code
-        for each build. If your project is well-behaved, however, you may be
-        able to use the <command>Use update</command> option, which speeds
-        things up substantially by using the <command>svn update</command>
-        command instead. To be on the safe side, you may want to use the
-        <command>Revert</command> option, which will run <command>svn
-        revert</command> before running <command>svn update</command>. This
-        will ensure that no local files have been modified, though it will not
-        remove any new files that have been created during the build
-        process.</para>
+        <para>You can fine-tune the way Jenkins obtains the latest source code
+        from your Subversion repository by selecting an appropriate value in
+        the Check-out Strategy drop-down list. If your project is
+        well-behaved, however, you may be able to speedsthings up
+        substantially by selecting "Use 'svn update' as much as possible".
+        This is the fastest option, but may leave artifacts and files from
+        previous builds in your workspace. To be on the safe side, you may
+        want to use the second option ("Use 'svn update' as much as possible,
+        with 'svn revert' before update"), which will systematically run
+        <command>svn revert</command> before running <command>svn
+        update</command>. This will ensure that no local files have been
+        modified, though it will not remove any new files that have been
+        created during the build process. Alternatively, you can ask Jenkins
+        to delete any unversioned or ignored files before performing an
+        <command>svn update</command>, or play it safe by checking out a full
+        clean copy for each build. </para>
 
         <para>Another very useful feature is Jenkins's integration with source
         code browsers. A good source code browser is an important part of your

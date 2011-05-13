@@ -31,22 +31,25 @@
     Continuous Integration tool is to monitor source code in a version control
     system and to fetch and build the latest version of your source code
     whenever any changes are committed. So you'll need a version control
-    system. More precisely in our case, you'll need to set up a Subversion
-    server on your local machine. You'll also need to download the pre-bundled
-    Subversion repository from the book website. We'll explain how to set it
-    all up in great detail further on.</para>
+    system. In our case, we'll be using git (<uri>http://git-scm.com</uri>).
+    The central source code repository for our simple project is stored on
+    Github (<uri>https://github.com</uri>). Don't worry about messing up this
+    repository with your own changes, though: you'll be creating your own fork
+    of the repository that you can use as you wish. If you haven't used git
+    and/or don't have an account on Github yet, don't worry, we'll walk
+    through the basics, and the whole installation process is well documented
+    on the Github web site. We'll explain how to set it all up in great detail
+    further on.</para>
 
     <para>In this chapter, we'll be using Jenkins to build a Java application
     using Maven. <indexterm>
         <primary>maven</primary>
       </indexterm>Maven is a widely-used build tool in the Java world, with
     many powerful features such as declarative dependency management,
-    convention over configuration, and a large range of plugins. As we
-    mentioned earlier, we'll also be using a Subversion repository to store
-    the source code. For our build, we will also be using recent versions of
-    the Java Development Kit (JDK) and Maven, but if you don't have these
-    installed on your machine, don't fret! As we will see, Jenkins will
-    install them for you.</para>
+    convention over configuration, and a large range of plugins. For our
+    build, we will also be using recent versions of the Java Development Kit
+    (JDK) and Maven, but if you don't have these installed on your machine,
+    don't fret! As we will see, Jenkins will install them for you.</para>
 
     <sect2>
       <title>Installing Java</title>
@@ -89,175 +92,109 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen></par
     </sect2>
 
     <sect2>
-      <title>Installing a local Subversion server</title>
+      <title>Installing Git</title>
 
-      <para>The examples in this chapter use Subversion, so to run them on
-      your own machine, you will also need to install and run a local
-      Subversion server on your workstation. If this sounds a little daunting,
-      don't worry - it's actually pretty straightforward, and we'll step you
-      through the process. Otherwise, you can follow along without running the
-      examples and still get a good feel for what Jenkins can do.</para>
+      <para>Since we will be using Git, you will need to install and configure
+      Git on your machine. If you are new to Git, you might want to run
+      through the basics on the Git Reference website
+      (<uri>http://gitref.org</uri>). And if you get lost, the whole process
+      is well documented on the Github help pages
+      (<uri>http://help.github.com</uri>).</para>
 
-      <para>Subversion comes pre-installed on Mac OS X and many flavors of
-      Linux. Just make sure you have the Subversion server tools
-      (<command>svnserve</command> in particular) installed. You can check
-      this by running the <indexterm>
-          <primary>Subversion</primary>
+      <para>First of all, you need to install Git on your machine. This
+      involves downloading the appropriate installer for your operating system
+      from the Git website (<uri>http://git-scm.com</uri>). There are packaged
+      installers for both Windows and Mac OS X. If you are using Linux, you
+      are in Git's home ground: most Linux distributions . On Ubuntu or some
+      other Debian-based distribution, you could run something like:<screen>$ <command>sudo apt-get install git-core</command></screen></para>
 
-          <secondary>svnserve</secondary>
-        </indexterm><command>svnserve</command> command from the command line
-      or in a DOS window as shown here:<screen>$ <command>svnserve --version</command>
-svnserve, version 1.6.2 (r37639)
-   compiled May 14 2009, 14:34:54
+      <para>On Fedora or another RPM-based distribution, you could use
+      <command>yum</command> instead:</para>
 
-Copyright (C) 2000-2009 CollabNet.
-Subversion is open source software, see http://subversion.tigris.org/
-This product includes software developed by CollabNet (http://www.Collab.Net/).
+      <para><screen>$ <command>sudo yum install git-core</command></screen>And,
+      being Linux, you also have the option of installing the application from
+      source. There are instructions on how to do this on the Git
+      website.</para>
 
-The following repository back-end (FS) modules are available:
-
-* fs_base : Module for working with a Berkeley DB repository.
-* fs_fs : Module for working with a plain file (FSFS) repository.
-
-Cyrus SASL authentication is available.</screen></para>
-
-      <para>If you get an error, you probably haven't got the Subversion
-      server software installed on your machine. You will need Subversion 1.6
-      or higher to work with the sample repositories, so if you have an older
-      version of Subversion installed, you will also need to upgrade.</para>
-
-      <para>You can find the Subversion installation packages, or installation
-      instructions, for your operation system from the Subversion website
-      (<ulink url="http://subversion.apache.org"></ulink>). If you are
-      installing Subversion on Windows, make sure you only install the basic
-      command-line Subversion tools (<command>svn</command> and
-      <command>svnserve</command> in particular). Some of the Windows
-      installation packages, such as those from Collabnet and VisualSVN, will
-      install Subversion as a service on your workstation and set up an empty
-      repository for you. This is great if you are installing a Subversion
-      server, and if you are familiar with Subversion administration, but for
-      our purposes it is overkill, and will interfere with the instructions we
-      provide.</para>
-
-      <para>A better choice in this regard is the <indexterm>
-          <primary>Subversion</primary>
-
-          <secondary>SlikSVN</secondary>
-        </indexterm>SlikSVN installer (<ulink
-      url="http://www.sliksvn.com/en/download"></ulink>), which will only
-      install the bare-bones Subversion command-line tools, which suits us
-      just fine. However, be sure to choose the 'Complete' setup type (see
-      <xref linkend="fig-sliksvn-install" />), as this is the only one that
-      includes the <command>svnserve</command> tool.</para>
-
-      <figure id="fig-sliksvn-install">
-        <title>Installing Slik Subversion</title>
-
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata align="center" fileref="figs/web/sliksvn-install.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>
-
-      <para>Once you have installed Subversion, you should check that it is
-      working properly. Open a command prompt and run <command>svnserve
-      -version</command>. You should now get something like this: <screen>C:\Documents and Settings\Owner&gt;<command>svnserve --version</command>
-svnserve, version 1.6.9 (SlikSvn:tag/1.6.9@902044) WIN32
-   compiled Jan 22 2010, 10:39:27
-
-Copyright (C) 2000-2009 CollabNet.
-Subversion is open source software, see http://subversion.tigris.org/
-This product includes software developed by CollabNet (http://www.Collab.Net/).
-
-The following repository back-end (FS) modules are available:
-
-* fs_base : Module for working with a Berkeley DB repository.
-* fs_fs : Module for working with a plain file (FSFS) repository.
-
-Cyrus SASL authentication is available.</screen></para>
-
-      <para>With Subversion now installed, we can proceed to set up the sample
-      repository containing the project we will be building with
-      Jenkins.</para>
+      <para>Once you are done, check that Git is installed and available by
+      invoking it from the command line:<screen>$ <command>git --version</command>
+git version 1.7.1</screen></para>
     </sect2>
 
     <sect2>
-      <title>Setting up the sample Subversion repository</title>
+      <title>Setting up a Github account</title>
 
-      <para>All of the <indexterm>
-          <primary>Sample projects</primary>
-        </indexterm>sample projects used in this book are available online.
-      You can download the Subversion repository used for this chapter from
-      the book web site, which you can find at <ulink
-      url="http://www.continuous-integration-with-hudson.org"></ulink>. Go to
-      this page now and download the book-examples zip file. When you unzip
-      this file, you should see a sub-folder for each chapter of the book (see
-      <xref linkend="fig-first-steps-examples" />).</para>
+      <para>Next, if you don't already have one, you will need to create
+      yourself a Github account. This is easy and (for our purposes, at least)
+      free of charge, and all the cool kids have one. Go to the Github signup
+      page (<uri>https://github.com/plans</uri>) and choose the 'Create a free
+      account' option. You will just need to provide a username, a password
+      and your email address (see <xref
+      linkend="fig-github-signup" />).</para>
 
-      <figure id="fig-first-steps-examples">
-        <title>The Book examples folder on a Windows machine</title>
+      <para><figure id="fig-github-signup">
+          <title>Signing up for a Github account</title>
 
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata align="center"
-                       fileref="figs/web/first-steps-examples.png "
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center" fileref="figs/web/github-signup.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
 
-      <para>A Subversion repository is a simple directory structure that can
-      be used on any operating system. In our case, the repository is stored
-      in a directory called <indexterm>
-          <primary>Subversion</primary>
+    <sect2>
+      <title>Configuring SSH keys</title>
 
-          <secondary>svn-repos directory</secondary>
-        </indexterm><filename>svn-repos</filename>, which you will find in the
-      <filename>chapter-first-steps</filename> directory of the book
-      resources. You don't have to worry about the details, though. To start
-      up the Subversion server on your machine, just go to the
-      <filename>chapter-first-steps</filename> directory and run the <ulink
-      url="start-svn.bat"></ulink> script (for Windows) or the <ulink
-      url="start-svn.sh"></ulink> script (on Linux, Mac OS, and so
-      forth).</para>
+      <para>Github uses SSH keys to establish a secure connection between your
+      computer and the Github servers. Setting these up is not hard, but
+      involves a bit of work: fortunately there are clear and detailed
+      instructions for each operating system on the Github web site
+      (<uri>http://help.github.com/set-up-git-redirect</uri>).</para>
+    </sect2>
 
-      <para>If you are more experienced with Subversion, you might like to
-      start the server manually yourself. In this case, open up a command-line
-      prompt in the <filename>chapter-first-steps</filename> directory and run
-      the following command:<screen>$<command> svnserve -d -r svn-repos</command></screen></para>
+    <sect2 id="sect-git-fork">
+      <title>Forking the sample repository</title>
 
-      <para>In both cases, you will end up with a Subversion server running on
-      your machine. In a Linux or Mac OS X environment, the process will run
-      as a daemon in the background. On Windows, it will just run in the
-      command prompt until you stop it manually using Control-C (see <xref
-      linkend="fig-running-svnserve" />). If your are running Subversion on
-      Windows, make sure you don't shut this window!</para>
+      <para>As we mentioned earlier, all the sample code for this book is
+      stored on Github, at the following URL:
+      <uri>https://github.com/wakaleo/game-of-life</uri>. This is a public
+      repository, so you can freely view the source code online and check out
+      your own working copy. However, if you want to make changes, you will
+      need to create your own fork. A fork is a personal copy of a repository
+      that you can use as you wish. To create a fork, login to your Github
+      account and navigate to the repository URL
+      (<uri>https://github.com/wakaleo/game-of-life</uri>). Then click on the
+      'Fork' button (see <xref linkend="github-fork" />). This will create
+      your own personal copy of the repository.</para>
 
-      <figure id="fig-running-svnserve">
-        <title>Running the svnserve Subversion server in Windows</title>
+      <para><figure id="fig-github-fork">
+          <title>Forking the sample code repository</title>
 
-        <mediaobject>
-          <imageobject role="web">
-            <imagedata align="center" fileref="figs/web/svnserve-running.png"
-                       width="4.3in" />
-          </imageobject>
-        </mediaobject>
-      </figure>
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center" fileref="figs/web/github-fork.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have forked the repository, you should clone a local
+      copy to make sure everything is set up correctly. Go to the command line
+      and run the following command (replacing "&lt;username"&gt; with your
+      own Github username).<screen>$ git clone git@github.com:<emphasis>&lt;username&gt;</emphasis>/game-of-life.git</screen></para>
 
-      <para>Finally, just to make sure everything is working, open another
-      command prompt and run the <command>svn list</command> command. This
-      will display a listing of the top-level directory in our Subversion
-      repository, which should look something like this:<screen>$ <command>svn list svn://localhost/gameoflife/trunk</command>
-.classpath
-.project
-.settings/
-pom.xml
-src/</screen></para>
+      <para>This will "clone" (or checkout, in Subversion terms) a copy of the
+      project onto your local drive:</para>
 
-      <para>This is all you really need to follow along for the rest of the
-      chapter. So now, let's take Jenkins for a spin.</para>
+      <para><screen><command>git clone git@github.com:john-smart/game-of-life.git</command>
+Initialized empty Git repository in /Users/johnsmart/.../game-of-life/.git/
+remote: Counting objects: 1783, done.
+remote: Compressing objects: 100% (589/589), done.
+remote: Total 1783 (delta 1116), reused 1783 (delta 1116)
+Receiving objects: 100% (1783/1783), 14.83 MiB | 119 KiB/s, done.
+Resolving deltas: 100% (1116/1116), done.</screen>You should now have a local
+      copy of the project that you can build and execute. We will be using
+      this project later on to trigger changes in the repository.</para>
     </sect2>
   </sect1>
 
@@ -348,17 +285,16 @@ src/</screen></para>
       </mediaobject>
     </figure>
 
-    <para><indexterm>
-        <primary>Jenkins</primary>
-
-        <secondary>Starting from the command line</secondary>
-      </indexterm>If you are an experienced Java user versed in the ways of
-    WAR files, you may prefer to simply download the latest version of Jenkins
-    and run it from the command line. Jenkins comes in the form of an
-    executable WAR file - you can download the most recent version from the
-    Jenkins website home page (<ulink url="http://hudson-ci.org"></ulink>).
-    For convenience, there is also a link to the latest version of Jenkins in
-    the Resources section of the book website (at <ulink
+    <para>There are also installers available for the principal operating
+    systems available on the Jenkins web site
+    (<uri>http://jenkins-ci.org/</uri>). Or, if you are an experienced Java
+    user versed in the ways of WAR files, you may prefer to simply download
+    the latest version of Jenkins and run it from the command line. Jenkins
+    comes in the form of an executable WAR file - you can download the most
+    recent version from the Jenkins website home page (<ulink
+    url="http://hudson-ci.org"></ulink>). For convenience, there is also a
+    link to the latest version of Jenkins in the Resources section of the book
+    website (at <ulink
     url="http://www.continuous-integration-with-hudson.org"></ulink>).</para>
 
     <para>Once downloaded, you can start Jenkins from the command line as
@@ -458,90 +394,158 @@ src/</screen></para>
     click on the help icon next to it and Jenkins will display a very detailed
     description about what it is and how it works.</para>
 
-    <para><indexterm>
-        <primary>Maven</primary>
-      </indexterm>Let's configure Maven first. Jenkins provides great
-    out-of-the-box support for Maven. Scroll down until you reach the 'Maven'
-    section in the 'Configure System' screen (see <xref lang=""
-    linkend="fig-hudson-maven" />).</para>
+    <sect2>
+      <title>Configuring your Maven setup</title>
 
-    <para>Jenkins provides several options when it comes to configuring Maven.
-    If you already have Maven installed on your machine, you can simply
-    provide the path in the MAVEN_HOME field. Alternatively, you can install a
-    Maven distribution by extracting a zip file located in a shared directory,
-    or execute a home-rolled installation script. Or you can let Jenkins do
-    all the hard work and download Maven for you. To choose this option, just
-    tick the 'Install automatically' check box. Jenkins will download and
-    install Maven from the Apache web site the first time a build job needs
-    it. Just choose the Maven version you want to install and Jenkins will do
-    the rest. You will also need to give a name for your Maven version
-    (imaginatively called "Maven 2.2.1" in the example), so that you can refer
-    to it in your build jobs.</para>
+      <para><indexterm>
+          <primary>Maven</primary>
+        </indexterm>Let's configure Maven first. Jenkins provides great
+      out-of-the-box support for Maven. Scroll down until you reach the
+      'Maven' section in the 'Configure System' screen (see <xref lang=""
+      linkend="fig-hudson-maven" />).</para>
 
-    <para>For this to work, you need to have an Internet connection. If you
-    are behind a proxy, you'll need to provide your proxy information - we
-    discuss how to set this up in <xref
-    linkend="sect-configuration-proxies" />.</para>
+      <para>Jenkins provides several options when it comes to configuring
+      Maven. If you already have Maven installed on your machine, you can
+      simply provide the path in the MAVEN_HOME field. Alternatively, you can
+      install a Maven distribution by extracting a zip file located in a
+      shared directory, or execute a home-rolled installation script. Or you
+      can let Jenkins do all the hard work and download Maven for you. To
+      choose this option, just tick the 'Install automatically' check box.
+      Jenkins will download and install Maven from the Apache web site the
+      first time a build job needs it. Just choose the Maven version you want
+      to install and Jenkins will do the rest. You will also need to give a
+      name for your Maven version (imaginatively called "Maven 2.2.1" in the
+      example), so that you can refer to it in your build jobs.</para>
 
-    <figure id="fig-hudson-maven">
-      <title>Configuring a Maven installation</title>
+      <para>For this to work, you need to have an Internet connection. If you
+      are behind a proxy, you'll need to provide your proxy information - we
+      discuss how to set this up in <xref
+      linkend="sect-configuration-proxies" />.</para>
 
-      <mediaobject>
-        <imageobject role="web">
-          <imagedata align="center"
-                     fileref="figs/web/hudson-configure-maven.png"
-                     width="4.3in" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+      <figure id="fig-hudson-maven">
+        <title>Configuring a Maven installation</title>
 
-    <para>One of the nice things about the Jenkins Maven installation process
-    is how well it works with remote build agents. Later on in the book, we'll
-    see how Jenkins can also run builds on remote build servers. You can
-    define a standard way of installing Maven for all of your build servers
-    (downloading from the internet, unzipping a distribution bundle on a
-    shared server,...) - all of these options will work when you add a new
-    remote build agent or set up a new build server using this Jenkins
-    configuration.</para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-configure-maven.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
-    <para><indexterm>
-        <primary>JDK</primary>
-      </indexterm>Once you have configured your Maven installation, you will
-    also need to configure a JDK installation (see <xref
-    linkend="fig-hudson-jdk" />). Again, if you have a Java JDK (as opposed to
-    a Java Runtime Environment - the JDK contains extra development tools such
-    as the Java compiler) already installed on your workstation, you can
-    simply provide the path to your JDK in the JAVA_HOME field. Otherwise, you
-    can ask Jenkins to download the JDK from the <ulink
-    url="http://java.sun.com"></ulink> website the first time a build job
-    requires it. This is similar to the automatic Maven installation feature -
-    just pick the JDK version you need and Jenkins will take care of all the
-    logistics. However, for licensing reasons, you will also need to tick a
-    check box to indicate that you agree with the Java SDK License
-    Agreement.</para>
+      <para>One of the nice things about the Jenkins Maven installation
+      process is how well it works with remote build agents. Later on in the
+      book, we'll see how Jenkins can also run builds on remote build servers.
+      You can define a standard way of installing Maven for all of your build
+      servers (downloading from the internet, unzipping a distribution bundle
+      on a shared server,...) - all of these options will work when you add a
+      new remote build agent or set up a new build server using this Jenkins
+      configuration.</para>
+    </sect2>
 
-    <figure id="fig-hudson-jdk">
-      <title>Configuring a JDK installation</title>
+    <sect2>
+      <title>Configuring the JDK</title>
 
-      <mediaobject>
-        <imageobject role="web">
-          <imagedata align="center"
-                     fileref="figs/web/hudson-configure-jdk.png" width="4.3in" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+      <para><indexterm>
+          <primary>JDK</primary>
+        </indexterm>Once you have configured your Maven installation, you will
+      also need to configure a JDK installation (see <xref
+      linkend="fig-hudson-jdk" />). Again, if you have a Java JDK (as opposed
+      to a Java Runtime Environment - the JDK contains extra development tools
+      such as the Java compiler) already installed on your workstation, you
+      can simply provide the path to your JDK in the JAVA_HOME field.
+      Otherwise, you can ask Jenkins to download the JDK from the <ulink
+      url="http://java.sun.com"></ulink> website the first time a build job
+      requires it. This is similar to the automatic Maven installation feature
+      - just pick the JDK version you need and Jenkins will take care of all
+      the logistics. However, for licensing reasons, you will also need to
+      tick a check box to indicate that you agree with the Java SDK License
+      Agreement.</para>
 
-    <para>The last thing you would typically set up is notification. When a
-    Jenkins build breaks, and when it works again, it can send out email
-    messages to the team to spread the word. Using plugins, you can also get
-    it to send instant messages or SMS messages, post entries on Twitter, or
-    get people notified in a few other ways. It all depends on what works best
-    for your organizational culture. However, to keep things simple, we're not
-    going to worry about notifications just yet.</para>
+      <figure id="fig-hudson-jdk">
+        <title>Configuring a JDK installation</title>
 
-    <para>That is all we need to configure at this stage. Go to the bottom of
-    the screen and click on the 'Save' button. You are now ready to set up
-    your first Jenkins build job!</para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-configure-jdk.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Now go to the bottom of the screen and click on the 'Save'
+      button.</para>
+    </sect2>
+
+    <sect2>
+      <title>Notification</title>
+
+      <para>Another important aspect you would typically set up is
+      notification. When a Jenkins build breaks, and when it works again, it
+      can send out email messages to the team to spread the word. Using
+      plugins, you can also get it to send instant messages or SMS messages,
+      post entries on Twitter, or get people notified in a few other ways. It
+      all depends on what works best for your organizational culture. Email
+      notification is easy enough to set up if you know your local SMTP server
+      address - just provide this value in the 'Email Notification' section
+      towards the bottom of the main configuration page. However, to keep
+      things simple, we're not going to worry about notifications just
+      yet.</para>
+    </sect2>
+
+    <sect2>
+      <title>Setting up Git</title>
+
+      <para>The last thing we need to configure for this demo is to get
+      Jenkins working with Git. Jenkins comes with support for Subversion and
+      CVS out of the box, but you will need to install the Jenkins Git plugin
+      to be able to complete the rest of this tutorial. Don't worry, the
+      process is pretty simple. First of all, click on the 'Manage Jenkins'
+      link to the left of the screen to go back to the main configuration
+      screen (see <xref linkend="fig-hudson-manage" />). Then click on 'Manage
+      Plugins'. This will open the plugin configuration screen, which is where
+      you manage the extra features you want to install on your Jenkins
+      server. You should see four tabs: 'Updates', 'Available', 'Installed',
+      and 'Advanced' (see <xref
+      linkend="fig-jenkins-plugin-manager-installed" />).</para>
+
+      <para><figure id="fig-jenkins-plugin-manager-installed">
+          <title>Managing plugins in Jenkins</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-plugin-manager-installed.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>For now, just click on the 'Available' tab. Here you will see
+      a very long list of available plugins. Find the 'Git Plugin' entry in
+      this list and tick the corresponding checkbox (see <xref
+      linkend="fig-jenkins-installing-git" />), and then scroll down to the
+      bottom of the screen and click on 'Install'. This will download and
+      install the Jenkins Git plugin into your local Jenkins instance.</para>
+
+      <para><figure id="fig-jenkins-installing-git">
+          <title>Installing the Git plugin</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-installing-git.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once it is done, you will need to restart Jenkins for the
+      changes to take effect. To do this, you can simply click on the 'Restart
+      Jenkins when no jobs are running' button displayed on the installation
+      screen, or alternatively shut down and restart Jenkins by hand.</para>
+
+      <para>That is all we need to configure at this stage. You are now ready
+      to set up your first Jenkins build job!</para>
+    </sect2>
   </sect1>
 
   <sect1 id="sect-first-steps-first-job">
@@ -644,26 +648,24 @@ src/</screen></para>
 
         <secondary>Configuring in Freestyle build jobs</secondary>
       </indexterm>For this project, we will be getting the source code from
-    the local Subversion repository we set up earlier (so make sure you have
-    this Subversion repository up and running, as we described in <xref
-    linkend="sect-first-steps-environment" />). On the Jenkins screen, choose
-    'Subversion' and enter <ulink
-    url="svn://localhost/gameoflife/trunk"></ulink> as the Repository URL (see
-    <xref linkend="fig-new-job-svn" />). Also, place a dot (".") in the 'Local
-    Directory Module' field. This makes Jenkins check out the source code
-    directly into the build job's workspace. If you don't do this, Subversion
-    will check the source code out to a subdirectory called
-    <filename>trunk</filename>. Using the build job's workspace makes some of
-    the other options a little simpler to configure. You can leave all of the
-    other options up until here with their default values.</para>
+    the Github repository we set up earlier. On the Jenkins screen, choose
+    'Git' and enter the Repository URL we defined in <xref
+    linkend="sect-git-fork" /> (see <xref
+    linkend="fig-jenkins-git-new-project" />). Make sure this is the URL of
+    your fork, and not of the original repository: it should have the form
+    <emphasis>git@github.com:<emphasis><emphasis>&lt;username&gt;</emphasis></emphasis>/game-of-life.git</emphasis>,
+    where <emphasis>&lt;username&gt;</emphasis> is the username for your own
+    Github account. You can leave all of the other options up until here with
+    their default values.</para>
 
-    <figure id="fig-new-job-svn">
+    <figure id="fig-jenkins-git-new-project">
       <title>Telling Jenkins where to find the source code</title>
 
       <mediaobject>
         <imageobject role="web">
           <imagedata align="center"
-                     fileref="figs/web/hudson-freestyle-svn.png" width="4.3in" />
+                     fileref="figs/web/jenkins-git-new-project.png"
+                     width="4.3in" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -754,7 +756,7 @@ src/</screen></para>
     you'd expect of any build server. But Jenkins also does a great job of
     helping you display your test results and test result trends.</para>
 
-    <para>The defacto standard for test reporting in the Java world is an XML
+    <para>The de facto standard for test reporting in the Java world is an XML
     format used by JUnit. This format is also used by many other Java testing
     tools, such as TestNG, Spock and Easyb. Jenkins understands this format,
     so if your build produces JUnit XML test results, Jenkins can generate
@@ -779,8 +781,8 @@ src/</screen></para>
     directory. So enter "**/target/surefire-reports/*.xml" in the 'Test report
     XMLs' field. The two asterisks at the start of the path ('**') are a best
     practice to make the configuration a bit more robust: they allow Jenkins
-    to find the target directory no matter how we have configured Subversion
-    to check out the source code.</para>
+    to find the target directory no matter how we have configured Jenkins to
+    check out the source code.</para>
 
     <para>Another thing you often want to do is to archive your build results.
     Jenkins can store a copy of the binary artifacts generated by your build,
@@ -877,42 +879,10 @@ src/</screen></para>
     back to the core business model of a Continuous Integration server -
     kicking off builds when someone changes the code!</para>
 
-    <para>We are going to commit a code change to Subversion and see what
-    happens. First, you will need to check out a copy of the source code from
-    the Subversion repository we set up. You can do this is from the command
-    line as shown here:<screen>$ <command>svn co svn://localhost/gameoflife/trunk gameoflife</command>
-...
-A    gameoflife/src
-A    gameoflife/src/test
-A    gameoflife/src/test/java
-A    gameoflife/src/test/java/com
-A    gameoflife/src/test/java/com/ciwithhudson
-A    gameoflife/src/test/java/com/ciwithhudson/gameoflife
-A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain
-A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/CellTest.java
-A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/UniverseTest.java
-A    gameoflife/src/test/java/com/ciwithhudson/gameoflife/domain/GridTest.java
-A    gameoflife/src/test/resources
-A    gameoflife/src/main
-A    gameoflife/src/main/java
-A    gameoflife/src/main/java/com
-A    gameoflife/src/main/java/com/ciwithhudson
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Cell.java
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Universe.java
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/Grid.java
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
-A    gameoflife/src/main/java/com/ciwithhudson/gameoflife/domain/DeadCell.java
-A    gameoflife/src/main/resources
-A    gameoflife/pom.xml
-...
-Checked out revision 6.</screen></para>
-
-    <para>This will download the source code for our demo project into the
-    <filename>gameoflife</filename> directory. Now, if we make any changes, we
-    will be able to push them onto the Subversion repository and see if
-    Jenkins can pick them up.</para>
+    <para>We are going to commit a code change to Github and see what happens,
+    using the source code we checked out in <xref linkend="sect-git-fork" />.
+    We now have Jenkins configured to monitor our Githib fork, so if we make
+    any changes, Jenkins should be able to pick them up.</para>
 
     <para>So let's make a change. The idea is to introduce a code change that
     will cause the unit tests to fail. If your Java is a bit rusty, don't
@@ -922,87 +892,107 @@ Checked out revision 6.</screen></para>
     <para>Now in normal development, you would first modify the unit test that
     describes this behaviour. Then you would verify that the test fails with
     the existing code, and implement the code to ensure that the test passes.
-    <emphasis>Then</emphasis> you would commit your changes to Subversion,
-    allowing Jenkins to build them. However this would be a poor demonstration
-    of how Jenkins handles unit test failures. So in this example, we will,
-    against all best practices, simply modify the application code
-    directly.</para>
+    <emphasis>Then</emphasis> you would commit your changes to your version
+    control system, allowing Jenkins to build them. However this would be a
+    poor demonstration of how Jenkins handles unit test failures. So in this
+    example, we will, against all best practices, simply modify the
+    application code directly.</para>
 
-    <para>First of all, open the <filename>LivingCell.java</filename> file,
-    which you will find in the
-    <filename>gameoflife-core/src/main/java/com/ciwithhudson/gameoflide/domain</filename>
+    <para>First of all, open the <filename>Cell.java</filename> file, which
+    you will find in the
+    <filename>gameoflife-core/src/main/java/com/wakaleo/gameoflife/domain</filename>
     directory. Open this file in your favorite text editor. You should see
     something like this:</para>
 
-    <programlisting>package com.ciwithhudson.gameoflife.domain;
+    <programlisting>package com.wakaleo.gameoflife.domain;
 
-public class LivingCell extends Cell {
+public enum Cell {
+    LIVE_CELL("*"), DEAD_CELL(".");
 
-    public static final char SYMBOL = '+';
-    
-    @Override
-    public Boolean isAlive() {
-        return true;
-    }
+    private String symbol;
 
-    @Override
-    public Cell nextGeneration(int neighbourCount) {
-        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
-            return new LivingCell();
-        } else {
-            return new DeadCell();
-        }
+    private Cell(String symbol) {
+        this.symbol = symbol;
     }
 
     @Override
     public String toString() {
-        return Character.toString(SYMBOL);
+        return symbol;
     }
-    
+
+    static Cell fromSymbol(String symbol) {
+        Cell cellRepresentedBySymbol = null;
+        for (Cell cell : Cell.values()) {
+            if (cell.symbol.equals(symbol)) {
+                cellRepresentedBySymbol = cell;
+                break;
+            }
+        }
+        return cellRepresentedBySymbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }</programlisting>
 
     <para>The application can print the state of the grid as a text array.
-    Currently, the application prints our live cells as a plus character
-    ('+'), and dead cells appear as a minus character ('-'). So a five-by-five
-    grid containing a single living cell in the center would look like
+    Currently, the application prints our live cells as an asterisk ('*'), and
+    dead cells appear as a minus character ('-'). So a five-by-five grid
+    containing a single living cell in the center would look like
     this:<screen>-----
---+--
------</screen> Now users have asked the application - they want stars ('*')
-    instead of pluses! So we are going to make a slight change to the
-    <code>LivingCell</code> class method, and rewrite it as follows (the
-    modified line is in <command>bold</command>):</para>
+--*--
+-----</screen>Now users have asked for a change the application - they want
+    pluses ('*+') instead of stars! So we are going to make a slight change to
+    the <code>Cell</code> class method, and rewrite it as follows (the
+    modifications are in <command>bold</command>):</para>
 
-    <programlisting>public class LivingCell extends Cell {
+    <programlisting>package com.wakaleo.gameoflife.domain;
 
-    <command>public static final char SYMBOL = '*';</command>
-    
-    @Override
-    public Boolean isAlive() {
-        return true;
-    }
+public enum Cell {
+    <command>LIVE_CELL("+")</command>, DEAD_CELL(".");
 
-    @Override
-    public Cell nextGeneration(int neighbourCount) {
-        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
-            return new LivingCell();
-        } else {
-            return new DeadCell();
-        }
+    private String symbol;
+
+    private Cell(String symbol) {
+        this.symbol = symbol;
     }
 
     @Override
     public String toString() {
-        return Character.toString(SYMBOL);
+        return symbol;
     }
-    
+
+    static Cell fromSymbol(String symbol) {
+        Cell cellRepresentedBySymbol = null;
+        for (Cell cell : Cell.values()) {
+            if (cell.symbol.equals(symbol)) {
+                cellRepresentedBySymbol = cell;
+                break;
+            }
+        }
+        return cellRepresentedBySymbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }</programlisting>
 
-    <para>Save this change, and then commit them to the Subversion repository
-    by running "<command>svn commit</command>" from the
-    <filename>babble</filename> directory: <screen>$ <command>svn commit -m "Live cells should display as stars and not pluses"</command>
-Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
-Transmitting file data .
-Committed revision 7.</screen></para>
+    <para>Save this change, and then commit them to the local Git repository
+    by running "<command>git commit</command>": <screen>$ <command>git commit -a -m "Changes stars to pluses"</command>
+[master 61ce946] Changes stars to pluses
+ 1 files changed, 1 insertions(+), 1 deletions(-)</screen>This will commit the
+    changes locally, but since Git is a distributed repository, you now have
+    to push these changes through to your fork on Github. You do this by
+    running "<command>git push</command>":<screen>$ <command>git push</command>
+Counting objects: 21, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (11/11), 754 bytes, done.
+Total 11 (delta 4), reused 0 (delta 0)
+To git@github.com:john-smart/game-of-life.git
+   7882d5c..61ce946  master -&gt; master</screen></para>
 
     <para><indexterm>
         <primary>Build failures</primary>
@@ -1080,44 +1070,58 @@ Committed revision 7.</screen></para>
     <para>Now let's fix the build. To make things simple, we'll just back out
     our changes and recommit the code in it's original state (the end users
     just changed their mind about the asterisks, anyway). So just undo the
-    changes you made to the <filename>LivingCell</filename> class (again, the
+    changes you made to the <filename>Cell</filename> class (again, the
     changes are highlighted in <command>bold</command>):</para>
 
-    <programlisting>public class LivingCell extends Cell {
+    <programlisting>package com.wakaleo.gameoflife.domain;
 
-    <command>public static final char SYMBOL = '+';</command>
-    
-    @Override
-    public Boolean isAlive() {
-        return true;
-    }
+public enum Cell {
+    <command>LIVE_CELL("*")</command>, DEAD_CELL(".");
 
-    @Override
-    public Cell nextGeneration(int neighbourCount) {
-        if (neighbourCount &gt;= 2 &amp;&amp; neighbourCount &lt;= 3) {
-            return new LivingCell();
-        } else {
-            return new DeadCell();
-        }
+    private String symbol;
+
+    private Cell(String symbol) {
+        this.symbol = symbol;
     }
 
     @Override
     public String toString() {
-        return Character.toString(SYMBOL);
+        return symbol;
     }
-    
+
+    static Cell fromSymbol(String symbol) {
+        Cell cellRepresentedBySymbol = null;
+        for (Cell cell : Cell.values()) {
+            if (cell.symbol.equals(symbol)) {
+                cellRepresentedBySymbol = cell;
+                break;
+            }
+        }
+        return cellRepresentedBySymbol;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
 }</programlisting>
 
-    <para>When you've done this, commit your changes again:<screen>$ <command>svn commit -m "Fixed broken unit tests"</command>
-Sending        src/main/java/com/ciwithhudson/gameoflife/domain/LivingCell.java
-Transmitting file data .
-Committed revision 8.</screen>Once you've committed these changes, Jenkins
-    should pick them up and kick off a build. Once this is done, you will be
-    able to see the fruit of your work on the build job home page (see <xref
-    linkend="fig-new-job-fixed-build" />) - the build status is blue again and
-    all is well. Also notice the way we are building up a trend graph showing
-    the number of succeeding unit tests over time - this sort of report really
-    is one of Jenkins's strong points.</para>
+    <para>When you've done this, commit your changes again:<screen>$ <command>git commit -a -m "Restored the star"</command>
+[master bc924be] Restored the star
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+$ <command>git push</command>
+Counting objects: 21, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (11/11), 752 bytes, done.
+Total 11 (delta 4), reused 6 (delta 0)
+To git@github.com:john-smart/game-of-life.git
+   61ce946..bc924be  master -&gt; master</screen>Once you've committed these
+    changes, Jenkins should pick them up and kick off a build. Once this is
+    done, you will be able to see the fruit of your work on the build job home
+    page (see <xref linkend="fig-new-job-fixed-build" />) - the build status
+    is blue again and all is well. Also notice the way we are building up a
+    trend graph showing the number of succeeding unit tests over time - this
+    sort of report really is one of Jenkins's strong points.</para>
 
     <figure id="fig-new-job-fixed-build">
       <title>Now the build is back to normal</title>
@@ -1164,19 +1168,22 @@ Committed revision 8.</screen>Once you've committed these changes, Jenkins
         <imageobject role="web">
           <imagedata align="center"
                      fileref="figs/web/hudson-freestyle-javadoc-build-step.png"
-                     width="4.3in" />
+                     width="10.3in" />
         </imageobject>
       </mediaobject>
     </figure>
 
     <para>Now go to the 'Post-build Action' and tick the 'Publish Javadoc'
-    checkbox. In the 'Javadoc directory' field, enter
-    <filename>target/site/apidocs</filename> - this is where Maven will place
-    the Javadocs it generates. Jenkins may display an error message saying
-    that this directory doesn't exist. Jenkins is correct - this directory
-    won't exist until we run the <command>javadoc:javadoc</command> goal, but
-    since we haven't run this command yet we can safely ignore the message at
-    this stage.</para>
+    checkbox. This project is a multi-module project, so a separate
+    sub-directory is generated for each module (core, services, web and so
+    forth). For this example, we are interested in displaying the
+    documentation for the core module. In the 'Javadoc directory' field, enter
+    <filename>gameoflife-core/target/site/apidocs</filename> - this is where
+    Maven will place the Javadocs it generates for the core module. Jenkins
+    may display an error message saying that this directory doesn't exist at
+    first.s Jenkins is correct - this directory won't exist until we run the
+    <command>javadoc:javadoc</command> goal, but since we haven't run this
+    command yet we can safely ignore the message at this stage.</para>
 
     <para>If you tick 'Retain Javadoc for each successful build, Jenkins will
     also keep track of the Javadocs for previous builds - not always useful,
@@ -1242,7 +1249,7 @@ Committed revision 8.</screen>Once you've committed these changes, Jenkins
       <mediaobject>
         <imageobject role="web">
           <imagedata align="center"
-                     fileref="figs/web/hudson-plugin-manager.png"
+                     fileref="figs/web/hudson-plugin-manager.png "
                      width="4.3in" />
         </imageobject>
       </mediaobject>
@@ -1256,7 +1263,7 @@ Committed revision 8.</screen>Once you've committed these changes, Jenkins
     downloading the plugin file elsewhere and uploading it to your Jenkins
     installation (just open the 'Advanced' tab in <xref
     linkend="fig-hudson-plugin-manager" />), or by copying the plugin to the
-    <filename>$HUDSON_HOME/plugins</filename> directory.</para>
+    <filename>$JENKINS_HOME/plugins</filename> directory.</para>
 
     <para>In our case, we are interested in the Cobertura plugin, so go to the
     'Available' tab and scroll down until you find the 'Cobertura Plugin'
@@ -1378,44 +1385,40 @@ Committed revision 8.</screen>Once you've committed these changes, Jenkins
     <para>For example, if you drill down into the coverage reports, you will
     notice that certain parts of this code are not tested (for example the
     <filename>Cell.java</filename> class in <xref
-    linkend="fig-hudson-code-coverage-class" />). Let's see if we can improve
-    things.</para>
+    linkend="fig-hudson-code-coverage-class" />). <figure
+        id="fig-hudson-code-coverage-class">
+        <title>Jenkins lets you display code coverage metrics for packages and
+        classes</title>
 
-    <para>Looking at this coverage report, we can see that error handling is
-    poorly tested. We would probably want to ensure that our code behaves as
-    expected if a user provides an incorrectly-formatted cell grid. You can
-    improve things simply by adding a test like this one to the CellTest.java
-    class (in the
-    <filename>src/test/java/com/ciwithhudson/gameoflife/domain</filename>
-    directory):</para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-code-coverage-class.png "
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
 
-    <programlisting>    @Test(expected=IllegalArgumentException.class)
-    public void anInvalidCharacterShouldThrowAnException() {
-        Cell.fromChar('X');
-    }</programlisting>
+    <para>Code coverage metrics are a great way to isolate code that has not
+    been tested, in order to add extra tests for corner cases that were not
+    properly tested during the initial development, for example. The Jenkins
+    code coverage graphs are also a great way of keeping track of your code
+    coverage metrics as the project grows. Indeed, as you add new tests, you
+    will notice that Jenkins will display a graph of code coverage over time,
+    not just the latest results (see <xref lang=""
+    linkend="fig-hudson-code-coverage-graph" />).<figure
+        id="fig-hudson-code-coverage-graph">
+        <title>Jenkins also displays a graph of code coverage over
+        time</title>
 
-    <para>Add this test and commit your changes to Subversion:<screen>$ svn commit -m "Added extra unit test"
-Sending        src/test/java/com/ciwithhudson/gameoflife/domain/CellTest.java
-Transmitting file data ..
-Committed revision 8.</screen></para>
-
-    <figure id="fig-hudson-code-coverage-class">
-      <title>Jenkins lets you display code coverage metrics for packages and
-      classes</title>
-
-      <mediaobject>
-        <imageobject role="web">
-          <imagedata align="center"
-                     fileref="figs/web/hudson-code-coverage-class.png "
-                     width="4.3in" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>This will trigger another build, which should result in slightly
-    better code coverage statistics. You will also notice that Jenkins is now
-    displaying a graph of code coverage over time, not just the latest results
-    (see <xref lang="" linkend="fig-hudson-code-coverage-graph" />).</para>
+        <mediaobject>
+          <imageobject role="web">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-code-coverage-graph.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
 
     <para>Note that our objective here is not to improve the code coverage
     just for the sake of improving code coverage - we are adding an extra test
@@ -1429,18 +1432,6 @@ Committed revision 8.</screen></para>
     the health of your project, and Jenkins presents them in a particularly
     accessible way.</para>
 
-    <figure id="fig-hudson-code-coverage-graph">
-      <title>Jenkins also displays a graph of code coverage over time</title>
-
-      <mediaobject>
-        <imageobject role="web">
-          <imagedata align="center"
-                     fileref="figs/web/hudson-code-coverage-graph.png"
-                     width="4.3in" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-
     <para>This is just one of the code quality metrics plugins that have been
     written for Jenkins. There are many more (over fifty reporting plugins
     alone at the time of writing). We'll look at some more of them in the
@@ -1453,7 +1444,7 @@ Committed revision 8.</screen></para>
     <para>In this chapter, we have gone through what you need to know to get
     started with Jenkins. You should be able to set up a new build job, and
     setting up reporting on JUnit test results and javadocs. And you have seen
-    how to add a reporting pluging and keep tabs on code coverage. Well done!
+    how to add a reporting plugin and keep tabs on code coverage. Well done!
     But there's still a lot more to learn about Jenkins - in the following
     chapters, we will be looking at how Jenkins can help you improve your
     build automation process in many other areas as well.</para>
