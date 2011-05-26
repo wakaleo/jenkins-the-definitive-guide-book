@@ -135,7 +135,7 @@
     straight-forward to set up, and many of the options we configure here also
     appear in other build jobs.</para>
 
-    <sect2>
+    <sect2 id="sect-general-options">
       <title>General options</title>
 
       <para>The first section you see when you create a new free-style job
@@ -183,12 +183,26 @@
       tell Jenkins to only keep recent builds (Jenkins will delete builds
       after a certain number of days), or to keep no more than a specified
       number of builds. If a certain build has particular sentimental value,
-      you can always tell Jenkins to keep it forever. In addition, Jenkins
-      will never delete the last stable and successful builds, no matter how
-      old they are. For example, if you limit Jenkins to only keep the last
-      twenty builds, and your last successful build was thirty builds ago,
-      Jenkins will still keep the successful build job as well as the last
-      twenty failing builds.</para>
+      you can always tell Jenkins to keep it forever by using the 'Keep
+      forever' button on the build details page (see <xref
+      linkend="fig-jenkins-keep-forever" />). Note that this button will only
+      appear if you have asked Jenkins to discard old builds. </para>
+
+      <para><figure id="fig-jenkins-keep-forever">
+          <title>Keeping a build job forever</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-keep-forever.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>In addition, Jenkins will never delete the last stable and
+      successful builds, no matter how old they are. For example, if you limit
+      Jenkins to only keep the last twenty builds, and your last successful
+      build was thirty builds ago, Jenkins will still keep the successful
+      build job as well as the last twenty failing builds.</para>
 
       <para>You also have the option to disable the build. A disabled build
       will not be executed until you enable it again. Using this option when
@@ -377,7 +391,7 @@
         created during the build process. Alternatively, you can ask Jenkins
         to delete any unversioned or ignored files before performing an
         <command>svn update</command>, or play it safe by checking out a full
-        clean copy for each build. </para>
+        clean copy for each build.</para>
 
         <para>Another very useful feature is Jenkins's integration with source
         code browsers. A good source code browser is an important part of your
@@ -1956,326 +1970,15 @@ println env['BUILD_NUMBER']</programlisting></para>
       </sect3>
 
       <sect3>
-        <title>Building Grails projects</title>
+        <title>Building projects in other languages</title>
 
-        <para>Grails is an open-source dynamic web application framework built
-        on Groovy and many well-established open source Java frameworks such
-        as Spring and Hibernate.</para>
-
-        <para>Jenkins provides excellent support for Grails builds. First, you
-        need to install the Jenkins Grails Plugin
-        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/Grails+Plugin</uri>).
-        Once you have installed this and restarted Jenkins, you will need to
-        provide at least one version of Grails for Jenkins to use in the
-        <command>Grails Builder</command> section of the <command>Configure
-        System</command> screen (see <xref
-        linkend="fig-hudson-build-job-grails-builder" />).</para>
-
-        <para><figure id="fig-hudson-build-job-grails-builder">
-            <title>Adding a Grails installation to Jenkins</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-build-job-grails-builder.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>Now you can set up a freestyle build job to build your
-        Grails project. The Grails plugin adds the 'Build with Grails' build
-        step, which you can use to build your Grails application (see <xref
-        linkend="fig-hudson-build-job-grails" />). Here, you provide the
-        Grails target, or targets, you want to execute. Unlike the command
-        line, you can execute several targets in the same command. However, if
-        you need to pass any arguments to a particular target, you should
-        enclose the target and its arguments in double quotes. In <xref
-        linkend="fig-hudson-build-job-grails" />, for example, we run
-        <command>grails clean</command>, followed by <command>grails test-app
-        -unit -non-interactive</command>. To get this to work properly, we
-        enclose the options of the second command in quotes, which gives us
-        <command>grails clean "test-app -unit
-        -non-interactive"</command>.</para>
-
-        <para><figure id="fig-hudson-build-job-grails">
-            <title>Configuring a Grails build step</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-build-job-grails.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>The Grails build step takes many optional parameters. For
-        example, Grails is finicky about versions - if your project was
-        created by an older version, Grails will ask you to upgrade it. To be
-        on the safe side, for example, you may want to tick the
-        '<command>Force Upgrade</command>', which makes sure that runs a
-        <command>grails upgrade --non-interactive</command> before it runs the
-        main targets.</para>
-
-        <para>You can also specify the server port (useful if you are
-        executing web tests), and any other properties you want to pass to the
-        build.</para>
-      </sect3>
-
-      <sect3>
-        <title>Building projects with Gradle</title>
-
-        <para>In comparison to the build tool veterans Ant and Maven, Gradle
-        (<uri>http://gradle.org</uri>) is a relatively new open source build
-        tool for the Java Virtual Machine. Build scripts for Gradle are
-        written in a Domain Specific Language (DSL) based on Groovy. Gradle
-        implements convention over configuration, allows direct access to Ant
-        tasks, and uses Maven-like declarative dependency management. The
-        concise nature of Groovy scripting lets you write very expressive
-        build scripts with very little code, albeit at the cost of loosing the
-        IDE support that exists for established tools like Ant and
-        Maven.</para>
-
-        <para>There are two different ways to run your Gradle builds with
-        Jenkins. You can either use the Gradle plugin for Jenkins or the
-        Gradle wrapper functionality.</para>
-
-        <sect4 id="the-gradle-plugin-for-hudson">
-          <title>The Gradle plugin for Jenkins</title>
-
-          <para>You can install the Gradle plugin in the usual way - just go
-          to the 'Manage Plugins' screen and select the 'Jenkins Gradle
-          plugin. Click 'Install' and restart your Jenkins instance.</para>
-
-          <para>Once Jenkins has restarted, you will need to configure your
-          new Gradle plugin. You should now find a new "Gradle" section in
-          your 'Configure System' screen. Here you will need to add the Gradle
-          installation you want to use. The process is similar to that used
-          for the other tool installations. First, click the 'Add Gradle'
-          button to add a new Gradle installation, and enter an appropriate
-          name (see <xref linkend="fig-gradle-plugin" />). If Gradle has
-          already been installed on your build server, you can point to local
-          Gradle home directory. Alternatively, you can use the "Install
-          automatically" feature to download a Gradle installation, in the
-          form of a ZIP or GZipped TAR file, directly from a URL. You can use
-          a public URL (see <uri>http://gradle.org/downloads.html</uri>), or
-          may prefer to make these installations available on a local server
-          instead.</para>
-
-          <figure id="fig-gradle-plugin">
-            <title>Configuring the Gradle Plugin</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/configureGradle.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-
-          <para>You typically use Freestyle build jobs to configure your
-          Gradle builds. When you add a build step to a Freestyle build job,
-          you will now have a new option called "Invoke Gradle script", which
-          lets you add Gradle specific settings to your build job.</para>
-
-          <para>As an example, here is a very simple Gradle build script. It
-          is a simple Java project that uses a Maven directory structure and a
-          Maven repository manager. There is a customizable task, called
-          'uploadArchives', to deploy the generated archive to the local
-          Enterprise repository manager:</para>
-
-          <para><programlisting>apply plugin:'java'
-apply plugin:'maven'
-
-version='1.0-SNAPSHOT'
-group = "org.acme"
-
-repositories{
-  mavenCentral()
-    mavenRepo urls: 'http://build.server/nexus/content/repositories/public'
-}
-
-dependencies{
-  testCompile "junit:junit:4.8.2"
-}
-
-uploadArchives {
-  repositories.mavenDeployer {
-    configuration = configurations.archives
-      repository(url: "http://build.server/nexus/content/repositories/snapshots") {
-        authentication(userName: "admin", password: "password")
-     }
-  }
-}</programlisting>In <xref linkend="fig-gradle-build-job" />, we use the just
-          configured "Gradle-0.9RC2" instance to run this Gradle build. In
-          this case, we want to run the JUnit tests and upload the build
-          artifacts to our local Maven repository. Furthermore we configure
-          our job to collect the test results from "**/build/test-results",
-          the default directory for storing test results in Gradle.</para>
-
-          <para><figure id="fig-gradle-build-job">
-              <title>Setting up a Gradle build job</title>
-
-              <mediaobject>
-                <imageobject role="web">
-                  <imagedata align="center"
-                             fileref="figs/web/configureGradleJob.png"
-                             width="4.3in" />
-                </imageobject>
-              </mediaobject>
-            </figure></para>
-        </sect4>
-
-        <sect4 id="incremental-builds">
-          <title>Incremental builds</title>
-
-          <para>While running a Gradle build job with unchanged sources,
-          Gradle runs its builds incremental. If the output of a Gradle task
-          is still available and the sources haven't changed since the last
-          build, Gradle is able to skip the task execution and marks the
-          according task as up-to-date. This incremental build feature can
-          decrease the duration of a running build job tremendously.</para>
-
-          <para>If Gradle evaluates the test task as up-to-date even the
-          execution of your unit tests is skipped. This can cause problems
-          when running your Gradle build with Jenkins. In our sample build job
-          above we configured a post build action to publish the JUnit reports
-          of our build. If the test task is skipped by Gradle, the Jenkins job
-          will be marked as failed with the following message:</para>
-
-          <blockquote>
-            <para>Test reports were found but none of them are new. Did tests
-            run?</para>
-          </blockquote>
-
-          <para>You can easily fix this by invalidating the output and force a
-          re-execution of your tests by adding the following snippet to your
-          Gradle file:</para>
-
-          <screen>test {
-    outputs.upToDateWhen { false }
-}</screen>
-
-          <para>After adding the snippet above to your build file, your job
-          console output should look like the one in <xref
-          linkend="gradle-incremental-build" />.</para>
-
-          <figure id="gradle-incremental-build">
-            <title>Incremental Gradle job</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/incrementalBuildJob.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-
-          <para>As you can see, except <emphasis>test</emphasis> and
-          <emphasis>uploadArchives</emphasis> all of the tasks have been
-          marked as up-to-date and not executed.</para>
-        </sect4>
-      </sect3>
-
-      <sect3>
-        <title>Building projects with Visual Studio MSBuild</title>
-
-        <para>Jenkins is a Java application, but it also provides excellent
-        support for .NET projects.</para>
-
-        <para>To build .NET projects in Jenkins, you need to install the
-        MSBuild plugin
-        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
-
-        <para>You may also want to install the MSTest plugin
-        (<uri>http://wiki.jenkins-ci.org//display/HUDSON/MSTest+Plugin</uri>)
-        and the NUnit plugin
-        (<uri>http://wiki.jenkins-ci.org//display/HUDSON/NUnit+Plugin</uri>),
-        to display your test results.</para>
-
-        <para>Once you have installed the .NET plugins and restarted Jenkins,
-        you need to configure your .NET build tools. Go to the
-        <command>Configure System</command> page and specify the path of the
-        MSBuild executable (see <xref
-        linkend="fig-hudson-msbuild-config" />).</para>
-
-        <para><figure id="fig-hudson-msbuild-config">
-            <title>Configuring .NET build tools in Jenkins</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-msbuild-config.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure>Once you have this set up, you can return to your freestyle
-        project and add your .NET build step configuration.</para>
-
-        <para>Go to the <command>Build</command> section and choose
-        '<command>Build a Visual project or solution using MSBuild</command>'
-        option in the 'Add Build Step' menu. Then enter the path to your
-        MSBuild build script (a <filename>.proj</filename> or
-        <filename>.sln</filename> file), along with any command-line options
-        your build requires (see <xref
-        linkend="fig-hudson-msbuild-step" />).</para>
-
-        <para><figure id="fig-hudson-msbuild-step">
-            <title>A build step using MSBuild</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-msbuild-step.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
-      </sect3>
-
-      <sect3>
-        <title>Build projects with NAnt</title>
-
-        <para>Another way to build your .NET projects is to use NAnt. NAnt is
-        a .NET version of the Ant build scripting tool widely used in the Java
-        world. NAnt build scripts are XML files (typically with a
-        <filename>.build</filename> extension), with a very similar format to
-        Ant build scripts.</para>
-
-        <para>To build with NAnt in Jenkins, you need to install the Jenkins
-        NAnt plugin
-        (<uri>http://wiki.jenkins-ci.org/display/HUDSON/NAnt+Plugin</uri>).
-        Once you have installed the plugin and restarted Jenkins, go to the
-        <command>Configure System</command> page and specify the NAnt
-        installation directory in the <command>Nant Builders</command> section
-        (see <xref linkend="fig-hudson-msbuild-config" />).</para>
-
-        <para>Now go to the <command>Build</command> section of your freestyle
-        project and choose '<command>Execute NAnt build</command>' (see <xref
-        linkend="fig-hudson-nant-step" />). Here you specify your build script
-        and the target you want to invoke. If you click on the
-        '<command>Advanced...</command>' option, you can also set property
-        values to be passed into the NAnt script.</para>
-
-        <para><figure id="fig-hudson-nant-step">
-            <title>A build step using NAnt</title>
-
-            <mediaobject>
-              <imageobject role="web">
-                <imagedata align="center"
-                           fileref="figs/web/hudson-nant-step.png"
-                           width="4.3in" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
-      </sect3>
-
-      <sect3>
-        <title>Build steps for other languages</title>
-
-        <para>As the last few sections illustrate, Jenkins provides excellent
-        support for other languages and development environments, including
-        Ruby, .NET, PHP, and many others. We will discuss other aspects of
-        building non-Java projects later on in the book.</para>
+        <para>Jenkins is a flexible tool, and it can be used for much more
+        than just Java and Groovy. For example, Jenkins also works well with
+        Grails, .Net, Ruby, Python and PHP, just to name a few. When using
+        other languages, you generally need to install a plugin to support
+        your favorite language, which will add a new build step type for this
+        language. We will look at some examples in <xref
+        linkend="using-jenkins-with-other-languages" /></para>
       </sect3>
     </sect2>
 
@@ -2580,14 +2283,330 @@ uploadArchives {
       trigger the first build manually, or just wait for it to kick off by
       itself. Once the build is finished, you can click on the build number to
       see the results of your work.</para>
+    </sect2>
+  </sect1>
 
-      <para>In the rest of this chapter, we will have a look at the other most
-      commonly used build job: Maven 2 build jobs.</para>
+  <sect1 id="using-jenkins-with-other-languages">
+    <title>Using Jenkins with other languages</title>
+
+    <para>As we mentioned earlier, Jenkins provides excellent support for
+    other languages. In this section, we will look at how to use Jenkins with
+    a few of the more common ones.</para>
+
+    <sect2>
+      <title>Building Grails projects</title>
+
+      <para>Grails is an open-source dynamic web application framework built
+      on Groovy and many well-established open source Java frameworks such as
+      Spring and Hibernate.</para>
+
+      <para>Jenkins provides excellent support for Grails builds. First, you
+      need to install the Jenkins Grails Plugin
+      (<uri>http://wiki.jenkins-ci.org/display/HUDSON/Grails+Plugin</uri>).
+      Once you have installed this and restarted Jenkins, you will need to
+      provide at least one version of Grails for Jenkins to use in the
+      <command>Grails Builder</command> section of the <command>Configure
+      System</command> screen (see <xref
+      linkend="fig-hudson-build-job-grails-builder" />).</para>
+
+      <para><figure id="fig-hudson-build-job-grails-builder">
+          <title>Adding a Grails installation to Jenkins</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-job-grails-builder.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Now you can set up a freestyle build job to build your Grails
+      project. The Grails plugin adds the 'Build with Grails' build step,
+      which you can use to build your Grails application (see <xref
+      linkend="fig-hudson-build-job-grails" />). Here, you provide the Grails
+      target, or targets, you want to execute. Unlike the command line, you
+      can execute several targets in the same command. However, if you need to
+      pass any arguments to a particular target, you should enclose the target
+      and its arguments in double quotes. In <xref
+      linkend="fig-hudson-build-job-grails" />, for example, we run
+      <command>grails clean</command>, followed by <command>grails test-app
+      -unit -non-interactive</command>. To get this to work properly, we
+      enclose the options of the second command in quotes, which gives us
+      <command>grails clean "test-app -unit
+      -non-interactive"</command>.</para>
+
+      <para><figure id="fig-hudson-build-job-grails">
+          <title>Configuring a Grails build step</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-build-job-grails.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>The Grails build step takes many optional parameters. For
+      example, Grails is finicky about versions - if your project was created
+      by an older version, Grails will ask you to upgrade it. To be on the
+      safe side, for example, you may want to tick the '<command>Force
+      Upgrade</command>', which makes sure that runs a <command>grails upgrade
+      --non-interactive</command> before it runs the main targets.</para>
+
+      <para>You can also specify the server port (useful if you are executing
+      web tests), and any other properties you want to pass to the
+      build.</para>
+    </sect2>
+
+    <sect2>
+      <title>Building projects with Gradle</title>
+
+      <para>In comparison to the build tool veterans Ant and Maven, Gradle
+      (<uri>http://gradle.org</uri>) is a relatively new open source build
+      tool for the Java Virtual Machine. Build scripts for Gradle are written
+      in a Domain Specific Language (DSL) based on Groovy. Gradle implements
+      convention over configuration, allows direct access to Ant tasks, and
+      uses Maven-like declarative dependency management. The concise nature of
+      Groovy scripting lets you write very expressive build scripts with very
+      little code, albeit at the cost of loosing the IDE support that exists
+      for established tools like Ant and Maven.</para>
+
+      <para>There are two different ways to run your Gradle builds with
+      Jenkins. You can either use the Gradle plugin for Jenkins or the Gradle
+      wrapper functionality.</para>
+
+      <sect3 id="the-gradle-plugin-for-hudson">
+        <title>The Gradle plugin for Jenkins</title>
+
+        <para>You can install the Gradle plugin in the usual way - just go to
+        the 'Manage Plugins' screen and select the 'Jenkins Gradle plugin.
+        Click 'Install' and restart your Jenkins instance.</para>
+
+        <para>Once Jenkins has restarted, you will need to configure your new
+        Gradle plugin. You should now find a new "Gradle" section in your
+        'Configure System' screen. Here you will need to add the Gradle
+        installation you want to use. The process is similar to that used for
+        the other tool installations. First, click the 'Add Gradle' button to
+        add a new Gradle installation, and enter an appropriate name (see
+        <xref linkend="fig-gradle-plugin" />). If Gradle has already been
+        installed on your build server, you can point to local Gradle home
+        directory. Alternatively, you can use the "Install automatically"
+        feature to download a Gradle installation, in the form of a ZIP or
+        GZipped TAR file, directly from a URL. You can use a public URL (see
+        <uri>http://gradle.org/downloads.html</uri>), or may prefer to make
+        these installations available on a local server instead.</para>
+
+        <figure id="fig-gradle-plugin">
+          <title>Configuring the Gradle Plugin</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center" fileref="figs/web/configureGradle.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>You typically use Freestyle build jobs to configure your Gradle
+        builds. When you add a build step to a Freestyle build job, you will
+        now have a new option called "Invoke Gradle script", which lets you
+        add Gradle specific settings to your build job.</para>
+
+        <para>As an example, here is a very simple Gradle build script. It is
+        a simple Java project that uses a Maven directory structure and a
+        Maven repository manager. There is a customizable task, called
+        'uploadArchives', to deploy the generated archive to the local
+        Enterprise repository manager:</para>
+
+        <para><programlisting>apply plugin:'java'
+apply plugin:'maven'
+
+version='1.0-SNAPSHOT'
+group = "org.acme"
+
+repositories{
+  mavenCentral()
+    mavenRepo urls: 'http://build.server/nexus/content/repositories/public'
+}
+
+dependencies{
+  testCompile "junit:junit:4.8.2"
+}
+
+uploadArchives {
+  repositories.mavenDeployer {
+    configuration = configurations.archives
+      repository(url: "http://build.server/nexus/content/repositories/snapshots") {
+        authentication(userName: "admin", password: "password")
+     }
+  }
+}</programlisting>In <xref linkend="fig-gradle-build-job" />, we use the just
+        configured "Gradle-0.9RC2" instance to run this Gradle build. In this
+        case, we want to run the JUnit tests and upload the build artifacts to
+        our local Maven repository. Furthermore we configure our job to
+        collect the test results from "**/build/test-results", the default
+        directory for storing test results in Gradle.</para>
+
+        <para><figure id="fig-gradle-build-job">
+            <title>Setting up a Gradle build job</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/configureGradleJob.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </sect3>
+
+      <sect3 id="incremental-builds">
+        <title>Incremental builds</title>
+
+        <para>While running a Gradle build job with unchanged sources, Gradle
+        runs its builds incremental. If the output of a Gradle task is still
+        available and the sources haven't changed since the last build, Gradle
+        is able to skip the task execution and marks the according task as
+        up-to-date. This incremental build feature can decrease the duration
+        of a running build job tremendously.</para>
+
+        <para>If Gradle evaluates the test task as up-to-date even the
+        execution of your unit tests is skipped. This can cause problems when
+        running your Gradle build with Jenkins. In our sample build job above
+        we configured a post build action to publish the JUnit reports of our
+        build. If the test task is skipped by Gradle, the Jenkins job will be
+        marked as failed with the following message:</para>
+
+        <blockquote>
+          <para>Test reports were found but none of them are new. Did tests
+          run?</para>
+        </blockquote>
+
+        <para>You can easily fix this by invalidating the output and force a
+        re-execution of your tests by adding the following snippet to your
+        Gradle file:</para>
+
+        <screen>test {
+    outputs.upToDateWhen { false }
+}</screen>
+
+        <para>After adding the snippet above to your build file, your job
+        console output should look like the one in <xref
+        linkend="gradle-incremental-build" />.</para>
+
+        <figure id="gradle-incremental-build">
+          <title>Incremental Gradle job</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/incrementalBuildJob.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>As you can see, except <emphasis>test</emphasis> and
+        <emphasis>uploadArchives</emphasis> all of the tasks have been marked
+        as up-to-date and not executed.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Building projects with Visual Studio MSBuild</title>
+
+      <para>Jenkins is a Java application, but it also provides excellent
+      support for .NET projects.</para>
+
+      <para>To build .NET projects in Jenkins, you need to install the MSBuild
+      plugin
+      (<uri>http://wiki.jenkins-ci.org/display/HUDSON/MSBuild+Plugin</uri>).</para>
+
+      <para>You may also want to install the MSTest plugin
+      (<uri>http://wiki.jenkins-ci.org//display/HUDSON/MSTest+Plugin</uri>)
+      and the NUnit plugin
+      (<uri>http://wiki.jenkins-ci.org//display/HUDSON/NUnit+Plugin</uri>), to
+      display your test results.</para>
+
+      <para>Once you have installed the .NET plugins and restarted Jenkins,
+      you need to configure your .NET build tools. Go to the
+      <command>Configure System</command> page and specify the path of the
+      MSBuild executable (see <xref
+      linkend="fig-hudson-msbuild-config" />).</para>
+
+      <para><figure id="fig-hudson-msbuild-config">
+          <title>Configuring .NET build tools in Jenkins</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-msbuild-config.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have this set up, you can return to your freestyle
+      project and add your .NET build step configuration.</para>
+
+      <para>Go to the <command>Build</command> section and choose
+      '<command>Build a Visual project or solution using MSBuild</command>'
+      option in the 'Add Build Step' menu. Then enter the path to your MSBuild
+      build script (a <filename>.proj</filename> or <filename>.sln</filename>
+      file), along with any command-line options your build requires (see
+      <xref linkend="fig-hudson-msbuild-step" />).</para>
+
+      <para><figure id="fig-hudson-msbuild-step">
+          <title>A build step using MSBuild</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-msbuild-step.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
+
+    <sect2>
+      <title>Build projects with NAnt</title>
+
+      <para>Another way to build your .NET projects is to use NAnt. NAnt is a
+      .NET version of the Ant build scripting tool widely used in the Java
+      world. NAnt build scripts are XML files (typically with a
+      <filename>.build</filename> extension), with a very similar format to
+      Ant build scripts.</para>
+
+      <para>To build with NAnt in Jenkins, you need to install the Jenkins
+      NAnt plugin
+      (<uri>http://wiki.jenkins-ci.org/display/HUDSON/NAnt+Plugin</uri>). Once
+      you have installed the plugin and restarted Jenkins, go to the
+      <command>Configure System</command> page and specify the NAnt
+      installation directory in the <command>Nant Builders</command> section
+      (see <xref linkend="fig-hudson-msbuild-config" />).</para>
+
+      <para>Now go to the <command>Build</command> section of your freestyle
+      project and choose '<command>Execute NAnt build</command>' (see <xref
+      linkend="fig-hudson-nant-step" />). Here you specify your build script
+      and the target you want to invoke. If you click on the
+      '<command>Advanced...</command>' option, you can also set property
+      values to be passed into the NAnt script.</para>
+
+      <para><figure id="fig-hudson-nant-step">
+          <title>A build step using NAnt</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-nant-step.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
   </sect1>
 
   <sect1 id="sect-build-jobs-maven">
     <title>Working with Maven Build Jobs</title>
+
+    <para>In the rest of this chapter, we will have a look at the other most
+    commonly used build job: Maven 2 build jobs.</para>
 
     <para>Maven build jobs are specifically adapted to Maven 2 and Maven 3
     builds. Creating a Maven build job requires considerably less work than

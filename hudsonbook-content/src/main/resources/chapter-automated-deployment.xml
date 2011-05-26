@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-automated-deployment">
+  <title>Automated Deployment and Continuous Deployment</title>
+
+  <sect1 id="sect-continuous-deployment-introduction">
+    <title>Introduction</title>
+
+    <para><indexterm>
+        <primary>Automated Deployment</primary>
+      </indexterm></para>
+
+    <para>Continuous Integration should not stop once your application
+    compiles correctly. Nor should it stop once you can run a set of automated
+    tests or automatically checked and audited the code for potential quality
+    issues. The next logical step, once you have achieved all of these, is to
+    extend your build automation process to the deployment phase. This
+    practice is globally known as Automated Deployment or Continuous
+    Deployment.</para>
+
+    <para>In it's most advanced form, Continuous Deployment is the process
+    whereby any code change, subject to automated tests and other appropriate
+    verifications, is immediately deployed into production. The aim is to
+    reduce cycle time and reduce the time and effort involved in the
+    deployment process. This in turn helps development teams reduce the time
+    taken to deliver individual features or bug fixes, and as a consequence
+    significantly increase their throughput. Reducing or eliminating the
+    periods of intense activity leading up to a traditional release and
+    deployment also frees up time and resources for process improvement and
+    innovation. This approach is comparable to the philosophy of continual
+    improvement promoted by lean processes such as Kanban.</para>
+
+    <para>A more conservative variation on this theme, often seen in larger,
+    more traditional organizations, is to have the entire deployment process
+    automated, but to trigger the actual deployment manually in a one-click
+    process. This second approach would be more accurately described as
+    Automated Deployment rather than Continuous Deployment. An intermediate
+    approach might involve automatically deploying code to certain
+    environments (such as test and QA) while using a manual one-click
+    deployment for the other environments (such as UAT and Production).</para>
+
+    <para>Continuous Deployment is rightly considered to represent a very high
+    level of maturity in terms of build automation and SDLC practices.
+    Continuous Deployment cannot exist without an extremely solid set of
+    automated tests. Nor can Continuous Deployment exist without a CI
+    environment and a robust built pipeline - indeed it typically represents
+    the final stage and goal of the build pipeline. However, considering the
+    significant advantages that Continuous Deployment can bring to an
+    organization, it is a worthy goal.</para>
+  </sect1>
+
+  <sect1 id="sect-implementing-cd">
+    <title>Implementing Automated and Continuous Deployment</title>
+
+    <para>In its most elementary form, Automated Deployment can be as simple
+    as writing your own scripts to deploy your application to a particular
+    server. The main advantage of a scripted solution is simplicity and ease
+    of configuration. However, a simple scripted approach may run into limits
+    if you need to perform more advanced deployment activities, such as
+    installing software on a machine or rebooting the server. For more
+    advanced scenarios, you may need to use a more sophisticated
+    deployment/configuration management solution such as Puppet or
+    Chef.</para>
+
+    <sect2 id="sect-deployment-script">
+      <title>The deployment script</title>
+
+      <para>An essential part of any Automated Deployment initiative is a
+      scriptable deployment process. While this may seem obvious, there are
+      still many organizations where deployment remains a cumbersome,
+      complicated and labor-intensive process, including manual file copying,
+      manual script execution, hand-written deployment notes, and so forth.
+      The good news is that, in general, it does not have to be this way, and,
+      with a little work, it is usually possible to write a script of some
+      sort to automate most, if not all, of the process.</para>
+
+      <para>The complexity of a deployment script varies enormously from
+      application to application. For a simple web site, a deployment script
+      may be as simple as rsyncing a directory on the target server. Many Java
+      application servers have Ant or Maven plugins that can be used to deploy
+      applications. For a more complicated infrastructure, deployment may
+      involve deploying several applications and services across multiple
+      clustered servers in a precisely coordinated manner. Most deployment
+      processes tend to fall somewhere between these extremes.</para>
+    </sect2>
+
+    <sect2 id="sect-liquibase">
+      <title>Database updates</title>
+
+      <para>Deploying your app to the application server is often only one
+      part of the puzzle. Of course, ideally, your database would be perfect
+      from the start, but this is rarely the case in the real world. Indeed,
+      when you update your application, you will generally also need to update
+      one or more databases as well.</para>
+
+      <para>Database updates are usually more difficult to manage smoothly
+      than application updates, as both the structure and the contents of the
+      database may be impacted. However, managing database updates is a
+      critical part of both the development and the deployment process, and
+      deserves some reflection and planning.</para>
+
+      <para>Some application frameworks, such as Ruby on Rails and Hibernate,
+      can manage structural database changes automatically to some extent.
+      Using these frameworks, you can typically specify if you want to create
+      a new database schema from scratch at each update, or whether you which
+      to update the database schema while conserving the existing data. While
+      this sounds useful in theory, in fact it is very limited for anything
+      other than non-critical development environments. In particular, these
+      tools do not handle data migration well. For example, if you rename a
+      column in your database, the update process will simply create a new
+      column: it will not copy the data from the old column into the new
+      column, nor will it remove the old column from the updated table.</para>
+
+      <para>Fortunately, this is not the only approach you can use. Another
+      tool that attempts to tackle the thorny problem of database updates is
+      Liquibase (<uri>http://www.liquibase.org/</uri>). Liquibase is an open
+      source tool that can help manage and organize upgrade paths between
+      versions of a database using a high-level approach.</para>
+
+      <para>Liquibase works by keeping a record of database updates applied in
+      a table in the database, so that it is easy to bring any target database
+      to the correct state for a given version of the application. As a
+      result, you don't need to worry about running the same update script
+      twice - Liquibase will only apply the update scripts that have not
+      already been applied to your database. Liquibase is also capable of
+      rolling back changes, at least for certain types of changes. However,
+      since this will not work for every change (for example, data in a
+      deleted table cannot be restored), it is best not to place too much
+      faith in this particular feature.</para>
+
+      <para>In Liquibase, you keep track of database changes as a set of
+      "change sets", each of which represents the database update in a
+      database-neutral XML format. Change sets can represent any changes you
+      would make in a database, from adding and deleting tables, to creating
+      or updating columns, indexes and foreign keys. <programlisting>&lt;databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.6"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.6
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
+  &lt;changeSet id="1" author="john"&gt;
+    &lt;createTable tableName="department"&gt;
+      &lt;column name="id" type="int"&gt;
+        &lt;constraints primaryKey="true" nullable="false"/&gt;
+      &lt;/column&gt;
+      &lt;column name="name" type="varchar(50)"&gt;
+        &lt;constraints nullable="false"/&gt;
+      &lt;/column&gt;
+      &lt;column name="active" type="boolean" defaultValue="1"/&gt;
+    &lt;/createTable&gt;
+  &lt;/changeSet&gt;
+&lt;/databaseChangeLog&gt;</programlisting></para>
+
+      <para>Change sets can also reflect modifications to existing tables. For
+      example, the following change set represents the renaming of a
+      column:<programlisting>&lt;changeSet id="1" author="bob"&gt;
+  &lt;renameColumn tableName="person" oldColumnName="fname" newColumnName="firstName"/&gt;
+&lt;/changeSet&gt;</programlisting></para>
+
+      <para>Since this representation records the semantic nature of the
+      change, Liquibase is capable of handling both the schema updates and
+      data migration associated with this change correctly.</para>
+
+      <para>Liquibase can also handle updates to the contents of your
+      database, as well as to its structure. For example, the following change
+      set inserts a new row of data into a table:</para>
+
+      <para><programlisting>&lt;changeSet id="326" author="simon"&gt;
+  &lt;insert tableName="country"&gt;
+    &lt;column name="id" valueNumeric="1"/&gt;
+    &lt;column name="code" value="AL"/&gt;
+    &lt;column name="name" value="Albania"/&gt;
+  &lt;/addColumn&gt;
+&lt;/changeSet&gt;</programlisting></para>
+
+      <para>Each changeset has an id and an author, which makes it easier to
+      keep track of who made a particular change and reduces the risk of
+      conflict. Developers can test their change sets on their own database
+      schema, and then commit them to version control once they are ready. The
+      next obvious step is to configure a Jenkins build to run the Liquibase
+      updates against the appropriate database automatically before any
+      integration tests or application deployment is done, usually as part of
+      the ordinary project build script.</para>
+
+      <para>Liquibase integrates well into the build process - it can be
+      executed from the command line, or integrated into an Ant or Maven build
+      script. Using Maven, for example, you can configure the Maven Liquibase
+      Plugin as shown here:<programlisting>&lt;project&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
+        &lt;artifactId&gt;liquibase-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.9.3.0&lt;/version&gt;
+        &lt;configuration&gt;
+        &lt;propertyFileWillOverride&gt;true&lt;/propertyFileWillOverride&gt;
+        &lt;propertyFile&gt;src/main/resources/liquibase.properties&lt;/propertyFile&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;
+...
+&lt;/project&gt;</programlisting></para>
+
+      <para>Using Liquibase with Maven this way, you could update a given
+      target database to the current schema using this plugin:<screen>$ mvn liquibase:update</screen></para>
+
+      <para>The default database connection details are specified in the
+      <filename>src/main/resources/liquibase.properties</filename> file, and
+      might look something like this:<programlisting>changeLogFile = changelog.xml
+driver = com.mysql.jdbc.Driver
+url = jdbc:mysql://localhost/ebank
+username = scott
+password = tiger
+verbose = true
+dropFirst = false</programlisting></para>
+
+      <para>However you can override any of these properties from the command
+      line, which makes it easy to set up a Jenkins build to update different
+      databases.</para>
+
+      <para>Other similar commands let you generate an SQL script (if you need
+      to submit it to your local DBA for approval, for example), or rollback
+      to a previous version of the schema.</para>
+
+      <para>This is of course just one example of a possible approach. Other
+      teams prefer to manually maintain a series of SQL update scripts, or
+      write their own in-house solutions. The important thing is to have a
+      solution that you can use to reliably and reproducibly update different
+      databases to the correct state when deploying your applications.</para>
+    </sect2>
+
+    <sect2 id="sect-smoke-tests">
+      <title>Smoke tests</title>
+
+      <para>Any serious automated deployment needs to be followed up by a
+      series of automated smoke tests. A subset of the automated acceptance
+      tests can be a good candidate for smoke tests. Smoke tests should be
+      unobtrusive and relatively fast. They should be safe to run in a
+      production environment, which may restrict the number of modifications
+      the test cases can do in the system.</para>
+    </sect2>
+
+    <sect2 id="sect-rolling-back">
+      <title>Rolling back changes</title>
+
+      <para>Another important aspect to consider when setting up Automated
+      Deployment is how to back out if something goes wrong, particularly if
+      you are thinking of implementing Continuous Deployment. Indeed, it is
+      critical to be able to roll back to the previous version if
+      required.</para>
+
+      <para>How you will do this depends a lot on your application. While it
+      is relatively straight-forward to redeploy a previous version of an
+      application using Jenkins (we will look at a technique to do this
+      further on in this chapter), the application is often not the only
+      player in the game. In particular, you will need to consider how to
+      restore your database to a previous state.</para>
+
+      <para>We saw how it is possible to use Liquibase to manage database
+      updates, and of course many other strategies are also possible. However
+      rolling back a database version presents its own challenges. Liquibase,
+      for example, lets your revert some, but not all changes to the database
+      structure. However data lost (in dropped tables, for example) cannot be
+      recovered using Liquibase alone.</para>
+
+      <para>The most reliable way to revert your database to a previous state
+      is probably to take a snapshot of the database just before the upgrade,
+      and use this snapshot to restore the database to its previous state. One
+      effective strategy is to automate this process in Jenkins in the
+      deployment build job, and then to save both the database snapshot and
+      the deployable binary file as artifacts. This way, you can easily
+      restore the database using the saved snapshot and then redeploy the
+      application using the saved binary. We will look at an example of this
+      strategy in action further on in this chapter.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="sect-deploying-to-an-app-server">
+    <title>Deploying to an application server</title>
+
+    <para>Jenkins provides plugins to help you deploy your application to a
+    number of commonly-used application servers. The <command>Deploy
+    Plugin</command> lets you deploy to Tomcat, JBoss and Glassfish. And the
+    <command>Deploy Websphere Plugin</command> tries to cater for the
+    particularities of IBM WebSphere Application Server.</para>
+
+    <para>For other application servers, you will typically have to integrate
+    the deployment process into your build scripts, or resort to custom
+    scripts to deploy your application. For other languages, too, your
+    deployment process will vary, but it will often involve some use of shell
+    scripting. For example, for a Ruby on Rails application, you may use a
+    tool like Capistrano or Chef, or simply a shell script. For a PHP
+    application, an FTP or SCP file transfer may suffice.</para>
+
+    <para>Let's first look at some strategies for deploying your Java
+    applications to an application server.</para>
+
+    <para>This is known as a hot-deploy, where the application is deployed
+    onto a running server. This is generally a fast and efficient way of
+    getting your application online. However, depending on your application
+    and on your application server, this approach has been known to result in
+    memory leaks or resource locking issues - older versions of Tomcat, for
+    example, were particularly well-known for this. If you run into this sort
+    of issue, you may have to force the application to restart after each
+    deployment, or possibly schedule a nightly restart of the application
+    server on your test machine.</para>
+
+    <sect2 id="sect-deploying-java-app">
+      <title>Deploying a Java application</title>
+
+      <para>In this section we will look at an example of how to deploy your
+      Java web or JEE application to an application server such as Tomcat,
+      JBoss or Glassfish.</para>
+
+      <para>One of the fundamental principles of automated deployment is to
+      reuse your binaries. It is inefficient, and potentially unreliable, to
+      rebuild your application during the deployment process. Indeed, imagine
+      that you run a series of unit and integration tests against a particular
+      version of your application, before deploying it to a test environment
+      for further testing. If you rebuild the binary before deploying it to
+      the test environment, the source code may have changed since the
+      original revision, which means you may not know exactly what you are
+      deploying.</para>
+
+      <para>A more efficient process is to reuse the binaries generated by a
+      previous build. For example, you may configure a build job to run unit
+      and integration tests before generating a deployable binary file
+      (typically a WAR or EAR file). You can do this very effectively using
+      the <command>Copy Artifact Plugin</command> (see <xref
+      linkend="sect-copying-artifacts" />). This plugin lets you copy an
+      artifact from another build job workspace into the current build job
+      workspace. This, when combined with a normal build trigger or with the
+      <command>Build Promotion</command> plugin, lets you deploy precisely the
+      binary file that you built and tested in the previous phase.</para>
+
+      <para>- Knowing what version you have deployed</para>
+
+      <para>- Using build promotion plugin</para>
+
+      <para>- Parameterized deployment</para>
+
+      <para>- Redeploying an arbitrary binary.</para>
+
+      <sect3 id="sect-deploy-plugin">
+        <title>Using the Deploy Plugin</title>
+
+        <para>Let's look at an example. A simple automated build and
+        deployment pipeline is illustrated in <xref
+        linkend="fig-cd-pipeline" />.</para>
+
+        <para><figure id="fig-cd-pipeline">
+            <title>A simple automated deployment pipeline</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-cd-pipeline.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Here, the default build
+        (<command>gameoflife-default</command>) runs the unit and integration
+        tests, and builds a deployable binary in the form of a WAR file. The
+        metrics build (<command>gameoflife-metrics</command>) runs additional
+        checks regarding coding standards and code coverage. If both these
+        builds are successful, the application will be automatically deployed
+        to the test environment by the
+        <command>gameoflife-deploy-to-test</command> build job.</para>
+
+        <para>In the <command>gameoflife-deploy-to-test</command> build job,
+        we use the <command>Copy Artifact Plugin</command> to retrieve the WAR
+        file generated in the <command>gameoflife-default</command> build job
+        and copies it into the current build job's workspace (see <xref
+        linkend="fig-jenkins-cd-copy-artifacts" />).<figure
+            id="fig-jenkins-cd-copy-artifacts">
+            <title>Copying the binary artifact to be deployed</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-cd-copy-artifacts.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>Next, we use the <command>Deploy Plugin</command> to deploy the
+        WAR file to the test server. Of course it is generally possible, and
+        not too difficult, to write a hand-rolled deployment script to get
+        your application on to your application server. In some cases, this
+        may be your only option. However, if a Jenkins plugin exists for your
+        application server, it can simplify things considerably to use it. If
+        you are deploying to Tomcat, JBoss or Glassfish, the <command>Deploy
+        Plugin</command> may work for you. This plugin uses Cargo to connect
+        to your application server and deploy (or redeploy) your application.
+        Just select the target server type, and specify the server's URL along
+        with the username and password of a user with deployment rights (see
+        <xref linkend="fig-jenkins-cd-deploy-plugin" />).</para>
+
+        <para><figure id="fig-jenkins-cd-deploy-plugin">
+            <title>Deploying to Tomcat using the Deploy Plugin</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-cd-deploy-plugin.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>This is known as a hot-deploy, where the application is
+        deployed onto a running server. This is generally a fast and efficient
+        way of getting your application online, and should be the preferred
+        solution because of its speed convenience. However, depending on your
+        application and on your application server, this approach has been
+        known to result in memory leaks or resource locking issues - older
+        versions of Tomcat, for example, were particularly well-known for
+        this. If you run into this sort of issue, you may have to force the
+        application to restart after each deployment, or possibly schedule a
+        nightly restart of the application server on your test machine.</para>
+      </sect3>
+
+      <sect3>
+        <title>Redeploying a specific version</title>
+
+        <para>When you deploy your application automatically or continually,
+        it becomes of critical importance to precisely identify the version of
+        the application currently deployed. There are a several ways you can
+        do this, which vary essentially in the role Jenkins plays in the
+        build/deployment architecture.</para>
+
+        <para>Some teams use Jenkins as the central place of truth, where
+        artifacts are both built and stored for future reference. If you store
+        your deployable artifacts on Jenkins, then it may make perfect sense
+        to deploy your artifacts directly from your Jenkins instance. This is
+        not hard to do: in the next section we will look at how to do this
+        using a combination of the <command>Copy Artifacts</command>,
+        <command>Deploy</command> and <command>Parameterized Trigger</command>
+        plugins.</para>
+
+        <para>Alternatively, if you are using an Enterprise repository such as
+        Nexus or Artifactory to store your artifacts, then this repository
+        should act as the central point of reference: Jenkins should build and
+        deploy artifacts to your central repository, and then deploy them from
+        there. This is typically the case if you are using Maven as your build
+        tool, but teams using tools like Gradle or Ivy may also use this
+        approach. Repository managers such as Nexus and Artifactory,
+        particularly in their commercial editions, make this strategy easier
+        to implement by providing features such as build promotion and staging
+        repositories that help you manage the release state of your
+        artifacts.</para>
+
+        <para>Let's look at how you might implement each of these strategies
+        using Jenkins.</para>
+      </sect3>
+
+      <sect3>
+        <title>Deploying a version from a previous Jenkins build</title>
+
+        <para>Redeploying a previously-deployed artifact in Jenkins is
+        relatively straight-forward. In <xref linkend="sect-deploy-plugin" />,
+        we saw how to use the <command>Copy Artifacts</command> and
+        <command>Deploy</command> plugins to deploy a WAR file built by a
+        previous build job to an application server. What we need to do now is
+        to let the user specify the version to be deployed, rather than just
+        deploying the latest build.</para>
+
+        <para>We can do this using the <command>Parameterized
+        Trigger</command> plugin (see <xref
+        linkend="sect-advanced-builds-parameterized" />). First, we add a
+        parameter to the build job, using the special 'Build selector for Copy
+        Artifact' parameter type (see <xref
+        linkend="fig-jenkins-build-selector-copy-artifact" />).</para>
+
+        <para><figure id="fig-jenkins-build-selector-copy-artifact">
+            <title>Adding a 'build selector from copy artifact' parameter
+            </title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-build-selector-copy-artifact.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>This adds a new parameter to your build job (see <xref
+        linkend="fig-jenkins-build-selector-parameter" />). Here you need to
+        enter a name and a short description. The name you provide will be
+        used as an environment variable passed to the subsequent build
+        steps.</para>
+
+        <para><figure id="fig-jenkins-build-selector-parameter">
+            <title>Adding a 'build selector from copy artifact'
+            parameter</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-build-selector-parameter.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The build selector parameter type lets you pick a previous
+        build in a number of ways, including the latest successful build, the
+        upstream build that triggered this build job, or a specific build. All
+        of these options will be available to the user when he or she triggers
+        a build. The Default Selector lets you specify which of these options
+        will be proposed by default.</para>
+
+        <para>When the user selects a particular build job, the build number
+        will also be stored in the environment variables for use in the build
+        steps. The environment variable is called
+        <code>COPYARTIFACT_BUILD_NUMBER_</code><emphasis><code>MY_BUILD_JOB</code></emphasis>,
+        where <emphasis><code>MY_BUILD_JOB</code></emphasis> is the name of
+        the original build job (in upper case and with characters other than
+        A-Z converted to underscores). For example, if we copy an artifact
+        from build number 4 of the 'gameoflife-default' project, the
+        <code>COPYARTIFACT_BUILD_NUMBER_GAMEOFLIFE_DEFAULT</code> environment
+        variable would be set to '4'.</para>
+
+        <para>The second part of the configuration is to tell Jenkins what to
+        fetch, and from which build job. In the <command>Build</command>
+        section of our project configuration, we add a 'Copy artifacts from
+        another project' step. Here you specify the project where the artifact
+        was built and archived ('gameoflife-default' in our example). You also
+        need to make Jenkins use the build specified in the parameter we
+        defined earlier. You do this by choosing 'Specified by a build
+        parameter' in the 'Which build' option, and providing the variable
+        name we specified earlier in the build selector name field (see <xref
+        linkend="fig-jenkins-copy-artifacts-build-parameter" />). Then, just
+        configure the artifacts to copy as we did in the previous
+        example.</para>
+
+        <para><figure id="fig-jenkins-copy-artifacts-build-parameter">
+            <title>Specify where to find the artifacts to be deployed</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-copy-artifacts-build-parameter.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Finally, we deploy the copied artifact using the Deploy
+        plugin, as illustrated in <xref
+        linkend="fig-jenkins-cd-deploy-plugin" />. </para>
+
+        <para>So let's see how this build works in practice. When we kick off
+        a build manually, Jenkins will propose a list of options letting you
+        select the build to redeploy (see <xref
+        linkend="fig-jenkins-redeploy-choose-build" />). </para>
+
+        <para><figure id="fig-jenkins-redeploy-choose-build">
+            <title>Specify where to find the artifacts to be deployed</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-redeploy-choose-build.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Most of these options are fairly self-explanatory. </para>
+
+        <para>The '<command>latest successful build</command>' is the most
+        recent build excluding any failing builds. So this option will
+        typically just redeploy the latest version again. If you use this
+        option, you will probably want to select the 'Stable builds only'
+        checkbox, which will exclude any unstable builds as well. </para>
+
+        <para>If you have opted to discard old builds, you will be able to
+        flag certain build jobs to be kept forever (see <xref
+        linkend="sect-general-options" />). In this case, you can choose to
+        deploy the '<command>Latest saved build</command>'.</para>
+
+        <para>A sensible option for an automated build job at the end of a
+        build pipeline is '<command>Upstream build that triggered this
+        job</command>'. This way, you can be sure that you are deploying the
+        artifact that was generated by (or promoted through) the previous
+        build job, even if other builds have happened since. It is worth
+        noting that, although this sort of parameterized build job is often
+        used to manual deploy a specific artifact, it can also be effectively
+        used as part of an automated build process. If it is not triggered
+        manually, it will simply use whatever value you define in the 'default
+        selector' field.</para>
+
+        <para>You can also choose the '<command>Specified by
+        permalink</command>' option (see <xref
+        linkend="jenkins-build-permalink" />). This lets you choose from a
+        number of shortcut values, such as the last build, the last stable
+        build, the last successful build, and so on.</para>
+
+        <para><figure id="fig-jenkins-build-permalink">
+            <title>Using the 'specified by permalink' option</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-build-permalink.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>However if you want to redeploy a particular version of
+        your application, a more useful option is 'Specific build' (see <xref
+        linkend="jenkins-specific-build" />). This option lets you provide a
+        specific build number to be deployed. This is the most flexible way to
+        redeploy an application - you will just need to know the number of the
+        build you need to redeploy, but this usually isn't to hard to find by
+        looking at the build history of the original build job.</para>
+
+        <para><figure id="fig-jenkins-specific-build">
+            <title>Using a specific build</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-specific-build.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>This is a convenient way to deploy or to redeploy artifacts
+        from previous Jenkins build jobs. However, in some cases you may
+        prefer to use an artifact stored in an enterprise repository like
+        Nexus or Artifactory. We will look at an example of how to do this in
+        the next section.</para>
+      </sect3>
+
+      <sect3>
+        <title>Deploying a version from a Maven repository</title>
+
+        <para></para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>Deploying a Ruby application</title>
+
+      <para></para>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Conclusion</title>
+
+    <para>TODO</para>
+  </sect1>
+</chapter>
