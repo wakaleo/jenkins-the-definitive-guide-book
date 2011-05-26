@@ -1367,11 +1367,11 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         <command>wget</command> operation on the URL of the corresponding
         build job.</para>
 
-        <programlisting>HUDSON_SERVER=http://myserver:8080/jenkins
+        <programlisting>JENKINS_SERVER=http://myserver:8080/jenkins
 REPOS="$1"
 PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
             id="svn-hook-1" />
-/usr/bin/wget $HUDSON_SERVER/job/${PROJECT}/build</programlisting>
+/usr/bin/wget $JENKINS_SERVER/job/${PROJECT}/build</programlisting>
 
         <para><calloutlist>
             <callout arearefs="svn-hook-1">
@@ -1382,7 +1382,7 @@ PROJECT=<emphasis>&lt;Regular Expression Processing Goes Here&gt;</emphasis><co
         particular build, and relies on a convention that the default build
         job is based on the repository name in Subversion. A more flexible
         approach with Subversion is to use the Jenkins Subversion API
-        directly, as shown here:<programlisting>HUDSON_SERVER=http://myserver:8080/hudson
+        directly, as shown here:<programlisting>JENKINS_SERVER=http://myserver:8080/jenkins
 REPOS="$1"
 REV="$2"
 UUID=`svnlook uuid $REPOS`
@@ -1391,7 +1391,7 @@ UUID=`svnlook uuid $REPOS`
   --post-data "`svnlook changed --revision $REV $REPOS`" \
   --output-document "-" \
   --timeout=2 \
-  $HUDSON_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
+  $JENKINS_SERVER/subversion/${UUID}/notifyCommit?rev=$REV</programlisting></para>
 
         <para>This would automatically start any Jenkins build jobs monitoring
         this Subversion repository.</para>
@@ -3037,10 +3037,10 @@ uploadArchives {
       <para>By default, the Maven build job only allows for a single Maven
       goal. There are times when this is a little limiting, and you would like
       to add some extra steps before or after the main build. You can do this
-      with the Hudson M2 Extra Steps Plugin. This plugin lets you add normal
-      build steps before and after the main Maven goal, giving you the
-      flexibility of a freestyle build while still having the convenience of
-      the Maven build job configuration.</para>
+      with the <command>Jenkins M2 Extra Steps</command> Plugin. This plugin
+      lets you add normal build steps before and after the main Maven goal,
+      giving you the flexibility of a freestyle build while still having the
+      convenience of the Maven build job configuration.</para>
 
       <para>Install this plugin and go to the <command>Build
       Environment</command> section of your build job. Tick the 'Configure
