@@ -334,19 +334,28 @@ dropFirst = false</programlisting></para>
       <command>Build Promotion</command> plugin, lets you deploy precisely the
       binary file that you built and tested in the previous phase.</para>
 
-      <para>- Knowing what version you have deployed</para>
-
-      <para>- Using build promotion plugin</para>
-
-      <para>- Parameterized deployment</para>
-
-      <para>- Redeploying an arbitrary binary.</para>
+      <para>This approach does put some constraints on the way you build your
+      application. In particular, any environment-specific configuration must
+      be externalized to the application: JDBC connections or other such
+      configuration details should not be defined in configuration files
+      embedded in your WAR file, for example, but rather be defined using JDNI
+      or in an externalized properties file. If this is not the case, you may
+      need to build from a given SCM revision, as discussed for Subversion in
+      <xref linkend="sect-build-from-svn-tag" />.</para>
 
       <sect3 id="sect-deploy-plugin">
         <title>Using the Deploy Plugin</title>
 
-        <para>Let's look at an example. A simple automated build and
-        deployment pipeline is illustrated in <xref
+        <para>If you are deploying to a Tomcat, JBoss or Glassfish server, the
+        most useful tool at your disposition will probably be the
+        <command>Deploy Plugin</command>. This plugin makes it relatively
+        straightforward to integrate deployment to these platforms into your
+        Jenkins build process. If you are deploying to IBM Websphere, you can
+        use the <command>Websphere Deploy Plugin</command> to similar
+        ends.</para>
+
+        <para>Let's see how this plugin works in action, using the simple
+        automated build and deployment pipeline illustrated in <xref
         linkend="fig-cd-pipeline" />.</para>
 
         <para><figure id="fig-cd-pipeline">
@@ -473,8 +482,8 @@ dropFirst = false</programlisting></para>
         linkend="fig-jenkins-build-selector-copy-artifact" />).</para>
 
         <para><figure id="fig-jenkins-build-selector-copy-artifact">
-            <title>Adding a 'build selector from copy artifact' parameter
-            </title>
+            <title>Adding a 'build selector from copy artifact'
+            parameter</title>
 
             <mediaobject>
               <imageobject role="web">
@@ -543,12 +552,12 @@ dropFirst = false</programlisting></para>
             </mediaobject>
           </figure>Finally, we deploy the copied artifact using the Deploy
         plugin, as illustrated in <xref
-        linkend="fig-jenkins-cd-deploy-plugin" />. </para>
+        linkend="fig-jenkins-cd-deploy-plugin" />.</para>
 
         <para>So let's see how this build works in practice. When we kick off
         a build manually, Jenkins will propose a list of options letting you
         select the build to redeploy (see <xref
-        linkend="fig-jenkins-redeploy-choose-build" />). </para>
+        linkend="fig-jenkins-redeploy-choose-build" />).</para>
 
         <para><figure id="fig-jenkins-redeploy-choose-build">
             <title>Specify where to find the artifacts to be deployed</title>
@@ -560,13 +569,13 @@ dropFirst = false</programlisting></para>
                            width="4.3in" />
               </imageobject>
             </mediaobject>
-          </figure>Most of these options are fairly self-explanatory. </para>
+          </figure>Most of these options are fairly self-explanatory.</para>
 
         <para>The '<command>latest successful build</command>' is the most
         recent build excluding any failing builds. So this option will
         typically just redeploy the latest version again. If you use this
         option, you will probably want to select the 'Stable builds only'
-        checkbox, which will exclude any unstable builds as well. </para>
+        checkbox, which will exclude any unstable builds as well.</para>
 
         <para>If you have opted to discard old builds, you will be able to
         flag certain build jobs to be kept forever (see <xref
@@ -586,7 +595,7 @@ dropFirst = false</programlisting></para>
 
         <para>You can also choose the '<command>Specified by
         permalink</command>' option (see <xref
-        linkend="jenkins-build-permalink" />). This lets you choose from a
+        linkend="fig-jenkins-build-permalink" />). This lets you choose from a
         number of shortcut values, such as the last build, the last stable
         build, the last successful build, and so on.</para>
 
@@ -602,11 +611,11 @@ dropFirst = false</programlisting></para>
             </mediaobject>
           </figure>However if you want to redeploy a particular version of
         your application, a more useful option is 'Specific build' (see <xref
-        linkend="jenkins-specific-build" />). This option lets you provide a
-        specific build number to be deployed. This is the most flexible way to
-        redeploy an application - you will just need to know the number of the
-        build you need to redeploy, but this usually isn't to hard to find by
-        looking at the build history of the original build job.</para>
+        linkend="fig-jenkins-specific-build" />). This option lets you provide
+        a specific build number to be deployed. This is the most flexible way
+        to redeploy an application - you will just need to know the number of
+        the build you need to redeploy, but this usually isn't to hard to find
+        by looking at the build history of the original build job.</para>
 
         <para><figure id="fig-jenkins-specific-build">
             <title>Using a specific build</title>
@@ -628,20 +637,313 @@ dropFirst = false</programlisting></para>
       <sect3>
         <title>Deploying a version from a Maven repository</title>
 
-        <para></para>
+        <para>Many organizations use an Enterprise repository manager such as
+        Nexus and Artifactory to store and share binary artifacts such as JAR
+        files. This strategy is commonly used with Maven, but also with other
+        build tools such as Ant (with Ivy or the Maven Ant Tasks) and Gradle.
+        Using this approach in a CI environment, both snapshot and release
+        dependencies are built on your Jenkins server, and then deployed to
+        your repository manager (see <xref
+        linkend="fig-jenkins-enterprise-repositories" />). Whenever a
+        developer commits source code changes to the version control system,
+        Jenkins will pick up the changes and build new snapshot versions of
+        the corresponding artifacts. Jenkins then deploys these snapshot
+        artifacts to the local Enterprise Repository Manager, where they can
+        be made available to other developers on the team or on other teams
+        within the organization. We discussed how to get Jenkins to
+        automatically deploy Maven artifacts to an enterprise repository in
+        <xref linkend="fig-jenkins-enterprise-repositories" />. A similar
+        approach can also be done using Gradle or Ivy.</para>
+
+        <para><figure id="fig-jenkins-enterprise-repositories">
+            <title>Using a Maven Enterprise Repository</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-enterprise-repositories.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>Maven conventions use a well-defined system of version numbers,
+        distinguishing between SNAPSHOT and RELEASE versions. SNAPSHOT
+        versions are considered to be potentially unstable builds of the
+        latest code base, whereas RELEASE versions are official releases
+        having undergone a more formal release process. Typically, SNAPSHOT
+        artifacts are reserved for use within a development team, whereas
+        RELEASE versions are considered ready for further testing.</para>
+
+        <para>A similar approach can be used for deployable artifacts such as
+        WAR or EAR files - they are built and tested on the CI server, then
+        automatically deployed to the Enterprise Repository, often as part of
+        a build pipeline involving automated tests and quality checks (see
+        <xref linkend="sect-build-pipelines" />). SNAPSHOT versions are
+        typically deployed to a test server for automated and/or manual
+        testing, in order to decide whether a version is ready to be
+        officially released.</para>
+
+        <para>The exact strategy used to decide when a release version is to
+        be created, and how it is deployed, varies greatly from one
+        organization. For example, some teams prefer a formal release at the
+        end of each iteration or sprint, with a well-defined version number
+        and corresponding set of release notes that is distributed to QA teams
+        for further testing. When a particular version gets the go-ahead from
+        QA, it can then be deployed into production. Others, using a more lean
+        approach, prefer to cut a new release whenever a new feature or bug
+        fix is ready to be deployed. If a team is particularly confident in
+        their automated tests and code quality checks, it may even be possible
+        to automate this process completely, generating and releasing a new
+        version either periodically (say every night) or whenever new changes
+        are committed.</para>
+
+        <para>There are many ways to implement this sort of strategy. In the
+        rest of this section, we will see how to do it using a conventional
+        multi-module Maven project. Our sample project is a web application
+        called <command>gameoflife</command>, consisting of three modules:
+        <command>gameoflife-core</command>,
+        <command>gameoflife-services</command> and
+        <command>gameoflife-web</command>. The
+        <command>gameoflife-web</command> module produces a WAR file that
+        includes JAR files from the other two modules. It is this WAR file
+        that we want to deploy.</para>
+
+        <para><screen>tuatara:gameoflife johnsmart$ ls -l
+total 32
+drwxr-xr-x  16 johnsmart  staff    544 16 May 09:58 gameoflife-core
+drwxr-xr-x   8 johnsmart  staff    272  4 May 18:12 gameoflife-deploy
+drwxr-xr-x   8 johnsmart  staff    272 16 May 09:58 gameoflife-services
+drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
+-rw-r--r--@  1 johnsmart  staff  12182  4 May 18:07 pom.xml</screen>Earlier on
+        in this chapter we saw how to use the <command>Deploy</command> plugin
+        deploy a WAR file generated by the current build job to an application
+        server. What we want to do now is to deploy an arbitrary version of
+        the WAR file to an application server.</para>
+
+        <para>In <xref linkend="jenkins-maven-releases" />, we discussed how
+        to configure Jenkins to invoke the Maven Release Plugin to generate a
+        formal release version of an application. The first step of of the
+        deployment process starts here, so we will assume that this has been
+        configured and that a few releases have already been deployed to our
+        Enterprise Repository Manager.</para>
+
+        <para>The next step involves creating a dedicated project to manage
+        the deployment process. This project will be a standard Maven
+        project,</para>
+
+        <para>The first thing you need to do is to set up a dedicated
+        deployment project. In its simplest for, this project will simply
+        fetch the requested version of your WAR file from your enterprise
+        repository to be deployed by Jenkins. In the following
+        <filename>pom.xml</filename> file, we use the
+        <filename>maven-war-plugin</filename> to fetch a specified version of
+        the <command>gameoflife-web</command> WAR file from our enterprise
+        repository. The version we want is specified in the
+        <command>target.version</command> property:</para>
+
+        <para><programlisting>&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+  &lt;artifactId&gt;gameoflife-deploy-with-jenkins&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+      &lt;artifactId&gt;gameoflife-web&lt;/artifactId&gt;
+      &lt;type&gt;war&lt;/type&gt;d
+      &lt;version&gt;${target.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;warName&gt;gameoflife&lt;/warName&gt;
+          &lt;overlays&gt;
+            &lt;overlay&gt;
+              &lt;groupId&gt;com.wakaleo.gameoflife&lt;/groupId&gt;
+              &lt;artifactId&gt;gameoflife-web&lt;/artifactId&gt;
+            &lt;/overlay&gt;
+          &lt;/overlays&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  &lt;properties&gt;
+    &lt;target.version&gt;RELEASE&lt;/target.version&gt;
+  &lt;/properties&gt;
+&lt;/project&gt;</programlisting>Next, we configure a Jenkins build job to
+        invoke this <filename>pom.xml</filename> file using a property value
+        provided by the user (see <xref
+        linkend="fig-jenkins-gameoflife-deploy" />). Note that we have set the
+        default value to RELEASE so that, by default, the most recent release
+        version will be deployed. Otherwise, the user can provide the version
+        number of the version to be deployed or redeployed.</para>
+
+        <para><figure id="fig-jenkins-gameoflife-deploy">
+            <title>Deploying an artifact from a Maven repository</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-gameoflife-deploy.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>The rest of this build job simply checks out the deployment
+        project and invokes the <command>mvn package</command> goal, and then
+        deploys the WAR file using the <command>Deploy Plugin</command> (see
+        <xref linkend="fig-jenkins-mvn-package" />). The
+        <command>target.version</command> property will be automatically
+        passed in to the build job and used to deploy the correct
+        version.</para>
+
+        <para><figure id="fig-jenkins-mvn-package">
+            <title>Preparing the WAR to be deployed</title>
+
+            <mediaobject>
+              <imageobject role="web">
+                <imagedata align="center"
+                           fileref="figs/web/jenkins-mvn-package.png"
+                           width="4.3in" />
+              </imageobject>
+            </mediaobject>
+          </figure>Similar techniques can be used for other project types. If
+        you are deploying to an application server that is not supported by
+        the Deploy Plugin, you also have the option of writing a custom script
+        in whatever language is most convenient, and getting Jenkins to pass
+        the requested version number as a parameter as described above.</para>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Deploying a Ruby application</title>
+      <title>Deploying scripting-based applications like Ruby and PHP</title>
 
-      <para></para>
+      <para>Deploying projects using scripting languages such as PHP and Ruby
+      is generally simpler than deploying Java applications, though the issues
+      related to database updates are similar. Indeed, very often these
+      deployments essentially involve copying files onto a remote server. To
+      obtain the files in the first place, you have the choice of either
+      copying them from another build job's workspace using the Copy
+      Artifacts, or checking the source code out directly from the source code
+      repository, if necessary using a specific revision or tag as described
+      for Subversion in <xref linkend="sect-build-from-svn-tag" /> and for Git
+      in <xref linkend="sect-building-git-tag" />. Then, once you have the
+      source code in your Jenkins workspace, you simply need to deploy it onto
+      the target server.</para>
+
+      <para>A useful tool for this sort of deployment is the <command>Publish
+      Over</command> series of plugins for Jenkins (<command>Publish Over
+      FTP</command>, <command>Publish Over SSH</command> and <command>Publish
+      Over CIFS</command>). These plugins provide a consistent and flexible
+      way to deploy your application artifacts to other servers over a number
+      of protocols, including CIFS (for Windows shared drives), FTP and
+      SSH/SFTP.</para>
+
+      <para>The configuration for each of these plugins is similar. Once you
+      have installed the plugins, you need to set up the host configurations,
+      which are managed centrally in the main configuration screen. You can
+      create as many host configurations as you like - they will appear in a
+      drop-down list in the job configuration page.</para>
+
+      <para>Configuration of the hosts is fairly self-explanatory (see <xref
+      linkend="fig-jenkins-ssh-config" />). The name is the name that will
+      appear in the drop-down list in the build job configurations. You can
+      configure authentication using a username and password for FTP, or
+      either an SSH key or a username and password for SSH. You also need to
+      provide an existing directory on the remote server that will act at the
+      root directory for this configuration. In the Advanced options, you can
+      also configure the SSH port and timeout options.</para>
+
+      <para><figure id="fig-jenkins-ssh-config">
+          <title>Configuring a remote host</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-ssh-config.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>Once you have configured your hosts, you can set up your
+      build jobs to deploy artifacts to these hosts. You can do this either as
+      a build step (see <xref linkend="fig-jenkins-ssh-build-step" />) or as a
+      post-build action (see <xref linkend="fig-jenkins-ssh-deploy" />). In
+      both cases, the options are similar.</para>
+
+      <para><figure id="fig-jenkins-ssh-build-step">
+          <title>Deploying files to a remote host in the build section</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-ssh-build-step.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>First of all, you select the target host from the list of
+      hosts you configured in the previous section. Next, you configure the
+      files you want to transfer. You do this by defining one or more
+      "Transfer sets". A Transfer set is a set of files (defined by an Ant
+      fileset expression) that you deploy to a specified directory on the
+      remote server. You can also provide a prefix to be removed - this lets
+      you strip off unnecessary directories that you do not want to appear on
+      the server (such as the <filename>target/site</filename> directory path
+      in the example). You can add as many transfer sets as you need to get
+      the files you want onto the remote server. The plugin also provides
+      options to execute commands on the remote server once the transfer is
+      complete ("Exec command") or to exclude certain files or flatten the
+      directories.</para>
+
+      <para><figure id="fig-jenkins-ssh-deploy">
+          <title>Deploying files to a remote host in the post-build
+          actions</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/jenkins-ssh-deploy.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </sect2>
   </sect1>
 
   <sect1>
     <title>Conclusion</title>
 
-    <para>TODO</para>
+    <para>Automated deployment, and in its most advanced form, Continuous
+    Deployment, can be considered the culminating point of a modern Continuous
+    Integration infrastructure.</para>
+
+    <para>In this chapter we have reviewed several automated deployment
+    techniques, mostly centered around Java-based deployments. However, the
+    general principles discussed here apply for any technology. Indeed, the
+    actual deployment process in many other technologies, in particular
+    scripting languages such as Ruby and PHP, are considerably simpler than
+    when using Java, and essentially involve copying files onto the production
+    server. Ruby also benefits from tools such as Heroku and Capistrano to
+    facilitate the task.</para>
+
+    <para>There are several important aspects you need to consider when
+    setting up an automated deployment. First of all, automated deployment is
+    the end-point of your CI architecture: you need to define a build pipeline
+    to take your build from the initial compilation and unit tests, though
+    more comprehensive functional and automated acceptance tests and code
+    quality checks, culminating in deployment to one or more platforms. The
+    degree of confidence you can have in your build pipeline depends largely
+    on the degree of confidence you have in your tests. Or, in other terms,
+    the less reliable and comprehensive your tests, the earlier in the build
+    process you will have to fall back to manual testing and human
+    intervention.</para>
+
+    <para>Finally, if at all possible, it is important to build your
+    deployable artifact once and once only, and then reuse it in subsequent
+    steps for functional tests and deployment to different platforms.</para>
   </sect1>
 </chapter>
