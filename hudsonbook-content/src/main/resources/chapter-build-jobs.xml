@@ -2602,6 +2602,83 @@ uploadArchives {
           </mediaobject>
         </figure></para>
     </sect2>
+
+    <sect2 id="sect-ruby-builds">
+      <title>Building Ruby and Ruby on Rails projects</title>
+
+      <para>Jenkins makes an excellent choice when it comes to integrating CI
+      into your Ruby and Ruby on Rails projects. The <command>Rake
+      Plugin</command> lets you add Rake build steps to your build jobs. You
+      can also use the <command>Ruby Plugin</command> lets you run Ruby
+      scripts directly in your build job. Finally, the <command>Ruby Metrics
+      Plugin</command> provides support for Ruby code quality metrics tools
+      such as RCov, Rails stats and Flog. </para>
+
+      <para>Another invaluable tool in this area is
+      <command>CI:Reporter</command>. This library is an add-on to
+      <command>Test::Unit</command>, <command>RSpec</command> and
+      <command>Cucumber</command> that generates JUnit-compatible XML reports
+      for your tests. As we will see, JUnit-compatible test results can be
+      used directly by Jenkins to report on your test results. You would
+      install CI:Reporter using Gem as illustrated here:</para>
+
+      <screen>$ <command>sudo gem install ci_reporter</command>
+Successfully installed ci_reporter-1.6.4
+1 gem installed</screen>
+
+      <para>Next, you will need to set this up in your Rakefile, by adding the
+      following:<programlisting>require 'rubygems'
+gem 'ci_reporter'
+require 'ci/reporter/rake/test_unit' # use this if you're using Test::Unit</programlisting></para>
+
+      <para>In <xref linkend="chapter-code-quality" />, we discuss integrating
+      code quality metrics into your Jenkins builds. Jenkins also provides
+      support for code coverage metrics in Ruby. The <command>Ruby Metrics
+      Plugin</command> supports code coverage metrics using
+      <command>rcov</command> as well as general code statistics with
+      <command>Rails stats</command>. To install the
+      <command>rcov-plugin</command>, you will first need to run something
+      along the following lines:</para>
+
+      <para><screen>$ <command>./script/plugin install http://svn.codahale.com/rails_rcov</command> </screen></para>
+
+      <para>Once this is set up, you will be able to display your test results
+      and test result trend in Jenkins.</para>
+
+      <para>Finally, you can configure a Rake build simply by using a Rake
+      build step, as illustrated in <xref
+      linkend="fig-hudson-rake-step" /></para>
+
+      <para><figure id="fig-hudson-rake-step">
+          <title>A build step using Rake</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-rake-step.png" width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure>You also need to configure Jenkins to report on the test and
+      quality metrics results. You can do this by activating the 'Publish
+      JUnit test result report', 'Publish Rails stats report' and 'Public Rcov
+      report' options (see <xref linkend="fig-hudson-rails-metrics" />). The
+      JUnit XML reports will be found in the <filename>results</filename>
+      directory (enter <filename>results/*.xml</filename> in the 'Test report
+      XMLs' field), and the Rcov date in the
+      <filename>coverage/units</filename> directory.</para>
+
+      <para><figure id="fig-hudson-rails-metrics">
+          <title>A build step using Rake</title>
+
+          <mediaobject>
+            <imageobject role="web">
+              <imagedata align="center"
+                         fileref="figs/web/hudson-rails-metrics.png"
+                         width="4.3in" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+    </sect2>
   </sect1>
 
   <sect1 id="sect-build-jobs-maven">
