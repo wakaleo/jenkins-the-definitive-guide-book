@@ -4,72 +4,296 @@
 <chapter id="intro">
   <title>Introducing Jenkins</title>
 
-  <section id="intro-sect-intro">
+  <sect1 id="intro-sect-intro">
     <title>Introduction</title>
 
-    <para></para>
+    <para>Continuous Integration, also know as CI, is a cornerstone of modern
+    software development. It is a game changer - when Continuous Integration
+    is introduced into an organization, it radically changes the way teams
+    think about the whole development process. Every professional development
+    team, no matter how small, should be practicing it.</para>
 
-    <para>Continuous Integration is a software development practice where
-    members of a team integrate their work frequently, usually each person
-    integrates at least daily – leading to multiple integrations per day. Each
-    integration is verified by an automated build (including test) to detect
-    integration errors as quickly as possible. Many teams find that this
-    approach leads to significantly reduced integration problems and allows a
-    team to develop cohesive software more rapidly. This article is a quick
-    overview of Continuous Integration summarizing the technique and its
-    current usage.</para>
+    <para>Back in the days of waterfall projects and Gantt charts, before the
+    introduction of CI practices, development team time and energy was
+    regularly drained in the period leading up to a release by what was known
+    as the Integration Phase, where the code changes made by individual
+    developers or small teams were brought together piecemeal and forged into
+    a working product. This was hard work, sometimes involving the integration
+    of months of conflicting changes. It was a painful process, fraught with
+    risk and danger that often lead to significant delivery delays, unplanned
+    costs and, as a result, unhappy clients. Continuous Integration was born
+    to address these issues. </para>
 
-    <para>- Martin Fowler</para>
+    <para>Continuous Integration, in its simplest form, involves a tool that
+    monitors your version control system for changes. Whenever a change is
+    detected, this tool automatically compiles and tests your application. If
+    something goes wrong, the tool immediately notifies the developers so that
+    they can fix the issue immediately. </para>
 
-    <para></para>
+    <para>But Continuous Integration can do much more than this. Continuous
+    Integration can also help you keep tabs on the health of your code base,
+    automatically monitoring code quality and code coverage metrics, and
+    helping you keep your code quality high and maintenance costs low. The
+    publicly-visible code metrics can also help developers take pride in the
+    quality of their code and strive to improve it. Combined with automated
+    end-to-end acceptance tests, it can act as a communication tool,
+    publishing a clear picture of the current state of development efforts.
+    And it can simplify and accelerate delivery by helping you automate the
+    deployment process, letting you deploy the latest version of your
+    application either automatically or as a one-click process.</para>
 
-    <para>1. Reduce risks 2. Reduce repetitive manual processes 3. Generate
-    deployable software at any time and at any place 4. Enable better project
-    visibility 5. Establish greater confidence in the software product from
-    the development team</para>
+    <para>In essence, Continuous Integration is all about reducing risk by
+    providing faster feedback. First and foremost, it is designed to help
+    identify and fix integration and regression issues faster, resulting in
+    smoother, quicker delivery, and fewer bugs. By providing better visibility
+    for both technical and non-technical team members on the state of the
+    project, Continuous Integration can open and facilitate communication
+    channels between team members and encourage collaborative problem solving
+    and process improvement. And, by automating the deployment process,
+    Continuous Integration helps you get your software in to the hands of the
+    testers and the end users faster, more reliably and with less
+    effort.</para>
 
-    <para>An introduction to Jenkins</para>
+    <para>But Continuous Integration is a mindset as much as a toolset. To get
+    the most out of CI, a team needs to adopt a CI mentality. For example,
+    your projects must have a reliable, repeatable and automated build
+    process, involving no human intervention. Fixing broken builds should take
+    an absolute priority, and not be left to stagnate. And since the trust you
+    place in your CI server depends to a great extend on the quality of your
+    tests, so the team needs to place a strong emphasis on high quality tests
+    and testing practices. </para>
 
-    <para>-</para>
+    <para>In this book we will be looking at how to implement a robust and
+    comprehensive Continuous Integration solution with what is without doubt
+    the most popular open source CI tool ever developed: Jenkins.</para>
+  </sect1>
 
-    <para>Basic principles of CI</para>
+  <sect1>
+    <title>Introducing Jenkins</title>
 
-    <para>- The CI loop</para>
+    <para>Jenkins is the world's most popular open source Continuous
+    Integration tool. Written in Java, Jenkins is now used by teams of all
+    sizes, for projects in a wide variety of languages and technologies,
+    including .NET, Ruby, Groovy, Grails, PHP and more, as well as Java. So
+    what has made Jenkins such a success? And why use Jenkins for your CI
+    infrastructure?</para>
 
-    <para>- Continuous Integration - a cornerstone of agile development</para>
+    <para>Firstly, Jenkins is easy to use. The user interface is simple,
+    intuitive, and visually appealing, and Jenkins as a whole has a very low
+    learning curve. As we will see in the next chapter, you can get started
+    with Jenkins in a matter of minutes. </para>
 
-    <para>- Not just a glorified cron job</para>
+    <para>However Jenkins does not sacrifice power or extensibility: is also
+    extremely flexible and easy to adapt to your own purposes. Hundreds of
+    open source plugins are available, with more coming out every week. These
+    plugins cover everything from version control systems, build tools, code
+    quality metrics, build notifiers, integration with external systems, UI
+    customization, games, and much more. And installing them is quick and
+    easy. </para>
 
-    <para>- Fast feedback</para>
+    <para>Last, but certainly not least, much of Jenkins's popularity comes
+    from the size and vibrancy of its community. The Jenkins community is a
+    large, dynamic, reactive and welcoming bunch, with active mailing lists,
+    IRC channels and a very vocal blog and twitter account. The development
+    pace is fast, with releases coming out weekly with the latest new
+    features, bug fixes, and plugin updates.</para>
 
-    <para>- Better visibility on project status</para>
+    <para>However Jenkins also caters for users who are not comfortable with
+    upgrading on a weekly basis. For those who prefer a less-hectic release
+    pace, there is also a 'Long-term Support', or LTS, release line that lags
+    behind the latest release in favor of more stability and a slower rate of
+    change. New LTS releases come out every three months or so, with important
+    bug fixes being backported. This concept is similar to the Ubuntu LTS
+    releases.</para>
+  </sect1>
 
-    <para>- Helps facilitate and coordinate team activity</para>
+  <sect1>
+    <title>From Hudson to Jenkins - a short history</title>
 
-    <para></para>
+    <para>Jenkins is the result of one visionary developer, Kohsuke Kawaguchi,
+    who started the project as a hobby project under the name of Hudson in
+    2004 whilst working at Sun. As Hudson evolved over the years, it was
+    adopted by more and more teams within Sun for their own projects. By early
+    2008 Sun recognized the quality of the tool, asking Kohsuke to work on
+    Hudson full-time, and starting to provide professional services and
+    support around Hudson. And by 2010, Hudson had become the leading
+    Continuous Integration solution with a market share of over 70%.</para>
 
-    <para>- Hudson or Jenkins?</para>
+    <para>In 2009, Oracle purchased Sun. Towards the end of 2010, tensions
+    arouse between the Hudson developer community and Oracle, initially
+    triggered by problems with the Java.net infrastructure, and aggravated by
+    issues related to Oracle's claim to the Hudson trademark. These tensions
+    also reflected strong underlying disagreements about the way the project
+    was being managed by Oracle. Indeed, Oracle wanted to move towards a more
+    strictly controlled development process with a slower release schedule,
+    whereas most of the core Hudson developers, lead by Kohsuke, preferred to
+    continue with the open, flexible and fast-paced community-focused model
+    that had worked so well for Hudson in the past. </para>
 
-    <para> - The fork</para>
+    <para>In January 2011, the Hudson developer community decisively voted to
+    rename the project to Jenkins. They subsequently migrated the original
+    Hudson code base to a new Github project (https://github.com/jenkinsci)
+    and continued their work there. The vast majority of core and plugin
+    developers upped camp and followed Kohsuke Kawaguchi and other core
+    contributors to the Jenkins camp, where the bulk of the development
+    activity can be seen today. </para>
 
-    <para> - The community</para>
+    <para>After the fork, a majority of users also followed the Jenkins
+    developer community and switched to Jenkins. At the time of writing, polls
+    show that some 75% of Hudson users have switched to Jenkins, while 13% are
+    still using Hudson, and another 12% are using both Hudson and
+    Jenkins.</para>
 
-    <para> - Compatibility</para>
+    <para>Nevertheless, Oracle and Sonatype (the company behind Maven and
+    Nexus) have continued to work on the Hudson code base (now also hosted on
+    Github at https://github.com/hudson), but with a very different focus.
+    Indeed, the Sonatype developers have concentrating on major underlying
+    infrastructure changes around, among other areas, the dependency injection
+    framework and the plugin architecture.</para>
+  </sect1>
 
-    <para></para>
+  <sect1>
+    <title>Jenkins or Hudson?</title>
 
-    <para>Sponsors</para>
+    <para>So should you use Jenkins or Hudson? In fact, Jenkins is simply the
+    old Hudson with a new name. Jenkins uses the Hudson code base, and the
+    development team and project philosophy remain the same. So, in a
+    nutshell, the developers who wrote the vast majority of the Hudson core
+    are now working on Jenkins. </para>
 
-    <para>- Wakaleo</para>
+    <para>Hudson, under the stewardship of Oracle and Sonatype, is moving more
+    slowly, in quite a different direction, though the two products will
+    certainly remain very similar from an end-user's perspective.
+    Nevertheless, Jenkins still distinguishes itself by its strong, active
+    community and dynamic, fast-moving project management style. </para>
 
-    <para>- CloudBees</para>
+    <para>But if you are using Hudson, this book is for you too! Much of this
+    book was written using the pre-fork version of Hudson. Indeed, almost
+    everything discussed in this book is still directly applicable to
+    Hudson.</para>
+  </sect1>
 
-    <para>- Odd-e</para>
+  <sect1>
+    <title>Introducing Continuous Integration into your organization</title>
 
-    <para>- XMLMind</para>
+    <para>Continuous Integration is not an all-or-nothing affair. In fact,
+    introducing CI into an organization takes you on a path that progresses
+    through several distinct phases. Each of these phases involves incremental
+    improvements to the technical infrastructure as well as, perhaps more
+    importantly, improvements in the practices and culture of the development
+    team itself. In the following paragraphs, I have tried to paint an
+    approximate picture of each phase.</para>
 
-    <para>- Lean Kanban</para>
+    <sect2>
+      <title>Phase 1 - no build server</title>
 
-    <para>- Book examples</para>
-  </section>
+      <para>Initially, the team has no central build server of any kind.
+      Software is built manually on a developer's machine, though it may use
+      an Ant script or similar to do so. Source code may be stored in a
+      central source code repository, but developers do not necessarily commit
+      their changes on a regular basis. Some time before a release is
+      scheduled, a developer manually integrates the changes, a process which
+      is generally associated with pain and suffering.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 2 - nightly builds</title>
+
+      <para>In this phase, the team has a build server, and automated builds
+      are scheduled on a regular (typically nightly) basis. This build simply
+      compiles the code, as there are no reliable or repeatable unit tests.
+      Indeed, automated tests, if they are written, are not a mandatory part
+      of the build process, and may well not run correctly at all. However
+      developers now commit their changes regularly, at least at the end of
+      every day. If a developer commits code changes that conflict with
+      another developer's work, the build server alerts the team via email the
+      following morning. Nevertheless, the team still tends to use the build
+      server for information purposes only - they feel little obligation to
+      fix a broken build immediately, and builds may stay broken on the build
+      server for some time.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 3 - nightly builds and basic automated tests</title>
+
+      <para>The team is now starting to take Continuous Integration and
+      automated testing more seriously. The build server is configured to kick
+      off a build whenever new code is committed to the version control
+      system, and team members are able to easily see what changes in the
+      source code triggered a particular build, and what issues these changes
+      address. In addition, the build script compiles the application and runs
+      a set of automated unit and/or integration tests. In addition to email,
+      the build server also alerts team members of integration issues using
+      more proactive channels such as Instant Messaging. Broken builds are now
+      generally fixed quickly.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 4 - enter the metrics</title>
+
+      <para>Automated code quality and code coverage metrics are now run to
+      help evaluate the quality of the code base and (to some extent, at
+      least) the relevance and effectiveness of the tests. The code quality
+      build also automatically generates API documentation for the
+      application. All this helps teams keep the quality of the code base
+      high, alerting team members if good testing practices are slipping. The
+      team has also set up a "build radiator", a dashboard view of the project
+      status that is displayed on a prominent screen visible to all team
+      members.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 5 - getting more serious about testing</title>
+
+      <para>The benefits of Continuous Integration are closely related to
+      solid testing practices. Now, practices like Test-Driven development are
+      more widely practiced, resulting in a growing confidence in the results
+      of the automated builds. The application is no longer simply compiled
+      and tested, but if the tests pass it is automatically deployed to an
+      application server for more comprehensive end-to-end tests and
+      performance tests.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 6 - automated acceptance tests and more automated
+      deployment</title>
+
+      <para>Acceptance-Test Driven Development is practiced, guiding
+      development efforts and providing high-level reporting on the state of
+      the project. These automated tests use Behavior Driven Development and
+      Acceptance-Test Driven Development tools to act as communication tools
+      as much as testing tools, publishing reports on test results in business
+      terms that non-developers can understand. Since these high-level tests
+      are automated at an early stage in the development process, they also
+      provide a clear idea of what features have been implemented, and which
+      remain to be done. The application is automatically deployed into test
+      environments for testing by the QA team either as changes are committed,
+      or on a nightly basis; a version can be deployed (or "promoted") to UAT
+      and possibly production environments using a manually-triggered build
+      when testers consider it ready. The team is also capable of using the
+      build server to back out a release, rolling back to a previous release,
+      if something goes horribly wrong.</para>
+    </sect2>
+
+    <sect2>
+      <title>Phase 7 - continuous deployment</title>
+
+      <para>Confidence in the automated unit, integration and acceptance tests
+      is now such that teams can apply the automated deployment techniques
+      developed in the previous phase to push out new changes directly into
+      production.</para>
+
+      <para>The progression between levels here is of course somewhat
+      approximate, and may not always match real-world situations. For
+      example, you may well introduce automated web tests before integrating
+      code quality and code coverage reporting. However, it should give a
+      general idea of how implementing a Continuous Integration strategy in a
+      real world organization generally works.</para>
+
+      <para>Throughout the remainder of this book, as we study the various
+      features Jenkins has to offer, as well as the practices required to make
+      the most of these features, we will see how we can progress through each
+      of these levels with Jenkins.</para>
+    </sect2>
+  </sect1>
 </chapter>
