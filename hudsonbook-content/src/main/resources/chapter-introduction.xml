@@ -4,7 +4,7 @@
 <chapter id="intro">
   <title>Introducing Jenkins</title>
 
-  <sect1 id="intro-sect-intro">
+  <sect1>
     <title>Introduction</title>
 
     <para>Continuous Integration, also know as CI, is a cornerstone of modern
@@ -19,6 +19,10 @@
     non-developers, and ultimately, help teams deliver more real business
     value to the end user. Every professional development team, no matter how
     small, should be practicing CI.</para>
+  </sect1>
+
+  <sect1 id="intro-sect-intro">
+    <title>Continuous Integration Fundamentals</title>
 
     <para>Back in the days of waterfall projects and Gantt charts, before the
     introduction of CI practices, development team time and energy was
@@ -51,9 +55,9 @@
     development efforts. And it can simplify and accelerate delivery by
     helping you automate the deployment process, letting you deploy the latest
     version of your application either automatically or as a one-click
-    process.</para>
+    process. </para>
 
-    <para>In essence, Continuous Integration is all about reducing risk by
+    <para>In essence, Continuous Integration is about reducing risk by
     providing faster feedback. First and foremost, it is designed to help
     identify and fix integration and regression issues faster, resulting in
     smoother, quicker delivery, and fewer bugs. By providing better visibility
@@ -65,15 +69,40 @@
     testers and the end users faster, more reliably and with less
     effort.</para>
 
-    <para>So Continuous Integration, and in particular Continuous Delivery, is
-    very much about providing value to the end user faster. How long does it
-    take your team to get a small code change out to production? How much of
-    this process involves problems that could have been fixed earlier, had you
-    known about the code changes that Joe down the corridor was making? How
-    much is taken up by labour-intensive manual testing by QA teams? How much
-    involves manual deployment steps, the secrets of which are known only to a
-    select few? CI is not a silver bullet by any means, but it can certainly
-    help streamline many of these problems.</para>
+    <para>This idea of automated deployment is important. Indeed, if you take
+    automating the deployment process to its logical conclusion, you could
+    push every build that passes the necessary automated tests into
+    production. The practice of automatically deploying every successful build
+    directly into production is generally known as <emphasis>Continuous
+    Deployment</emphasis>. </para>
+
+    <para>However, a pure Continuous Deployment approach is not always
+    appropriate for everyone. For example, many users would not appreciate new
+    versions falling into their laps several times a week, and prefer a more
+    predictable (and transparent) release cycle. Commercial and marketing
+    considerations might also play a role in when a new release should
+    actually be deployed.</para>
+
+    <para>The notion of <emphasis>Continuous Delivery</emphasis> is a slight
+    variation on the idea of Continuous Deployment that takes into account
+    these considerations. With Continuous Delivery, any and every successful
+    build that has passed all the relevant automated tests and quality gates
+    can <emphasis>potentially</emphasis> be deployed into production via a
+    fully automated one-click process, and be in the hands of the end-user
+    within minutes. However, the process is not automatic: it is the business,
+    rather than IT, decides the best time to deliver the latest changes.
+    </para>
+
+    <para>So Continuous Integration techniques, and in particular Continuous
+    Deployment and Continuous Delivery, are very much about providing value to
+    the end user faster. How long does it take your team to get a small code
+    change out to production? How much of this process involves problems that
+    could have been fixed earlier, had you known about the code changes that
+    Joe down the corridor was making? How much is taken up by labour-intensive
+    manual testing by QA teams? How much involves manual deployment steps, the
+    secrets of which are known only to a select few? CI is not a silver bullet
+    by any means, but it can certainly help streamline many of these
+    problems.</para>
 
     <para>But Continuous Integration is a mindset as much as a tool set. To
     get the most out of CI, a team needs to adopt a CI mentality. For example,
@@ -86,19 +115,18 @@
     tests and testing practices.</para>
 
     <para>In this book we will be looking at how to implement a robust and
-    comprehensive Continuous Integration solution with what is without doubt
-    the most popular open source CI tool ever developed: Jenkins.</para>
+    comprehensive Continuous Integration solution using Jenkins.</para>
   </sect1>
 
   <sect1 id="intro-sect-introducing-jenkins">
-    <title>Introducing Jenkins</title>
+    <title>Introducing Jenkins (née Hudson)</title>
 
-    <para>Jenkins is the world's most popular open source Continuous
-    Integration tool. Written in Java, Jenkins is now used by teams of all
-    sizes, for projects in a wide variety of languages and technologies,
-    including .NET, Ruby, Groovy, Grails, PHP and more, as well as Java. So
-    what has made Jenkins such a success? And why use Jenkins for your CI
-    infrastructure?</para>
+    <para>Jenkins, originally called Hudson, is an open source Continuous
+    Integration tool written in Java. Boasting a dominant market share,
+    Jenkins is used by teams of all sizes, for projects in a wide variety of
+    languages and technologies, including .NET, Ruby, Groovy, Grails, PHP and
+    more, as well as Java. So what has made Jenkins such a success? And why
+    use Jenkins for your CI infrastructure?</para>
 
     <para>Firstly, Jenkins is easy to use. The user interface is simple,
     intuitive, and visually appealing, and Jenkins as a whole has a very low
@@ -170,8 +198,9 @@
     Nexus) have continued to work on the Hudson code base (now also hosted on
     Github at <uri>https://github.com/hudson</uri>), but with a very different
     focus. Indeed, the Sonatype developers have concentrating on major
-    underlying infrastructure changes around, among other areas, the
-    dependency injection framework and the plugin architecture.</para>
+    underlying infrastructure changes around, among other areas, Maven
+    integration, the dependency injection framework and the plugin
+    architecture.</para>
   </sect1>
 
   <sect1 id="intro-sect-jenkins-or-hudson">
@@ -196,9 +225,9 @@
         <para><emphasis>The Jenkins community</emphasis>. Like many of the
         more successful Open Source projects, much of Hudson's strength came
         from its large and dynamic community, and its massive adoption. Bugs
-        are identified (and often fixed) more rapidly, and, if you have a
-        problem, chances are someone else will have had it too! If you run
-        into trouble, post a question on the mailing list or IRC channel -
+        are identified (and generally fixed) much more rapidly, and, if you
+        have a problem, chances are someone else will have had it too! If you
+        run into trouble, post a question on the mailing list or IRC channel -
         there's sure to be someone who can help.</para>
       </listitem>
 
@@ -208,7 +237,7 @@
         developers love. New features, new plugins and bug fixes come out
         weekly, and the turn-around time for bug fixes can be very short
         indeed. And, if you prefer more stability, there are always the LTS
-        releases (see above). </para>
+        releases (see above).</para>
       </listitem>
     </itemizedlist>
   </sect1>
