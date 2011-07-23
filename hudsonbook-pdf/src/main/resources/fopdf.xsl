@@ -41,8 +41,16 @@
    ################################################### -->
 
     <!-- Paper type, no headers on blank pages, no double sided printing -->
-    <xsl:param name="page.height" select="'9.681in'"/>
+<!--
     <xsl:param name="page.width" select="'7.444in'"/>
+    <xsl:param name="page.height" select="'9.681in'"/>
+-->                                                      
+<!--
+ 	Print page size: 8.17in x 10.35in
+-->
+	<xsl:param name="page.width" select="'8.223in'"/>
+	<xsl:param name="page.height" select="'11.695in'"/>
+
     <xsl:param name="headers.on.blank.pages">0</xsl:param>
     <xsl:param name="footers.on.blank.pages">0</xsl:param>
 
