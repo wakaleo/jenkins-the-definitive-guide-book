@@ -2,30 +2,31 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wakaleo.hudsonbook</groupId>
     <artifactId>hudsonbook</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Jenkins: The Definitive Guide</name>
-    <description>A book about Jenkins</description>
-    <url>http://www.wakaleo.com/books/jenkins-the-definitive-guide</url>
+    <name>Continuous Integration with Hudson</name>
+    <description>A book about Hudson</description>
+    <url>http://www.wakaleo.com/hudson-book</url>
     <organization>
         <name>Wakaleo Consulting</name>
         <url>http://www.wakaleo.com</url>
     </organization>
     <scm>
-	<connection>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</connection>
-	<url>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</url>
-	<developerConnection>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</developerConnection>	
+        <connection>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</connection>
+        <url>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</url>
+        <developerConnection>scm:git:git@github.com:wakaleo/continuous-integration-with-hudson.git</developerConnection>    
     </scm>
     <properties>
-        <book.title>Jenkins: The Definitive Guide</book.title>
+        <book.title>Continuous Integration with Hudson</book.title>
         <book.subtitle>Streamlining your build process</book.subtitle>
-		<book.abstract>Learn how to implement a Continuous Integration infrastructure using Jenkins, a popular open source Continuous Integration tool.</book.abstract>
+        <book.abstract>Learn how to implement a Continuous Integration infrastructure using Hudson, a popular open source Continuous Integration tool.</book.abstract>
         <book.principle.author>John Ferguson Smart</book.principle.author>
         <organization.address>111 Donald Street, Karori, Wellington 6012, New Zealand</organization.address>
         <publisher.name>O'Reilly Media</publisher.name>
         <publisher.address>1005 Gravenstein Highway North, Sebastopol, CA 95472</publisher.address>
-        <copyright.year>2011</copyright.year>
+        <copyright.year>2010</copyright.year>
         <book.locale>en</book.locale>
+        <docbook.xml.version>4.5</docbook.xml.version>
     </properties>
     <developers>
         <developer>
@@ -41,10 +42,40 @@
     </developers>
   <modules>
     <module>hudsonbook-content</module>
+    <module>hudsonbook-content-zh</module>
     <module>hudsonbook-pdf</module>
     <module>hudsonbook-html</module>
   </modules>
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.3.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -57,30 +88,24 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.0-beta-9</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <preparationGoals>clean install</preparationGoals>
                 </configuration>
             </plugin>
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-release-plugin</artifactId>
-	        <version>2.0-beta-9</version>
-	      </plugin>
         </plugins>
     </build>
     <profiles>
-	  <profile>
-		<id>french</id>
-		<properties>
-			<book.locale>fr</book.locale>
-        	<book.title>L'Integration Continue avec Jenkins</book.title>
-		    <book.subtitle>Un sous-titre super-engageant pour ce livre</book.subtitle>
-		    <book.abstract>Un resume super-engageant pour ce livre</book.abstract>
-		</properties>
-	  </profile>
-	</profiles>
+      <profile>
+        <id>french</id>
+        <properties>
+            <book.locale>fr</book.locale>
+            <book.title>L'Integration Continue avec Hudson</book.title>
+            <book.subtitle>Un sous-titre super-engageant pour ce livre</book.subtitle>
+            <book.abstract>Un resume super-engageant pour ce livre</book.abstract>
+        </properties>
+      </profile>
+    </profiles>
     <!-- Distribution Management -->
     <distributionManagement>
         <repository>
@@ -92,4 +117,11 @@
             <url>http://www.wakaleo-labs.com/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype-forge</id>
+            <name>Sonatype Group Forge</name>
+            <url>http://repository.sonatype.org/content/groups/forge/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

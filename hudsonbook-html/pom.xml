@@ -1,116 +1,116 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-	<groupId>com.wakaleo.hudsonbook</groupId>
-	<artifactId>hudsonbook</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+    <groupId>com.wakaleo.hudsonbook</groupId>
+    <artifactId>hudsonbook</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
   </parent>
   <artifactId>hudsonbook-html</artifactId>
   <packaging>jar</packaging>
   <name>Continuous Integration with Hudson (HTML) </name>
   <description>A book about Hudson</description>
   <build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>html_chunk.xsl</include>
-				</includes>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.cjcook</groupId>
-				<artifactId>docbook-plugin</artifactId>
-				<version>1.0</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<escapeString>\</escapeString>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<version>2.0.7</version>
-				<dependencies>
-					<dependency>
-						<groupId>docbook</groupId>
-						<artifactId>docbook-xml</artifactId>
-						<version>4.5</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>generate-html</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>generate-html</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<htmlCustomization>${basedir}/target/classes/html_chunk.xsl</htmlCustomization>
-					<sourceDirectory>${basedir}/target/docbook</sourceDirectory>
-					<targetDirectory>${basedir}/target/html</targetDirectory>
-					<includes>book.xml</includes>
-					<xincludeSupported>true</xincludeSupported>
-					<chunkedOutput>true</chunkedOutput>
-					<chunkSectionDepth>1</chunkSectionDepth>
-					<postProcess>
-						<copy todir="${project.build.directory}/html/images">
-							<fileset dir="${basedir}/src/main/resources/images" />
-						</copy>
-						<copy todir="${project.build.directory}/html/figs/web">
-							<fileset dir="target/docbook/figs/web" />
-						</copy>
-					</postProcess>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>${hudsonbook-content}</artifactId>
-									<version>${project.version}</version>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${basedir}/target/docbook</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-				  <classesDirectory>${basedir}/target/html</classesDirectory>
-				</configuration>
-			</plugin>
-		</plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>html_chunk.xsl</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.cjcook</groupId>
+                <artifactId>docbook-plugin</artifactId>
+                <version>1.0</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <escapeString>\</escapeString>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.agilejava.docbkx</groupId>
+                <artifactId>docbkx-maven-plugin</artifactId>
+                <version>2.0.7</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>docbook</groupId>
+                        <artifactId>docbook-xml</artifactId>
+                        <version>${docbook.xml.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate-html</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate-html</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <htmlCustomization>${basedir}/target/classes/html_chunk.xsl</htmlCustomization>
+                    <sourceDirectory>${basedir}/target/docbook</sourceDirectory>
+                    <targetDirectory>${basedir}/target/html</targetDirectory>
+                    <includes>book.xml</includes>
+                    <xincludeSupported>true</xincludeSupported>
+                    <chunkedOutput>true</chunkedOutput>
+                    <chunkSectionDepth>1</chunkSectionDepth>
+                    <postProcess>
+                        <copy todir="${project.build.directory}/html/images">
+                            <fileset dir="${basedir}/src/main/resources/images" />
+                        </copy>
+                        <copy todir="${project.build.directory}/html/figs/web">
+                            <fileset dir="target/docbook/figs/web" />
+                        </copy>
+                    </postProcess>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${hudsonbook-content}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${basedir}/target/docbook</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                  <classesDirectory>${basedir}/target/html</classesDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
   </build>
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>${hudsonbook-content}</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>${hudsonbook-content}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
   <properties>
     <hudsonbook-content>hudsonbook-content</hudsonbook-content>
   </properties>
