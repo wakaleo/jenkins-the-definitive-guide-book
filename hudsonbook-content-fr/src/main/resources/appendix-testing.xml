@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<appendix id="appendix-automating-your-tests">
+  <title>Automating your unit and integration tests</title>
+
+  <sect1 id="sect-testing-maven">
+    <title>Automating your tests with Maven</title>
+
+    <para>Maven is a popular open source build tool of the Java world, that
+    makes use of practices such as declarative dependencies, standard
+    directories and build life cycles, and convention over configuration to
+    encourage clean, maintainable, high level build scripts. Test automation
+    is strongly supported in Maven. Maven projects use a standard directory
+    structure: it will automatically look for unit tests in a directory called
+    (by default) <filename>src/test/java</filename>. There is little else to
+    configure: just add a dependency to the test framework (or frameworks)
+    your tests are using, and Maven will automatically look for and execute
+    the JUnit, TestNG or even POJO (Plain Old Java Objects) tests contained in
+    this directory structure.</para>
+
+    <para>In Maven, you run your unit tests by invoking the
+    <command>test</command> life cycle phase, as shown here:</para>
+
+    <screen>$ <command>mvn test</command>
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Tweeter domain model
+[INFO]    task-segment: [test]
+[INFO] ------------------------------------------------------------------------
+...
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.wakaleo.training.tweeter.domain.TagTest
+Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 sec
+Running com.wakaleo.training.tweeter.domain.TweeterTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 sec
+Running com.wakaleo.training.tweeter.domain.TweeterUserTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 sec
+Running com.wakaleo.training.tweeter.domain.TweetFeeRangeTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 sec
+Running com.wakaleo.training.tweeter.domain.HamcrestTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
+
+Results :
+
+Tests run: 38, Failures: 0, Errors: 0, Skipped: 0</screen>
+
+    <para>In addition to executing your tests, and failing the build if any of
+    the tests fail, Maven will produce a set of test reports (again, by
+    default) in the <filename>target/surefire-reports</filename> directory, in
+    both XML and text formats. For our CI purposes, it is the XML files that
+    interest us, as Jenkins is able to understand and analyse these files for
+    it's CI reporting:</para>
+
+    <screen>$ <command>ls target/surefire-reports/*.xml</command>
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.HamcrestTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TagTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweetFeeRangeTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterTest.xml
+target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest.xml</screen>
+
+    <para>Maven defines two distinct testing phases: unit tests and
+    integration tests. Unit tests should be fast and lightweight, providing a
+    large amount of test feedback in as little time as possible. Integration
+    tests are slower and more cumbersome, and often require the application to
+    be build and deployed to a server (even an embedded one) to carry out more
+    complete tests. Both these sorts of tests are important, and for a
+    well-designed Continuous Integration environment, it is important to be
+    able to distinguish between them. The build should ensure that all of the
+    unit tests are run initially - if a unit test fails, developers should be
+    notified very quickly. Only if all of the unit tests pass is it worthwhile
+    undertaking the slower and more heavy-weight integration tests.</para>
+
+    <para>In Maven, integration tests are executed during the
+    <command>integration-test</command> life cycle phase, which you can invoke
+    by running '<command>mvn integration-test</command>' or (more simply)
+    '<command>mvn verify</command>'. During this phase, it is easy to
+    configure Maven to start up your web application on an embedded Jetty web
+    server, or to package and deploy your application to a test server, for
+    example. Your integration tests can then be executed against the running
+    application. The tricky part however is telling Maven how to distinguish
+    between your unit tests and your integration tests, so that they will only
+    be executed when a running version of the application is available.</para>
+
+    <para>There are several ways to do this, but at the time of writing there
+    is no official standard approach used across all Maven projects. One
+    simple strategy is to use naming conventions: all integration tests might
+    end in 'IntegrationTest', or be placed in a particular package. The
+    following class uses one such convention:</para>
+
+    <para><programlisting>public class AccountIntegrationTest {
+  
+  @Test
+  public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+  }
+}</programlisting>In Maven, tests are configured via the
+    <command>maven-surefire-plugin</command> plugin. To ensure that Maven only
+    runs these tests during the <command>integration-test</command> phase, you
+    can configure this plugin as shown here:</para>
+
+    <programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;<co id="maven-it-1" />
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;<co id="maven-it-2" />
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/*IntegrationTest.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;<co id="maven-it-3" />
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;includes&gt;
+                &lt;include&gt;**/*IntegrationTest.java&lt;/include&gt;
+              &lt;/includes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      ...</programlisting>
+
+    <para><calloutlist>
+        <callout arearefs="maven-it-1">
+          <para>Skip all tests by default - this deactivates the default Maven
+          test configuration.</para>
+        </callout>
+
+        <callout arearefs="maven-it-2">
+          <para>During the unit test phase, run the tests but exclude the
+          integration tests</para>
+        </callout>
+
+        <callout arearefs="maven-it-3">
+          <para>During the integration test phase, run the tests but
+          <emphasis>only</emphasis> include the integration tests</para>
+        </callout>
+      </calloutlist>This will ensure that the integration tests are skipped
+    during the unit test phase, and only executed during the integration test
+    phase.</para>
+
+    <para>If you don't want to put unwanted constraints on the names of your
+    test classes, you can use package names instead. In the project
+    illustrated in <xref linkend="fig-hudson-testing-sample-project" />, all
+    of the functional tests have been placed in a package called 'webtests'.
+    There is no constraint on the names of the tests, but we are using Page
+    Objects to model our application user interface, so we also make sure that
+    no classes in the 'pages' package (underneath the 'webtests' package) are
+    treated as tests.</para>
+
+    <para><figure id="fig-hudson-testing-sample-project">
+        <title>A project containing freely-named test classes</title>
+
+        <mediaobject>
+          <imageobject role="web" security="">
+            <imagedata align="center"
+                       fileref="figs/web/hudson-testing-sample-project.png"
+                       width="4.3in" />
+          </imageobject>
+        </mediaobject>
+      </figure>In Maven, we could do this with the following
+    configuration:</para>
+
+    <para><programlisting>      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/webtests/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;includes&gt;
+                &lt;include&gt;**/webtests/*.java&lt;/include&gt;
+              &lt;/includes&gt;
+              &lt;excludes&gt;
+                &lt;exclude&gt;**/pages/*.java&lt;/exclude&gt;
+              &lt;/excludes&gt;
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+    <para>TestNG currently has more flexible support for test groups than
+    JUnit. If you are using TestNG, you can identify your integration tests
+    using TestNG Groups. In TestNG, test classes or test methods can be tagged
+    using the 'groups' attribute of the <command>@Test</command> annotation,
+    as shown here:<programlisting>@Test(groups = { "integration-test" })
+public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
+    Account account = new Account();
+    account.makeDeposit(100);
+    account.makeCashWithdraw(60);
+    assertThat(account.getBalance(), is(40));
+}</programlisting></para>
+
+    <para>Using Maven, you could ensure that these tests where only run during
+    the integration test phase using the following configuration:</para>
+
+    <para><programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;skip&gt;true&lt;/skip&gt;
+        &lt;/configuration&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;unit-tests&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;excludedGroups&gt;integration-tests&lt;/excludedGroups&gt;<co
+          id="maven-it-ng-1" />
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;integration-tests&lt;/id&gt;
+            &lt;phase&gt;integration-test&lt;/phase&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;test&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+              &lt;skip&gt;false&lt;/skip&gt;
+              &lt;groups&gt;integration-tests&lt;/groups&gt;<co
+          id="maven-it-ng-2" />
+            &lt;/configuration&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
+      ...</programlisting><calloutlist>
+        <callout arearefs="maven-it-ng-1">
+          <para>Do not run the integration-tests group during the test
+          phase</para>
+        </callout>
+
+        <callout arearefs="maven-it-ng-2">
+          <para>Run only the tests in the integration-tests group during the
+          integration-test phase.</para>
+        </callout>
+      </calloutlist></para>
+
+    <para>It often makes good sense to run your tests in parallel where
+    possible, as it can speed up your tests significantly (see <xref
+    linkend="sect-tests-too-slow" />). Parallel tests are particularly
+    intensive with slow-running tests that use a lot of IO, disk or network
+    access (such as web tests), which is convenient, as these are precisely
+    the sort of tests we usually want to speed up.</para>
+
+    <para>TestNG provides good support for parallel tests. For instance, using
+    TestNG, you could configure your test methods to run in parallel on ten
+    concurrent threads like this:<programlisting>      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.5&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;parallel&gt;methods&lt;/parallel&gt;
+          &lt;threadCount&gt;10&lt;/threadCount&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;</programlisting></para>
+
+    <para>As of JUnit 4.7, you can also run your JUnit tests in parallel using
+    a similar configuration. In fact, the configuration shown above will work
+    for JUnit 4.7 onwards.</para>
+
+    <para>You can also set the &lt;parallel&gt; configuration item to
+    'classes' instead of 'methods', which will try to run the test classes in
+    parallel, rather than each method. This might be slower or faster,
+    depending on the number of test classes you have, but might be safer for
+    some test cases not designed with concurrency in mind.</para>
+
+    <para>Mileage will vary, so you should experiment with the numbers to get
+    the best results.</para>
+  </sect1>
+
+  <sect1 id="sect-testing-ant">
+    <title>Automating your tests with Ant</title>
+
+    <para>Setting up automated testing in Ant is also relatively easy, though
+    it requires a bit more plumbing that with Maven. In particular, Ant does
+    not come packaged with the JUnit libraries or Ant tasks out-of-the-box, so
+    you have to install them somewhere yourself. The most portable approach is
+    to use a Dependency Management tool such as Ivy, or to place the
+    corresponding JAR files in a directory within your project
+    structure.</para>
+
+    <para>To run your tests in Ant, you call the
+    <filename>&lt;junit&gt;</filename> task. A typical Jenkins-friendly
+    configuration is shown in this example:<programlisting>&lt;property name="build.dir" value="target" /&gt;
+&lt;property name="java.classes" value="${build.dir}/classes" /&gt;
+&lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
+&lt;property name="test.reports" value="${build.dir}/test-reports" /&gt;
+&lt;property name="lib" value="${build.dir}/lib" /&gt;
+
+&lt;path id="test.classpath"&gt;<co id="junit-ant-1" />
+  &lt;pathelement location="${basedir}/tools/junit/*.jar" /&gt;
+  &lt;pathelement location="${java.classes}" /&gt;
+  &lt;pathelement location="${lib}" /&gt;
+&lt;/path&gt;
+
+&lt;target name="test" depends="test-compile"&gt;
+  &lt;junit haltonfailure="no" failureproperty="failed"&gt;<co
+          id="junit-ant-2" />
+    &lt;classpath&gt;<co id="junit-ant-3" />
+      &lt;path refid="test.classpath" /&gt;
+      &lt;pathelement location="${test.classes}" /&gt;
+    &lt;/classpath&gt;
+    &lt;formatter type="xml" /&gt;<co id="junit-ant-4" />
+    &lt;batchtest fork="yes" forkmode="perBatch"<co id="junit-ant-5" /> todir="${test.reports}"&gt;
+      &lt;fileset dir="${test.src}"&gt;<co id="junit-ant-6" />
+        &lt;include name="**/*Test*.java" /&gt;
+      &lt;/fileset&gt;
+    &lt;/batchtest&gt;
+  &lt;/junit&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;<co id="junit-ant-7" />
+&lt;/target&gt;
+</programlisting></para>
+
+    <para><calloutlist>
+        <callout arearefs="junit-ant-1">
+          <para>We need to set up a classpath containing the
+          <filename>junit</filename> and <filename>junit-ant</filename> JAR
+          files, as well as the application classes and any other dependencies
+          the application needs to compile and run.</para>
+        </callout>
+
+        <callout arearefs="junit-ant-2">
+          <para>The tests themselves are run here. The
+          <command>haltonfailure</command> option is used to make the build
+          fail immediately if any tests fail. In a Continuous Integration
+          environment, this is not exactly what we want, as we need to get the
+          results for any subsequent tests as well. So we set this value to
+          "no" and use the <command>failureproperty</command> option to force
+          the build to fail once all of the tests have finished.</para>
+        </callout>
+
+        <callout arearefs="junit-ant-3">
+          <para>The classpath needs to contain the JUnit libraries, your
+          application classes and their dependencies, and your compiled test
+          classes.</para>
+        </callout>
+
+        <callout arearefs="junit-ant-4">
+          <para>The Junit Ant task can produce both text and XML reports, but
+          for Jenkins, we only need the XML ones.</para>
+        </callout>
+
+        <callout arearefs="junit-ant-5">
+          <para>The <command>fork</command> option runs your tests in a
+          separate JVM. This is generally a good idea, as it can avoid
+          classloader issues related to conflicts with Ant's own libraries.
+          However, the default behaviour of the JUnit Ant task is to create a
+          new JVM for each test, which slows down the tests significantly. The
+          'perBatch' option is better, as it only creates one new JVM for each
+          batch of tests.</para>
+        </callout>
+
+        <callout arearefs="junit-ant-6">
+          <para>You define the tests you want to run in a fileset element.
+          This provides a great deal of flexibility, and makes it easy to
+          define other targets for different subsets of tests (integration,
+          web, and so on).</para>
+        </callout>
+
+        <callout arearefs="junit-ant-7">
+          <para>Force the build to fail <emphasis>after</emphasis> the tests
+          have finished, if any of them failed.</para>
+        </callout>
+      </calloutlist></para>
+
+    <para>If you prefer TestNG, Ant is of course well supported here as well.
+    Using TestNG with the previous example, you could do something like
+    this:</para>
+
+    <para><programlisting>&lt;property name="build.dir" value="target" /&gt;
+&lt;property name="java.classes" value="${build.dir}/classes" /&gt;
+&lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
+&lt;property name="test.reports" value="${build.dir}/test-reports" /&gt;
+&lt;property name="lib" value="${build.dir}/lib" /&gt;
+
+&lt;path id="test.classpath"&gt;
+  &lt;pathelement location="${java.classes}" /&gt;
+  &lt;pathelement location="${lib}" /&gt;
+&lt;/path&gt;
+
+&lt;taskdef resource="testngtasks" classpath="lib/testng.jar"/&gt;
+
+&lt;target name="test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>TestNG is a very flexible testing library, and
+    the TestNG task has many more options than this. For example, to only run
+    tests defined as part of the "integration-test" group that we saw earlier,
+    we could do this:</para>
+
+    <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>groups="integration-test"</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting>Or to run your tests in parallel, using four
+    concurrent threads, you could do this:</para>
+
+    <para><programlisting>&lt;target name="integration-test" depends="test-compile"&gt;
+  &lt;testng classpathref="test.classpath"
+          <command>parallel="true"
+          threadCount=4</command>
+          outputDir="${testng.report.dir}"
+          haltonfailure="no" 
+          failureproperty="failed"&gt;
+    &lt;classfileset dir="${test.classes}"&gt;
+      &lt;include name="**/*Test*.class" /&gt;
+    &lt;/classfileset&gt;
+  &lt;/testng&gt;
+  &lt;fail message="TEST FAILURE" if="failed" /&gt;
+&lt;/target&gt;</programlisting></para>
+  </sect1>
+</appendix>
