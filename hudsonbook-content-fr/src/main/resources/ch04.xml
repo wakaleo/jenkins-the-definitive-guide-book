@@ -444,40 +444,41 @@
   </sect1>
 
   <sect1 id="sect-configuration-global">
-    <title>Configuring Global Properties</title>
+    <title>Configurer les propriétés globales</title>
 
-    <para>The <indexterm class="startofrange" id="ch04-global1"
+    <para>La section <indexterm class="startofrange" id="ch04-global1"
         significance="normal">
         <primary>configuration</primary>
 
-        <secondary>global properties</secondary>
+        <secondary>propriétés globales</secondary>
       </indexterm><indexterm class="startofrange" id="ch04-global2"
         significance="normal">
-        <primary>global properties</primary>
+        <primary>propriétés globales</primary>
       </indexterm><indexterm class="startofrange" id="ch04-global3"
         significance="normal">
-        <primary>properties</primary>
+        <primary>propriétés</primary>
 
-        <secondary>global</secondary>
+        <secondary>globales</secondary>
       </indexterm><indexterm class="startofrange" id="ch04-global4"
         significance="normal">
-        <primary>build jobs</primary>
+        <primary>tâches de construction</primary>
 
-        <secondary>global properties for</secondary>
-      </indexterm>Global Properties (see <xref
-    linkend="fig-configure-global-properties" />) section lets you define
-    variables that can be managed centrally but used in all of your build
-    jobs. You can add as many properties as you want here, and use them in
-    your build jobs. Jenkins will make them available within your build job
-    environment, so you can freely use them within your Ant and Maven build
-    scripts. Note that you shouldn’t put periods (“.”) in the property names,
-    as they won’t be processed correctly. So <literal
-    moreinfo="none">ldapserver</literal> or <literal
-    moreinfo="none">ldap_server</literal> is fine, but not <literal
+        <secondary>propriétés globales pour</secondary>
+      </indexterm>Propriétés globales (voir <xref
+    linkend="fig-configure-global-properties" />) vous permet de définir des
+    variables de façon centralisée et utilisées dans toutes vos tâches de
+    construction. Vous pouvez ajouter autant de propriétés que vous voulez, et
+    les utiliser dans vos tâches. Jenkins les rendra disponible à l'intérieur
+    de votre environnement de construction de tâches, vous permettant de les
+    utiliser facilement dans vos scripts Ant ou Maven. A noter que vous ne
+    devez pas mettre de points (“.”) dans les noms de propriétés, parce qu'ils
+    ne seront pas traités correctement. Utilisez donc <literal
+    moreinfo="none">ldapserver</literal> ou <literal
+    moreinfo="none">ldap_server</literal>, mais pas <literal
     moreinfo="none">ldap.server</literal>.</para>
 
     <figure float="0" id="fig-configure-global-properties">
-      <title>Configuring environment variables in Jenkins</title>
+      <title>Configurer les variables d'environnement dans Jenkins</title>
 
       <mediaobject id="I_mediaobject4_d1e4446">
         <imageobject role="print">
@@ -490,30 +491,33 @@
       </mediaobject>
     </figure>
 
-    <para>There are two ways you typically use these variables. Firstly, you
-    can use them directly in your build script, using the <literal
-    moreinfo="none">${key}</literal> or <literal
-    moreinfo="none">$key</literal> notation (so <literal
-    moreinfo="none">${ldapserver}</literal> or <literal
-    moreinfo="none">$ldapserver</literal> in the example give above. This is
-    the simplest approach, but means that there is a tight coupling between
-    your build job configuration and your build scripts.</para>
+    <para>Il y a deux façons principales d'utiliser ces variables.
+    Premièrement, vous pouvez les utiliser directement dans votre script de
+    construction, en utilisant la notation <literal
+    moreinfo="none">${key}</literal> ou <literal
+    moreinfo="none">$key</literal> (donc <literal
+    moreinfo="none">${ldapserver}</literal> ou <literal
+    moreinfo="none">$ldapserver</literal> dans l'exemple donné ci-dessus).
+    C'est l'approche la plus simple, mais cela signifie qu'il y a un couplage
+    fort entre la configuration de votre tâche et vos scripts de
+    construction.</para>
 
-    <para>If your script uses a different property name (one containing dots,
-    for example), you can also pass the value to your build script in the
-    build job configuration. In <xref
-    linkend="fig-config-properties-in-job" /> we pass the <literal
-    moreinfo="none">ldapserver</literal> property value defined in <xref
-    linkend="fig-configure-global-properties" /> to a Maven build job. Using
-    the <literal moreinfo="none">-D</literal> option means that this value
-    will be accessible from within the build script. This is a flexible
-    approach, as we can assign the global properties defined within Jenkins to
-    script-specific variables in our build scripts. In <xref
-    linkend="fig-config-properties-in-job" />, for example, the <literal
-    moreinfo="none">ldapserver</literal> property will be available from
-    within the Maven build via the<indexterm class="endofrange"
-        id="I_indexterm4_d1e4483" significance="normal"
-        startref="ch04-global1">
+    <para>Si votre script utilise un nom de propriété différent (un contenant
+    des points, par exemple), vous pouvez aussi passer la valeur à votre
+    script de construction dans la configuration de votre tâche de
+    construction. Dans <xref linkend="fig-config-properties-in-job" /> nous
+    passons la valeur de la propriété <literal
+    moreinfo="none">ldapserver</literal> définie dans <xref
+    linkend="fig-configure-global-properties" /> à une tâche de construction
+    Maven. Utiliser l'option <literal moreinfo="none">-D</literal> signifie
+    que cette valeur sera accessible à l'intérieur du script. C'est une
+    approche flexible, parce qu'on peut assigner les propriétés globales
+    définies dans Jenkins à des variables spécifiques à nos scripts de
+    construction. Dans <xref linkend="fig-config-properties-in-job" />, par
+    exemple, la propriété <literal moreinfo="none">ldapserver</literal> sera
+    disponible à l'intérieur de la construction Maven via la
+    propriété<indexterm class="endofrange" id="I_indexterm4_d1e4483"
+        significance="normal" startref="ch04-global1">
         <primary></primary>
       </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4485"
         significance="normal" startref="ch04-global2">
@@ -524,11 +528,10 @@
       </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4489"
         significance="normal" startref="ch04-global4">
         <primary></primary>
-      </indexterm> internal <literal moreinfo="none">${ldap.server}</literal>
-    property.</para>
+      </indexterm> <literal moreinfo="none">${ldap.server}</literal>.</para>
 
     <figure float="none" id="fig-config-properties-in-job">
-      <title>Using a configured environment variable</title>
+      <title>Utiliser une variable d'environnement configurée</title>
 
       <mediaobject id="I_mediaobject4_d1e4498">
         <imageobject role="print">
