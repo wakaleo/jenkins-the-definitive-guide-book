@@ -546,7 +546,7 @@
   </sect1>
 
   <sect1 id="sect-configuration-jdks">
-    <title>Configuring Your JDKs</title>
+    <title>Configurer vos JDKs</title>
 
     <para><indexterm class="startofrange" id="ch04-jdk1" significance="normal">
         <primary>configuration</primary>
@@ -556,50 +556,54 @@
         significance="normal">
         <primary>JDK (Java Development Kit)</primary>
 
-        <secondary>configuring multiple versions of</secondary>
-      </indexterm>Historically, one of the most common uses of Jenkins has
-    been to build Java applications. So Jenkins naturally provides excellent
-    built-in support for Java.</para>
+        <secondary>configurer de multiples versions du</secondary>
+      </indexterm>Historiquement, l'une des utilisations les plus communes de
+    Jenkins était de construire des applications Java. Jenkins fournit donc
+    naturellement un support intégré pour Java.</para>
 
-    <para>By default, Jenkins will build Java applications using whatever
-    version of Java it finds on the system path, which is usually the version
-    that Jenkins itself is running under. However, for a production build
-    server, you will probably want more control than this. For example, you
-    may be running your Jenkins server under Java 6, for performance reasons.
-    However, your production server might be running under Java 5 or even Java
-    1.4. Large organizations are often cautious when it comes to upgrading
-    Java versions in their production environments, and some of the more
-    heavyweight application servers on the market are notoriously slow to be
-    certified with the latest JDKs.</para>
+    <para>Par défaut, Jenkins construira les applications Java en utilisant la
+    version de Java qu'il trouve dans le PATH, qui est habituellement celle
+    avec laquelle Jenkins fonctionne. Toutefois, pour un serveur de
+    construction de production, vous voudrez probablement plus de contrôle que
+    cela. Par exemple, vous pourriez exécuter votre serveur Jenkins avec Java
+    6, pour des raisons de performance. Par contre, votre serveur de
+    production pourrait tourner avec Java 5 ou même Java 1.4. Les grosses
+    organisations sont souvent très précautionneuses lorsqu'il s'agit de
+    mettre à jour les versions de Java dans leurs environnements de
+    production, et certains des serveurs d'application poids-lourds du marché
+    sont de notoriété publique lents à être certifiés avec les derniers
+    JDKs.</para>
 
-    <para>In any case, it is always a wise practice to build your application
-    using a version of Java that is close to the one running on your
-    production server. While an application <phrase
-    role="keep-together">compiled</phrase> with Java 1.4 will usually run fine
-    under Java 6, the inverse is not always true. Or you may have different
-    applications that need to be built using different versions of
-    Java.</para>
+    <para>Dans tous les cas, c'est toujours une sage pratique que de
+    construire votre application en utilisant une version de Java proche de
+    celle utilisée sur votre serveur de production. Bien qu'une application
+    compilée avec Java 1.4 tournera généralement avec Java 6, l'inverse n'est
+    pas toujours vrai. Vous pourriez aussi avoir plusieurs applications qui
+    nécessitent d'être construites avec différentes versions de Java.</para>
 
-    <para>Jenkins provides good support for working with multiple JVMs.
-    Indeed, Jenkins makes it very easy to configure and use as many versions
-    of Java as you want. Like most system-level configuration, we do this in
-    the Configure System screen (see <xref linkend="fig-configure-system" />).
-    Here, you will find a section called JDK which allows you to manage the
-    JDK installations you need Jenkins to work with.</para>
+    <para>Jenkins fournit un bon support pour travailler avec de multiples
+    JVMs. En effet, Jenkins rend très facile la configuration et l'utilisation
+    de plusieurs versions de Java. Comme la plupart des configurations de
+    niveau système, cela se paramètre dans l'écran Configurer le système (voir
+    <xref linkend="fig-configure-system" />). A cet endroit, vous trouverez
+    une section appelée JDK qui vous permettra de gérer les installations de
+    JDK avec lesquelles vous voulez que Jenkins travaille.</para>
 
-    <para>The simplest way to declare a JDK installation is simply to supply
-    an appropriate name (which will be used to identify this Java installation
-    later on when you configure your builds), along with the path to the Java
-    installation directory (the same path you would use for the<indexterm
-        id="I_indexterm4_d1e4531" significance="normal">
-        <primary>JAVA_HOME environment variable</primary>
-      </indexterm> <literal moreinfo="none">JAVA_HOME</literal> variable), as
-    shown in <xref linkend="fig-configure-jdk" />. Although you need to type
-    the path manually, Jenkins will check in real time both that the directory
-    exists and that it looks like a valid JDK directory.</para>
+    <para>Le moyen le plus simple de déclarer une installation de JDK est de
+    fournir un nom approprié (qui sera ensuite utilisé pour identifier cette
+    installation de java lors de la configuration de vos constructions), et un
+    chemin vers le répertoire de l'installation Java (le même chemin que vous
+    utiliseriez pour la <indexterm id="I_indexterm4_d1e4531"
+        significance="normal">
+        <primary>JAVA_HOME variable d'environnement</primary>
+      </indexterm> variable <literal moreinfo="none">JAVA_HOME</literal>),
+    comme montré sur <xref linkend="fig-configure-jdk" />. Bien que vous
+    deviez taper le chemin manuellement, Jenkins vérifiera en temps réel à la
+    fois que le répertoire existe et que ça ressemble à un répertoire JDK
+    valide..</para>
 
     <figure float="none" id="fig-configure-jdk">
-      <title>JDK configuration in Jenkins</title>
+      <title>Configuration des JDK dans Jenkins</title>
 
       <mediaobject id="I_mediaobject4_d1e4543">
         <imageobject role="print">
@@ -612,53 +616,58 @@
       </mediaobject>
     </figure>
 
-    <para>You can <indexterm id="I_indexterm4_d1e4550" significance="normal">
+    <para>Vous pouvez <indexterm id="I_indexterm4_d1e4550"
+        significance="normal">
         <primary>installation</primary>
 
         <secondary>JDK</secondary>
       </indexterm><indexterm id="I_indexterm4_d1e4555" significance="normal">
         <primary>JDK (Java Development Kit)</primary>
 
-        <secondary>installing</secondary>
-      </indexterm>also ask Jenkins to install Java for you. In this case,
-    Jenkins will download the JDK installation and install a copy on your
-    machine (see <xref linkend="fig-configure-jdk-installers" />). The first
-    time a build needs to use this JDK, Jenkins will download and install the
-    specified version of Java into the <filename
-    moreinfo="none">tools</filename> directory in the Jenkins home directory.
-    If the build is running on a new build agent that doesn’t have this JDK
-    installed, it will download and install it onto the build agent machine as
-    well.</para>
+        <secondary>installer</secondary>
+      </indexterm>aussi demander à Jenkins d'installer Java pour vous. Dans ce
+    cas, Jenkins téléchargera l'installeur du JDK et installera une copie sur
+    votre machine (voir <xref linkend="fig-configure-jdk-installers" />). La
+    première fois qu'une construction a besoin d'utiliser ce JDK, Jenkins
+    téléchargera et installera la version spécifiée de Java dans le répertoire
+    <filename moreinfo="none">tools</filename> du répertoire racine de
+    Jenkins. Si la construction est exécutée sur un nouvel agent de
+    construction qui n'a pas ce JDK installé, il le téléchargera et
+    l'installera sur celui-ci de la même façon.</para>
 
-    <para>This<indexterm id="I_indexterm4_d1e4568" significance="normal">
-        <primary>build agents</primary>
+    <para>C'est<indexterm id="I_indexterm4_d1e4568" significance="normal">
+        <primary>agents de constructions</primary>
 
-        <secondary>configuring for multiple JDK versions</secondary>
-      </indexterm> is also a great way to configure build agents. As we’ll see
-    later on in the book, Jenkins can delegate build jobs to other machines,
-    or build agents. A build agent (or “slave”) is simply another computer
-    that Jenkins can use to run some of its builds. If you use Jenkins’s
-    Install automatically option, you don’t need to manually install all the
-    JDK versions you need on the build agent machines—Jenkins will do it for
-    you the first time it needs to.</para>
+        <secondary>configurer de multiples versions de JDK</secondary>
+      </indexterm> aussi un formidable moyen de configurer les agents de
+    construction. Comme nous le verrons plus loin dans le livre, Jenkins peut
+    déléguer des tâches de construction à d'autres machines, ou d'autres
+    agents de construction. Un agent de construction (ou “esclave”) est
+    simplement un autre ordinateur que Jenkins peut utiliser pour exécuter
+    certaines de ses constructions. Si vous utilisez l'option d'installation
+    automatique de Jenkins, vous n'avez pas à installer toutes les versions de
+    JDK dont vous avez besoin sur les machines agent de construction — Jenkins
+    le fera pour vous la première fois que cela lui sera nécessaire.</para>
 
-    <para>By default, Jenkins proposes to download the JDK from the Oracle
-    website. If your Jenkins installation is behind a proxy server, you may
-    need to configure your proxy settings to ensure that Jenkins can access
-    the external download sites (see <xref
-    linkend="sect-configuration-proxies" />). Another option is to provide a
-    URL pointing to your own internal copy of the JDK binaries (either in the
-    form of a ZIP or a GZip-compressed TAR file), stored on a local server
-    within your organization. This lets you provide standard installations on
-    a local server and makes for faster automatic installations. When you use
-    this option, Jenkins also lets you specify a label, which will restrict
-    the use of this installation to the build notes with this label. This is a
-    useful technique if you need to install a specific version of a tool on
-    certain build machines. The same approach can also be used for other build
-    tools (such as Maven and Ant).</para>
+    <para>Par défaut, Jenkins propose de télécharger le JDK à partir du site
+    web d'Oracle. Si votre installation Jenkins est derrière un serveur proxy,
+    vous pourrez avoir besoin de modifier votre configuration de proxy pour
+    permettre à Jenkins d'accès aux sites externes de téléchargement (voir
+    <xref linkend="sect-configuration-proxies" />). Une autre option est de
+    fournir une URL pointant sur votre propre copie interne des binaires du
+    JDK (soit sous la forme d'un ZIP soit sous la forme d'un fichier TAR
+    compressé avec GZip), stocké sur un serveur local à l'intérieur de votre
+    organisation. Cela vous permet de fournir des installations normalisées
+    sur un serveur local et d'accélérer les installations automatiques. Quand
+    vous utilisez cette option, Jenkins vous permet aussi de spécifier un
+    label, ce qui resteindra l'utilisation de cette installation aux noeuds
+    avec celui-ci. C'est une technique utile si vous avez besoin d'installer
+    une version spécifique d'un outil sur certaines machines de construction.
+    La même approche peut aussi être utilisée pour les autres outils de
+    construction (comme Maven et Ant).</para>
 
     <figure float="0" id="fig-configure-jdk-installers">
-      <title>Installing a JDK automatically</title>
+      <title>Installer un JDK automatiquement</title>
 
       <mediaobject id="I_mediaobject4_d1e4581">
         <imageobject role="print">
@@ -671,17 +680,18 @@
       </mediaobject>
     </figure>
 
-    <para>The automatic installer will not work in all environments (if it
-    can’t find or identify your operating system to its satisfaction, for
-    example, the installation will fail), but it is nevertheless a useful and
-    convenient way to set up new build servers or distributed build agents in
-    a <indexterm class="endofrange" id="I_indexterm4_d1e4589"
+    <para>L'installeur automatique ne fonctionnera pas dans tous les
+    environnements (s'il ne parvient pas à trouver ou identifier un système
+    d'exploitation satisfaisant, par exemple, l'installation échouera), mais
+    c'est néanmoins un moyen utile et agréable de configurer de nouveaux
+    serveurs de construction ou des agents de construction distribués de
+    <indexterm class="endofrange" id="I_indexterm4_d1e4589"
         significance="normal" startref="ch04-jdk1">
         <primary></primary>
       </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4591"
         significance="normal" startref="ch04-jdk2">
         <primary></primary>
-      </indexterm>consistent manner.</para>
+      </indexterm>manière consistante.</para>
   </sect1>
 
   <sect1 id="sect-configuration-build-tools">
