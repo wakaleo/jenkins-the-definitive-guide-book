@@ -695,67 +695,71 @@
   </sect1>
 
   <sect1 id="sect-configuration-build-tools">
-    <title>Configuring Your Build Tools</title>
+    <title>Configurer vos outils de construction</title>
 
-    <para>Build tools<indexterm class="startofrange" id="ch04-tool1"
-        significance="normal">
+    <para>Les outils de construction<indexterm class="startofrange"
+        id="ch04-tool1" significance="normal">
         <primary>configuration</primary>
 
-        <secondary>build tools</secondary>
+        <secondary>outils de construction</secondary>
       </indexterm><indexterm class="startofrange" id="ch04-tool2"
         significance="normal">
-        <primary>build tools, configuring</primary>
-      </indexterm> are the bread-and-butter of any build server, and Jenkins
-    is no exception. Out of the box, Jenkins supports three principal build
-    tools: Ant, Maven, and the basic shell-script (or Batch script in
-    Windows). Using Jenkins plugins, you can also add support for other build
-    tools and other languages, such as Gant, Grails, MSBuild, and many
-    more.</para>
+        <primary>outils de construction, configurer</primary>
+      </indexterm> sont l'essence même de tout serveur de construction, et
+    Jenkins n'est pas une exception. En standard, Jenkins supporte trois
+    outils de construction principaux : Ant, Maven, et le basique shell-script
+    (ou script Batch sous Windows). En utilisant les plugins Jenkins, vous
+    pouvez aussi ajouter le support d'autres outils de construction et
+    d'autres langages, comme Gant, Grails, MSBuild, et beaucoup
+    d'autres.</para>
 
     <sect2>
       <title>Maven</title>
 
       <para><indexterm class="startofrange" id="ch04-maven1"
           significance="normal">
-          <primary>configuration</primary>
+          <primary>configurer</primary>
 
           <secondary>Maven</secondary>
         </indexterm><indexterm class="startofrange" id="ch04-maven2"
           significance="normal">
           <primary>Maven</primary>
 
-          <secondary>configuring</secondary>
-        </indexterm>Maven is a high-level build scripting framework for Java
-      that uses notions such as a standard directory structure and standard
-      life cycles, Convention over Configuration, and Declarative Dependency
-      Management to simplify a lot of the low-level scripting that you find in
-      a typical Ant build script. In Maven, your project uses a standard,
-      well-defined build life cycle—compile, test, package, deploy, and so
-      forth. Each life cycle phase is associated with a Maven plugin. The
-      various Maven plugins use the standard directory structure to carry out
-      these tasks with a minimum of intervention on your part. You can also
-      extend Maven by overriding the default plugin configurations or by
-      invoking additional plugins.</para>
+          <secondary>configurer</secondary>
+        </indexterm>Maven est un framework de scripting de haut-niveau pour
+      Java qui utilise des notions telles qu'une structure normalisée
+      d'arborescence et des cycles de vie normalisés, <emphasis>"Convention
+      over Configuration"</emphasis>, et une gestion déclarative des
+      dépendances pour simplifier beaucoup le scripting de bas-niveau qu'on
+      trouve souvent dans un script de construction Ant typique. Avec Maven,
+      votre projet utilise un cycle de vie normalisé et bien défini — compile,
+      test, package, deploy, etc. Chaque phase de cycle est associée avec un
+      plugin Maven. Les différents plugins Maven utilisent la structure
+      d'arborescence normalisée pour traiter ces tâches avec un minimum
+      d'intervention de votre part. Vous pouvez aussi étendre Maven en
+      redéfinissant les configurations de plugin par défaut ou en invoquant
+      des plugins supplémentaires.</para>
 
       <para>Jenkins <indexterm id="I_indexterm4_d1e4625" significance="normal">
           <primary>Maven</primary>
 
-          <secondary>installing</secondary>
+          <secondary>installer</secondary>
         </indexterm><indexterm id="I_indexterm4_d1e4630" significance="normal">
           <primary>installation</primary>
 
           <secondary>Maven</secondary>
-        </indexterm>provides excellent support for Maven, and has a good
-      understanding of Maven project structures and dependencies. You can
-      either get Jenkins to install a specific version of Maven automatically
-      (as we are doing with Maven 3 in the example), or provide a path to a
-      local Maven installation (see <xref linkend="fig-configure-maven"
-      os="" />). You can configure as many versions of Maven for your build
-      projects as you want, and use different versions of Maven for different
-      projects.</para>
+        </indexterm>fournit un excellent support pour Maven, et comprend
+      parfaitement les structures de projet et les dépendances Maven. Vous
+      pouvez soit demander à Jenkins d'installer automatiquement une version
+      de Maven (comme nous le faisons avec Maven 3 dans l'exemple), ou fournir
+      un chemin vers une installation locale de Maven (voir <xref
+      linkend="fig-configure-maven" os="" />). Vous pouvez configurer autant
+      de versions de Maven pour vos projets de construction que vous le
+      voulez, et utiliser différentes versions de Maven pour différents
+      projets.</para>
 
       <figure float="none" id="fig-configure-maven">
-        <title>Configuring Maven in Jenkins</title>
+        <title>Configurer Maven dans Jenkins</title>
 
         <mediaobject id="I_mediaobject4_d1e4641">
           <imageobject role="print">
@@ -768,35 +772,38 @@
         </mediaobject>
       </figure>
 
-      <para>If you tick the Install automatically checkbox, Jenkins will
-      download and install the requested version of Maven for you. You can
-      either ask Jenkins to download Maven directly from the Apache site, or
-      from a (presumably local) URL of your choice. This is an excellent
-      choice when you are using distributed builds, and, since Maven is
-      cross-platform, it will work on any machine. You don’t need to install
-      Maven explicitly on each build machine—the first time a build machine
-      needs to use Maven, it will download a copy and install it to the
-      <filename moreinfo="none">tools</filename> directory in the Jenkins home
-      directory.</para>
+      <para>Si vous cochez la case à cocher Installer automatiquement, Jenkins
+      téléchargera et installera la versions demandée de Maven pour vous. Vous
+      pouvez soit demander à Jenkins de télécharger Maven directement depuis
+      le site Apache, soit depuis une URL (a priori locale) de votre choix.
+      C'est un excellent choix si vous utilisez des constructions distribuées,
+      et puisque Maven est multi-plateformes, cela fonctionnera sur n'importe
+      quelle machine. Vous n'avez pas besoin d'installer explicitement Maven
+      sur chaque machine de construction — la première fois qu'une machine de
+      construction aura besoin d'utiliser Maven, elle en téléchargera une
+      copie et l'installera dans le répertoire <filename
+      moreinfo="none">tools</filename> du répertoire racine de Jenkins.</para>
 
-      <para>Sometimes you need to pass Java system options to your Maven build
-      process. For instance it is often useful to give Maven a bit of extra
-      memory for heavyweight tasks such as code coverage or site generation.
-      Maven lets you do this by setting the <code>MAVEN_OPTS</code> variable.
-      In Jenkins, you can set a system-wide default value, to be used across
-      all projects (see <xref linkend="fig-configure-mvnopts" />). This comes
-      in handy if you want to use certain standard memory options (for
-      example) across all projects, without having to set it up in each
-      project by<indexterm class="endofrange" id="I_indexterm4_d1e4658"
-          significance="normal" startref="ch04-maven1">
+      <para>Il est parfois nécessaire de passer des options système à votre
+      processus de construction Maven. Par exemple, il est souvent utile de
+      donner à Maven un peu plus de mémoire pour des tâches lourdes comme la
+      couverture de code ou la génération de site. Maven vous permet de faire
+      cela en positionnant la variable <code>MAVEN_OPTS</code>. Dans Jenkins,
+      vous pouvez définir une valeur par défaut pour tout le système, afin de
+      l'utiliser dans tous les projets (voir <xref
+      linkend="fig-configure-mvnopts" />). C'est pratique si vous voulez
+      utiliser des options standards de mémoire (par exemple) pour tous vos
+      projets, sans avoir à le configurer dans chaque projet à la<indexterm
+          class="endofrange" id="I_indexterm4_d1e4658" significance="normal"
+          startref="ch04-maven1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4660"
           significance="normal" startref="ch04-maven2">
           <primary></primary>
-        </indexterm> hand.</para>
+        </indexterm> main.</para>
 
       <figure float="none" id="fig-configure-mvnopts">
-        <title>Configuring system-wide MVN_OPTS</title>
+        <title>Configurer la variable système MVN_OPTS</title>
 
         <mediaobject id="I_mediaobject4_d1e4666">
           <imageobject role="print">
@@ -815,63 +822,67 @@
 
       <para><indexterm class="startofrange" id="ch04-ant1"
           significance="normal">
-          <primary>configuration</primary>
+          <primary>configurer</primary>
 
           <secondary>Ant</secondary>
         </indexterm><indexterm class="startofrange" id="ch04-ant2"
           significance="normal">
           <primary>Ant</primary>
 
-          <secondary>configuring</secondary>
+          <secondary>configurer</secondary>
         </indexterm><indexterm class="startofrange" id="ch06-ant3"
           significance="normal">
           <primary>Ant</primary>
-        </indexterm>Ant is a widely-used and very well-known build scripting
-      language for Java. It is a flexible, extensible, relatively low-level
-      scripting language, used in a large number of open source projects. An
-      Ant build script (typically called <filename
-      moreinfo="none">build.xml</filename>) is made up of a number of
-      <emphasis>targets</emphasis>. Each target performs a particular job in
-      the build process, such as compiling your code or running your unit
-      tests. It does so by executing <emphasis>tasks</emphasis>, which carry
-      out a specific part of the build job, such as invoking <command
-      moreinfo="none">javac</command> to compile your code, or creating a new
-      directory. Targets also have <emphasis>dependencies</emphasis>,
-      indicating the order in which your build tasks need to be executed. For
-      example, you need to compile your code before you can run your unit
-      tests.</para>
+        </indexterm>Ant est un langage de script de construction pour Java
+      largement utilisé et très connu. C'est un langage de scripting de
+      flexible, extensible, relativement bas-niveau utilisé dans un grand
+      nombre de projets opensource. Un script de construction Ant (typiquement
+      nommé <filename moreinfo="none">build.xml</filename>) est constitué d'un
+      certain nombre de <emphasis>targets</emphasis>. Chaque target effectue
+      une tâche particulière dans le processus de construction, comme compiler
+      votre code ou exécuter vos tests unitaires. Il fonctionne en exécutant
+      des <emphasis>tasks</emphasis>, qui portent une partie spécifique de la
+      tâche de construction, comme invoquer <command
+      moreinfo="none">javac</command> pour compiler votre code, ou créer un
+      nouveau répertoire. Les Targets ont aussi des
+      <emphasis>dependencies</emphasis>, indiquant l'ordre dans lequel vos
+      tâches de construction doivent être exécutées. Par exemple, vous devez
+      compiler votre code avant de lancer vos tests unitaires.</para>
 
-      <para>Jenkins provides excellent build-in support for Ant—you can invoke
-      Ant targets from your build job, providing properties to customize the
-      process as required. We look at how to do this in detail later on in
-      this book.</para>
+      <para>Jenkins fournit en standard un support excellent pour Ant — vous
+      pouvez invoquer les tâches Ant depuis votre tâche de construction, en
+      fournissant les propriétés permettant de personnaliser le processus
+      comme cela est nécessaire. Nous regardons comment faire cela en détail
+      plus loin dans le livre.</para>
 
-      <para>If Ant is available on the system path, Jenkins will find it.
-      However, if you want to know precisely what version of Ant you are
-      using, or if you need to be able to use several different versions of
-      Ant on different build jobs, you can configure as many installations of
-      Ant as required (see <xref linkend="fig-configure-ant" />). Just provide
-      a name and installation directory for each version of Ant in the Ant
-      section of the Configure System screen. You will then be able to choose
-      what version of Ant you want to use for each project.</para>
+      <para>Si Ant est disponible dans le <emphasis>path</emphasis> système,
+      Jenkins le trouvera. Toutefois, si vous voulez savoir précisément quelle
+      version de Ant vous êtes en train d'utiliser, ou si vous avez besoin de
+      pouvoir utiliser différentes versions de Ant sur différentes tâches de
+      construction, vous pouvez configurer autant d'installations de Ant que
+      vous le souhaitez (voir <xref linkend="fig-configure-ant" />).
+      Fournissez simplement un nom et un répertoire d'installation pour chaque
+      version de Ant dans la section Ant de l'écran Configurer le système.
+      Vous pourrez ensuite choisir quelle version de Ant vous voulez utiliser
+      pour chaque projet.</para>
 
-      <para>If you<indexterm id="I_indexterm4_d1e4713" significance="normal">
+      <para>Si vous <indexterm id="I_indexterm4_d1e4713" significance="normal">
           <primary>Ant</primary>
 
-          <secondary>installing</secondary>
+          <secondary>installer</secondary>
         </indexterm><indexterm id="I_indexterm4_d1e4718" significance="normal">
           <primary>installation</primary>
 
           <secondary>Ant</secondary>
-        </indexterm> tick the Install automatically checkbox, Jenkins will
-      download and install Ant into the <filename
-      moreinfo="none">tools</filename> directory of your Jenkins home
-      directory, just like it does for Maven. It will download an Ant
-      installation the first time a build job needs to use Ant, either from
-      the Apache website or from a local URL. Again, this is a great way to
-      standardize <phrase role="keep-together">build servers</phrase> and make
-      it easier to add new distributed build servers to an existing <phrase
-      role="keep-together">infrastructure</phrase>.<indexterm
+        </indexterm>cochez la case à cocher Installer automatiquent, Jenkins
+      téléchargera et installera Ant dans le répertoire <filename
+      moreinfo="none">tools</filename> du répertoire racine de Jenkins,
+      exactement comme il le fait pour Maven. Il téléchargera une installation
+      de Ant la première fois qu'une tâche de construction aura besoin
+      d'utiliser Ant, soit depuis le site web Apache, soit depuis une URL
+      locale. Encore une fois, ceci est un moyen formidable de normaliser vos
+      serveurs de construction et de faciliter l'ajout de nouveaux serveurs de
+      construction distribués à une infrastructure existante.<indexterm
           class="endofrange" id="I_indexterm4_d1e4733" significance="normal"
           startref="ch06-ant3">
           <primary></primary>
@@ -884,7 +895,7 @@
         </indexterm></para>
 
       <figure float="0" id="fig-configure-ant">
-        <title>Configuring Ant in Jenkins</title>
+        <title>Configurer Ant dans Jenkins</title>
 
         <mediaobject id="I_mediaobject4_d1e4743">
           <imageobject role="print">
@@ -899,39 +910,41 @@
     </sect2>
 
     <sect2>
-      <title>Shell-Scripting Language</title>
+      <title>Langage de scripts Shell</title>
 
-      <para>If you<indexterm id="I_indexterm4_d1e4753" significance="normal">
-          <primary>shell scripts</primary>
+      <para>Si vous<indexterm id="I_indexterm4_d1e4753" significance="normal">
+          <primary>scripts shell</primary>
         </indexterm><indexterm id="I_indexterm4_d1e4756" significance="normal">
           <primary>scripts</primary>
 
-          <secondary>shell scripts</secondary>
-        </indexterm> are running your build server on Unix or Linux, Jenkins
-      lets you insert shell scripts into your build jobs. This is handy for
-      performing low-level, OS-related tasks that you don’t want to do in Ant
-      or Maven. In the Shell section, you define the default shell that will
-      be used when executing these shell scripts. By default, this is
-      <filename moreinfo="none">/bin/sh</filename>, but there are times you
-      may want to modify this to another command interpreter such as <filename
-      moreinfo="none">bash</filename> or <filename
+          <secondary>scripts shell</secondary>
+        </indexterm> exécutez votre serveur de construction sous Unix ou
+      Linux, Jenkins vous permettra d'insérer des scripts shells dans vos
+      tâches de construction. C'est pratique pour effectuer des tâches
+      bas-niveau, liées à l'OS que vous ne voulez pas faire avec Ant ou Maven.
+      Dans la section Shell, vous définissez le Shell par défaut qui sera
+      utilisé pour exécuter ces scripts Shell. Par défaut, c'est <filename
+      moreinfo="none">/bin/sh</filename>, mais parfois vous pouvez vouloir
+      modifier cela pour utiliser un autre interpréteur de commande comme
+      <filename moreinfo="none">bash</filename> ou <filename
       moreinfo="none">Perl</filename>.</para>
 
-      <para>In <indexterm id="I_indexterm4_d1e4773" significance="normal">
-          <primary>batch scripts</primary>
+      <para>Sous <indexterm id="I_indexterm4_d1e4773" significance="normal">
+          <primary>scripts batch</primary>
         </indexterm><indexterm id="I_indexterm4_d1e4776" significance="normal">
           <primary>scripts</primary>
 
-          <secondary>batch scripts</secondary>
-        </indexterm>Windows, the Shell section does not apply—you use Windows
-      batch scripting instead. So, on a Windows build server, you should
-      leave<indexterm class="endofrange" id="I_indexterm4_d1e4782"
-          significance="normal" startref="ch04-tool1">
+          <secondary>scripts batch</secondary>
+        </indexterm>Windows, la section Shell ne s'applique pas — vous
+      utilisez le scripting batch Windows à la place. Donc, sur un serveur de
+      construction Windows, vous devriez laisser <indexterm class="endofrange"
+          id="I_indexterm4_d1e4782" significance="normal"
+          startref="ch04-tool1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4784"
           significance="normal" startref="ch04-tool2">
           <primary></primary>
-        </indexterm> this field blank.</para>
+        </indexterm>ce champ vierge.</para>
     </sect2>
   </sect1>
 
