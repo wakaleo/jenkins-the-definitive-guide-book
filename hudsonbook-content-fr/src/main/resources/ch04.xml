@@ -1,615 +1,1197 @@
-<?xml version="1.0"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-configuration">
-  <title>Configuring Your Jenkins Server</title>
+  <title>Configurer votre serveur Jenkins</title>
+
   <sect1 id="sect-configuration-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch04-config" significance="normal"><primary>configuration</primary></indexterm><indexterm id="I_indexterm4_d1e4122" significance="normal"><primary>Jenkins</primary><secondary>configuring</secondary><see>configuration</see></indexterm>Before you can start creating your build jobs in Jenkins,
-    you need to do a little configuration, to ensure that your Jenkins server
-    works smoothly in your particular environment. Jenkins is highly
-    configurable, and, although most options are provided with sensible
-    default values, or are able to find the right build tools in the system
-    path and environment variables, it is always a good idea to know exactly
-    what your build server is doing.</para>
-    <para>Jenkins is globally very easy to configure. The administration
-    screens are intuitive, and the contextual online help (the blue question
-    mark icons next to each field) is detailed and precise. In this chapter,
-    we will look at how to configure your basic server setup in detail,
-    including how to configure Jenkins to use different versions of Java,
-    build tools such as Ant and Maven, and SCM tools such as CVS and
-    Subversion. We will look at more advanced server configuration, such as
-    using other version control systems or notification tools, further on in
-    the book.</para>
+
+    <para><indexterm class="startofrange" id="ch04-config"
+        significance="normal">
+        <primary>configuration</primary>
+      </indexterm><indexterm id="I_indexterm4_d1e4122" significance="normal">
+        <primary>Jenkins</primary>
+
+        <secondary>configurer</secondary>
+
+        <see>configuration</see>
+      </indexterm>Avant de commencer à créer vos tâches de construction dans
+    Jenkins, vous devez faire un peu de configuration pour vous assurer que
+    votre serveur Jenkins fonctionnera sans problème dans votre environnement
+    spécifique. Jenkins est hautement configurable, et bien que la plupart des
+    options soit fournie avec des valeurs raisonnables par défaut, ou que
+    l'outil soit capable de trouver les bons outils de construction dans le
+    PATH ou dans les variables d'environnement, c'est toujours une bonne idée
+    de savoir exactement ce que votre serveur de construction fait.</para>
+
+    <para>Jenkins est globalement très simple à configurer. Les écrans
+    d'administration sont intuitifs, et l'aide contextuelle (les icônes en
+    forme de point d'interrogation bleu à côté de chaque champ) est détaillée
+    et précise. Dans ce chapitre, nous allons voir comment configurer votre
+    serveur basique en détail. Nous verrons notamment comment configurer
+    Jenkins pour qu'il utilise différentes versions de Java, d'outils de
+    construction comme Ant ou Maven, et d'outils de gestion de version comme
+    CVS et Subversion. Plus loin dans le livre, nous regarderons aussi des
+    configurations de serveur plus avancées, comme l'utilisation d'autres
+    systèmes de gestion de version ou d'outils de notifications.</para>
   </sect1>
+
   <sect1 id="sect-configuration-manage-hudson">
-    <title>The Configuration Dashboard—The Manage Jenkins Screen</title>
-    <para>In <indexterm class="startofrange" id="ch04-manage" significance="normal"><primary>Manage Jenkins screen</primary></indexterm>Jenkins, you manage virtually all aspects of system
-    configuration in the Manage Jenkins screen (see <xref linkend="fig-hudson-manage-hudson"/>). You can also get to this screen
-    directly from anywhere in the application by typing “manage” in the
-    Jenkins search box. This screen changes depending on what plugins you
-    install, so don’t be surprised if you see more than what we show
-    here.</para>
+    <title>Le tableau de bord de configuration — L'écran Administrer
+    Jenkins</title>
+
+    <para>Dans <indexterm class="startofrange" id="ch04-manage"
+        significance="normal">
+        <primary>écran Administrer Jenkins</primary>
+      </indexterm>Jenkins, vous gérez pratiquement tous les aspects de la
+    configuration du système dans l'écran Administrer Jenkins (voir <xref
+    linkend="fig-hudson-manage-hudson" />). Vous pouvez aussi atteindre cet
+    écran directement depuis n'importe où dans l'application en tapant
+    “manage” dans la boîte de recherche Jenkins. Cet écran change en fonction
+    des plugins que vous installez, ne soyez donc pas surpris si vous voyez
+    plus de choses que ce que nous montrons ici.</para>
+
     <figure float="0" id="fig-hudson-manage-hudson">
-      <title>You configure your Jenkins installation in the Manage Jenkins
-      screen</title>
+      <title>Configurer son installation Jenkins dans l'écran Administrer
+      Jenkins</title>
+
       <mediaobject id="I_mediaobject4_d1e4146">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0401.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0401.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0401.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0401.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This screen lets you configure different aspects of your Jenkins
-    server. Each link on this page takes you to a dedicated configuration
-    screen, where you can manage different parts of the Jenkins server. Some
-    of the more interesting options are discussed here:</para>
+
+    <para>Cet écran vous permet de configurer différents aspects de votre
+    serveur Jenkins. Chaque lien sur cette page vous amène à un écran de
+    configuration dédié, où vous pouvez gérer différentes parties du serveur
+    Jenkins. Quelques-unes des options les plus intéressantes sont discutées
+    ici :</para>
+
     <variablelist>
       <varlistentry>
-        <term>Configure System</term>
+        <term>Configurer le système</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4159" significance="normal"><primary>configuration</primary><secondary>Configure System screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4164" significance="normal"><primary>Configure System screen</primary></indexterm>This is where you manage paths to the various tools
-          you use in your builds, such as JDKs, and versions of Ant and Maven,
-          as well as security options, email servers, and other system-wide
-          configuration details. Many of the plugins that you install will
-          also need to be configured here—Jenkins will add the fields
-          dynamically when you install the plugins.</para>
+          <para><indexterm id="I_indexterm4_d1e4159" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>écran configurer système</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4164"
+              significance="normal">
+              <primary>écran configurer système</primary>
+            </indexterm>C'est là que vous gérez les chemins vers les
+          différents outils que vous utilisez dans vos constructions, comme
+          les JDKs, les version de Ant et Maven, les options de sécurité, les
+          serveurs d'email, et autres détails de configuration de niveau
+          système. Plusieurs des plugins que vous installerez nécessiteront
+          aussi d'être configurés ici — Jenkins ajoutera les champs
+          dynamiquement à l'installation des plugins.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Reload Configuration from Disk</term>
+        <term>Recharger la configuration à partir du disque</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4173" significance="normal"><primary>configuration</primary><secondary>Reload Configuration from Disk screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4178" significance="normal"><primary>Reload Configuration from Disk screen</primary></indexterm>As we saw in the previous chapter, Jenkins stores all
-          its system and build job configuration details as XML files stored
-          in the Jenkins home directory (see <xref linkend="sec-hudson-home-directory"/>). It also stores all of the
-          build history in the same directory. If you are migrating build jobs
-          from one Jenkins instance to another, or archiving old build jobs,
-          you will need to add or remove the corresponding build job
-          directories to Jenkins’s <filename moreinfo="none">builds</filename>
-          directory. You don’t need to take Jenkins offline to do this—you can
-          simply use the “Reload Configuration from Disk” option to reload the
-          Jenkins system and build job configurations directly. This process
-          can be a little slow if there is a lot of build history, as Jenkins
-          loads not only the build configurations but also all of the
-          historical data as well.</para>
+          <para><indexterm id="I_indexterm4_d1e4173" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>écran de configuration du rechargement à partir du
+              disque</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4178"
+              significance="normal">
+              <primary>écran de configuration du rechargement à partir du
+              disque</primary>
+            </indexterm>Comme nous l'avons vu dans le précédent chapitre,
+          Jenkins stocke tous les détails de configuration du système et des
+          tâches de construction dans des fichiers XML localisés dans le
+          répertoire utilisateur de Jenkins (voir <xref
+          linkend="sec-hudson-home-directory" />). Il stocke aussi tout
+          l'historique des constructions dans le même répertoire. Si vous
+          migrez des tâches de construction d'une instance Jenkins à une
+          autre, ou archivez de vieilles tâches de construction, vous aurez
+          besoin d'ajouter ou d'enlever les différents répertoires de tâches
+          de construction au répertoire de constructions de Jenkins. Vous
+          n'avez pas besoin de désactiver Jenkins pour faire cela — vous
+          pouvez simplement utiliser l'option “Recharger la configuration à
+          partir du disque” pour recharger directement la configuration
+          système de Jenkins et des tâches de construction. Ce processus peut
+          être un peu lent s'il y a beaucoup d'historique de construction,
+          pendant que Jenkins charge non seulement la configuration des
+          constructions mais aussi les données de l'historique.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Manage Plugins</term>
+        <term>Gestion des plugins</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4192" significance="normal"><primary>configuration</primary><secondary>Manage Plugins screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4197" significance="normal"><primary>Manage Plugins screen</primary></indexterm><indexterm id="I_indexterm4_d1e4200" significance="normal"><primary>plugins</primary><secondary>managing</secondary></indexterm>One of the best features of Jenkins is its extensible
-          architecture. There is a large ecosystem of third-party open source
-          plugins available, enabling you to add extra features to your build
-          server, from support for different SCM tools such as Git, Mercurial
-          or ClearCase, to code quality and code coverage metrics reporting.
-          We will be looking at many of the more popular and useful plugins
-          throughout this book. Plugins can be installed, updated and removed
-          through the Manage Plugins screen. Note that removing plugins needs
-          to be done with some care, as it can sometimes affect the stability
-          of your Jenkins instance—we will look at this in more detail in
-          <xref linkend="sect-maint-migrating-jobs"/>.</para>
+          <para><indexterm id="I_indexterm4_d1e4192" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>écran de gestion des plugins</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4197"
+              significance="normal">
+              <primary>écran de gestion des plugins</primary>
+            </indexterm><indexterm id="I_indexterm4_d1e4200"
+              significance="normal">
+              <primary>plugins</primary>
+
+              <secondary>gestion</secondary>
+            </indexterm>L'une des meilleures fonctionnalités de Jenkins est
+          son architecture extensible. Il y a un large écosystème de plugins
+          open source tierces disponibles, vous permettant d'ajouter des
+          fonctionnalités à votre serveur de construction, du support des
+          différents outils de gestion de sources comme Git, Mercurial ou
+          ClearCase, aux métriques de qualité du code et de couverture de
+          code. Nous regarderons plusieurs des plugins les plus populaires et
+          utiles à travers ce livre. Les plugins peuvent être installés, mis à
+          jour et enlevés via l'écran Gérer les Plugins. Notez qu'enlever des
+          plugins nécessite un certain soin, parce que cela peut parfois
+          affecter la stabilité de votre instance Jenkins — nous verrons cela
+          plus en détails dans <xref
+          linkend="sect-maint-migrating-jobs" />.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>System Information</term>
+        <term>Information Système</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4213" significance="normal"><primary>configuration</primary><secondary>System Information screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4218" significance="normal"><primary>System Information screen</primary></indexterm>This screen displays a list of all the current Java
-          system properties and system environment variables. Here, you can
-          check exactly what version of Java Jenkins is running in, what user
-          it is running under, and so forth. You can also check that Jenkins
-          is using the correct environment variable settings. Its main use is
-          for <phrase role="keep-together">troubleshooting</phrase>, so that
-          you can make sure that your server is running with the system
-          properties and variables you think it is.</para>
+          <para><indexterm id="I_indexterm4_d1e4213" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>écran Information Système</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4218"
+              significance="normal">
+              <primary>écran Information Système</primary>
+            </indexterm>Cet écran affiche une liste de toutes les propriétés
+          systèmes Java et les variables d'environnement systèmes. Ici, vous
+          pouvez vérifier dans quelle version exacte de Java Jenkins est en
+          train de fonctionner, avec quel utilisateur, etc. Vous pouvez aussi
+          vérifier que Jenkins utilise le bon paramétrage des variables
+          d'environnement. Cet écran sert principalement pour le dépannage. Il
+          vous permet de vous assurer que votre serveur fonctionne avec les
+          propriétés systèmes et les variables d'environnement que vous
+          pensez.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>System Log</term>
+        <term>Log système</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4230" significance="normal"><primary>configuration</primary><secondary>System Log screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4235" significance="normal"><primary>System Log screen</primary></indexterm>The System Log screen is a convenient way to view the
-          Jenkins log files in real time. Again, the main use of this screen
-          is for troubleshooting.</para>
-          <para>You can also subscribe to RSS feeds for various levels of log
-          messages. For example, as a Jenkins administrator, you might want to
-          subscribe to all the ERROR and WARNING log messages.</para>
+          <para><indexterm id="I_indexterm4_d1e4230" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>System Log screen</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4235"
+              significance="normal">
+              <primary>System Log screen</primary>
+            </indexterm>L'écran de Log Système est un moyen pratique de voir
+          les fichiers de log Jenkins en temps réel. Encore une fois, ceci
+          sert principalement au dépannage.</para>
+
+          <para>Vous pouvez aussi souscrire aux flux RSS pour différents
+          niveaux de messages de logs. Par exemple, en tant qu'administrateur
+          Jenkins, il peut être une bonne idée de souscrire à tous les
+          messages de log de niveau ERROR et WARNING.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Load Statistics</term>
+        <term>Statistiques d'utilisation</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4246" significance="normal"><primary>configuration</primary><secondary>Load Statistics screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4251" significance="normal"><primary>Load Statistics screen</primary></indexterm>Jenkins keeps track of how busy your server is in
-          terms of the number of concurrent builds and the length of the build
-          queue (which gives an idea of how long your builds need to wait
-          before being executed). These statistics can give you an idea of
-          whether you need to add extra capacity or extra build nodes to your
+          <para><indexterm id="I_indexterm4_d1e4246" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>Ecran de Statistiques d'utilisation</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4251"
+              significance="normal">
+              <primary>Ecran de Statistiques d'utilisation</primary>
+            </indexterm>Jenkins garde la trace du niveau d'activité de votre
+          serveur en fonction du nombre de de constructions concurrentes et de
+          la longueur de la file d'attente de construction (ce qui vous donne
+          une idée de la durée pendant laquelle vos constructions doivent
+          attendre avant d'être exécutées). Ces statistiques peuvent vous
+          aider à savoir si vous avez besoin d'ajouter de la capacité
+          additionnelle ou des nœuds supplémentaires à votre
           infrastructure.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Script Console</term>
+        <term>Console de script</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4260" significance="normal"><primary>configuration</primary><secondary>Script Console</secondary></indexterm><indexterm id="I_indexterm4_d1e4265" significance="normal"><primary>Script Console screen</primary></indexterm><indexterm id="I_indexterm4_d1e4268" significance="normal"><primary>Groovy scripts</primary><secondary>running on Script Console</secondary></indexterm>This screen lets you run Groovy scripts on the server.
-          It is useful for advanced troubleshooting: since it requires a
-          strong knowledge of the internal Jenkins architecture, it is mainly
-          useful for plugin developers and the like.</para>
+          <para><indexterm id="I_indexterm4_d1e4260" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>Console de script</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4265"
+              significance="normal">
+              <primary>Ecran de Console de script</primary>
+            </indexterm><indexterm id="I_indexterm4_d1e4268"
+              significance="normal">
+              <primary>scripts Groovy</primary>
+
+              <secondary>fonctionnant dans la console de script</secondary>
+            </indexterm>Cet écran vous permet d'exécuter des scripts Groovy
+          sur le serveur. C'est utile pour le dépannage avancé : cela requiert
+          en effet une connaissance profonde de l'architecture interne de
+          Jenkins. Cet écran est donc principalement utile pour les
+          développeurs de plugins et consorts.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Manage Nodes</term>
+        <term>Gérer les nœuds</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4279" significance="normal"><primary>configuration</primary><secondary>Manage Nodes screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4284" significance="normal"><primary>Manage Nodes screen</primary></indexterm>Jenkins handles parallel and distributed builds well.
-          In this screen, you can configure how many builds you want. Jenkins
-          runs simultaneously, and, if you are using distributed builds, set
-          up build nodes. A build node is another machine that Jenkins can use
-          to execute its builds. We will look at how to configure distributed
-          builds in detail in <xref linkend="chapter-distributed-builds"/>.</para>
+          <para><indexterm id="I_indexterm4_d1e4279" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>Ecran Gérer les nœuds</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4284"
+              significance="normal">
+              <primary>Ecran Gérer les nœuds</primary>
+            </indexterm>Jenkins gère aussi bien les constructions parallèles
+          que distribuées. Dans cet écran, vous pouvez configurer le nombre de
+          constructions que vous voulez. Jenkins les exécute simultanément,
+          et, si vous utilisez des constructions distribuées, vous pouvez
+          configurer les nœuds de construction (NDT : version anglaise
+          confuse, à revoir). Un nœud de construction est une autre machine
+          que Jenkins peut utiliser pour exécuter ses constructions. Nous
+          regarderons comment configurer les constructions distribuées en
+          détail dans <xref linkend="chapter-distributed-builds" />.</para>
         </listitem>
       </varlistentry>
+
       <varlistentry>
-        <term>Prepare for Shutdown</term>
+        <term>Préparer à la fermeture</term>
+
         <listitem>
-          <para><indexterm id="I_indexterm4_d1e4295" significance="normal"><primary>configuration</primary><secondary>Prepare for Shut down screen</secondary></indexterm><indexterm id="I_indexterm4_d1e4300" significance="normal"><primary>Prepare for Shutdown screen</primary></indexterm>If you need to shut down Jenkins, or the server
-          Jenkins is running on, it is best not to do so when a build is being
-          executed. To shut down Jenkins cleanly, you can use the Prepare for
-          Shutdown link, which prevents any new builds from being started.
-          Eventually, when all of the current builds have finished, you will
-          be able to shut down Jenkins cleanly.</para>
+          <para><indexterm id="I_indexterm4_d1e4295" significance="normal">
+              <primary>configuration</primary>
+
+              <secondary>Ecran Préparer à la fermeture</secondary>
+            </indexterm><indexterm id="I_indexterm4_d1e4300"
+              significance="normal">
+              <primary>Ecran Préparer à la fermeture</primary>
+            </indexterm>Si vous avez besoin d'éteindre Jenkins, ou le serveur
+          sur lequel il fonctionne, c'est mieux de ne pas le faire lorsqu'une
+          construction est en cours. Pour fermer Jenkins proprement, vous
+          pouvez utiliser le lien Préparer à la fermeture, qui empêche le
+          démarrage de toute nouvelle construction. Finalement, lorsque toutes
+          les constructions en cours seront terminées, vous pourrez éteindre
+          Jenkins proprement.</para>
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>We will come back to some of these features in more detail later on
-    in the book. In the following sections, we will focus on how to configure
-    the most important Jenkins system <indexterm id="I_indexterm4_d1e4306" class="endofrange" startref="ch04-config" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4308" class="endofrange" startref="ch04-manage" significance="normal"><primary/></indexterm>parameters.</para>
+
+    <para>Nous reviendrons sur certaines de ces fonctionnalités en détails
+    plus loin dans le livre. Dans les sections suivantes, nous nous
+    concentrerons sur comment configurer les paramètres systèmes les plus
+    importants de Jenkins <indexterm class="endofrange"
+        id="I_indexterm4_d1e4306" significance="normal" startref="ch04-config">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4308"
+        significance="normal" startref="ch04-manage">
+        <primary></primary>
+      </indexterm>.</para>
   </sect1>
+
   <sect1 id="sect-configuration-system">
-    <title>Configuring the System Environment</title>
-    <para>The <indexterm class="startofrange" id="ch04-configsys1" significance="normal"><primary>configuration</primary><secondary>Configure System screen</secondary></indexterm><indexterm class="startofrange" id="ch04-configsys2" significance="normal"><primary>Configure System screen</primary></indexterm>most important Jenkins administration page is the Configure
-    System screen (<xref linkend="fig-configure-system"/>). Here, you set up
-    most of the fundamental tools that Jenkins needs to do its daily work. The
-    default screen contains a number of sections, each relating to a different
-    configuration area or external tool. In addition, when you install
-    plugins, their system-wide configuration is also often done in this
-    screen.</para>
+    <title>Configurer l'environnement système</title>
+
+    <para>La <indexterm class="startofrange" id="ch04-configsys1"
+        significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>Ecran de configuration système</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-configsys2"
+        significance="normal">
+        <primary>Ecran de configuration système</primary>
+      </indexterm>page d'administration la plus importante de Jenkins est
+    l'écran Configurer le système (<xref linkend="fig-configure-system" />).
+    Ici, vous paramétrez la plupart des outils fondamentaux dont Jenkins a
+    besoin pour son travail quotidien. L'écran par défaut contient un certain
+    nombre de sections, chacune concernant un domaine différent ou un outil
+    externe. De plus, quand vous installez des plugins, leur configuration
+    système globale est aussi souvent effectuée dans cet écran.</para>
+
     <figure float="none" id="fig-configure-system">
-      <title>System configuration in Jenkins</title>
+      <title>Configuration du système dans Jenkins</title>
+
       <mediaobject id="I_mediaobject4_d1e4330">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0402.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0402.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0402.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0402.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>The Configure System screen lets you define global parameters for
-    your Jenkins installation, as well as external tools required for your
-    build process. The first part of this screen lets you define some general
-    system-wide parameters.</para>
-    <para>The Jenkins <indexterm id="I_indexterm4_d1e4339" significance="normal"><primary>home directory for Jenkins</primary></indexterm><indexterm id="I_indexterm4_d1e4342" significance="normal"><primary>Jenkins</primary><secondary>home directory for</secondary></indexterm>home directory is displayed, for reference. This way, you
-    can check at a glance that you are working with the home directory that
-    you expect. Remember, you can change this directory by setting
-    the<indexterm id="I_indexterm4_d1e4348" significance="normal"><primary>JENKINS_HOME environment variable</primary></indexterm> <literal moreinfo="none">JENKINS_HOME</literal> environment variable in
-    your environment (see <xref linkend="sec-hudson-home-directory" os=""/>).</para>
-    <para>The System Message field<indexterm id="I_indexterm4_d1e4359" significance="normal"><primary>Jenkins</primary><secondary>home page for</secondary></indexterm><indexterm id="I_indexterm4_d1e4364" significance="normal"><primary>home page</primary></indexterm><indexterm id="I_indexterm4_d1e4367" significance="normal"><primary>configuration</primary><secondary>system message on home page</secondary></indexterm> is useful for several purposes. This text is displayed at
-    the top of your Jenkins home page. You can use HTML tags, so it is a
-    simple way to customize your build server by including the name of your
-    server and a short blurb describing its purpose. You can also use it to
-    display messages for all users, such as to announce system outages and so
-    on.</para>
-    <para>The Quiet Period is <indexterm id="I_indexterm4_d1e4375" significance="normal"><primary>configuration</primary><secondary>quiet period before build starts</secondary></indexterm><indexterm id="I_indexterm4_d1e4380" significance="normal"><primary>build jobs</primary><secondary>delaying start of</secondary></indexterm><indexterm id="I_indexterm4_d1e4385" significance="normal"><primary>quiet period before build starts</primary></indexterm><indexterm id="I_indexterm4_d1e4388" significance="normal"><primary>CVS</primary><secondary>delaying build jobs</secondary></indexterm>useful for SCM tools like CVS that commit file changes one
-    by one, rather than grouped together in a single atomic transaction.
-    Normally, Jenkins will trigger a build as soon as it detects a change in
-    the source repository. However, this doesn’t suit all environments. If you
-    are using an SCM tool like CVS, you don’t want Jenkins kicking off a build
-    as soon as the first change comes in, as the repository will be in an
-    inconsistent state until all of the changes have been committed. You can
-    use the Quiet Period field to avoid issues like this. If you set a value
-    here, Jenkins will wait until no changes have been detected for the
-    specified number of seconds before triggering the build. This helps to
-    ensure that all of the changes have been committed and the repository is
-    in a stable state before starting the build.</para>
-    <para>For most modern version control systems, such as Subversion, Git or
-    Mercurial, commits are atomic. This means that changes in multiple files
-    are submitted to the repository as a single unit, and the source code on
-    the repository is guaranteed to be in a stable state at all times.
-    However, some teams still use an approach where one logical change set is
-    delivered in several commit operations. In this case, you can use the
-    Quiet Period field to ensure that the build always uses a stable source
-    code version.</para>
-    <para>The Quiet Period value specified here is in fact the default
-    system-wide value—if required, you can redefine this value individually
-    for each project.</para>
-    <para>You also manage user accounts and user rights here. By default,
-    Jenkins lets any user do anything. If you want a more restrictive
-    approach, you will need to activate Jenkins security here using the Enable
-    Security field. There are many ways to do this, and we look at this aspect
-    of Jenkins<indexterm id="I_indexterm4_d1e4400" class="endofrange" startref="ch04-configsys1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4402" class="endofrange" startref="ch04-configsys2" significance="normal"><primary/></indexterm> later on (see <xref linkend="chapter-security"/>).</para>
+
+    <para>L'écran Configurer le système vous permet de définir les paramètres
+    globaux pour votre installation Jenkins, et aussi pour vos outils externes
+    nécessaires au processus de construction. La première partie de cet écran
+    permet de définir certains paramètres de niveau système.</para>
+
+    <para>Le répertoire utilisateur<indexterm id="I_indexterm4_d1e4339"
+        significance="normal">
+        <primary>répertoire utilisateur de Jenkins</primary>
+      </indexterm><indexterm id="I_indexterm4_d1e4342" significance="normal">
+        <primary>Jenkins</primary>
+
+        <secondary>répertoire utilisateur de</secondary>
+      </indexterm> de Jenkins est indiqué, pour référence. De cette façon,
+    vous pouvez vérifier d'un coup d'œil que vous travaillez avec le
+    répertoire utilisateur auquel vous vous attendez. Rappelez-vous, vous
+    pouvez changer ce répertoire en positionnant la variable d'environnement
+    <indexterm id="I_indexterm4_d1e4348" significance="normal">
+        <primary>JENKINS_HOME variable d'environnement</primary>
+      </indexterm> <literal moreinfo="none">JENKINS_HOME</literal> dans votre
+    environnement (voir <xref linkend="sec-hudson-home-directory"
+    os="" />).</para>
+
+    <para>Le champ Message du système<indexterm id="I_indexterm4_d1e4359"
+        significance="normal">
+        <primary>Jenkins</primary>
+
+        <secondary>page d'accueil pour</secondary>
+      </indexterm><indexterm id="I_indexterm4_d1e4364" significance="normal">
+        <primary>page d'accueil</primary>
+      </indexterm><indexterm id="I_indexterm4_d1e4367" significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>message système sur la page d'accueil</secondary>
+      </indexterm> sert à plusieurs choses. Ce texte est affiché en haut de
+    votre page d'accueil Jenkins. Vous pouvez utiliser des balises HTML, c'est
+    donc un moyen simple de personnaliser votre serveur de construction en
+    incluant le nom de votre serveur et un petit laïus sur son rôle. Vous
+    pouvez aussi l'utiliser pour afficher des messages pour tous les
+    utilisateurs, pour annoncer par exemple des indisponibilités du système,
+    etc.</para>
+
+    <para>La Période d'attente est <indexterm id="I_indexterm4_d1e4375"
+        significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>période d'attente avant que la construction ne
+        démarre</secondary>
+      </indexterm><indexterm id="I_indexterm4_d1e4380" significance="normal">
+        <primary>tâches de construction</primary>
+
+        <secondary>retarder le démarrage</secondary>
+      </indexterm><indexterm id="I_indexterm4_d1e4385" significance="normal">
+        <primary>période d'attente avant que la construction ne
+        démarre</primary>
+      </indexterm><indexterm id="I_indexterm4_d1e4388" significance="normal">
+        <primary>CVS</primary>
+
+        <secondary>retarder les tâches de construction</secondary>
+      </indexterm>utile pour les outils de gestion de sources comme CVS qui
+    committent les fichiers un par un, au lieu de les grouper ensemble en une
+    seule transaction atomique. Normalement, Jenkins déclenchera une
+    construction dès qu'il détectera un changement dans le dépôt de sources.
+    Toutefois, cela ne convient pas à tous les environnements. Si vous
+    utilisez un outil comme CVS, vous ne devriez pas lancer une construction
+    dès que le premier changement arrive, parce que le dépôt sera dans un état
+    inconsistant tant que tous les changements n'auront pas été committés.
+    Vous pouvez utiliser le champ Période d'attente pour éviter des problèmes
+    de ce genre. Si vous mettez une valeur à cet endroit, Jenkins attendra
+    qu'aucun changement n'ait été détecté pendant le nombre spécifié de
+    secondes avant de déclencher la construction. Ce permet de d'assurer que
+    tous les changements ont été committés et que le dépôt est dans un état
+    stable avant de démarrer la construction.</para>
+
+    <para>Pour les systèmes de gestion de version modernes, comme Subversion,
+    Git ou Mercurial, les commits sont atomiques. Cela signifie que des
+    changements dans plusieurs fichiers sont soumis au dépôt comme unité
+    simple, et le code source sur le dépôt est garanti d'être à tout moment
+    dans un état stable. Toutefois, certaines équipes utilisent encore une
+    approche où un changement logique est livré en plusieurs opérations de
+    commit. Dans ce cas, vous pouvez utiliser la Période d'attente pour vous
+    assurer que la construction utilise toujours une version stable de code
+    source.</para>
+
+    <para>La valeur de Période d'attente spécifiée est la valeur par défaut au
+    niveau système — si nécessaire, vous pouvez redéfinir cette valeur
+    individuellement pour chaque projet.</para>
+
+    <para>Vous pouvez aussi gérer les comptes utilisateurs et les droits ici.
+    Par défaut, Jenkins laisse n'importe quel utilisateur faire ce qu'il
+    souhaite. Si vous souhaitez une approche plus restrictive, vous devrez
+    activer la sécurité de Jenkins en sélectionnant le champ Activer la
+    sécurité. Il y a plusieurs façons de gérer cela, nous regarderons cet
+    aspect de Jenkins<indexterm class="endofrange" id="I_indexterm4_d1e4400"
+        significance="normal" startref="ch04-configsys1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4402"
+        significance="normal" startref="ch04-configsys2">
+        <primary></primary>
+      </indexterm> plus tard (voir <xref
+    linkend="chapter-security" />).</para>
   </sect1>
+
   <sect1 id="sect-configuration-global">
-    <title>Configuring Global Properties</title>
-    <para>The <indexterm class="startofrange" id="ch04-global1" significance="normal"><primary>configuration</primary><secondary>global properties</secondary></indexterm><indexterm class="startofrange" id="ch04-global2" significance="normal"><primary>global properties</primary></indexterm><indexterm class="startofrange" id="ch04-global3" significance="normal"><primary>properties</primary><secondary>global</secondary></indexterm><indexterm class="startofrange" id="ch04-global4" significance="normal"><primary>build jobs</primary><secondary>global properties for</secondary></indexterm>Global Properties (see <xref linkend="fig-configure-global-properties"/>) section lets you define
-    variables that can be managed centrally but used in all of your build
-    jobs. You can add as many properties as you want here, and use them in
-    your build jobs. Jenkins will make them available within your build job
-    environment, so you can freely use them within your Ant and Maven build
-    scripts. Note that you shouldn’t put periods (“.”) in the property names,
-    as they won’t be processed correctly. So <literal moreinfo="none">ldapserver</literal> or
-    <literal moreinfo="none">ldap_server</literal> is fine, but not
-    <literal moreinfo="none">ldap.server</literal>.</para>
+    <title>Configurer les propriétés globales</title>
+
+    <para>La section <indexterm class="startofrange" id="ch04-global1"
+        significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>propriétés globales</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-global2"
+        significance="normal">
+        <primary>propriétés globales</primary>
+      </indexterm><indexterm class="startofrange" id="ch04-global3"
+        significance="normal">
+        <primary>propriétés</primary>
+
+        <secondary>globales</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-global4"
+        significance="normal">
+        <primary>tâches de construction</primary>
+
+        <secondary>propriétés globales pour</secondary>
+      </indexterm>Propriétés globales (voir <xref
+    linkend="fig-configure-global-properties" />) vous permet de définir des
+    variables de façon centralisée et utilisées dans toutes vos tâches de
+    construction. Vous pouvez ajouter autant de propriétés que vous voulez, et
+    les utiliser dans vos tâches. Jenkins les rendra disponible à l'intérieur
+    de votre environnement de construction de tâches, vous permettant de les
+    utiliser facilement dans vos scripts Ant ou Maven. A noter que vous ne
+    devez pas mettre de points (“.”) dans les noms de propriétés, parce qu'ils
+    ne seront pas traités correctement. Utilisez donc <literal
+    moreinfo="none">ldapserver</literal> ou <literal
+    moreinfo="none">ldap_server</literal>, mais pas <literal
+    moreinfo="none">ldap.server</literal>.</para>
+
     <figure float="0" id="fig-configure-global-properties">
-      <title>Configuring environment variables in Jenkins</title>
+      <title>Configurer les variables d'environnement dans Jenkins</title>
+
       <mediaobject id="I_mediaobject4_d1e4446">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0403.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0403.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0403.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0403.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>There are two ways you typically use these variables. Firstly, you
-    can use them directly in your build script, using the
-    <literal moreinfo="none">${key}</literal> or <literal moreinfo="none">$key</literal> notation (so
-    <literal moreinfo="none">${ldapserver}</literal> or <literal moreinfo="none">$ldapserver</literal> in the
-    example give above. This is the simplest approach, but means that there is
-    a tight coupling between your build job configuration and your build
-    scripts.</para>
-    <para>If your script uses a different property name (one containing dots,
-    for example), you can also pass the value to your build script in the
-    build job configuration. In <xref linkend="fig-config-properties-in-job"/> we pass the
-    <literal moreinfo="none">ldapserver</literal> property value defined in <xref linkend="fig-configure-global-properties"/> to a Maven build job. Using
-    the <literal moreinfo="none">-D</literal> option means that this value will be accessible
-    from within the build script. This is a flexible approach, as we can
-    assign the global properties defined within Jenkins to script-specific
-    variables in our build scripts. In <xref linkend="fig-config-properties-in-job"/>, for example, the
-    <literal moreinfo="none">ldapserver</literal> property will be available from within the
-    Maven build via the<indexterm id="I_indexterm4_d1e4483" class="endofrange" startref="ch04-global1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4485" class="endofrange" startref="ch04-global2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4487" class="endofrange" startref="ch04-global3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4489" class="endofrange" startref="ch04-global4" significance="normal"><primary/></indexterm> internal <literal moreinfo="none">${ldap.server}</literal> property.</para>
+
+    <para>Il y a deux façons principales d'utiliser ces variables.
+    Premièrement, vous pouvez les utiliser directement dans votre script de
+    construction, en utilisant la notation <literal
+    moreinfo="none">${key}</literal> ou <literal
+    moreinfo="none">$key</literal> (donc <literal
+    moreinfo="none">${ldapserver}</literal> ou <literal
+    moreinfo="none">$ldapserver</literal> dans l'exemple donné ci-dessus).
+    C'est l'approche la plus simple, mais cela signifie qu'il y a un couplage
+    fort entre la configuration de votre tâche et vos scripts de
+    construction.</para>
+
+    <para>Si votre script utilise un nom de propriété différent (un contenant
+    des points, par exemple), vous pouvez aussi passer la valeur à votre
+    script de construction dans la configuration de votre tâche de
+    construction. Dans <xref linkend="fig-config-properties-in-job" /> nous
+    passons la valeur de la propriété <literal
+    moreinfo="none">ldapserver</literal> définie dans <xref
+    linkend="fig-configure-global-properties" /> à une tâche de construction
+    Maven. Utiliser l'option <literal moreinfo="none">-D</literal> signifie
+    que cette valeur sera accessible à l'intérieur du script. C'est une
+    approche flexible, parce qu'on peut assigner les propriétés globales
+    définies dans Jenkins à des variables spécifiques à nos scripts de
+    construction. Dans <xref linkend="fig-config-properties-in-job" />, par
+    exemple, la propriété <literal moreinfo="none">ldapserver</literal> sera
+    disponible à l'intérieur de la construction Maven via la
+    propriété<indexterm class="endofrange" id="I_indexterm4_d1e4483"
+        significance="normal" startref="ch04-global1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4485"
+        significance="normal" startref="ch04-global2">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4487"
+        significance="normal" startref="ch04-global3">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4489"
+        significance="normal" startref="ch04-global4">
+        <primary></primary>
+      </indexterm> <literal moreinfo="none">${ldap.server}</literal>.</para>
+
     <figure float="none" id="fig-config-properties-in-job">
-      <title>Using a configured environment variable</title>
+      <title>Utiliser une variable d'environnement configurée</title>
+
       <mediaobject id="I_mediaobject4_d1e4498">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0404.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0404.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0404.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0404.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
   </sect1>
+
   <sect1 id="sect-configuration-jdks">
-    <title>Configuring Your JDKs</title>
-    <para><indexterm class="startofrange" id="ch04-jdk1" significance="normal"><primary>configuration</primary><secondary>JDK</secondary></indexterm><indexterm class="startofrange" id="ch04-jdk2" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>configuring multiple versions of</secondary></indexterm>Historically, one of the most common uses of Jenkins has
-    been to build Java applications. So Jenkins naturally provides excellent
-    built-in support for Java.</para>
-    <para>By default, Jenkins will build Java applications using whatever
-    version of Java it finds on the system path, which is usually the version
-    that Jenkins itself is running under. However, for a production build
-    server, you will probably want more control than this. For example, you
-    may be running your Jenkins server under Java 6, for performance reasons.
-    However, your production server might be running under Java 5 or even Java
-    1.4. Large organizations are often cautious when it comes to upgrading
-    Java versions in their production environments, and some of the more
-    heavyweight application servers on the market are notoriously slow to be
-    certified with the latest JDKs.</para>
-    <para>In any case, it is always a wise practice to build your application
-    using a version of Java that is close to the one running on your
-    production server. While an application <phrase role="keep-together">compiled</phrase> with Java 1.4 will usually run fine
-    under Java 6, the inverse is not always true. Or you may have different
-    applications that need to be built using different versions of
-    Java.</para>
-    <para>Jenkins provides good support for working with multiple JVMs.
-    Indeed, Jenkins makes it very easy to configure and use as many versions
-    of Java as you want. Like most system-level configuration, we do this in
-    the Configure System screen (see <xref linkend="fig-configure-system"/>).
-    Here, you will find a section called JDK which allows you to manage the
-    JDK installations you need Jenkins to work with.</para>
-    <para>The simplest way to declare a JDK installation is simply to supply
-    an appropriate name (which will be used to identify this Java installation
-    later on when you configure your builds), along with the path to the Java
-    installation directory (the same path you would use for the<indexterm id="I_indexterm4_d1e4531" significance="normal"><primary>JAVA_HOME environment variable</primary></indexterm> <literal moreinfo="none">JAVA_HOME</literal> variable), as shown in <xref linkend="fig-configure-jdk"/>. Although you need to type the path
-    manually, Jenkins will check in real time both that the directory exists
-    and that it looks like a valid JDK directory.</para>
+    <title>Configurer vos JDKs</title>
+
+    <para><indexterm class="startofrange" id="ch04-jdk1" significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>JDK</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-jdk2"
+        significance="normal">
+        <primary>JDK (Java Development Kit)</primary>
+
+        <secondary>configurer de multiples versions du</secondary>
+      </indexterm>Historiquement, l'une des utilisations les plus communes de
+    Jenkins était de construire des applications Java. Jenkins fournit donc
+    naturellement un support intégré pour Java.</para>
+
+    <para>Par défaut, Jenkins construira les applications Java en utilisant la
+    version de Java qu'il trouve dans le PATH, qui est habituellement celle
+    avec laquelle Jenkins fonctionne. Toutefois, pour un serveur de
+    construction de production, vous voudrez probablement plus de contrôle que
+    cela. Par exemple, vous pourriez exécuter votre serveur Jenkins avec Java
+    6, pour des raisons de performance. Par contre, votre serveur de
+    production pourrait tourner avec Java 5 ou même Java 1.4. Les grosses
+    organisations sont souvent très précautionneuses lorsqu'il s'agit de
+    mettre à jour les versions de Java dans leurs environnements de
+    production, et certains des serveurs d'application poids-lourds du marché
+    sont de notoriété publique lents à être certifiés avec les derniers
+    JDKs.</para>
+
+    <para>Dans tous les cas, c'est toujours une sage pratique que de
+    construire votre application en utilisant une version de Java proche de
+    celle utilisée sur votre serveur de production. Bien qu'une application
+    compilée avec Java 1.4 tournera généralement avec Java 6, l'inverse n'est
+    pas toujours vrai. Vous pourriez aussi avoir plusieurs applications qui
+    nécessitent d'être construites avec différentes versions de Java.</para>
+
+    <para>Jenkins fournit un bon support pour travailler avec de multiples
+    JVMs. En effet, Jenkins rend très facile la configuration et l'utilisation
+    de plusieurs versions de Java. Comme la plupart des configurations de
+    niveau système, cela se paramètre dans l'écran Configurer le système (voir
+    <xref linkend="fig-configure-system" />). A cet endroit, vous trouverez
+    une section appelée JDK qui vous permettra de gérer les installations de
+    JDK avec lesquelles vous voulez que Jenkins travaille.</para>
+
+    <para>Le moyen le plus simple de déclarer une installation de JDK est de
+    fournir un nom approprié (qui sera ensuite utilisé pour identifier cette
+    installation de java lors de la configuration de vos constructions), et un
+    chemin vers le répertoire de l'installation Java (le même chemin que vous
+    utiliseriez pour la <indexterm id="I_indexterm4_d1e4531"
+        significance="normal">
+        <primary>JAVA_HOME variable d'environnement</primary>
+      </indexterm> variable <literal moreinfo="none">JAVA_HOME</literal>),
+    comme montré sur <xref linkend="fig-configure-jdk" />. Bien que vous
+    deviez taper le chemin manuellement, Jenkins vérifiera en temps réel à la
+    fois que le répertoire existe et que ça ressemble à un répertoire JDK
+    valide..</para>
+
     <figure float="none" id="fig-configure-jdk">
-      <title>JDK configuration in Jenkins</title>
+      <title>Configuration des JDK dans Jenkins</title>
+
       <mediaobject id="I_mediaobject4_d1e4543">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0405.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0405.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0405.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0405.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>You can <indexterm id="I_indexterm4_d1e4550" significance="normal"><primary>installation</primary><secondary>JDK</secondary></indexterm><indexterm id="I_indexterm4_d1e4555" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>installing</secondary></indexterm>also ask Jenkins to install Java for you. In this case,
-    Jenkins will download the JDK installation and install a copy on your
-    machine (see <xref linkend="fig-configure-jdk-installers"/>). The first
-    time a build needs to use this JDK, Jenkins will download and install the
-    specified version of Java into the <filename moreinfo="none">tools</filename> directory in the Jenkins home directory.
-    If the build is running on a new build agent that doesn’t have this JDK
-    installed, it will download and install it onto the build agent machine as
-    well.</para>
-    <para>This<indexterm id="I_indexterm4_d1e4568" significance="normal"><primary>build agents</primary><secondary>configuring for multiple JDK versions</secondary></indexterm> is also a great way to configure build agents. As we’ll see
-    later on in the book, Jenkins can delegate build jobs to other machines,
-    or build agents. A build agent (or “slave”) is simply another computer
-    that Jenkins can use to run some of its builds. If you use Jenkins’s
-    Install automatically option, you don’t need to manually install all the
-    JDK versions you need on the build agent machines—Jenkins will do it for
-    you the first time it needs to.</para>
-    <para>By default, Jenkins proposes to download the JDK from the Oracle
-    website. If your Jenkins installation is behind a proxy server, you may
-    need to configure your proxy settings to ensure that Jenkins can access
-    the external download sites (see <xref linkend="sect-configuration-proxies"/>). Another option is to provide a
-    URL pointing to your own internal copy of the JDK binaries (either in the
-    form of a ZIP or a GZip-compressed TAR file), stored on a local server
-    within your organization. This lets you provide standard installations on
-    a local server and makes for faster automatic installations. When you use
-    this option, Jenkins also lets you specify a label, which will restrict
-    the use of this installation to the build notes with this label. This is a
-    useful technique if you need to install a specific version of a tool on
-    certain build machines. The same approach can also be used for other build
-    tools (such as Maven and Ant).</para>
+
+    <para>Vous pouvez <indexterm id="I_indexterm4_d1e4550"
+        significance="normal">
+        <primary>installation</primary>
+
+        <secondary>JDK</secondary>
+      </indexterm><indexterm id="I_indexterm4_d1e4555" significance="normal">
+        <primary>JDK (Java Development Kit)</primary>
+
+        <secondary>installer</secondary>
+      </indexterm>aussi demander à Jenkins d'installer Java pour vous. Dans ce
+    cas, Jenkins téléchargera l'installeur du JDK et installera une copie sur
+    votre machine (voir <xref linkend="fig-configure-jdk-installers" />). La
+    première fois qu'une construction a besoin d'utiliser ce JDK, Jenkins
+    téléchargera et installera la version spécifiée de Java dans le répertoire
+    <filename moreinfo="none">tools</filename> du répertoire racine de
+    Jenkins. Si la construction est exécutée sur un nouvel agent de
+    construction qui n'a pas ce JDK installé, il le téléchargera et
+    l'installera sur celui-ci de la même façon.</para>
+
+    <para>C'est<indexterm id="I_indexterm4_d1e4568" significance="normal">
+        <primary>agents de constructions</primary>
+
+        <secondary>configurer de multiples versions de JDK</secondary>
+      </indexterm> aussi un formidable moyen de configurer les agents de
+    construction. Comme nous le verrons plus loin dans le livre, Jenkins peut
+    déléguer des tâches de construction à d'autres machines, ou d'autres
+    agents de construction. Un agent de construction (ou “esclave”) est
+    simplement un autre ordinateur que Jenkins peut utiliser pour exécuter
+    certaines de ses constructions. Si vous utilisez l'option d'installation
+    automatique de Jenkins, vous n'avez pas à installer toutes les versions de
+    JDK dont vous avez besoin sur les machines agent de construction — Jenkins
+    le fera pour vous la première fois que cela lui sera nécessaire.</para>
+
+    <para>Par défaut, Jenkins propose de télécharger le JDK à partir du site
+    web d'Oracle. Si votre installation Jenkins est derrière un serveur proxy,
+    vous pourrez avoir besoin de modifier votre configuration de proxy pour
+    permettre à Jenkins d'accès aux sites externes de téléchargement (voir
+    <xref linkend="sect-configuration-proxies" />). Une autre option est de
+    fournir une URL pointant sur votre propre copie interne des binaires du
+    JDK (soit sous la forme d'un ZIP soit sous la forme d'un fichier TAR
+    compressé avec GZip), stocké sur un serveur local à l'intérieur de votre
+    organisation. Cela vous permet de fournir des installations normalisées
+    sur un serveur local et d'accélérer les installations automatiques. Quand
+    vous utilisez cette option, Jenkins vous permet aussi de spécifier un
+    label, ce qui resteindra l'utilisation de cette installation aux noeuds
+    avec celui-ci. C'est une technique utile si vous avez besoin d'installer
+    une version spécifique d'un outil sur certaines machines de construction.
+    La même approche peut aussi être utilisée pour les autres outils de
+    construction (comme Maven et Ant).</para>
+
     <figure float="0" id="fig-configure-jdk-installers">
-      <title>Installing a JDK automatically</title>
+      <title>Installer un JDK automatiquement</title>
+
       <mediaobject id="I_mediaobject4_d1e4581">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0406.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0406.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0406.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0406.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>The automatic installer will not work in all environments (if it
-    can’t find or identify your operating system to its satisfaction, for
-    example, the installation will fail), but it is nevertheless a useful and
-    convenient way to set up new build servers or distributed build agents in
-    a <indexterm id="I_indexterm4_d1e4589" class="endofrange" startref="ch04-jdk1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4591" class="endofrange" startref="ch04-jdk2" significance="normal"><primary/></indexterm>consistent manner.</para>
+
+    <para>L'installeur automatique ne fonctionnera pas dans tous les
+    environnements (s'il ne parvient pas à trouver ou identifier un système
+    d'exploitation satisfaisant, par exemple, l'installation échouera), mais
+    c'est néanmoins un moyen utile et agréable de configurer de nouveaux
+    serveurs de construction ou des agents de construction distribués de
+    <indexterm class="endofrange" id="I_indexterm4_d1e4589"
+        significance="normal" startref="ch04-jdk1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4591"
+        significance="normal" startref="ch04-jdk2">
+        <primary></primary>
+      </indexterm>manière consistante.</para>
   </sect1>
+
   <sect1 id="sect-configuration-build-tools">
-    <title>Configuring Your Build Tools</title>
-    <para>Build tools<indexterm class="startofrange" id="ch04-tool1" significance="normal"><primary>configuration</primary><secondary>build tools</secondary></indexterm><indexterm class="startofrange" id="ch04-tool2" significance="normal"><primary>build tools, configuring</primary></indexterm> are the bread-and-butter of any build server, and Jenkins
-    is no exception. Out of the box, Jenkins supports three principal build
-    tools: Ant, Maven, and the basic shell-script (or Batch script in
-    Windows). Using Jenkins plugins, you can also add support for other build
-    tools and other languages, such as Gant, Grails, MSBuild, and many
-    more.</para>
+    <title>Configurer vos outils de construction</title>
+
+    <para>Les outils de construction<indexterm class="startofrange"
+        id="ch04-tool1" significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>outils de construction</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-tool2"
+        significance="normal">
+        <primary>outils de construction, configurer</primary>
+      </indexterm> sont l'essence même de tout serveur de construction, et
+    Jenkins n'est pas une exception. En standard, Jenkins supporte trois
+    outils de construction principaux : Ant, Maven, et le basique shell-script
+    (ou script Batch sous Windows). En utilisant les plugins Jenkins, vous
+    pouvez aussi ajouter le support d'autres outils de construction et
+    d'autres langages, comme Gant, Grails, MSBuild, et beaucoup
+    d'autres.</para>
+
     <sect2>
       <title>Maven</title>
-      <para><indexterm class="startofrange" id="ch04-maven1" significance="normal"><primary>configuration</primary><secondary>Maven</secondary></indexterm><indexterm class="startofrange" id="ch04-maven2" significance="normal"><primary>Maven</primary><secondary>configuring</secondary></indexterm>Maven is a high-level build scripting framework for Java
-      that uses notions such as a standard directory structure and standard
-      life cycles, Convention over Configuration, and Declarative Dependency
-      Management to simplify a lot of the low-level scripting that you find in
-      a typical Ant build script. In Maven, your project uses a standard,
-      well-defined build life cycle—compile, test, package, deploy, and so
-      forth. Each life cycle phase is associated with a Maven plugin. The
-      various Maven plugins use the standard directory structure to carry out
-      these tasks with a minimum of intervention on your part. You can also
-      extend Maven by overriding the default plugin configurations or by
-      invoking additional plugins.</para>
-      <para>Jenkins <indexterm id="I_indexterm4_d1e4625" significance="normal"><primary>Maven</primary><secondary>installing</secondary></indexterm><indexterm id="I_indexterm4_d1e4630" significance="normal"><primary>installation</primary><secondary>Maven</secondary></indexterm>provides excellent support for Maven, and has a good
-      understanding of Maven project structures and dependencies. You can
-      either get Jenkins to install a specific version of Maven automatically
-      (as we are doing with Maven 3 in the example), or provide a path to a
-      local Maven installation (see <xref linkend="fig-configure-maven" os=""/>). You can configure as many versions of Maven for your build
-      projects as you want, and use different versions of Maven for different
-      projects.</para>
+
+      <para><indexterm class="startofrange" id="ch04-maven1"
+          significance="normal">
+          <primary>configurer</primary>
+
+          <secondary>Maven</secondary>
+        </indexterm><indexterm class="startofrange" id="ch04-maven2"
+          significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>configurer</secondary>
+        </indexterm>Maven est un framework de scripting de haut-niveau pour
+      Java qui utilise des notions telles qu'une structure normalisée
+      d'arborescence et des cycles de vie normalisés, <emphasis>"Convention
+      over Configuration"</emphasis>, et une gestion déclarative des
+      dépendances pour simplifier beaucoup le scripting de bas-niveau qu'on
+      trouve souvent dans un script de construction Ant typique. Avec Maven,
+      votre projet utilise un cycle de vie normalisé et bien défini — compile,
+      test, package, deploy, etc. Chaque phase de cycle est associée avec un
+      plugin Maven. Les différents plugins Maven utilisent la structure
+      d'arborescence normalisée pour traiter ces tâches avec un minimum
+      d'intervention de votre part. Vous pouvez aussi étendre Maven en
+      redéfinissant les configurations de plugin par défaut ou en invoquant
+      des plugins supplémentaires.</para>
+
+      <para>Jenkins <indexterm id="I_indexterm4_d1e4625" significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>installer</secondary>
+        </indexterm><indexterm id="I_indexterm4_d1e4630" significance="normal">
+          <primary>installation</primary>
+
+          <secondary>Maven</secondary>
+        </indexterm>fournit un excellent support pour Maven, et comprend
+      parfaitement les structures de projet et les dépendances Maven. Vous
+      pouvez soit demander à Jenkins d'installer automatiquement une version
+      de Maven (comme nous le faisons avec Maven 3 dans l'exemple), ou fournir
+      un chemin vers une installation locale de Maven (voir <xref
+      linkend="fig-configure-maven" os="" />). Vous pouvez configurer autant
+      de versions de Maven pour vos projets de construction que vous le
+      voulez, et utiliser différentes versions de Maven pour différents
+      projets.</para>
+
       <figure float="none" id="fig-configure-maven">
-        <title>Configuring Maven in Jenkins</title>
+        <title>Configurer Maven dans Jenkins</title>
+
         <mediaobject id="I_mediaobject4_d1e4641">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0407.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0407.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0407.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0407.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>If you tick the Install automatically checkbox, Jenkins will
-      download and install the requested version of Maven for you. You can
-      either ask Jenkins to download Maven directly from the Apache site, or
-      from a (presumably local) URL of your choice. This is an excellent
-      choice when you are using distributed builds, and, since Maven is
-      cross-platform, it will work on any machine. You don’t need to install
-      Maven explicitly on each build machine—the first time a build machine
-      needs to use Maven, it will download a copy and install it to the
-      <filename moreinfo="none">tools</filename> directory in the Jenkins home
-      directory.</para>
-      <para>Sometimes you need to pass Java system options to your Maven build
-      process. For instance it is often useful to give Maven a bit of extra
-      memory for heavyweight tasks such as code coverage or site generation.
-      Maven lets you do this by setting the <code>MAVEN_OPTS</code> variable.
-      In Jenkins, you can set a system-wide default value, to be used across
-      all projects (see <xref linkend="fig-configure-mvnopts"/>). This comes
-      in handy if you want to use certain standard memory options (for
-      example) across all projects, without having to set it up in each
-      project by<indexterm id="I_indexterm4_d1e4658" class="endofrange" startref="ch04-maven1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4660" class="endofrange" startref="ch04-maven2" significance="normal"><primary/></indexterm> hand.</para>
+
+      <para>Si vous cochez la case à cocher Installer automatiquement, Jenkins
+      téléchargera et installera la versions demandée de Maven pour vous. Vous
+      pouvez soit demander à Jenkins de télécharger Maven directement depuis
+      le site Apache, soit depuis une URL (a priori locale) de votre choix.
+      C'est un excellent choix si vous utilisez des constructions distribuées,
+      et puisque Maven est multi-plateformes, cela fonctionnera sur n'importe
+      quelle machine. Vous n'avez pas besoin d'installer explicitement Maven
+      sur chaque machine de construction — la première fois qu'une machine de
+      construction aura besoin d'utiliser Maven, elle en téléchargera une
+      copie et l'installera dans le répertoire <filename
+      moreinfo="none">tools</filename> du répertoire racine de Jenkins.</para>
+
+      <para>Il est parfois nécessaire de passer des options système à votre
+      processus de construction Maven. Par exemple, il est souvent utile de
+      donner à Maven un peu plus de mémoire pour des tâches lourdes comme la
+      couverture de code ou la génération de site. Maven vous permet de faire
+      cela en positionnant la variable <code>MAVEN_OPTS</code>. Dans Jenkins,
+      vous pouvez définir une valeur par défaut pour tout le système, afin de
+      l'utiliser dans tous les projets (voir <xref
+      linkend="fig-configure-mvnopts" />). C'est pratique si vous voulez
+      utiliser des options standards de mémoire (par exemple) pour tous vos
+      projets, sans avoir à le configurer dans chaque projet à la<indexterm
+          class="endofrange" id="I_indexterm4_d1e4658" significance="normal"
+          startref="ch04-maven1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4660"
+          significance="normal" startref="ch04-maven2">
+          <primary></primary>
+        </indexterm> main.</para>
+
       <figure float="none" id="fig-configure-mvnopts">
-        <title>Configuring system-wide MVN_OPTS</title>
+        <title>Configurer la variable système MVN_OPTS</title>
+
         <mediaobject id="I_mediaobject4_d1e4666">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0408.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0408.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0408.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0408.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2 id="hudson-config-ant">
       <title>Ant</title>
-      <para><indexterm class="startofrange" id="ch04-ant1" significance="normal"><primary>configuration</primary><secondary>Ant</secondary></indexterm><indexterm class="startofrange" id="ch04-ant2" significance="normal"><primary>Ant</primary><secondary>configuring</secondary></indexterm><indexterm class="startofrange" id="ch06-ant3" significance="normal"><primary>Ant</primary></indexterm>Ant is a widely-used and very well-known build scripting
-      language for Java. It is a flexible, extensible, relatively low-level
-      scripting language, used in a large number of open source projects. An
-      Ant build script (typically called <filename moreinfo="none">build.xml</filename>) is made up of a number of
-      <emphasis>targets</emphasis>. Each target performs a particular job in
-      the build process, such as compiling your code or running your unit
-      tests. It does so by executing <emphasis>tasks</emphasis>, which carry
-      out a specific part of the build job, such as invoking <command moreinfo="none">javac</command> to compile your code, or creating a new
-      directory. Targets also have <emphasis>dependencies</emphasis>,
-      indicating the order in which your build tasks need to be executed. For
-      example, you need to compile your code before you can run your unit
-      tests.</para>
-      <para>Jenkins provides excellent build-in support for Ant—you can invoke
-      Ant targets from your build job, providing properties to customize the
-      process as required. We look at how to do this in detail later on in
-      this book.</para>
-      <para>If Ant is available on the system path, Jenkins will find it.
-      However, if you want to know precisely what version of Ant you are
-      using, or if you need to be able to use several different versions of
-      Ant on different build jobs, you can configure as many installations of
-      Ant as required (see <xref linkend="fig-configure-ant"/>). Just provide
-      a name and installation directory for each version of Ant in the Ant
-      section of the Configure System screen. You will then be able to choose
-      what version of Ant you want to use for each project.</para>
-      <para>If you<indexterm id="I_indexterm4_d1e4713" significance="normal"><primary>Ant</primary><secondary>installing</secondary></indexterm><indexterm id="I_indexterm4_d1e4718" significance="normal"><primary>installation</primary><secondary>Ant</secondary></indexterm> tick the Install automatically checkbox, Jenkins will
-      download and install Ant into the <filename moreinfo="none">tools</filename> directory of your Jenkins home
-      directory, just like it does for Maven. It will download an Ant
-      installation the first time a build job needs to use Ant, either from
-      the Apache website or from a local URL. Again, this is a great way to
-      standardize <phrase role="keep-together">build servers</phrase> and make
-      it easier to add new distributed build servers to an existing <phrase role="keep-together">infrastructure</phrase>.<indexterm id="I_indexterm4_d1e4733" class="endofrange" startref="ch06-ant3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4736" class="endofrange" startref="ch04-ant1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4738" class="endofrange" startref="ch04-ant2" significance="normal"><primary/></indexterm></para>
+
+      <para><indexterm class="startofrange" id="ch04-ant1"
+          significance="normal">
+          <primary>configurer</primary>
+
+          <secondary>Ant</secondary>
+        </indexterm><indexterm class="startofrange" id="ch04-ant2"
+          significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>configurer</secondary>
+        </indexterm><indexterm class="startofrange" id="ch06-ant3"
+          significance="normal">
+          <primary>Ant</primary>
+        </indexterm>Ant est un langage de script de construction pour Java
+      largement utilisé et très connu. C'est un langage de scripting de
+      flexible, extensible, relativement bas-niveau utilisé dans un grand
+      nombre de projets opensource. Un script de construction Ant (typiquement
+      nommé <filename moreinfo="none">build.xml</filename>) est constitué d'un
+      certain nombre de <emphasis>targets</emphasis>. Chaque target effectue
+      une tâche particulière dans le processus de construction, comme compiler
+      votre code ou exécuter vos tests unitaires. Il fonctionne en exécutant
+      des <emphasis>tasks</emphasis>, qui portent une partie spécifique de la
+      tâche de construction, comme invoquer <command
+      moreinfo="none">javac</command> pour compiler votre code, ou créer un
+      nouveau répertoire. Les Targets ont aussi des
+      <emphasis>dependencies</emphasis>, indiquant l'ordre dans lequel vos
+      tâches de construction doivent être exécutées. Par exemple, vous devez
+      compiler votre code avant de lancer vos tests unitaires.</para>
+
+      <para>Jenkins fournit en standard un support excellent pour Ant — vous
+      pouvez invoquer les tâches Ant depuis votre tâche de construction, en
+      fournissant les propriétés permettant de personnaliser le processus
+      comme cela est nécessaire. Nous regardons comment faire cela en détail
+      plus loin dans le livre.</para>
+
+      <para>Si Ant est disponible dans le <emphasis>path</emphasis> système,
+      Jenkins le trouvera. Toutefois, si vous voulez savoir précisément quelle
+      version de Ant vous êtes en train d'utiliser, ou si vous avez besoin de
+      pouvoir utiliser différentes versions de Ant sur différentes tâches de
+      construction, vous pouvez configurer autant d'installations de Ant que
+      vous le souhaitez (voir <xref linkend="fig-configure-ant" />).
+      Fournissez simplement un nom et un répertoire d'installation pour chaque
+      version de Ant dans la section Ant de l'écran Configurer le système.
+      Vous pourrez ensuite choisir quelle version de Ant vous voulez utiliser
+      pour chaque projet.</para>
+
+      <para>Si vous <indexterm id="I_indexterm4_d1e4713" significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>installer</secondary>
+        </indexterm><indexterm id="I_indexterm4_d1e4718" significance="normal">
+          <primary>installation</primary>
+
+          <secondary>Ant</secondary>
+        </indexterm>cochez la case à cocher Installer automatiquent, Jenkins
+      téléchargera et installera Ant dans le répertoire <filename
+      moreinfo="none">tools</filename> du répertoire racine de Jenkins,
+      exactement comme il le fait pour Maven. Il téléchargera une installation
+      de Ant la première fois qu'une tâche de construction aura besoin
+      d'utiliser Ant, soit depuis le site web Apache, soit depuis une URL
+      locale. Encore une fois, ceci est un moyen formidable de normaliser vos
+      serveurs de construction et de faciliter l'ajout de nouveaux serveurs de
+      construction distribués à une infrastructure existante.<indexterm
+          class="endofrange" id="I_indexterm4_d1e4733" significance="normal"
+          startref="ch06-ant3">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4736"
+          significance="normal" startref="ch04-ant1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4738"
+          significance="normal" startref="ch04-ant2">
+          <primary></primary>
+        </indexterm></para>
+
       <figure float="0" id="fig-configure-ant">
-        <title>Configuring Ant in Jenkins</title>
+        <title>Configurer Ant dans Jenkins</title>
+
         <mediaobject id="I_mediaobject4_d1e4743">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0409.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0409.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0409.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0409.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
-      <title>Shell-Scripting Language</title>
-      <para>If you<indexterm id="I_indexterm4_d1e4753" significance="normal"><primary>shell scripts</primary></indexterm><indexterm id="I_indexterm4_d1e4756" significance="normal"><primary>scripts</primary><secondary>shell scripts</secondary></indexterm> are running your build server on Unix or Linux, Jenkins
-      lets you insert shell scripts into your build jobs. This is handy for
-      performing low-level, OS-related tasks that you don’t want to do in Ant
-      or Maven. In the Shell section, you define the default shell that will
-      be used when executing these shell scripts. By default, this is
-      <filename moreinfo="none">/bin/sh</filename>, but there are times you
-      may want to modify this to another command interpreter such as <filename moreinfo="none">bash</filename> or <filename moreinfo="none">Perl</filename>.</para>
-      <para>In <indexterm id="I_indexterm4_d1e4773" significance="normal"><primary>batch scripts</primary></indexterm><indexterm id="I_indexterm4_d1e4776" significance="normal"><primary>scripts</primary><secondary>batch scripts</secondary></indexterm>Windows, the Shell section does not apply—you use Windows
-      batch scripting instead. So, on a Windows build server, you should
-      leave<indexterm id="I_indexterm4_d1e4782" class="endofrange" startref="ch04-tool1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4784" class="endofrange" startref="ch04-tool2" significance="normal"><primary/></indexterm> this field blank.</para>
+      <title>Langage de scripts Shell</title>
+
+      <para>Si vous<indexterm id="I_indexterm4_d1e4753" significance="normal">
+          <primary>scripts shell</primary>
+        </indexterm><indexterm id="I_indexterm4_d1e4756" significance="normal">
+          <primary>scripts</primary>
+
+          <secondary>scripts shell</secondary>
+        </indexterm> exécutez votre serveur de construction sous Unix ou
+      Linux, Jenkins vous permettra d'insérer des scripts shells dans vos
+      tâches de construction. C'est pratique pour effectuer des tâches
+      bas-niveau, liées à l'OS que vous ne voulez pas faire avec Ant ou Maven.
+      Dans la section Shell, vous définissez le Shell par défaut qui sera
+      utilisé pour exécuter ces scripts Shell. Par défaut, c'est <filename
+      moreinfo="none">/bin/sh</filename>, mais parfois vous pouvez vouloir
+      modifier cela pour utiliser un autre interpréteur de commande comme
+      <filename moreinfo="none">bash</filename> ou <filename
+      moreinfo="none">Perl</filename>.</para>
+
+      <para>Sous <indexterm id="I_indexterm4_d1e4773" significance="normal">
+          <primary>scripts batch</primary>
+        </indexterm><indexterm id="I_indexterm4_d1e4776" significance="normal">
+          <primary>scripts</primary>
+
+          <secondary>scripts batch</secondary>
+        </indexterm>Windows, la section Shell ne s'applique pas — vous
+      utilisez le scripting batch Windows à la place. Donc, sur un serveur de
+      construction Windows, vous devriez laisser <indexterm class="endofrange"
+          id="I_indexterm4_d1e4782" significance="normal"
+          startref="ch04-tool1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4784"
+          significance="normal" startref="ch04-tool2">
+          <primary></primary>
+        </indexterm>ce champ vierge.</para>
     </sect2>
   </sect1>
+
   <sect1 id="sect-configuration-scm">
-    <title>Configuring Your Version Control Tools</title>
-    <para><indexterm class="startofrange" id="ch04-vc1" significance="normal"><primary>configuration</primary><secondary>version control systems</secondary></indexterm><indexterm class="startofrange" id="ch04-vc2" significance="normal"><primary>version control systems</primary><secondary>configuring</secondary></indexterm><indexterm class="startofrange" id="ch04-vc3" significance="normal"><primary>version control systems</primary><secondary>supported by Jenkins</secondary></indexterm><indexterm id="I_indexterm4_d1e4806" significance="normal"><primary>version control systems</primary><seealso>CVS; Git; Subversion</seealso></indexterm>Jenkins comes preinstalled with plugins for CVS and
-    Subversion. Other version control systems are supported by plugins that
-    you can download from the Manage Plugins screen.</para>
+    <title>Configurer vos outils de gestion de version</title>
+
+    <para><indexterm class="startofrange" id="ch04-vc1" significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>systèmes de gestion de version</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-vc2"
+        significance="normal">
+        <primary>systèmes de gestion de version</primary>
+
+        <secondary>configurer</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-vc3"
+        significance="normal">
+        <primary>systèmes de gestion de version</primary>
+
+        <secondary>supporté par Jenkins</secondary>
+      </indexterm><indexterm id="I_indexterm4_d1e4806" significance="normal">
+        <primary>systèmes de gestion de version</primary>
+
+        <seealso>CVS; Git; Subversion</seealso>
+      </indexterm>Jenkins arrrive de base préinstallé avec des plugins pour
+    CVS et Subversion. Les autres systèmes de gestion de version sont
+    supportés par des plugins que vous pouvez télécharger depuis l'écran Gérer
+    les plugins.</para>
+
     <sect2>
-      <title>Configuring Subversion</title>
-      <para><indexterm id="I_indexterm4_d1e4816" significance="normal"><primary>configuration</primary><secondary>Subversion</secondary></indexterm><indexterm id="I_indexterm4_d1e4821" significance="normal"><primary>Subversion</primary><secondary>configuring</secondary></indexterm>Subversion needs no special configuration, since Jenkins
-      uses native Java libraries to interact with Subversion repositories. If
-      you need to authenticate to connect to a repository, Jenkins will prompt
-      you when you enter the Subversion URL in the build job
-      configuration.</para>
+      <title>Configurer Subversion</title>
+
+      <para><indexterm id="I_indexterm4_d1e4816" significance="normal">
+          <primary>configuration</primary>
+
+          <secondary>Subversion</secondary>
+        </indexterm><indexterm id="I_indexterm4_d1e4821" significance="normal">
+          <primary>Subversion</primary>
+
+          <secondary>configurer</secondary>
+        </indexterm>Subversion ne nécessite pas de configuration spéciale,
+      puisque Jenkins utilise des bibliothèques Java natives pour interagir
+      avec des dépôts Subversion. Si vous avez besoin de vous authentifier
+      pour vous connecter à un dépôt, Jenkins vous le demandera quand vous
+      entrerez l'URL Subversion dans la configuration de la tâche de
+      construction.</para>
     </sect2>
+
     <sect2>
-      <title>Configuring CVS</title>
-      <para>CVS <indexterm id="I_indexterm4_d1e4832" significance="normal"><primary>CVS</primary><secondary>configuring</secondary></indexterm><indexterm id="I_indexterm4_d1e4837" significance="normal"><primary>configuration</primary><secondary>CVS</secondary></indexterm>needs little or no configuration. By default, Jenkins will
-      look for tools like CVS on the system path, though you can provide the
-      path explicitly if it isn’t on the system path. CVS keeps login and
-      password details in a file called <filename moreinfo="none">.cvspass</filename>, which is usually in your home
-      directory. If this is not the case, you can provide a path where Jenkins
-      can find<indexterm id="I_indexterm4_d1e4846" class="endofrange" startref="ch04-vc1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4848" class="endofrange" startref="ch04-vc2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4850" class="endofrange" startref="ch04-vc3" significance="normal"><primary/></indexterm> this file.</para>
+      <title>Configurer CVS</title>
+
+      <para>CVS <indexterm id="I_indexterm4_d1e4832" significance="normal">
+          <primary>CVS</primary>
+
+          <secondary>configurer</secondary>
+        </indexterm><indexterm id="I_indexterm4_d1e4837" significance="normal">
+          <primary>configuration</primary>
+
+          <secondary>CVS</secondary>
+        </indexterm>nécessite peu voire aucune configuration. Par défaut,
+      Jenkins cherchera des outils comme CVS dans le chemin système, bien que
+      vous puissiez fournir le chemin explicitement s'il ne s'y trouve pas.
+      CVS garde le login et le mot de passe dans un fichier appelé <filename
+      moreinfo="none">.cvspass</filename>, qui se trouve habituellement dans
+      votre répertoire utilisateur. Si ce n'est pas le cas, vous pouvez
+      fournir un chemin où Jenkins pourra trouver <indexterm
+          class="endofrange" id="I_indexterm4_d1e4846" significance="normal"
+          startref="ch04-vc1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4848"
+          significance="normal" startref="ch04-vc2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4850"
+          significance="normal" startref="ch04-vc3">
+          <primary></primary>
+        </indexterm>ce fichier.</para>
     </sect2>
   </sect1>
+
   <sect1 id="sect-configuration-email">
-    <title>Configuring the Mail Server</title>
-    <para><indexterm class="startofrange" id="ch04-email1" significance="normal"><primary>configuration</primary><secondary>email server</secondary></indexterm><indexterm class="startofrange" id="ch04-email2" significance="normal"><primary>email server, configuring</primary></indexterm><indexterm class="startofrange" id="ch04-email3" significance="normal"><primary>mail server, configuring</primary></indexterm>The last of the basic configuration options you need to set
-    up is the email server configuration. Email is Jenkins’s more fundamental
-    notification technique—when a build fails, it will send an email message
-    to the developer who committed the changes, and optionally to other team
-    members as well. So Jenkins needs to know about your email server (see
-    <xref linkend="fig-configure-email"/>).</para>
+    <title>Configurer le serveur de messagerie électronique</title>
+
+    <para><indexterm class="startofrange" id="ch04-email1"
+        significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>serveur de messagerie server</secondary>
+      </indexterm><indexterm class="startofrange" id="ch04-email2"
+        significance="normal">
+        <primary>serveur de messagerie électronique, configurer</primary>
+      </indexterm><indexterm class="startofrange" id="ch04-email3"
+        significance="normal">
+        <primary>serveur de messagerie électronique, configurer</primary>
+      </indexterm>La dernière des options de configuration basique que vous
+    devez mettre en place est la configuration du serveur de messagerie
+    électronique. L'email est la technique de notification la plus
+    fondamentale de Jenkins — quand une construction échoue, il envoie un
+    email au développeur qui a committé les changements, et optionnellement
+    aussi aux autres membres de l'équipe. Jenkins a donc besoin de connaître
+    votre serveur de messagerie de électronique (voir <xref
+    linkend="fig-configure-email" />).</para>
+
     <figure float="none" id="fig-configure-email">
-      <title>Configuring an email server in Jenkins</title>
+      <title>Configurer un serveur d'email dans Jenkins</title>
+
       <mediaobject id="I_mediaobject4_d1e4874">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0410.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0410.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0410.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0410.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>The System Admin email address is the address from which the
-    notification messages are sent. You can also use this field to check the
-    email setup—if you click on the Test configuration button, Jenkins will
-    send a test email to this address.</para>
-    <para>In many organizations, you can derive a user’s email address from
-    their login by adding the organization domain name. For example, at ACME,
-    user John Smith will have a login of “jsmith" and an email address of
-    “jsmith@acme.com”. If this extends to your version control system, Jenkins
-    can save you a lot of configuration effort in this area. In the previous
-    example, you could simply specify the default user email suffix of
-    acme.com and Jenkins will figure out the rest.</para>
-    <para>You also need to provide a proper base URL for your Jenkins server
-    (one that does not use localhost). Jenkins uses this URL in the email
-    notifications so that users can go directly from the email to the build
-    failure screen on Jenkins.</para>
-    <para>Jenkins also provides for more sophisticated email configuration,
-    using more advanced features such as SMTP authentication and SSL. If this
-    is your case, click on the Advanced button to configure these
-    options.</para>
-    <para><indexterm id="I_indexterm4_d1e4888" significance="normal"><primary>Gmail, configuring</primary></indexterm>For example, many organizations use Google Apps for their
-    email services. You can configure Jenkins to work with the Gmail service
-    as shown in <xref linkend="fig-configure-gmail" os=""/>. All you need to
-    do in this case is to use the Gmail SMTP server, and provide your Gmail
-    username and password in the SMTP Authentication (you also need to use SSL
-    and the non-standard <indexterm id="I_indexterm4_d1e4894" class="endofrange" startref="ch04-email1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4896" class="endofrange" startref="ch04-email2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4898" class="endofrange" startref="ch04-email3" significance="normal"><primary/></indexterm>port of 465).</para>
+
+    <para>L'email de l'administrateur système est l'adresse depuis laquelle
+    les messages de notification sont envoyés. Vous pouvez aussi utiliser ce
+    champ pour tester la configuration email —si vous cliquez sur le bouton
+    Tester la configuration, Jenkins enverra un email de test à cette
+    adresse.</para>
+
+    <para>Dans de nombreuses organisations, vous pouvez dériver l'adresse
+    email de l'utilisateur à partir de son login en ajoutant le nom de domaine
+    de l'organisation. Par exemple, chez ACME, l'utilisateur Marcel Tartampion
+    aura un login "mtartampion" et une adresse email "mtartampion@acme.com”.
+    Si cela s'étend à votre système de gestion de version, Jenkins peut vous
+    économiser un bon nombre d'efforts de configuration dans ce domaine. Dans
+    l'exemple précédent, vous pourriez simplement spécifier le suffixe email
+    utilisateur par défaut et Jenkins devinera le reste.</para>
+
+    <para>Vous devrez aussi fournir une URL de base correcte pour votre
+    serveur Jenkins (une qui n'utilise pas localhost). Jenkins utilise cette
+    URL dans les notifications email pour que les utilisateurs puissent aller
+    directement de l'email à l'écran d'échec de construction sur
+    Jenkins.</para>
+
+    <para>Jenkins fournit aussi une configuration email plus sophistiquée, en
+    utilisant des fonctionnalités plus avancées comme l'authentification SMTP
+    et SSL. Si vous êtes dans ce cas, cliquez sur le bouton Avancé pour
+    configurer ces options.</para>
+
+    <para><indexterm id="I_indexterm4_d1e4888" significance="normal">
+        <primary>Gmail, configurer</primary>
+      </indexterm>Par exemple, plusieurs organisations utilisent Google Apps
+    pour leur services d'email. Vous pouvez configurer Jenkins pour travailler
+    avec le service Gmail comme montré dans <xref
+    linkend="fig-configure-gmail" os="" />. Tout ce que vous avez besoin de
+    faire dans ce cas est d'utiliser le serveur SMTP Gmail, et de fournir
+    votre nom d'utilisateur Gmail et votre passe dans Authentication SMTP
+    (vous devez aussi utiliser SSL et le port non-standard <indexterm
+        class="endofrange" id="I_indexterm4_d1e4894" significance="normal"
+        startref="ch04-email1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4896"
+        significance="normal" startref="ch04-email2">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4898"
+        significance="normal" startref="ch04-email3">
+        <primary></primary>
+      </indexterm>465).</para>
+
     <figure float="none" id="fig-configure-gmail">
-      <title>Configuring an email server in Jenkins to use a Google Apps
-      domain</title>
+      <title>Configurer un serveur d'email pour utiliser un domaine Google
+      Apps</title>
+
       <mediaobject id="I_mediaobject4_d1e4904">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0411.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0411.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0411.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0411.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
   </sect1>
+
   <sect1 id="sect-configuration-proxies">
-    <title>Configuring a Proxy</title>
-    <para><indexterm class="startofrange" id="ch04-proxy1" significance="normal"><primary>proxy, configuring</primary></indexterm><indexterm class="startofrange" id="ch04-proxy2" significance="normal"><primary>configuration</primary><secondary>proxy</secondary></indexterm>In most enterprise environments, your Jenkins server will be
-    situated behind a firewall, and will not have direct access to the
-    Internet. Jenkins needs Internet access to download plugins and updates,
-    and also to install tools such as the JDK, Ant and Maven from remote
-    sites. If you need to go through an HTTP proxy server<indexterm id="I_indexterm4_d1e4922" significance="normal"><primary>HTTP proxy server</primary></indexterm> to get to the Internet, you can configure the connection
-    details (the server and port, and if required the <phrase role="keep-together">username</phrase> and password) in the Advanced tab
-    on the Plugin Manager screen (see <phrase role="keep-together"><xref linkend="fig-configuration-proxy"/></phrase>).</para>
-    <para>If your proxy is using Microsoft’s <indexterm id="I_indexterm4_d1e4934" significance="normal"><primary>NTLM proxy authentication</primary></indexterm>NTLM authentication scheme, then you will need to provide a
-    domain name as well as a username. You can place both in the User name
-    field: just enter the domain name, followed by a back-slash (\), followed
-    by the username, such as “MyDomain\Joe Bloggs”.</para>
+    <title>Configurer un Proxy</title>
+
+    <para><indexterm class="startofrange" id="ch04-proxy1"
+        significance="normal">
+        <primary>proxy, configurer</primary>
+      </indexterm><indexterm class="startofrange" id="ch04-proxy2"
+        significance="normal">
+        <primary>configuration</primary>
+
+        <secondary>proxy</secondary>
+      </indexterm>Dans la plupart des environnements d'entreprise, votre
+    serveur Jenkins sera situé derrière un pare-feu, et n'aura pas accès
+    direct à Internet. Jenkins a besoin d'un accès Internet pour télécharger
+    les plugins et les mises à jour, et aussi pour installer les outils tels
+    que le JDK, Ant et Maven depuis des sites distants. Si vous avez besoin de
+    passer par un serveur proxy HTTP<indexterm id="I_indexterm4_d1e4922"
+        significance="normal">
+        <primary>serveur proxy HTTP</primary>
+      </indexterm> pour accéder à Internet, vous pouvez configurer les détails
+    de connexion (le serveur et le port, et si nécessaire le nom utilisateur
+    et le mot de passe) dans l'onglet Avancé de l'écran Gestionnaire de
+    plugins (voir <phrase role="keep-together"><xref
+    linkend="fig-configuration-proxy" /></phrase>).</para>
+
+    <para>Si votre proxy utilise le système d'authentification Microsoft
+    <indexterm id="I_indexterm4_d1e4934" significance="normal">
+        <primary>NTLM proxy authentication</primary>
+      </indexterm>NTLM, vous devrez alors fournir un nom de domaine en plus
+    d'un nom d'utilisateur. Vous pouvez placer les deux dans le champ Nom
+    d'utilisateur : entrez simplement le nom de domaine, suivi par anti-slash
+    (\), suivi par le nom utilisateur, comme par exemple “MonDomain\Joe
+    Bloggs”.</para>
+
     <figure float="none" id="fig-configuration-proxy">
-      <title>Configuring Jenkins to use a proxy</title>
+      <title>Configurer Jenkins pour utiliser un proxy</title>
+
       <mediaobject id="I_mediaobject4_d1e4941">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0412.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0412.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0412.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0412.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Finally, if you are setting up Proxy access on your Jenkins build
-    server, remember that all of the other tools running on this server will
-    need to know about the proxy as well. In particular, this may include
-    tools such as Subversion (if you are accessing an external repository) and
-    Maven (if you are not using an Enterprise Repository <indexterm id="I_indexterm4_d1e4948" class="endofrange" startref="ch04-proxy1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm4_d1e4950" class="endofrange" startref="ch04-proxy2" significance="normal"><primary/></indexterm>Manager).</para>
+
+    <para>Enfin, si vous mettez en place un accès Proxy sur votre serveur
+    Jenkins, rappelez-vous que tous les autres outils de ce serveur auront
+    besoin de connaître aussi l'existence de ce proxy. En particulier, cela
+    inclut des outils comme Subversion (si vous accédez un dépôt externeif you
+    are accessing) et Maven (si vous n'utilisez pas un <emphasis>Repository
+    <indexterm class="endofrange" id="I_indexterm4_d1e4948"
+        significance="normal" startref="ch04-proxy1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm4_d1e4950"
+        significance="normal" startref="ch04-proxy2">
+        <primary></primary>
+      </indexterm>Manager</emphasis>).</para>
   </sect1>
+
   <sect1 id="I_sect14_d1e4953">
     <title id="sect-configuration-conclusion">Conclusion</title>
-    <para>You don’t need a great deal of configuration to get started with
-    Jenkins. The configuration that is required is fairly straightforward, and
-    is centralised in the Configure System screen. Once this is done, you are
-    ready to create your first Jenkins build job!</para>
+
+    <para>Vous n'avez pas besoin d'énormément de configuration pour démarrer
+    avec Jenkins. La configuration requise est plutôt évidente, et est
+    centralisée dans l'écran Configurer le système. Une fois que c'est fait,
+    vous êtes prêt à créer votre première tâche de construction Jenkins
+    !</para>
   </sect1>
 </chapter>
