@@ -4,17 +4,17 @@
   <title>Tests automatisés</title>
   <sect1 id="sect-chapter-automated-testing-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automatisés  </secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>tâches de construction</primary><secondary>tests in</secondary><see>tests</see></indexterm>Si vous n'utilisez pas les tests automatisés avec votre environnement d'intégration
+    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automatisés  </secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>tâches de build</primary><secondary>tests in</secondary><see>tests</see></indexterm>Si vous n'utilisez pas les tests automatisés avec votre environnement d'intégration
     continue, vous passez à coté d'un aspect important. Croyez-
     moi—IC sans les tests automatisés représente juste une petite amélioration pour
-    les taches de construction lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
+    les taches de build lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
     de zéro, c'est quand même un grand pas en avant, mais vous pouvez faire
     mieux. En résumé, si vous utilisez Jenkins sans tests automatisés,
     vous n'obtenez pas autant de valeur de votre infrastructure d'intégration
     continue que vous le devriez.</para>
-    <para>Un des principes de base de l'intégration continue est qu'une 
-    construction doit être vérifiable. Vous devez être capable de déterminer objectivement
-    si une construction donnée est prête à passer à la prochaine étape du
+    <para>Un des principes de base de l'intégration continue est qu'un
+    build doit être vérifiable. Vous devez être capable de déterminer objectivement
+    si un build donnée est prête à passer à la prochaine étape du
     processus de constuction, et le meilleur moyen de le faire est d'utiliser les tests
     automatisés. Sans une bonne automatisation des tests, vous allez devoir
     conserver de nombreux artefacts construits et les tester manuellement, ce qui est constaire à 
@@ -36,13 +36,13 @@
     types de tests automatisés que vous devriez considérer, selon la
     nature de votre application, parmi les tests d'intégration, les tests web,
     les tests fonctionnels, les tests de performance, les tests de charge et d'autres. Tous ceux
-    ont leur placed dans un environnement de construction automatisé.</para>
+    ont leur place dans un environnement de build automatisé.</para>
     <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal"><primary>tests d'acceptance, automatisé</primary></indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal"><primary>tests</primary><secondary>tests d'acceptance</secondary></indexterm>peut aussi être utilisé, en conjonction avec des techniques telles
     que Behavior-Driven Development et Acceptance Test Driven Development, comme un
     outil de communication destiné à la fois aux développeurs et aux autres intervenants
     d'un projet. Des frameworks BDD tels que easyb, fitnesse, jbehave, rspec,
     Cucumber, et beaucoup d'autres, essaient de présenter les tests d'acceptance en termes que 
-    les testers, les chefs de produit, et les utilisateurs  peuvent comprendre. Avec de tels
+    les testers, les Product Owners, et les utilisateurs  peuvent comprendre. Avec de tels
     outils, Jenkins peut fournir des informations sur l'avancement d'un projet en termes business, et
     ainsi faciliter la communication entre developpeurs and non developpeurs à l'intérieur
     d'une équipe.</para>
@@ -61,37 +61,37 @@
     application existante.</para>
     <para>Dans ce chapitre, nous allons voir comment Jenkins vous aide à conserver les traces
     des résultats des tests automatisés, et comment vous pouvez utiliser cette information pour surveiller
-    et disséquer votre processus de construction.</para>
+    et disséquer votre processus de build.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-unit">
-    <title>Automating Your Unit and Integration Tests</title>
-    <para>The<indexterm id="I_indexterm6_d1e8601" significance="normal"><primary>unit tests</primary></indexterm><indexterm id="I_indexterm6_d1e8604" significance="normal"><primary>tests</primary><secondary>unit tests</secondary></indexterm> first thing we will look at is how to integrate your unit
-    tests into Jenkins. Whether you are practicing Test-Driven Development, or
-    writing unit tests using a more conventional approach, these are probably
-    the first tests that you will want to automate with Jenkins.</para>
-    <para>Jenkins does an excellent job of reporting on your test results.
-    However, it is up to you to write the appropriate tests and to configure
-    your build script to run them automatically. Fortunately integrating unit
-    tests into your automated builds is generally relatively easy.</para>
-    <para>There are many unit testing tools out there, with the <indexterm id="I_indexterm6_d1e8614" significance="normal"><primary>xUnit</primary></indexterm>xUnit family holding a predominant place. In the Java world,
-    <indexterm id="I_indexterm6_d1e8618" significance="normal"><primary>JUnit reports</primary></indexterm>JUnit is the de facto standard, although <indexterm id="I_indexterm6_d1e8622" significance="normal"><primary>TestNG</primary></indexterm>TestNG is another popular Java unit testing framework with a
-    number of innovative features. For C# applications, the <indexterm id="I_indexterm6_d1e8626" significance="normal"><primary>NUnit</primary></indexterm>NUnit testing framework proposes similar functionalities to
-    those provided by JUnit, as does<indexterm id="I_indexterm6_d1e8630" significance="normal"><primary>Test::Unit</primary></indexterm> <literal moreinfo="none">Test::Unit</literal> for Ruby. For C/C++, there is
-    <indexterm id="I_indexterm6_d1e8638" significance="normal"><primary>CppUnit</primary></indexterm>CppUnit, and PHP developers can use <indexterm id="I_indexterm6_d1e8642" significance="normal"><primary>PHPUnit</primary></indexterm>PHPUnit. And this is not an exhaustive list!</para>
-    <para>These tools can also serve for <indexterm id="I_indexterm6_d1e8648" significance="normal"><primary>tests</primary><secondary>integration tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal"><primary>integration tests</primary></indexterm>integration tests, <indexterm id="I_indexterm6_d1e8657" significance="normal"><primary>tests</primary><secondary>functional (regression) tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal"><primary>functional (regression) tests</primary></indexterm>functional tests, web tests and so forth. Many <indexterm id="I_indexterm6_d1e8666" significance="normal"><primary>web tests</primary></indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal"><primary>tests</primary><secondary>web tests</secondary></indexterm>web testing tools, such as Selenium, WebDriver, and Watir,
-    generate xUnit-compatible reports. Behaviour-Driven Development and
-    automated Acceptance-Test tools such as easyb, Fitnesse, Concordion are
-    also xUnit-friendly. In the following sections we make no distinction
-    between these different types of test, as, from a configuration point of
-    view, they are treated by Jenkins in exactly the same manner. However, you
-    will almost certainly need to make the distinction in your build jobs. In
-    order to get the fastest possible feedback loop, your tests should be
-    grouped into well-defined categories, starting with the fast-running unit
-    tests, and then proceeding to the integration tests, before finally
-    running the slower functional and web tests.</para>
-    <para>A detailed discussion of how to automate your tests is beyond the
-    scope of this book, but we do cover a few useful techniques for Maven
-    and<indexterm id="I_indexterm6_d1e8677" class="endofrange" startref="ch06-auto2" significance="normal"><primary/></indexterm> Ant in the <xref linkend="appendix-automating-your-tests"/>.</para>
+    <title>Automatisez vos tests unitaires et d'intégration</title>
+    <para>Le <indexterm id="I_indexterm6_d1e8601" significance="normal"><primary>tests unitaires</primary></indexterm><indexterm id="I_indexterm6_d1e8604" significance="normal"><primary>tests</primary><secondary>tests unitaires</secondary></indexterm>premier sujet que nous allons regarder est comment intégrer vos tests
+    unitaires dans Jenkins. Que vous maitrisiez l'approche Test-Driven Development, ou
+    que vous écriviez des tests unitaires avec une approche plus conventionnelle, ce seront probablement
+    les premiers tests que vous voudrez automatiser avec Jenkins.</para>
+    <para>Jenkins est excellent dans l'analyse des résultats de vos tests.
+    Cependant, c'est à vous d'écrire les tests appropriés et de configurer
+    votre script de build pour qu'il les exécute automatiquement. Heureusement, intégrer des tests
+    unitaires dans vos builds automatisés est généralement aisé.</para>
+    <para>Il y a de nombreux outils de tests unitaires, avec la famille <indexterm id="I_indexterm6_d1e8614" significance="normal"><primary>xUnit</primary></indexterm>xUnit occupant une place prépondérente. Dans le monde Java,
+    <indexterm id="I_indexterm6_d1e8618" significance="normal"><primary>rapports JUnit</primary></indexterm>JUnit est le standard de facto, bien que <indexterm id="I_indexterm6_d1e8622" significance="normal"><primary>TestNG</primary></indexterm>TestNG soit aussi un framework de test unitaire populaire avec
+    un certain nombre de fonctionnalités innovantes. Pour les applications C#, le framework <indexterm id="I_indexterm6_d1e8626" significance="normal"><primary>NUnit</primary></indexterm>NUnit propose des fonctionnalités similaires à
+    celles fournies par JUnit, comme le fait<indexterm id="I_indexterm6_d1e8630" significance="normal"><primary>Test::Unit</primary></indexterm> <literal moreinfo="none">Test::Unit</literal> pour Ruby. Pour C/C++, il y a
+    <indexterm id="I_indexterm6_d1e8638" significance="normal"><primary>CppUnit</primary></indexterm>CppUnit, et les développeurs PHP peuvent utiliser <indexterm id="I_indexterm6_d1e8642" significance="normal"><primary>PHPUnit</primary></indexterm>PHPUnit. Et cette liste n'est pas exhaustive!</para>
+    <para>Ces outils peuvent aussi être utilisés pour <indexterm id="I_indexterm6_d1e8648" significance="normal"><primary>tests</primary><secondary>tests d'intégration</secondary></indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal"><primary>tests d'intégration</primary></indexterm>tests d'intégration, <indexterm id="I_indexterm6_d1e8657" significance="normal"><primary>tests</primary><secondary>tests fonctionnels (regression)</secondary></indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal"><primary>tests fonctionnels (regression)</primary></indexterm>les tests fonctionnels, les tests web et ainsi de suite. De nombreux <indexterm id="I_indexterm6_d1e8666" significance="normal"><primary>tests web</primary></indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal"><primary>tests</primary><secondary>tests web</secondary></indexterm>outils de tests web, comme Selenium, WebDriver, et Watir,
+    génèrent des rapports compatibles xUnit. Les outils Behaviour-Driven Development et
+    de tests d'acceptance automatisés comme easyb, Fitnesse, Concordion sont
+    aussi orientés xUnit. Dans les sections suivantes, nous ne faisons pas de distinction
+    entre ces différents types de test, parce que, d'un point de vue
+    configuration, ils sont traités de la même façon par Jenkins. Cependant, vous
+    aurez certainement à faire la distinction dans vos taches de build. Afin
+    d'obtenir un compte rendu le plus rapide, vos tests devront être
+    groupés dans des catégories bien définies, en commençant par les rapides tests unitaires,
+    ensuite viendront les tests d'intégration, pour finir
+    par exécuter les tests fonctionnels et web, plus longs.</para>
+    <para>Une discussion détaillée sur la façon d'automatiser vos tests est en dehors
+    du sujet de ce livre, mais nous couvrons quelques techniques utilies pour Apache Maven
+    et<indexterm id="I_indexterm6_d1e8677" class="endofrange" startref="ch06-auto2" significance="normal"><primary/></indexterm> Ant dans <xref linkend="appendix-automating-your-tests"/>.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-reporting">
     <title>Configuring Test Reports in Jenkins</title>
