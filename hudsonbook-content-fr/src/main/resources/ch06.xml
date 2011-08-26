@@ -1,67 +1,67 @@
 <?xml version="1.0"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-automated-testing">
-  <title>Automated Testing</title>
+  <title>Tests automatisés</title>
   <sect1 id="sect-chapter-automated-testing-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automating</secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>build jobs</primary><secondary>tests in</secondary><see>tests</see></indexterm>If you aren’t using automated tests with your Continuous
-    Integration setup, you’re really missing out on something big. Believe
-    me—CI without automated tests is really just a small improvement on
-    automatically scheduled builds. Now don’t get me wrong, if you’re coming
-    from nothing, that’s already a great step forward—but you can do much
-    better. In short, if you are using Jenkins without any automated tests,
-    you are not getting anywhere near as much value out of your Continuous
-    Integration infrastructure as you should.</para>
-    <para>One of the basic principles of Continuous Integration is that a
-    build should be verifiable. You have to be able to objectively determine
-    whether a particular build is ready to proceed to the next stage of the
-    build process, and the most convenient way to do this is to use automated
-    tests. Without proper automated testing, you find yourself having to
-    retain many build artifacts and test them by hand, which is hardly in the
-    spirit of Continuous Integration.</para>
-    <para>There <indexterm id="I_indexterm6_d1e8524" significance="normal"><primary>integration tests</primary></indexterm><indexterm id="I_indexterm6_d1e8527" significance="normal"><primary>tests</primary><secondary>integration tests</secondary></indexterm>are many ways you can integrate automated tests into your
-    application. One of the most efficient ways to write high quality tests is
-    to write them first, using techniques such as <indexterm id="I_indexterm6_d1e8533" significance="normal"><primary>TDD (Test Driven Development)</primary></indexterm>Test-Driven Development (TDD) or <indexterm id="I_indexterm6_d1e8537" significance="normal"><primary>BDD (Behavior-Driven Development)</primary></indexterm>Behavior-Driven Development (BDD). In this approach,
-    commonly used in many Agile projects, the aim of your unit tests is to
-    both clarify your understanding of the code’s behavior and to write an
-    automated test that the code does indeed implement this behavior. Focusing
-    on testing the expected behavior, rather than the implementation, of your
-    code also makes for more comprehensive and more accurate tests, and thus
-    helps Jenkins to provide more relevant <phrase role="keep-together">feedback</phrase>.</para>
-    <para>Of <indexterm id="I_indexterm6_d1e8546" significance="normal"><primary>unit tests</primary></indexterm><indexterm id="I_indexterm6_d1e8549" significance="normal"><primary>tests</primary><secondary>unit tests</secondary></indexterm>course, more classical unit testing, done once the code has
-    been implemented, is also another commonly-used approach, and is certainly
-    better than no tests at all.</para>
+    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automatisés  </secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>tâches de construction</primary><secondary>tests in</secondary><see>tests</see></indexterm>Si vous n'utilisez pas les tests automatisés avec votre environnement d'intégration
+    continue, vous passez à coté d'un aspect important. Croyez-
+    moi—IC sans les tests automatisés représente juste une petite amélioration pour
+    les taches de construction lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
+    de zéro, c'est quand même un grand pas en avant, mais vous pouvez faire
+    mieux. En résumé, si vous utilisez Jenkins sans tests automatisés,
+    vous n'obtenez pas autant de valeur de votre infrastructure d'intégration
+    continue que vous le devriez.</para>
+    <para>Un des principes de base de l'intégration continue est qu'une 
+    construction doit être vérifiable. Vous devez être capable de déterminer objectivement
+    si une construction donnée est prête à passer à la prochaine étape du
+    processus de constuction, et le meilleur moyen de le faire est d'utiliser les tests
+    automatisés. Sans une bonne automatisation des tests, vous allez devoir
+    conserver de nombreux artefacts construits et les tester manuellement, ce qui est constaire à 
+    l'esprit de l'intégration continue.</para>
+    <para>Il <indexterm id="I_indexterm6_d1e8524" significance="normal"><primary>tests d'intégration</primary></indexterm><indexterm id="I_indexterm6_d1e8527" significance="normal"><primary>tests</primary><secondary>tests d'intégration</secondary></indexterm>y a plusieurs façons d'intégrer les tests automatisés dans votre 
+    application. Une des façons la plus efficace pour écrire des tests de haute qualité est 
+    de les écrire en premier, en utisant des techniques comme  <indexterm id="I_indexterm6_d1e8533" significance="normal"><primary>TDD (Test Driven Development)</primary></indexterm>Test-Driven Development (TDD) ou <indexterm id="I_indexterm6_d1e8537" significance="normal"><primary>BDD (Behavior-Driven Development)</primary></indexterm>Behavior-Driven Development (BDD). Dans cette approche, 
+    utilisée courament dans de nombreux projets agiles, le but de vos tests unitaires est à la fois
+    de clarifier votre compréhension du comportement du code et d'écrire un
+    test automatisé prouvant que le code implémente le comportement. En se concentrant 
+    sur le test du comportement attendu, plutôt que sur l'implémentation, de votre
+    code rend les tests plus compréhensibles et plus pertinents, et par conséquent
+    aide Jenkins à fournir une information plus <phrase role="keep-together">pertinente</phrase>.</para>
+    <para>Bien <indexterm id="I_indexterm6_d1e8546" significance="normal"><primary>tests unitaires</primary></indexterm><indexterm id="I_indexterm6_d1e8549" significance="normal"><primary>tests</primary><secondary>tests unitaires</secondary></indexterm>entendu, les plus classiques tests unitaires, quand le code a été
+    implémenté, est aussi une approche courament utilisée, et est certainement
+    mieux que pas de tests du tout.</para>
     <?dbfo-need height=”1in”?>
-    <para>Jenkins is not limited to unit testing, though. There are many other
-    types of automated testing that you should consider, depending on the
-    nature of your application, including integration testing, web testing,
-    functional testing, performance testing, load testing and so on. All of
-    these have their place in an automated build setup.</para>
-    <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal"><primary>acceptance tests, automated</primary></indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>can also be used, in conjunction with techniques like
-    Behavior-Driven Development and Acceptance Test Driven Development, as a
-    communications tool aimed at both developers and other project
-    stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
-    Cucumber, and many others, try to present acceptance tests in terms that
-    testers, product owners, and end users can understand. With the use of
-    such tools, Jenkins can report on project progress in business terms, and
-    so facilitate communication between developers and non-developers within a
-    team.</para>
-    <para>For existing or legacy applications with little or no automated
-    testing in place, it can be time-consuming and difficult to retro-fit
-    comprehensive unit tests onto the code. In addition, the tests may not be
-    very effective, as they will tend to validate the existing implementation
-    rather than verify the expected business behavior. One useful approach in
-    these situations is to write <indexterm id="I_indexterm6_d1e8571" significance="normal"><primary>functional (regression) tests</primary></indexterm><indexterm id="I_indexterm6_d1e8574" significance="normal"><primary>tests</primary><secondary>functional (regression) tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8579" significance="normal"><primary>regression tests</primary><see>functional (regression) tests</see></indexterm>automated functional tests (“regression”) tests that
-    simulate the most common ways that users manipulate the application. For
-    example, automated <indexterm id="I_indexterm6_d1e8585" significance="normal"><primary>web tests</primary></indexterm><indexterm id="I_indexterm6_d1e8588" significance="normal"><primary>tests</primary><secondary>web tests</secondary></indexterm>web testing tools such as Selenium and WebDriver can be
-    effectively used to test web applications at a high level. While this
-    approach is not as comprehensive as a combination of good quality unit,
-    integration and acceptance tests, it is still an effective and relatively
-    cost-efficient way to integrate automated regression testing into an
-    existing application.</para>
-    <para>In this chapter, we will see how Jenkins helps you keep track of
-    automated test results, and how you can use this information to monitor
-    and dissect your build process.</para>
+    <para>Jenkins n'est pas limité aux tests unitaires, cependant. Il y a beaucoup d'autres
+    types de tests automatisés que vous devriez considérer, selon la
+    nature de votre application, parmi les tests d'intégration, les tests web,
+    les tests fonctionnels, les tests de performance, les tests de charge et d'autres. Tous ceux
+    ont leur placed dans un environnement de construction automatisé.</para>
+    <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal"><primary>tests d'acceptance, automatisé</primary></indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal"><primary>tests</primary><secondary>tests d'acceptance</secondary></indexterm>peut aussi être utilisé, en conjonction avec des techniques telles
+    que Behavior-Driven Development et Acceptance Test Driven Development, comme un
+    outil de communication destiné à la fois aux développeurs et aux autres intervenants
+    d'un projet. Des frameworks BDD tels que easyb, fitnesse, jbehave, rspec,
+    Cucumber, et beaucoup d'autres, essaient de présenter les tests d'acceptance en termes que 
+    les testers, les chefs de produit, et les utilisateurs  peuvent comprendre. Avec de tels
+    outils, Jenkins peut fournir des informations sur l'avancement d'un projet en termes business, et
+    ainsi faciliter la communication entre developpeurs and non developpeurs à l'intérieur
+    d'une équipe.</para>
+    <para>Pour des applications existantes avec peu ou pas de tests automatisés
+    existants, cela peut être difficile et consommateur de temps d'installer
+    des tests unitaires complets dans le code. De plus, les tests peuvent ne pas être
+    très efficaces, parce qu'ils auront tendance à valider l'implémentation existante
+    plutôt que vérifier le fonctionnel attendu. Une appoche intéressante dans
+    ces situations est d'écrire <indexterm id="I_indexterm6_d1e8571" significance="normal"><primary>tests fonctionnels (regression)</primary></indexterm><indexterm id="I_indexterm6_d1e8574" significance="normal"><primary>tests</primary><secondary>tests fonctionnels (regression)</secondary></indexterm><indexterm id="I_indexterm6_d1e8579" significance="normal"><primary>tests de regression</primary><see>tests fonctionnels (regression)</see></indexterm>des tests fonctionnels automatisés (“regression”) qui
+    simulent les manières les plus courantes d'utilisation de l'application. Par
+    exemple, les outils de tests web automatisés <indexterm id="I_indexterm6_d1e8585" significance="normal"><primary>tests web</primary></indexterm><indexterm id="I_indexterm6_d1e8588" significance="normal"><primary>tests</primary><secondary>tests web</secondary></indexterm>tels que Selenium et WebDriver peuvent être
+    utilisés efficacement pour tester les applications web à un haut niveau. Alors que cette
+    approche n'est pas aussi complête que la combinaison de tests unitaires,
+    d'integration et d'acceptance de bonne qualité, c'est quand même un façon efficace et
+    économique d'intégrer des tests de regression automatisés dans une
+    application existante.</para>
+    <para>Dans ce chapitre, nous allons voir comment Jenkins vous aide à conserver les traces
+    des résultats des tests automatisés, et comment vous pouvez utiliser cette information pour surveiller
+    et disséquer votre processus de construction.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-unit">
     <title>Automating Your Unit and Integration Tests</title>
