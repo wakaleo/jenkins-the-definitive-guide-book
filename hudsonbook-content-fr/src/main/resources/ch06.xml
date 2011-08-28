@@ -95,18 +95,18 @@
   </sect1>
   <sect1 id="sect-chapter-automated-testing-reporting">
     <title>Configuring Test Reports in Jenkins</title>
-    <para>Once <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>reports from</secondary><tertiary>configuring</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>reporting</primary><secondary>test results</secondary><tertiary>configuring</tertiary></indexterm>your build generates test results, you need to configure
-    your Jenkins build job to display them. As mentioned above, Jenkins will
-    work fine with any xUnit-compatible test reports, no matter what language
-    they are written in.</para>
-    <para>For <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>Maven build jobs</primary><secondary>reporting on test results</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">in Maven build jobs</secondary></indexterm>Maven build jobs, no special configuration is required—just
-    make sure you invoke a goal that will run your tests, such as <literal moreinfo="none">mvn
-    test</literal> (for your unit tests) or <literal moreinfo="none">mvn verify</literal> (for
-    unit and integration tests). An example of a Maven build job configuration
-    is shown in <xref linkend="fig-testing-maven-verify-goal"/>.</para>
+    <para>Une fois que <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>configurer</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>rapport</primary><secondary>résultats de test</secondary><tertiary>configurer</tertiary></indexterm>votre build génère des résultats de test, vous devez configurer
+    votre tache de build Jenkins afin de les afficher. Comme mentionné précedemment, Jenkins sait
+    traiter n'importe quel rapport de test compatible xUnit, quel que soit le language
+    avec lequel is ont été écrit.</para>
+    <para>Pour <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>taches de build Maven</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">dans des taches de build Maven</secondary></indexterm>les taches de build Maven, aucune configuration spécifique n'est requise—uniquement
+    assurez vous que vous lancez bien un "goal" qui va exécuter vos tests, tel que <literal moreinfo="none">mvn
+    test</literal> (pour vos tests unitaires) ou <literal moreinfo="none">mvn verify</literal> (pour
+    les test unitaires et d'intégration). Un exemple de configuration de tache de build Maven
+    est donné dans <xref linkend="fig-testing-maven-verify-goal"/>.</para>
     <figure float="none" id="fig-testing-maven-verify-goal">
-      <title>You configure your Jenkins installation in the Manage Jenkins
-      screen</title>
+      <title>Vous configurez votre installation Jenkins installation dans l'écran Administrer Jenkins
+      </title>
       <mediaobject id="I_mediaobject6_d1e8726">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0601.pdf" format="PDF" scale="90"/>
@@ -116,18 +116,18 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For <indexterm id="I_indexterm6_d1e8733" significance="normal"><primary>freestyle build jobs</primary><secondary>reporting on test results</secondary></indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal"><primary>tests</primary><secondary sortas="free-style">in freestyle build jobs</secondary></indexterm>freestyle build jobs, you need to do a little more
-    configuration work. In addition to ensuring that your build actually runs
-    the tests, you need to tell Jenkins to publish the JUnit test report. You
-    <indexterm id="I_indexterm6_d1e8744" significance="normal"><primary>freestyle build jobs</primary><secondary>post-build actions</secondary></indexterm>configure this in the “Post-build Actions” section (see
-    <xref linkend="fig-testing-freestyle-junit-config"/>). Here, you provide
-    a path to the JUnit or TestNG XML reports. Their exact location will
-    depend on a project—for a Maven project, a path like
-    <filename moreinfo="none">**/target/surefire-reports/*.xml</filename> will find them for
-    most projects. For an Ant-based project, it will depend on how you
-    configured the Ant JUnit task, as we discussed above.</para>
+    <para>Pour <indexterm id="I_indexterm6_d1e8733" significance="normal"><primary>taches de build free-style</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal"><primary>tests</primary><secondary sortas="free-style">dans des taches de build free-style</secondary></indexterm>les taches de build free-style, vous devez effectuer une petit
+    travail de configuration. En plus de vous assurer que votre build exécute
+    les tests, vous devez indiquer à Jenkins de publier les rapport de test JUnit. Vous
+    <indexterm id="I_indexterm6_d1e8744" significance="normal"><primary>taches de build free-style</primary><secondary>Actions à la suite du build</secondary></indexterm>le configurez dans la section “Actions à la suite du build” (voir
+    <xref linkend="fig-testing-freestyle-junit-config"/>). Ici, vous fournissez
+    un chemin vers les rapports XML JUnit ou TestNG. Leur chemin exact dépend
+    du projet—pour un projet Maven, un chemin tel
+    <filename moreinfo="none">**/target/surefire-reports/*.xml</filename> les trouvera pour
+    la plupart des projets. Pour un projet Ant, cela dépendra de la façon dont vous avez
+    configuré la tache Ant JUnit, comme discuté précédement.</para>
     <figure float="none" id="fig-testing-freestyle-junit-config">
-      <title>Configuring Maven test reports in a freestyle project</title>
+      <title>Configurer les rapports de test Maven dans un projet free-style</title>
       <mediaobject id="I_mediaobject6_d1e8758">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0602.pdf" format="PDF" scale="85"/>
@@ -137,15 +137,15 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For <indexterm id="I_indexterm6_d1e8765" significance="normal"><primary>Java applications</primary><secondary>test reports from</secondary></indexterm>Java projects, whether they are using<indexterm id="I_indexterm6_d1e8771" significance="normal"><primary>JUnit reports</primary><secondary>configuring in freestyle build job</secondary></indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal"><primary>TestNG</primary></indexterm> JUnit or TestNG, Jenkins does an excellent job out of the
-    box. If you are using Jenkins for non-Java projects, you might need
-    the<indexterm id="I_indexterm6_d1e8780" significance="normal"><primary>xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8783" significance="normal"><primary>xUnit plugin</primary></indexterm><indexterm id="I_indexterm6_d1e8786" significance="normal"><primary>plugins</primary><secondary>xUnit</secondary></indexterm> xUnit Plugin. This plugin lets Jenkins process test reports
-    from non-Java tools in a consistent way. It provides support for MSUnit
-    and NUnit (for C# and other .NET languages), UnitTest++ and Boost Test
-    (for C++), PHPUnit (for PHP), as well as a few other xUnit libraries via
-    additional plugins (see <xref linkend="fig-hudson-xunit-plugin"/>).</para>
+    <para>Pour <indexterm id="I_indexterm6_d1e8765" significance="normal"><primary>applications Java</primary><secondary>rapports de test de</secondary></indexterm>projets Java, qu'ils utilisent<indexterm id="I_indexterm6_d1e8771" significance="normal"><primary>rapports JUnit</primary><secondary>configurer dans une tache de build free-style</secondary></indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal"><primary>TestNG</primary></indexterm> JUnit ou TestNG, Jenkins fournit une excellent intégration de
+    base. Si vous utilisez Jenkins pour des projets non Java, vous aurez besoin
+    du<indexterm id="I_indexterm6_d1e8780" significance="normal"><primary>xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8783" significance="normal"><primary>plugin xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8786" significance="normal"><primary>plugins</primary><secondary>xUnit</secondary></indexterm> plugin xUnit. Ce plugin permet à Jenkins de traiter les rapports de test
+    de projets non Java d'une façon uniforme. Il fournit un support de MSUnit
+    et NUnit (pour C# et d'autres langages .NET), UnitTest++ et Boost Test
+    (pour C++), PHPUnit (pour PHP), ainsi que quelques autres librairies xUnit via
+    d'autres plugins (voir <xref linkend="fig-hudson-xunit-plugin"/>).</para>
     <figure float="0" id="fig-hudson-xunit-plugin">
-      <title>Installing the xUnit plugin</title>
+      <title>Installer le plugin xUnit</title>
       <mediaobject id="I_mediaobject6_d1e8797">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0603.pdf" format="PDF"/>
@@ -155,15 +155,15 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Once you have installed the xUnit Plugin, you will need to configure
-    the reporting for your particular xUnit reports in the “Post-build
-    Actions” section. Check the “Publish testing tools result report”
-    checkbox, and enter the path to the XML reports generated by your testing
-    library (see <xref linkend="fig-hudson-xunit-plugin-config"/>). When the
-    build job runs, Jenkins will convert these reports to JUnit reports so
-    that they can be displayed<indexterm id="I_indexterm6_d1e8806" class="endofrange" startref="ch06-config" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8808" class="endofrange" startref="ch06-config2" significance="normal"><primary/></indexterm> in Jenkins.</para>
+    <para>Une fois que vous avez installé le plugin xUnit, vous devez configurer
+    le traitement pour vos rapports xUnit dans la section “Actions à la suite du build”.
+    Selectionnez la case “Publish testing tools result report”,
+    et saisissez le chemin vers les rapports XML générés par votre librairie
+    de test (voir <xref linkend="fig-hudson-xunit-plugin-config"/>). Quand la
+    tache de build s'exécute, Jenkins convertira ces rapports en rapports JUnit de telle manière
+    à ce qu'ils soient affichés<indexterm id="I_indexterm6_d1e8806" class="endofrange" startref="ch06-config" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8808" class="endofrange" startref="ch06-config2" significance="normal"><primary/></indexterm> dans Jenkins.</para>
     <figure float="0" id="fig-hudson-xunit-plugin-config">
-      <title>Publishing xUnit test results</title>
+      <title>Publier les résultat de test xUnit</title>
       <mediaobject id="I_mediaobject6_d1e8814">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0604.pdf" format="PDF"/>
