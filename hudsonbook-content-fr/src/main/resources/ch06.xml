@@ -7,7 +7,7 @@
     <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automatisés  </secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>tâches de build</primary><secondary>tests in</secondary><see>tests</see></indexterm>Si vous n'utilisez pas les tests automatisés avec votre environnement d'intégration
     continue, vous passez à coté d'un aspect important. Croyez-
     moi—IC sans les tests automatisés représente juste une petite amélioration pour
-    les taches de build lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
+    les tâches de build lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
     de zéro, c'est quand même un grand pas en avant, mais vous pouvez faire
     mieux. En résumé, si vous utilisez Jenkins sans tests automatisés,
     vous n'obtenez pas autant de valeur de votre infrastructure d'intégration
@@ -84,7 +84,7 @@
     aussi orientés xUnit. Dans les sections suivantes, nous ne faisons pas de distinction
     entre ces différents types de test, parce que, d'un point de vue
     configuration, ils sont traités de la même façon par Jenkins. Cependant, vous
-    aurez certainement à faire la distinction dans vos taches de build. Afin
+    aurez certainement à faire la distinction dans vos tâches de build. Afin
     d'obtenir un compte rendu le plus rapide, vos tests devront être
     groupés dans des catégories bien définies, en commençant par les rapides tests unitaires,
     ensuite viendront les tests d'intégration, pour finir
@@ -95,11 +95,11 @@
   </sect1>
   <sect1 id="sect-chapter-automated-testing-reporting">
     <title>Configuring Test Reports in Jenkins</title>
-    <para>Une fois que <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>configurer</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>rapport</primary><secondary>résultats de test</secondary><tertiary>configurer</tertiary></indexterm>votre build génère des résultats de test, vous devez configurer
+    <para>Une fois que <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>configurer</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>rapporter</primary><secondary>résultats de test</secondary><tertiary>configurer</tertiary></indexterm>votre build génère des résultats de test, vous devez configurer
     votre tache de build Jenkins afin de les afficher. Comme mentionné précedemment, Jenkins sait
     traiter n'importe quel rapport de test compatible xUnit, quel que soit le language
     avec lequel is ont été écrit.</para>
-    <para>Pour <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>taches de build Maven</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">dans des taches de build Maven</secondary></indexterm>les taches de build Maven, aucune configuration spécifique n'est requise—uniquement
+    <para>Pour <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>tâches de build Maven</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">dans des tâches de build Maven</secondary></indexterm>les tâches de build Maven, aucune configuration spécifique n'est requise—uniquement
     assurez vous que vous lancez bien un "goal" qui va exécuter vos tests, tel que <literal moreinfo="none">mvn
     test</literal> (pour vos tests unitaires) ou <literal moreinfo="none">mvn verify</literal> (pour
     les test unitaires et d'intégration). Un exemple de configuration de tache de build Maven
@@ -116,10 +116,10 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pour <indexterm id="I_indexterm6_d1e8733" significance="normal"><primary>taches de build free-style</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal"><primary>tests</primary><secondary sortas="free-style">dans des taches de build free-style</secondary></indexterm>les taches de build free-style, vous devez effectuer une petit
+    <para>Pour <indexterm id="I_indexterm6_d1e8733" significance="normal"><primary>tâches de build free-style</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal"><primary>tests</primary><secondary sortas="free-style">dans des tâches de build free-style</secondary></indexterm>les tâches de build free-style, vous devez effectuer une petit
     travail de configuration. En plus de vous assurer que votre build exécute
     les tests, vous devez indiquer à Jenkins de publier les rapport de test JUnit. Vous
-    <indexterm id="I_indexterm6_d1e8744" significance="normal"><primary>taches de build free-style</primary><secondary>Actions à la suite du build</secondary></indexterm>le configurez dans la section “Actions à la suite du build” (voir
+    <indexterm id="I_indexterm6_d1e8744" significance="normal"><primary>tâches de build free-style</primary><secondary>Actions à la suite du build</secondary></indexterm>le configurez dans la section “Actions à la suite du build” (voir
     <xref linkend="fig-testing-freestyle-junit-config"/>). Ici, vous fournissez
     un chemin vers les rapports XML JUnit ou TestNG. Leur chemin exact dépend
     du projet—pour un projet Maven, un chemin tel
@@ -175,35 +175,35 @@
     </figure>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-results">
-    <title>Displaying Test Results</title>
-    <para>Once<indexterm class="startofrange" id="ch06-disp1" significance="normal"><primary>tests</primary><secondary>reports from</secondary><tertiary>displaying</tertiary></indexterm><indexterm class="startofrange" id="ch06-disp2" significance="normal"><primary>reporting</primary><secondary>test results</secondary><tertiary>displaying</tertiary></indexterm> Jenkins knows where to find the test reports, it does a
-    great job of reporting on them. Indeed, one of Jenkins’s main jobs is to
-    detect and to report on build failures. And a failing unit test is one of
-    the most obvious symptoms.</para>
-    <para>As we mentioned earlier, Jenkins <indexterm class="startofrange" id="ch06-fail1" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>details regarding</tertiary></indexterm><indexterm id="I_indexterm6_d1e8848" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary></indexterm><indexterm id="I_indexterm6_d1e8853" significance="normal"><primary>unstable builds</primary></indexterm>makes the distinction between <emphasis>failed</emphasis>
-    builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
-    by a red ball) indicates test failures, or a build job that is broken in
-    some brutal manner, such as a compilation error. An unstable build, on the
-    other hand, is a build that is not considered of sufficient quality. This
-    is intentionally a little vague: what defines “quality” in this sense is
-    largely up to you, but it is typically related to code quality metrics
-    such as code coverage or coding standards, that we will be discussing
-    later on in the book. For now, let’s focus on the
-    <emphasis>failed</emphasis> builds.</para>
-    <para>In <xref linkend="fig-testing-maven-test-failure-dashboard"/>
-    we<indexterm id="I_indexterm6_d1e8870" significance="normal"><primary>Maven build jobs</primary><secondary>test results of</secondary></indexterm> can see how Jenkins displays a Maven build job containing
-    test failures. This is the build job home page, which should be your first
-    port of call when a build breaks. When a build results in failing tests,
-    the Latest Test Result link will indicate <phrase role="keep-together">the
-    current</phrase> number of test failures in this build job (“5 failures”
-    in the illustration), <phrase role="keep-together">and also</phrase> the
-    change in the number of test failures since the last build (“+5” in the
-    <phrase role="keep-together">illustration—</phrase>five new test
-    failures). You can also see how the tests have been faring over <phrase role="keep-together">time—</phrase>test failures from previous builds will
-    also appear as red in the Test Result Trend graph.</para>
+    <title>Afficher les résultats de test</title>
+    <para>Une fois que<indexterm class="startofrange" id="ch06-disp1" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>afficher</tertiary></indexterm><indexterm class="startofrange" id="ch06-disp2" significance="normal"><primary>rapporter</primary><secondary>résultats de test</secondary><tertiary>afficher</tertiary></indexterm> Jenkins sait où se trouvent les rapports de test, il fournit un
+    excellent travail de rapport sur ces derniers. En effect, une des tâches principales de Jenkins est de
+    détecter et de fournir des rapports sur des échecs de build. Et un test unitaire échoué est un des
+    symptomes les plus évidents.</para>
+    <para>Comme nous le mentionnions plus tôt, Jenkins <indexterm class="startofrange" id="ch06-fail1" significance="normal"><primary>tâches de build</primary><secondary>échouées</secondary><tertiary>détails à propos de</tertiary></indexterm><indexterm id="I_indexterm6_d1e8848" significance="normal"><primary>tâches de buid</primary><secondary>build instable de</secondary></indexterm><indexterm id="I_indexterm6_d1e8853" significance="normal"><primary>builds instables</primary></indexterm>fait la distinction entre les builds <emphasis>échoués</emphasis>
+    et les builds <emphasis>instables</emphasis>. Un build échoué (indiqué
+    par une balle rouge) signale des tests échoués, ou une tache de build qui est cassée d'une
+    façon brutale, telle qu'une erreur de compilation. Un build instable, de l'autre
+    coté, est un build qui n'est pas considéré de qualité suffisante. C'est
+    intentionnellement vague: ce qui définit la “qualité” est généralement
+    donné par vous, mais c'est typiquement lié aux métriques de code
+    comme la couverture de code ou les standards de codage, ce que nous discuterons
+    plus tard dans le livre. Pour l'instant, concentrons nous sur les builds
+    <emphasis>échoués</emphasis>.</para>
+    <para>Dans <xref linkend="fig-testing-maven-test-failure-dashboard"/>
+    nous<indexterm id="I_indexterm6_d1e8870" significance="normal"><primary>tâches de build Maven</primary><secondary>résultats de test de</secondary></indexterm> pouvons voir comment Jenkins affiche une tâche de build Maven contenant
+    des échecs de test. Ceci est la page d'accueil de la tache de build, qui devrait être votre premier
+    point d'entrée quand un build échoue. Quand un build contient des tests en échec,
+    le lien Dernier résultats des tests indique <phrase role="keep-together">le nombre
+    </phrase> courant d'échecs de test dans cette tâche de build (“5 échecs”
+    dans l'illustration), <phrase role="keep-together">et aussi</phrase> la
+    difference dans le nombre d'échecs de test depuis le dernier build (“+5” dans
+    <phrase role="keep-together">l'illustration—</phrase>cinq nouveaux échecs de
+    test). Vous pouvez aussi voir comment les tests ont réussi dans le <phrase role="keep-together">temps—</phrase>les échecs de test des build précédents apparaittront
+    en rouge dans le graphique Tendance des résultats des tests.</para>
     <figure float="0" id="fig-testing-maven-test-failure-dashboard">
-      <title>Jenkins displays test result trends on the project home
-      page</title>
+      <title>Jenkins affiche la tendance des résultats de test sur la page d'accueil du projet
+      </title>
       <mediaobject id="I_mediaobject6_d1e8892">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0605.pdf" format="PDF"/>
@@ -213,14 +213,14 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>If you click on the Latest Test Result link, Jenkins will give you a
-    rundown of the current test results (see <xref linkend="fig-testing-test-result-details"/>). Jenkins understands Maven
-    multimodule project structures, and for a Maven build job, Jenkins will
-    initially display a summary view of test results per module. For more
-    details about the failing tests in a particular module, just click on the
-    module you are interest in.</para>
+    <para>Si vous cliquez sur le lien Derniers résultats des tests, Jenkins vous donnera un
+    aperçu des résultats des derniers tests (voir <xref linkend="fig-testing-test-result-details"/>). Jenkins supporte les structures de projets
+    multi-modules Maven, et pour une tâche de build Maven, Jenkins va
+    afficher une vue synthétique des résultats de test par module. Pour voir plus de
+    détails sur les tests en échec dans un module particulier, cliquez simplement sur le
+    module qui vous intéresse.</para>
     <figure float="none" id="fig-testing-test-result-details">
-      <title>Jenkins displays a summary of the test results</title>
+      <title>Jenkins affiche une vue synthétique des résultats de test</title>
       <mediaobject id="I_mediaobject6_d1e8904">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0606.pdf" format="PDF"/>
@@ -230,35 +230,35 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For <indexterm id="I_indexterm6_d1e8911" significance="normal"><primary>freestyle build jobs</primary><secondary>failed</secondary></indexterm>freestyle build jobs, Jenkins will directly give you a
-    summary of your test results, but organized by high-level packages rather
-    than modules.</para>
-    <para>In both cases, Jenkins starts off by presenting a summary of test
-    results for each package. From here, you can drill down, seeing test
-    results for each test class and then finally the tests within the test
-    classes themselves. And if there are any failed tests, these will be
-    prominently displayed at the top of the page.</para>
-    <para>This full view gives you both a good overview of the current state
-    of your tests, and an indication of their history. The Age column tells
-    you how for how long a test has been broken, with a hyperlink that takes
-    you back to the first build in which this test failed.</para>
-    <para>You can also add a description to the test results, using the Edit
-    Description link in the top right-hand corner of the screen. This is a
-    great way to annotate a build failure with some additional details, in
-    order to add extra information about the origin of test failures or some
-    notes about how to fix them.</para>
-    <para>When a test fails, you generally want to know why. To see the
-    details of a particular test failure, just click on the corresponding link
-    on this screen. This will display all the gruesome details, including the
-    error message and the stack trace, as well as a reminder of how long the
-    test has been failing (see <xref linkend="fig-testing-test-failure-details"/>). You should be wary of
-    tests that have been failing for more than just a couple of builds—this is
-    an indicator of either a tricky technical problem that might need
-    investigating, or a complacent attitude to failed builds (developers might
-    just be ignoring build failures), which is more serious and definitely
-    should be<indexterm id="I_indexterm6_d1e8928" class="endofrange" startref="ch06-fail1" significance="normal"><primary/></indexterm> investigated.</para>
+    <para>Pour <indexterm id="I_indexterm6_d1e8911" significance="normal"><primary>tâches de build free-style</primary><secondary>échoué</secondary></indexterm>les tâches de build free-style, Jenkins vous donnera directement un
+    aperçu de vos résultats de test, mais organisé par packages de haut niveau plutôt que
+    par modules.</para>
+    <para>Dans les deux cas, Jenkins commence par présenter un aperçu des résultats
+    de test pour chaque package. A partir d'ici, vous pouvez affiner, voir les résultats
+    de test pour chaque classe de test pour finir par les tests dans les classes
+    de test. Et s'il y a des tests en échec, ils seront
+    surlignés en haut de la page.</para>
+    <para>Cette vue complète vous donne à la fois un bon aperçu de l'état courant
+    de vos tests, et une indication sur leur historique. La colonne Age indique
+    depuis combien de temps un test a été cassé, avec un hyperlien qui vous ramène
+    vers le premier build dans lequel le test a échoué.</para>
+    <para>Vous pouvez aussi rajouter une description aux résultats de test, en utilisant le lien
+    ajouter une description dans le coin en haut à droite de l'écran. C'est une bonne
+    manière d'annoter un échec de build avec des détails additionnels, afin
+    de rajouter une information supplémentaire sur l'origine du problème des échecs de test ou des
+    notes sur la façon de les corriger.</para>
+    <para>Lorsqu'un test échoue, vous voulez généralement savoir pourquoi. Pour voir les
+    détails d'un échec d'un test donné, cliquez sur le lien correspondant
+    sur cet écran. Cela va afficher l'ensemble des détails, y compris le
+    message d'erreur et la pile, ainsi qu'un rappel du temps depuis lequel le
+    test est en échec (voir <xref linkend="fig-testing-test-failure-details"/>). Vous devriez vous méfier des
+    tests qui sont en échec depuis plus de deux builds—cela signale
+    soit un problème technique pointu qui doit être
+    investigué, soit une attitude complaisante envers les tests en échec (les developpeurs ignorent
+    peut-être les échecs de build), ce qui est plus sérieux et doit 
+    surement être<indexterm id="I_indexterm6_d1e8928" class="endofrange" startref="ch06-fail1" significance="normal"><primary/></indexterm> investigué.</para>
     <figure float="none" id="fig-testing-test-failure-details">
-      <title>The details of a test failure</title>
+      <title>Les détails d'un échec de test</title>
       <mediaobject id="I_mediaobject6_d1e8934">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0607.pdf" format="PDF"/>
@@ -268,25 +268,24 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Make <indexterm class="startofrange" id="ch06-perf1" significance="normal"><primary>tests</primary><secondary>performance of</secondary></indexterm><indexterm class="startofrange" id="ch06-perf2" significance="normal"><primary>performance</primary><secondary sortas="tests">of tests</secondary></indexterm>sure you also keep an eye on how long your tests take to
-    run, and not just whether they pass or fail. Unit tests should be designed
-    to run fast, and overly long-running tests can be the sign of a
-    performance issue. Slow unit tests also delay feedback, and in CI, fast
-    feedback is the name of the game. For example, running one thousand unit
-    tests in five minutes is good—taking an hour to run them is not. So it is
-    a good idea to regularly check how long your unit tests are taking to run,
-    and if necessary investigate why they are taking so long.</para>
-    <para>Luckily, Jenkins can easily tell you how long your tests have been
-    taking to run over time. On the build job home page, click on the “trend”
-    link in the Build History box on the left of the screen. This will give
-    you a graph along the lines of the one in <xref linkend="fig-testing-test-trend"/>, showing how long each of your builds
-    took to run. Now tests are not the only thing that happens in a build job,
-    but if you have enough tests to worry about, they will probably take a
-    large proportion of the time. So this graph is a great way to see how well
-    your tests are performing as well.</para>
+    <para>Assurez-vous <indexterm class="startofrange" id="ch06-perf1" significance="normal"><primary>tests</primary><secondary>performance de</secondary></indexterm><indexterm class="startofrange" id="ch06-perf2" significance="normal"><primary>performance</primary><secondary sortas="tests">des tests</secondary></indexterm>que vous gardez un oeil sur le temps que prennent vos tests pour
+    s'exécuter, et pas uniquement s'ils passent ou échouent. Les tests unitaires doivent être conçus
+    pour s'exécuter rapidement, et des tests trop longs peuvent être le signe d'un
+    problème de performance. Des tests unitaires lents retardent aussi le retour, et en IC, un retour
+    rapide est la clé. Par exemple, exécuter un millier de tests unitaires
+    en cinq minutes est bon—prendre une heure ne l'est pas. Donc c'est
+    une bonne idée de vérifier régulièrement combien de temps vos tests unitaires prennent pour s'exécuter,
+    et si nécessaire invstiguer pourquoi ils prennent autant de temps.</para>
+    <para>Heureusement, Jenkins peut facilement vous dire la durée que prennent vos tests pour s'exécuter
+    dans le temps. Sur la page d'accueil de la tâche de build, cliquez sur le lien “tendance”
+    dans la boite Historique des builds sur la gauche de l'écran. Cela vous donnera
+    un graphique à l'instar de celui dans <xref linkend="fig-testing-test-trend"/>, vous montrant combien de temps chacun de vos builds
+    a pris pour s'exécuter. Maintenant, les tests ne sont pas la seule chose qui apparait dans une tache de build,
+    mais si vous avez suffisamment de tests à regarder de près, ils vont probablement prendre une
+    grande partie du temps. Ainsi, ce graphique est aussi un excellent moyen de voir comment
+    vos tests se comportent.</para>
     <figure float="none" id="fig-testing-test-trend">
-      <title>Build time trends can give you a good indicator of how fast your
-      tests are running</title>
+      <title>Les tendances de temps de build peuvent vous donner un bon indicateur de la rapidité de vos tests</title>
       <mediaobject id="I_mediaobject6_d1e8959">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0608.pdf" format="PDF"/>
@@ -296,13 +295,13 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>When you are on the Test Results page (see <xref linkend="fig-testing-test-result-details"/>), you can also drill down and
-    see how long the tests in a particular module, package or class are taking
-    to run. Just click on the test duration in the test results page (“Took 31
-    ms” in <xref linkend="fig-testing-test-result-details"/>) to view the
-    test history for a package, class, or individual test (see <xref linkend="fig-testing-test-result-history"/>). This makes it easy to
-    isolate a test that is taking more time than it should, or even decide
-    when a general optimization of your unit tests is<indexterm id="I_indexterm6_d1e8972" class="endofrange" startref="ch06-disp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8974" class="endofrange" startref="ch06-disp2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8976" class="endofrange" startref="ch06-perf1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8978" class="endofrange" startref="ch06-perf2" significance="normal"><primary/></indexterm> required.</para>
+    <para>Quand vous êtes sur la page Résultats des tests (voir <xref linkend="fig-testing-test-result-details"/>), vous pouvez aussi affiner et
+    voir le temps que prennent les tests dans un module, package ou classe donné.
+    Cliquez sur la durée du test dans la page Résultats des tests (“A duré 31
+    ms” in <xref linkend="fig-testing-test-result-details"/>) pour voir
+    l'historique du test pour un package, une classe, ou un test individuel (voir <xref linkend="fig-testing-test-result-history"/>). Cela rend facile
+    l'isolation d'un test qui prend plus de temps qu'il ne le devrait, ou même décider
+    quand une optimisation générale de vos tests unitaires est<indexterm id="I_indexterm6_d1e8972" class="endofrange" startref="ch06-disp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8974" class="endofrange" startref="ch06-disp2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8976" class="endofrange" startref="ch06-perf1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8978" class="endofrange" startref="ch06-perf2" significance="normal"><primary/></indexterm> requise.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-ignoring">
     <title>Ignoring Tests</title>
