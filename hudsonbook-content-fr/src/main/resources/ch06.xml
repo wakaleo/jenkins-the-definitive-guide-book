@@ -304,10 +304,10 @@
     quand une optimisation générale de vos tests unitaires est<indexterm id="I_indexterm6_d1e8972" class="endofrange" startref="ch06-disp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8974" class="endofrange" startref="ch06-disp2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8976" class="endofrange" startref="ch06-perf1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8978" class="endofrange" startref="ch06-perf2" significance="normal"><primary/></indexterm> requise.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-ignoring">
-    <title>Ignoring Tests</title>
-    <para>Jenkins<indexterm class="startofrange" id="ch06-ignore" significance="normal"><primary>tests</primary><secondary>ignoring</secondary></indexterm> distinguishes between test failures and skipped tests.
-    Skipped tests are ones that have been deactivated, for example by using
-    the <literal moreinfo="none">@Ignore</literal> annotation in JUnit 4:</para>
+    <title>Ignorer des tests</title>
+    <para>Jenkins<indexterm class="startofrange" id="ch06-ignore" significance="normal"><primary>tests</primary><secondary>ignorer</secondary></indexterm> fait la distinction entre les tests échoués et les tests ignorés.
+    Les tests ignorés sont ceux qui ont été désactivés, par exemple en utilisant
+    l'annotation <literal moreinfo="none">@Ignore</literal> dans JUnit 4:</para>
     <programlisting id="I_programlisting6_d1e8995" format="linespecific">@Ignore("Pending more details from the BA")
 @Test 
 public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
@@ -317,7 +317,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     assertThat(account.getBalance(), is(40));
 }</programlisting>
     <figure float="none" id="fig-testing-test-result-history">
-      <title>Jenkins also lets you see how long your tests take to run</title>
+      <title>Jenkins vous permet de voir combien de temps les tests ont mis pour s'exécuter</title>
       <mediaobject id="I_mediaobject6_d1e9000">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0609.pdf" format="PDF"/>
@@ -327,16 +327,16 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Skipping some tests is perfectly legitimate in some circumstances,
-    such as to place an automated acceptance test, or higher-level technical
-    test, on hold while you implement the lower levels. In such cases, you
-    don’t want to be distracted by the failing acceptance test, but you don’t
-    want to forget that the test exists either. Using techniques such as the
-    <literal moreinfo="none">@Ignore</literal> annotation are better than simply commenting
-    out the test or renaming it (in JUnit 3), as it lets Jenkins keep tabs on
-    the ignored tests for you.</para>
-    <para>In <indexterm id="I_indexterm6_d1e9012" significance="normal"><primary>TestNG</primary></indexterm>TestNG, you can also skip tests, using the
-    <literal moreinfo="none">enabled</literal> property:</para>
+    <para>Ignorer des tests est parfaitement légitime dans certaines circonstances,
+    telles que placer un test d'acceptance automatisé, ou un test technique de plus haut niveau
+    , en attente pendant que vous implémentez les couches inférieures. Dans de tels cas, vous
+    ne voulez pas être distrait par le test d'acceptance échoué, mais vous ne voulez pas
+    non plus oublier que le test existe. Utilser des techniques telles que l'annotation
+    <literal moreinfo="none">@Ignore</literal> est certainement meilleur que de commenter simplement
+    le test ou de le renommer (dans JUnit 3), car cela permet à Jenkins de garder un oeil
+    sur les tests ignorés pour vous.</para>
+    <para>Avec <indexterm id="I_indexterm6_d1e9012" significance="normal"><primary>TestNG</primary></indexterm>TestNG, vous pouvez aussi ignorer des tests, en utilisant la
+    propriété <literal moreinfo="none">enabled</literal>:</para>
     <programlisting id="I_programlisting6_d1e9019" format="linespecific">@Test(enabled=false)
 public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Account account = new Account();
@@ -344,26 +344,26 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     account.makeCashWithdraw(60);
     assertThat(account.getBalance(), is(40));
 }</programlisting>
-    <para>In TestNG, you can also define dependencies between tests, so that
-    certain tests will only run after another test or group of tests has run,
-    as illustrated here:</para>
+    <para>Avec TestNG, vois pouvez aussi définir des dépendences entre tests, de façon que
+    certains tests s'exécuteront après qu'un autre test ou un groupe de tests se soit exécuté,
+    comme illustré ici:</para>
     <programlisting id="I_programlisting6_d1e9023" format="linespecific">@Test
 public void serverStartedOk() {...}
  
 @Test(dependsOnMethods = { "serverStartedOk" })
 public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed(){..}</programlisting>
-    <para>Here, if the first test (<literal moreinfo="none">serverStartedOk()</literal>)
-    fails, the following test will be skipped.</para>
-    <para>In all of these cases, Jenkins will mark the tests that were not run
-    as yellow, both in the overall test results trend, and in the test details
-    (see <xref linkend="fig-testing-test-skipped"/>). Skipped tests are not
-    as bad as test failures, but it is important not to get into the habit of
-    neglecting them. Skipped tests are like branches in a version control
-    system: a test should be skipped for a specific reason, with a clear idea
-    as to when they will be reactivated. A skipped test that remains skipped
-    for too long is a bad<indexterm id="I_indexterm6_d1e9034" class="endofrange" startref="ch06-ignore" significance="normal"><primary/></indexterm> smell.</para>
+    <para>Ici, si le premier test (<literal moreinfo="none">serverStartedOk()</literal>)
+    échoue, le test suivant sera ignoré.</para>
+    <para>Dans tous ces cas, Jenkins marquera les tests qui n'ont pas été exécutés
+    en jaune, à la fois dans la tendance de résultats de test globale, et dans les détails du test
+    (voir <xref linkend="fig-testing-test-skipped"/>). Les tests ignorés ne sont pas
+    aussi mauvais que des tests échoués, mais il est important de ne pas avoir l'habitude
+    de les négliger. Les tests ignorés sont comme des branches dans un système de gestion
+    de version: un test doit être ignoré pour une raison particulière, avec une idée claire
+    de la date à laquelle il sera réactivé. Un test ignoré qui reste ignoré
+    pendant une période trop longue ne sent pas<indexterm id="I_indexterm6_d1e9034" class="endofrange" startref="ch06-ignore" significance="normal"><primary/></indexterm> bon.</para>
     <figure float="none" id="fig-testing-test-skipped">
-      <title>Jenkins displays skipped tests as yellow</title>
+      <title>Jenkins affiche les tests ignorés en jaune</title>
       <mediaobject id="I_mediaobject6_d1e9041">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0610.pdf" format="PDF"/>
