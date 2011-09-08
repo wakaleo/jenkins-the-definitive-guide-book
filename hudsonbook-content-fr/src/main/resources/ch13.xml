@@ -747,46 +747,113 @@
 			</figure>
 		</sect2>
 	</sect1>
-  <sect1 id="sect-maint-archiving-jobs">
-    <title>Archiving Build Jobs</title>
-    <para>Another <indexterm class="startofrange" id="ch13-arc1" significance="normal"><primary>maintenance</primary><secondary>archiving build jobs</secondary></indexterm><indexterm class="startofrange" id="ch13-arc2" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>archiving build jobs</tertiary></indexterm><indexterm class="startofrange" id="ch13-arc3" significance="normal"><primary>archiving build jobs</primary></indexterm><indexterm class="startofrange" id="ch13-arc4" significance="normal"><primary>build jobs</primary><secondary>archiving</secondary></indexterm>way to address disk space issues is to delete or archive
-    projects that are no longer active. Archiving a project allows you to
-    easily restore it later if you need to consult the project data or
-    artifacts. Archiving a project is simple: just move the build project
-    directory out of the job directory. Of course, typically, you would
-    compress it into a ZIP file or a tarball first.</para>
-    <para>In the following example, we want to archive the
-    <emphasis>tweeter-default</emphasis> project. So first we go to the
-    Jenkins <filename moreinfo="none">jobs</filename> directory and create a
-    tarball (compressed archive) of the <filename moreinfo="none">tweeter-default</filename> build job directory:</para>
-    <screen format="linespecific">$ <userinput moreinfo="none">cd $JENKINS_HOME/jobs</userinput>
-$ <userinput moreinfo="none">ls</userinput>
-gameoflife-default      tweeter-default
-$ <userinput moreinfo="none">tar czf tweeter-default.tgz tweeter-default</userinput>
-$ <userinput moreinfo="none">ls</userinput>
-gameoflife-default      tweeter-default         tweeter-default.tgz</screen>
-    <para>As long as the project you want to archive is not running, you can
-    now safely delete the project directory and move the archive into
-    storage:</para>
-    <screen format="linespecific">$ <userinput moreinfo="none">rm -Rf tweeter-default</userinput>
-$ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</userinput></screen>
-    <para>Once you have done this, you can simply reload the configuration
-    from the disk in the Manage Jenkins screen (see <xref linkend="fig-maintenance-reload-configuration"/>). The archived project
-    will promptly disappear from your dashboard.</para>
-    <figure float="none" id="fig-maintenance-reload-configuration">
-      <title>Reloading the configuration from disk</title>
-      <mediaobject id="I_mediaobject13_d1e18203">
-        <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_1314.pdf" format="PDF"/>
-        </imageobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_1314.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>On a Windows machine, you can do exactly the same thing by creating
-    a ZIP file of the project<indexterm id="I_indexterm13_d1e18210" class="endofrange" startref="ch13-arc1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18212" class="endofrange" startref="ch13-arc2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18214" class="endofrange" startref="ch13-arc3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18216" class="endofrange" startref="ch13-arc4" significance="normal"><primary/></indexterm> directory.</para>
-  </sect1>
+	<sect1 id="sect-maint-archiving-jobs">
+		<title>Archiver les Tâches de Build</title>
+		<para>
+			Une autre façon
+			<indexterm class="startofrange" id="ch13-arc1"
+				significance="normal">
+				<primary>maintenance</primary>
+				<secondary>archiving build jobs</secondary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-arc2"
+				significance="normal">
+				<primary>Jenkins</primary>
+				<secondary>maintenance of</secondary>
+				<tertiary>archiving build jobs</tertiary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-arc3"
+				significance="normal">
+				<primary>archiving build jobs</primary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-arc4"
+				significance="normal">
+				<primary>build jobs</primary>
+				<secondary>archiving</secondary>
+			</indexterm>
+			d'aborder la problématique de l'espace disque est de supprimer ou
+			d'archiver les projets qui ne sont plus actifs. Archiver un projet
+			vous permet de le restaurer aisément ultérieurement afin de consulter
+			ses données ou artefacts. Archiver un projet est facile : il suffit
+			de déplacer le répertoire de celui ci en dehors du répertoire des
+			tâches. Bien sûr, généralement, le répertoire de la tâche est en premier
+			lieu compressé dans un fichier ZIP ou une tarball.
+		</para>
+		<para>
+			Dans l'exemple qui suit, nous voulons archiver le project
+			<emphasis>tweeter-default</emphasis>
+			. En premier lieu, nous nous rendons dans le répertoire
+			<filename moreinfo="none">jobs</filename>
+			de Jenkins et y créons une "tarball" (archive compressée) du
+			répertoire
+			<filename moreinfo="none">tweeter-default</filename>
+			se trouvant dans le répertoire des tâches.
+		</para>
+		<screen format="linespecific">
+			$
+			<userinput moreinfo="none">cd $JENKINS_HOME/jobs</userinput>
+			$
+			<userinput moreinfo="none">ls</userinput>
+			gameoflife-default tweeter-default
+			$
+			<userinput moreinfo="none">tar czf tweeter-default.tgz
+				tweeter-default</userinput>
+			$
+			<userinput moreinfo="none">ls</userinput>
+			gameoflife-default tweeter-default tweeter-default.tgz
+		</screen>
+		<para>Si le projet n'est pas en cours de construction par Jenkins,
+			vous pouvez alors le supprimer en toute sécurité et déplacer
+			l'archive vers son lieu de stockage :
+			</para>
+		<screen format="linespecific">
+			$
+			<userinput moreinfo="none">rm -Rf tweeter-default</userinput>
+			$
+			<userinput moreinfo="none">mv tweeter-default.tgz
+				/data/archives/jenkins</userinput>
+		</screen>
+		<para>
+			Une fois cela réalisé, vous pouvez tout simplement recharger la
+			configuration depuis le disque dans l'écran "Administrer Jenkins"
+			(voir
+			<xref linkend="fig-maintenance-reload-configuration" />
+			). Le projet archivé va dispairaitre instantanément de votre tableau
+			de bord.
+		</para>
+		<figure float="none" id="fig-maintenance-reload-configuration">
+			<title>Recharger la configuration à partir du disque</title>
+			<mediaobject id="I_mediaobject13_d1e18203">
+				<imageobject role="print">
+					<imagedata fileref="figs/print/jtdg_1314.pdf" format="PDF" />
+				</imageobject>
+				<imageobject role="web">
+					<imagedata fileref="figs/web/jtdg_1314.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>
+			Sur une machine Windows, vous pouvez faire exactement de même en
+			créant un fichier ZIP du
+			<indexterm id="I_indexterm13_d1e18210" class="endofrange"
+				startref="ch13-arc1" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18212" class="endofrange"
+				startref="ch13-arc2" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18214" class="endofrange"
+				startref="ch13-arc3" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18216" class="endofrange"
+				startref="ch13-arc4" significance="normal">
+				<primary />
+			</indexterm>
+			répertoire du projet.
+		</para>
+	</sect1>
   <sect1 id="sect-maint-migrating-jobs">
     <title>Migrating Build Jobs</title>
     <para>There <indexterm class="startofrange" id="ch13-migrate1" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>migrating build jobs</tertiary></indexterm><indexterm class="startofrange" id="ch13-migrate2" significance="normal"><primary>maintenance</primary><secondary>migrating build jobs</secondary></indexterm><indexterm class="startofrange" id="ch13-migrate3" significance="normal"><primary>migrating build jobs</primary></indexterm><indexterm class="startofrange" id="ch13-migrate4" significance="normal"><primary>build jobs</primary><secondary>migrating</secondary></indexterm>are times when you need to move or copy Jenkins build jobs
