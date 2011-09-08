@@ -427,201 +427,326 @@
 			</mediaobject>
 		</figure>
 	</sect1>
-  <sect1 id="sect-maint-backups">
-    <title>Backing Up Your Configuration</title>
-    <para>Backing<indexterm class="startofrange" id="ch13-backups" significance="normal"><primary>backups</primary></indexterm><indexterm class="startofrange" id="ch13-backups2" significance="normal"><primary>maintenance</primary><secondary>backups</secondary></indexterm><indexterm class="startofrange" id="ch13-backups3" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>backups</tertiary></indexterm> up your data is a universally recommended practice, and
-    your Jenkins server should be no exception. Fortunately, backing up
-    Jenkins is relatively easy. In this section, we will look at a few ways to
-    do this.</para>
-    <sect2>
-      <title>Fundamentals of Jenkins Backups</title>
-      <para>In the simplest of configurations, all you need to do is to
-      periodically back up your <filename moreinfo="none">JENKINS_HOME</filename> directory.
-      This contains all of your build jobs configurations, your slave node
-      configurations, and your build history. This will also work fine while
-      Jenkins is running—there is no need to shut down your server while doing
-      your backup.</para>
-      <para>The downside of this approach is that the
-      <filename moreinfo="none">JENKINS_HOME</filename> directory can contain a very large
-      amount of data (see <xref linkend="sec-hudson-home-directory-contents"/>). If this becomes an
-      issue, you can save a little by not backing up the following
-      directories, which contain data that can be easily recreated on-the-fly
-      by Jenkins:</para>
-      <variablelist>
-        <varlistentry>
-          <term>
-            <filename moreinfo="none">$JENKINS_HOME/war</filename>
-          </term>
-          <listitem>
-            <para>The exploded WAR file</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <filename moreinfo="none">$JENKINS_HOME/cache</filename>
-          </term>
-          <listitem>
-            <para>Downloaded tools</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <filename moreinfo="none">$JENKINS_HOME/tools</filename>
-          </term>
-          <listitem>
-            <para>Extracted tools</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-      <para>You can also be selective about what you back up in your build
-      jobs data. The <filename moreinfo="none">$JENKINS_HOME/jobs</filename>
-      directory contains job configuration, build history and archived files
-      for each of your build jobs. The structure of a build job directory is
-      illustrated in <xref linkend="fig-jenkins-build-directory"/>.</para>
-      <figure float="none" id="fig-jenkins-build-directory">
-        <title>The builds directory</title>
-        <mediaobject id="I_mediaobject13_d1e17989">
-          <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_1309.pdf" format="PDF"/>
-          </imageobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_1309.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>To understand how to optimize your Jenkins backups, you need to
-      understand how the build job directories are organized. Within the
-      <emphasis>jobs</emphasis> directory there is a subdirectory for each
-      build job. This subdirectory contains two subdirectories of its own:
-      <filename moreinfo="none">builds</filename> and <filename moreinfo="none">workspace</filename>. There is no need to backup the
-      <filename moreinfo="none">workspace</filename> directory, as it will
-      simply be restored with a clean checkout if Jenkins finds it
-      missing.</para>
-      <para>The <filename moreinfo="none">builds</filename> directory, on the
-      other hand, needs more attention. This directory contains the history of
-      your build results and previously-generated artifacts, with a
-      time-stamped directory for each previous build. If you are not
-      interested in restoring build history or past artifacts, you don’t need
-      to store this directory. If you are, read on! In each of these
-      directories, you will find the build history (stored in the form of XML
-      files such as JUnit test results) and archived artifacts. Jenkins uses
-      the XML and text files to produce the graphs it displays on the build
-      job dashboard, so if these are important to you, you should store these
-      files. The <filename moreinfo="none">archive</filename> directory
-      contains binary files that were generated and stored by previous builds.
-      These binaries may or may not be important to you, but they can take up
-      a lot of space, so if you exclude them from your backups, you may be
-      able to save a considerable amount of space.</para>
-      <para>Just as it is wise to make frequent backups, it is also wise to
-      test your backup procedure. With Jenkins, this is easy to do. Jenkins
-      home directories are totally portable, so all you need to do to test
-      your backup is to extract your backup into a temporary directory and run
-      an instance of Jenkins against it. For example, imagine we have
-      extracted our backup into a temporary directory called <filename moreinfo="none">/tmp/jenkins-backup</filename>. To test this backup,
-      first set the <filename moreinfo="none">JENKINS_HOME</filename> directory to this
-      temporary directory:</para>
-      <programlisting id="I_programlisting13_d1e18024" format="linespecific">$ <userinput moreinfo="none">export JENKINS_HOME=/tmp/jenkins-backup</userinput></programlisting>
-      <para>Then simply start Jenkins on a different port and see if it
-      works:</para>
-      <programlisting id="I_programlisting13_d1e18031" format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --httpPort=8888</userinput></programlisting>
-      <para>You can now view Jenkins running on this port and make sure that
-      your backup worked correctly.</para>
-    </sect2>
-    <sect2>
-      <title>Using the Backup Plugin</title>
-      <para>The <indexterm id="I_indexterm13_d1e18042" significance="normal"><primary>Backup plugin</primary></indexterm><indexterm id="I_indexterm13_d1e18045" significance="normal"><primary>plugins</primary><secondary>Backup</secondary></indexterm>approach described in the previous section is simple
-      enough to integrate into your normal backup procedures, but you may
-      prefer something more Jenkins-specific. The Backup plugin (see <xref linkend="fig-jenkins-backup-manager"/>) provides a simple user
-      interface that you can use to back up and restore your Jenkins
-      configurations and data.</para>
-      <figure float="none" id="fig-jenkins-backup-manager">
-        <title>The Jenkins Backup Manager Plugin</title>
-        <mediaobject id="I_mediaobject13_d1e18056">
-          <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_1310.pdf" format="PDF"/>
-          </imageobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_1310.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>This plugin lets you configure and run backups of both your build
-      job configurations and your build history. The Setup screen gives you a
-      large degree of control over exactly what you want backed up (see <xref linkend="fig-jenkins-backup-config"/>). You can opt to only back up the
-      XML configuration files, or back up both the configuration files and the
-      build history. You can also choose to backup (or not to backup) the
-      automatically-generated Maven artifacts (in many build processes, these
-      will be available on your local Enterprise Repository Manager). You can
-      also back up the job workspaces (typically unnecessary, as we discussed
-      above) and any generated fingerprints.</para>
-      <figure float="none" id="fig-jenkins-backup-config">
-        <title>Configuring the Jenkins Backup Manager</title>
-        <mediaobject id="I_mediaobject13_d1e18068">
-          <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_1311.pdf" format="PDF"/>
-          </imageobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_1311.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>You can trigger a backup manually from the Backup Manager screen
-      (which you can access from the Manage Jenkins screen). The backup takes
-      some time, and will shut down Jenkins during the process (unless you
-      deactivate this option in the backup <phrase role="keep-together">configuration</phrase>).</para>
-      <para>At the time of writing, there is no way to schedule this operation
-      from within Jenkins, but you can start the backup operation externally
-      by invoking the corresponding URL (e.g., <ulink url="http://localhost:8080/backup/backup"/> if your Jenkins
-      instance is running locally on port 8080). In a unix environment, for
-      example, this would typically be scheduled as a cron job using a tool
-      like <literal moreinfo="none">wget</literal> or <literal moreinfo="none">curl</literal> to start the
-      backup.</para>
-    </sect2>
-    <sect2>
-      <title>More Lightweight Automated Backups</title>
-      <para>If all<indexterm id="I_indexterm13_d1e18093" significance="normal"><primary>Thin Backup plugin</primary></indexterm><indexterm id="I_indexterm13_d1e18096" significance="normal"><primary>plugins</primary><secondary>Thin Backup</secondary></indexterm><indexterm id="I_indexterm13_d1e18101" significance="normal"><primary>lightweight backups</primary></indexterm> you want to back up is your build job configuration, the
-      Backup Manager plugin might be considered overkill. Another option is to
-      use the Thin Backup plugin, which lets you schedule full and incremental
-      backups of your configuration files. Because they don’t save your build
-      history or artifacts, these backups are very fast, and there is no need
-      to shut down the server to do them.</para>
-      <para>Like the Backup plugin, this plugin adds an icon to the Jenkins
-      System Configuration page. From here, you can configure and schedule
-      your configuration backups, force an immediate backup, or restore your
-      configuration files to a previous state. Configuration is
-      straightforward (see <xref linkend="fig-lightweight-backup-config"/>),
-      and simply involves scheduling full and incremental backups using a cron
-      job syntax, and providing a directory in which to store the
-      backups.</para>
-      <figure float="none" id="fig-lightweight-backup-config">
-        <title>Configuring the Thin Backup plugin</title>
-        <mediaobject id="I_mediaobject13_d1e18112">
-          <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_1312.pdf" format="PDF"/>
-          </imageobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_1312.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-      <para>To restore a previous configuration, just go to the Restore page
-      and choose the date of the configuration you wish to reinstate (see
-      <xref linkend="fig-restore-light-plugin"/>). Once the configuration has
-      been restored to the previous state, you need to reload the Jenkins
-      configuration from disk <indexterm id="I_indexterm13_d1e18121" class="endofrange" startref="ch13-backups" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18123" class="endofrange" startref="ch13-backups2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18125" class="endofrange" startref="ch13-backups3" significance="normal"><primary/></indexterm>or restart Jenkins.</para>
-      <figure float="none" id="fig-restore-light-plugin">
-        <title>Restoring a previous configuration</title>
-        <mediaobject id="I_mediaobject13_d1e18131">
-          <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_1313.pdf" format="PDF"/>
-          </imageobject>
-          <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_1313.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-    </sect2>
-  </sect1>
+	<sect1 id="sect-maint-backups">
+		<title>Sauvegarde de votre configuration</title>
+		<para>
+			Sauvegarder
+			<indexterm class="startofrange" id="ch13-backups"
+				significance="normal">
+				<primary>backups</primary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-backups2"
+				significance="normal">
+				<primary>maintenance</primary>
+				<secondary>backups</secondary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-backups3"
+				significance="normal">
+				<primary>Jenkins</primary>
+				<secondary>maintenance of</secondary>
+				<tertiary>backups</tertiary>
+			</indexterm>
+			vos données est pratique universellement recommandée, et vos serveurs
+			Jenkins ne devraient pas faire exception. Par chance, sauvergarder
+			Jenkins est relativement aisé. Dans cette section nous allons
+			regarder plusieurs façons de réaliser cela.
+		</para>
+		<sect2>
+			<title>Fondamentaux de la sauvegarde Jenkins</title>
+			<para>
+				Dans la plus simple des configurations, il suffit de sauvegarder
+				périodiquement votre dossier
+				<filename moreinfo="none">JENKINS_HOME</filename>
+				.
+				Il contient la configuration de toutes vos tâches de build, les
+				configurations de vos noeuds esclaves et l'historique des build. La
+				sauvegarde peut se faire pendant que Jenkins tourne. Il n'y a pas
+				besoin de couper votre serveur pendant la sauvegarde.
+			</para>
+			<para>
+				L'inconvénient de cette approche est que dossier
+				<filename moreinfo="none">JENKINS_HOME</filename>
+				peut contenir un volume très important de données (voir
+				<xref linkend="sec-hudson-home-directory-contents" />
+				). Si cela devient un problème, vous pouvez gagner un peu en ne
+				sauvegardant pas les dossiers suivants, qui contiennent des données
+				aisément recrées à la demande par Jenkins :
+			</para>
+			<variablelist>
+				<varlistentry>
+					<term>
+						<filename moreinfo="none">$JENKINS_HOME/war</filename>
+					</term>
+					<listitem>
+						<para>Le fichier WAR eclaté</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<filename moreinfo="none">$JENKINS_HOME/cache</filename>
+					</term>
+					<listitem>
+						<para>Outils téléchargés</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>
+						<filename moreinfo="none">$JENKINS_HOME/tools</filename>
+					</term>
+					<listitem>
+						<para>Outils décompressés</para>
+					</listitem>
+				</varlistentry>
+			</variablelist>
+			<para>
+				Vous pouvez aussi être sélectif concernant ce que vous sauvegarder
+				dans vos tâches de build.
+				Le dossier
+				<filename moreinfo="none">$JENKINS_HOME/jobs</filename>
+				contient la configuration de la tâche, l'historique des builds et les
+				fichiers archivés pour chacun de vos builds. La structure d'un
+				dossier de tâche de build est présentée dans
+				<xref linkend="fig-jenkins-build-directory" />
+				.
+			</para>
+			<figure float="none" id="fig-jenkins-build-directory">
+				<title>Le dossier des builds</title>
+				<mediaobject id="I_mediaobject13_d1e17989">
+					<imageobject role="print">
+						<imagedata fileref="figs/print/jtdg_1309.pdf" format="PDF" />
+					</imageobject>
+					<imageobject role="web">
+						<imagedata fileref="figs/web/jtdg_1309.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Pour savoir comment optimiser vos backups Jenkins, vous devez
+				comprendre comment sont organisés les dossiers de tâche de build. Au sein
+				du dossier
+				<emphasis>jobs</emphasis>
+				, il y a un dossier pour chaque tâche de build. Ce dossier contient deux
+				dossiers :
+				<filename moreinfo="none">builds</filename>
+				et
+				<filename moreinfo="none">workspace</filename>
+				. Il n'y a pas besoin de sauvegarder le dossier
+				<filename moreinfo="none">workspace</filename>
+				, vu qu'il sera simplement restauré via une simple récupération
+				si Jenkins constate son absence.
+			</para>
+			<para>
+				Au contraire, le dossier
+				<filename moreinfo="none">builds</filename>
+				requiert plus d'attention. Il contient l'historique de vos résultats
+				de builds et de vos artefacts générés précédement, avec un dossier
+				horodaté pour chaque build précédent.
+				Si vous n'êtres pas intéressés par la restauration de votre historique
+				des builds ou d'anciens artefacts, vous n'avez pas besoin de sauver
+				ce dossier.
+				Si vous intéressés, continuez à lire! Dans chacun de ces dossiers,
+				vous trouverez l'historique des builds (stockés sous la forme de
+				fichiers XML, par exemple les résultats des tests JUnit)
+				et les artefacts archivés. Jenkins utilise les fichiers textes et XML
+				pour réaliser les graphiques affichés sur le tableau de bord des tâche de build. 
+				Le dossier
+				<filename moreinfo="none">archive</filename>
+				contient les fichiers binaires ayant été générés et stockés par les
+				builds précédents. Les binaires peuvent vous être importants ou non,
+				mais ils peuvent prendre beaucoup de place. Aussi, si vous les
+				excluez de vos sauvegardes, vous pourriez économiser beaucoup
+				d'espace.
+			</para>
+			<para>
+				De même qu'il est sage de réaliser des sauvegardes fréquentes, il
+				est également sage de tester votre procédure de sauvegarde. Avec
+				Jenkins, cela est facile à faire.
+				Les répertoires racine Jenkins sont totalement portables, pour tester
+				votre sauvegarde, il suffit donc de l'extraire dans un dossier
+				temporaire et de lancer une instance d'y
+				lancer Jenkins. Par exemple, imaginons que vous avez extrait votre
+				sauvegarde dans un dossier temporaire nommé
+				<filename moreinfo="none">/tmp/jenkins-backup</filename>
+				. Pour tester cette sauvegarde, assigner le chemin du dossier
+				temporaire à la variable
+				<filename moreinfo="none">JENKINS_HOME</filename>
+				:
+			</para>
+			<programlisting id="I_programlisting13_d1e18024"
+				format="linespecific">
+				$
+				<userinput moreinfo="none">export
+					JENKINS_HOME=/tmp/jenkins-backup</userinput>
+			</programlisting>
+			<para>Puis démarrer Jenkins sur un port différent et regardez s'il
+				fonctionne :
+			</para>
+			<programlisting id="I_programlisting13_d1e18031"
+				format="linespecific">
+				$
+				<userinput moreinfo="none">java -jar jenkins.war --httpPort=8888</userinput>
+			</programlisting>
+			<para>Vous pouvez maintenant voir Jenkins tourner sur ce port et
+				vérifier que votre sauvegarde fonctionne correctement.</para>
+		</sect2>
+		<sect2>
+			<title>Utilisation du Backup Plugin</title>
+			<para>
+				L'approche via le
+				<indexterm id="I_indexterm13_d1e18042" significance="normal">
+					<primary>Backup plugin</primary>
+				</indexterm>
+				<indexterm id="I_indexterm13_d1e18045" significance="normal">
+					<primary>plugins</primary>
+					<secondary>Backup</secondary>
+				</indexterm>
+				décrite dans la section précédente est suffisament simple pour
+				s'intégrer dans vos procédures normales de sauvegardes, mais vous
+				pourriez préférer quelque chose de plus spécifique à Jenkins. Le
+				plugin Jenkins Backup Manager (voir
+				<xref linkend="fig-jenkins-backup-manager" />
+				) fournit une interface utilisateur simple utilisable pour
+				sauvegarder et restaurer vos configurations et données Jenkins.
+			</para>
+			<figure float="none" id="fig-jenkins-backup-manager">
+				<title>Plugin Jenkins Backup Manager</title>
+				<mediaobject id="I_mediaobject13_d1e18056">
+					<imageobject role="print">
+						<imagedata fileref="figs/print/jtdg_1310.pdf" format="PDF" />
+					</imageobject>
+					<imageobject role="web">
+						<imagedata fileref="figs/web/jtdg_1310.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Ce plugin permet de configurer et lancer des sauvegardes tant des
+				configurations de vos tâches de build que de votre historique des
+				builds. L'écran "Configuration", dans l'écran "Administrer Jenkins" 
+				via "Gestionnaire de backup", vous donne un important contrôle sur les
+				éléments à sauvegarder (voir
+				<xref linkend="fig-jenkins-backup-config" />
+				). Vous pouvez choisir de seulement sauvegarder les fichiers XML de
+				configuration, ou de sauvegarder avec l'historique des builds.
+				Vous pouvez aussi choisir de sauvegarder (ou non) les artefacts Maven
+				automatiquement générés (dans de nombreux processus de build, ces
+				artefacts sont disponibles dans votre Entreprise Repository Manager
+				local). Vous pouvez aussi sauvegarder les espaces de travail des
+				tâches  (généralement non nécessaire, comme discuté plus haut) et toutes
+				empreintes numériques générées.
+			</para>
+			<figure float="none" id="fig-jenkins-backup-config">
+				<title>Configurer Jenkins Backup Manager</title>
+				<mediaobject id="I_mediaobject13_d1e18068">
+					<imageobject role="print">
+						<imagedata fileref="figs/print/jtdg_1311.pdf" format="PDF" />
+					</imageobject>
+					<imageobject role="web">
+						<imagedata fileref="figs/web/jtdg_1311.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Vous pouvez déclencher une sauvegarde manuellement, depuis l'écran
+				"Gestionnaire de backup" (accessible depuis l'écran "Administrer Jenkins").
+				La sauvegarde prend du temps et stoppe Jenkins durant cette période (à moins
+				de désactiver cette option dans la
+				<phrase role="keep-together">configuration</phrase>
+				du backup ).
+			</para>
+			<para>
+				A l'heure où ces lignes sont écrites, il n'est pas possible de
+				planifier cette opération depuis Jenkins, mais vous pouvez démarrer
+				la sauvegarde en invoquant l'adresse correspondante (par exemple
+				<ulink url="http://localhost:8080/backup/backup" />
+				si votre instance Jenkins tourne localment sur le port 8080). Dans
+				un environnement unix, par exemple, cela serait généralement fait
+				via une tâche cron en utilisant un outil tel que
+				<literal moreinfo="none">wget</literal>
+				ou
+				<literal moreinfo="none">curl</literal>
+				pour démarrer la sauvegarde.
+			</para>
+		</sect2>
+		<sect2>
+			<title>Des sauvegardes automatisées plus légères</title>
+			<para>
+				Si tout
+				<indexterm id="I_indexterm13_d1e18093" significance="normal">
+					<primary>Thin Backup plugin</primary>
+				</indexterm>
+				<indexterm id="I_indexterm13_d1e18096" significance="normal">
+					<primary>plugins</primary>
+					<secondary>Thin Backup</secondary>
+				</indexterm>
+				<indexterm id="I_indexterm13_d1e18101" significance="normal">
+					<primary>lightweight backups</primary>
+				</indexterm>
+				ce que vous voulez sauvegarder est votre configuration des tâches de build,
+				le plugin Backup Manager peut être considéré excessif. Une
+				autre option est d'utiliser le plugin "Thin Backup", qui permet de
+				planifier des sauvegardes complètes et incrémentales de vos fichiers
+				de configuration.
+				Vu qu'ils ne sauvegardent pas votre historique des
+				builds ou vos artefacts, ces sauvegardes sont très rapides et peuvent
+				ainsi être réalisées sans stopper le serveur pour les réaliser.
+			</para>
+			<para>
+				Tout comme le plugin Backup, ce plugin ajoute une icône dans la page
+				"Administrer Jenkins". De là, vous pouvez configurer et planifier
+				les sauvegardes de votre configuration, déclencher un backup
+				immédiat ou restaurer une sauvegarde précédente. La configuration
+				est sans détours (voir
+				<xref linkend="fig-lightweight-backup-config" />
+				). Elle implique simplement de configurer des sauvegardes complètes
+				et incrémentales en utilisant une syntaxe similaire à celle de cron
+				et de fournir un dossier où stocker les sauvegardes.
+			</para>
+			<figure float="none" id="fig-lightweight-backup-config">
+				<title>Configurer le plugin Thin Backup</title>
+				<mediaobject id="I_mediaobject13_d1e18112">
+					<imageobject role="print">
+						<imagedata fileref="figs/print/jtdg_1312.pdf" format="PDF" />
+					</imageobject>
+					<imageobject role="web">
+						<imagedata fileref="figs/web/jtdg_1312.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Pour restaurer une configuration précédente, aller simplement à la
+				page "Restore" et choisissez la date de la configuration que vous
+				voulez réappliquer (voir
+				<xref linkend="fig-restore-light-plugin" />
+				). Une fois la configuration précédente restaurée, vous devez
+				recharger la configuration Jenkins depuis le disque
+				<indexterm id="I_indexterm13_d1e18121" class="endofrange"
+					startref="ch13-backups" significance="normal">
+					<primary />
+				</indexterm>
+				<indexterm id="I_indexterm13_d1e18123" class="endofrange"
+					startref="ch13-backups2" significance="normal">
+					<primary />
+				</indexterm>
+				<indexterm id="I_indexterm13_d1e18125" class="endofrange"
+					startref="ch13-backups3" significance="normal">
+					<primary />
+				</indexterm>
+				ou redémarrer Jenkins.
+			</para>
+			<figure float="none" id="fig-restore-light-plugin">
+				<title>Restaurer une configiuratiopn précédente</title>
+				<mediaobject id="I_mediaobject13_d1e18131">
+					<imageobject role="print">
+						<imagedata fileref="figs/print/jtdg_1313.pdf" format="PDF" />
+					</imageobject>
+					<imageobject role="web">
+						<imagedata fileref="figs/web/jtdg_1313.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+	</sect1>
   <sect1 id="sect-maint-archiving-jobs">
     <title>Archiving Build Jobs</title>
     <para>Another <indexterm class="startofrange" id="ch13-arc1" significance="normal"><primary>maintenance</primary><secondary>archiving build jobs</secondary></indexterm><indexterm class="startofrange" id="ch13-arc2" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>archiving build jobs</tertiary></indexterm><indexterm class="startofrange" id="ch13-arc3" significance="normal"><primary>archiving build jobs</primary></indexterm><indexterm class="startofrange" id="ch13-arc4" significance="normal"><primary>build jobs</primary><secondary>archiving</secondary></indexterm>way to address disk space issues is to delete or archive
