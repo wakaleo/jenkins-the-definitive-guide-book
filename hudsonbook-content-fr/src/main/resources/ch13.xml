@@ -321,62 +321,112 @@
 			</para>
 		</sect2>
 	</sect1>
-  <sect1 id="sect-maint-server-load">
-    <title>Monitoring the Server Load</title>
-    <para>Jenkins<indexterm class="startofrange" id="ch13-server1" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>monitoring server load</tertiary></indexterm><indexterm class="startofrange" id="ch13-server2" significance="normal"><primary>maintenance</primary><secondary>monitoring server load</secondary></indexterm><indexterm class="startofrange" id="ch13-server3" significance="normal"><primary>build server</primary><secondary>monitoring load of</secondary></indexterm> provides build-in monitoring of server activity. On the
-    Manage Jenkins screen, click on the Load Statistics icon. This will
-    display a graph of the server load over time for the master node (see
-    <xref linkend="fig-jenkins-load-statistics"/>). This graph keeps track of
-    three metrics: the total number of executors, the number of busy
-    executors, and queue length.</para>
-    <para>The <command moreinfo="none">total number of executors</command>
-    (the blue line) includes the executors on the master and on the slave
-    nodes. This can vary when slaves are brought on and offline, and can be a
-    useful indicator of how well your dynamic provisioning of slave nodes is
-    working.</para>
-    <para>The <command moreinfo="none">number of busy executors</command> (the
-    red line) indicates how many of your executors are occupied executing
-    builds. You should make sure you have enough spare capacity here to absorb
-    spikes in build jobs. If all of your executors are permanently occupied
-    running build jobs, you should add more executors and/or slave
-    nodes.</para>
-    <para>The <command moreinfo="none">queue length</command> (the gray line)
-    is the number of build jobs awaiting executing. Build jobs are queued when
-    all of the executors are occupied. This metric does not include jobs that
-    are waiting for an upstream build job to finish, so it gives a reasonable
-    idea of when your server could benefit from extra capacity.</para>
-    <figure float="0" id="fig-jenkins-load-statistics">
-      <title>Jenkins Load Statistics</title>
-      <mediaobject id="I_mediaobject13_d1e17895">
-        <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_1307.pdf" format="PDF"/>
-        </imageobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_1307.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>You can get a similar graph for slave nodes, using the Load
-    Statistics icon in the slave node details page.</para>
-    <para>Another option is to install the Monitoring plugin. This plugin uses
-    JavaMelody to produce comprehensive HTML reports about the state of your
-    build server, including CPU and system load, average response time, and
-    memory usage (see <xref linkend="fig-jenkins-monitoring-pluging"/>). Once
-    you have installed this plugin, you can access the JavaMelody graphs from
-    the Manage Jenkins screen, using the “Monitoring of Jenkins/Jenkins
-    master” or “Jenkins/Jenkins nodes” <indexterm id="I_indexterm13_d1e17906" class="endofrange" startref="ch13-server1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e17908" class="endofrange" startref="ch13-server2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e17910" class="endofrange" startref="ch13-server3" significance="normal"><primary/></indexterm>menu entries.</para>
-    <figure float="0" id="fig-jenkins-monitoring-pluging">
-      <title>The Jenkins Monitoring plugin</title>
-      <mediaobject id="I_mediaobject13_d1e17916">
-        <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_1308.pdf" format="PDF"/>
-        </imageobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_1308.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-  </sect1>
+	<sect1 id="sect-maint-server-load">
+		<title>Surveiller la charge serveur</title>
+		<para>
+			Jenkins
+			<indexterm class="startofrange" id="ch13-server1"
+				significance="normal">
+				<primary>Jenkins</primary>
+				<secondary>maintenance of</secondary>
+				<tertiary>monitoring server load</tertiary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-server2"
+				significance="normal">
+				<primary>maintenance</primary>
+				<secondary>monitoring server load</secondary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-server3"
+				significance="normal">
+				<primary>build server</primary>
+				<secondary>monitoring load of</secondary>
+			</indexterm>
+			inclut une surveillance des activités serveur. Sur l'écran "Administrer Jenkins", 
+			cliquez sur l'icône "Statistiques d'utilisation". Cela affiche un
+			graphique de la charge serveur au cours du temps pour le noeud maître
+			(voir
+			<xref linkend="fig-jenkins-load-statistics" />
+			). Ce graphique contient trois métriques: nombre total d'exécuteurs,
+			nombre d'exécuteurs occupés et longueur de la queue.
+		</para>
+		<para>
+			Le
+			<command moreinfo="none">nombre total d'exécuteurs</command>
+			(la ligne bleue) inclut les exécuteurs sur les noeuds maître et
+			esclaves. Ce chiffre peut varier quand les esclaves sont mis allumés
+			ou éteints, et est un indicateur utile pour déterminer si la gestion
+			dynamique des esclaves fonctionnent.
+		</para>
+		<para>
+			Le
+			<command moreinfo="none">nombre d'exécuteurs occupés</command>
+			(la ligne rouge) indique le nombre d'exécuteurs en train de réaliser
+			des buids. Vous devriez vous assurer que vous avez assez de capacités
+			de réserve afin de supporter les pics de builds. Si tous vos
+			exécuteurs sont occupés de façon permanente, vous devriez ajouter
+			plus d'exécuteurs et/ou de noeuds esclaves.
+		</para>
+		<para>
+			La
+			<command moreinfo="none">longueur de la queue</command>
+			(la ligne grise) est le nombre de tâches de build attendant d'être
+			exécutés. Les tâches de build sont mis en attente lorsque tous les
+			exécuteurs sont occupés. Cette métrique n'inclut pas les tâches en
+			attente qu'un build en amont soit fini. Ainsi il donne une idée
+			raisonnable du moment où votre serveur pourrait bénéficier de plus de
+			capacités.
+		</para>
+		<figure float="0" id="fig-jenkins-load-statistics">
+			<title>Statistiques de charge Jenkins </title>
+			<mediaobject id="I_mediaobject13_d1e17895">
+				<imageobject role="print">
+					<imagedata fileref="figs/print/jtdg_1307.pdf" format="PDF" />
+				</imageobject>
+				<imageobject role="web">
+					<imagedata fileref="figs/web/jtdg_1307.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>Vous pouvez obtenir un graphique similaire pour des noeuds
+			esclaves, en utilisant le bouton "Statistiques d'utilisation" dans la page de
+			détails du noeud esclave.
+		</para>
+		<para>
+			Une autre possibilité est d'installer le plugin de Surveillance. Ce
+			plugin utilise JavaMelody afin de réaliser des rapports HTML
+			complets sur l'état de votre serveur de build. Les rapports
+			incluent la charge système et processeur, les temps moyen de réponse
+			et l'utilisation de la mémoire (voir
+			<xref linkend="fig-jenkins-monitoring-pluging" />
+			). Une fois ce plugin installé, vous pouvez accéder aux graphiques
+			JavaMelody depuis la page "Administrer Jenkins", en utilisant les entrés
+			du menu
+			<indexterm id="I_indexterm13_d1e17906" class="endofrange"
+				startref="ch13-server1" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e17908" class="endofrange"
+				startref="ch13-server2" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e17910" class="endofrange"
+				startref="ch13-server3" significance="normal">
+				<primary />
+			</indexterm>
+			"Monitoring of Hudson/Jenkins master" ou "Hudson/Jenkins nodes".
+		</para>
+		<figure float="0" id="fig-jenkins-monitoring-pluging">
+			<title>The Jenkins Monitoring plugin</title>
+			<mediaobject id="I_mediaobject13_d1e17916">
+				<imageobject role="print">
+					<imagedata fileref="figs/print/jtdg_1308.pdf" format="PDF" />
+				</imageobject>
+				<imageobject role="web">
+					<imagedata fileref="figs/web/jtdg_1308.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>
   <sect1 id="sect-maint-backups">
     <title>Backing Up Your Configuration</title>
     <para>Backing<indexterm class="startofrange" id="ch13-backups" significance="normal"><primary>backups</primary></indexterm><indexterm class="startofrange" id="ch13-backups2" significance="normal"><primary>maintenance</primary><secondary>backups</secondary></indexterm><indexterm class="startofrange" id="ch13-backups3" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>backups</tertiary></indexterm> up your data is a universally recommended practice, and
