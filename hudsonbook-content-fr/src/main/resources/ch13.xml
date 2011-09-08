@@ -854,167 +854,278 @@
 			répertoire du projet.
 		</para>
 	</sect1>
-  <sect1 id="sect-maint-migrating-jobs">
-    <title>Migrating Build Jobs</title>
-    <para>There <indexterm class="startofrange" id="ch13-migrate1" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>migrating build jobs</tertiary></indexterm><indexterm class="startofrange" id="ch13-migrate2" significance="normal"><primary>maintenance</primary><secondary>migrating build jobs</secondary></indexterm><indexterm class="startofrange" id="ch13-migrate3" significance="normal"><primary>migrating build jobs</primary></indexterm><indexterm class="startofrange" id="ch13-migrate4" significance="normal"><primary>build jobs</primary><secondary>migrating</secondary></indexterm>are times when you need to move or copy Jenkins build jobs
-    from one Jenkins instance to another, without copying the entire Jenkins
-    configuration. For example, you might be migrating your build jobs to a
-    Jenkins instance on a brand new box, with system configuration details
-    that vary from the original machine. Or you might be restoring an old
-    build job that you have archived.</para>
-    <para>As we have seen, Jenkins stores all of the data it needs for a
-    project in a subdirectory of the <filename moreinfo="none">jobs</filename>
-    directory in your Jenkins home directory. This subdirectory is easy to
-    <phrase role="keep-together">identify—</phrase>it has the same name as
-    your project. Incidentally, this is one reason why your project names
-    really shouldn’t contain spaces, particularly if Jenkins is running under
-    Unix or Linux—it makes maintenance and admin tasks a lot easier if the
-    project names are also well-behaved Unix filenames.</para>
-    <para>You can copy or move build jobs between instances of projects simply
-    enough by copying or moving the build job directories to the new Jenkins
-    instance. The project job directory is self-contained—it contains both the
-    full project configuration and all the build history. It is even safe
-    enough to copy build job directories to a running Jenkins instance, though
-    if you are also deleting them from the original server, you should shut
-    this one down first. You don’t even need to restart the new Jenkins
-    instance to see the results of your import—just go to the Manage Jenkins
-    screen and click on Reload Configuration From Disk. This will load the new
-    jobs and make them immediately visible on the Jenkins dashboard.</para>
-    <para>There are a few gotchas, however. If you are migrating your jobs to
-    a brand new Jenkins configuration, remember to install, or migrate, the
-    plugins from your original server. The plugins can be found in the
-    <filename moreinfo="none">plugins</filename> directory, so you can simply
-    copy everything from this directory to the corresponding directory in your
-    new instance.</para>
-    <para>Of course, you might be migrating the build jobs to a new instance
-    precisely <emphasis>because</emphasis> the plugin configuration on the
-    original box is a mess. Some Jenkins plugins can be a bit buggy sometimes,
-    and you may want to move to a clean installation with a well-known,
-    well-defined set of vetted plugins. In this case, you may need to rework
-    some of your project configurations once they have been imported.</para>
-    <para>The reason for this is straightforward. When you use a plugin in a
-    project, the project’s <filename moreinfo="none">config.xml</filename>
-    will be updated with plugin-specific configuration fields. If for some
-    reason you need to migrate projects selectively to a Jenkins installation
-    <emphasis>without</emphasis> these plugins installed, Jenkins will no
-    longer understand these parts of the project configuration. The same thing
-    can also sometimes happen if the plugin versions are very different on the
-    machines, and the data format used by the plugin has changed.</para>
-    <para>If you are migrating jobs to a Jenkins instance with a different
-    configuration, it also pays to keep an eye on the system logs. Invalid
-    plugin configurations will usually let you know through warnings or
-    exceptions. While not always fatal, these error messages often mean that
-    the plugin will not work as expected, or at all.</para>
-    <para>Jenkins provides some useful features to help you migrate your
-    project configurations. If Jenkins finds data that it thinks is out of
-    date or invalid, it will tell you so. On the Manage Jenkins screen, you
-    will get a message like the one in <xref linkend="fig-jenkins-new-version"/>.</para>
-    <figure float="0" id="fig-jenkins-new-version">
-      <title>Jenkins will inform you if your data is not compatible with the
-      current version</title>
-      <mediaobject id="I_mediaobject13_d1e18282">
-        <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_1315.pdf" format="PDF"/>
-        </imageobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_1315.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>From here, you can choose to either leave the configuration as it is
-    (just in case you roll back to a previous version of your Jenkins
-    instance, for example), or let Jenkins discard the fields it cannot read.
-    If you choose this option, Jenkins will bring up a screen containing more
-    details about the error, and can even help tidy up your project
-    configuration files if you wish (see <xref linkend="fig-jenkins-manage-old-data"/>).</para>
-    <figure float="0" id="fig-jenkins-manage-old-data">
-      <title>Managing out-of-date build jobs data</title>
-      <mediaobject id="I_mediaobject13_d1e18295">
-        <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_1316.pdf" format="PDF"/>
-        </imageobject>
-        <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_1316.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>This screen gives you more details about the project containing the
-    dodgy data, as well as the exact error message. This gives you several
-    options. If you are sure that you no longer need the plugin that
-    originally created the data, you can safely remove the redundant fields by
-    clicking on the Discard Unreadable Data button. Alternatively, you may
-    decide that the fields belong to a useful plugin that hasn’t yet been
-    installed on the new Jenkins instance. In this case, install the plugin
-    and all should be well. Finally, you can always choose to leave the
-    redundant data and live with the error message, at least until you are
-    sure that you won’t need to migrate the job back to the old server some
-    day.</para>
-    <para>However, Jenkins doesn’t always detect all of the errors or
-    inconsistencies—it still pays to keep one eye on the system logs when you
-    migrate your build jobs. For example, the following is a real example from
-    a Jenkins log file showing what can happen during the migration
-    process:</para>
-    <screen format="linespecific">Mar 16, 2010 2:05:06 PM hudson.util.CopyOnWriteList$ConverterImpl unmarshal
-WARNING: Failed to resolve class
-com.thoughtworks.xstream.mapper.CannotResolveClassException: hudson.plugins.ciga
-me.GamePublisher : hudson.plugins.cigame.GamePublisher
-        at com.thoughtworks.xstream.mapper.DefaultMapper.realClass(DefaultMapper
-.java:68)
-        at com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper
-.java:38)
-        at com.thoughtworks.xstream.mapper.DynamicProxyMapper.realClass(DynamicP
-roxyMapper.java:71)
-        at com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper
-.java:38)</screen>
-    <para>The error is essentially telling us that it can’t find a class
-    called <literal moreinfo="none">hudson.plugins.cigame.GamePublisher</literal>. In fact,
-    the target installation is missing the CI Game plugin. And in this case
-    (as sometimes happens), no warning messages where appearing on the Manage
-    Jenkins page, so Jenkins was unable to correct the configuration files
-    itself.</para>
-    <para>The simplest solution in this case would be to install the CI Game
-    plugin on the target server. But what if we don’t want to install this
-    plugin? We could leave the configuration files alone, but this might mask
-    more significant errors later on—it would be better to tidy them
-    up.</para>
-    <para>In that case, we need to inspect and update the project
-    configuration files by hand. On this Unix box, I just used
-    <literal moreinfo="none">grep</literal> to find all the configuration files containing a
-    reference to “cigame”:</para>
-    <screen format="linespecific">$ <userinput moreinfo="none">cd $JENKINS_HOME/jobs</userinput>
-$ <userinput moreinfo="none">grep cigame */config.xml</userinput>
-project-a/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
-project-b/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;
-project-c/config.xml:    &lt;hudson.plugins.cigame.GamePublisher/&gt;</screen>
-    <para>In these <emphasis>config.xml</emphasis> files, I found the
-    reference to the CI Game plugin in the <literal moreinfo="none">&lt;publishers&gt;</literal> sect1 (which is where the
-    configuration for the reporting plugins generally goes):</para>
-    <programlisting id="I_programlisting13_d1e18334" format="linespecific">&lt;maven2-moduleset&gt;
-  ...
-  &lt;publishers&gt;
-    &lt;hudson.plugins.cigame.GamePublisher/&gt;
-    &lt;hudson.plugins.claim.ClaimPublisher/&gt;
-  &lt;/publishers&gt;
-  ...
-&lt;/maven2-moduleset&gt;</programlisting>
-    <para>To fix the issue, all I have to do is to remove the offending
-    line:</para>
-    <programlisting id="I_programlisting13_d1e18339" format="linespecific">&lt;maven2-moduleset&gt;
-  ...
-  &lt;publishers&gt;
-    &lt;hudson.plugins.claim.ClaimPublisher/&gt;
-  &lt;/publishers&gt;
-  
-  ...
-&lt;/maven2-moduleset&gt;</programlisting>
-    <para>The exact location of the plugin configuration data will vary
-    depending on the plugin, but in general the <filename moreinfo="none">config.xml</filename> files are quite readable, and
-    updating them by hand isn’t too hard.</para>
-    <para>So, all in all, migrating build jobs between Jenkins instances isn’t
-    all that hard—you just need to know a couple of tricks for the corner
-    cases, and if you know where to look Jenkins provides some nice tools to
-    make<indexterm id="I_indexterm13_d1e18348" class="endofrange" startref="ch13-migrate1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18350" class="endofrange" startref="ch13-migrate2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18352" class="endofrange" startref="ch13-migrate3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18354" class="endofrange" startref="ch13-migrate4" significance="normal"><primary/></indexterm> the process<indexterm id="I_indexterm13_d1e18357" class="endofrange" startref="ch13-maint2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e18359" class="endofrange" startref="ch13-maint" significance="normal"><primary/></indexterm> smoother.</para>
-  </sect1>
+	<sect1 id="sect-maint-migrating-jobs">
+		<title>Migrer les Build Jobs</title>
+		<para>
+			Il arrive
+			<indexterm class="startofrange" id="ch13-migrate1"
+				significance="normal">
+				<primary>Jenkins</primary>
+				<secondary>maintenance of</secondary>
+				<tertiary>migrating build jobs</tertiary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-migrate2"
+				significance="normal">
+				<primary>maintenance</primary>
+				<secondary>migrating build jobs</secondary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-migrate3"
+				significance="normal">
+				<primary>migrating build jobs</primary>
+			</indexterm>
+			<indexterm class="startofrange" id="ch13-migrate4"
+				significance="normal">
+				<primary>build jobs</primary>
+				<secondary>migrating</secondary>
+			</indexterm>
+			que vous ayez à déplacer ou copier des tâches de build Jenkins d'une
+			instance Jenkins à une autre sans copier toute la configuration de
+			Jenkins. Par exemple, vous pourriez migrer vos tâches de build vers une
+			instance Jenkins sur une machine flambant neuve, avec une
+			configuration système différente de celle de la machine initiale. Ou
+			vous pourriez être en train de restaurer une vieille archive de
+			tâche de build.
+		</para>
+		<para>
+			Comme nous l'avons vu, Jenkins stocke toutes les données nécessaires
+			pour un projet au sein d'un sous répertoire du répertoire
+			<filename moreinfo="none">jobs</filename>
+			dans votre répertoire racine de Jenkins. Ce sous répertoire est aisé
+			à
+			<phrase role="keep-together">identifier—</phrase>
+			il a le même nom que votre projet. D'ailleurs, cela explique pourquoi
+			vos noms de projets ne doivent pas contenir d'espaces, spécialement
+			si Jenkins tourne sous Unix ou Linux— cela rend la maintenance et les
+			tâches d'administrtions bien plus aisées si les noms de projet sont
+			également des fichiers Unix correctement nommés.
+		</para>
+		<para>
+			Vous pouvez copier ou déplacer des tâches de build entre instances de
+			projets assez simplement en copiant ou déplaçant les répertoires des
+			tâches de build dans la nouvelle instance Jenkins. Le répertoire de la tâche du
+			projet est autonome—il contient tant la configuration complète du
+			projet que son historique des builds. Il est possible également de
+			copier des répertoires de tâches de build dans une instance Jenkins en
+			cours de fonctionnement. Toutefois, si vous effacez également ces
+			répertoires du serveur originel, vous devriez en premier stopper ce
+			dernier. Vous n'avez même pas besoin de redémarrer la nouvelle
+			instance Jenkins pour voir le résultat de votre import, allez
+			simplement à l'écran "Administrer Jenkins" et cliquez sur "Recharger
+			la configuration à partir du disque". Cela chargera les nouvelles tâches de build
+			et les rendra immédiatement visible sur le tableau de bord Jenkins.
+		</para>
+		<para>
+			Il y a quelques précautions à prendre toutefois. Si vous migrez vos
+			tâches vers une installation toute fraîche de Jenkins, souvenez vous
+			d'installer ou migrer les plugins de votre serveur précédent. Les
+			plugins se trouvent dans le répertoire
+			<filename moreinfo="none">plugins</filename>
+			, il suffit donc simplement de copier tout le contenu de ce
+			répertoire dans le répertoire correspondant de votre nouvelle
+			instance.
+		</para>
+		<para>
+			Bien sûr, vous pourriez être en train de migrer les tâches de build vers
+			une nouvelle instance présicément
+			<emphasis>parce que</emphasis>
+			la configuration des plugins est problématique. Certains plugins
+			peuvent parfois être un peu buggés, et vous pourriez vouloir une
+			isntallation propre avec des plugins bien précis. Dans ce cas, vous
+			pourriez avoir à retravailler certaines configurations de projets une
+			fois ceux ci importés.
+		</para>
+		<para>
+			L'explication de cela est simple. Quand vous utilisez un plugin dans
+			un projet, le fichier
+			<filename moreinfo="none">config.xml</filename>
+			du projet est mis à jour avec des champs de configuration spécifiques
+			au plugin. Si, pour quelques raisons que ce soit, vous devez migrer des
+			projets vers une installation Jenkins
+			<emphasis>sans</emphasis>
+			ces plugins, Jenkins ne comprendra pas les parties correspondantes de
+			la configuration de ces projets. La même chose peut également arriver
+			si les versions des plugins sont très différentes et que le format
+			des données de configuration a changé.
+		</para>
+		<para>Si vous migrez des tâches vers une instance Jenkins avec une
+			configuration différente, il est également intéressant de garder un
+			oeil sur les logs systèmes. Les configurations de plugin invalides
+			sont généralement visibles via des alertes ou des exceptions.
+			Bien que non fatal, ces messages d'erreurs indiquent souvent que le plugin ne
+			fonctionnera pas comme attendu, voir pas du tout.
+			</para>
+		<para>
+			Jenkins offre des fonctionnalités utiles pour vous aider à migrer les
+			configurations de vos projets. Si Jenkins trouve des données qu'il
+			considère invalides, il vous le fera savoir. Sur l'écran "Administrer
+			Jenkins", vous aurez des messages comme celui dans
+			<xref linkend="fig-jenkins-new-version" />
+			.
+		</para>
+		<figure float="0" id="fig-jenkins-new-version">
+			<title>Jenkins vous informe si vos données ne sont pas compatibles
+				avec la version actuelle</title>
+			<mediaobject id="I_mediaobject13_d1e18282">
+				<imageobject role="print">
+					<imagedata fileref="figs/print/jtdg_1315.pdf" format="PDF" />
+				</imageobject>
+				<imageobject role="web">
+					<imagedata fileref="figs/web/jtdg_1315.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>
+			Plusieurs options s'offrent alors à vous. Vous pouvez laisser la
+			configuration en l'état, par exemple si vous souhaitez revenir à une
+			version précédente de votre instance Jenkins. Vous pouvez
+			aussi laisser Jenkins ignorer les champs qu'il ne peut lire. Si vous
+			retenez cette option, Jenkins affichera un écran avec plus de détails
+			sur l'erreur et peut même, si vous le souhaitez, vous aider à
+			nettoyer votre fichier de configuration (voir
+			<xref linkend="fig-jenkins-manage-old-data" />
+			).
+		</para>
+		<figure float="0" id="fig-jenkins-manage-old-data">
+			<title>Gestion de configuration périmée</title>
+			<mediaobject id="I_mediaobject13_d1e18295">
+				<imageobject role="print">
+					<imagedata fileref="figs/print/jtdg_1316.pdf" format="PDF" />
+				</imageobject>
+				<imageobject role="web">
+					<imagedata fileref="figs/web/jtdg_1316.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		<para>Cet écran donne plus de détails sur le projet contenant les
+			données périmées ainsi que le message d'erreur obtenu. Cela offre
+			plusieurs possibilités. Si vous êtes sûr de ne plus avoir besoin du
+			plugin ayant originellement créé ces données, vous pouvez supprimer
+			en toute sécurité les champs fautifs en cliquant sur le bouton
+			"Discard Unreadable Data". Il est aussi possible que ces données
+			appartiennent à un plugin qui n'a pas encore été installé sur cette
+			instance Jenkins. Dans ce cas, installez le plugin et tout devrait
+			aller bien. Enfin, vous pouvez toujours choisir de laisser les
+			données redondantes et de vivre avec le message d'erreur, au moins
+			jusqu'à ce que vous soyez sûr de ne plus avoir à migrer ces données
+			vers l'ancien serveur.
+</para>
+		<para>Cependant, Jenkins ne détecte pas toujours toutes les erreurs et
+			inconsistences. Il est toujours utile de garder un oeil sur les
+			fichiers de log lorsque que vous migrez vos tâches de build. Par
+			exemple, ce qui suit est un exemple réel d'un fichier de log Jenkins
+			montrant ce qu'il peut arriver pendant une migration :</para>
+		<screen format="linespecific">Mar 16, 2010 2:05:06 PM
+			hudson.util.CopyOnWriteList$ConverterImpl unmarshal
+			WARNING: Failed to resolve class com.thoughtworks.xstream.mapper.CannotResolveClassException:
+			hudson.plugins.cigame.GamePublisher :
+			hudson.plugins.cigame.GamePublisher
+			at
+			com.thoughtworks.xstream.mapper.DefaultMapper.realClass(DefaultMapper.java:68)
+			at
+			com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper.java:38)
+			at
+			com.thoughtworks.xstream.mapper.DynamicProxyMapper.realClass(DynamicProxyMapper.java:71)
+			at
+			com.thoughtworks.xstream.mapper.MapperWrapper.realClass(MapperWrapper.java:38)</screen>
+		<para>
+			Cette erreur nous informe que Jenkins ne peut trouver une classe
+			appelée
+			<literal moreinfo="none">hudson.plugins.cigame.GamePublisher
+			</literal>
+			. En fait, l'installation cible n'a pas le plugin "CI Game". Et dans
+			ce cas (comme cela arrive parfois), aucun message d'alerte n'est
+			apparu sur la page "Administrer Jenkins". Par conséquent, Jenkins n'a
+			pas été capable de corriger le fichier de configuration par lui même.
+		</para>
+		<para>La solution la plus simple, dans ce cas, serait d'installer le
+			plugin "CI Game". Mais que faire si on ne veut pas installer ce
+			plugin? Nous pourrions laisser les fichiers de configuration en
+			l'état, mais cela pourrait cacher des erreurs plus importantes
+			ultérieurement. Il serait mieux de les nettoyer.</para>
+		<para>
+			Dans ce cas, il faut inspecter et modifier les fichiers de
+			configuration du projet à la main. Sur cette machine Unix, j'ai juste
+			utilisé
+			<literal moreinfo="none">grep</literal>
+			pour trouver tous les fichiers de configuration contenant "cigame" :
+		</para>
+		<screen format="linespecific">
+			$
+			<userinput moreinfo="none">cd $JENKINS_HOME/jobs</userinput>
+			$
+			<userinput moreinfo="none">grep cigame */config.xml</userinput>
+			project-a/config.xml: &lt;hudson.plugins.cigame.GamePublisher/&gt;
+			project-b/config.xml: &lt;hudson.plugins.cigame.GamePublisher/&gt;
+			project-c/config.xml: &lt;hudson.plugins.cigame.GamePublisher/&gt;
+		</screen>
+		<para>
+			Dans ces fichiers
+			<emphasis>config.xml</emphasis>
+			, j'ai trouvé une référence au plugin CI Game dans la section
+			<literal moreinfo="none">&lt;publishers&gt;</literal>
+			, là où se trouve généralement les configurations des plugins
+			réalisant des rapports :
+		</para>
+		<programlisting id="I_programlisting13_d1e18334"
+			format="linespecific">&lt;maven2-moduleset&gt;
+			...
+			&lt;publishers&gt;
+			&lt;hudson.plugins.cigame.GamePublisher/&gt;
+			&lt;hudson.plugins.claim.ClaimPublisher/&gt;
+			&lt;/publishers&gt;
+			...
+			&lt;/maven2-moduleset&gt;</programlisting>
+		<para>Pour résoudre le problème, il suffit de supprimer la ligne
+			incriminée:</para>
+		<programlisting id="I_programlisting13_d1e18339"
+			format="linespecific">&lt;maven2-moduleset&gt;
+			...
+			&lt;publishers&gt;
+			&lt;hudson.plugins.claim.ClaimPublisher/&gt;
+			&lt;/publishers&gt;
+
+			...
+			&lt;/maven2-moduleset&gt;</programlisting>
+		<para>
+			L'emplacement précis des données de configuration du plugin varie en
+			fonction du plugin, mais en général les fichiers
+			<filename moreinfo="none">config.xml</filename>
+			sont relativement lisibles. Les mettre à jour manuellement n'est pas
+			trop compliqué.
+		</para>
+		<para>
+			Au final, migrer des tâches de build entre des instances Jenkins n'est pas
+			si dur. Tout ce qu'il faut savoir est quelques astuces pour les cas
+			particuliers, et, si vous savez où regarder, Jenkins fournit de beaux
+			outils pour rendre
+			<indexterm id="I_indexterm13_d1e18348" class="endofrange"
+				startref="ch13-migrate1" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18350" class="endofrange"
+				startref="ch13-migrate2" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18352" class="endofrange"
+				startref="ch13-migrate3" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18354" class="endofrange"
+				startref="ch13-migrate4" significance="normal">
+				<primary />
+			</indexterm>
+			le processus
+			<indexterm id="I_indexterm13_d1e18357" class="endofrange"
+				startref="ch13-maint2" significance="normal">
+				<primary />
+			</indexterm>
+			<indexterm id="I_indexterm13_d1e18359" class="endofrange"
+				startref="ch13-maint" significance="normal">
+				<primary />
+			</indexterm>
+			aisé.
+		</para>
+	</sect1>
   <sect1 id="sect-maint-conclusion">
     <title>Conclusion</title>
     <para>In this chapter, we looked at a number of considerations that you
