@@ -917,49 +917,48 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     </sect2>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-acceptance">
-    <title>Automated Acceptance Tests</title>
-    <para>Automated <indexterm class="startofrange" id="ch06-accept2" significance="normal"><primary>acceptance tests, automated</primary></indexterm><indexterm class="startofrange" id="ch06-accept3" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>acceptance tests play an important part in many agile
-    projects, both for verification and for communication. As a verification
-    tool, acceptance tests perform a similar role to integration tests, and
-    aim to demonstrate that the application effectively does what is expected
-    of it. But this is almost a secondary aspect of automated Acceptance
-    Tests. The primary focus is actually on communication—demonstrating to
-    nondevelopers (business owners, business analysts, testers, and so forth)
-    precisely where the project is at.</para>
-    <para>Acceptance tests should not be mixed with developer-focused tests,
-    as both their aim and their audience is very different. Acceptance tests
-    should be working examples of how the system works, with an emphasis on
-    demonstration rather than exhaustive proof. The exhaustive tests should be
-    done at the unit-testing level.</para>
-    <para>Acceptance Tests can be automated using conventional tools such as
-    JUnit, but there is a growing tendency to use <indexterm id="I_indexterm6_d1e9602" significance="normal"><primary>BDD (Behaviour Driven Development)</primary></indexterm>Behavior-Driven Development (BDD) frameworks for this
-    purpose, as they tend to be a better fit for the public-facing nature of
-    Acceptance Tests. Behavior-driven development tools used for automated
-    Acceptance Tests <phrase role="keep-together">typically</phrase> generate
-    HTML reports with a specific layout that is well-suited to nondevelopers.
-    They often also produce <indexterm id="I_indexterm6_d1e9609" significance="normal"><primary>JUnit reports</primary><secondary sortas="acceptance">for acceptance tests</secondary></indexterm>JUnit-compatible reports that can be understood directly by
+    <title>Tests d'acceptance automatisés</title>
+    <para>Les tests <indexterm class="startofrange" id="ch06-accept2" significance="normal"><primary>tests d'acceptance, automatisés</primary></indexterm><indexterm class="startofrange" id="ch06-accept3" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>d'acceptance automatisés jouent un rôle important dans de nombreux projets
+    agiles, à la fois pour la vérification et pour la communication. Comme outil de
+    vérification, les tests d'acceptance jouent un rôle similaire aux tests d'intégration, et
+    visent à démontrer que l'application fait effectivement ce qui est attendu
+    d'elle. Mais ce n'est seulement qu'un aspect secondaire des tests d'acceptance
+    automatisés. L'objectif principal est en fait la communication—montrer aux
+    non développeurs (experts métier, analystes métiers, testeurs, et ainsi de suite)
+    précisement où en est le projet.</para>
+    <para>Les tests d'acceptance ne doivent pas être mélangés avec des tests orientés développeurs,
+    parce qu'à la fois leur finalité et leur audience sont très différents. Les tests d'acceptance
+    doivent être des exemples montrant comment le système fonctionne, avec un accent sur
+    la démonstration plutôt que sur une preuve exhaustive. Les tests exhaustifs doivent être
+    fait au niveau test unitaire.</para>
+    <para>Les tests d'acceptance peuvent être automatisés en utilisant des outils conventionnels tels que
+    JUnit, mais il y a une tendance croissante à utiliser <indexterm id="I_indexterm6_d1e9602" significance="normal"><primary>BDD (Behaviour Driven Development)</primary></indexterm>des frameworks Behavior-Driven Development (BDD) à cet
+    effet, parce qu'ils correspondent mieux à l'audience non technique des
+    tests d'acceptance. Les outils Behavior-driven development utilisés pour les tests d'acceptance
+    automatisés <phrase role="keep-together">génèrent</phrase> généralement
+    des rapports HTML avec une mise en page bien adaptée aux non développeurs.
+    Ils produisent aussi souvent <indexterm id="I_indexterm6_d1e9609" significance="normal"><primary>rapports JUnit</primary><secondary sortas="acceptance">pour tests d'acceptance</secondary></indexterm>des rapports compatibles JUnit qui peuvent être traités directement par
     Jenkins.</para>
-    <para>Behavior-Driven Development frameworks also have the notion of
-    “Pending tests,” tests that are automated, but have not yet been
-    implemented by the development team. This distinction plays an important
-    role in communication with other non-developer stakeholders: if you can
-    automated these tests early on in the process, they can give an excellent
-    indicator of which features have been implemented, which work, and which
-    have not been started yet.</para>
-    <para>As a <indexterm class="startofrange" id="ch06-acceptrep" significance="normal"><primary>reporting</primary><secondary>acceptance test results</secondary></indexterm>rule, your Acceptance Tests should be displayed separately
-    from the other more conventional automated tests. If they use the same
-    testing framework as your normal tests (e.g., JUnit), make sure they are
-    executed in a dedicated build job, so that non-developers can view them
-    and concentrate on the business-focused tests without being distracted by
-    low-level or technical ones. It can also help to adopt business-focused
-    and behavioural naming conventions for your tests and test classes, to
-    make them more accessible to non-developers (see <xref linkend="fig-hudson-junit-acceptance-tests"/>). The way you name your
-    tests and test classes can make a huge difference when it comes to reading
-    the test reports and understanding the actual business features and
-    behavior that is being tested.</para>
+    <para>Les frameworks Behavior-Driven Development ont aussi la notion de
+    “tests en attente,” tests qui sont automatisés, mais qui n'ont pas encore été
+    implementés par l'équipe de développement. Cette distinction joue un rôle important
+    dans la communication avec les autres acteurs non développeurs: si vous pouvez
+    automatiser ces tests tôt dans le processus, ils vous donneront un excellent
+    indicateur des fonctionnalités qui ont été implémentées, qui fonctionnent, et qui
+    n'ont pa encore été démarrées.</para>
+    <para>En <indexterm class="startofrange" id="ch06-acceptrep" significance="normal"><primary>rapports</primary><secondary>résultats de test d'acceptance</secondary></indexterm>règle générale, vos tests d'acceptance doivent être affichés séparément
+    des autres tests automatisés plus conventionnels. S'ils utilisent le même
+    framework de test que vos tests classiques (e.g., JUnit), assurez vous qu'ils sont
+    exécutés dans une tâche de build séparée, de telle façon que les non développeurs peuvent les visualiser
+    et se concentrer sur les tests orientés métier sans être distrait par
+    ceux de plus bas niveau ou techniques. Il peut être aussi utile d'adopter des conventions de nommage
+    orientées métier et fonctionnel pour vos tests et classes de test, afin
+    de les rendre plus accessible aux non développeurs (voir <xref linkend="fig-hudson-junit-acceptance-tests"/>). La façon dont vous nommez
+    vos tests et classes de test peut faire une réelle différence quand à la lecture
+    des rapports de test et la compréhension des fonctionnalités et comportements métier
+    qui sont testés.</para>
     <figure float="0" id="fig-hudson-junit-acceptance-tests">
-      <title>Using business-focused, behavior-driven naming conventions for
-      JUnit tests</title>
+      <title>Utilisation de conventions de nommage orienté métier pour des tests JUnit</title>
       <mediaobject id="I_mediaobject6_d1e9630">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0619.pdf" format="PDF"/>
@@ -969,15 +968,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>If you are using a tool that generates HTML reports, you can display
-    them in the same build as your conventional tests, as long as they appear
-    in a separate report. Jenkins provides a very convenient plugin for this
-    sort of HTML report, called the<indexterm class="startofrange" id="ch06-html1" significance="normal"><primary>HTML Publisher plugin</primary></indexterm><indexterm class="startofrange" id="ch06-html2" significance="normal"><primary>plugins</primary><secondary>HTML Publisher</secondary></indexterm> HTML Publisher plugin (see <xref linkend="fig-hudson-html-publisher-plugin"/>). While it is still your job
-    to ensure that your build <phrase role="keep-together">produces</phrase>
-    the right reports, Jenkins can display the reports on your build job page,
-    making them easily accessible to all team members.</para>
+    <para>Si vous utilisez un outil qui génère des rapports HTML, vous pouvez les afficher
+    dans le même build que vos tests classiques, tant qu'ils apparaissent
+    dans un rapport séparé. Jenkins fournit un plugin très pratique pour ce genre
+    de rapport HTML, appelé le<indexterm class="startofrange" id="ch06-html1" significance="normal"><primary>plugin HTML Publisher</primary></indexterm><indexterm class="startofrange" id="ch06-html2" significance="normal"><primary>plugins</primary><secondary>HTML Publisher</secondary></indexterm> plugin HTML Publisher (voir <xref linkend="fig-hudson-html-publisher-plugin"/>). Bien que ce soit à vous
+    de vous assurer que votre build <phrase role="keep-together">produisse</phrase>
+    les bons rapports, Jenkins peut les afficher sur la page de votre tâche de build,
+    les rendant facilement accessible à tous les membres de l'équipe.</para>
     <figure float="0" id="fig-hudson-html-publisher-plugin">
-      <title>Installing the HTML Publisher plugin</title>
+      <title>Installer le plugin HTML Publisher</title>
       <mediaobject id="I_mediaobject6_d1e9654">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0620.pdf" format="PDF"/>
@@ -987,13 +986,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This plugin is easy to configure. Just go to the “Post-build
-    Actions” section and tick the “Publish HTML reports” checkbox (see <xref linkend="fig-hudson-html-reports"/>). Next, give Jenkins the directory
-    your HTML reports were generated to, an index page, and a title for your
-    report. You can also ask Jenkins to store the reports generated for each
-    build, or only keep the latest one.</para>
+    <para>Ce plugin est facile à configurer. Allez jusqu'à la section  “Actions à la suite du build”
+    et cochez la case “Publish HTML reports” (voir <xref linkend="fig-hudson-html-reports"/>). Ensuite, indiquez à Jenkins le répertoire
+    où ont été générés vos rapports HTML, une page d'index, et un titre pour votre
+    rapport. Vous pouvez aussi demander à Jenkins de stocker les rapports générés pour chaque
+    build, ou de ne conserver que le dernier.</para>
     <figure float="none" id="fig-hudson-html-reports">
-      <title>Publishing HTML reports</title>
+      <title>Publier les rapports HTML</title>
       <mediaobject id="I_mediaobject6_d1e9666">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0621.pdf" format="PDF"/>
@@ -1003,12 +1002,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Once this is done, Jenkins will display a special icon on your build
-    job home page, with a link to your HTML report. In <xref linkend="fig-hudson-easyb-report"/>, you can see the easyb reports we
-    configured previously in action.</para>
+    <para>Une fois que cela est fait, Jenkins affichera une icône spéciale sur votre page d'accueil de votre
+    tâche de build, avec un lien vers votre rapport HTML. Sur <xref linkend="fig-hudson-easyb-report"/>, vous pouvez voir les rapports easyb que nous
+    avions configuré précédemment en action.</para>
     <figure float="none" id="fig-hudson-easyb-report">
-      <title>Jenkins displays a special link on the build job home page for
-      your report</title>
+      <title>Jenkins affiche un lien spécial sur la page d'accueil de la tâche de build pour
+      votre rapport</title>
       <mediaobject id="I_mediaobject6_d1e9679">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0622.pdf" format="PDF"/>
@@ -1018,16 +1017,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>The HTML Publisher plugin works perfectly for HTML reports. If, on
-    the other hand, you want to (also) publish non-HTML documents, such as
-    text files, PDFs, and so forth, then the<indexterm id="I_indexterm6_d1e9686" significance="normal"><primary>DocLinks plugin</primary></indexterm><indexterm id="I_indexterm6_d1e9689" significance="normal"><primary>plugins</primary><secondary>DocLinks</secondary></indexterm> DocLinks plugin is for you. This plugin is similar to the
-    HTML Publisher plugin, but lets you archive both HTML reports as well as
-    documents in other formats. For example, in <xref linkend="fig-jenkins-doclinks-plugin"/>, we have configured a build job
-    to archive both a PDF document and an HTML report. Both these documents
-    will now be listed on the build <indexterm id="I_indexterm6_d1e9697" class="endofrange" startref="ch06-accept2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9699" class="endofrange" startref="ch06-accept3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9701" class="endofrange" startref="ch06-acceptrep" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9703" class="endofrange" startref="ch06-html1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9705" class="endofrange" startref="ch06-html2" significance="normal"><primary/></indexterm>home page.</para>
+    <para>Le plugin HTML Publisher fonctionne parfaitement pour les rapports HTML. Si, 
+    d'autre part, vous voulez (aussi) publier des documents non-HTML, tels que
+    des fichiers texte, PDFs, et ainsi de suite, alors le<indexterm id="I_indexterm6_d1e9686" significance="normal"><primary>plugin DocLinks</primary></indexterm><indexterm id="I_indexterm6_d1e9689" significance="normal"><primary>plugins</primary><secondary>DocLinks</secondary></indexterm> plugin DocLinks est fait pour vous. Ce plugin est semblable au
+    plugin HTML Publisher, mais il vous permet d'archiver à la fois des rapports HTML aussi bien
+    que des documents dans d'autres formats. Par exemple, dans <xref linkend="fig-jenkins-doclinks-plugin"/>, nous avons configuré une tâche de build
+    qui archive à la fois un document PDF et un rapport HTML. Ces deux documents
+    seront maintenant listés sur la page d'accueil de la tache de <indexterm id="I_indexterm6_d1e9697" class="endofrange" startref="ch06-accept2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9699" class="endofrange" startref="ch06-accept3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9701" class="endofrange" startref="ch06-acceptrep" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9703" class="endofrange" startref="ch06-html1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9705" class="endofrange" startref="ch06-html2" significance="normal"><primary/></indexterm>build.</para>
     <figure float="0" id="fig-jenkins-doclinks-plugin">
-      <title>The DocLinks plugin lets you archive both HTML and non-HTML
-      artifacts</title>
+      <title>Le plugin DocLinks vous permet d'archiver des documents HTML et non-HTML
+      </title>
       <mediaobject id="I_mediaobject6_d1e9711">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0623.pdf" format="PDF"/>
