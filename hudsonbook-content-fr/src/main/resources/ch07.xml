@@ -1,55 +1,110 @@
-<?xml version="1.0"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-security">
-  <title>Securing Jenkins</title>
+  <title>Sécuriser Jenkins</title>
+
   <sect1 id="sect-security-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch07-sec" significance="normal"><primary>security</primary></indexterm><indexterm id="I_indexterm7_d1e10038" significance="normal"><primary>authorization</primary><seealso>security</seealso></indexterm>Jenkins supports several security models, and can integrate
-    with several user repositories. In smaller organizations, where developers
-    work in close proximity, security on your Jenkins machine may not be a
-    large concern—you may simply want to prevent unidentified users tampering
-    with your build job configurations. For larger organizations, with
-    multiple teams, a stricter approach might be required, where only team
-    members and system administrators are allowed to modify their build job
-    configurations. And in situations where the Jenkins server may be exposed
-    to a broader audience, such as on an internal corporate website, or even
-    on the Internet, certain build jobs may be visible to all users whereas
-    others will need to be hidden to unauthorized users.</para>
-    <para>In this chapter, we will look at how to configure different security
-    configurations in Jenkins, for different environments and
-    circumstances.</para>
+
+    <para><indexterm class="startofrange" id="ch07-sec" significance="normal">
+        <primary>securité</primary>
+      </indexterm><indexterm id="I_indexterm7_d1e10038" significance="normal">
+        <primary>autorisation</primary>
+
+        <seealso>sécurité</seealso>
+      </indexterm>Jenkins supporte plusieurs modèles de sécurité, et peut
+    s'intégrer avec différents gestionnaires d'utilisateurs. Dans les petites
+    organisations, où les développeurs travaillent proches les uns des autres,
+    la sécurité de votre machine Jenkins n'est peut-être pas un gros problème
+    — vous pourriez juste vouloir éviter que des utilisateurs non identifiés
+    n'altèrent vos configurations de tâches de build. Pour de plus importantes
+    organisations, avec de multiples équipes, une approche plus stricte
+    pourrait être nécessaire, dans laquelle seuls les membres de l'équipe et
+    les administrateurs systèmes ont les droits pour modifier la configuration
+    des tâches de build. Et dans des situations où Jenkins serait exposé à une
+    audience plus large, comme un site web interne d'une entreprise, ou même
+    sur Internet, certaines tâches de build pourraient être visibles à tous
+    les utilisateurs alors que d'autres nécessiteraient d'être cachées aux
+    utilisateurs non autorisés.</para>
+
+    <para>Dans ce chapitre, nous regarderons comment configurer différentes
+    configurations de sécurité dans Jenkins, pour différents environnements et
+    circonstances.</para>
   </sect1>
+
   <sect1 id="sect-security-activating">
     <title>Activating Security in Jenkins</title>
-    <para>Setting<indexterm id="I_indexterm7_d1e10051" significance="normal"><primary>security</primary><secondary>enabling</secondary></indexterm> up basic security in Jenkins is easy enough. Go to the main
-    configuration page and check the Enable security checkbox (see <xref linkend="fig-hudson-enabling-security"/>). This will display a number of
+
+    <para>Setting<indexterm id="I_indexterm7_d1e10051" significance="normal">
+        <primary>security</primary>
+
+        <secondary>enabling</secondary>
+      </indexterm> up basic security in Jenkins is easy enough. Go to the main
+    configuration page and check the Enable security checkbox (see <xref
+    linkend="fig-hudson-enabling-security" />). This will display a number of
     options, that we will investigate in detail in this chapter. The first
-    <indexterm id="I_indexterm7_d1e10059" significance="normal"><primary>security</primary><secondary>security realms</secondary></indexterm>section, Security Realms, determines where Jenkins will look
+    <indexterm id="I_indexterm7_d1e10059" significance="normal">
+        <primary>security</primary>
+
+        <secondary>security realms</secondary>
+      </indexterm>section, Security Realms, determines where Jenkins will look
     for users during authentication, and includes options such as using users
     stored in an LDAP server, using the underlying Unix user accounts
     (assuming, of course, that Jenkins is running on a Unix machine), or using
     a simple built-in user database managed by Jenkins.</para>
-    <para>The <indexterm id="I_indexterm7_d1e10067" significance="normal"><primary>security</primary><secondary>authorization</secondary></indexterm><indexterm id="I_indexterm7_d1e10072" significance="normal"><primary>authorization</primary></indexterm>second section, Authorization, determines what users can do
+
+    <para>The <indexterm id="I_indexterm7_d1e10067" significance="normal">
+        <primary>security</primary>
+
+        <secondary>authorization</secondary>
+      </indexterm><indexterm id="I_indexterm7_d1e10072" significance="normal">
+        <primary>authorization</primary>
+      </indexterm>second section, Authorization, determines what users can do
     once they are logged in. This ranges from simple options like “Anyone can
     do anything” or “Logged-in users can do anything,” to more sophisticated
     role and project-based authorization policies.</para>
+
     <figure float="0" id="fig-hudson-enabling-security">
       <title>Enabling security in Jenkins</title>
+
       <mediaobject id="I_mediaobject7_d1e10079">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0701.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0701.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0701.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0701.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>In the remainder of this chapter, we will look at how to configure
-    Jenkins security for a number of common scenarios.</para>
+
+    <para>Dans la fin de ce chapitre, nous regarderons comment configurer la
+    sécurité Jenkins pour un certain nombre de scénarii courants.</para>
   </sect1>
+
   <sect1 id="hudson-security-simple">
     <title>Simple Security in Jenkins</title>
-    <para>The <indexterm class="startofrange" id="ch07-none1" significance="normal"><primary>security</primary><secondary>authorization</secondary><tertiary>no restrictions on</tertiary></indexterm><indexterm class="startofrange" id="ch07-none2" significance="normal"><primary>authorization</primary><secondary>no restrictions on</secondary></indexterm><indexterm id="I_indexterm7_d1e10103" significance="normal"><primary>users</primary><secondary>authorization for</secondary><see>authorization</see></indexterm>most simple usable security model in Jenkins involves
+
+    <para>The <indexterm class="startofrange" id="ch07-none1"
+        significance="normal">
+        <primary>security</primary>
+
+        <secondary>authorization</secondary>
+
+        <tertiary>no restrictions on</tertiary>
+      </indexterm><indexterm class="startofrange" id="ch07-none2"
+        significance="normal">
+        <primary>authorization</primary>
+
+        <secondary>no restrictions on</secondary>
+      </indexterm><indexterm id="I_indexterm7_d1e10103" significance="normal">
+        <primary>users</primary>
+
+        <secondary>authorization for</secondary>
+
+        <see>authorization</see>
+      </indexterm>most simple usable security model in Jenkins involves
     allowing authenticated users to do anything, whereas non-authenticated
     users will just have a read-only view of the build jobs. This is great for
     small teams—developers can manage the build jobs, whereas other users
@@ -57,146 +112,256 @@
     required to view the status of the project. Indeed, certain build jobs may
     be set up just for this purpose, displaying the results of automated
     acceptance tests or code quality metrics, for example.</para>
+
     <para>You can set up this sort of configuration to choose “Logged-in users
     can do anything” in the Authorization section. There are several ways that
-    Jenkins can authenticate users (see <xref linkend="sect-security-realms"/>), but for this example, we will be using
-    the simplest option, which is to use <indexterm id="I_indexterm7_d1e10115" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Jenkins internal user database</tertiary></indexterm><indexterm id="I_indexterm7_d1e10122" significance="normal"><primary>user database</primary></indexterm><indexterm id="I_indexterm7_d1e10125" significance="normal"><primary>user database</primary><seealso>security, security realms</seealso></indexterm><indexterm id="I_indexterm7_d1e10130" significance="normal"><primary>database</primary><secondary>user database</secondary></indexterm>Jenkins’s own built in database (see <xref linkend="hudson-users-internal"/>). This is the configuration illustrated
-    in <xref linkend="fig-hudson-enabling-security"/>.</para>
-    <para>Make <indexterm id="I_indexterm7_d1e10142" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>enabling sign-ups</tertiary></indexterm>sure you tick the “Allow users to sign up” option. This
+    Jenkins can authenticate users (see <xref
+    linkend="sect-security-realms" />), but for this example, we will be using
+    the simplest option, which is to use <indexterm id="I_indexterm7_d1e10115"
+        significance="normal">
+        <primary>security</primary>
+
+        <secondary>security realms</secondary>
+
+        <tertiary>Jenkins internal user database</tertiary>
+      </indexterm><indexterm id="I_indexterm7_d1e10122" significance="normal">
+        <primary>user database</primary>
+      </indexterm><indexterm id="I_indexterm7_d1e10125" significance="normal">
+        <primary>user database</primary>
+
+        <seealso>security, security realms</seealso>
+      </indexterm><indexterm id="I_indexterm7_d1e10130" significance="normal">
+        <primary>database</primary>
+
+        <secondary>user database</secondary>
+      </indexterm>Jenkins’s own built in database (see <xref
+    linkend="hudson-users-internal" />). This is the configuration illustrated
+    in <xref linkend="fig-hudson-enabling-security" />.</para>
+
+    <para>Make <indexterm id="I_indexterm7_d1e10142" significance="normal">
+        <primary>security</primary>
+
+        <secondary>security realms</secondary>
+
+        <tertiary>enabling sign-ups</tertiary>
+      </indexterm>sure you tick the “Allow users to sign up” option. This
     option will display a Sign up link at the top of the screen to let users
-    create their own user account as required (see <xref linkend="fig-hudson-user-signup"/>). It is a good idea for developers to
+    create their own user account as required (see <xref
+    linkend="fig-hudson-user-signup" />). It is a good idea for developers to
     use their SCM username here: in this case, Jenkins will be able to work
     out what users contributed to the SCM changes that triggered a particular
     build.</para>
+
     <figure float="0" id="fig-hudson-user-signup">
       <title>The Jenkins Sign up page</title>
+
       <mediaobject id="I_mediaobject7_d1e10155">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0702.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0702.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0702.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0702.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>This approach is obviously a little too simple for many
     situations—it is useful for small teams working in close proximity, where
     the aim is to know who’s changes caused (or broke) a particular build,
     rather than to manage access in any more restrictive way. In the following
     sections, we will discuss the two orthogonal aspects of Jenkins security:
     identifying your users (Security Realms) and determining what they are
-    allowed<indexterm id="I_indexterm7_d1e10162" class="endofrange" startref="ch07-none1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10164" class="endofrange" startref="ch07-none2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10166" class="endofrange" startref="ch07-sec" significance="normal"><primary/></indexterm> to (Authorization).</para>
+    allowed<indexterm class="endofrange" id="I_indexterm7_d1e10162"
+        significance="normal" startref="ch07-none1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10164"
+        significance="normal" startref="ch07-none2">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10166"
+        significance="normal" startref="ch07-sec">
+        <primary></primary>
+      </indexterm> to (Authorization).</para>
   </sect1>
+
   <sect1 id="sect-security-realms">
     <title id="sec-identifying-users">Security Realms—Identifying Jenkins
     Users</title>
+
     <para>Jenkins lets you identify and manage users in a number of ways,
     ranging from a simple, built-in user database suitable for small teams to
     integration with enterprise directories, with many other options in
     between.</para>
+
     <sect2 id="hudson-users-internal">
       <title>Using Jenkins’s Built-in User Database</title>
-      <para>The <indexterm class="startofrange" id="ch07-internal" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Jenkins internal user database</tertiary></indexterm><indexterm class="startofrange" id="ch07-internal2" significance="normal"><primary>user database</primary></indexterm><indexterm class="startofrange" id="ch07-internal3" significance="normal"><primary>database</primary><secondary>user database</secondary></indexterm>easiest way to manage user accounts in Jenkins is to use
+
+      <para>The <indexterm class="startofrange" id="ch07-internal"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>Jenkins internal user database</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch07-internal2"
+          significance="normal">
+          <primary>user database</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-internal3"
+          significance="normal">
+          <primary>database</primary>
+
+          <secondary>user database</secondary>
+        </indexterm>easiest way to manage user accounts in Jenkins is to use
       Jenkins’s internal user database. This is a good option if you want to
       keep things simple, as very little setup or configuration is required.
       Users who need to log on to the Jenkins server can sign up and create an
       account for themselves, and, depending on the security model chosen, an
-      <indexterm id="I_indexterm7_d1e10195" significance="normal"><primary>administrator</primary><secondary sortas="Jenkins">for Jenkins internal user
-          database</secondary></indexterm><indexterm id="I_indexterm7_d1e10200" significance="normal"><primary>users</primary><secondary>administrator</secondary><tertiary sortas="Jenkins">for Jenkins internal user
-          database</tertiary></indexterm>administrator can then decide what these users are allowed
+      <indexterm id="I_indexterm7_d1e10195" significance="normal">
+          <primary>administrator</primary>
+
+          <secondary sortas="Jenkins">for Jenkins internal user
+          database</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10200"
+          significance="normal">
+          <primary>users</primary>
+
+          <secondary>administrator</secondary>
+
+          <tertiary sortas="Jenkins">for Jenkins internal user
+          database</tertiary>
+        </indexterm>administrator can then decide what these users are allowed
       to do.</para>
+
       <para>Jenkins automatically adds all SCM users to this database whenever
       a change is committed to source code monitored by Jenkins. These user
       names are used mainly to record who is responsible for each build job.
       You can view the list of currently known users by clicking on the People
-      menu entry (see <xref linkend="fig-hudson-user-list"/>). Here, you can
+      menu entry (see <xref linkend="fig-hudson-user-list" />). Here, you can
       visualize the users that Jenkins currently knows about, and also see the
       last project they committed changes to. Note that this list contains all
       of the users who have ever committed changes to the projects that
       Jenkins monitors—they may not be (and usually aren’t) all active Jenkins
       users who are able to log on to the Jenkins server.</para>
+
       <figure float="none" id="fig-hudson-user-list">
         <title>The list of users known to Jenkins</title>
+
         <mediaobject id="I_mediaobject7_d1e10215">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0703.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0703.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0703.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0703.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>If you click on a user in this list, Jenkins takes you to a page
       displaying various details about this user, including the user’s full
-      name and the build jobs they have contributed to (see <xref linkend="fig-hudson-user-builds"/>). From here, you can also modify or
+      name and the build jobs they have contributed to (see <xref
+      linkend="fig-hudson-user-builds" />). From here, you can also modify or
       complete the details about this user, such as their password or email
       address.</para>
+
       <figure float="none" id="fig-hudson-user-builds">
         <title>Displaying the builds that a user participates in</title>
+
         <mediaobject id="I_mediaobject7_d1e10227">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0704.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0704.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0704.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0704.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>A user appearing in this list cannot necessarily log on to
       Jenkins. To be able to log on to Jenkins, the user account needs to be
       set up with a password. There are essentially two ways to do this. If
-      <indexterm id="I_indexterm7_d1e10234" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>enabling user sign-ups</tertiary></indexterm>you have activated the “Allow users to sign up” option,
+      <indexterm id="I_indexterm7_d1e10234" significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>enabling user sign-ups</tertiary>
+        </indexterm>you have activated the “Allow users to sign up” option,
       users can simply sign up with their SCM user name and provide their
-      email address and a password (see <xref linkend="hudson-security-simple"/>). Alternatively, you can activate a
+      email address and a password (see <xref
+      linkend="hudson-security-simple" />). Alternatively, you can activate a
       user by clicking on the Configure menu option in the user details
-      screen, and provide an email address and password yourself (see <xref linkend="fig-hudson-edit-user"/>).</para>
+      screen, and provide an email address and password yourself (see <xref
+      linkend="fig-hudson-edit-user" />).</para>
+
       <figure float="none" id="fig-hudson-edit-user">
         <title>Creating a new user account by signing up</title>
+
         <mediaobject id="I_mediaobject7_d1e10249">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0705.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0705.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0705.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0705.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>It is <indexterm id="I_indexterm7_d1e10256" significance="normal"><primary>notifications</primary><secondary>email</secondary></indexterm><indexterm id="I_indexterm7_d1e10261" significance="normal"><primary>email notifications</primary></indexterm>worth noting that, if your email addresses are
+
+      <para>It is <indexterm id="I_indexterm7_d1e10256" significance="normal">
+          <primary>notifications</primary>
+
+          <secondary>email</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10261"
+          significance="normal">
+          <primary>email notifications</primary>
+        </indexterm>worth noting that, if your email addresses are
       synchronized with your version control user names (for example, if you
       work at acme.com, and user “joe” in your version control system has an
       email address of <emphasis>joe@acme.com</emphasis>), you can get Jenkins
       to derive the email address from a user name by adding a suffix that you
-      configure in the Email Notification section (see <xref linkend="fig-security-email-config"/>). If you have set up this sort of
+      configure in the Email Notification section (see <xref
+      linkend="fig-security-email-config" />). If you have set up this sort of
       configuration, you don’t need to specify the email address for new users
       unless it does not respect this convention.</para>
+
       <figure float="none" id="fig-security-email-config">
         <title>Synchronizing email addresses</title>
+
         <mediaobject id="I_mediaobject7_d1e10273">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0706.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0706.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0706.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0706.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Another way to manage the current active users (those who can
       actually log on to Jenkins) is by clicking on the Manage Users link in
-      the main Jenkins configuration page (see <xref linkend="fig-hudson-manage-users"/>).</para>
+      the main Jenkins configuration page (see <xref
+      linkend="fig-hudson-manage-users" />).</para>
+
       <figure float="none" id="fig-hudson-manage-users">
         <title>You can also manage Jenkins users from the Jenkins
         configuration page</title>
+
         <mediaobject id="I_mediaobject7_d1e10286">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0707.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0707.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0707.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0707.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>From here, you can view and edit the users who can log in to
-      Jenkins (see <xref linkend="fig-hudson-user-database"/>). This includes
+      Jenkins (see <xref linkend="fig-hudson-user-database" />). This includes
       both users that have signed up manually (if this option has been
       activated) and SCM users that you have activated by configuring them
       with a password. You can also edit a user’s details (for example
@@ -205,99 +370,176 @@
       them from the overall user list (their name will still appear in the
       build history, for example), but they will no longer be able to log on
       to the Jenkins server.</para>
+
       <figure float="none" id="fig-hudson-user-database">
         <title>The Jenkins user database</title>
+
         <mediaobject id="I_mediaobject7_d1e10298">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0708.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0708.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0708.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0708.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>The internal Jenkins database is sufficient for many teams and
       organizations. However, for larger organizations, it may become tedious
       and repetitive to manage large numbers of user accounts by hand,
       especially if this information already exists elsewhere. In the
       following sections, we will look at how to hook Jenkins up to other user
       management systems, such as LDAP repositories and Unix users and
-      <indexterm id="I_indexterm7_d1e10305" class="endofrange" startref="ch07-internal" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10307" class="endofrange" startref="ch07-internal2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10309" class="endofrange" startref="ch07-internal3" significance="normal"><primary/></indexterm>groups.</para>
+      <indexterm class="endofrange" id="I_indexterm7_d1e10305"
+          significance="normal" startref="ch07-internal">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10307"
+          significance="normal" startref="ch07-internal2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10309"
+          significance="normal" startref="ch07-internal3">
+          <primary></primary>
+        </indexterm>groups.</para>
     </sect2>
+
     <sect2 id="sec-security-ldap">
       <title>Using an LDAP Repository</title>
-      <para>Many <indexterm class="startofrange" id="ch07-ldap1" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>LDAP repository</tertiary></indexterm><indexterm class="startofrange" id="ch07-ldap2" significance="normal"><primary>LDAP repository, as security realm</primary></indexterm>organizations use LDAP directories to store user accounts
+
+      <para>Many <indexterm class="startofrange" id="ch07-ldap1"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>LDAP repository</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch07-ldap2"
+          significance="normal">
+          <primary>LDAP repository, as security realm</primary>
+        </indexterm>organizations use LDAP directories to store user accounts
       and passwords across applications. Jenkins integrates well with LDAP,
       with no special plugins required. It can authenticate users using the
       LDAP repository, check group membership, and retrieve the email address
       of authenticated users.</para>
+
       <para>To integrate Jenkins with your LDAP repository, Just select “LDAP”
       in the Security Realm section, and fill in the appropriate details about
-      your LDAP server (see <xref linkend="fig-hudson-security-ldap"/>). The
+      your LDAP server (see <xref linkend="fig-hudson-security-ldap" />). The
       most important field is the repository server. If you are using a
       non-standard port, you will need to provide this as well (for example,
       <filename moreinfo="none">ldap.acme.org:1389</filename>). Or, if you are
       using LDAPS, you will need to specify this as well (for example,
       <filename moreinfo="none">ldaps://ldap.acme.org</filename>)</para>
+
       <para>If your server supports anonymous binding, this will probably be
       enough to get you started. If not, you can use the Advanced options to
       fine-tune your configuration.</para>
+
       <para>Most of the Advanced fields can safely be left blank unless you
       have a good reason to change them. If your repository is extremely
-      large, you may want to specify a root DN value (e.g., <literal moreinfo="none">dc=acme,
-      dc=com</literal>) and/or a User and Group search base (e.g.,
-      <literal moreinfo="none">ou=people</literal>) to narrow down the scope of user queries.
-      This is not usually required unless you notice performance issues. Or,
-      if your server does not support anonymous binding, you will need to
-      provide a Manager DN and a Manager DN password, so that Jenkins can
-      connect to the server to perform its queries.</para>
+      large, you may want to specify a root DN value (e.g., <literal
+      moreinfo="none">dc=acme, dc=com</literal>) and/or a User and Group
+      search base (e.g., <literal moreinfo="none">ou=people</literal>) to
+      narrow down the scope of user queries. This is not usually required
+      unless you notice performance issues. Or, if your server does not
+      support anonymous binding, you will need to provide a Manager DN and a
+      Manager DN password, so that Jenkins can connect to the server to
+      perform its queries.</para>
+
       <figure float="none" id="fig-hudson-security-ldap">
         <title>Configuring LDAP in Jenkins</title>
+
         <mediaobject id="I_mediaobject7_d1e10351">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0709.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0709.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0709.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0709.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Once you have set up LDAP as your Security Realm, you can
       configure your favorite security model as described previously. When
       users log on to Jenkins, they will be authenticated against the LDAP
       repository.</para>
-      <para>You <indexterm id="I_indexterm7_d1e10360" significance="normal"><primary>groups</primary><secondary>LDAP</secondary></indexterm>can also use LDAP groups, though the configuration is not
+
+      <para>You <indexterm id="I_indexterm7_d1e10360" significance="normal">
+          <primary>groups</primary>
+
+          <secondary>LDAP</secondary>
+        </indexterm>can also use LDAP groups, though the configuration is not
       immediately obvious. Suppose you have defined a group called
       JenkinsAdmin in your LDAP repository, with a DN of
       <code>cn=JenkinsAdmin, ou-Groups, dc=acme, dc=com</code>. To refer to
       this group in Jenkins, you need to take the common name (cn) in
-      uppercase, and prefix it with <literal moreinfo="none">ROLE_</literal>. So
-      <code>cn=JenkinsAdmin</code> becomes <code>ROLE_JENKINSADMIN</code>. You
-      can see an example of LDAP groups used<indexterm id="I_indexterm7_d1e10379" class="endofrange" startref="ch07-ldap1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10381" class="endofrange" startref="ch07-ldap2" significance="normal"><primary/></indexterm> in this way in <xref linkend="fig-hudson-security-ldap-groups"/>.</para>
+      uppercase, and prefix it with <literal moreinfo="none">ROLE_</literal>.
+      So <code>cn=JenkinsAdmin</code> becomes <code>ROLE_JENKINSADMIN</code>.
+      You can see an example of LDAP groups used<indexterm class="endofrange"
+          id="I_indexterm7_d1e10379" significance="normal"
+          startref="ch07-ldap1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10381"
+          significance="normal" startref="ch07-ldap2">
+          <primary></primary>
+        </indexterm> in this way in <xref
+      linkend="fig-hudson-security-ldap-groups" />.</para>
+
       <figure float="none" id="fig-hudson-security-ldap-groups">
         <title>Using LDAP Groups in Jenkins</title>
+
         <mediaobject id="I_mediaobject7_d1e10389">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0710.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0710.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0710.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0710.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Using Microsoft Active Directory</title>
-      <para>Microsoft Active Directory<indexterm class="startofrange" id="ch07-ad1" significance="normal"><primary>Microsoft Active Directory, as security realm</primary></indexterm><indexterm class="startofrange" id="ch07-ad2" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Microsoft Active Directory</tertiary></indexterm><indexterm class="startofrange" id="ch07-atlas3" significance="normal"><primary>Active Directory, Microsoft, as security realm</primary></indexterm> is a directory service product widely used in Microsoft
+
+      <para>Microsoft Active Directory<indexterm class="startofrange"
+          id="ch07-ad1" significance="normal">
+          <primary>Microsoft Active Directory, as security realm</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-ad2"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>Microsoft Active Directory</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch07-atlas3"
+          significance="normal">
+          <primary>Active Directory, Microsoft, as security realm</primary>
+        </indexterm> is a directory service product widely used in Microsoft
       architectures. Although Active Directory does provide an LDAP service,
       it can be a little tricky to set up, and it is simpler to get Jenkins to
       talk directly to the Active Directory server. Fortunately, there’s a
       plugin for that.</para>
-      <para>The Jenkins Active Directory plugin lets<indexterm id="I_indexterm7_d1e10415" significance="normal"><primary>plugins</primary><secondary>Active Directory</secondary></indexterm> you configure Jenkins to authenticate against a Microsoft
+
+      <para>The Jenkins Active Directory plugin lets<indexterm
+          id="I_indexterm7_d1e10415" significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>Active Directory</secondary>
+        </indexterm> you configure Jenkins to authenticate against a Microsoft
       Active Directory server. You can both authenticate users, and retrieve
       their groups for Matrix and Project-based authorization. Note that,
-      unlike the conventional LDAP integration (see <xref linkend="sec-security-ldap"/>), there is no need to prefix group names
-      with <literal moreinfo="none">ROLE_</literal>—you can use Active Directory <indexterm id="I_indexterm7_d1e10426" significance="normal"><primary>groups</primary><secondary>Active Directory</secondary></indexterm>groups (such as “Domain Admins”) directory.</para>
+      unlike the conventional LDAP integration (see <xref
+      linkend="sec-security-ldap" />), there is no need to prefix group names
+      with <literal moreinfo="none">ROLE_</literal>—you can use Active
+      Directory <indexterm id="I_indexterm7_d1e10426" significance="normal">
+          <primary>groups</primary>
+
+          <secondary>Active Directory</secondary>
+        </indexterm>groups (such as “Domain Admins”) directory.</para>
+
       <para>To configure the plugin, you need to provide the full domain name
       of your Active Directory server. If you have more than one domain, you
       can provide a comma-<phrase role="keep-together">separated</phrase>
@@ -306,6 +548,7 @@
       catalog. Note that if you do this without specifying the bind DN (see
       below), the user would have to login as “europe\joe” or
       “joe@europe”.</para>
+
       <para>The advanced options let you specify a site name (to improve
       performance by restricting the domain controllers that Jenkins queries),
       and a Binding DN and password, which come in handy if you are connecting
@@ -315,77 +558,158 @@
       way, the user can simply type in “jack” or “jill”, and have the system
       automatically figure out that they are
       <emphasis>jack@europe.acme.com</emphasis> or
-      <emphasis>jack@asia.acme.com</emphasis>. You need to <phrase role="keep-together">provide</phrase> the full user principal name with
+      <emphasis>jack@asia.acme.com</emphasis>. You need to <phrase
+      role="keep-together">provide</phrase> the full user principal name with
       domain name, like <emphasis>admin@europe.acme.com</emphasis>, or a
-      LDAP-style distinguished name, such as
-      <literal moreinfo="none">CN=Administrator,OU=europe,DC=acme,DC=com</literal>.</para>
+      LDAP-style distinguished name, such as <literal
+      moreinfo="none">CN=Administrator,OU=europe,DC=acme,DC=com</literal>.</para>
+
       <para>Another nice thing about this plugin is that it works both in a
       Windows environment and in a Unix environment. So if Jenkins is running
       on a Unix server, it can still authenticate against a Microsoft Active
       Directory service running on another machine.</para>
+
       <para>More precisely, if Jenkins is running on a Windows machine and you
       do not specify a domain, that machine must be a member of the domain you
       wish to authenticate against. Jenkins will use ADSI to figure out all
       the details, so no additional configuration is required.</para>
+
       <para>On a non-Windows machine (or you specify one or more domains), you
       need to tell Jenkins the name of Active Directory domain(s) to
       authenticate with. Jenkins then uses DNS SRV records and LDAP service of
       Active Directory to authenticate users.</para>
-      <para>Jenkins can determine which <indexterm id="I_indexterm7_d1e10462" significance="normal"><primary>groups</primary><secondary>Active Directory</secondary></indexterm>groups in Active Directory that the user belongs to, so
+
+      <para>Jenkins can determine which <indexterm id="I_indexterm7_d1e10462"
+          significance="normal">
+          <primary>groups</primary>
+
+          <secondary>Active Directory</secondary>
+        </indexterm>groups in Active Directory that the user belongs to, so
       you can use these as part of your authorisation strategy. For example,
       you can use these groups in matrix-based security, or allow “Domain
-      Admins” to administer <indexterm id="I_indexterm7_d1e10468" class="endofrange" startref="ch07-ad1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10470" class="endofrange" startref="ch07-ad2" significance="normal"><primary/></indexterm>Jenkins.</para>
+      Admins” to administer <indexterm class="endofrange"
+          id="I_indexterm7_d1e10468" significance="normal" startref="ch07-ad1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10470"
+          significance="normal" startref="ch07-ad2">
+          <primary></primary>
+        </indexterm>Jenkins.</para>
     </sect2>
+
     <sect2>
       <title>Using Unix Users and Groups</title>
-      <para>If <indexterm id="I_indexterm7_d1e10478" significance="normal"><primary>Unix</primary><secondary>users and groups, as security realm</secondary></indexterm><indexterm id="I_indexterm7_d1e10483" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Unix users and groups</tertiary></indexterm><indexterm id="I_indexterm7_d1e10490" significance="normal"><primary>groups</primary><secondary>Unix</secondary></indexterm>you are running Jenkins on a Unix machine, you can also
+
+      <para>If <indexterm id="I_indexterm7_d1e10478" significance="normal">
+          <primary>Unix</primary>
+
+          <secondary>users and groups, as security realm</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10483"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>Unix users and groups</tertiary>
+        </indexterm><indexterm id="I_indexterm7_d1e10490"
+          significance="normal">
+          <primary>groups</primary>
+
+          <secondary>Unix</secondary>
+        </indexterm>you are running Jenkins on a Unix machine, you can also
       ask Jenkins to use the user and group accounts defined on this machine.
       In this case, users will log into Jenkins using their Unix account
       logins and passwords. This uses Pluggable Authentication Modules (PAM),
       and also works fine with NIS.</para>
+
       <para>In its most basic form, this is somewhat cumbersome, as it
       requires new user accounts to be set up and configured for each new
       Jenkins user. It is only really useful if these accounts need to be set
       up for other purposes.</para>
     </sect2>
+
     <sect2>
       <title>Delegating to the Servlet Container</title>
-      <para>Another <indexterm id="I_indexterm7_d1e10503" significance="normal"><primary>Servlet container</primary><secondary>as security realm</secondary></indexterm><indexterm id="I_indexterm7_d1e10508" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Servlet container</tertiary></indexterm>way to identify Jenkins users is to let your Servlet
+
+      <para>Another <indexterm id="I_indexterm7_d1e10503"
+          significance="normal">
+          <primary>Servlet container</primary>
+
+          <secondary>as security realm</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10508"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>Servlet container</tertiary>
+        </indexterm>way to identify Jenkins users is to let your Servlet
       container do it for you. This approach is useful if you are running
-      Jenkins on a Servlet container such as <indexterm id="I_indexterm7_d1e10516" significance="normal"><primary>Tomcat Servlet container</primary></indexterm>Tomcat or <indexterm id="I_indexterm7_d1e10520" significance="normal"><primary>GlassFish Servlet container</primary></indexterm>GlassFish, and you already have an established way to
+      Jenkins on a Servlet container such as <indexterm
+          id="I_indexterm7_d1e10516" significance="normal">
+          <primary>Tomcat Servlet container</primary>
+        </indexterm>Tomcat or <indexterm id="I_indexterm7_d1e10520"
+          significance="normal">
+          <primary>GlassFish Servlet container</primary>
+        </indexterm>GlassFish, and you already have an established way to
       integrate the Servlet container with your local enterprise user
       directory. Tomcat, for example, allows you to authenticate users against
       a relational database (using direct JDBC or a DataSource), JNDI, JAAS,
       or an XML configuration file. You can also use the roles defined in the
       Servlet container’s user directory for use with Matrix and Project-based
       authorization <phrase role="keep-together">strategies</phrase>.</para>
+
       <para>In Jenkins, this is easy to configure—just select this option in
-      the Security Realm section (see <xref linkend="fig-hudson-security-container"/>). Once you have done this,
+      the Security Realm section (see <xref
+      linkend="fig-hudson-security-container" />). Once you have done this,
       Jenkins will let the server take care of everything.</para>
+
       <figure float="none" id="fig-hudson-security-container">
         <title>Selecting the security realm</title>
+
         <mediaobject id="I_mediaobject7_d1e10534">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0711.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0711.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0711.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0711.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Using Atlassian Crowd</title>
-      <para>If <indexterm class="startofrange" id="ch07-atlas1" significance="normal"><primary>Atlassian Crowd, as security realm</primary></indexterm><indexterm class="startofrange" id="ch07-atlas2" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Atlassian Crowd</tertiary></indexterm><indexterm id="I_indexterm7_d1e10554" significance="normal"><primary>Crowd, Atlassian, as security realm</primary></indexterm>your organization is using Atlassian products such as JIRA
+
+      <para>If <indexterm class="startofrange" id="ch07-atlas1"
+          significance="normal">
+          <primary>Atlassian Crowd, as security realm</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-atlas2"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>Atlassian Crowd</tertiary>
+        </indexterm><indexterm id="I_indexterm7_d1e10554"
+          significance="normal">
+          <primary>Crowd, Atlassian, as security realm</primary>
+        </indexterm>your organization is using Atlassian products such as JIRA
       and Confluence, you may also be using Crowd. Crowd is a commercial
       Identity Management and Single-Sign On (SSO) application from Atlassian
       that lets you manage single user accounts across multiple products. It
       lets you manage both an internal database of users, groups and roles,
       and integrate with external directories such as LDAP directories or
       custom user stores.</para>
-      <para>Using the Jenkins Crowd plugin, you<indexterm id="I_indexterm7_d1e10560" significance="normal"><primary>plugins</primary><secondary>Crowd, for Atlassian Crowd</secondary></indexterm> can use Atlassian Crowd as the source of your Jenkins
+
+      <para>Using the Jenkins Crowd plugin, you<indexterm
+          id="I_indexterm7_d1e10560" significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>Crowd, for Atlassian Crowd</secondary>
+        </indexterm> can use Atlassian Crowd as the source of your Jenkins
       users and groups. Before you start, you need to set up a new application
-      in Crowd (see <xref linkend="fig-hudson-security-cloud-app"/>). Just
+      in Crowd (see <xref linkend="fig-hudson-security-cloud-app" />). Just
       set up a new Generic Application called “hudson” (or something similar),
       and step through the tabs. In the Connections tab, you need to provide
       the IP address of your Jenkins server. Then map the Crowd directories
@@ -395,82 +719,179 @@
       authenticate, and let Jenkins sort out the details. Alternatively, you
       can list the Crown user groups who are allowed to connect to
       Jenkins.</para>
+
       <figure float="0" id="fig-hudson-security-cloud-app">
         <title>Using Atlassian Crowd as the Jenkins Security Realm</title>
+
         <mediaobject id="I_mediaobject7_d1e10571">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0712.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0712.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0712.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0712.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Once you have set this up, you need to install the Jenkins Crowd
       plugin, which you do as usual via the Jenkins Plugin Manager. Once you
       have installed the plugin and restarted Jenkins, you can define Crowd as
-      your Security Realm in the main Jenkins configuration screen (see <xref linkend="fig-hudson-security-crowd"/>).</para>
+      your Security Realm in the main Jenkins configuration screen (see <xref
+      linkend="fig-hudson-security-crowd" />).</para>
+
       <figure float="0" id="fig-hudson-security-crowd">
         <title>Using Atlassian Crowd as the Jenkins Security Realm</title>
+
         <mediaobject id="I_mediaobject7_d1e10583">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0713.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0713.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0713.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0713.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>With this plugin installed and configured, you can use users and
-      <indexterm id="I_indexterm7_d1e10590" significance="normal"><primary>groups</primary><secondary>Atlassian Crowd</secondary></indexterm>groups from Crowd for any of the Jenkins Authorization
-      strategies we discussed earlier on in the chapter. For example, in <xref linkend="fig-hudson-security-crowd-groups-matrix"/>, we are using user
+      <indexterm id="I_indexterm7_d1e10590" significance="normal">
+          <primary>groups</primary>
+
+          <secondary>Atlassian Crowd</secondary>
+        </indexterm>groups from Crowd for any of the Jenkins Authorization
+      strategies we discussed earlier on in the chapter. For example, in <xref
+      linkend="fig-hudson-security-crowd-groups-matrix" />, we are using user
       groups defined in Crowd to set up Matrix-based security in the main
-      configuration <indexterm id="I_indexterm7_d1e10598" class="endofrange" startref="ch07-atlas2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10600" class="endofrange" startref="ch07-atlas1" significance="normal"><primary/></indexterm>screen.</para>
+      configuration <indexterm class="endofrange" id="I_indexterm7_d1e10598"
+          significance="normal" startref="ch07-atlas2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10600"
+          significance="normal" startref="ch07-atlas1">
+          <primary></primary>
+        </indexterm>screen.</para>
+
       <figure float="0" id="fig-hudson-security-crowd-groups-matrix">
         <title>Using Atlassian Crowd groups in Jenkins</title>
+
         <mediaobject id="I_mediaobject7_d1e10606">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0714.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0714.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0714.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0714.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Integrating with Other Systems</title>
-      <para>In <indexterm id="I_indexterm7_d1e10616" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>CAS</tertiary></indexterm><indexterm id="I_indexterm7_d1e10623" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>SFEE</tertiary></indexterm><indexterm id="I_indexterm7_d1e10630" significance="normal"><primary>CAS (Central Authentication Service)</primary></indexterm><indexterm id="I_indexterm7_d1e10633" significance="normal"><primary>SFEE (Source Forge Enterprise Edition)</primary></indexterm><indexterm id="I_indexterm7_d1e10636" significance="normal"><primary>plugins</primary><secondary>CAS</secondary></indexterm><indexterm id="I_indexterm7_d1e10641" significance="normal"><primary>plugins</primary><secondary>SFEE</secondary></indexterm><indexterm id="I_indexterm7_d1e10646" significance="normal"><primary>Source Forge Enterprise Edition</primary><see>SFEE</see></indexterm>addition to the authentication strategies discussed here,
+
+      <para>In <indexterm id="I_indexterm7_d1e10616" significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>CAS</tertiary>
+        </indexterm><indexterm id="I_indexterm7_d1e10623"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>SFEE</tertiary>
+        </indexterm><indexterm id="I_indexterm7_d1e10630"
+          significance="normal">
+          <primary>CAS (Central Authentication Service)</primary>
+        </indexterm><indexterm id="I_indexterm7_d1e10633"
+          significance="normal">
+          <primary>SFEE (Source Forge Enterprise Edition)</primary>
+        </indexterm><indexterm id="I_indexterm7_d1e10636"
+          significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>CAS</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10641"
+          significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>SFEE</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e10646"
+          significance="normal">
+          <primary>Source Forge Enterprise Edition</primary>
+
+          <see>SFEE</see>
+        </indexterm>addition to the authentication strategies discussed here,
       there are a number of other plugins that allow Jenkins to authenticate
       against other systems. At the time of writing, these include Central
       Authentication Service (CAS)—an open source single sign-on tool—and the
       Collabnet Source Forge Enterprise Edition (SFEE) server.</para>
-      <para>If <indexterm class="startofrange" id="ch07-cust" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>customizing</tertiary></indexterm><indexterm class="startofrange" id="ch07-cust2" significance="normal"><primary>plugins</primary><secondary>Script Security Realm</secondary></indexterm><indexterm class="startofrange" id="ch07-cust3" significance="normal"><primary>Script Security Realm plugin</primary></indexterm><indexterm class="startofrange" id="ch07-cust4" significance="normal"><primary>scripts</primary><secondary>custom authentication scripts</secondary></indexterm>no plugin is available, you can also write your own custom
+
+      <para>If <indexterm class="startofrange" id="ch07-cust"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>security realms</secondary>
+
+          <tertiary>customizing</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch07-cust2"
+          significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>Script Security Realm</secondary>
+        </indexterm><indexterm class="startofrange" id="ch07-cust3"
+          significance="normal">
+          <primary>Script Security Realm plugin</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-cust4"
+          significance="normal">
+          <primary>scripts</primary>
+
+          <secondary>custom authentication scripts</secondary>
+        </indexterm>no plugin is available, you can also write your own custom
       authentication script. To do this, you need to install the Script
       Security Realm plugin. Once you have installed the script and restarted
       Jenkins, you can write two scripts in your favorite scripting language.
       One script authenticates users, whereas the other determines the groups
-      of a given user (see <xref linkend="fig-hudson-security-scripts"/>).</para>
+      of a given user (see <xref
+      linkend="fig-hudson-security-scripts" />).</para>
+
       <figure float="0" id="fig-hudson-security-scripts">
         <title>Using custom scripts to handle authentication</title>
+
         <mediaobject id="I_mediaobject7_d1e10680">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0715.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0715.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0715.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0715.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Before invoking the authentication script, Jenkins sets two
-      <indexterm id="I_indexterm7_d1e10687" significance="normal"><primary>U environment variable</primary></indexterm><indexterm id="I_indexterm7_d1e10690" significance="normal"><primary>P environment variable</primary></indexterm><phrase>environment</phrase> variables:
-      <literal moreinfo="none">U</literal>, containing the username, and <literal moreinfo="none">P</literal>,
-      containing the password. This script uses these <phrase role="keep-together">environment</phrase> variables to authenticate
-      using the specified username and password, returning 0 if the
-      authentication is successful, and some other value otherwise. If
+      <indexterm id="I_indexterm7_d1e10687" significance="normal">
+          <primary>U environment variable</primary>
+        </indexterm><indexterm id="I_indexterm7_d1e10690"
+          significance="normal">
+          <primary>P environment variable</primary>
+        </indexterm><phrase>environment</phrase> variables: <literal
+      moreinfo="none">U</literal>, containing the username, and <literal
+      moreinfo="none">P</literal>, containing the password. This script uses
+      these <phrase role="keep-together">environment</phrase> variables to
+      authenticate using the specified username and password, returning 0 if
+      the authentication is successful, and some other value otherwise. If
       authentication fails, the output from the process will be reported in
-      the error message displayed to the user. Here is a simple <indexterm class="startofrange" id="ch07-authgroovy" significance="normal"><primary>Groovy scripts</primary><secondary>authentication script</secondary></indexterm>Groovy authentication script:</para>
-      <programlisting id="I_programlisting7_d1e10712" format="linespecific">def env = System.getenv()
+      the error message displayed to the user. Here is a simple <indexterm
+          class="startofrange" id="ch07-authgroovy" significance="normal">
+          <primary>Groovy scripts</primary>
+
+          <secondary>authentication script</secondary>
+        </indexterm>Groovy authentication script:</para>
+
+      <programlisting format="linespecific" id="I_programlisting7_d1e10712">def env = System.getenv()
 def username = env['U']
 def password = env['P']
 
@@ -487,17 +908,20 @@ def authenticate(def username, def password) {
     // Authentication logic goes here
     return userIsAuthenticated
 }</programlisting>
+
       <para>This script is enough if all you have to deal with is basic
       authentication without groups. If you want to use groups from your
-      custom authentication source in your Matrix-<phrase role="keep-together">based</phrase> or Project-based authorizations (see
-      <xref linkend="sect-authorization"/>), you can write a second script,
+      custom authentication source in your Matrix-<phrase
+      role="keep-together">based</phrase> or Project-based authorizations (see
+      <xref linkend="sect-authorization" />), you can write a second script,
       which determines the groups for a given user. This groups uses the U
       environment variable to determine which user is trying to log on, and
       prints a comma-separated list of groups for this user to the standard
       output. If you don’t like commas, you can override the separating
       character in the configuration. A simple Groovy script to do this job is
       shown here:</para>
-      <programlisting id="I_programlisting7_d1e10721" format="linespecific">def env = System.getenv()
+
+      <programlisting format="linespecific" id="I_programlisting7_d1e10721">def env = System.getenv()
 def username = env['U'] 
 
 println findGroupsFor(username)
@@ -507,109 +931,184 @@ System.exit 0
 def findGroupsFor(def username) {
     return "admin,game-of-life-developer"
 }</programlisting>
+
       <para>Both these scripts must return 0 when called for a user to
-      be<indexterm id="I_indexterm7_d1e10725" class="endofrange" startref="ch07-cust2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10727" class="endofrange" startref="ch07-cust3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10729" class="endofrange" startref="ch07-cust3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10731" class="endofrange" startref="ch07-cust" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10733" class="endofrange" startref="ch07-authgroovy" significance="normal"><primary/></indexterm> authenticated.</para>
+      be<indexterm class="endofrange" id="I_indexterm7_d1e10725"
+          significance="normal" startref="ch07-cust2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10727"
+          significance="normal" startref="ch07-cust3">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10729"
+          significance="normal" startref="ch07-cust3">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10731"
+          significance="normal" startref="ch07-cust">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10733"
+          significance="normal" startref="ch07-authgroovy">
+          <primary></primary>
+        </indexterm> authenticated.</para>
     </sect2>
   </sect1>
+
   <sect1 id="sect-authorization">
     <title>Authorization—Who Can Do What</title>
+
     <para>Once you have defined how to identify your users, you need to decide
     what they are allowed to do. Jenkins supports a variety of strategies in
     this area, ranging from a simple approach where a logged-in user can do
     anything to more involved roles and project-based authentication
     strategies.</para>
+
     <sect2 id="sec-matrix-security">
       <title>Matrix-based Security</title>
-      <para>Letting<indexterm class="startofrange" id="ch07-matrix1" significance="normal"><primary>matrix-based security</primary></indexterm><indexterm class="startofrange" id="ch07-matrix2" significance="normal"><primary>authorization</primary><secondary>matrix-based security</secondary></indexterm><indexterm class="startofrange" id="ch07-matrix3" significance="normal"><primary>security</primary><secondary>authorization</secondary><tertiary>matrix-based security</tertiary></indexterm><indexterm id="I_indexterm7_d1e10761" significance="normal"><primary>permissions</primary><see>authorization</see></indexterm> signed-in users do anything is certainly flexible, and
+
+      <para>Letting<indexterm class="startofrange" id="ch07-matrix1"
+          significance="normal">
+          <primary>matrix-based security</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-matrix2"
+          significance="normal">
+          <primary>authorization</primary>
+
+          <secondary>matrix-based security</secondary>
+        </indexterm><indexterm class="startofrange" id="ch07-matrix3"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>authorization</secondary>
+
+          <tertiary>matrix-based security</tertiary>
+        </indexterm><indexterm id="I_indexterm7_d1e10761"
+          significance="normal">
+          <primary>permissions</primary>
+
+          <see>authorization</see>
+        </indexterm> signed-in users do anything is certainly flexible, and
       may be all you need for a small team. For larger or multiple teams, or
       cases where Jenkins is being used outside the development environment, a
       more sophisticated approach is generally required.</para>
+
       <para>Matrix-based security is a more sophisticated approach, where
       different users are assigned different rights, using a role-based
       approach.</para>
+
       <sect3>
         <title>Setting up matrix-based security</title>
-        <para>The<indexterm id="I_indexterm7_d1e10774" significance="normal"><primary>administrator</primary><secondary sortas="matrix">for matrix-based security</secondary></indexterm><indexterm id="I_indexterm7_d1e10779" significance="normal"><primary>users</primary><secondary>administrator</secondary><tertiary sortas="matrix">for matrix-based security</tertiary></indexterm> first step in setting up matrix-based security in
+
+        <para>The<indexterm id="I_indexterm7_d1e10774" significance="normal">
+            <primary>administrator</primary>
+
+            <secondary sortas="matrix">for matrix-based security</secondary>
+          </indexterm><indexterm id="I_indexterm7_d1e10779"
+            significance="normal">
+            <primary>users</primary>
+
+            <secondary>administrator</secondary>
+
+            <tertiary sortas="matrix">for matrix-based security</tertiary>
+          </indexterm> first step in setting up matrix-based security in
         Jenkins is to create an administrator. <emphasis>This is an essential
         step, and must be done before all others.</emphasis> Now your
         administrator can be an existing user, or one created specially for
         the purpose. If you want to create a dedicated administrator user,
-        simply create one by signing up in the usual way (see <xref linkend="fig-hudson-user-signup"/>). It doesn’t have to be associated
+        simply create one by signing up in the usual way (see <xref
+        linkend="fig-hudson-user-signup" />). It doesn’t have to be associated
         with an SCM user.</para>
+
         <para>Once you have your admin user ready, you can activate
         matrix-based security by selecting “Matrix-based security” in the
         Authorization section of the main configuration page. Jenkins will
         display a table containing authorized users, and checkboxes
         corresponding to the various permissions that you can assign to these
-        users (see <xref linkend="fig-hudson-matrix-anonymous"/>).</para>
+        users (see <xref linkend="fig-hudson-matrix-anonymous" />).</para>
+
         <figure float="none" id="fig-hudson-matrix-anonymous">
           <title>Matrix-based security configuration</title>
+
           <mediaobject id="I_mediaobject7_d1e10799">
             <imageobject role="print">
-              <imagedata fileref="figs/print/jtdg_0716.pdf" format="PDF"/>
+              <imagedata fileref="figs/print/jtdg_0716.pdf" format="PDF" />
             </imageobject>
+
             <imageobject role="web">
-              <imagedata fileref="figs/web/jtdg_0716.png" format="PNG"/>
+              <imagedata fileref="figs/web/jtdg_0716.png" format="PNG" />
             </imageobject>
           </mediaobject>
         </figure>
+
         <para>The special “anonymous” user is always present in the table.
         This user represents unauthenticated users. Typically, you only grant
         very limited rights to unauthenticated users, such as read-only
-        access, or no access at all (as shown in <xref linkend="fig-hudson-matrix-anonymous"/>).</para>
+        access, or no access at all (as shown in <xref
+        linkend="fig-hudson-matrix-anonymous" />).</para>
+
         <para>The first thing you need to do now is to grant administration
         rights to your administrator. Add your administration user in the
         “User/group to add” field and click on Add. Your administrator will
         now appear in the permissions matrix. Now make sure you grant this
-        user every permission (see <xref linkend="fig-hudson-matrix-admin"/>), and save your configuration.
+        user every permission (see <xref
+        linkend="fig-hudson-matrix-admin" />), and save your configuration.
         You should now be able to log in with your administrator account (if
         you aren’t already logged in with this account) and continue to set up
         your other users.</para>
+
         <figure float="none" id="fig-hudson-matrix-admin">
           <title>Setting up an administrator</title>
+
           <mediaobject id="I_mediaobject7_d1e10815">
             <imageobject role="print">
-              <imagedata fileref="figs/print/jtdg_0717.pdf" format="PDF"/>
+              <imagedata fileref="figs/print/jtdg_0717.pdf" format="PDF" />
             </imageobject>
+
             <imageobject role="web">
-              <imagedata fileref="figs/web/jtdg_0717.png" format="PNG"/>
+              <imagedata fileref="figs/web/jtdg_0717.png" format="PNG" />
             </imageobject>
           </mediaobject>
         </figure>
       </sect3>
+
       <sect3>
         <title>Fine-tuning user permissions</title>
+
         <para>Once you have set up your administrator account, you can add any
         other users that need to access your Jenkins instance. Simply add the
-        user names and tick the permissions you want to grant them (see <xref linkend="fig-hudson-matrix-users"/>). If you are using an LDAP server
+        user names and tick the permissions you want to grant them (see <xref
+        linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
         or Unix users and groups as the underlying authentication schema (see
-        <xref linkend="sec-security-ldap"/>), you can also configure
+        <xref linkend="sec-security-ldap" />), you can also configure
         permissions for groups of users.</para>
+
         <figure float="none" id="fig-hudson-matrix-users">
           <title>Setting up other users</title>
+
           <mediaobject id="I_mediaobject7_d1e10832">
             <imageobject role="print">
-              <imagedata fileref="figs/print/jtdg_0718.pdf" format="PDF"/>
+              <imagedata fileref="figs/print/jtdg_0718.pdf" format="PDF" />
             </imageobject>
+
             <imageobject role="web">
-              <imagedata fileref="figs/web/jtdg_0718.png" format="PNG"/>
+              <imagedata fileref="figs/web/jtdg_0718.png" format="PNG" />
             </imageobject>
           </mediaobject>
         </figure>
+
         <para>You can grant a range of permissions, which are organized into
         several groups: Overall, Slave, Job, Run, View and SCM. Most of the
         permissions are fairly obvious, but some need a little more
         explanation. The individual permissions are as follows:</para>
+
         <variablelist>
           <varlistentry>
-            <term>
-              <emphasis>Overall</emphasis>
-            </term>
+            <term><emphasis>Overall</emphasis></term>
+
             <listitem>
               <para>This group covers basic system-wide permissions:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Administer</term>
+
                   <listitem>
                     <para>Lets a user make system-wide configuration changes
                     and other sensitive operations, for example in the main
@@ -617,8 +1116,10 @@ def findGroupsFor(def username) {
                     the Jenkins administrator.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Read</term>
+
                   <listitem>
                     <para>This permission provides read-only access to
                     virtually all of the pages in Jenkins. If you want
@@ -628,28 +1129,33 @@ def findGroupsFor(def username) {
                     revoke this permission for the Anonymous user. And if you
                     want all authenticated users to be able to see build jobs,
                     then add a special user called “authenticated”, and grant
-                    this user Overall/Read <phrase role="keep-together">permission</phrase>.</para>
+                    this user Overall/Read <phrase
+                    role="keep-together">permission</phrase>.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
-            <term>
-              <emphasis>Slave</emphasis>
-            </term>
+            <term><emphasis>Slave</emphasis></term>
+
             <listitem>
               <para>This group covers permissions about remote build nodes, or
               slaves:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Configure</term>
+
                   <listitem>
                     <para>Create and configure new build nodes.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Delete</term>
+
                   <listitem>
                     <para>Delete build nodes.</para>
                   </listitem>
@@ -657,46 +1163,58 @@ def findGroupsFor(def username) {
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
-            <term>
-              <emphasis>Job</emphasis>
-            </term>
+            <term><emphasis>Job</emphasis></term>
+
             <listitem>
               <para>This group covers job-related permissions:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Create</term>
+
                   <listitem>
                     <para>Create a new build job.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Delete</term>
+
                   <listitem>
                     <para>Delete an existing build job.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Configure</term>
+
                   <listitem>
                     <para>Update the configuration of an existing build
                     jobs.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Read</term>
+
                   <listitem>
                     <para>View build jobs.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Build</term>
+
                   <listitem>
                     <para>Start a build job.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Workspace</term>
+
                   <listitem>
                     <para>View and download the workspace contents for a build
                     job. Remember, the workspace contains source code and
@@ -704,8 +1222,10 @@ def findGroupsFor(def username) {
                     access, you should revoke this permission.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Release</term>
+
                   <listitem>
                     <para>Start a Maven release for a project configured with
                     the M2Release plugin.</para>
@@ -714,22 +1234,31 @@ def findGroupsFor(def username) {
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
-            <term>
-              <emphasis>Run</emphasis>
-            </term>
+            <term><emphasis>Run</emphasis></term>
+
             <listitem>
-              <para>This <indexterm id="I_indexterm7_d1e10940" significance="normal"><primary>build history</primary><secondary>permissions for</secondary></indexterm>group covers rights related to particular builds
+              <para>This <indexterm id="I_indexterm7_d1e10940"
+                  significance="normal">
+                  <primary>build history</primary>
+
+                  <secondary>permissions for</secondary>
+                </indexterm>group covers rights related to particular builds
               in the build history:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Delete</term>
+
                   <listitem>
                     <para>Delete a build from the build history.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Update</term>
+
                   <listitem>
                     <para>Update the description and other properties of a
                     build in the build history. This can be useful if a user
@@ -740,27 +1269,33 @@ def findGroupsFor(def username) {
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
-            <term>
-              <emphasis>View</emphasis>
-            </term>
+            <term><emphasis>View</emphasis></term>
+
             <listitem>
               <para>This group covers managing views:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Create</term>
+
                   <listitem>
                     <para>Create a new view.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Delete</term>
+
                   <listitem>
                     <para>Delete an existing view.</para>
                   </listitem>
                 </varlistentry>
+
                 <varlistentry>
                   <term>Configure</term>
+
                   <listitem>
                     <para>Configure an existing view.</para>
                   </listitem>
@@ -768,13 +1303,17 @@ def findGroupsFor(def username) {
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
             <term>SCM</term>
+
             <listitem>
               <para>Permissions related to your version control system:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Tag</term>
+
                   <listitem>
                     <para>Create a new tag in the source code repository for a
                     given build.</para>
@@ -783,14 +1322,18 @@ def findGroupsFor(def username) {
               </variablelist>
             </listitem>
           </varlistentry>
+
           <varlistentry>
             <term>Others</term>
+
             <listitem>
               <para>There can also be other permissions available, depending
               on the plugins installed. One useful one is:</para>
+
               <variablelist>
                 <varlistentry>
                   <term>Promote</term>
+
                   <listitem>
                     <para>If the Promoted Builds plugin is installed, this
                     permission allows users to manually promote a
@@ -802,8 +1345,10 @@ def findGroupsFor(def username) {
           </varlistentry>
         </variablelist>
       </sect3>
+
       <sect3>
         <title>Help! I’ve locked myself out!</title>
+
         <para>Now it may happen that, during this process, you may end up
         locking yourself out of Jenkins. This can happen if, for example, you
         save the matrix configuration without having correctly set up your
@@ -812,86 +1357,133 @@ def findGroupsFor(def username) {
         the <filename moreinfo="none">config.xml</filename> file at the root
         of the Jenkins home directory. This will contain something like
         this:</para>
-        <programlisting id="I_programlisting7_d1e11019" format="linespecific">&lt;hudson&gt;
+
+        <programlisting format="linespecific" id="I_programlisting7_d1e11019">&lt;hudson&gt;
     &lt;version&gt;1.391&lt;/version&gt;
     &lt;numExecutors&gt;2&lt;/numExecutors&gt;
     &lt;mode&gt;NORMAL&lt;/mode&gt;
     &lt;useSecurity&gt;true&lt;/useSecurity&gt;
     ...</programlisting>
+
         <para>The thing to look for is the <code>&lt;useSecurity&gt;</code>
         element. To restore your access to Jenkins, change this value to
         false, and restart your server. You will now be able to access Jenkins
-        again, and set up your security configuration<indexterm id="I_indexterm7_d1e11026" class="endofrange" startref="ch07-matrix1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11028" class="endofrange" startref="ch07-matrix2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11030" class="endofrange" startref="ch07-matrix3" significance="normal"><primary/></indexterm> correctly.</para>
+        again, and set up your security configuration<indexterm
+            class="endofrange" id="I_indexterm7_d1e11026"
+            significance="normal" startref="ch07-matrix1">
+            <primary></primary>
+          </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11028"
+            significance="normal" startref="ch07-matrix2">
+            <primary></primary>
+          </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11030"
+            significance="normal" startref="ch07-matrix3">
+            <primary></primary>
+          </indexterm> correctly.</para>
       </sect3>
     </sect2>
+
     <sect2>
       <title>Project-based Security</title>
-      <para>Project-based <indexterm class="startofrange" id="ch07-proj1" significance="normal"><primary>project-based security</primary></indexterm><indexterm class="startofrange" id="ch07-proj2" significance="normal"><primary>authorization</primary><secondary>project-based security</secondary></indexterm><indexterm class="startofrange" id="ch07-proj3" significance="normal"><primary>security</primary><secondary>authorization</secondary><tertiary>project-based security</tertiary></indexterm>security lets you build on the matrix-based security model
+
+      <para>Project-based <indexterm class="startofrange" id="ch07-proj1"
+          significance="normal">
+          <primary>project-based security</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-proj2"
+          significance="normal">
+          <primary>authorization</primary>
+
+          <secondary>project-based security</secondary>
+        </indexterm><indexterm class="startofrange" id="ch07-proj3"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>authorization</secondary>
+
+          <tertiary>project-based security</tertiary>
+        </indexterm>security lets you build on the matrix-based security model
       we just discussed, and apply it to individual projects. Not only can you
       assign system-wide roles for your users, you can also configure more
       specific rights for certain individual projects.</para>
+
       <para>To activate project-level security, select “Project-based Matrix
       Authorization Strategy” in the Authorization section of the main
-      configuration screen (see <xref linkend="fig-hudson-project-based-security"/>). Here, you set up the
+      configuration screen (see <xref
+      linkend="fig-hudson-project-based-security" />). Here, you set up the
       default rights for users and groups, as we saw with Matrix-based
-      security (see <xref linkend="sec-matrix-security"/>).</para>
+      security (see <xref linkend="sec-matrix-security" />).</para>
+
       <figure float="0" id="fig-hudson-project-based-security">
         <title>Project-based security</title>
+
         <mediaobject id="I_mediaobject7_d1e11063">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0719.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0719.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0719.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0719.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <?dbfo-need height=”1in”?>
+
       <para>These are the default permissions that apply to all projects that
       have not been specially configured. However, when you use project-based
       security, you can also set up special project-specific permissions. You
       do this by selecting “Enable project-based security” in the project
-      configuration screen (see <xref linkend="fig-hudson-security-project-anon"/>). Jenkins will display a
+      configuration screen (see <xref
+      linkend="fig-hudson-security-project-anon" />). Jenkins will display a
       table of project-specific permissions. You can configure these
       permissions for different users and groups just like on the system-wide
       configuration page. These permissions will be added to the system-wide
       permissions to produce a project-specific set of permissions applicable
       for this project.</para>
+
       <figure float="0" id="fig-hudson-security-project-anon">
         <title>Configuring project-based security</title>
+
         <mediaobject id="I_mediaobject7_d1e11076">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0720.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0720.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0720.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0720.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>The way this works is easiest to understand with a few practical
-      examples. In <xref linkend="fig-hudson-project-based-security"/>, for
+      examples. In <xref linkend="fig-hudson-project-based-security" />, for
       instance, no permissions have been granted to the anonymous user, so by
       default all build jobs will remain invisible until a user signs on.
       However, we are using project-based security, so we can override this on
-      a project-by-project basis. In <xref linkend="fig-hudson-security-project-anon"/>, for example, we have set
+      a project-by-project basis. In <xref
+      linkend="fig-hudson-security-project-anon" />, for example, we have set
       up the <emphasis>game-of-life</emphasis> project to have read-only
       access for the special “anonymous” user.</para>
+
       <para>When you save this configuration, unauthenticated users will be
       able to see the <emphasis>game-of-life</emphasis> project in read-only
-      mode (see <xref linkend="fig-hudson-security-readonly-project"/>). This
+      mode (see <xref linkend="fig-hudson-security-readonly-project" />). This
       same principle applies with all of the project-specific
       permissions.</para>
+
       <figure float="0" id="fig-hudson-security-readonly-project">
         <title>Viewing a project</title>
+
         <mediaobject id="I_mediaobject7_d1e11100">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0721.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0721.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0721.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0721.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Note that Jenkins permissions are cumulative—at the time of
       writing, there is no way to revoke a system-wide permission for a
       particular project. For example, if the anonymous user has read-access
@@ -900,172 +1492,293 @@ def findGroupsFor(def username) {
       system level matrix to define minimum default permissions applicable
       across all of your projects, and set up projects with additional
       project-specific authorizations.</para>
+
       <para>There are many approaches to managing project permissions, and
       they depend as much on organizational culture as on technical
-      considerations. One common strategy <phrase role="keep-together">approach</phrase> is to allow team members to have
+      considerations. One common strategy <phrase
+      role="keep-together">approach</phrase> is to allow team members to have
       full access to their own projects, and read-only access to other
-      projects. <indexterm id="I_indexterm7_d1e11113" significance="normal"><primary>plugins</primary><secondary>Extended Read Permission</secondary></indexterm><indexterm id="I_indexterm7_d1e11118" significance="normal"><primary>Extended Read Permission plugin</primary></indexterm>The Extended Read Permission plugin is a useful <phrase role="keep-together">extension</phrase> to have for this scenario. This
+      projects. <indexterm id="I_indexterm7_d1e11113" significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>Extended Read Permission</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e11118"
+          significance="normal">
+          <primary>Extended Read Permission plugin</primary>
+        </indexterm>The Extended Read Permission plugin is a useful <phrase
+      role="keep-together">extension</phrase> to have for this scenario. This
       plugin lets you let users from other teams see a read-only view of your
-      project configuration, without being able to modify anything (see <xref linkend="fig-hudson-security-extended-read"/>). This is a great way to
+      project configuration, without being able to modify anything (see <xref
+      linkend="fig-hudson-security-extended-read" />). This is a great way to
       share build configuration practices and tips with other teams without
       letting them tamper with your builds.</para>
+
       <figure float="none" id="fig-hudson-security-extended-read">
         <title>Setting up Extended Read Permissions</title>
+
         <mediaobject id="I_mediaobject7_d1e11130">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0722.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0722.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0722.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0722.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>It is worth noting that, whenever large and/or multiple teams are
       involved, the internal Jenkins database reaches its limits quite
       quickly, and it is worth considering integrating with a more specialized
       directory service such as an LDAP server, Active Directory or Atlassian
       Crowd, or possibly a more sophisticated permission system such as
-      role-based security, discussed in the following <indexterm id="I_indexterm7_d1e11137" class="endofrange" startref="ch07-proj1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11139" class="endofrange" startref="ch07-proj2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11141" class="endofrange" startref="ch07-proj3" significance="normal"><primary/></indexterm>section.</para>
+      role-based security, discussed in the following <indexterm
+          class="endofrange" id="I_indexterm7_d1e11137" significance="normal"
+          startref="ch07-proj1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11139"
+          significance="normal" startref="ch07-proj2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11141"
+          significance="normal" startref="ch07-proj3">
+          <primary></primary>
+        </indexterm>section.</para>
     </sect2>
+
     <sect2>
       <title>Role-based Security</title>
-      <para>Sometimes <indexterm class="startofrange" id="ch07-role1" significance="normal"><primary>role-based security</primary></indexterm><indexterm class="startofrange" id="ch07-role2" significance="normal"><primary>authorization</primary><secondary>role-based security</secondary></indexterm><indexterm class="startofrange" id="ch07-role3" significance="normal"><primary>security</primary><secondary>authorization</secondary><tertiary>role-based security</tertiary></indexterm>managing user permissions individually can be cumbersome,
+
+      <para>Sometimes <indexterm class="startofrange" id="ch07-role1"
+          significance="normal">
+          <primary>role-based security</primary>
+        </indexterm><indexterm class="startofrange" id="ch07-role2"
+          significance="normal">
+          <primary>authorization</primary>
+
+          <secondary>role-based security</secondary>
+        </indexterm><indexterm class="startofrange" id="ch07-role3"
+          significance="normal">
+          <primary>security</primary>
+
+          <secondary>authorization</secondary>
+
+          <tertiary>role-based security</tertiary>
+        </indexterm>managing user permissions individually can be cumbersome,
       and you may not want to integrate with an LDAP server to set up groups
-      that way. A more recent alternative option is to use the<indexterm id="I_indexterm7_d1e11165" significance="normal"><primary>plugins</primary><secondary>Role Strategy</secondary></indexterm><indexterm id="I_indexterm7_d1e11170" significance="normal"><primary>Role Strategy plugin</primary></indexterm> Role Strategy plugin, which allows you to define global
+      that way. A more recent alternative option is to use the<indexterm
+          id="I_indexterm7_d1e11165" significance="normal">
+          <primary>plugins</primary>
+
+          <secondary>Role Strategy</secondary>
+        </indexterm><indexterm id="I_indexterm7_d1e11170"
+          significance="normal">
+          <primary>Role Strategy plugin</primary>
+        </indexterm> Role Strategy plugin, which allows you to define global
       and project-level roles, and assign these roles to users.</para>
+
       <para>You install the plugin in the usual way, via the Plugin Manager.
       Once installed, you can activate this authorization strategy in the main
-      configuration page (see <xref linkend="fig-hudson-security-role-based"/>).</para>
+      configuration page (see <xref
+      linkend="fig-hudson-security-role-based" />).</para>
+
       <figure float="none" id="fig-hudson-security-role-based">
         <title>Setting up Role-based security</title>
+
         <mediaobject id="I_mediaobject7_d1e11181">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0723.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0723.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0723.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0723.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Once you have set this up, you can define roles that regroup sets
       of related permissions. You set up and configure your roles, and assign
       these roles to your users, in the Manage Roles screen, which you can
-      access in the Manage Jenkins screen (see <xref linkend="fig-hudson-security-manage-roles-menu"/>).</para>
+      access in the Manage Jenkins screen (see <xref
+      linkend="fig-hudson-security-manage-roles-menu" />).</para>
+
       <figure float="none" id="fig-hudson-security-manage-roles-menu">
         <title>The Manage Roles configuration menu</title>
+
         <mediaobject id="I_mediaobject7_d1e11193">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0724.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0724.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0724.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0724.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>In the Manage Roles screen, you can set up global and <indexterm id="I_indexterm7_d1e11200" significance="normal"><primary>project-level permissions, in role-based security</primary></indexterm>project-level permissions. Global permissions apply across
+
+      <para>In the Manage Roles screen, you can set up global and <indexterm
+          id="I_indexterm7_d1e11200" significance="normal">
+          <primary>project-level permissions, in role-based security</primary>
+        </indexterm>project-level permissions. Global permissions apply across
       all projects, and are typically system-wide administration or general
-      access permissions (see <xref linkend="fig-hudson-security-global-roles"/>). Setting these roles up
+      access permissions (see <xref
+      linkend="fig-hudson-security-global-roles" />). Setting these roles up
       is intuitive and similar to setting up user permissions in the other
       security models we have seen.</para>
+
       <figure float="0" id="fig-hudson-security-global-roles">
         <title>Managing global roles</title>
+
         <mediaobject id="I_mediaobject7_d1e11209">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0725.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0725.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0725.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0725.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Project roles are slightly more complicated. A project role
       regroups a set of permissions that are applicable to one or more
       (presumably related) projects. You define the relevant projects using a
       regular expression, so it helps to have a clear and consistent set of
-      naming conventions in place for your project names (see <xref linkend="fig-hudson-security-project-roles"/>). For example, you may
+      naming conventions in place for your project names (see <xref
+      linkend="fig-hudson-security-project-roles" />). For example, you may
       wish to create roles distinguishing developers with full configuration
       rights on their own project from users who can simply trigger a build
       and view the build results, or create roles where developers can
       configure certain automated deployment build jobs, but only production
       teams are allowed to execute these jobs.</para>
+
       <figure float="0" id="fig-hudson-security-project-roles">
         <title>Managing project roles</title>
+
         <mediaobject id="I_mediaobject7_d1e11221">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0726.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0726.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0726.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0726.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Once you have defined these roles, you can go to the Assign Roles
-      screen to set up individual users or groups with these roles (see <xref linkend="fig-hudson-security-assign-roles"/>).</para>
+      screen to set up individual users or groups with these roles (see <xref
+      linkend="fig-hudson-security-assign-roles" />).</para>
+
       <figure float="0" id="fig-hudson-security-assign-roles">
         <title>Assigning roles to users</title>
+
         <mediaobject id="I_mediaobject7_d1e11234">
           <imageobject role="print">
-            <imagedata fileref="figs/print/jtdg_0727.pdf" format="PDF"/>
+            <imagedata fileref="figs/print/jtdg_0727.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
-            <imagedata fileref="figs/web/jtdg_0727.png" format="PNG"/>
+            <imagedata fileref="figs/web/jtdg_0727.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Role-based strategy is relatively new in Jenkins, but it is an
       excellent way to simplify the task of managing permissions in large,
-      multiteam and<indexterm id="I_indexterm7_d1e11241" class="endofrange" startref="ch07-role1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11243" class="endofrange" startref="ch07-role2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11245" class="endofrange" startref="ch07-role3" significance="normal"><primary/></indexterm> multiproject organizations.</para>
+      multiteam and<indexterm class="endofrange" id="I_indexterm7_d1e11241"
+          significance="normal" startref="ch07-role1">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11243"
+          significance="normal" startref="ch07-role2">
+          <primary></primary>
+        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11245"
+          significance="normal" startref="ch07-role3">
+          <primary></primary>
+        </indexterm> multiproject organizations.</para>
     </sect2>
   </sect1>
+
   <sect1 id="sect-security-auditing">
     <title>Auditing—Keeping Track of User Actions</title>
-    <para>In <indexterm class="startofrange" id="ch07-audit1" significance="normal"><primary>auditing user actions</primary></indexterm><indexterm class="startofrange" id="ch07-audit2" significance="normal"><primary>users</primary><secondary>auditing actions of</secondary></indexterm>addition to configuring user accounts and access rights, it
+
+    <para>In <indexterm class="startofrange" id="ch07-audit1"
+        significance="normal">
+        <primary>auditing user actions</primary>
+      </indexterm><indexterm class="startofrange" id="ch07-audit2"
+        significance="normal">
+        <primary>users</primary>
+
+        <secondary>auditing actions of</secondary>
+      </indexterm>addition to configuring user accounts and access rights, it
     can also be useful to keep track of the individual user actions: in other
     words, who did what to your server configuration. This sort of audit trail
     facility is even required in many organizations.</para>
+
     <para>There are two Jenkins plugins that can help you do this. The Audit
     Trail plugin keeps a record of user changes in a special log file. And the
     JobConfigHistory plugin lets you keep a copy of previous versions of the
     various system and job configuration files that Jenkins uses.</para>
-    <para>The<indexterm class="startofrange" id="ch07-at1" significance="normal"><primary>plugins</primary><secondary>Audit Trail</secondary></indexterm><indexterm class="startofrange" id="ch07-at2" significance="normal"><primary>Audit Trail plugin</primary></indexterm> Audit Trail Plugin keeps track of the main user actions in
+
+    <para>The<indexterm class="startofrange" id="ch07-at1"
+        significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>Audit Trail</secondary>
+      </indexterm><indexterm class="startofrange" id="ch07-at2"
+        significance="normal">
+        <primary>Audit Trail plugin</primary>
+      </indexterm> Audit Trail Plugin keeps track of the main user actions in
     a set of rolling log files. To set this up, go to the Plugin Manager page
     and select the Audit Trail plugin in the list of available plugins. Then,
     as usual, click on Install and restart Jenkins once the plugin has been
     downloaded.</para>
+
     <para>You can set up the audit trail configuration in the Audit Trail
-    section of the main Jenkins configuration page (see <xref linkend="fig-hudson-security-audit-trail"/>). The most important field is
+    section of the main Jenkins configuration page (see <xref
+    linkend="fig-hudson-security-audit-trail" />). The most important field is
     the Log Location, which is where you indicate the directory in which the
     log files are to be written. The audit trail is designed to produce
     system-style log files, which are often placed in a special system
     directory such as <filename moreinfo="none">/var/log</filename>. You can
     also configure the number of log files to be maintained, and the
     (approximate) maximum size of each file. The simplest option is to provide
-    an absolute path (such as <filename moreinfo="none">/var/log/hudson.log</filename>), in which case Jenkins
-    will write to log files with names like <filename moreinfo="none">/var/log/hudson.log.1</filename>, <filename moreinfo="none">/var/log/hudson.log.2</filename>, and so forth. Of course,
+    an absolute path (such as <filename
+    moreinfo="none">/var/log/hudson.log</filename>), in which case Jenkins
+    will write to log files with names like <filename
+    moreinfo="none">/var/log/hudson.log.1</filename>, <filename
+    moreinfo="none">/var/log/hudson.log.2</filename>, and so forth. Of course,
     you need to ensure that the user running your Jenkins instance is allowed
     to write to this directory.</para>
+
     <figure float="0" id="fig-hudson-security-audit-trail">
       <title>Configuring the Audit Trail plugin</title>
+
       <mediaobject id="I_mediaobject7_d1e11294">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0728.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0728.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0728.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0728.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
-    <para>You can also use the format defined in the Java logging <ulink url="http://download.oracle.com/javase/1.5.0/docs/api/java/util/logging/FileHandler.html">FileHandler</ulink>
+
+    <para>You can also use the format defined in the Java logging <ulink
+    url="http://download.oracle.com/javase/1.5.0/docs/api/java/util/logging/FileHandler.html">FileHandler</ulink>
     class for more control over the generated log files. In this format, you
-    can insert variables such as <literal moreinfo="none">%h</literal>, for the current user’s
-    home directory, and <literal moreinfo="none">%t</literal>, for the system temporary
-    directory, to build a more dynamic file path.</para>
+    can insert variables such as <literal moreinfo="none">%h</literal>, for
+    the current user’s home directory, and <literal
+    moreinfo="none">%t</literal>, for the system temporary directory, to build
+    a more dynamic file path.</para>
+
     <para>By default, the details recorded in the audit logs are fairly
     sparse—they effectively record key actions performed, such as creating,
     modifying or deleting job configurations or views, and the user who
     performed the actions. The log also shows how individual build jobs
     started. An extract of the default log is shown here:</para>
-    <programlisting id="I_programlisting7_d1e11312" format="linespecific">Dec 27, 2010 9:16:08 AM /job/game-of-life/configSubmit by johnsmart
+
+    <programlisting format="linespecific" id="I_programlisting7_d1e11312">Dec 27, 2010 9:16:08 AM /job/game-of-life/configSubmit by johnsmart
 Dec 27, 2010 9:16:42 AM /view/All/createItem by johnsmart
 Dec 27, 2010 9:16:57 AM /job/game-of-life-prod-deployment/doDelete by johnsmart
 Dec 27, 2010 9:24:38 AM job/game-of-life/ #177 Started by user johnsmart
@@ -1074,6 +1787,7 @@ Dec 27, 2010 9:25:57 AM job/game-of-life-acceptance-tests/ #107 Started by upstr
 Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstream 
     project "game-of-life" build number 177
 Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
+
     <para>This audit trail is certainly useful, especially from a system
     administration perspective. However, it doesn’t provide any information
     about the exact changes that were made to the Jenkins configuration.
@@ -1081,32 +1795,54 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
     actions in Jenkins is to keep tabs on exactly what changes were made to
     build job configurations. When something goes wrong, it can be useful to
     know what changes were done and so be able to undo them. The
-    JobConfigHistory plugin lets you do<indexterm id="I_indexterm7_d1e11316" class="endofrange" startref="ch07-at1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11318" class="endofrange" startref="ch07-at2" significance="normal"><primary/></indexterm> just this.</para>
-    <para>The <indexterm class="startofrange" id="ch07-jobconfig" significance="normal"><primary>JobConfigHistory plugin</primary></indexterm><indexterm class="startofrange" id="ch07-jobconfig2" significance="normal"><primary>plugins</primary><secondary>JobConfigHistory</secondary></indexterm>JobConfigHistory plugin is a powerful tool that lets you
+    JobConfigHistory plugin lets you do<indexterm class="endofrange"
+        id="I_indexterm7_d1e11316" significance="normal" startref="ch07-at1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11318"
+        significance="normal" startref="ch07-at2">
+        <primary></primary>
+      </indexterm> just this.</para>
+
+    <para>The <indexterm class="startofrange" id="ch07-jobconfig"
+        significance="normal">
+        <primary>JobConfigHistory plugin</primary>
+      </indexterm><indexterm class="startofrange" id="ch07-jobconfig2"
+        significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>JobConfigHistory</secondary>
+      </indexterm>JobConfigHistory plugin is a powerful tool that lets you
     keep a full history of changes made to both job and system configuration
     files. You install it from the Plugin Manager in the usual way. Once
     installed, you can fine-tune the job history configuration in the Manage
-    Jenkins screen (see <xref linkend="fig-hudson-security-confighistory-setup"/>).</para>
+    Jenkins screen (see <xref
+    linkend="fig-hudson-security-confighistory-setup" />).</para>
+
     <figure float="0" id="fig-hudson-security-confighistory-setup">
       <title>Setting up Job Configuration History</title>
+
       <mediaobject id="I_mediaobject7_d1e11338">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0729.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0729.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0729.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0729.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>Here, you can configure a number of useful nonstandard options. In
     particular, you should specify a directory where Jenkins can store
     configuration history, in the “Root history folder” field. This is the
     directory where Jenkins will store a record of both system-related and
     job-related configuration changes. It can be either an absolute directory
-    (such as <filename moreinfo="none">/var/hudson/history</filename>), or a relative
-    directory, calculated from the Jenkins home directory (see <xref linkend="sec-hudson-home-directory"/>). If you don’t do this, job
+    (such as <filename moreinfo="none">/var/hudson/history</filename>), or a
+    relative directory, calculated from the Jenkins home directory (see <xref
+    linkend="sec-hudson-home-directory" />). If you don’t do this, job
     configuration history will be stored with the jobs, and will be lost if
     you delete a job.</para>
+
     <para>There are a few other useful options in the Advanced section. The
     “Save system configuration changes” checkbox lets you keep track of
     system-wide configuration updates, and not just job-specific ones. And the
@@ -1117,54 +1853,80 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
     this to happen internally—for example, system configuration settings are
     all saved whenever the main configuration page is saved, even if no
     changes have been made.</para>
+
     <para>Once you have set up this plugin, you can access the configuration
     history both for the whole server, including system configuration updates,
     as well as the changes made to the configuration of each project. In both
     cases, you can view these changes by clicking on the Job Config History
     icon to the right of the screen. Clicking on this icon from the Jenkins
     dashboard will display a view of all of your configuration history,
-    including job changes and system-wide changes (see <xref linkend="fig-hudson-jobconfig-global-history"/>).</para>
+    including job changes and system-wide changes (see <xref
+    linkend="fig-hudson-jobconfig-global-history" />).</para>
+
     <figure float="none" id="fig-hudson-jobconfig-global-history">
       <title>Viewing Job Configuration History</title>
+
       <mediaobject id="I_mediaobject7_d1e11359">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0730.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0730.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0730.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0730.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>If you click on a system-wide change (indicated by the “(system)”
     suffix in the list), Jenkins takes you to a screen that lists all of the
     versions of that file, and allows you to view the differences between the
-    different versions (see <xref linkend="fig-hudson-jobconfig-config-history"/>). The differences are
+    different versions (see <xref
+    linkend="fig-hudson-jobconfig-config-history" />). The differences are
     displayed as <emphasis>diff</emphasis> files, which is not particularly
     readable in itself. However, for small changes, the readable XML format of
     most of the Jenkins configuration files makes this sufficient to
     understand what changes were made.</para>
+
     <figure float="0" id="fig-hudson-jobconfig-config-history">
       <title>Viewing differences in Job Configuration History</title>
+
       <mediaobject id="I_mediaobject7_d1e11374">
         <imageobject role="print">
-          <imagedata fileref="figs/print/jtdg_0731.pdf" format="PDF"/>
+          <imagedata fileref="figs/print/jtdg_0731.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
-          <imagedata fileref="figs/web/jtdg_0731.png" format="PNG"/>
+          <imagedata fileref="figs/web/jtdg_0731.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>The JobConfigHistory plugin is a powerful tool. However, at the time
     of writing, it does have its limits. As mentioned, the plugin only
-    displays the differences in raw <filename moreinfo="none">diff</filename> format, and you
-    can’t restore a previous version of a configuration file (those doing this
-    out of context could be dangerous in some circumstances, particularly for
-    system-wide configuration files). Nevertheless, it gives a very clear
-    picture of the changes that have been made, both to your build jobs and to
-    your system<indexterm id="I_indexterm7_d1e11384" class="endofrange" startref="ch07-jobconfig" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11386" class="endofrange" startref="ch07-jobconfig2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11388" class="endofrange" startref="ch07-audit1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11390" class="endofrange" startref="ch07-audit2" significance="normal"><primary/></indexterm> configuration.</para>
+    displays the differences in raw <filename moreinfo="none">diff</filename>
+    format, and you can’t restore a previous version of a configuration file
+    (those doing this out of context could be dangerous in some circumstances,
+    particularly for system-wide configuration files). Nevertheless, it gives
+    a very clear picture of the changes that have been made, both to your
+    build jobs and to your system<indexterm class="endofrange"
+        id="I_indexterm7_d1e11384" significance="normal"
+        startref="ch07-jobconfig">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11386"
+        significance="normal" startref="ch07-jobconfig2">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11388"
+        significance="normal" startref="ch07-audit1">
+        <primary></primary>
+      </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11390"
+        significance="normal" startref="ch07-audit2">
+        <primary></primary>
+      </indexterm> configuration.</para>
   </sect1>
+
   <sect1 id="sect-security-conclusion">
     <title>Conclusion</title>
+
     <para>In this chapter we have looked at a variety of ways to configure
     security in Jenkins. The Jenkins security model, with the two orthogonal
     concepts of Authentication and Authorization, is flexible and extensible.
