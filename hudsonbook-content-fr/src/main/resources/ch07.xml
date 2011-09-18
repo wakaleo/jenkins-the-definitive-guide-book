@@ -88,76 +88,79 @@
   </sect1>
 
   <sect1 id="hudson-security-simple">
-    <title>Simple Security in Jenkins</title>
+    <title>Sécurité simple dans Jenkins</title>
 
-    <para>The <indexterm class="startofrange" id="ch07-none1"
+    <para>Le <indexterm class="startofrange" id="ch07-none1"
         significance="normal">
-        <primary>security</primary>
+        <primary>securité</primary>
 
-        <secondary>authorization</secondary>
+        <secondary>autorisation</secondary>
 
-        <tertiary>no restrictions on</tertiary>
+        <tertiary>pas de restrictions sur</tertiary>
       </indexterm><indexterm class="startofrange" id="ch07-none2"
         significance="normal">
-        <primary>authorization</primary>
+        <primary>autorisation</primary>
 
-        <secondary>no restrictions on</secondary>
+        <secondary>pas de restrictions sur</secondary>
       </indexterm><indexterm id="I_indexterm7_d1e10103" significance="normal">
-        <primary>users</primary>
+        <primary>utilisateurs</primary>
 
-        <secondary>authorization for</secondary>
+        <secondary>autorisation pour</secondary>
 
-        <see>authorization</see>
-      </indexterm>most simple usable security model in Jenkins involves
-    allowing authenticated users to do anything, whereas non-authenticated
-    users will just have a read-only view of the build jobs. This is great for
-    small teams—developers can manage the build jobs, whereas other users
-    (testers, BAs, project managers and so on) can view the build jobs as
-    required to view the status of the project. Indeed, certain build jobs may
-    be set up just for this purpose, displaying the results of automated
-    acceptance tests or code quality metrics, for example.</para>
+        <see>autorisation</see>
+      </indexterm>modèle de sécurité le plus simple disponible dans Jenkins
+    permet aux utilisateurs authentifiés de faire tout ce qu'ils veulent,
+    alors que les utilisateurs non authentifiés auront seulement une vue en
+    lecture seule de leurs tâches de build. C'est super pour les petites
+    équipes - les développeurs peuvent gérer les tâches de construction, alors
+    que les autres utilisateurs (testeur, analyste métier, responsable de
+    projet etc.) peuvent accéder aux tâches de build pour voir l'état du
+    projet. En effet, certaines tâches pourraient même être configurées
+    uniquement dans ce but, affichant les résultats de tests d'acceptation
+    automatisés ou des métriques de qualité de code, par exemple.</para>
 
-    <para>You can set up this sort of configuration to choose “Logged-in users
-    can do anything” in the Authorization section. There are several ways that
-    Jenkins can authenticate users (see <xref
-    linkend="sect-security-realms" />), but for this example, we will be using
-    the simplest option, which is to use <indexterm id="I_indexterm7_d1e10115"
-        significance="normal">
-        <primary>security</primary>
+    <para>Vous pouvez mettre en place ce type de configuration en choisissant
+    “Les utilisateurs connectés peuvent tout faire” dans la section
+    Autorisations. Il y a plusieurs façons dans Jenkins pour authentifier les
+    utilisateurs (voir <xref linkend="sect-security-realms" />), mais pour cet
+    exemple, nous allons utiliser l'option la plus simple, qui est d'utiliser
+    <indexterm id="I_indexterm7_d1e10115" significance="normal">
+        <primary>sécurité</primary>
 
-        <secondary>security realms</secondary>
+        <secondary>domaines de sécurité</secondary>
 
-        <tertiary>Jenkins internal user database</tertiary>
+        <tertiary>base de données utilisateurs interne à Jenkins</tertiary>
       </indexterm><indexterm id="I_indexterm7_d1e10122" significance="normal">
-        <primary>user database</primary>
+        <primary>base de données utilisateurs</primary>
       </indexterm><indexterm id="I_indexterm7_d1e10125" significance="normal">
-        <primary>user database</primary>
+        <primary>base de données</primary>
 
-        <seealso>security, security realms</seealso>
+        <seealso>sécurité, domaines de sécurité</seealso>
       </indexterm><indexterm id="I_indexterm7_d1e10130" significance="normal">
-        <primary>database</primary>
+        <primary>base de données</primary>
 
-        <secondary>user database</secondary>
-      </indexterm>Jenkins’s own built in database (see <xref
-    linkend="hudson-users-internal" />). This is the configuration illustrated
-    in <xref linkend="fig-hudson-enabling-security" />.</para>
+        <secondary>base de données utilisateurs</secondary>
+      </indexterm>la base de données intégrée à Jenkins (voir <xref
+    linkend="hudson-users-internal" />). C'est la configuration illustrée dans
+    <xref linkend="fig-hudson-enabling-security" />.</para>
 
-    <para>Make <indexterm id="I_indexterm7_d1e10142" significance="normal">
-        <primary>security</primary>
+    <para>Assurez-vous <indexterm id="I_indexterm7_d1e10142"
+        significance="normal">
+        <primary>sécurité</primary>
 
-        <secondary>security realms</secondary>
+        <secondary>domaines de sécurité</secondary>
 
-        <tertiary>enabling sign-ups</tertiary>
-      </indexterm>sure you tick the “Allow users to sign up” option. This
-    option will display a Sign up link at the top of the screen to let users
-    create their own user account as required (see <xref
-    linkend="fig-hudson-user-signup" />). It is a good idea for developers to
-    use their SCM username here: in this case, Jenkins will be able to work
-    out what users contributed to the SCM changes that triggered a particular
-    build.</para>
+        <tertiary>activer les connexions</tertiary>
+      </indexterm>de cocher l'option "Autoriser les utilisateurs à se
+    connecter". Cette option affichera un lien Se connecter en haut de l'écran
+    permettant aux utilisateurs de créer leurs propres comptes (voir <xref
+    linkend="fig-hudson-user-signup" />). C'est une bonne idée pour les
+    développeurs d'utiliser ici leur nom de gestionnaire de sources : dans ce
+    cas, Jenkins sera capable de retrouver quels utilisateurs ont contribué
+    aux changements qui ont déclenché un build particulier.</para>
 
     <figure float="0" id="fig-hudson-user-signup">
-      <title>The Jenkins Sign up page</title>
+      <title>La page de connexion Jenkins</title>
 
       <mediaobject id="I_mediaobject7_d1e10155">
         <imageobject role="print">
@@ -170,14 +173,15 @@
       </mediaobject>
     </figure>
 
-    <para>This approach is obviously a little too simple for many
-    situations—it is useful for small teams working in close proximity, where
-    the aim is to know who’s changes caused (or broke) a particular build,
-    rather than to manage access in any more restrictive way. In the following
-    sections, we will discuss the two orthogonal aspects of Jenkins security:
-    identifying your users (Security Realms) and determining what they are
-    allowed<indexterm class="endofrange" id="I_indexterm7_d1e10162"
-        significance="normal" startref="ch07-none1">
+    <para>Cette approche est évidemment un peu trop simple pour beaucoup de
+    situations — il est utile pour les petites équipes de travailler en forte
+    proximité, où le but est de savoir le changement de qui a déclenché (ou
+    cassé) un build particulier, plutôt que de gérer l'accès de façon plus
+    restrictive. Dans les sections suivantes, nous discuterons de deux aspects
+    orthogonaux de la sécurité Jenkins : identifier vos utilisateurs (domaines
+    de sécurité) et déterminer ce qu'ils sont autorisés à faire<indexterm
+        class="endofrange" id="I_indexterm7_d1e10162" significance="normal"
+        startref="ch07-none1">
         <primary></primary>
       </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10164"
         significance="normal" startref="ch07-none2">
@@ -185,7 +189,7 @@
       </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10166"
         significance="normal" startref="ch07-sec">
         <primary></primary>
-      </indexterm> to (Authorization).</para>
+      </indexterm> (Autorisation).</para>
   </sect1>
 
   <sect1 id="sect-security-realms">
