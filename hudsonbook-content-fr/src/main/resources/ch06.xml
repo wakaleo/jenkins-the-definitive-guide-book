@@ -1384,97 +1384,96 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     </figure>
   </sect1>
   <sect1 id="sect-tests-too-slow">
-    <title>Help! My Tests Are Too Slow!</title>
-    <para>One <indexterm class="startofrange" id="ch06-imp1" significance="normal"><primary>tests</primary><secondary>performance of</secondary></indexterm><indexterm class="startofrange" id="ch06-imp2" significance="normal"><primary>performance</primary><secondary sortas="tests">of tests</secondary></indexterm>of the underlying principles of designing your CI builds is
-    that the value of information about a build failure diminishes rapidly
-    with time. In other words, the longer the news of a build failure takes to
-    get to you, the less it is worth, and the harder it is to fix.</para>
-    <para>Indeed, if your functional or integration tests are taking several
-    hours to run, chances are they won’t be run for every change. They are
-    more likely to be scheduled as a nightly build. The problem with this is
-    that a lot can happen in twenty-four hours, and, if the nightly build
-    fails, it will be difficult to figure out which of the many changes
-    committed to version control during the day was responsible. This is a
-    serious issue, and penalizes your CI server’s ability to provide the fast
-    feedback that makes it useful.</para>
-    <para>Of course some builds <emphasis>are</emphasis> slow, by their very
-    nature. Performance or load tests fall into this category, as do some more
-    heavyweight code quality metrics builds for large projects. However,
-    <indexterm id="I_indexterm6_d1e9934" significance="normal"><primary>integration tests</primary><secondary>performance of</secondary></indexterm>integration and <indexterm id="I_indexterm6_d1e9940" significance="normal"><primary>functional (regression) tests</primary><secondary>performance of</secondary></indexterm>functional tests most definitely do <emphasis>not</emphasis>
-    fall into this category. You should do all you can to make these tests as
-    fast as possible. Under ten minutes is probably acceptable for a full
-    integration/functional test suite. Two hours is not.</para>
-    <para>So, if you find yourself needing to speed up your tests, here are a
-    few strategies that might help, in approximate order of difficulty.</para>
+    <title>A l'aide! Mes tests sont trop lents!</title>
+    <para>Un <indexterm class="startofrange" id="ch06-imp1" significance="normal"><primary>tests</primary><secondary>performance de</secondary></indexterm><indexterm class="startofrange" id="ch06-imp2" significance="normal"><primary>performance</primary><secondary sortas="tests">des tests</secondary></indexterm>des principes fondamentaux de la conception de vos builds d'intégration continue est
+    que la valeur de l'information d'un échec de build diminue rapidement
+    avec le temps. En d'autres termes, plus le retour d'un échec de build met de temps à vous atteindre
+    , moins il vaut la  peine, et plus dur il est à corriger.</para>
+    <para>En effet, si vos tests fonctionnels ou d'intégration prennent plusieurs
+    heures pour s'exécuter, il y a des chances qu'ils ne seront pas exécutés à chaque changement. Ils sont
+    plus susceptibles d'être programmés comme un build quotidien. Le problème est alors
+    que beaucoup de choses peuvent intervenir en vingt-quatre heures, et, si le build quotidien
+    échoue, il sera difficile de déterminer lequel des nombreux changements
+    committés sur le contrôle de version pendant la journée était responsable. C'est un
+    problème sérieux, et pénalise la capacité de votre serveur d'intégration continue de fournir un retour
+    rapide qui le rend utile.</para>
+    <para>Bien sur, certains builds <emphasis>sont</emphasis> lents, par nature
+    . Les tests de performance ou de charge rentrent dans cette catégorie, comme d'autres builds
+    lourds de métriques de qualité de code pour de gros projets. Cependant,
+    <indexterm id="I_indexterm6_d1e9934" significance="normal"><primary>tests d'intégration</primary><secondary>performance de</secondary></indexterm>les tests d'intégration et <indexterm id="I_indexterm6_d1e9940" significance="normal"><primary>tests functionnels (régression)</primary><secondary>performance de</secondary></indexterm>fonctionnels <emphasis>ne</emphasis>
+    rentrent pas dans cette catégorie. Vous devez faire tout ce que vous pouvez pour rendre ces tests aussi
+    rapides que possible. Moins de dix minutes est probablement acceptable pour une suite complète
+    d'intégration/fonctionnelle. Deux heures ne l'est pas.</para>
+    <para>Donc, si vous vous trouvez vous-même à devoir accélerer vos tests, voici
+    quelques stratégies qui seront utiles, par ordre approximatif de difficulté.</para>
     <sect2>
-      <title>Add More Hardware</title>
-      <para>Sometimes<indexterm id="I_indexterm6_d1e9956" significance="normal"><primary>build server</primary><secondary>upgrading</secondary></indexterm> the easiest way to speed up your builds is to throw more
-      hardware into the mix. This could be as simple as upgrading your build
-      server. Compared to the time and effort saved in identifying and fixing
-      integration-related bugs, the cost of buying a shiny new build server is
-      relatively modest.</para>
-      <para>Another <indexterm id="I_indexterm6_d1e9964" significance="normal"><primary>virtual machine, for build server</primary></indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal"><primary>build server</primary><secondary>virtual machine for</secondary></indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal"><primary>cloud computing, for builds</primary></indexterm>option is to consider using virtual or cloud-based
-      approach. Later on in the book, we will see how you can use VMWare
-      virtual machines or cloud-based infrastructure such as Amazon Web
-      Services (EC2) or CloudBees to increase your build capacity on an
-      “as-needed” basis, without having to invest in permanent new
-      machines.</para>
-      <para>This approach can also involve distributing your builds across
-      several servers. While this will not in itself speed up your tests, it
-      may result in faster feedback if your build server is under heavy
-      demand, and if build jobs are constantly being queued.</para>
+      <title>Ajouter plus de matériel</title>
+      <para>Quelquefois<indexterm id="I_indexterm6_d1e9956" significance="normal"><primary>serveur de build</primary><secondary>mise à jour</secondary></indexterm> la façon la plus facile pour accélérer vos builds est de
+      de rajouter du matériel. Cela pourrait être aussi simple que de mettre à jour votre serveur
+      de build. Comparé au temps et effort passés à identifier et corriger les
+      bugs liés à l'intégration, le coût d'achat d'un nouveau serveur flambant neuf est
+      relativement faible.</para>
+      <para>Une autre <indexterm id="I_indexterm6_d1e9964" significance="normal"><primary>machine virtuelle, pour serveur de build</primary></indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal"><primary>serveur de build</primary><secondary>machine virtuelle pour</secondary></indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal"><primary>cloud computing, pour les builds</primary></indexterm>option est d'envisager l'utilisation d'approches virtuelle ou basée sur le cloud
+      . Plus tard dans le livre, nous verrons comment vous pouvez utiliser des machines virtuelles VMWare
+      ou une infrastructure cloud telles que Amazon Web
+      Services (EC2) ou CloudBees pour augmenter votre capacité de build sur une base
+      “à la demande”, sans avoir à investir dans de nouvelles machines
+      permanentes.</para>
+      <para>Cette approche peut également impliquer la distribution de vos builds sur
+      plusieurs serveurs. Bien que cela ne va pas en tant que tel accélérer vos tests, cela
+      peut mener à un retour plus rapide si votre serveur de build est sous forte
+      demande, et si vos tâches de build sont constamment en attente.</para>
     </sect2>
     <sect2>
-      <title>Run Fewer Integration/Functional Tests</title>
-      <para>In many <indexterm id="I_indexterm6_d1e9983" significance="normal"><primary>integration tests</primary><secondary>number of</secondary></indexterm><indexterm id="I_indexterm6_d1e9988" significance="normal"><primary>functional (regression) tests</primary><secondary>number of</secondary></indexterm>applications, integration or functional tests are used by
-      default as the standard way to test almost all aspects of the system.
-      However integration and functional tests are not the best way to detect
-      and identify bugs. Because of the large number of components involved in
-      a typical end-to-end test, it can be very hard to know where something
-      has gone wrong. In addition, with so many moving parts, it is extremely
-      difficult, if not completely unfeasible, to cover all of the possible
-      paths through the application.</para>
-      <para>For this reason, wherever possible, you should prefer
-      quick-running unit tests to the much slower integration and functional
-      tests. When you are confident that the <phrase role="keep-together">individual</phrase> components work well, you can
-      complete the picture by a few end-to-end tests that step through common
-      use cases for the system, or use cases that have caused problems in the
-      past. This will help ensure that the components do fit together
-      correctly, which is, after all, what integration tests are supposed to
-      do. But leave the more comprehensive tests where possible to unit tests.
-      This strategy is probably the most sustainable approach to keeping your
-      feedback loop short, but it does require some discipline and
-      effort.</para>
+      <title>Lancer moins de tests d'intégration/fonctionnels</title>
+      <para>Dans de nombreuses <indexterm id="I_indexterm6_d1e9983" significance="normal"><primary>tests d'intégration</primary><secondary>nombre de</secondary></indexterm><indexterm id="I_indexterm6_d1e9988" significance="normal"><primary>tests fonctionnels (régression)</primary><secondary>nombre de</secondary></indexterm>applications, les tests d'intégration ou fonctionnels sont utilisés par
+      défaut comme moyen standard pour tester presque tous les aspects du système.
+      Cependant, les tests d'intégration et fonctionnels ne sont pas le meilleur moyen de détecter
+      et d'identifier les bugs. En raison du grand nombre de composants impliqués dans
+      un test typique de bout en bout, il peut être très difficile de savoir où s'est
+      produit l'erreur. En outre, avec autant de pièces changeant, il est extrêmement
+      difficile, si pas totalement irréalisable, de couvrir l'ensemble des chemins
+      possibles à travers l'application.</para>
+      <para>Pour cette raison, dans la mesure du possible, vous devriez préférer
+      les tests unitaires rapides aux tests d'intégration et fonctionnels beaucoup plus lents
+      . Quand vous êtes confiant que les <phrase role="keep-together">composants</phrase> individuels fonctionnent correctement, vous pouvez
+      compléter le tableau par quelques tests de bout en bout qui passent par des cas
+      d'utilisation communs du système, ou des cas d'utilisation qui ont causé des problèmes par le
+      passé. Cela va garantir que les composants s'emboîtent
+      correctement, ce qui est, après tout, ce que les tests d'intégration sont supposés
+      faire. Mais préférez, dans la mesure du possible, les tests unitaires aux tests plus complets.
+      Cette stratégie est probablement l'approche la plus viable pour maintenir votre
+      retour rapide, mais elle nécessite une certaine discipline et
+       effort.</para>
     </sect2>
     <sect2>
-      <title>Run Your Tests in Parallel</title>
-      <para>If your <indexterm id="I_indexterm6_d1e10004" significance="normal"><primary>functional (regression) tests</primary><secondary>running in parallel</secondary></indexterm>functional tests take two hours to run, it is unlikely
-      that they all need to be run back-to-back. It is also unlikely that they
-      will be consuming all of the available CPU on your build machine. So
-      breaking your integration tests into smaller batches and running them in
-      parallel makes a lot of sense.</para>
-      <para>There are several strategies you can try, and your mileage will
-      probably vary depending on the nature of your application. One approach,
-      for example, is to set up several build jobs to run different subsets of
-      your functional tests, and to run these jobs in parallel. Jenkins lets
-      you aggregate test results. This is a good way to take advantage of a
-      distributed build architecture to speed up your builds even further.
-      Essential to this strategy is the ability to run subsets of your tests
-      in isolation, which may require some refactoring.</para>
-      <para>At a lower level, you can also run your tests in parallel at the
-      build scripting level. As we saw earlier, both TestNG and the more
-      recent versions of JUnit support running tests in parallel.
-      Nevertheless, you will need to ensure that your tests can be run
-      concurrently, which may take some refactoring. For example, common files
-      or shared instance variables within test cases will cause problems
-      here.</para>
-      <para>In general, you need to be careful of interactions between your
-      tests. If your web tests start up an embedded web server such as Jetty,
-      for example, you need to make sure the port used is different for each
-      set of concurrent tests.</para>
-      <para>Nevertheless, if you can get it to work for your application,
-      running your tests in parallel is one of the more effective way to speed
-      up <indexterm id="I_indexterm6_d1e10018" class="endofrange" startref="ch06-imp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e10020" class="endofrange" startref="ch06-imp2" significance="normal"><primary/></indexterm>your tests.</para>
+      <title>Exécutez vos tests en parallèle</title>
+      <para>Si vos <indexterm id="I_indexterm6_d1e10004" significance="normal"><primary>tests fonctionnels (regression)</primary><secondary>exécution en parallèle</secondary></indexterm>tests fonctionnels prennent deux heures pour s'exécuter, il est peu probable
+      qu'ils aient tous besoin de s'exécuter à la suite. Il est aussi peu probable qu'ils
+      consomment toute la CPU disponible sur votre machine de build. Alors
+      découper vos tests d'intégration en petits lots et les exécuter en
+       parallèle a beaucoup de sens.</para>
+      <para>Il y a plusieurs stratégies que vous pouvez essayer, et votre choix va
+      probablement dépendre de la nature de votre application. Une approche,
+      par exemple, est de mettre en place plusieurs tâches de build pour exécuter des sous ensembles différents
+      de vos tests fonctionnels, et de lancer ces tâches en parallèle. Jenkins vous permet
+      d'aggréger les résultats de test. C'est une bonne façon de tirer avantage de
+      l'architecture de build distribuée pour accélerer vos builds encore plus.
+      Le point essentiel de cette stratégie est la capacité d'exécuter des sous-ensembles de vos tests
+      en isolation, ce qui peut demander une certain refactorisation.</para>
+      <para>A un plus bas niveau, vous pouvez aussi exécuter vos tests en parallèle au
+      niveau des scripts de build. Comme nous avons vu précédemment, TestNG et les
+      versions les plus récentes de JUnit supportent tous les deux l'exécution de tests en parallèle.
+      Néanmoins, vous devrez vous assurer que vos tests peuvent être exécutés
+      simultanément, ce qui peut demander une certaine refactorisation. Par exemple, les fichiers communs
+      ou des variables d'instance partagées vont causer des problèmes
+      ici.</para>
+      <para>En général, vous devez être prudent sur ​​les interactions entre votre
+      tests. Si vos tests web démarrent un serveur Web intégré, comme Jetty,
+      par exemple, vous devez vous assurer que le port utilisé est différent pour chaque
+      ensemble de tests simultanés.</para>
+      <para>Néanmoins, si vous pouvez le faire fonctionner pour votre application,
+      exécuter vos tests en parallèle est un des moyens les plus efficaces pour accélérer <indexterm id="I_indexterm6_d1e10018" class="endofrange" startref="ch06-imp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e10020" class="endofrange" startref="ch06-imp2" significance="normal"><primary/></indexterm>vos tests.</para>
     </sect2>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-conclusion">
