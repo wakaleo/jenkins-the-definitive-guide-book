@@ -202,57 +202,61 @@
     avec de nombreuses autres options entre les deux.</para>
 
     <sect2 id="hudson-users-internal">
-      <title>Using Jenkins’s Built-in User Database</title>
+      <title>Utiliser la base de données intégrée à Jenkins</title>
 
-      <para>The <indexterm class="startofrange" id="ch07-internal"
+      <para>Le <indexterm class="startofrange" id="ch07-internal"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
-          <tertiary>Jenkins internal user database</tertiary>
+          <tertiary>base de données utilisateurs interne à Jenkins</tertiary>
         </indexterm><indexterm class="startofrange" id="ch07-internal2"
           significance="normal">
-          <primary>user database</primary>
+          <primary>base de données utilisateurs</primary>
         </indexterm><indexterm class="startofrange" id="ch07-internal3"
           significance="normal">
-          <primary>database</primary>
+          <primary>base de données</primary>
 
-          <secondary>user database</secondary>
-        </indexterm>easiest way to manage user accounts in Jenkins is to use
-      Jenkins’s internal user database. This is a good option if you want to
-      keep things simple, as very little setup or configuration is required.
-      Users who need to log on to the Jenkins server can sign up and create an
-      account for themselves, and, depending on the security model chosen, an
+          <secondary>base de données utilisateurs</secondary>
+        </indexterm>moyen le plus simple pour gérer des comptes utilisateurs
+      dans Jenkins est d'utiliser la base de données interne de Jenkins. C'est
+      une bonne option si vous voulez garder les choses simples, car peu de
+      configuration est nécessaire. Les utilisateurs qui ont besoin de se
+      connecter au serveur Jenkins peuvent s'enregistrer et créer un compte
+      par eux-mêmes, et, en fonction du modèle de sécurité choisi, un
       <indexterm id="I_indexterm7_d1e10195" significance="normal">
-          <primary>administrator</primary>
+          <primary>administrateur</primary>
 
-          <secondary sortas="Jenkins">for Jenkins internal user
-          database</secondary>
+          <secondary sortas="Jenkins">pour la base de données utilisateurs
+          interne de Jenkins</secondary>
         </indexterm><indexterm id="I_indexterm7_d1e10200"
           significance="normal">
-          <primary>users</primary>
+          <primary>utilisateurs</primary>
 
-          <secondary>administrator</secondary>
+          <secondary>administrateur</secondary>
 
-          <tertiary sortas="Jenkins">for Jenkins internal user
-          database</tertiary>
-        </indexterm>administrator can then decide what these users are allowed
-      to do.</para>
+          <tertiary sortas="Jenkins">pour la base de données utilisateurs
+          interne de Jenkins</tertiary>
+        </indexterm>administrateur peut ensuite décider ce que ces
+      utilisateurs sont autorisés à faire.</para>
 
-      <para>Jenkins automatically adds all SCM users to this database whenever
-      a change is committed to source code monitored by Jenkins. These user
-      names are used mainly to record who is responsible for each build job.
-      You can view the list of currently known users by clicking on the People
-      menu entry (see <xref linkend="fig-hudson-user-list" />). Here, you can
-      visualize the users that Jenkins currently knows about, and also see the
-      last project they committed changes to. Note that this list contains all
-      of the users who have ever committed changes to the projects that
-      Jenkins monitors—they may not be (and usually aren’t) all active Jenkins
-      users who are able to log on to the Jenkins server.</para>
+      <para>Jenkins ajoute automatiquement tout utilisateur de gestionnaire de
+      sources à cette base de données dès qu'un changement est committé dans
+      le code source surveillé par Jenkins. Ces noms d'utilisateurs sont
+      utilisés principalement pour enregistrer le responsable de chaque tâche
+      de build. Vous pouvez voir la liste des utilisateurs actuellement connus
+      en cliquant sur l'entrée de menu Personnes (voir <xref
+      linkend="fig-hudson-user-list" />). Ici, vous pouvez visualiser les
+      utilisateurs que Jenkins connaît actuellement, et aussi voir le dernier
+      projet dans lequel ils ont committé. Notez que cette liste contient la
+      liste de tous les utilisateurs à avoir jamais committé dans les projets
+      que Jenkins surveille — ils pourraient ne pas être (et en général ne
+      sont pas) tous des utilisateurs actifs de Jenkins capables de se logguer
+      sur le serveur Jenkins.</para>
 
       <figure float="none" id="fig-hudson-user-list">
-        <title>The list of users known to Jenkins</title>
+        <title>La liste des utilisateurs connus de Jenkins</title>
 
         <mediaobject id="I_mediaobject7_d1e10215">
           <imageobject role="print">
@@ -265,15 +269,15 @@
         </mediaobject>
       </figure>
 
-      <para>If you click on a user in this list, Jenkins takes you to a page
-      displaying various details about this user, including the user’s full
-      name and the build jobs they have contributed to (see <xref
-      linkend="fig-hudson-user-builds" />). From here, you can also modify or
-      complete the details about this user, such as their password or email
-      address.</para>
+      <para>Si vous cliquez sur un utilisateur de cette liste, Jenkins vous
+      emmène sur une page affichant différentes informations à propos de cet
+      utilisateur, incluant son nom complet et les tâches de build auxquelles
+      il a contribué (voir <xref linkend="fig-hudson-user-builds" />). De là,
+      vous pouvez aussi modifier ou compléter les détails à propos de cet
+      utilisateur, comme son mot de passe ou son adresse email.</para>
 
       <figure float="none" id="fig-hudson-user-builds">
-        <title>Displaying the builds that a user participates in</title>
+        <title>Afficher les builds auxquels un utilisateur participe</title>
 
         <mediaobject id="I_mediaobject7_d1e10227">
           <imageobject role="print">
@@ -286,25 +290,27 @@
         </mediaobject>
       </figure>
 
-      <para>A user appearing in this list cannot necessarily log on to
-      Jenkins. To be able to log on to Jenkins, the user account needs to be
-      set up with a password. There are essentially two ways to do this. If
-      <indexterm id="I_indexterm7_d1e10234" significance="normal">
-          <primary>security</primary>
+      <para>Un utilisateur apparaissant sur cette liste ne peut pas
+      nécessairement se connecter à Jenkins. Pour pouvoir se connecter,
+      l'utilisateur doit avoir un mot de passe configuré. Il y a
+      essentiellement deux façons de faire cela. Si <indexterm
+          id="I_indexterm7_d1e10234" significance="normal">
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
-          <tertiary>enabling user sign-ups</tertiary>
-        </indexterm>you have activated the “Allow users to sign up” option,
-      users can simply sign up with their SCM user name and provide their
-      email address and a password (see <xref
-      linkend="hudson-security-simple" />). Alternatively, you can activate a
-      user by clicking on the Configure menu option in the user details
-      screen, and provide an email address and password yourself (see <xref
+          <tertiary>activer l'enregistrement utilisateur</tertiary>
+        </indexterm>vous avez configuré l'option "Autoriser les utilisateurs à
+      s'enregistrer", les utilisateurs peuvent simplement se connecter avec
+      leur nom d'utilisateur SCM et fournir leur adresse email et leur mot de
+      passe (voir <xref linkend="hudson-security-simple" />). Autrement, vous
+      pouvez activer un utilisateur en cliquant sur l'option de menu
+      Configurer dans l'écran de détails utilisateur, et fournir une adresse
+      email et un mot de passe vous-même (voir <xref
       linkend="fig-hudson-edit-user" />).</para>
 
       <figure float="none" id="fig-hudson-edit-user">
-        <title>Creating a new user account by signing up</title>
+        <title>Créer un nouveau compte utilisateur en s'enregistrant</title>
 
         <mediaobject id="I_mediaobject7_d1e10249">
           <imageobject role="print">
@@ -317,25 +323,27 @@
         </mediaobject>
       </figure>
 
-      <para>It is <indexterm id="I_indexterm7_d1e10256" significance="normal">
+      <para>Il est <indexterm id="I_indexterm7_d1e10256" significance="normal">
           <primary>notifications</primary>
 
           <secondary>email</secondary>
         </indexterm><indexterm id="I_indexterm7_d1e10261"
           significance="normal">
-          <primary>email notifications</primary>
-        </indexterm>worth noting that, if your email addresses are
-      synchronized with your version control user names (for example, if you
-      work at acme.com, and user “joe” in your version control system has an
-      email address of <emphasis>joe@acme.com</emphasis>), you can get Jenkins
-      to derive the email address from a user name by adding a suffix that you
-      configure in the Email Notification section (see <xref
-      linkend="fig-security-email-config" />). If you have set up this sort of
-      configuration, you don’t need to specify the email address for new users
-      unless it does not respect this convention.</para>
+          <primary>notifications email</primary>
+        </indexterm>utile de noter que, si vos adresses email sont
+      synchronisées avec vos noms d'utilisateurs de contrôle de version (par
+      exemple, si vous travaillez chez acme.com, et que l'utilisateur “joe”
+      dans votre système de contrôle de version a une adresse email
+      <emphasis>joe@acme.com</emphasis>), vous pouvez faire que Jenkins dérive
+      l'adresse email de l'utilisateur en ajoutant un suffixe que vous
+      configurez dans la section Notification Email (voir <xref
+      linkend="fig-security-email-config" />). Si vous avez effectué ce type
+      de configuration, vous n'avez pas besoin de spécifier l'adresse email
+      pour les nouveaux utilisateurs à moins qu'elle ne respecte pas cette
+      convention.</para>
 
       <figure float="none" id="fig-security-email-config">
-        <title>Synchronizing email addresses</title>
+        <title>Synchroniser les adresses email</title>
 
         <mediaobject id="I_mediaobject7_d1e10273">
           <imageobject role="print">
@@ -348,14 +356,14 @@
         </mediaobject>
       </figure>
 
-      <para>Another way to manage the current active users (those who can
-      actually log on to Jenkins) is by clicking on the Manage Users link in
-      the main Jenkins configuration page (see <xref
-      linkend="fig-hudson-manage-users" />).</para>
+      <para>Une autre façon de gérer les utilisateurs courants actifs (ceux
+      qui peuvent vraiment se connecter à Jenkins) s'effectue via le lien
+      Gérer les utilisateurs dans la page de configuration principale de
+      Jenkins (voir <xref linkend="fig-hudson-manage-users" />).</para>
 
       <figure float="none" id="fig-hudson-manage-users">
-        <title>You can also manage Jenkins users from the Jenkins
-        configuration page</title>
+        <title>Vous pouvez aussi gérer les utilisateurs Jenkins depuis la page
+        de configuration Jenkins</title>
 
         <mediaobject id="I_mediaobject7_d1e10286">
           <imageobject role="print">
@@ -368,19 +376,20 @@
         </mediaobject>
       </figure>
 
-      <para>From here, you can view and edit the users who can log in to
-      Jenkins (see <xref linkend="fig-hudson-user-database" />). This includes
-      both users that have signed up manually (if this option has been
-      activated) and SCM users that you have activated by configuring them
-      with a password. You can also edit a user’s details (for example
-      modifying their email address or resetting their password), or even
-      remove them from the list of active users. Doing this will not remove
-      them from the overall user list (their name will still appear in the
-      build history, for example), but they will no longer be able to log on
-      to the Jenkins server.</para>
+      <para>D'ici, vous pouvez voir et éditer les utilisateurs qui peuvent se
+      connecter à Jenkins (voir <xref linkend="fig-hudson-user-database" />).
+      Cela inclut à la fois les utilisateurs qui se sont enregistrés
+      manuellement (si cette option a été activée) et les utilisateurs SCM que
+      vous avez activés en leur configurant un mot de passe. Vous pouvez aussi
+      éditer des informations utilisateur (par exemple, modifier leur adresse
+      email or réinitialiser leur mot de passe), ou même les supprimer de la
+      liste des utilisateurs actifs. Procéder ainsi ne les enlèvera pas de la
+      liste globale des utilisateurs (leurs noms apparaîtront toujours dans
+      l'historique de build, par exemple), mais ils ne seront plus capables de
+      se connecter au serveur Jenkins.</para>
 
       <figure float="none" id="fig-hudson-user-database">
-        <title>The Jenkins user database</title>
+        <title>La base de données des utilisateurs de Jenkins</title>
 
         <mediaobject id="I_mediaobject7_d1e10298">
           <imageobject role="print">
@@ -393,14 +402,16 @@
         </mediaobject>
       </figure>
 
-      <para>The internal Jenkins database is sufficient for many teams and
-      organizations. However, for larger organizations, it may become tedious
-      and repetitive to manage large numbers of user accounts by hand,
-      especially if this information already exists elsewhere. In the
-      following sections, we will look at how to hook Jenkins up to other user
-      management systems, such as LDAP repositories and Unix users and
-      <indexterm class="endofrange" id="I_indexterm7_d1e10305"
-          significance="normal" startref="ch07-internal">
+      <para>La base de données interne de Jenkins est suffisante pour de
+      nombreuses équipes et organisations. Toutefois, pour des organisations
+      plus importantes, cela peut devenir fastidieux et répétitif de gérer un
+      grand nombre d'utilisateurs à la main. Et plus particulièrement encore
+      si cette information existe déjà quelque part. Dans les sections
+      suivantes, nous regarderons comment brancher Jenkins avec d'autres
+      systèmes de gestion utilisateurs, comme des annuaires LDAP ou des
+      utilisateurs et groupes <indexterm class="endofrange"
+          id="I_indexterm7_d1e10305" significance="normal"
+          startref="ch07-internal">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10307"
           significance="normal" startref="ch07-internal2">
@@ -408,7 +419,7 @@
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10309"
           significance="normal" startref="ch07-internal3">
           <primary></primary>
-        </indexterm>groups.</para>
+        </indexterm>Unix.</para>
     </sect2>
 
     <sect2 id="sec-security-ldap">
