@@ -525,92 +525,101 @@
     </sect2>
 
     <sect2>
-      <title>Using Microsoft Active Directory</title>
+      <title>Utiliser Microsoft Active Directory</title>
 
       <para>Microsoft Active Directory<indexterm class="startofrange"
           id="ch07-ad1" significance="normal">
-          <primary>Microsoft Active Directory, as security realm</primary>
+          <primary>Microsoft Active Directory, comme domaine de
+          sécurité</primary>
         </indexterm><indexterm class="startofrange" id="ch07-ad2"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
           <tertiary>Microsoft Active Directory</tertiary>
         </indexterm><indexterm class="startofrange" id="ch07-atlas3"
           significance="normal">
-          <primary>Active Directory, Microsoft, as security realm</primary>
-        </indexterm> is a directory service product widely used in Microsoft
-      architectures. Although Active Directory does provide an LDAP service,
-      it can be a little tricky to set up, and it is simpler to get Jenkins to
-      talk directly to the Active Directory server. Fortunately, there’s a
-      plugin for that.</para>
+          <primary>Active Directory, Microsoft, comme domaine de
+          sécurité</primary>
+        </indexterm> est un logiciel d'annuaire largement utilisé dans les
+      architectures Microsoft. Bien qu'Active Directory fournisse un service
+      LDAP, il peut être compliqué à configurer, et il est plus simple de
+      demander à Jenkins de parler directement au serveur Active Directory.
+      Heureusement, il y a un plugin pour ça.</para>
 
-      <para>The Jenkins Active Directory plugin lets<indexterm
+      <para>Le plugin Active Directory de Jenkins vous permet <indexterm
           id="I_indexterm7_d1e10415" significance="normal">
           <primary>plugins</primary>
 
           <secondary>Active Directory</secondary>
-        </indexterm> you configure Jenkins to authenticate against a Microsoft
-      Active Directory server. You can both authenticate users, and retrieve
-      their groups for Matrix and Project-based authorization. Note that,
-      unlike the conventional LDAP integration (see <xref
-      linkend="sec-security-ldap" />), there is no need to prefix group names
-      with <literal moreinfo="none">ROLE_</literal>—you can use Active
-      Directory <indexterm id="I_indexterm7_d1e10426" significance="normal">
+        </indexterm> de configurer Jenkins pour authentifier les utilisateurs
+      via un serveur Microsoft Active Directory. Vous pouvez à la fois
+      authentifier les utilisateurs, et récupérer leurs groupes pour la
+      matrice d'autorisations générale ou par projet. Notez que, à l'inverse
+      d'une intégration LDAP conventionnelle (voir <xref
+      linkend="sec-security-ldap" />), il n'est pas nécessaire de préfixer les
+      groupes avec <literal moreinfo="none">ROLE_</literal>— vous pouvez
+      utiliser l'annuaire des groupes Active Directory <indexterm
+          id="I_indexterm7_d1e10426" significance="normal">
           <primary>groups</primary>
 
           <secondary>Active Directory</secondary>
-        </indexterm>groups (such as “Domain Admins”) directory.</para>
+        </indexterm>(comme “Administrateur de Domaine”).</para>
 
-      <para>To configure the plugin, you need to provide the full domain name
-      of your Active Directory server. If you have more than one domain, you
-      can provide a comma-<phrase role="keep-together">separated</phrase>
-      list. If you provide the forest name (say “acme.com” instead of
-      “europe.acme.com”), then the search will be done against the global
-      catalog. Note that if you do this without specifying the bind DN (see
-      below), the user would have to login as “europe\joe” or
-      “joe@europe”.</para>
+      <para>Pour configurer le plugin, vous devez fournir le nom de domaine
+      complet de votre serveur Active Directory. Si vous avez plus d'un
+      domaine, vous pouvez fournir une liste séparée par des virgule. Si vous
+      fournissez le nom de la forêt (say “acme.com” au lieu de
+      “europe.acme.com”), alors la recherche sera faite à partir du catalogue
+      global. Notez que si vous faites cela sans spécifier le <emphasis>bind
+      DN</emphasis> (voir ci-dessous), l'utilisateur devra se connecter en
+      tant que “europe\joe” ou “joe@europe”.</para>
 
-      <para>The advanced options let you specify a site name (to improve
-      performance by restricting the domain controllers that Jenkins queries),
-      and a Binding DN and password, which come in handy if you are connecting
-      to a multidomain forest. You need to provide a valid Binding DN and
-      password values, that Jenkins can use to connect to your server so that
-      it can establish the full identity of the user being authenticated. This
-      way, the user can simply type in “jack” or “jill”, and have the system
-      automatically figure out that they are
-      <emphasis>jack@europe.acme.com</emphasis> or
-      <emphasis>jack@asia.acme.com</emphasis>. You need to <phrase
-      role="keep-together">provide</phrase> the full user principal name with
-      domain name, like <emphasis>admin@europe.acme.com</emphasis>, or a
-      LDAP-style distinguished name, such as <literal
+      <para>Les options avancées vous permettent de spécifier un nom de site
+      (pour améliorer les performances en restreignant les contrôleurs de
+      domaine que Jenkins requête), et un DN de liaison et un mot de passe, ce
+      qui peut être pratique si vous vous connectez à une forêt multidomaines.
+      Vous devez fournir des valeurs de DN de liaison et de mot de passe
+      valides, que Jenkins puisse utiliser pour se connecter à votre serveur
+      afin qu'il établisse l'identité complète de l'utilisateur en cours
+      d'authentification. De cette façon, l'utilisateur peut taper simplement
+      “jack” ou “jill”, et faire que le système retrouve automatiquement
+      qu'ils sont <emphasis>jack@europe.acme.com</emphasis> ou
+      <emphasis>jack@asia.acme.com</emphasis>. Vous devez fournir le nom
+      principal complet avec le nom de domaine, tel que
+      <emphasis>admin@europe.acme.com</emphasis>, ou un nom distinctif de
+      style LDAP, tel que <literal
       moreinfo="none">CN=Administrator,OU=europe,DC=acme,DC=com</literal>.</para>
 
-      <para>Another nice thing about this plugin is that it works both in a
-      Windows environment and in a Unix environment. So if Jenkins is running
-      on a Unix server, it can still authenticate against a Microsoft Active
-      Directory service running on another machine.</para>
+      <para>Une autre bonne chose à propos de ce plugin est qu'il fonctionne à
+      la fois dans un environnement Windows et un environnement Unix. Donc si
+      Jenkins fonctionne sur un serveur Unix, il pourra quand même effectuer
+      les authentifications via un service Microsoft Active Directory d'une
+      autre machine.</para>
 
-      <para>More precisely, if Jenkins is running on a Windows machine and you
-      do not specify a domain, that machine must be a member of the domain you
-      wish to authenticate against. Jenkins will use ADSI to figure out all
-      the details, so no additional configuration is required.</para>
+      <para>Plus précisément, si Jenkins s'exécute sur une machine Windows et
+      que vous ne spécifiez pas de domaine, cette machine doit être un membre
+      du domaine auprès duquel vous souhaitez vous authentifier. Jenkins
+      utilisera ADSI pour retrouver tous les détails, aucune configuration
+      additionnelle n'est donc nécessaire.</para>
 
-      <para>On a non-Windows machine (or you specify one or more domains), you
-      need to tell Jenkins the name of Active Directory domain(s) to
-      authenticate with. Jenkins then uses DNS SRV records and LDAP service of
-      Active Directory to authenticate users.</para>
+      <para>Sur une machine non Windows (ou si vous spécifiez un ou plusieurs
+      domaines), vous devez dire à Jenkins le nom du domaine Active Directory
+      auprès duquel s'authentifier. Jenkins utilise alors les enregistrements
+      DNS SRV et le service LDAP d'Active Directory pour authentifier les
+      utilisateurs.</para>
 
-      <para>Jenkins can determine which <indexterm id="I_indexterm7_d1e10462"
+      <para>Jenkins peut déterminer les <indexterm id="I_indexterm7_d1e10462"
           significance="normal">
-          <primary>groups</primary>
+          <primary>groupes</primary>
 
           <secondary>Active Directory</secondary>
-        </indexterm>groups in Active Directory that the user belongs to, so
-      you can use these as part of your authorisation strategy. For example,
-      you can use these groups in matrix-based security, or allow “Domain
-      Admins” to administer <indexterm class="endofrange"
+        </indexterm>groupes Active Directory auxquels l'utilisateur
+      appartient. Vous pouvez donc les utiliser dans votre stratégie
+      d'autorisations. Par exemple, vous pouvez utiliser ces groupes dans la
+      sécurité basée sur une matrice, ou autoriser les "Administrateurs de
+      domaine" à administrer <indexterm class="endofrange"
           id="I_indexterm7_d1e10468" significance="normal" startref="ch07-ad1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10470"
