@@ -423,50 +423,54 @@
     </sect2>
 
     <sect2 id="sec-security-ldap">
-      <title>Using an LDAP Repository</title>
+      <title>Utiliser un annuaire LDAP</title>
 
-      <para>Many <indexterm class="startofrange" id="ch07-ldap1"
+      <para>Plusieurs <indexterm class="startofrange" id="ch07-ldap1"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
-          <tertiary>LDAP repository</tertiary>
+          <tertiary>annuaire LDAP</tertiary>
         </indexterm><indexterm class="startofrange" id="ch07-ldap2"
           significance="normal">
-          <primary>LDAP repository, as security realm</primary>
-        </indexterm>organizations use LDAP directories to store user accounts
-      and passwords across applications. Jenkins integrates well with LDAP,
-      with no special plugins required. It can authenticate users using the
-      LDAP repository, check group membership, and retrieve the email address
-      of authenticated users.</para>
+          <primary>annuaire LDAP, comme domaine de sécurité</primary>
+        </indexterm>organisations utilisent des annuaires LDAP pour stocker
+      des comptes et mots de passe à travers différentes applications. Jenkins
+      s'intègre bien avec LDAP, sans nécessiter de plugin spécial. Il peut
+      authentifier les utilisateurs en utilisant l'annuaire LDAP, vérifier
+      l'appartenance à un groupe, et récupérer les adresses email des
+      utilisateurs authentifiés.</para>
 
-      <para>To integrate Jenkins with your LDAP repository, Just select “LDAP”
-      in the Security Realm section, and fill in the appropriate details about
-      your LDAP server (see <xref linkend="fig-hudson-security-ldap" />). The
-      most important field is the repository server. If you are using a
-      non-standard port, you will need to provide this as well (for example,
-      <filename moreinfo="none">ldap.acme.org:1389</filename>). Or, if you are
-      using LDAPS, you will need to specify this as well (for example,
-      <filename moreinfo="none">ldaps://ldap.acme.org</filename>)</para>
+      <para>Pour intégrer Jenkins à votre annuaire LDAP, sélectionnez
+      simplement “LDAP” dans la section Domaine de sécurité, et remplissez les
+      détails concernant votre serveur LDAP (voir <xref
+      linkend="fig-hudson-security-ldap" />). Le champ le plus important est
+      le serveur de l'annuaire. Si vous utilisez un port non standard, vous
+      devrez aussi l'indiquer (par exemple, <filename
+      moreinfo="none">ldap.acme.org:1389</filename>). Si vous utilisez LDAPS,
+      vous devrez aussi le spécifier (par exemple, <filename
+      moreinfo="none">ldaps://ldap.acme.org</filename>)</para>
 
-      <para>If your server supports anonymous binding, this will probably be
-      enough to get you started. If not, you can use the Advanced options to
-      fine-tune your configuration.</para>
+      <para>Si votre serveur autorise le <emphasis>binding</emphasis> anonyme,
+      cela vous suffira probablement pour démarrer. Sinon, vous pouvez
+      utiliser les options avancées pour paramétrer plus finement votre
+      configuration.</para>
 
-      <para>Most of the Advanced fields can safely be left blank unless you
-      have a good reason to change them. If your repository is extremely
-      large, you may want to specify a root DN value (e.g., <literal
-      moreinfo="none">dc=acme, dc=com</literal>) and/or a User and Group
-      search base (e.g., <literal moreinfo="none">ou=people</literal>) to
-      narrow down the scope of user queries. This is not usually required
-      unless you notice performance issues. Or, if your server does not
-      support anonymous binding, you will need to provide a Manager DN and a
-      Manager DN password, so that Jenkins can connect to the server to
-      perform its queries.</para>
+      <para>La plupart des champs Avancés peuvent sans problème être laissés
+      vides à moins que vous n'ayez une bonne raison de les changer. Si votre
+      annuaire est extrêmement volumineux, vous devriez spécifiez une valeur
+      de DN racine (e.g., <literal moreinfo="none">dc=acme, dc=com</literal>)
+      et/ou une base de recherche utilisateur et groupe (e.g., <literal
+      moreinfo="none">ou=people</literal>) pour réduire la portée des requêtes
+      utilisateur. Ceci n'est habituellement pas nécessaire à moins que vous
+      ne remarquiez des problèmes de performance. Ou, si votre serveur
+      n'autorise pas les bindind anonymes, vous devrez fournir un DN et un mot
+      de passe de gestionnaire, afin que Jenkins puisse se connecter au
+      serveur pour exécuter ses requêtes.</para>
 
       <figure float="none" id="fig-hudson-security-ldap">
-        <title>Configuring LDAP in Jenkins</title>
+        <title>Configurer LDAP dans Jenkins</title>
 
         <mediaobject id="I_mediaobject7_d1e10351">
           <imageobject role="print">
@@ -479,34 +483,34 @@
         </mediaobject>
       </figure>
 
-      <para>Once you have set up LDAP as your Security Realm, you can
-      configure your favorite security model as described previously. When
-      users log on to Jenkins, they will be authenticated against the LDAP
-      repository.</para>
+      <para>Une fois que vous avez configuré votre serveur LDAP comme domaine
+      de sécurité, vous pouvez configurer votre modèle de sécurité comme
+      décrit précédemment. Quand les utilisateurs se connecteront à Jenkins,
+      ils seront authentifiés sur l'annuaire LDAP.</para>
 
-      <para>You <indexterm id="I_indexterm7_d1e10360" significance="normal">
-          <primary>groups</primary>
+      <para>Vous <indexterm id="I_indexterm7_d1e10360" significance="normal">
+          <primary>groupes</primary>
 
           <secondary>LDAP</secondary>
-        </indexterm>can also use LDAP groups, though the configuration is not
-      immediately obvious. Suppose you have defined a group called
-      JenkinsAdmin in your LDAP repository, with a DN of
-      <code>cn=JenkinsAdmin, ou-Groups, dc=acme, dc=com</code>. To refer to
-      this group in Jenkins, you need to take the common name (cn) in
-      uppercase, and prefix it with <literal moreinfo="none">ROLE_</literal>.
-      So <code>cn=JenkinsAdmin</code> becomes <code>ROLE_JENKINSADMIN</code>.
-      You can see an example of LDAP groups used<indexterm class="endofrange"
-          id="I_indexterm7_d1e10379" significance="normal"
-          startref="ch07-ldap1">
+        </indexterm>pouvez aussi utiliser des groupes LDAP, bien que la
+      configuration ne soit pas immédiatement évidente. Supposons que vous
+      ayez défini un group appelé JenkinsAdmin dans votre annuaire LDAP, avec
+      un DN <code>cn=JenkinsAdmin, ou-Groups, dc=acme, dc=com</code>. Pour
+      référencer ce groupe dans Jenkins, vous devez prendre le nom commun (cn)
+      en majuscules, et le préfixer avec <literal
+      moreinfo="none">ROLE_</literal>. Ainsi <code>cn=JenkinsAdmin</code>
+      devient <code>ROLE_JENKINSADMIN</code>. Vous pouvez voir un exemple de
+      groupes LDAP<indexterm class="endofrange" id="I_indexterm7_d1e10379"
+          significance="normal" startref="ch07-ldap1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10381"
           significance="normal" startref="ch07-ldap2">
           <primary></primary>
-        </indexterm> in this way in <xref
+        </indexterm> utilisés de cette façon dans <xref
       linkend="fig-hudson-security-ldap-groups" />.</para>
 
       <figure float="none" id="fig-hudson-security-ldap-groups">
-        <title>Using LDAP Groups in Jenkins</title>
+        <title>Utiliser des groupes LDAP dans Jenkins</title>
 
         <mediaobject id="I_mediaobject7_d1e10389">
           <imageobject role="print">
