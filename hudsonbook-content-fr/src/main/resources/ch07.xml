@@ -832,19 +832,19 @@
     </sect2>
 
     <sect2>
-      <title>Integrating with Other Systems</title>
+      <title>S'intégrer avec d'autres systèmes</title>
 
-      <para>In <indexterm id="I_indexterm7_d1e10616" significance="normal">
-          <primary>security</primary>
+      <para>En <indexterm id="I_indexterm7_d1e10616" significance="normal">
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
           <tertiary>CAS</tertiary>
         </indexterm><indexterm id="I_indexterm7_d1e10623"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
           <tertiary>SFEE</tertiary>
         </indexterm><indexterm id="I_indexterm7_d1e10630"
@@ -868,42 +868,44 @@
           <primary>Source Forge Enterprise Edition</primary>
 
           <see>SFEE</see>
-        </indexterm>addition to the authentication strategies discussed here,
-      there are a number of other plugins that allow Jenkins to authenticate
-      against other systems. At the time of writing, these include Central
-      Authentication Service (CAS)—an open source single sign-on tool—and the
-      Collabnet Source Forge Enterprise Edition (SFEE) server.</para>
+        </indexterm>plus des stratégies d'authentification discutées ici, il y
+      a un certain nombre d'autres plugins permettant à Jenkins d'effectuer
+      l'authentification via d'autres systèmes. Au moment de l'écriture de ces
+      lignes, ceci inclut <emphasis>Central Authentication Service</emphasis>
+      (CAS) — un outil open source de single sign-on — et le serveur Collabnet
+      <emphasis>Source Forge Enterprise Edition</emphasis> (SFEE).</para>
 
-      <para>If <indexterm class="startofrange" id="ch07-cust"
+      <para>Si <indexterm class="startofrange" id="ch07-cust"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>security realms</secondary>
+          <secondary>domaines de sécurité</secondary>
 
-          <tertiary>customizing</tertiary>
+          <tertiary>personnaliser</tertiary>
         </indexterm><indexterm class="startofrange" id="ch07-cust2"
           significance="normal">
           <primary>plugins</primary>
 
-          <secondary>Script Security Realm</secondary>
+          <secondary>Script de domaines de sécurité</secondary>
         </indexterm><indexterm class="startofrange" id="ch07-cust3"
           significance="normal">
-          <primary>Script Security Realm plugin</primary>
+          <primary>Plugin de script de domaines de sécurité</primary>
         </indexterm><indexterm class="startofrange" id="ch07-cust4"
           significance="normal">
           <primary>scripts</primary>
 
-          <secondary>custom authentication scripts</secondary>
-        </indexterm>no plugin is available, you can also write your own custom
-      authentication script. To do this, you need to install the Script
-      Security Realm plugin. Once you have installed the script and restarted
-      Jenkins, you can write two scripts in your favorite scripting language.
-      One script authenticates users, whereas the other determines the groups
-      of a given user (see <xref
-      linkend="fig-hudson-security-scripts" />).</para>
+          <secondary>scripts d'authentification personnalisés</secondary>
+        </indexterm>aucun plugin n'est disponible, vous pouvez aussi écrire
+      votre propre script d'authentification. Pour faire cela, vous devez
+      installer le plugin de domaine de sécurité. Une fois que vous avez
+      installé le script et redémarré Jenkins, vous pouvez écrire deux scripts
+      dans votre langage de scripting favori. Un script authentifie
+      l'utilisateur, tandis que l'autre détermine les groupes d'un utilisateur
+      donné (voir <xref linkend="fig-hudson-security-scripts" />).</para>
 
       <figure float="0" id="fig-hudson-security-scripts">
-        <title>Using custom scripts to handle authentication</title>
+        <title>Utiliser des scripts personnalisés pour gérer
+        l'authentification</title>
 
         <mediaobject id="I_mediaobject7_d1e10680">
           <imageobject role="print">
@@ -916,25 +918,25 @@
         </mediaobject>
       </figure>
 
-      <para>Before invoking the authentication script, Jenkins sets two
-      <indexterm id="I_indexterm7_d1e10687" significance="normal">
-          <primary>U environment variable</primary>
+      <para>Avant d'invoquer le script d'authentification, Jenkins positionne
+      deux <indexterm id="I_indexterm7_d1e10687" significance="normal">
+          <primary>variable d'environnement U</primary>
         </indexterm><indexterm id="I_indexterm7_d1e10690"
           significance="normal">
-          <primary>P environment variable</primary>
-        </indexterm><phrase>environment</phrase> variables: <literal
-      moreinfo="none">U</literal>, containing the username, and <literal
-      moreinfo="none">P</literal>, containing the password. This script uses
-      these <phrase role="keep-together">environment</phrase> variables to
-      authenticate using the specified username and password, returning 0 if
-      the authentication is successful, and some other value otherwise. If
-      authentication fails, the output from the process will be reported in
-      the error message displayed to the user. Here is a simple <indexterm
-          class="startofrange" id="ch07-authgroovy" significance="normal">
+          <primary>variable d'environnement P</primary>
+        </indexterm><phrase>variables d'environnement</phrase> : <literal
+      moreinfo="none">U</literal>, contenant le nom d'utilisateur, et <literal
+      moreinfo="none">P</literal>, contenant le mot de passe. Ce script
+      utilise ces variables d'environnement pour authentifier le nom
+      d'utilisateur et le mot de passe spécifié, en retournant 0 en cas de
+      réussite, et une autre valeur sinon. Si l'authentification échoue, la
+      sortie du processus sera renvoyée dans le message d'erreur affiché à
+      l'utilisateur. Voici un simple script <indexterm class="startofrange"
+          id="ch07-authgroovy" significance="normal">
           <primary>Groovy scripts</primary>
 
-          <secondary>authentication script</secondary>
-        </indexterm>Groovy authentication script:</para>
+          <secondary>script d'authentification</secondary>
+        </indexterm>script d'authentification Groovy :</para>
 
       <programlisting format="linespecific" id="I_programlisting7_d1e10712">def env = System.getenv()
 def username = env['U']
@@ -954,17 +956,17 @@ def authenticate(def username, def password) {
     return userIsAuthenticated
 }</programlisting>
 
-      <para>This script is enough if all you have to deal with is basic
-      authentication without groups. If you want to use groups from your
-      custom authentication source in your Matrix-<phrase
-      role="keep-together">based</phrase> or Project-based authorizations (see
-      <xref linkend="sect-authorization" />), you can write a second script,
-      which determines the groups for a given user. This groups uses the U
-      environment variable to determine which user is trying to log on, and
-      prints a comma-separated list of groups for this user to the standard
-      output. If you don’t like commas, you can override the separating
-      character in the configuration. A simple Groovy script to do this job is
-      shown here:</para>
+      <para>Ce script est suffisant si tout ce que vous avez à faire est de
+      gérer une authentification basique sans groupes. Si vous voulez utiliser
+      des groupes de votre source d'authentification personnalisée dans vos
+      autorisations matricielles ou projet (voir <xref
+      linkend="sect-authorization" />), vous pouvez écrire un second script,
+      qui détermine les groupes pour un utilisateur donné. Ce script utilise
+      la variable d'environnement U pour déterminer quel utilisateur essaie de
+      se connecter, et affiche une liste de groupe séparée par des virgules
+      pour cet utilisateur sur la sortie standard. Si vous n'aimez pas les
+      virgules, vous pouvez redéfinir le caractère de séparation dans la
+      configuration. Voici un simple script Groovy pour faire cela :</para>
 
       <programlisting format="linespecific" id="I_programlisting7_d1e10721">def env = System.getenv()
 def username = env['U'] 
@@ -977,12 +979,10 @@ def findGroupsFor(def username) {
     return "admin,game-of-life-developer"
 }</programlisting>
 
-      <para>Both these scripts must return 0 when called for a user to
-      be<indexterm class="endofrange" id="I_indexterm7_d1e10725"
-          significance="normal" startref="ch07-cust2">
-          <primary></primary>
-        </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10727"
-          significance="normal" startref="ch07-cust3">
+      <para>Ces deux scripts doivent renvoyer 0 lorsqu'ils sont appelés pour
+      qu'un utilisateur soit<indexterm class="endofrange"
+          id="I_indexterm7_d1e10727" significance="normal"
+          startref="ch07-cust3">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10729"
           significance="normal" startref="ch07-cust3">
@@ -993,7 +993,7 @@ def findGroupsFor(def username) {
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e10733"
           significance="normal" startref="ch07-authgroovy">
           <primary></primary>
-        </indexterm> authenticated.</para>
+        </indexterm> authentifié.</para>
     </sect2>
   </sect1>
 
