@@ -1449,37 +1449,39 @@ def findGroupsFor(def username) {
     </sect2>
 
     <sect2>
-      <title>Project-based Security</title>
+      <title>Sécurité basée sur le projet</title>
 
-      <para>Project-based <indexterm class="startofrange" id="ch07-proj1"
-          significance="normal">
-          <primary>project-based security</primary>
+      <para>La sécurité basée sur <indexterm class="startofrange"
+          id="ch07-proj1" significance="normal">
+          <primary>sécurité basée sur le projet</primary>
         </indexterm><indexterm class="startofrange" id="ch07-proj2"
           significance="normal">
-          <primary>authorization</primary>
+          <primary>autorisation</primary>
 
-          <secondary>project-based security</secondary>
+          <secondary>sécurité basée sur le projet</secondary>
         </indexterm><indexterm class="startofrange" id="ch07-proj3"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>authorization</secondary>
+          <secondary>autorisation</secondary>
 
-          <tertiary>project-based security</tertiary>
-        </indexterm>security lets you build on the matrix-based security model
-      we just discussed, and apply it to individual projects. Not only can you
-      assign system-wide roles for your users, you can also configure more
-      specific rights for certain individual projects.</para>
+          <tertiary>sécurité basée sur le projet</tertiary>
+        </indexterm>le projet vous permet d'utiliser le modèle de sécurité
+      matricielle dont vous venons de discuter, et l'appliquer à des projets
+      individuels. Non seulement vous pouvez assigner des rôles globaux à vos
+      utilisateurs, mais vous pouvez aussi configurer des droits plus
+      spécifiques à certains projets en particulier.</para>
 
-      <para>To activate project-level security, select “Project-based Matrix
-      Authorization Strategy” in the Authorization section of the main
-      configuration screen (see <xref
-      linkend="fig-hudson-project-based-security" />). Here, you set up the
-      default rights for users and groups, as we saw with Matrix-based
-      security (see <xref linkend="sec-matrix-security" />).</para>
+      <para>Pour activer la sécurité de niveau projet, sélectionnez “Stratégie
+      d'autorisation matricielle basée sur les projets” dans la section
+      Autorisations de l'écran de configuration principal (voir <xref
+      linkend="fig-hudson-project-based-security" />). Ici, vous pouvez
+      configurer des droits par défaut pour les utilisateurs et les groupes,
+      comme nous l'avons vu dans la sécurité basée sur une matrice (voir <xref
+      linkend="sec-matrix-security" />).</para>
 
       <figure float="0" id="fig-hudson-project-based-security">
-        <title>Project-based security</title>
+        <title>Sécurité basée sur le projet</title>
 
         <mediaobject id="I_mediaobject7_d1e11063">
           <imageobject role="print">
@@ -1494,20 +1496,20 @@ def findGroupsFor(def username) {
 
       <?dbfo-need height=”1in”?>
 
-      <para>These are the default permissions that apply to all projects that
-      have not been specially configured. However, when you use project-based
-      security, you can also set up special project-specific permissions. You
-      do this by selecting “Enable project-based security” in the project
-      configuration screen (see <xref
-      linkend="fig-hudson-security-project-anon" />). Jenkins will display a
-      table of project-specific permissions. You can configure these
-      permissions for different users and groups just like on the system-wide
-      configuration page. These permissions will be added to the system-wide
-      permissions to produce a project-specific set of permissions applicable
-      for this project.</para>
+      <para>Ce sont les permissions par défaut à appliquer à tous les projets
+      qui n'ont pas été spécifiquement configurés. Toutefois, quand vous
+      utilisez la sécurité basée sur le projet, vous pouvez aussi positionner
+      des permissions spécifiques au projet. Pour faire cela, sélectionnez
+      “Activer la sécurité basée sur le projet” dans l'écran de configuration
+      du projet (voir <xref linkend="fig-hudson-security-project-anon" />).
+      Jenkins affichera un tableau de permissions spécifiques au projet. Vous
+      pouvez configurer ces permissions pour différents utilisateurs et
+      groupes comme dans la page de configuration globales. Ces permissions
+      seront ajoutées aux permissions globales pour produire un ensemble de
+      permissions spécifiquement applicables à ce projet.</para>
 
       <figure float="0" id="fig-hudson-security-project-anon">
-        <title>Configuring project-based security</title>
+        <title>Configurer la sécurité basée sur le projet</title>
 
         <mediaobject id="I_mediaobject7_d1e11076">
           <imageobject role="print">
@@ -1520,24 +1522,25 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>The way this works is easiest to understand with a few practical
-      examples. In <xref linkend="fig-hudson-project-based-security" />, for
-      instance, no permissions have been granted to the anonymous user, so by
-      default all build jobs will remain invisible until a user signs on.
-      However, we are using project-based security, so we can override this on
-      a project-by-project basis. In <xref
-      linkend="fig-hudson-security-project-anon" />, for example, we have set
-      up the <emphasis>game-of-life</emphasis> project to have read-only
-      access for the special “anonymous” user.</para>
+      <para>Comprendre comment cela fonctionne est plus facile avec quelques
+      exemples pratiques. Dans <xref
+      linkend="fig-hudson-project-based-security" />, par exemple, aucune
+      permission n'a été donnée à l'utilisateur anonyme. Donc, par défaut,
+      toutes les tâches de build resterong invisibles jusqu'à ce que
+      l'utilisateur se connecte. Toutefois, nous utilisons une sécurité basée
+      sur le projet, nous pouvons donc redéfinir cela projet par projet. Dans
+      <xref linkend="fig-hudson-security-project-anon" />, par exemple, nous
+      avons configuré le projet <emphasis>game-of-life</emphasis> pour qu'il
+      offre l'accès en lecture seule à l'utilisateur spécial “anonyme”.</para>
 
-      <para>When you save this configuration, unauthenticated users will be
-      able to see the <emphasis>game-of-life</emphasis> project in read-only
-      mode (see <xref linkend="fig-hudson-security-readonly-project" />). This
-      same principle applies with all of the project-specific
-      permissions.</para>
+      <para>Quand vous aurez sauvé cette configuration, les utilisateurs non
+      authentifiés pourront voir le projet <emphasis>game-of-life</emphasis>
+      en mode lecture seule (voir <xref
+      linkend="fig-hudson-security-readonly-project" />). Le même principe
+      s'applique avec toutes les permissions spécifiques au projet.</para>
 
       <figure float="0" id="fig-hudson-security-readonly-project">
-        <title>Viewing a project</title>
+        <title>Voir un projet</title>
 
         <mediaobject id="I_mediaobject7_d1e11100">
           <imageobject role="print">
@@ -1550,37 +1553,39 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>Note that Jenkins permissions are cumulative—at the time of
-      writing, there is no way to revoke a system-wide permission for a
-      particular project. For example, if the anonymous user has read-access
-      to build jobs at the system level, you can’t revoke read-only access for
-      an individual project. So when using project-based security, use the
-      system level matrix to define minimum default permissions applicable
-      across all of your projects, and set up projects with additional
-      project-specific authorizations.</para>
+      <para>Notez que les permissions sont cumulatives — à l'écriture de ces
+      lignes, il n'y a pas de moyen d'enlever une permission globale pour un
+      projet particulier. Par exemple, si l'utilisateur anonyme a l'accès en
+      lecture seule au niveau global, vous ne pouvez pas lui enlever pour un
+      projet individuel. Donc quand vous utilisez la sécurité basée sur le
+      projet, utilisez la matrice globale au système pour définir des
+      permissions par défaut minimales à travers tous vos projets, et
+      configurez les projets avec des autorisations additionnelles spécifiques
+      au projet.</para>
 
-      <para>There are many approaches to managing project permissions, and
-      they depend as much on organizational culture as on technical
-      considerations. One common strategy <phrase
-      role="keep-together">approach</phrase> is to allow team members to have
-      full access to their own projects, and read-only access to other
-      projects. <indexterm id="I_indexterm7_d1e11113" significance="normal">
+      <para>Il y a plusieurs approches pour gérer les permissions de projet,
+      et elles dépendent autant sur la culture organisationnelle que sur des
+      considérations techniques. Une stratégie courante est d'autoriser les
+      membres de l'équipe à avoir l'accès complet à leurs propres projets, et
+      l'accès en lecture seule aux autres projets. <indexterm
+          id="I_indexterm7_d1e11113" significance="normal">
           <primary>plugins</primary>
 
           <secondary>Extended Read Permission</secondary>
         </indexterm><indexterm id="I_indexterm7_d1e11118"
           significance="normal">
           <primary>Extended Read Permission plugin</primary>
-        </indexterm>The Extended Read Permission plugin is a useful <phrase
-      role="keep-together">extension</phrase> to have for this scenario. This
-      plugin lets you let users from other teams see a read-only view of your
-      project configuration, without being able to modify anything (see <xref
-      linkend="fig-hudson-security-extended-read" />). This is a great way to
-      share build configuration practices and tips with other teams without
-      letting them tamper with your builds.</para>
+        </indexterm>Le plugin Extended Read Permission est une extension utile
+      à avoir dans ce scénario. Ce plugin vous permet d'offrir aux
+      utilisateurs d'autres équipes une vue en lecture seule de la
+      configuration de votre projet, sans avoir à modifier quoi que ce soit
+      (voir <xref linkend="fig-hudson-security-extended-read" />). C'est un
+      formidable moyen de partager des pratiques de configuration de build et
+      des astuces avec d'autres équipes sans les laisser trafiquer vos
+      builds.</para>
 
       <figure float="none" id="fig-hudson-security-extended-read">
-        <title>Setting up Extended Read Permissions</title>
+        <title>Configurer les permissions de droit de lecture étendus</title>
 
         <mediaobject id="I_mediaobject7_d1e11130">
           <imageobject role="print">
@@ -1593,13 +1598,14 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>It is worth noting that, whenever large and/or multiple teams are
-      involved, the internal Jenkins database reaches its limits quite
-      quickly, and it is worth considering integrating with a more specialized
-      directory service such as an LDAP server, Active Directory or Atlassian
-      Crowd, or possibly a more sophisticated permission system such as
-      role-based security, discussed in the following <indexterm
-          class="endofrange" id="I_indexterm7_d1e11137" significance="normal"
+      <para>Il est intéressant de noter que, aussi importantes ou multiples
+      que soient les équipes impliquées, la base de données interne de Jenkins
+      atteint ses limites assez rapidement, et cela vaut le coup d'envisager
+      l'intégration avec un service d'annuaire plus spécialisé comme un
+      serveur LDAP, Active Directory ou Atlassian Crowd, ou alors un système
+      de permission plus sophistiqué comme une sécurité basée sur les rôles,
+      discutée dans la section <indexterm class="endofrange"
+          id="I_indexterm7_d1e11137" significance="normal"
           startref="ch07-proj1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11139"
@@ -1608,7 +1614,7 @@ def findGroupsFor(def username) {
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11141"
           significance="normal" startref="ch07-proj3">
           <primary></primary>
-        </indexterm>section.</para>
+        </indexterm>suivante.</para>
     </sect2>
 
     <sect2>
