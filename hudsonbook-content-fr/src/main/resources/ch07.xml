@@ -1618,43 +1618,44 @@ def findGroupsFor(def username) {
     </sect2>
 
     <sect2>
-      <title>Role-based Security</title>
+      <title>Sécurité basée sur les rôles</title>
 
-      <para>Sometimes <indexterm class="startofrange" id="ch07-role1"
+      <para>Quelques fois, <indexterm class="startofrange" id="ch07-role1"
           significance="normal">
-          <primary>role-based security</primary>
+          <primary>sécurité basée sur les rôles</primary>
         </indexterm><indexterm class="startofrange" id="ch07-role2"
           significance="normal">
-          <primary>authorization</primary>
+          <primary>autorisation</primary>
 
-          <secondary>role-based security</secondary>
+          <secondary>sécurité basée sur les rôles</secondary>
         </indexterm><indexterm class="startofrange" id="ch07-role3"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>authorization</secondary>
+          <secondary>autorisation</secondary>
 
-          <tertiary>role-based security</tertiary>
-        </indexterm>managing user permissions individually can be cumbersome,
-      and you may not want to integrate with an LDAP server to set up groups
-      that way. A more recent alternative option is to use the<indexterm
-          id="I_indexterm7_d1e11165" significance="normal">
+          <tertiary>sécurité basée sur les rôles</tertiary>
+        </indexterm>gérer les permissions utilisateur individuellement peut
+      s'avérer rébarbatif, et vous pourriez ne pas vouloir vous intégrer avec
+      un serveur LDAP pour configurer vos groupes avec. Une alternative plus
+      récente est d'utiliser le plugin<indexterm id="I_indexterm7_d1e11165"
+          significance="normal">
           <primary>plugins</primary>
 
           <secondary>Role Strategy</secondary>
         </indexterm><indexterm id="I_indexterm7_d1e11170"
           significance="normal">
           <primary>Role Strategy plugin</primary>
-        </indexterm> Role Strategy plugin, which allows you to define global
-      and project-level roles, and assign these roles to users.</para>
+        </indexterm> Role Strategy, qui permet de définir des rôles globaux ou
+      de niveau projet, et les affecter aux utilisateurs.</para>
 
-      <para>You install the plugin in the usual way, via the Plugin Manager.
-      Once installed, you can activate this authorization strategy in the main
-      configuration page (see <xref
+      <para>Vous installez le plugin de façon habituelle, via le gestionnaire
+      de plugin. Une fois installé, vous pouvez activer cette stratégie
+      d'autorisation dans la page de configuration principale (voir <xref
       linkend="fig-hudson-security-role-based" />).</para>
 
       <figure float="none" id="fig-hudson-security-role-based">
-        <title>Setting up Role-based security</title>
+        <title>Configurer la sécurité basée sur les rôles</title>
 
         <mediaobject id="I_mediaobject7_d1e11181">
           <imageobject role="print">
@@ -1667,14 +1668,15 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>Once you have set this up, you can define roles that regroup sets
-      of related permissions. You set up and configure your roles, and assign
-      these roles to your users, in the Manage Roles screen, which you can
-      access in the Manage Jenkins screen (see <xref
+      <para>Quand vous avez configuré cela, vous pouvez définir des rôles
+      regroupant des ensembles de permissions liées les unes aux autres. Vous
+      créez et configurez vos rôles, puis les assignez à vos utilisateurs,
+      dans l'écran de gestion de rôles, auquel vous accédez dans l'écran
+      Administrer Jenkins (voir <xref
       linkend="fig-hudson-security-manage-roles-menu" />).</para>
 
       <figure float="none" id="fig-hudson-security-manage-roles-menu">
-        <title>The Manage Roles configuration menu</title>
+        <title>Le menu de configuration Gérer les rôles</title>
 
         <mediaobject id="I_mediaobject7_d1e11193">
           <imageobject role="print">
@@ -1687,18 +1689,21 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>In the Manage Roles screen, you can set up global and <indexterm
-          id="I_indexterm7_d1e11200" significance="normal">
-          <primary>project-level permissions, in role-based security</primary>
-        </indexterm>project-level permissions. Global permissions apply across
-      all projects, and are typically system-wide administration or general
-      access permissions (see <xref
-      linkend="fig-hudson-security-global-roles" />). Setting these roles up
-      is intuitive and similar to setting up user permissions in the other
-      security models we have seen.</para>
+      <para>Dans l'écran Gérer les rôles, vous pouvez mettre en place des
+      permissions globales <indexterm id="I_indexterm7_d1e11200"
+          significance="normal">
+          <primary>permissions de niveau projet, dans la sécurité basée sur
+          les rôles</primary>
+        </indexterm>ou de niveau projet. Les permissions globales s'appliquent
+      à tous les projets, et sont typiquement des permissions d'administration
+      du système ou d'accès général (voir <xref
+      linkend="fig-hudson-security-global-roles" />). La mise en oeuvre de ces
+      rôles est intuitive et similaire à la configuration des permissions
+      utilisateur dans les autres modèles de securité que nous avons
+      vus.</para>
 
       <figure float="0" id="fig-hudson-security-global-roles">
-        <title>Managing global roles</title>
+        <title>Gérer les rôles globaux</title>
 
         <mediaobject id="I_mediaobject7_d1e11209">
           <imageobject role="print">
@@ -1711,20 +1716,22 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>Project roles are slightly more complicated. A project role
-      regroups a set of permissions that are applicable to one or more
-      (presumably related) projects. You define the relevant projects using a
-      regular expression, so it helps to have a clear and consistent set of
-      naming conventions in place for your project names (see <xref
-      linkend="fig-hudson-security-project-roles" />). For example, you may
-      wish to create roles distinguishing developers with full configuration
-      rights on their own project from users who can simply trigger a build
-      and view the build results, or create roles where developers can
-      configure certain automated deployment build jobs, but only production
-      teams are allowed to execute these jobs.</para>
+      <para>Les rôles de projet sont légèrement plus compliqués. Un rôle de
+      projet regroupe un ensemble de permissions applicables à un ou plusieurs
+      projets (a priori reliés). Vous définissez les projets concernés en
+      utilisant une expression rationnelle, cela aide à avoir un ensemble
+      clair et cohérernt de conventions de nommage dans vos noms de projets
+      (voir <xref linkend="fig-hudson-security-project-roles" />). Par
+      exemple, vous pouvez vouloir créer des rôles distinguant les
+      développeurs avec des droits complets sur leurs propres projets
+      d'utilisateurs qui peuvent simplement déclencher un build et voir le
+      résultat. Ou vous pouvez créer des rôles où les développeurs peuvent
+      configurer certaines tâches de build de déploiement automatisé, mais que
+      seules les équipes de production soient autorisés à exécuter ces
+      tâches.</para>
 
       <figure float="0" id="fig-hudson-security-project-roles">
-        <title>Managing project roles</title>
+        <title>Gérer les rôles de projets</title>
 
         <mediaobject id="I_mediaobject7_d1e11221">
           <imageobject role="print">
@@ -1737,12 +1744,12 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>Once you have defined these roles, you can go to the Assign Roles
-      screen to set up individual users or groups with these roles (see <xref
-      linkend="fig-hudson-security-assign-roles" />).</para>
+      <para>Une fois ces rôles définis, vous pouvez aller dans l'écran
+      Assigner les rôles pour configurer les utilisateurs ou groupes avec ces
+      rôles (voir <xref linkend="fig-hudson-security-assign-roles" />).</para>
 
       <figure float="0" id="fig-hudson-security-assign-roles">
-        <title>Assigning roles to users</title>
+        <title>Assigner des rôles à des utilisateurs</title>
 
         <mediaobject id="I_mediaobject7_d1e11234">
           <imageobject role="print">
@@ -1755,9 +1762,10 @@ def findGroupsFor(def username) {
         </mediaobject>
       </figure>
 
-      <para>Role-based strategy is relatively new in Jenkins, but it is an
-      excellent way to simplify the task of managing permissions in large,
-      multiteam and<indexterm class="endofrange" id="I_indexterm7_d1e11241"
+      <para>La stratégie basée sur les rôles est relativement nouvelle dans
+      Jenkins, mais c'est une excellente façon de simplifier les tâches de
+      gestion des permissions dans des organisations grosses, multi-équipes et
+      <indexterm class="endofrange" id="I_indexterm7_d1e11241"
           significance="normal" startref="ch07-role1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11243"
@@ -1766,7 +1774,7 @@ def findGroupsFor(def username) {
         </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11245"
           significance="normal" startref="ch07-role3">
           <primary></primary>
-        </indexterm> multiproject organizations.</para>
+        </indexterm> multi-projets.</para>
     </sect2>
   </sect1>
 
