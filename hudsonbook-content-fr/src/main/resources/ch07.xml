@@ -1007,69 +1007,74 @@ def findGroupsFor(def username) {
     des rôles plus précis et des authentifications par projet.</para>
 
     <sect2 id="sec-matrix-security">
-      <title>Matrix-based Security</title>
+      <title>Sécurité basée sur une matrice</title>
 
-      <para>Letting<indexterm class="startofrange" id="ch07-matrix1"
+      <para>Laisser<indexterm class="startofrange" id="ch07-matrix1"
           significance="normal">
-          <primary>matrix-based security</primary>
+          <primary>sécurité basée sur une matrice</primary>
         </indexterm><indexterm class="startofrange" id="ch07-matrix2"
           significance="normal">
-          <primary>authorization</primary>
+          <primary>autorisation</primary>
 
-          <secondary>matrix-based security</secondary>
+          <secondary>sécurité basée sur une matrice</secondary>
         </indexterm><indexterm class="startofrange" id="ch07-matrix3"
           significance="normal">
-          <primary>security</primary>
+          <primary>sécurité</primary>
 
-          <secondary>authorization</secondary>
+          <secondary>autorisation</secondary>
 
-          <tertiary>matrix-based security</tertiary>
+          <tertiary>sécurité basée sur une matrice</tertiary>
         </indexterm><indexterm id="I_indexterm7_d1e10761"
           significance="normal">
           <primary>permissions</primary>
 
-          <see>authorization</see>
-        </indexterm> signed-in users do anything is certainly flexible, and
-      may be all you need for a small team. For larger or multiple teams, or
-      cases where Jenkins is being used outside the development environment, a
-      more sophisticated approach is generally required.</para>
+          <see>autorisation</see>
+        </indexterm> les utilisateurs connectés faire n'importe quoi est
+      certainement flexible, et pourrait suffire pour une petite équipe. Pour
+      des équipes plus importantes ou multiples, ou des cas où Jenkins est
+      utilisé en dehors d'un environnement de développement, une approche plus
+      sophistiquée est généralement requise.</para>
 
-      <para>Matrix-based security is a more sophisticated approach, where
-      different users are assigned different rights, using a role-based
-      approach.</para>
+      <para>La sécurité basée sur matrice est une approche plus élaborée, où
+      différents utilisateurs se voient attribués différents droits, en
+      utilisant une approche basée sur les rôles.</para>
 
       <sect3>
-        <title>Setting up matrix-based security</title>
+        <title>Mettre en place la sécurité basée sur une matrice</title>
 
-        <para>The<indexterm id="I_indexterm7_d1e10774" significance="normal">
-            <primary>administrator</primary>
+        <para>La<indexterm id="I_indexterm7_d1e10774" significance="normal">
+            <primary>administrateur</primary>
 
-            <secondary sortas="matrix">for matrix-based security</secondary>
+            <secondary sortas="matrix">pour la sécurité basée sur une
+            matrice</secondary>
           </indexterm><indexterm id="I_indexterm7_d1e10779"
             significance="normal">
-            <primary>users</primary>
+            <primary>utilisateurs</primary>
 
-            <secondary>administrator</secondary>
+            <secondary>administrateur</secondary>
 
-            <tertiary sortas="matrix">for matrix-based security</tertiary>
-          </indexterm> first step in setting up matrix-based security in
-        Jenkins is to create an administrator. <emphasis>This is an essential
-        step, and must be done before all others.</emphasis> Now your
-        administrator can be an existing user, or one created specially for
-        the purpose. If you want to create a dedicated administrator user,
-        simply create one by signing up in the usual way (see <xref
-        linkend="fig-hudson-user-signup" />). It doesn’t have to be associated
-        with an SCM user.</para>
+            <tertiary sortas="matrix">pour la sécurité basée sur une
+            matrice</tertiary>
+          </indexterm> première étape dans la configuration de la sécurité
+        basée sur une matrice dans Jenkins est de créer un administrateur.
+        <emphasis>C'est une étape essentielle, et elle doit être effectuée
+        avant toutes les autres. </emphasis>Votre administrateur peut être un
+        utilisateur existant, ou un créé spécialement dans ce bug. Si vous
+        voulez créer un utilisateur administrateur dédié, créez le simplement
+        en vous enregistrant de la façon habituelle (voir <xref
+        linkend="fig-hudson-user-signup" />). Il n'est pas nécessaire qu'il
+        soit associé à un utilisateur SCM.</para>
 
-        <para>Once you have your admin user ready, you can activate
-        matrix-based security by selecting “Matrix-based security” in the
-        Authorization section of the main configuration page. Jenkins will
-        display a table containing authorized users, and checkboxes
-        corresponding to the various permissions that you can assign to these
-        users (see <xref linkend="fig-hudson-matrix-anonymous" />).</para>
+        <para>Une fois que votre utilisateur admin est prêt, vous pouvez
+        activer la sécurité basée sur une matrice en sélectionnant “Sécurité
+        basée sur une matrice” dans la section Autorisations de la page de
+        configuration principale. Jenkins affichera un tableau contenant les
+        utilisateurs autorisés, et des cases à cocher correspondant aux
+        différentes permissions que vous pouvez affecter à ces utilisateurs
+        (voir <xref linkend="fig-hudson-matrix-anonymous" />).</para>
 
         <figure float="none" id="fig-hudson-matrix-anonymous">
-          <title>Matrix-based security configuration</title>
+          <title>Sécurité basée sur une matrice</title>
 
           <mediaobject id="I_mediaobject7_d1e10799">
             <imageobject role="print">
@@ -1082,24 +1087,27 @@ def findGroupsFor(def username) {
           </mediaobject>
         </figure>
 
-        <para>The special “anonymous” user is always present in the table.
-        This user represents unauthenticated users. Typically, you only grant
-        very limited rights to unauthenticated users, such as read-only
-        access, or no access at all (as shown in <xref
+        <para>L'utilisateur spécial “anonyme” est toujours présent dans le
+        tableau. Cet utilisateur représente les utilisateurs non authentifiés.
+        Typiquement, vous ne donnez que des droits limités aux utilisateurs
+        non authentifiés, comme des accès en lecture seule, ou pas d'accès du
+        tout (comme montré dans <xref
         linkend="fig-hudson-matrix-anonymous" />).</para>
 
-        <para>The first thing you need to do now is to grant administration
-        rights to your administrator. Add your administration user in the
-        “User/group to add” field and click on Add. Your administrator will
-        now appear in the permissions matrix. Now make sure you grant this
-        user every permission (see <xref
-        linkend="fig-hudson-matrix-admin" />), and save your configuration.
-        You should now be able to log in with your administrator account (if
-        you aren’t already logged in with this account) and continue to set up
-        your other users.</para>
+        <para>La première chose que vous devez savoir faire maintenant est de
+        donner les droits d'administration à votre administrateur. Ajoutez cet
+        utilisateur d'administration dans le champ “Utilisateur/groupe à
+        ajouter” et cliquez sur Ajouter. Votre administrateur apparaîtra alors
+        dans la matrice de permissions. Maintenant assurez-vous d'accorder
+        toutes les permissions à cet utilisateur (voir <xref
+        linkend="fig-hudson-matrix-admin" />), et sauvez votre configuration.
+        Vous devriez à présent être capable de vous connecter avec votre
+        compte utilisateur administrateur (si vous n'êtes pas déjà connecté
+        avec ce compte) et continuer à configurer vos autres
+        utilisateurs.</para>
 
         <figure float="none" id="fig-hudson-matrix-admin">
-          <title>Setting up an administrator</title>
+          <title>Configurer un administrateur</title>
 
           <mediaobject id="I_mediaobject7_d1e10815">
             <imageobject role="print">
@@ -1114,18 +1122,20 @@ def findGroupsFor(def username) {
       </sect3>
 
       <sect3>
-        <title>Fine-tuning user permissions</title>
+        <title>Configurer plus finement les permissions utilisateurs</title>
 
-        <para>Once you have set up your administrator account, you can add any
-        other users that need to access your Jenkins instance. Simply add the
-        user names and tick the permissions you want to grant them (see <xref
-        linkend="fig-hudson-matrix-users" />). If you are using an LDAP server
-        or Unix users and groups as the underlying authentication schema (see
-        <xref linkend="sec-security-ldap" />), you can also configure
-        permissions for groups of users.</para>
+        <para>Une fois que vous avez configuré votre compte administrateur,
+        vous pouvez ajouter d'autres utilisateurs ayant besoin d'accéder à
+        votre instance Jenkins. Ajoutez simplement les noms d'utilisateur et
+        cochez les permissions que vous voulez leur accorder (voir <xref
+        linkend="fig-hudson-matrix-users" />). Si vous utilisez un serveur
+        LDAP ou des utilisateurs ou groupes Unix comme schéma
+        d'authentification sous-jacent (voir <xref
+        linkend="sec-security-ldap" />), vous pouvez aussi configurer les
+        permissions pour des groupes d'utilisateurs.</para>
 
         <figure float="none" id="fig-hudson-matrix-users">
-          <title>Setting up other users</title>
+          <title>Configurer les autres utilisateurs</title>
 
           <mediaobject id="I_mediaobject7_d1e10832">
             <imageobject role="print">
@@ -1138,44 +1148,48 @@ def findGroupsFor(def username) {
           </mediaobject>
         </figure>
 
-        <para>You can grant a range of permissions, which are organized into
-        several groups: Overall, Slave, Job, Run, View and SCM. Most of the
-        permissions are fairly obvious, but some need a little more
-        explanation. The individual permissions are as follows:</para>
+        <para>Vous pouvez accorder différentes permissions, qui sont
+        organisées en plusieurs groupes : Global, Esclave, Job, Lancer, Voir
+        et Gestion de version. La plupart des permissions sont assez
+        évidentes, mais certaines nécessitent un peu plus d'explication. Les
+        permissions individuelles sont comme suit :</para>
 
         <variablelist>
           <varlistentry>
-            <term><emphasis>Overall</emphasis></term>
+            <term><emphasis>Global</emphasis></term>
 
             <listitem>
-              <para>This group covers basic system-wide permissions:</para>
+              <para>Ce groupe couvre des permissions basiques sur l'ensemble
+              du système :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Administer</term>
+                  <term>Administrer</term>
 
                   <listitem>
-                    <para>Lets a user make system-wide configuration changes
-                    and other sensitive operations, for example in the main
-                    Jenkins configuration pages. This should be reserved for
-                    the Jenkins administrator.</para>
+                    <para>Permet à un utilisateur de faire des modifications
+                    de configuration à l'ensemble du système ou autres
+                    opérations sensibles, par exemple dans les pages de
+                    configuration principales de Jenkins. Ceci devrait être
+                    réservé à l'administrateur Jenkins.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Read</term>
+                  <term>Lire</term>
 
                   <listitem>
-                    <para>This permission provides read-only access to
-                    virtually all of the pages in Jenkins. If you want
-                    anonymous users to be able to view build jobs freely, but
-                    not to be able to modify or start them, grant the Read
-                    role to the special “anonymous” user. If not, simply
-                    revoke this permission for the Anonymous user. And if you
-                    want all authenticated users to be able to see build jobs,
-                    then add a special user called “authenticated”, and grant
-                    this user Overall/Read <phrase
-                    role="keep-together">permission</phrase>.</para>
+                    <para>Cette permission fournit un accès en lecture seule à
+                    pratiquement toutes les pages de Jenkins. Si vous voulez
+                    que les utilisateurs anonymes puissent voir les jobs
+                    librement, mais qu'ils ne puissent pas les modifier ou les
+                    démarrer, donnez leur le droit Lire à l'utilisateur
+                    spécial “anonyme”. Sinon, enlevez simplement cette
+                    permission à l'utilisateur Anonyme. Et si vous voulez que
+                    tous les utilisateurs authentifiés puissent voir les jobs
+                    de construction, ajoutez alors un un utilisateur spécial
+                    “authenticated”, et donnez lui la permission
+                    Global/Lire.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1183,26 +1197,27 @@ def findGroupsFor(def username) {
           </varlistentry>
 
           <varlistentry>
-            <term><emphasis>Slave</emphasis></term>
+            <term><emphasis>Esclave</emphasis></term>
 
             <listitem>
-              <para>This group covers permissions about remote build nodes, or
-              slaves:</para>
+              <para>Ce groupe couvre des permissions à propos de noeuds de
+              constructions, ou esclaves :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Configure</term>
+                  <term>Configurer</term>
 
                   <listitem>
-                    <para>Create and configure new build nodes.</para>
+                    <para>Créer ou configurer de nouveaux noeuds de
+                    construction.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Delete</term>
+                  <term>Supprimer</term>
 
                   <listitem>
-                    <para>Delete build nodes.</para>
+                    <para>Supprimer des noeuds de construction.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1213,39 +1228,39 @@ def findGroupsFor(def username) {
             <term><emphasis>Job</emphasis></term>
 
             <listitem>
-              <para>This group covers job-related permissions:</para>
+              <para>Ce group couvre des permissions liées aux tâches :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Create</term>
+                  <term>Créer</term>
 
                   <listitem>
-                    <para>Create a new build job.</para>
+                    <para>Créer une nouvelle tâche de build.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Delete</term>
+                  <term>Supprimer</term>
 
                   <listitem>
-                    <para>Delete an existing build job.</para>
+                    <para>Supprimer une tâche de build existante.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Configure</term>
+                  <term>Configurer</term>
 
                   <listitem>
-                    <para>Update the configuration of an existing build
-                    jobs.</para>
+                    <para>Mettre à jour la configuration de tâches de build
+                    existantes.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Read</term>
+                  <term>Lire</term>
 
                   <listitem>
-                    <para>View build jobs.</para>
+                    <para>Voir des tâches de build.</para>
                   </listitem>
                 </varlistentry>
 
@@ -1253,18 +1268,20 @@ def findGroupsFor(def username) {
                   <term>Build</term>
 
                   <listitem>
-                    <para>Start a build job.</para>
+                    <para>Démarrer une tâche de build.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Workspace</term>
+                  <term>Espace de travail</term>
 
                   <listitem>
-                    <para>View and download the workspace contents for a build
-                    job. Remember, the workspace contains source code and
-                    artifacts, so if you want to protect these from general
-                    access, you should revoke this permission.</para>
+                    <para>Voir et télécharger le contenu de l'espace de
+                    travail pour une tâche de construction. Rappelez-vous,
+                    l'espace de travail contient le code source et les
+                    artefacts, donc si vous voulez protéger ces derniers d'un
+                    accès général, vous devriez enlever cette
+                    permission.</para>
                   </listitem>
                 </varlistentry>
 
@@ -1272,8 +1289,8 @@ def findGroupsFor(def username) {
                   <term>Release</term>
 
                   <listitem>
-                    <para>Start a Maven release for a project configured with
-                    the M2Release plugin.</para>
+                    <para>Démarrer une release Maven pour un projet configuré
+                    avec le plugin M2Release.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1281,34 +1298,34 @@ def findGroupsFor(def username) {
           </varlistentry>
 
           <varlistentry>
-            <term><emphasis>Run</emphasis></term>
+            <term><emphasis>Lancer</emphasis></term>
 
             <listitem>
-              <para>This <indexterm id="I_indexterm7_d1e10940"
+              <para>Ce <indexterm id="I_indexterm7_d1e10940"
                   significance="normal">
-                  <primary>build history</primary>
+                  <primary>historique de build</primary>
 
-                  <secondary>permissions for</secondary>
-                </indexterm>group covers rights related to particular builds
-              in the build history:</para>
+                  <secondary>permissions pour</secondary>
+                </indexterm>groupe couvre les droits relatifs à des builds
+              spécifiques de l'historique des builds :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Delete</term>
+                  <term>Supprimer</term>
 
                   <listitem>
-                    <para>Delete a build from the build history.</para>
+                    <para>Supprimer un build de l'historique de build.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Update</term>
+                  <term>Mettre à jour</term>
 
                   <listitem>
-                    <para>Update the description and other properties of a
-                    build in the build history. This can be useful if a user
-                    wants to leave a note about the cause of a build failure,
-                    for example.</para>
+                    <para>Mettre à jour la description et d'autres propriétés
+                    d'un build dans l'historique de build. Ceci peut être
+                    utile si un utilisateur veut laisser une note sur la cause
+                    des échecs de build, par exemple.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1316,33 +1333,33 @@ def findGroupsFor(def username) {
           </varlistentry>
 
           <varlistentry>
-            <term><emphasis>View</emphasis></term>
+            <term><emphasis>Voir</emphasis></term>
 
             <listitem>
-              <para>This group covers managing views:</para>
+              <para>Ce groupe couvre des vues de gestion :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Create</term>
+                  <term>Créer</term>
 
                   <listitem>
-                    <para>Create a new view.</para>
+                    <para>Créer une nouvelle vue.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Delete</term>
+                  <term>Supprimer</term>
 
                   <listitem>
-                    <para>Delete an existing view.</para>
+                    <para>Supprimer une vue existante.</para>
                   </listitem>
                 </varlistentry>
 
                 <varlistentry>
-                  <term>Configure</term>
+                  <term>Configurer</term>
 
                   <listitem>
-                    <para>Configure an existing view.</para>
+                    <para>Configurer une vue existante.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1350,18 +1367,19 @@ def findGroupsFor(def username) {
           </varlistentry>
 
           <varlistentry>
-            <term>SCM</term>
+            <term>Gestion de version</term>
 
             <listitem>
-              <para>Permissions related to your version control system:</para>
+              <para>Permissions relatives à votre système de contrôle de
+              version :</para>
 
               <variablelist>
                 <varlistentry>
                   <term>Tag</term>
 
                   <listitem>
-                    <para>Create a new tag in the source code repository for a
-                    given build.</para>
+                    <para>Créer un nouveau tag dans le dépôt de code source
+                    pour un build donné.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1369,20 +1387,21 @@ def findGroupsFor(def username) {
           </varlistentry>
 
           <varlistentry>
-            <term>Others</term>
+            <term>Autres</term>
 
             <listitem>
-              <para>There can also be other permissions available, depending
-              on the plugins installed. One useful one is:</para>
+              <para>Il peut y avoir d'autres permissions disponibles, en
+              fonction des plugins installés. Une permission utile est
+              :</para>
 
               <variablelist>
                 <varlistentry>
-                  <term>Promote</term>
+                  <term>Promouvoir</term>
 
                   <listitem>
-                    <para>If the Promoted Builds plugin is installed, this
-                    permission allows users to manually promote a
-                    build.</para>
+                    <para>Si le plugin Promoted Builds est installé, cette
+                    permission permet aux utilisateurs de promouvoir
+                    manuellement un build.</para>
                   </listitem>
                 </varlistentry>
               </variablelist>
@@ -1392,16 +1411,17 @@ def findGroupsFor(def username) {
       </sect3>
 
       <sect3>
-        <title>Help! I’ve locked myself out!</title>
+        <title>A l'aide ! Je me suis verrouillé tout seul !</title>
 
-        <para>Now it may happen that, during this process, you may end up
-        locking yourself out of Jenkins. This can happen if, for example, you
-        save the matrix configuration without having correctly set up your
-        administrator. If this happens, do not panic—there is an easy fix, as
-        long as you have access to Jenkins’s home directory. Simply open up
-        the <filename moreinfo="none">config.xml</filename> file at the root
-        of the Jenkins home directory. This will contain something like
-        this:</para>
+        <para>Il pourrait arriver que, pendant ce processus, vous vous
+        bloquiez tout seul l'accès à Jenkins. Ceci peut arriver si, par
+        exemple, vous sauvez la configuration matricielle sans avoir
+        correctement configuré votre administrateur. Si cela arrive, ne
+        paniquez pas — il y a une correction simple, du moment que vous avez
+        accès au répertoire racine de Jenkins. Ouvrez simplement le fichier
+        <filename moreinfo="none">config.xml</filename> à la racine du
+        répertoire de Jenkins. Il contiendra quelque chose de ce genre
+        :</para>
 
         <programlisting format="linespecific" id="I_programlisting7_d1e11019">&lt;hudson&gt;
     &lt;version&gt;1.391&lt;/version&gt;
@@ -1410,12 +1430,13 @@ def findGroupsFor(def username) {
     &lt;useSecurity&gt;true&lt;/useSecurity&gt;
     ...</programlisting>
 
-        <para>The thing to look for is the <code>&lt;useSecurity&gt;</code>
-        element. To restore your access to Jenkins, change this value to
-        false, and restart your server. You will now be able to access Jenkins
-        again, and set up your security configuration<indexterm
-            class="endofrange" id="I_indexterm7_d1e11026"
-            significance="normal" startref="ch07-matrix1">
+        <para>La chose à rechercher est l'élement
+        <code>&lt;useSecurity&gt;</code>. Pour restaurer votre accès à
+        Jenkins, changez cette valeur à false, et redémarrez votre serveur.
+        Vous pourrez alors à nouveau accéder à Jenkins, et mettre en place
+        votre configuration de sécurité<indexterm class="endofrange"
+            id="I_indexterm7_d1e11026" significance="normal"
+            startref="ch07-matrix1">
             <primary></primary>
           </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11028"
             significance="normal" startref="ch07-matrix2">
@@ -1423,7 +1444,7 @@ def findGroupsFor(def username) {
           </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11030"
             significance="normal" startref="ch07-matrix3">
             <primary></primary>
-          </indexterm> correctly.</para>
+          </indexterm> correctement.</para>
       </sect3>
     </sect2>
 
