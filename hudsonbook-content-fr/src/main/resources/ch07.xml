@@ -1779,59 +1779,61 @@ def findGroupsFor(def username) {
   </sect1>
 
   <sect1 id="sect-security-auditing">
-    <title>Auditing—Keeping Track of User Actions</title>
+    <title>Audit — Garder la trace des actions utilisateurs</title>
 
-    <para>In <indexterm class="startofrange" id="ch07-audit1"
+    <para>En <indexterm class="startofrange" id="ch07-audit1"
         significance="normal">
-        <primary>auditing user actions</primary>
+        <primary>auditer les actions utilisateurs</primary>
       </indexterm><indexterm class="startofrange" id="ch07-audit2"
         significance="normal">
-        <primary>users</primary>
+        <primary>utilisateurs</primary>
 
-        <secondary>auditing actions of</secondary>
-      </indexterm>addition to configuring user accounts and access rights, it
-    can also be useful to keep track of the individual user actions: in other
-    words, who did what to your server configuration. This sort of audit trail
-    facility is even required in many organizations.</para>
+        <secondary>auditer les actions de</secondary>
+      </indexterm>plus de configurer les comptes utilisateurs et leurs droits
+    d'accès, il peut être utile de garder des actions de chaque utilisateur :
+    en d'autres termes, qui a fait quoi à votre configuration serveur. Ce type
+    de traçage est même requis dans certaines organisations.</para>
 
-    <para>There are two Jenkins plugins that can help you do this. The Audit
-    Trail plugin keeps a record of user changes in a special log file. And the
-    JobConfigHistory plugin lets you keep a copy of previous versions of the
-    various system and job configuration files that Jenkins uses.</para>
+    <para>Il y a deux plugins Jenkins qui peuvent vous aider à accomplir cela.
+    Le plugin Audit Trail conserve un enregistrement des changements
+    utilisateur dans un fichier de log spécial. Et le plugin JobConfigHistory
+    vous permet de garder des copies de versions précédentes des diverses
+    configurations de tâches et du système que Jenkins utilise.</para>
 
-    <para>The<indexterm class="startofrange" id="ch07-at1"
+    <para>Le plugin<indexterm class="startofrange" id="ch07-at1"
         significance="normal">
         <primary>plugins</primary>
 
         <secondary>Audit Trail</secondary>
       </indexterm><indexterm class="startofrange" id="ch07-at2"
         significance="normal">
-        <primary>Audit Trail plugin</primary>
-      </indexterm> Audit Trail Plugin keeps track of the main user actions in
-    a set of rolling log files. To set this up, go to the Plugin Manager page
-    and select the Audit Trail plugin in the list of available plugins. Then,
-    as usual, click on Install and restart Jenkins once the plugin has been
-    downloaded.</para>
+        <primary>plugin Audit Trail</primary>
+      </indexterm> Audit Trail garde une trace des principales actions
+    utilisateur dans un ensemble de fichiers de logs tournants. Pour mettre
+    cela en place, allez dans la page Gérer les plugins et sélectionnez le
+    plugin Audit Trail dans la liste des plugins disponibles. Ensuite, comme
+    d'habitude, cliquez sur Installer et redémarrez Jenkins une fois que le
+    plugin a été téléchargé.</para>
 
-    <para>You can set up the audit trail configuration in the Audit Trail
-    section of the main Jenkins configuration page (see <xref
-    linkend="fig-hudson-security-audit-trail" />). The most important field is
-    the Log Location, which is where you indicate the directory in which the
-    log files are to be written. The audit trail is designed to produce
-    system-style log files, which are often placed in a special system
-    directory such as <filename moreinfo="none">/var/log</filename>. You can
-    also configure the number of log files to be maintained, and the
-    (approximate) maximum size of each file. The simplest option is to provide
-    an absolute path (such as <filename
-    moreinfo="none">/var/log/hudson.log</filename>), in which case Jenkins
-    will write to log files with names like <filename
+    <para>La configuration de l'audit trail s'effectue dans la section Audit
+    Trail de l'écran de configuration principal de Jenkins (voir <xref
+    linkend="fig-hudson-security-audit-trail" />). Le champ le plus important
+    est l'Emplacement des logs, qui indique où se trouve le répertoire dans
+    lequel les logs doivent être écrits. L'audit trail est conçu pour produire
+    des logs de style système, qui sont souvent placés dans un répertoire
+    système comme <filename moreinfo="none">/var/log</filename>. Vous pouvez
+    aussi configurer le nombre de fichiers de logs à maintenir, et la taille
+    maximale (approximative) de chaque fichier. L'option la plus simple est de
+    fournir un chemin absolu (comme <filename
+    moreinfo="none">/var/log/hudson.log</filename>), auquel cas Jenkins écrira
+    dans des fichiers de logs avec des noms comme <filename
     moreinfo="none">/var/log/hudson.log.1</filename>, <filename
-    moreinfo="none">/var/log/hudson.log.2</filename>, and so forth. Of course,
-    you need to ensure that the user running your Jenkins instance is allowed
-    to write to this directory.</para>
+    moreinfo="none">/var/log/hudson.log.2</filename>, et ainsi de suite. Bien
+    sûr, vous devez vous assurer que l'utilisateur exécutant votre instance
+    Jenkins peut écrire dans ce répertoire.</para>
 
     <figure float="0" id="fig-hudson-security-audit-trail">
-      <title>Configuring the Audit Trail plugin</title>
+      <title>Configurer le plugin Audit Trail</title>
 
       <mediaobject id="I_mediaobject7_d1e11294">
         <imageobject role="print">
@@ -1844,19 +1846,22 @@ def findGroupsFor(def username) {
       </mediaobject>
     </figure>
 
-    <para>You can also use the format defined in the Java logging <ulink
+    <para>Vous pouvez aussi utiliser le format défini dans la classe de l'API
+    de logging Java <ulink
     url="http://download.oracle.com/javase/1.5.0/docs/api/java/util/logging/FileHandler.html">FileHandler</ulink>
-    class for more control over the generated log files. In this format, you
-    can insert variables such as <literal moreinfo="none">%h</literal>, for
-    the current user’s home directory, and <literal
-    moreinfo="none">%t</literal>, for the system temporary directory, to build
-    a more dynamic file path.</para>
+    pour plus de contrôle sur les fichiers de log générés. Dans ce format,
+    vous pouvez insérer des variables telles que <literal
+    moreinfo="none">%h</literal>, pour le répertoire racine de l'utilisateur
+    courant, et <literal moreinfo="none">%t</literal>, pour le répertoire
+    temporaire du système, afin de construire un chemin de fichier plus
+    dynamique.</para>
 
-    <para>By default, the details recorded in the audit logs are fairly
-    sparse—they effectively record key actions performed, such as creating,
-    modifying or deleting job configurations or views, and the user who
-    performed the actions. The log also shows how individual build jobs
-    started. An extract of the default log is shown here:</para>
+    <para>Par défaut, les détails enregistrés dans les logs d'audit sont assez
+    légers — ils enregistrement effectivement les actions clés effectuées,
+    comme la création, la modification ou la suppression de configurations de
+    tâches ou de vues, ainsi que l'utilisateur qui a effectué ces actions. Le
+    log montre aussi comment les tâches individuelles ont été démarrées. Voici
+    un extrait du log par défaut :</para>
 
     <programlisting format="linespecific" id="I_programlisting7_d1e11312">Dec 27, 2010 9:16:08 AM /job/game-of-life/configSubmit by johnsmart
 Dec 27, 2010 9:16:42 AM /view/All/createItem by johnsmart
@@ -1868,22 +1873,24 @@ Dec 27, 2010 9:25:58 AM job/game-of-life-functional-tests/ #7 Started by upstrea
     project "game-of-life" build number 177
 Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
 
-    <para>This audit trail is certainly useful, especially from a system
-    administration perspective. However, it doesn’t provide any information
-    about the exact changes that were made to the Jenkins configuration.
-    Nevertheless, one of the most important reasons to keep track of user
-    actions in Jenkins is to keep tabs on exactly what changes were made to
-    build job configurations. When something goes wrong, it can be useful to
-    know what changes were done and so be able to undo them. The
-    JobConfigHistory plugin lets you do<indexterm class="endofrange"
-        id="I_indexterm7_d1e11316" significance="normal" startref="ch07-at1">
+    <para>L'audit trail est certainement utile, particulièrement avec une
+    perspective d'administration système. Toutefois, cela ne produit pas
+    d'information à propos des changements exacts qui ont été faits à la
+    configuration Jenkins. Néanmoins, une des raisons les plus importantes
+    pour garder des traces d'actions utilisateurs dans Jenkins est de savoir
+    quels changements ont été faits aux configurations de tâches de build.
+    Quand quelque chose se passe mal, il peut être utile de savoir quels
+    changements ont été faits et être donc capables de les défaire. Le plugin
+    JobConfigHistory vous permet justement de faire <indexterm
+        class="endofrange" id="I_indexterm7_d1e11316" significance="normal"
+        startref="ch07-at1">
         <primary></primary>
       </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11318"
         significance="normal" startref="ch07-at2">
         <primary></primary>
-      </indexterm> just this.</para>
+      </indexterm> cela.</para>
 
-    <para>The <indexterm class="startofrange" id="ch07-jobconfig"
+    <para>Le <indexterm class="startofrange" id="ch07-jobconfig"
         significance="normal">
         <primary>JobConfigHistory plugin</primary>
       </indexterm><indexterm class="startofrange" id="ch07-jobconfig2"
@@ -1891,15 +1898,16 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
         <primary>plugins</primary>
 
         <secondary>JobConfigHistory</secondary>
-      </indexterm>JobConfigHistory plugin is a powerful tool that lets you
-    keep a full history of changes made to both job and system configuration
-    files. You install it from the Plugin Manager in the usual way. Once
-    installed, you can fine-tune the job history configuration in the Manage
-    Jenkins screen (see <xref
+      </indexterm>plugin JobConfigHistory est un outil puissant vous
+    permettant de conserver l'historique complet des changements faits à la
+    fois sur les tâches et fichiers de configuration système. Vous l'installez
+    depuis le gestionnaire de plugin de la façon habituelle. Une fois
+    installé, vous pouvez régler finement la configuration de l'historique des
+    tâches dans l'écran Administrer Jenkins (voir <xref
     linkend="fig-hudson-security-confighistory-setup" />).</para>
 
     <figure float="0" id="fig-hudson-security-confighistory-setup">
-      <title>Setting up Job Configuration History</title>
+      <title>Mettre en place l'historique des configurations de tâches</title>
 
       <mediaobject id="I_mediaobject7_d1e11338">
         <imageobject role="print">
@@ -1912,39 +1920,43 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
       </mediaobject>
     </figure>
 
-    <para>Here, you can configure a number of useful nonstandard options. In
-    particular, you should specify a directory where Jenkins can store
-    configuration history, in the “Root history folder” field. This is the
-    directory where Jenkins will store a record of both system-related and
-    job-related configuration changes. It can be either an absolute directory
-    (such as <filename moreinfo="none">/var/hudson/history</filename>), or a
-    relative directory, calculated from the Jenkins home directory (see <xref
-    linkend="sec-hudson-home-directory" />). If you don’t do this, job
-    configuration history will be stored with the jobs, and will be lost if
-    you delete a job.</para>
+    <para>Ici, vous pouvez configurer un bon nombre d'options utiles non
+    standard. En particulier, vous devriez spécifier un répertoire où Jenkins
+    peut stocker l'historique de configuration, dans le champ "Répertoire
+    racine de l'historique”. C'est le répertoire dans lequel Jenkins stockera
+    un enregistrement des changements à la fois liés au système et aux
+    configuration de tâches. Cela peut être à la fois un répertoire absolu
+    (comme <filename moreinfo="none">/var/hudson/history</filename>), ou un
+    répertoire relatif, calculé à partir de la racine du répertoire de Jenkins
+    (voir <xref linkend="sec-hudson-home-directory" />). Si vous ne faites pas
+    cela, l'historique de configuration des tâches sera stockés dans les
+    tâches elles-mêmes, et tout sera perdu si vous supprimez une tâche.</para>
 
-    <para>There are a few other useful options in the Advanced section. The
-    “Save system configuration changes” checkbox lets you keep track of
-    system-wide configuration updates, and not just job-specific ones. And the
-    “Do not save duplicate history” checkbox allows you to avoid recording
-    configuration updates if no actual changes have been made. If not, a new
-    version of the configuration will be recorded, even if you have only
-    pressed the Save button without making any changes. Jenkins can also cause
-    this to happen internally—for example, system configuration settings are
-    all saved whenever the main configuration page is saved, even if no
-    changes have been made.</para>
+    <para>Il y a un certain nombre d'autres options utiles dans la section
+    Avancé. La case à cocher “Sauver les changements de configuration système”
+    vous permet de garder la trace de mise à jour de configuration de niveau
+    système, et non pas seulement de celles spécifiques aux tâches. Et la case
+    à cocher “Ne pas sauver d'historique dupliqué” vous permet d'éviter
+    d'avoir des enregistrements de configuration si aucun changement réel n'a
+    été effectué. Sinon, une nouvelle version du fichier de configuration sera
+    enregistrée, même si vous avez seulement appuyé sur le bouton Sauver sans
+    faire aucun changement. Jenkins peut aussi provoquer cela en interne - par
+    exemple, le paramétrage de de la configuration système est entièrement
+    sauvée à chaque fois que la page principale de configuration est sauvée,
+    même si aucune modification n'a été faite.</para>
 
-    <para>Once you have set up this plugin, you can access the configuration
-    history both for the whole server, including system configuration updates,
-    as well as the changes made to the configuration of each project. In both
-    cases, you can view these changes by clicking on the Job Config History
-    icon to the right of the screen. Clicking on this icon from the Jenkins
-    dashboard will display a view of all of your configuration history,
-    including job changes and system-wide changes (see <xref
+    <para>Une fois que vous avez mis ce plugin en place, vous pouvez accéder à
+    l'historique pour le serveur complet, incluant les mises à jour de
+    configuration système, aussi bien qu'aux changements effectués à la
+    configuration de chaque projet. Dans les deux cas, vous pouvez voir ces
+    changements en cliquant sur l'icône Job Config History sur la droite de
+    l'écran. Cliquer sur cette icône affichera une vue de tout votre
+    historique de configuration, incluant les changements de tâches and les
+    changements de niveau système (voir <xref
     linkend="fig-hudson-jobconfig-global-history" />).</para>
 
     <figure float="none" id="fig-hudson-jobconfig-global-history">
-      <title>Viewing Job Configuration History</title>
+      <title>Présentation de l'historique de configuration des tâches</title>
 
       <mediaobject id="I_mediaobject7_d1e11359">
         <imageobject role="print">
@@ -1957,18 +1969,19 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
       </mediaobject>
     </figure>
 
-    <para>If you click on a system-wide change (indicated by the “(system)”
-    suffix in the list), Jenkins takes you to a screen that lists all of the
-    versions of that file, and allows you to view the differences between the
-    different versions (see <xref
-    linkend="fig-hudson-jobconfig-config-history" />). The differences are
-    displayed as <emphasis>diff</emphasis> files, which is not particularly
-    readable in itself. However, for small changes, the readable XML format of
-    most of the Jenkins configuration files makes this sufficient to
-    understand what changes were made.</para>
+    <para>Si vous cliquez sur un changement de niveau système (indiqué par le
+    suffixe “(system)” dans la liste), Jenkins vous emmène vers un écran
+    listant toutes les versions de ce fichier, et vous permet de voir les
+    différences entre les versions (voir <xref
+    linkend="fig-hudson-jobconfig-config-history" />). Les différences sont
+    affichées sous la forme de fichiers <emphasis>diff</emphasis>, ce qui
+    n'est pas particulièrement lisible en soi. Toutefois, pour de petits
+    changements, le format XML lisible de Jenkins rend cela suffisant pour
+    comprendre le changement qui a été effectué.</para>
 
     <figure float="0" id="fig-hudson-jobconfig-config-history">
-      <title>Viewing differences in Job Configuration History</title>
+      <title>Voir les différences dans l'historique de configuration des
+      tâches</title>
 
       <mediaobject id="I_mediaobject7_d1e11374">
         <imageobject role="print">
@@ -1981,14 +1994,15 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
       </mediaobject>
     </figure>
 
-    <para>The JobConfigHistory plugin is a powerful tool. However, at the time
-    of writing, it does have its limits. As mentioned, the plugin only
-    displays the differences in raw <filename moreinfo="none">diff</filename>
-    format, and you can’t restore a previous version of a configuration file
-    (those doing this out of context could be dangerous in some circumstances,
-    particularly for system-wide configuration files). Nevertheless, it gives
-    a very clear picture of the changes that have been made, both to your
-    build jobs and to your system<indexterm class="endofrange"
+    <para>Le plugin JobConfigHistory est un outil puissant. Toutefois, à
+    l'écriture de ces lignes, il a ses limites. Comme mentionné, le plugin
+    affiche uniquement les différences au format <filename
+    moreinfo="none">diff</filename> brut, et vous ne pouvez pas restaurer une
+    version précédente d'un fichier de configuration (faire cela hors contexte
+    pourrait être dangereux dans certaines circonstances, particulièrement
+    pour les fichiers de configuration système). Cependant, il donne un aperçu
+    très clair des changements ayant été effectués, à la fois sur vos tâches
+    de construction et sur votre configuration<indexterm class="endofrange"
         id="I_indexterm7_d1e11384" significance="normal"
         startref="ch07-jobconfig">
         <primary></primary>
@@ -2001,7 +2015,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
       </indexterm><indexterm class="endofrange" id="I_indexterm7_d1e11390"
         significance="normal" startref="ch07-audit2">
         <primary></primary>
-      </indexterm> configuration.</para>
+      </indexterm> système.</para>
   </sect1>
 
   <sect1 id="sect-security-conclusion">
