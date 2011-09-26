@@ -13,10 +13,11 @@ do
 	localeVersion=`echo $englishVersion| sed "s/hudsonbook-content/hudsonbook-content-\$translation/g"`
 	englishSize=`du -sk $englishVersion| cut -f1`
 	localeSize=`du -sk $localeVersion| cut -f1`
-	
 	totalSize=$(( $englishSize + $totalSize ))
 	
 	#echo "$englishVersion ($englishSize kb) -> $localeVersion ($localeSize kb)"
+	
+	title=`grep "<title>" $englishVersion|head -1|sed "s/ *<title>//g"|sed "s/ *<\/title>//g"`
 	
 	echo -n "$englishVersion: "
 	if [[ `diff $englishVersion $localeVersion` ]]
@@ -26,10 +27,12 @@ do
 		translatedSize=$(( `diff $englishVersion $localeVersion |  egrep '^[<>]' | wc -c`/2000 ))
 		totalTranslatedSize=$(( $totalTranslatedSize + $translatedSize ))
 		#Note that sometimes, translation can be bigger than original, so display below can be disturbing :-) : 51/49 e.g.
-		echo "$translatedSize/$englishSize kB"
+		echo -n "$translatedSize/$englishSize kB"
 	else
-		echo "Untouched yet."
+		echo -n "Untouched yet."
 	fi
+	echo " (title: $title)"
+	
 done
 echo "Summary: $totalTranslatedSize/$totalSize"
 
