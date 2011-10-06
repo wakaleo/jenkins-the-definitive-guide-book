@@ -28,20 +28,20 @@
     mains propres et corriger les builds cassés plus rapidement.</para>
   </sect1>
   <sect1 id="sect-notification-email">
-    <title>Email Notification</title>
-    <para>Email <indexterm class="startofrange" id="ch08-email1" significance="normal"><primary>notifications</primary><secondary>email</secondary></indexterm><indexterm class="startofrange" id="ch08-email2" significance="normal"><primary>email notifications</primary></indexterm>notification is the most obvious and most common form of CI
-    notification. Email is well-known, ubiquitous, easy to use and easy to
-    configure (see <xref linkend="sect-configuration-email"/>). So, when
-    teams set up their first Continuous Integration environment, it is usually
-    the most common initial notification strategy they try.</para>
-    <para>You activate email notification in Jenkins by ticking the E-mail
-    Notification checkbox and providing the list of email addresses of the
-    people who need to be notified (see <xref linkend="fig-hudson-email-configuration"/>). By default, Jenkins will
-    send an email for <indexterm id="I_indexterm8_d1e11461" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11468" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11475" significance="normal"><primary>unstable builds</primary><secondary>notifications for</secondary></indexterm>every failed or unstable build. Remember, it will also send
-    a new email for the first successful build after a series of failed or
-    unstable builds, to indicate that the issue has been fixed.</para>
+    <title>Notification email</title>
+    <para>La notification <indexterm class="startofrange" id="ch08-email1" significance="normal"><primary>notifications</primary><secondary>email</secondary></indexterm><indexterm class="startofrange" id="ch08-email2" significance="normal"><primary>notifications email</primary></indexterm>email est la forme la plus évidente et la plus commune de
+    notification. L'email est bien connu, omniprésent, facile à utiliser et facile à
+    configurer (voir <xref linkend="sect-configuration-email"/>). Donc, quand
+    les équipes mettent en place leur premier environnement d'intégration continue, c'est généralement
+    la stratégie de notification initiale qu'ils essaient.</para>
+    <para>Vous activez les notifications email dans Jenkins en cochant la case Notification
+    par email et en fournissant la liste d'adresses email des
+    personnes qui doivent être notifiées (voir <xref linkend="fig-hudson-email-configuration"/>). Par défaut, Jenkins
+    enverra un email pour <indexterm id="I_indexterm8_d1e11461" significance="normal"><primary>tâches de build</primary><secondary>échoués</secondary><tertiary>notifications pour</tertiary></indexterm><indexterm id="I_indexterm8_d1e11468" significance="normal"><primary>tâches de build</primary><secondary>build instable de</secondary><tertiary>notifications pour</tertiary></indexterm><indexterm id="I_indexterm8_d1e11475" significance="normal"><primary>builds instables</primary><secondary>notifications pour</secondary></indexterm>chaque build échoué ou instable. Rappelez-vous, il enverra aussi
+    un nouvel email dès le premier build réussi après une série de builds échoués ou
+    instables, pour indiquer que le problème a été résolu.</para>
     <figure float="0" id="fig-hudson-email-configuration">
-      <title>Configuring email notification</title>
+      <title>Configurer les notifications email</title>
       <mediaobject id="I_mediaobject8_d1e11484">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0801.pdf" format="PDF"/>
@@ -51,59 +51,58 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Normally a build should not take too many tries to get working
-    again—developers should diagnose and reproduce the issue locally, fix it
-    locally, and only then commit their fix to version control. Repeated build
-    failures usually indicate either a chronic configuration issue or poor
-    developer practices (for example, developers committing changes without
-    checking that it works locally first).</para>
-    <para>You can also opt to send a separate email to any developers who have
-    committed changes to the broken build. This is generally a good idea, as
-    developers who have committed changes since the last build are naturally
-    the people who should be the most interested in the build results. Jenkins
-    will get the email address of the user from the currently-configured
-    security realm (see <xref linkend="sect-security-realms"/>), or by
-    deriving the email address from the SCM username if you have set this up
-    (see <xref linkend="sect-configuration-email"/>).</para>
-    <para>If you use this option, it may be less useful to include the entire
-    team in the main distribution list. You may want to simply include people
-    who will be interested in monitoring the result of every build (such as
-    technical leads), and let Jenkins inform <phrase role="keep-together">contributing</phrase> developers directly.</para>
-    <para>This assumes of course that the changes caused the build failure,
-    which is generally (but not always) the case. However, if the builds are
-    infrequent (for example, nightly builds, or if a build is queued for
-    several hours before finally kicking off), many changes may have been
-    committed, and it is hard to know which one was actually responsible for
-    the build failure.</para>
-    <para>Not all builds are alike when it comes to email notification.
-    Developers committing changes are particularly interested in the results
-    of the unit and integration test builds (especially those triggered by
-    their own changes), whereas BAs and testers might be more interested in
-    keeping tabs on the status of the automated acceptance tests. So the exact
-    email notification setup for each build job will be different. In fact, it
-    is useful to define an email notification strategy. A sample of such an
-    email notification strategy is outlined here:</para>
+    <para>Normallement, un build ne devrait pas prendre trop d'essais pour fonctionner à
+    nouveau—les développeurs doivent diagnostiquer et reproduire le problème localement, le corriger
+    localement, et alors seulement commiter leur correction dans le contrôle de version. Des erreurs répétées
+    de build indiquent généralement soit une erreur de configuration chronique soit des mauvaises
+    pratiques de développement (par exemple, des développeurs committant les modifications sans
+    vérifier que cela fonctionne localement d'abord).</para>
+    <para>Vous pouvez également choisir d'envoyer un email distinct à tous les développeurs qui ont
+    des changements committés dans le build échoué. C'est généralement une bonne idée, car
+    les développeurs qui ont committés des changements depuis le dernier build sont naturellement
+    les personnes qui devraient être les plus intéressées par les résultats du build. Jenkins
+    va récupérer l'adresse email de l'utilisateur à partir du domaine de sécurité courament
+    configuré (voir <xref linkend="sect-security-realms"/>), ou en
+    dérivant l'adresse email à partir de l'utilisateur du contrôle de version si vous l'avez configuré
+    (voir <xref linkend="sect-configuration-email"/>).</para>
+    <para>Si vous utilisez cette option, il peut être moins utile d'inclure l'équipe
+    entière dans la liste de distribution principale. Vous inclurez de préférence les personnes
+    qui seront intéressées par le suivi du résultat de chaque build (tels que
+    les responsables techniques), et laisser Jenkins informer les développeurs <phrase role="keep-together">contributeurs</phrase> directement.</para>
+    <para>Cela implique que les changements ont provoqué l'échec du build,
+    ce qui est généralement (mais pas toujours) le cas. Cependant, si les builds sont
+    peu fréquent (par exemple les builds nocturnes, ou si un build est en attente pendant
+    plusieurs heures avant d'être abandonné), de nombreux changements peuvent être
+    committés, et il est alors difficile de savoir lequel était en fait responsable
+    de l'échec du build.</para>
+    <para>Tous les builds ne sont pas semblables quand aux notifications email.
+    Les développeurs ayant committés des changements sont particulièrement intéressés par les résultats
+    des builds de tests unitaires et d'intégration (surtout ceux déclenchés par
+    leurs propres changements), alors que les testeurs seront plus intéressés par
+    jeter un coup d'oeil sur le statut des tests d'acceptance automatisés. Donc la
+    confuguration des notifications email sera différente pour chaque tâche de build. En fait, il
+    est utile de définir une stratégie de notification email. Un exemple d'une telle
+    stratégie de notification email est donné comme suit:</para>
     <itemizedlist>
       <listitem>
-        <para>Fast builds (unit/integration tests, runs in less than 5
-        minutes): notification is sent to the team lead and to developers
-        having committed changes.</para>
+        <para>Builds rapides (tests unitaires/d'intégration, s'exécutent en moins de 5
+        minutes): les notifications sont envoyées aux chefs d'équipes et aux développeurs
+        qui ont committés des changements.</para>
       </listitem>
       <listitem>
-        <para>Slow builds (acceptance tests builds, run after the fast
-        builds): notification is sent to team lead, testers and developers
-        having committed changes.</para>
+        <para>Builds lents (builds de tests d'acceptance, s'exécutent après les builds
+        rapides): les notifications sont envoyées aux chefs d'équipes, aux testeurs et aux développeurs
+        qui ont committés des changements.</para>
       </listitem>
       <listitem>
-        <para>Nightly builds (QA metrics, performance tests and so on; only
-        run if the other builds work): all team members—these provide a
-        snapshot picture of project health before the daily status
-        meeting.</para>
+        <para>Builds noctures (métriques de qualité, tests de performance et autres; s'exécutent uniquement
+        si les autres builds fonctionnent): tous les membres d'équipe—Ceux-ci fournissent une
+        photo instantanée de la santé du projet avant la réunion quotidienne.</para>
       </listitem>
     </itemizedlist>
-    <para>Indeed, you should consider what notification strategy is
-    appropriate for each build job on a case-by-case basis, rather than
-    applying a blanket policy for all build jobs.</para>
+    <para>En fait, vous devriez considérer quelle stratégie de notification est
+    appropriée pour chaque tâche de build au cas par cas, plutôt que
+    l'application d'une politique globale pour toutes les tâches de build.</para>
   </sect1>
   <sect1 id="sect-notification-advanced-email">
     <title>More Advanced Email Notification</title>
