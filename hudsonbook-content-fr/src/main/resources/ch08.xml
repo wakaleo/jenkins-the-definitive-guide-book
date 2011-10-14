@@ -105,25 +105,25 @@
     l'application d'une politique globale pour toutes les tâches de build.</para>
   </sect1>
   <sect1 id="sect-notification-advanced-email">
-    <title>More Advanced Email Notification</title>
-    <para>By default, Jenkins email notification is a rather blunt tool.
-    Notification messages are always sent to basically the same group of
-    people. You cannot send messages to different people depending on what
-    went wrong, or implement any sort of escalation policy. It would be
-    useful, for example, to be able to notify the developers who committed
-    changes the first time a build breaks, and send a different message to the
-    team lead or the entire team if the build breaks a second time</para>
-    <para>The<indexterm class="startofrange" id="ch08-ext1" significance="normal"><primary>plugins</primary><secondary>Email-ext</secondary></indexterm><indexterm class="startofrange" id="ch08-ext2" significance="normal"><primary>Email-ext plugin</primary></indexterm> Email-ext plugin lets you define a more refined email
-    notification strategy. This plugin adds an Editable Email Notification
-    checkbox (see <xref linkend="fig-hudson-email-ext-configuration"/>),
-    which effectively replaces the standard Jenkins email notification. Here,
-    you can define a default recipient list and fine-tune the contents of the
-    email message, and also define a more precise notification strategy with
-    different messages and recipient lists for different events. Note that
-    once you have installed and configured this plugin for your build job, you
-    can deactivate the normal E-mail Notification configuration.</para>
+    <title>Notification par email avancée</title>
+    <para>Par défaut, les notifications par email Jenkins sont un outil plutôt brut.
+    Les messages de notification sont toujours envoyés au même groupe de
+    personnes. Vous ne pouvez pas envoyer des messages à différentes personnes en fonction de ce
+    qui a mal tourné, ou mettre en œuvre toute sorte de politique d'escalade. Il serait
+    utile, par exemple, d'être en mesure de notifier les développeurs qui ont committés
+    les modifications la première fois qu'un build échoue, et envoyer un message différent au
+    chef d'équipe ou à l'équipe entière si le build échoue une seconde fois</para>
+    <para>Le<indexterm class="startofrange" id="ch08-ext1" significance="normal"><primary>plugins</primary><secondary>Email-ext</secondary></indexterm><indexterm class="startofrange" id="ch08-ext2" significance="normal"><primary>plugin Email-ext</primary></indexterm> plugin Email-ext vous permet de définir un stratégie de notification email plus
+    fine. Ce plugin ajoute une case Editable Email Notification
+    (voir <xref linkend="fig-hudson-email-ext-configuration"/>),
+    qui remplace efficacement la notification par email standard de Jenkins. Ainsi,
+    vous pouvez définir une liste de destinataire par défaut et affiner le contenu du
+    message électronique, et aussi définir une stratégie de notification plus précise avec les
+    différents messages et les listes de destinataires pour les différents événements. Notez qu'une
+    fois que vous avez installé et configuré ce plugin pour votre tâche de build, vous
+    pouvez désactiver la configuration normale de notification email.</para>
     <figure float="none" id="fig-hudson-email-ext-configuration">
-      <title>Configuring advanced email notification</title>
+      <title>Configurer les notifications email avancées</title>
       <mediaobject id="I_mediaobject8_d1e11539">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0802.pdf" format="PDF"/>
@@ -133,23 +133,22 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This plugin has two related but distinct functionalities. Firstly,
-    it lets you customize the email notification message. You can choose from
-    a large number of predefined tokens to create your own customized message
-    title and body. You include a token in your message template using the
-    familiar dollar notation (e.g., <literal moreinfo="none">${BUILD_NUMBER}</literal> or
-    <literal moreinfo="none">$BUILD_NUMBER)</literal>. Some of the tokens accept parameters,
-    which you can specify using a <literal moreinfo="none">name=value</literal> format (e.g.,
-    <literal moreinfo="none">${BUILD_LOG, maxLines=100}</literal> or <literal moreinfo="none">${ENV,
-    var="PATH"}</literal>). Among the more useful tokens are:</para>
+    <para>Ce plugin a deux fonctionnalités liées mais distinctes. Tout d'abord,
+    il vous permet de personnaliser le message de notification par email. Vous pouvez choisir parmi
+    un grand nombre de mots clés prédéfinis pour créer vos propres titre et corps du message
+    personnalisés. Vous incluez un mot clé dans votre modèle de message en utilisant la
+    notation familière dollar (e.g., <literal moreinfo="none">${BUILD_NUMBER}</literal> ou
+    <literal moreinfo="none">$BUILD_NUMBER)</literal>. Certains mots clés acceptent des paramètres,
+    que vous pouvez spécifier en utilisant le format <literal moreinfo="none">name=value</literal> (e.g.,
+    <literal moreinfo="none">${BUILD_LOG, maxLines=100}</literal> ou <literal moreinfo="none">${ENV,
+    var="PATH"}</literal>). Les mots clés les plus utiles sont:</para>
     <variablelist>
       <varlistentry>
         <term>
           <literal moreinfo="none">${DEFAULT_SUBJECT}</literal>
         </term>
         <listitem>
-          <para>The default email subject configured in the Jenkins system
-          configuration page</para>
+          <para>Le sujet par défaut configuré dans la page de configuration Jenkins</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -157,8 +156,7 @@
           <literal moreinfo="none">${DEFAULT_CONTENT}</literal>
         </term>
         <listitem>
-          <para>The default email content configured in the Jenkins system
-          configuration page</para>
+          <para>Le corps du message par défaut configuré dans la page de configuration Jenkins</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -166,7 +164,7 @@
           <literal moreinfo="none">${PROJECT_NAME}</literal>
         </term>
         <listitem>
-          <para>The project’s name</para>
+          <para>Le nom du projet</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -174,7 +172,7 @@
           <literal moreinfo="none">${BUILD_NUMBER}</literal>
         </term>
         <listitem>
-          <para>Current build number</para>
+          <para>Le numéro de build courant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -182,7 +180,7 @@
           <literal moreinfo="none">${BUILD_STATUS}</literal>
         </term>
         <listitem>
-          <para>Current build status (failing, success, etc.)</para>
+          <para>Le statut du build courant (échec, succès, etc.)</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -190,7 +188,7 @@
           <literal moreinfo="none">${CAUSE}</literal>
         </term>
         <listitem>
-          <para>The cause of the build</para>
+          <para>La cause du build</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -198,7 +196,7 @@
           <literal moreinfo="none">${BUILD_URL}</literal>
         </term>
         <listitem>
-          <para>A link to the corresponding build job page on Jenkins</para>
+          <para>Un lien vers la page correspondante du build sur Jenkins</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -206,8 +204,8 @@
           <literal moreinfo="none">${FAILED_TESTS}</literal>
         </term>
         <listitem>
-          <para>Shows information about failing unit tests, if any have
-          failed</para>
+          <para>Information sur les tests unitaires échoués, si certains ont
+          échoués</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -215,7 +213,7 @@
           <literal moreinfo="none">${CHANGES}</literal>
         </term>
         <listitem>
-          <para>Displays the changes made since the last build</para>
+          <para>Changements effectués depuis le dernier build</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -223,63 +221,63 @@
           <literal moreinfo="none">${CHANGES_SINCE_LAST_SUCCESS}</literal>
         </term>
         <listitem>
-          <para>All the changes made since the last successful build</para>
+          <para>Tous les changements effectués depuis le dernier build avec succès</para>
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>You can get a full list of the available tokens, and the options for
-    those that accept parameters, by clicking on the Help icon opposite the
-    Context Token Reference label.</para>
-    <para>The Advanced button lets you define a more sophisticated
-    notification strategy, based on the concept of triggers (see <xref linkend="fig-email-notification-triggers"/>). Triggers <indexterm id="I_indexterm8_d1e11638" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11645" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11652" significance="normal"><primary>unstable builds</primary><secondary>notifications for</secondary></indexterm>determine when email notification messages should be sent
-    out. The supported triggers include the following:</para>
+    <para>Vous pouvez obtenir une liste complète des mots clés disponibles, et les options pour
+    ceux qui acceptent des paramètres, en cliquant sur l'icône d'aide en face de 
+    Contexte Token Reference.</para>
+    <para>Le bouton Avancé vous permet de définir une statégie de notification
+    plus sophistiquée, basée sur le concept de triggers (voir <xref linkend="fig-email-notification-triggers"/>). Les triggers <indexterm id="I_indexterm8_d1e11638" significance="normal"><primary>tâches de build</primary><secondary>échoué</secondary><tertiary>notifications pour</tertiary></indexterm><indexterm id="I_indexterm8_d1e11645" significance="normal"><primary>tâche de build</primary><secondary>build instable de</secondary><tertiary>notifications pour</tertiary></indexterm><indexterm id="I_indexterm8_d1e11652" significance="normal"><primary>builds instables</primary><secondary>notifications pour</secondary></indexterm>déterminent quand les notifications email doivent être envoyées.
+    Les triggers supportés sont les suivants:</para>
     <variablelist>
       <varlistentry>
         <term>Failure</term>
         <listitem>
-          <para>Any time the build fails.</para>
+          <para>Chaque fois qu'un build échoue.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Still Failing</term>
         <listitem>
-          <para>Any successive build failures.</para>
+          <para>Pour tous les builds en échec suivants.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Unstable</term>
         <listitem>
-          <para>Any time a build is unstable.</para>
+          <para>Chaque fois qu'un build est instable.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Still Unstable</term>
         <listitem>
-          <para>Any successive unstable builds.</para>
+          <para>Pour tous les builds instables suivants.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Success</term>
         <listitem>
-          <para>Any successful build.</para>
+          <para>Pour chaque build avec succès.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Fixed</term>
         <listitem>
-          <para>When the build changes from Failure or Unstable to
-          Successful.</para>
+          <para>Quand un build passe d'échec ou instable à
+          succès.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>Before Build</term>
         <listitem>
-          <para>Sent before every build begins.</para>
+          <para>Avant chaque début de build.</para>
         </listitem>
       </varlistentry>
     </variablelist>
     <figure float="0" id="fig-email-notification-triggers">
-      <title>Configuring email notification triggers</title>
+      <title>Configurer les triggers de notification email</title>
       <mediaobject id="I_mediaobject8_d1e11704">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0803.pdf" format="PDF"/>
@@ -289,26 +287,26 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>You can set up as many (or as few) triggers as you like. The
-    recipients list and message template can be customized for each
-    trigger—for example, by using the Still Failing and Still Unstable
-    triggers, you can set up a notification strategy that only notifies
-    developer having committed changes the first time a build job fails, but
-    proceeds to notify the team leader if it fails a second time. You can
-    choose to send the message only to the developers who have committed to
-    this build (“Send to committers”), or to also include everyone who has
-    committed since the last successful build. This helps ensures that
-    everyone who may be involved in causing the build to break will be
-    notified <phrase role="keep-together">appropriately</phrase>.</para>
-    <para>You can also customize the content of the message by clicking on the
-    More Configuration option (as shown for the Still Failing trigger in <xref linkend="fig-email-notification-triggers"/>). This way, you can customize
-    different messages to be sent for different occasions.</para>
-    <para>The triggers interact intelligently. So if you configure both the
-    Failing and the Still Failing triggers, only the Still Failing trigger
-    will be activated on the second build failure.</para>
-    <para>An example of such a customized message is illustrated in <xref linkend="fig-hudson-email-notification-message"/>.</para>
+    <para>Vous pouvez configurer autant (ou aussi peu) de triggers que vous le souhaitez. La
+    liste des destinataires et le modèle de message peuvent être personnalisés pour chaque
+    trigger, par exemple en utilisant les triggers Still Failing et
+    Still Unstable, vous pouvez mettre en place une stratégie de notification qui avertit que
+    développeur ayant committé des changements la première fois qu'une tâche de build échoue, mais
+    continue à informer le chef d'équipe si elle échoue une seconde fois. Vous pouvez
+    choisir d'envoyer le message uniquement à des développeurs qui ont committés lors
+    du build («Send to committers"), ou d'inclure également tous ceux qui ont
+    committés depuis le dernier build avec succès. Cela assure que
+    tous ceux qui peuvent être impliqués dans l'échec du build seront
+    notifiés de manière <phrase role="keep-together">appropriée</phrase>.</para>
+    <para>Vous pouvez également personnaliser le contenu du message en cliquant sur
+    l'option More Configuration (comme indiqué pour le trigger Still Failing dans <xref linkend="fig-email-notification-triggers"/>). De cette façon, vous pouvez personnaliser
+    des messages différents qui seront envoyés dans des cas distincts.</para>
+    <para>Les triggers interagissent intelligement entre eux. Donc, si vous configurez à la fois le
+    trigger Failing et le trigger Still Failing, seul le trigger Still Failing
+    sera activé lors du second échec de build.</para>
+    <para>Un exemple d'un tel message personnalisé est illustré dans <xref linkend="fig-hudson-email-notification-message"/>.</para>
     <figure float="0" id="fig-hudson-email-notification-message">
-      <title>Customized notification message</title>
+      <title>Message de notification personnalisé</title>
       <mediaobject id="I_mediaobject8_d1e11728">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0804.pdf" format="PDF"/>
@@ -318,16 +316,15 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Overall, however, as a notification strategy, email is not without
-    its faults. Some developers shut down their email clients at times to
-    avoid being interrupted. In large organizations, the number of email
-    messages arriving each day can be considerable, and build failure
-    notifications can be hidden among a host of other less important messages.
-    So build failures may not always get the high-priority attention they
-    require in a finely-tuned CI environment. In the following sections, we
-    will look at some other notification strategies that can be used to raise
-    team awareness of failed builds and encourage developers to get them
-    fixed<indexterm id="I_indexterm8_d1e11735" class="endofrange" startref="ch08-ext1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11737" class="endofrange" startref="ch08-ext2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11739" class="endofrange" startref="ch08-email1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11741" class="endofrange" startref="ch08-email2" significance="normal"><primary>email notifications</primary></indexterm> faster.</para>
+    <para>Globalement, toutefois, comme stratégie de notification, l'email n'est pas sans
+    défaut. Certains développeurs ferment leurs clients de messagerie par moment afin
+    d'éviter d'être interrompu. Dans les grandes organisations, le nombre d'emails
+    qui arrivent chaque jour peut être considérable, et les notifications d'échec de
+    de build peuvent être cachées parmi une foule d'autres messages moins importants.
+    Donc les échecs de build peuvent ne pas avoir toujours l'attention prioritaire qu'ils
+    demandent dans un environnement d'intégration continue finement réglé. Dans les sections suivantes, nous
+    nous pencherons sur certaines stratégies de notification autres qui peuvent être utilisées pour augmenter
+    la sensibilisation des équipes sur les builds échoués et encourager les développeurs à les corriger<indexterm id="I_indexterm8_d1e11735" class="endofrange" startref="ch08-ext1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11737" class="endofrange" startref="ch08-ext2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11739" class="endofrange" startref="ch08-email1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e11741" class="endofrange" startref="ch08-email2" significance="normal"><primary>notifications email</primary></indexterm> plus vite.</para>
   </sect1>
   <sect1 id="sect-notification-claiming">
     <title>Claiming Builds</title>
