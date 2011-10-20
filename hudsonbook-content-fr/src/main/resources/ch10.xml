@@ -137,40 +137,41 @@
       </figure>
     </sect2>
     <sect2>
-      <title>Adapting Your Builds to Work with Parameterized Build
-      Scripts</title>
-      <para>Once<indexterm class="startofrange" id="ch10-script"
+      <title>Adapter vos build pour travailler avec des scripts de builds
+      paramétrés</title>
+      <para>Une fois<indexterm class="startofrange" id="ch10-script"
           significance="normal">
           <primary>scripts</primary>
-          <secondary>parameterized</secondary>
+          <secondary>paramétrés</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-script2"
           significance="normal">
-          <primary>parameterized build jobs</primary>
-          <secondary>build scripts for</secondary>
+          <primary>tâches de build paramétrées</primary>
+          <secondary>scripts de build pour</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-script3"
           significance="normal">
-          <primary>build jobs</primary>
-          <secondary>parameterized</secondary>
-          <tertiary>build scripts for</tertiary>
+          <primary>tâches de build</primary>
+          <secondary>paramétrées</secondary>
+          <tertiary>tâches de build paramétrées</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14004"
           significance="normal">
-          <primary>build scripts</primary>
+          <primary>scripts de build</primary>
           <see>scripts</see>
-        </indexterm> you have added a parameter, you need to configure your
-      build scripts to use it. Choosing the parameter name well is important
-      here, as this is also the name of the variable that Jenkins will pass
-      through as an <indexterm id="I_indexterm10_d1e14010"
+        </indexterm> que vous avez ajouté un paramètre, vous devez configurer
+      vos scripts de build pour l'utiliser. Bien choisir le nom du paramètre
+      est important, parce que c'est aussi le nom de la variable que Jenkins
+      passera comme <indexterm id="I_indexterm10_d1e14010"
           significance="normal">
-          <primary>environment variables</primary>
-          <secondary>build parameters as</secondary>
-        </indexterm>environment variable when it runs the build job. To
-      illustrate this, consider the very basic build job configuration in
-      <xref linkend="fig-hudson-parameterized-shell" />, where we are simply
-      echoing the build parameter back out to the console. Note that, to make
-      the environment variables more portable across operating systems, it is
-      good practice to put them all in upper case.</para>
+          <primary>variables d'environnement</primary>
+          <secondary>paramètres de build comme</secondary>
+        </indexterm>variable d'environnement lorsqu'il lance la tâche de
+      build. Pour illustrer cela, considérons la configuration de build très
+      basique de <xref linkend="fig-hudson-parameterized-shell" />, où on
+      affiche simplement le paramètre de build en retour dans la console.
+      Notez que, pour rendre les variables plus portables à travers différents
+      systèmes d'exploitation, il est une bonne pratique de les mettre en
+      majuscules.</para>
       <figure float="0" id="fig-hudson-parameterized-shell">
-        <title>Demonstrating a build parameter</title>
+        <title>Démonstration d'un paramètre de build</title>
         <mediaobject id="I_mediaobject10_d1e14021">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1004.pdf" format="PDF" />
@@ -180,8 +181,8 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>When we run this, we get a console output along the following
-      lines:</para>
+      <para>Quand on exécute cela, on obtient les lignes suivantes dans la
+      console :</para>
       <screen format="linespecific">Started by user anonymous
 Building on master
 [workspace] $ /bin/sh -xe /var/folders/y+/y+a+wZ-jG6WKHEm9KwnSvE+++TI/-Tmp-/
@@ -190,24 +191,26 @@ jenkins5862957776458050998.sh
 <userinput moreinfo="none">Version=1.2.3</userinput>
 Notifying upstream projects of job completion
 Finished: SUCCESS</screen>
-      <para>You can also use these environment variables from within your
-      build scripts. For example, in an Ant or Maven build, you can use the
-      special <literal moreinfo="none">env</literal> property to access the
-      current environment variables:</para>
+      <para>Vous pouvez aussi utiliser ces variables d'environnement depuis
+      l'intérieur de vos scripts de build. Par exemple, dans un build Ant ou
+      Maven, vous pouvez utiliser la propriété spéciale <literal
+      moreinfo="none">env</literal> pour accéder aux variables d'environnement
+      courantes :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14041">&lt;target name="printversion"&gt;
   &lt;property environment="env" /&gt;
   &lt;echo message="${env.VERSION}"/&gt;
 &lt;/target&gt;</programlisting>
-      <para>Another option is to pass the <indexterm
+      <para>Une autre option consiste à passer les <indexterm
           id="I_indexterm10_d1e14045" significance="normal">
-          <primary>properties</primary>
-          <secondary>build parameters as</secondary>
-        </indexterm>parameter into the build script as a property value. The
-      following is a more involved example from a Maven POM file. In this
-      example, Maven is configured to deploy a specific WAR file. We provide
-      the version of the WAR file to be deployed in the <literal
-      moreinfo="none">target.version</literal> property, which is used in the
-      dependency declaration, as shown below:</para>
+          <primary>propriétés</primary>
+          <secondary>paramètres de build comme</secondary>
+        </indexterm>paramètres au script de build comme une valeur de
+      propriété. Ce qui suit est un exemple plus pratique d'un fichier de POM
+      Maven. Dans cet exemple, Maven est configuré pour déployer un fichier
+      WAR spécifique. Nous fournissons la version du fichier WAR à déployer
+      dans la propriété <literal moreinfo="none">target.version</literal>, qui
+      est utilisé dans la déclaration de la dépendance, comme montré
+      ci-dessous :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14054">  ...
   &lt;dependencies&gt;
     &lt;dependency&gt;
@@ -221,13 +224,14 @@ Finished: SUCCESS</screen>
     &lt;target.version&gt;RELEASE&lt;/target.version&gt;
     ...
   &lt;/properties&gt;</programlisting>
-      <para>When we invoke Maven, we pass in the parameter as one of the build
-      properties (see <xref linkend="fig-hudson-inject-parameter-maven" />).
-      We can then use a tool like Cargo to do the actual deployment—Maven will
-      download the requested version of the WAR file from the local Enterprise
-      Repository Manager, and deploy it to an application server.</para>
+      <para>Quand on invoque Maven, on passe le paramètre comme l'une des
+      propriétés du build (voir <xref
+      linkend="fig-hudson-inject-parameter-maven" />). On peut ensuite
+      utiliser un outil comme Cargo pour faire le déploiement réel — Maven
+      téléchargera la version demandée du WAR depuis le gestionnaire de dépôt
+      d'entreprise, et la déploiera dans le serveur d'application.</para>
       <figure float="none" id="fig-hudson-inject-parameter-maven">
-        <title>Adding a parameter to a Maven build job</title>
+        <title>Ajouter un paramètre à la tâche de build Maven</title>
         <mediaobject id="I_mediaobject10_d1e14066">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1005.pdf" format="PDF" />
@@ -237,12 +241,12 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>That, in a nutshell, is how you can integrate build job parameters
-      into your build. In addition to plain old String parameters, however,
-      there are a few more sophisticated parameter types, that we will look at
-      in the following <indexterm class="endofrange"
-          id="I_indexterm10_d1e14074" significance="normal"
-          startref="ch10-script">
+      <para>Ceci, en résumé, montre comment vous pouvez intégrer des
+      paramètres de tâches de build dans vos builds. En plus de bons vieux
+      paramètres de type chaîne de caractères, toutefois, il existe quelques
+      types de paramètres plus sophistiqués, que nous regarderons dans les
+      <indexterm class="endofrange" id="I_indexterm10_d1e14074"
+          significance="normal" startref="ch10-script">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14076"
           significance="normal" startref="ch10-script2">
@@ -250,10 +254,10 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14078"
           significance="normal" startref="ch10-script3">
           <primary></primary>
-        </indexterm>paragraphs (see <xref
+        </indexterm>paragraphes suivants (voir <xref
       linkend="fig-hudson-build-parameter-types" />).</para>
       <figure float="0" id="fig-hudson-build-parameter-types">
-        <title>Many different types of parameters are available</title>
+        <title>Différents types de paramètres sont disponibles</title>
         <mediaobject id="I_mediaobject10_d1e14086">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1006.pdf" format="PDF" />
