@@ -462,37 +462,38 @@ Finished: SUCCESS</screen>
       </figure>
     </sect2>
     <sect2 id="sect-building-git-tag">
-      <title>Building from a Git Tag</title>
-      <para>Building<indexterm class="startofrange" id="ch10-git1"
+      <title>Construire à partir d'un tag Git</title>
+      <para>Construire <indexterm class="startofrange" id="ch10-git1"
           significance="normal">
-          <primary>parameterized build jobs</primary>
-          <secondary>run against a Git tag</secondary>
+          <primary>tâches de build paramétrées</primary>
+          <secondary>exécutées sur un tag Git</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-git2"
           significance="normal">
-          <primary>build jobs</primary>
-          <secondary>parameterized</secondary>
-          <tertiary>run against a Git tag</tertiary>
+          <primary>tâches de build</primary>
+          <secondary>paramétrées</secondary>
+          <tertiary>exécutées sur un tag Git</tertiary>
         </indexterm><indexterm class="startofrange" id="ch10-git3"
           significance="normal">
           <primary>Git</primary>
-          <secondary>tags, building against</secondary>
-        </indexterm> from a Git tag is not as simple as doing so from a
-      Subversion tag, though you can still use a parameter to indicate which
-      tag to use. Indeed, because of the very nature of Git, when Jenkins
-      obtains a copy of the source code from Git, it clones the Git
-      repository, including all of the tags. Once you have the latest version
-      of the repository on your Jenkins server, you can then proceed to
-      checkout a tagged version using <literal moreinfo="none">git checkout
+          <secondary>tags, exécuter sur </secondary>
+        </indexterm>à partir d'un tag Git n'est pas aussi simple que de le
+      faire à partir d'un tag Subversion, bien que vous puissisez toujours
+      utiliser un paramètre pour indiquer quel tag utiliser. En effet, à cause
+      de la nature même de Git, quand Jenkins obtient une copie du code source
+      depuis Git, il clone le dépôt Git, en incluant tous les tags. Une fois
+      que vous avez la dernière version du dépôt sur votre serveur Jenkins,
+      vous pouvez ensuite procéder à la récupération d'une version en
+      utilisant <literal moreinfo="none">git checkout
       &lt;tagname&gt;</literal>.</para>
-      <para>To set this up in Jenkins, you first need to add a String
-      parameter to your build job (called <literal
-      moreinfo="none">RELEASE</literal> in this example—see <xref
-      linkend="fig-jenkins-git-release-param" />). Unlike the Subversion
-      support, there is no way to list the available Git tags in a drop-down
-      list, so users will need to know the name of the tag they want to
-      release.</para>
+      <para>Pour configurer cela avec Jenkins, vous devez commencer par
+      ajouter un paramètre String à votre tâche de build (appelée <literal
+      moreinfo="none">RELEASE</literal> dans cet exemple — voir <xref
+      linkend="fig-jenkins-git-release-param" />). Contrairement au support
+      Subversion, il n'est pas possible de lister les tags Git disponibles
+      dans une liste déroulante, les utilisateur devront donc connaître le nom
+      du tag qu'ils veulent livrer.</para>
       <figure float="none" id="fig-jenkins-git-release-param">
-        <title>Configuring a parameter for a Git tag</title>
+        <title>Configurer un paramètre pour un tag Git</title>
         <mediaobject id="I_mediaobject10_d1e14310">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1012.pdf" format="PDF" />
@@ -502,15 +503,16 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have added this parameter, you need to checkout the
-      corresponding tag once the repository has been cloned locally. So if you
-      have a freestyle build, the first build step would be a command-line
-      call to Git to check out the tag referenced by the <literal
-      moreinfo="none">RELEASE</literal> parameter (see <xref
-      linkend="fig-jenkins-git-tag" />). Of course a more portable way to do
-      this would be to write a simple Ant or Groovy script to do the same
-      thing in a more<indexterm class="endofrange" id="I_indexterm10_d1e14322"
-          significance="normal" startref="ch10-git1">
+      <para>Une fois que vous avez ajouté ce paramètre, vous devez faire un
+      checkout du tag correspondant quand le dépôt a été cloné localement.
+      Ainsi, si vous avez un build freestyle, la première étape du build sera
+      un appel en ligne de commande à Git pour faire un checkout du tag
+      référencé par le paramètre <literal moreinfo="none">RELEASE</literal>
+      (voir <xref linkend="fig-jenkins-git-tag" />). Bien sûr, un moyen plus
+      portable de faire cela serait d'écrire un simple script Ant ou Groovy
+      pour faire l'équivalent d'une façon plus<indexterm class="endofrange"
+          id="I_indexterm10_d1e14322" significance="normal"
+          startref="ch10-git1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14324"
           significance="normal" startref="ch10-git2">
@@ -518,9 +520,9 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14326"
           significance="normal" startref="ch10-git3">
           <primary></primary>
-        </indexterm> OS-neutral way.</para>
+        </indexterm> indépendante du système d'exploitation.</para>
       <figure float="0" id="fig-jenkins-git-tag">
-        <title>Building from a Git tag</title>
+        <title>Construire à partir d'un tag Git</title>
         <mediaobject id="I_mediaobject10_d1e14332">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1013.pdf" format="PDF" />
