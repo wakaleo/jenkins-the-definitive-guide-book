@@ -734,58 +734,61 @@ Finished: SUCCESS</screen>
   </sect1>
 
   <sect1 id="sect-advanced-builds-triggers">
-    <title>Parameterized Triggers</title>
+    <title>Déclencheurs paramétrés</title>
 
-    <para>When <indexterm class="startofrange" id="ch10-trig1"
+    <para>Quand <indexterm class="startofrange" id="ch10-trig1"
         significance="normal">
-        <primary>parameterized triggers</primary>
+        <primary>déclencheurs paramétrés</primary>
       </indexterm><indexterm class="startofrange" id="ch10-trig2"
         significance="normal">
-        <primary>build triggers</primary>
+        <primary>déclencheurs de build</primary>
 
-        <secondary>parameterized</secondary>
-      </indexterm>you trigger another build job from within a parameterized
-    build job, it is often useful to be able to pass the parameters of the
-    current build job to the new one. Suppose, for example, that you have an
-    application that needs to be tested against several different databases.
-    As we have seen, you could do this by setting up a parameterized build job
-    that accepts the target database as a parameter. You may want to kick of a
-    series of builds, all of which will need this parameter.</para>
+        <secondary>paramétrés</secondary>
+      </indexterm>vous déclenchez une autre tâche de build depuis une tâche de
+    build paramétrée, il est souvent utile de pouvoir passer les paramètres du
+    build courant au nouveau. Supposons, par exemple, que vous ayez une
+    application qui doit être testée sur plusieurs bases de données
+    différentes. Comme nous l'avons vu, vous pourriez faire cela en
+    configurant une tâche de build paramétrée qui accepte la base de données
+    cible en paramètre. Vous sélectionneriez une série de builds, et tous
+    auraient besoin de ce paramètre.</para>
 
-    <para>If you try to do this using the conventional “Build other projects”
-    option in the Post-Build Actions section, it won’t work. In fact, you
-    can’t trigger a parameterized build in this way.</para>
+    <para>Si vous essayez de faire cela en utiliser l'option conventionnelle
+    "Construire d'autres projets" dans la section Actions Post-Build, cela ne
+    marchera pas. En effet, vous ne pouvez pas déclencher un build paramétré
+    de cette façon.</para>
 
-    <para>However, <indexterm id="I_indexterm10_d1e14434"
+    <para>Toutefois, <indexterm id="I_indexterm10_d1e14434"
         significance="normal">
         <primary>plugins</primary>
 
         <secondary>Parameterized Trigger</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e14439" significance="normal">
         <primary>Parameterized Trigger plugin</primary>
-      </indexterm>you can do this using the Jenkins Parameterized Trigger
-    plugin. This plugin lets you configure your build jobs to both trigger
-    parameterized builds, and to pass arbitrary parameters to these
-    builds.</para>
+      </indexterm>vous pouvez le faire en utilisent le plugin Jenkins
+    Parameterized Trigger. Ce plugin vous permet de configurer vos tâches de
+    build à la fois pour déclencher des builds paramétrés et pour passer des
+    paramètres arbitraires à ces builds.</para>
 
-    <para>Once you install this plugin, you will find the option of
-    “Triggering parameterized builds on other projects” in your build job
-    configuration page (see <xref
-    linkend="fig-hudson-build-parameters-trigger" />). This lets you start
-    another build job in a number of ways. In particular, it lets you kick off
-    a subsequent build job, passing the current parameters to this new build
-    job, which is impossible to do with a normal triggered build. The best way
-    to see how this works is through an example.</para>
+    <para>Une fois que vous avez installé ce plugin, vous trouverez l'option
+    “Déclencher des builds paramétrés sur d'autres projets” dans la page de
+    configuration de votre tâche de build (voir <xref
+    linkend="fig-hudson-build-parameters-trigger" />). Ceci vous permet de
+    démarrer une autre tâche de build de différentes façons. En particulier,
+    vous pouvez lancer une tâche de build ultérieure, en passant les
+    paramètres courant à cette nouvelle tâche, ce qui est impossible à faire
+    avec un builld paramétré normal. La meilleure façon de voir comment cela
+    fonctionne est au travers d'un exemple.</para>
 
-    <para>In <xref linkend="fig-hudson-build-parameters-unit-test" /> we have
-    an initial build job. This build job takes a single parameter, <literal
-    moreinfo="none">DATABASE</literal>, which specifies the database to be
-    used for the tests. As we have seen, the user will be prompted to enter
-    this value whenever the build is started.</para>
+    <para>Dans <xref linkend="fig-hudson-build-parameters-unit-test" /> nous
+    avons une tâche de build initiale. Cette tâche prend un unique paramètre,
+    <literal moreinfo="none">DATABASE</literal>, qui spécifie la base de
+    données à utiliser pour les tests. Comme nous l'avons vu, Jenkins
+    demandera à l'utilisateur de saisir cette valeur à chaque fois qu'un build
+    sera lancé.</para>
 
     <figure float="0" id="fig-hudson-build-parameters-unit-test">
-      <title>Jenkins stores what parameter values where used for each
-      build</title>
+      <title>Tâche de build paramétrée pour des tests unitaires</title>
 
       <mediaobject id="I_mediaobject10_d1e14457">
         <imageobject role="print">
@@ -798,14 +801,15 @@ Finished: SUCCESS</screen>
       </mediaobject>
     </figure>
 
-    <para>Now suppose we want to trigger a second build job to run more
-    comprehensive integration tests once this first build job has finished.
-    However we need it to run the tests against the same database. We can do
-    this by setting up a parameterized trigger to start this second build job
-    (see <xref linkend="fig-hudson-build-parameters-trigger" />).</para>
+    <para>Supposons maintenant que nous voulons déclencher une seconde tâche
+    de build pour exécuter des tests d'intégration plus complets une fois que
+    la première tâche a terminé. Cependant nous avons besoin d'exécuter les
+    tests sur la même base de données. On peut faire cela en configurant un
+    déclencheur paramétré pour démarrer cette seconde tâche (voir <xref
+    linkend="fig-hudson-build-parameters-trigger" />).</para>
 
     <figure float="0" id="fig-hudson-build-parameters-trigger">
-      <title>Adding a parameterized trigger to a build job</title>
+      <title>Ajouter un déclencheur paramétré à une tâche de build</title>
 
       <mediaobject id="I_mediaobject10_d1e14469">
         <imageobject role="print">
@@ -818,26 +822,27 @@ Finished: SUCCESS</screen>
       </mediaobject>
     </figure>
 
-    <para>In this case, we are simple passing through the current build
-    parameters. This second build job will automatically be started after the
-    first one, with the <literal moreinfo="none">DATABASE</literal> parameter
-    value provided by the user. You can also fine-tune the triggering policy,
-    by telling Jenkins when the build should be triggered. Typically, you
-    would only trigger a downstream build after your build has completed
-    successfully, but with the Parameterized Trigger plugin you can also
-    configure builds to be triggered even if the build is unstable, only when
-    the build fails or ask for it to be triggered no matter what the outcome
-    of the first build. You can even set up multiple triggers for the same
-    build job.</para>
+    <para>Dans ce cas, nous passons simplement les paramètres de build
+    courants. Cette seconde tâche de build démarrera automatiquement après la
+    première, avec la valeur du paramètre <literal
+    moreinfo="none">DATABASE</literal> fournie par l'utilisateur. Vous pouvez
+    aussi configurer finement la politique de déclenchement en indiquant à
+    Jenkins quand le build doit être lancé. Typiquement, vous déclencheriez
+    seulement un build aval après que votre build a réussi, mais avec le
+    plugin Parameterized Trigger vous pouvez aussi configurer les builds pour
+    se déclencher même si le build est instable, seulement quand le build
+    échoue ou demander à ce qu'il soit déclenché quoi qu'il arrive au premier
+    build. Vous pouvez même configurer plusieurs déclencheurs pour la même
+    tâche de build.</para>
 
-    <para>Naturally, the build job that you trigger must be a parameterized
-    build job (as illustrated in <xref
-    linkend="fig-hudson-build-parameters-integration-test" />), and you must
-    pass through all of the parameters it requires.</para>
+    <para>Naturellement, la tâche de build que vous déclenchez doit être une
+    tâche de build paramétrée (comme illustré dans <xref
+    linkend="fig-hudson-build-parameters-integration-test" />), et vous devez
+    transmettre tous les paramètres qu'elle requiert.</para>
 
     <figure float="0" id="fig-hudson-build-parameters-integration-test">
-      <title>The build job you trigger must also be a parameterized build
-      job</title>
+      <title>La tâche de build que vous déclenchez doit aussi être une tâche
+      paramétrée</title>
 
       <mediaobject id="I_mediaobject10_d1e14487">
         <imageobject role="print">
@@ -850,28 +855,28 @@ Finished: SUCCESS</screen>
       </mediaobject>
     </figure>
 
-    <para>This feature actually has much broader applications than simply
-    passing through the current build parameters. You can also trigger a
-    parameterized build job with an arbitrary set of parameters, or use a
-    combination of parameters that were passed to the current build, and your
-    own additional ones. Or, if you have a lot of parameters, you can load
-    them from a properties file. In <xref
-    linkend="fig-hudson-build-parameters-deploy-trigger" />, we are passing
-    both the current build parameters (the <literal
-    moreinfo="none">DATABASE</literal> variable in this case), and an
-    additional parameter <indexterm class="endofrange"
-        id="I_indexterm10_d1e14499" significance="normal"
-        startref="ch10-trig1">
+    <para>Cette fonctionnalité possède en fait des applications bien plus
+    larges que de simplement transmettre les paramètres du build courant. Vous
+    pouvez aussi déclencher une tâche de build paramétrée avec un ensemble
+    arbitraire de paramètres, ou utiliser une combinaison de paramètres passés
+    au build courant, et vos propres paramètres traditionnels. Ou alors, si
+    vous avez beaucoup de paramètres, vous pouvez les charger à partir d'un
+    fichier de propriétés. Dans <xref
+    linkend="fig-hudson-build-parameters-deploy-trigger" />, nous passons à la
+    fois les paramètres du build courant (la variable <literal
+    moreinfo="none">DATABASE</literal> dans ce cas), et un paramètre
+    additionnel <indexterm class="endofrange" id="I_indexterm10_d1e14499"
+        significance="normal" startref="ch10-trig1">
         <primary></primary>
       </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14501"
         significance="normal" startref="ch10-trig2">
         <primary></primary>
-      </indexterm>called <literal
+      </indexterm>appelé <literal
     moreinfo="none">TARGET_PLATFORM</literal>.</para>
 
     <figure float="0" id="fig-hudson-build-parameters-deploy-trigger">
-      <title>Passing a predefined parameter to a parameterized build
-      job</title>
+      <title>Passer un paramètre prédéfini à une tâche de build
+      paramétrée</title>
 
       <mediaobject id="I_mediaobject10_d1e14510">
         <imageobject role="print">
