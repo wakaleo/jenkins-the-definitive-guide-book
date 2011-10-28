@@ -1336,45 +1336,47 @@ Finished: SUCCESS</screen>
   </sect1>
 
   <sect1 id="I_sect110_d1e14808">
-    <title>Generating Your Maven Build Jobs Automatically</title>
+    <title>Générer vos tâches de build Maven automatiquement</title>
 
-    <para><emphasis>Contributed by Evgeny Goldin</emphasis></para>
+    <para><emphasis>Rédigé par Evgeny Goldin</emphasis></para>
 
-    <para>As <indexterm class="startofrange" id="ch10-mavengen"
+    <para>Comme <indexterm class="startofrange" id="ch10-mavengen"
         significance="normal">
-        <primary>Maven build jobs</primary>
+        <primary>tâches de build Maven</primary>
 
-        <secondary>generating automatically</secondary>
-      </indexterm>mentioned in the previous section, the number of build jobs
-    that your Jenkins server will host can vary. As the number of build jobs
-    grows, it becomes harder not only to view them in Jenkins dashboard, but
-    to configure them as well. Imagine what would it take to configure 20 to
-    50 Jenkins jobs one-by-one! In addition, many of those jobs may have
-    common configuration elements, such as Maven goals or build memory
-    settings, which results in duplicated configuration and higher maintenance
-    overhead.</para>
+        <secondary>générer automatiquement</secondary>
+      </indexterm>mentionné dans la section précédente, le nombre de tâches de
+    build que votre serveur Jenkins héberge peut varier. Lorsque ce nombre
+    grossira, il deviendra plus difficile non seulement de les voir dans le
+    tableau de bord Jenkins, mais aussi de les configurer. Imaginez ce que
+    nécessiterait la configuration de 20 à 50 tâches une par une ! De plus,
+    plusieurs de ces tâches pourraient avoir en commun des éléments de
+    configuration, comme des goals Maven ou des paramètres de configuration
+    mémoire, ce qui résulte dans une configuration dupliquée et un surplus de
+    maintenance.</para>
 
-    <para>For example, if you decide to run <literal moreinfo="none">mvn clean
-    install</literal> instead of <literal moreinfo="none">mvn clean
-    deploy</literal> for your release jobs and switch to alternative
-    deployment methods, such as those provided by <ulink
+    <para>Par exemple, si vous décidez d'exécuter <literal moreinfo="none">mvn
+    clean install</literal> au lieu de <literal moreinfo="none">mvn clean
+    deploy</literal> pour vos tâches de release et de passer à des méthodes de
+    déploiement alternatives, comme celles fournies par l'<ulink
     url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
-    plugin</ulink>, you’ll have no choice but to visit all relevant jobs and
-    update them manually.</para>
+    plugin</ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
+    tâches concernées et de les mettre à jour manuellement.</para>
 
-    <para>Alternatively, you could take an advantage of the fact that Jenkins
-    is a simple and straightforward tool that keeps all of its definitions in
-    plain files on the disk. Indeed you can update the <filename
-    moreinfo="none">config.xml</filename> files of your jobs directly in the
-    <filename moreinfo="none">.jenkins/jobs</filename> directory where they
-    are kept. While this approach will work, it is still far from ideal as it
-    involves quite a lot of manual picking and fragile replacements in Jenkins
-    XML files.</para>
+    <para>Sinon, vous pourriez tirer parti du fait que Jenkins est un outil
+    simple et direct qui garde trace de toutes ses définitions dans des
+    fichiers plats sur le disque. En effet, vous pouvez mettre à jour les
+    fichiers <filename moreinfo="none">config.xml</filename> de vos tâches
+    directement dans le répertoire <filename
+    moreinfo="none">.jenkins/jobs</filename> où ils sont conservés. Bien que
+    cette approche fonctionnerait, elle est loin d'être idéale parce qu'elle
+    implique un nombre assez important de sélections manuelles et de
+    remplacements fragiles dans des fichiers XML Jenkins.</para>
 
-    <para>There is a third way to achieve the nirvana of massive job updates:
-    generate your configuration files automatically using some sort of
-    definition file. The<indexterm id="I_indexterm10_d1e14843"
-        significance="normal">
+    <para>Il y a une troisième façon d'atteindre le nirvana des mises à jour
+    massives de tâches : générer vos fichiers de configuration automatiquement
+    en utilisant une sorte de fichier de définition. Le <indexterm
+        id="I_indexterm10_d1e14843" significance="normal">
         <primary>Maven Jenkins plugin</primary>
       </indexterm><indexterm id="I_indexterm10_d1e14846" significance="normal">
         <primary>plugins</primary>
@@ -1382,10 +1384,10 @@ Finished: SUCCESS</screen>
         <secondary>Maven Jenkins</secondary>
       </indexterm> <ulink
     url="http://evgeny-goldin.com/wiki/Maven-jenkins-plugin">Maven Jenkins
-    Plugin</ulink> does exactly that, generating <filename
-    moreinfo="none">config.xml</filename> files for all jobs using standard
-    Maven definitions kept in a single <filename
-    moreinfo="none">pom.xml</filename> file.</para>
+    Plugin</ulink> fait exactement cela : générer les fichiers <filename
+    moreinfo="none">config.xml</filename> pour toutes les tâches en utilisant
+    des définitions standards conservées dans un unique fichier <filename
+    moreinfo="none">pom.xml</filename>.</para>
 
     <sect2>
       <title>Configuring a Job</title>
