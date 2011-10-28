@@ -1159,31 +1159,31 @@ Finished: SUCCESS</screen>
     </sect2>
 
     <sect2>
-      <title>Running a Multiconfiguration Build</title>
+      <title>Exécuter un Build Multiconfiguration</title>
 
-      <para>Once<indexterm class="startofrange" id="ch10-mrun1"
+      <para>Une fois que<indexterm class="startofrange" id="ch10-mrun1"
           significance="normal">
-          <primary>multiconfiguration build jobs</primary>
+          <primary>tâches de build multiconfiguration</primary>
 
-          <secondary>running</secondary>
+          <secondary>exécuter</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-mrun2"
           significance="normal">
-          <primary>build jobs</primary>
+          <primary>tâches de build</primary>
 
           <secondary>multiconfiguration</secondary>
 
-          <tertiary>running</tertiary>
-        </indexterm> you have set up the axes, you can run your
-      multiconfiguration build just like any other. However, Jenkins will
-      treat each combination of variables as a separate build job. Jenkins
-      displays the aggregate results in a table, where all of the combinations
-      are shown (see <xref
-      linkend="fig-hudson-build-multi-config-results" />). If you click on any
-      of the balls, Jenkins will take you to the detailed results for that
-      particular build.</para>
+          <tertiary>exécuter</tertiary>
+        </indexterm> vous avez configuré les axes, vous pouvez exécuter votre
+      build multiconfiguration comme n'importe quel autre. Toutefois, Jenkins
+      traitera chaque combinaison de variables comme un build séparé. Jenkins
+      affiche les résultats agrégés dans un tableau, où toutes les
+      combinaisons sont montrées (voir <xref
+      linkend="fig-hudson-build-multi-config-results" />). Si vous cliquez sur
+      les boules, Jenkins vous emmènera aux résultats détaillés pour un build
+      particulier.</para>
 
       <figure float="0" id="fig-hudson-build-multi-config-results">
-        <title>Multiconfiguration build results</title>
+        <title>Résultats de build multiconfiguration</title>
 
         <mediaobject id="I_mediaobject10_d1e14725">
           <imageobject role="print">
@@ -1196,64 +1196,68 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
 
-      <para>By default, Jenkins will run the build jobs in parallel. However
-      there are some cases where this is not a good idea. For example, many
-      Java web applications use Selenium or WebDriver tests running against a
-      local instance of Jetty that is automatically started by the build job.
-      Build scripts like this need to be specially configured to be able to
-      run in parallel on the same machine, to avoid port conflicts. Concurrent
-      database access during tests can be another source of problems if
-      concurrency is not designed into the tests. If your builds are not
-      designed to run in parallel, you can force Jenkins to run the tests
-      sequentially by ticking the Run each configuration sequentially checkbox
-      at the bottom<indexterm id="I_indexterm10_d1e14732"
-          significance="normal">
-          <primary>multiconfiguration build jobs</primary>
+      <para>Par défaut, Jenkins exécutera les tâches de build en parallèle.
+      Toutefois, il y a quelques cas où cela n'est pas une bonne idée. Par
+      exemple, de nombreuses applications web Java utilisent des tests
+      Selenium ou WebDriver s'exécutant sur une instance locale de Jetty
+      automatiquement démarrée par la tâche. Les scripts de build de ce genre
+      doivent être spécialement configurés pour pouvoir s'exécuter en
+      parallèle sur la même machine, pour éviter les conflits de ports.
+      L'accès concurrent à la base de données pendant les tests peut être une
+      autre source de problèmes si la gestion de la concurrence n'est pas
+      intégrée à la conception des tests. Si vos builds ne sont pas conçus
+      pour fonctionner en parallèle, vous pouvez forcer Jenkins à exécuter les
+      tests de manière séquentielle en cochant la case Exécuter chaque
+      configuration séquentiellement en bas <indexterm
+          id="I_indexterm10_d1e14732" significance="normal">
+          <primary>tâches de build multiconfiguration</primary>
 
-          <secondary>configuration matrix for</secondary>
+          <secondary>matrice de configuration</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e14737"
           significance="normal">
-          <primary>build jobs</primary>
+          <primary>tâches de build</primary>
 
           <secondary>multiconfiguration</secondary>
 
-          <tertiary>configuration matrix for</tertiary>
-        </indexterm> of the Configuration Matrix section.</para>
+          <tertiary>matrice de configuration</tertiary>
+        </indexterm> de la section Configuration de la matrice.</para>
 
-      <para>By default, Jenkins will run all possible combinations of the
-      different axes. So, in the above example, we have three environments,
-      two JDKs, and four databases. This results in a total of 24 builds.
-      However, in some cases, it may not make sense (or be possible) to run
-      certain combinations. For example, suppose you have a build job that
-      runs automated web tests. If one axis contains the web browsers to be
-      tested (Firefox, Internet Explorer, Chrome, etc.) and another the
-      Operating Systems (Linux, Windows, Mac OS), it would make little sense
-      to run Internet Explorer with Linux or Mac OS.</para>
+      <para>Par défaut, Jenkins exécutera toutes les combinaisons possibles
+      des différents axes. Donc, dans l'exemple ci-dessus, nous avons trois
+      environnements, deux JDKs et quatre bases de données. Ceci résulte en un
+      total de 24 builds. Toutefois, dans certains cas, exécuter certaines
+      combinaisons ne pourrait avoir aucun sens (ou n'être pas possible). Par
+      exemple, supposons que vous ayez une tâche de build qui exécute des
+      tests web automatisés. Si un axe contient les navigateurs web à tester
+      (Firefox, Internet Explorer, Chrome, etc.) et un autre les systèmes
+      d'exploitation (Linux, Windows, Mac OS), cela n'aurait pas beaucoup de
+      sens d'exécuter Internet Explorer avec Linux ou Mac OS.</para>
 
-      <para>The<indexterm id="I_indexterm10_d1e14749" significance="normal">
-          <primary>build jobs</primary>
+      <para>L'<indexterm id="I_indexterm10_d1e14749" significance="normal">
+          <primary>tâches de build</primary>
 
           <secondary>multiconfiguration</secondary>
 
-          <tertiary>combination filter for</tertiary>
+          <tertiary>filtre de combinaison pour</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14756"
           significance="normal">
-          <primary>multiconfiguration build jobs</primary>
+          <primary>tâches de build multiconfiguration</primary>
 
-          <secondary>combination filter for</secondary>
-        </indexterm> Combination Filter option lets you set up rules about
-      which combinations of variables are valid. This field is a Groovy
-      boolean expression that uses the names of the variables you defined for
-      each axis. The expression must evaluate to true for the build to
-      execute. For example, suppose you have a build job running web tests in
-      different browsers on different operating systems (see <xref
-      linkend="fig-hudson-build-multi-config-filters" />). The tests need to
-      run Firefox, Internet Explorer and Chrome, on Windows, Mac OS X, and
-      Linux. However Internet Explorer only runs on Windows, and Chrome does
-      not run on Linux.</para>
+          <secondary>filtre de combinaison pour</secondary>
+        </indexterm>option de Filtre de Combinaison vous permet de mettre en
+      place des règles définissant quelles combinaisons de variables sont
+      valides. Ce champ est une expression booléene Groovy qui utilise les
+      noms des variables que vous définissez pour chaque axe. L'expression
+      doit valoir true pour que le build s'exécute. Par exemple, supposez que
+      vous ayez une tâche de build exécutant des tests web dans différents
+      navigateurs sur différents systèmes d'exploitation (voir <xref
+      linkend="fig-hudson-build-multi-config-filters" />). Les tests
+      nécessitent d'exécuter Firefox, Internet Explorer et Chrome, sur
+      Windows, Mac OS X, et Linux. Toutefois Internet Explorer ne fonctionne
+      que sous Windows, et Chrome ne fonctionne pas sous Linux.</para>
 
       <figure float="none" id="fig-hudson-build-multi-config-filters">
-        <title>Setting up a combination filter</title>
+        <title>Mettre en place un filtre de combinaison</title>
 
         <mediaobject id="I_mediaobject10_d1e14767">
           <imageobject role="print">
@@ -1266,21 +1270,21 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
 
-      <para>To set this up with a Combination Filter, we could use an
-      expression like the following:</para>
+      <para>Pour configurer un Filtre de Combinaison, nous pourrions utiliser
+      une expression comme la suivante :</para>
 
       <programlisting format="linespecific" id="I_programlisting10_d1e14774">(browser=="firefox")
 || (browser=="iexplorer" &amp;&amp; os=="windows")
 || (browser=="chrome" &amp;&amp; os != "linux")</programlisting>
 
-      <para>This would result in only the correct browser/operating system
-      combinations being executed (see <xref
-      linkend="fig-hudson-multi-config-filter-result" />). Executed builds are
-      displayed in the usual colors, whereas skipped builds are shown in
-      gray.</para>
+      <para>Ceci résulterait dans le fait que seules les combinaisons
+      correctes navigateur/système d'exploitation seraient exécutées (voir
+      <xref linkend="fig-hudson-multi-config-filter-result" />). Les builds
+      exécutés sont affichés dans les couleurs habituelles, alors que les
+      builds sautés sont grisés.</para>
 
       <figure float="0" id="fig-hudson-multi-config-filter-result">
-        <title>Build results using a combination filter</title>
+        <title>Résultats de build utilisant un filtre de combinaison</title>
 
         <mediaobject id="I_mediaobject10_d1e14783">
           <imageobject role="print">
@@ -1293,26 +1297,30 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
 
-      <para>Another reason to use a build filter is that there are simply too
-      many valid combinations to run in a reasonable time. In this case, the
-      best solution may be to upscale your build server. The second-best
-      solution, on the other hand, might be to only run a subset of the
-      combinations, possibly running the full set of combinations on a nightly
-      basis. You can do this by using the special <code>index</code> variable.
-      If you include the expression <code>(index%2 == 0)</code>, for example,
-      will ensure that only one build job in two is actually executed.</para>
+      <para>Une autre raison pour utiliser un filtre de build est qu'il y a
+      simplement trop de combinaisons valides pour s'exécuter dans un temps
+      raisonnable. Dans ce cas, la meilleure solution pourrait être
+      d'augmenter la capacité de votre serveur de build. La deuxième meilleure
+      solution, d'un autre côté, serait d'exécuter uniquement un sous-ensemble
+      des combinaisons, éventuellement exécutant l'ensemble complet de
+      combinaison pendant la nuit. Vous pouvez faire cela en utilisant la
+      variable spéciale <code>index</code>. Si vous incluez l'expression
+      <code>(index%2 == 0)</code>, par exemple, cela assurera que seulement un
+      build sur deux est en fait exécuté.</para>
 
-      <para>You may also want certain builds to be executed before the others,
-      as a sanity check. For example, you might want to run the default (and,
-      theoretically, the most reliable) configuration for your application
-      first, before continuing on to more exotic combinations. To do this, you
-      can use the “Execute touchstone builds first” option. Here, you enter a
-      filter value (like the one seen above) to define the first build or
-      builds to be executed. You can also specify if the build should proceed
-      only if these builds are successful, or even if they are unsuccessful.
-      Once these builds have completed as expected, Jenkins will proceed with
-      the other<indexterm class="endofrange" id="I_indexterm10_d1e14799"
-          significance="normal" startref="ch10-mrun1">
+      <para>Vous pourriez aussi vouloir que certains builds s'exécutent avant
+      les autres, comme tests de cohérence. Par exemple, vous pouvez vouloir
+      exécuter la configuration par défaut (et, théoriquement, la plus fiable)
+      pour votre application en premier, avant de continuer avec des
+      combinaisons plus exotiques. Pour faire cela, vous pouvez utiliser
+      l'option “Execute touchstone builds first”. Ici, vous entrez une valeur
+      de filtre (comme celle montrée ci-dessus) pour définir le ou les
+      premiers builds à exécuter. Vous pouvez aussi spécifier si le build
+      devrait continuer seulement si ces builds sont réussis, ou même s'ils
+      échouent. Une fois que ces builds ont terminé comme attendu, Jenkins
+      procédera au lancement des autres<indexterm class="endofrange"
+          id="I_indexterm10_d1e14799" significance="normal"
+          startref="ch10-mrun1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14801"
           significance="normal" startref="ch10-mrun2">
@@ -1323,7 +1331,7 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e14805"
           significance="normal" startref="ch10-multi2">
           <primary></primary>
-        </indexterm> combinations.</para>
+        </indexterm> combinaisons.</para>
     </sect2>
   </sect1>
 
