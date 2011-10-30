@@ -3,8 +3,10 @@
 "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-advanced-builds">
   <title>Builds avancés</title>
+
   <sect1 id="sect-advanced-builds-introduction">
     <title>Introduction</title>
+
     <para>Dans ce chapitre, nous regarderons quelques configurations avancées
     de tâches de build. Nous discuterons de builds paramétrés, qui permettent
     à Jenkins de demander à l'utilisateur des paramètres supplémentaires qui
@@ -17,20 +19,25 @@
     Jenkins non seulement comme un serveur de build, mais aussi comme un
     serveur de déploiement.</para>
   </sect1>
+
   <sect1 id="sect-advanced-builds-parameterized">
     <title>Tâches de build paramétrées</title>
+
     <para>Les builds<indexterm class="startofrange" id="ch10-param1"
         significance="normal">
         <primary>tâches de build</primary>
+
         <secondary>paramétrées</secondary>
       </indexterm><indexterm class="startofrange" id="ch10-param2"
         significance="normal">
         <primary>tâches de build paramétrées</primary>
       </indexterm> paramétrés sont un concept puissant vous permettant
     d'ajouter une nouvelle dimension à vos tâches de build.</para>
+
     <para>Le plugin <indexterm id="I_indexterm10_d1e13891"
         significance="normal">
         <primary>plugins</primary>
+
         <secondary>Parameterized Build</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e13896" significance="normal">
         <primary>Parameterized Build plugin</primary>
@@ -38,6 +45,7 @@
     paramètres pour vos tâches de build, qui peuvent être entrés par
     l'utilisateur lorsque le build est déclenché, ou (comme nous le verrons
     plus tard) depuis une autre tâche.</para>
+
     <para>Par exemple, vous pourriez avoir une tâche de déploiement, où vous
     choisiriez un environnement cible dans une liste déroulante quand vous
     démarrez le build. Vous pourriez aussi vouloir spécifier la version de
@@ -45,19 +53,25 @@
     build incluant des tests web, vous pourriez spécifier le navigateur dans
     lequel vous voulez faire tourner vos tests. Vous pouvez même uploader un
     fichier nécessaire à l'exécution de la tâche de build.</para>
+
     <para>Notez que c'est le rôle du script de build d'analyser et de traiter
     correctement les valeurs de paramètres — Jenkins fournit simplement une
     interface utilisateur permettant d'entrer les valeurs des paramètres, puis
     de passer ces paramètres au script de build.</para>
+
     <sect2>
       <title>Créer des tâches de build paramétrées</title>
+
       <para>Vous <indexterm id="I_indexterm10_d1e13909" significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>créer</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e13916"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>créer</secondary>
         </indexterm> installez le plugin Parameterized Build comme d'habitude,
       via l'écran de gestion des plugins. Une fois que vous avez fait cela,
@@ -67,30 +81,37 @@
       linkend="fig-hudson-parameterized-build" />). Vous pouvez ajouter des
       paramètres à n'importe quelle sorte de build, et vous pouvez ajouter
       autant de paramètres que vous voulez à une tâche de build donnée.</para>
+
       <figure float="none" id="fig-hudson-parameterized-build">
         <title>Créer une tâche de build paramétrée</title>
+
         <mediaobject id="I_mediaobject10_d1e13927">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1001.pdf" format="PDF"
                        scale="90" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1001.png" format="PNG"
                        scale="90" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Pour ajouter un paramètre à votre tâche de build, sélectionnez
       simplement le type de paramètre dans la liste déroulante. Cela vous
       permettra de configurer les détails de votre paramètre (voir <xref
       linkend="fig-hudson-string-build-parameter" />). Vous pouvez choisir
       différents <indexterm id="I_indexterm10_d1e13936" significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>types de paramètres</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e13941"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>parametré</secondary>
+
           <tertiary>types de paramètres</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e13948"
           significance="normal">
@@ -101,6 +122,7 @@
       différentes, mais le processus de base est le même. Tous les types de
       paramètres, à l'exception du paramètre Fichier, ont un nom et une
       description, et le plus souvent une valeur par défaut.</para>
+
       <para>Dans <xref linkend="fig-hudson-enter-string-parameter" />, par
       exemple, nous ajoutons un paramètre appelé <literal
       moreinfo="none">version</literal> à une tâche de déploiement. La valeur
@@ -108,53 +130,67 @@
       initialement affichée lorsque Jenkins demandera à l'utilisateur de
       valoriser ce paramètre, donc si l'utilisateur ne change rien, cette
       valeur sera utilisée.</para>
+
       <figure float="0" id="fig-hudson-string-build-parameter">
         <title>Ajouter un paramètre à la tâche de build</title>
+
         <mediaobject id="I_mediaobject10_d1e13965">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1002.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1002.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Quand l'utilisateur démarre un build paramétré (les constructions
       paramétrées sont très souvent démarrées manuellement), Jenkins propose
       une page dans laquelle l'utilisateur peut entrer une valeur pour chacun
       des paramètres de la tâche de construction (voir <xref
       linkend="fig-hudson-enter-string-parameter" />).</para>
+
       <figure float="0" id="fig-hudson-enter-string-parameter">
         <title>Ajouter un paramètre à la tâche de build</title>
+
         <mediaobject id="I_mediaobject10_d1e13977">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1003.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1003.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Adapter vos build pour travailler avec des scripts de builds
       paramétrés</title>
+
       <para>Une fois<indexterm class="startofrange" id="ch10-script"
           significance="normal">
           <primary>scripts</primary>
+
           <secondary>paramétrés</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-script2"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>scripts de build pour</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-script3"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>tâches de build paramétrées</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14004"
           significance="normal">
           <primary>scripts de build</primary>
+
           <see>scripts</see>
         </indexterm> que vous avez ajouté un paramètre, vous devez configurer
       vos scripts de build pour l'utiliser. Bien choisir le nom du paramètre
@@ -162,6 +198,7 @@
       passera comme <indexterm id="I_indexterm10_d1e14010"
           significance="normal">
           <primary>variables d'environnement</primary>
+
           <secondary>paramètres de build comme</secondary>
         </indexterm>variable d'environnement lorsqu'il lance la tâche de
       build. Pour illustrer cela, considérons la configuration de build très
@@ -170,19 +207,24 @@
       Notez que, pour rendre les variables plus portables à travers différents
       systèmes d'exploitation, il est une bonne pratique de les mettre en
       majuscules.</para>
+
       <figure float="0" id="fig-hudson-parameterized-shell">
         <title>Démonstration d'un paramètre de build</title>
+
         <mediaobject id="I_mediaobject10_d1e14021">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1004.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1004.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Quand on exécute cela, on obtient les lignes suivantes dans la
       console :</para>
+
       <screen format="linespecific">Started by user anonymous
 Building on master
 [workspace] $ /bin/sh -xe /var/folders/y+/y+a+wZ-jG6WKHEm9KwnSvE+++TI/-Tmp-/
@@ -191,18 +233,22 @@ jenkins5862957776458050998.sh
 <userinput moreinfo="none">Version=1.2.3</userinput>
 Notifying upstream projects of job completion
 Finished: SUCCESS</screen>
+
       <para>Vous pouvez aussi utiliser ces variables d'environnement depuis
       l'intérieur de vos scripts de build. Par exemple, dans un build Ant ou
       Maven, vous pouvez utiliser la propriété spéciale <literal
       moreinfo="none">env</literal> pour accéder aux variables d'environnement
       courantes :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14041">&lt;target name="printversion"&gt;
   &lt;property environment="env" /&gt;
   &lt;echo message="${env.VERSION}"/&gt;
 &lt;/target&gt;</programlisting>
+
       <para>Une autre option consiste à passer les <indexterm
           id="I_indexterm10_d1e14045" significance="normal">
           <primary>propriétés</primary>
+
           <secondary>paramètres de build comme</secondary>
         </indexterm>paramètres au script de build comme une valeur de
       propriété. Ce qui suit est un exemple plus pratique d'un fichier de POM
@@ -211,6 +257,7 @@ Finished: SUCCESS</screen>
       dans la propriété <literal moreinfo="none">target.version</literal>, qui
       est utilisé dans la déclaration de la dépendance, comme montré
       ci-dessous :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14054">  ...
   &lt;dependencies&gt;
     &lt;dependency&gt;
@@ -224,23 +271,28 @@ Finished: SUCCESS</screen>
     &lt;target.version&gt;RELEASE&lt;/target.version&gt;
     ...
   &lt;/properties&gt;</programlisting>
+
       <para>Quand on invoque Maven, on passe le paramètre comme l'une des
       propriétés du build (voir <xref
       linkend="fig-hudson-inject-parameter-maven" />). On peut ensuite
       utiliser un outil comme Cargo pour faire le déploiement réel — Maven
       téléchargera la version demandée du WAR depuis le gestionnaire de dépôt
       d'entreprise, et la déploiera dans le serveur d'application.</para>
+
       <figure float="none" id="fig-hudson-inject-parameter-maven">
         <title>Ajouter un paramètre à la tâche de build Maven</title>
+
         <mediaobject id="I_mediaobject10_d1e14066">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1005.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1005.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Ceci, en résumé, montre comment vous pouvez intégrer des
       paramètres de tâches de build dans vos builds. En plus de bons vieux
       paramètres de type chaîne de caractères, toutefois, il existe quelques
@@ -256,35 +308,44 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm>paragraphes suivants (voir <xref
       linkend="fig-hudson-build-parameter-types" />).</para>
+
       <figure float="0" id="fig-hudson-build-parameter-types">
         <title>Différents types de paramètres sont disponibles</title>
+
         <mediaobject id="I_mediaobject10_d1e14086">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1006.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1006.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Types de paramètres plus avancés</title>
+
       <para><firstterm>Les paramètres Mot de Passe</firstterm> <indexterm
           id="I_indexterm10_d1e14098" significance="normal">
           <primary>paramètres Mot de Passe</primary>
         </indexterm><indexterm class="startofrange" id="ch10-type1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>types of parameters</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-type2"
           significance="normal">
           <primary>build jobs</primary>
+
           <secondary>parameterized</secondary>
+
           <tertiary>types of parameters</tertiary>
         </indexterm>sont, comme vous pourriez vous y attendre, très similaires
       aux paramètres String, mis à part qu'ils sont affichés comme des champs
       mot de passe.</para>
+
       <para>Il y a plusieurs cas où vous souhaitez présenter un ensemble
       limité d'options de paramètres. Dans un build de déploiement, vous
       pourriez vouloir permettre à l'utilisateur de choisir parmi un ensemble
@@ -295,17 +356,21 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-parameter-choice" />). Vous devez fournir une
       liste de valeurs possibles, une par ligne, en commençant par la valeur
       par défaut.</para>
+
       <figure float="none" id="fig-hudson-build-parameter-choice">
         <title>Configurer un paramètre Choix</title>
+
         <mediaobject id="I_mediaobject10_d1e14124">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1007.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1007.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para><firstterm>Les paramètres Booléen</firstterm> <indexterm
           id="I_indexterm10_d1e14133" significance="normal">
           <primary>paramètres Booléen</primary>
@@ -313,6 +378,7 @@ Finished: SUCCESS</screen>
       prennent une valeur <literal moreinfo="none">true</literal> ou <literal
       moreinfo="none">false</literal>. Ils sont présentés en tant que case à
       cocher.</para>
+
       <para>Deux types de paramètres plus exotiques, qui se comportent un peu
       différemment des autres, sont les <firstterm>paramètres Run</firstterm>
       et <firstterm>les paramètres Fichier</firstterm>.</para>
@@ -322,6 +388,7 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm id="I_indexterm10_d1e14156"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>numéro d'exécution pour, en tant que
           paramètres</secondary>
         </indexterm>vous permettent de sélectionner une exécution particulière
@@ -330,17 +397,20 @@ Finished: SUCCESS</screen>
       effectue une sélection à partir d'une liste de numéros d'exécution de
       build. L'URL correspondant à l'exécution est stockée dans le paramètre
       spécifié.</para>
+
       <figure float="none" id="fig-hudson-build-parameter-run-param">
         <title>Configurer un paramètre Run</title>
         <mediaobject id="I_mediaobject10_d1e14167">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1008.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1008.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>L'URL (qui ressemble à
       <emphasis>http://jenkins.myorg.com/job/game-of-life/197/</emphasis>)
       peut être utilisée pour obtenir une information ou des artefacts d'une
@@ -349,12 +419,16 @@ Finished: SUCCESS</screen>
       poussés sur celui-ci dans une tâche de build séparée. Par exemple, pour
       accéder au fichier WAR d'un build précédent dans un projet Maven
       multimodules, l'URL ressemblerait à celle-ci :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14177">http://buildserver/job/game-of-life/197/artifact/gameoflife-web/target/
       gameoflife.war</programlisting>
+
       <para>Donc, en utilisant le paramètre configuré dans <xref
       linkend="fig-hudson-build-parameter-run-param" />, vous pourriez accéder
       au fichier WAR en utilisant l'expression suivante :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14184">${RELEASE_BUILD}gameoflife-web/target/gameoflife.war</programlisting>
+
       <para>Les paramètres Fichier parameters <indexterm
           id="I_indexterm10_d1e14188" significance="normal">
           <primary>paramètres Fichier</primary>
@@ -376,32 +450,41 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm>expression <literal
       moreinfo="none">${WORKSPACE}/deploy/app.war</literal>.</para>
+
       <figure float="none" id="fig-hudson-build-parameter-file">
         <title>Configurer un paramètre Fichier</title>
+
         <mediaobject id="I_mediaobject10_d1e14211">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1009.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1009.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2 id="sect-build-from-svn-tag">
       <title>Construire à partir d'un tag Subversion</title>
+
       <para>Le <indexterm class="startofrange" id="ch10-sub1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>exécutées sur un tag Subversion</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-sub2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>exécutées sur un tag subversion</tertiary>
         </indexterm><indexterm class="startofrange" id="ch10-sub3"
           significance="normal">
           <primary>Subversion</primary>
+
           <secondary>tags, build à partir de</secondary>
         </indexterm> plugin parameterized trigger possède un support spécial
       pour Subversion, vous permettant de construire à partir d'un tag
@@ -412,6 +495,7 @@ Finished: SUCCESS</screen>
       release Maven (voir <xref linkend="jenkins-maven-releases" />) pour
       générer une nouvelle release. Dans ce cas, un tag avec le numéro de
       release Maven sera automatiquement généré dans Subversion.</para>
+
       <para>Cette approche est utile pour des projets qui ont besoin d'être
       partiellement ou entièrement reconstruits avant de pouvoir être déployés
       sur une plateforme donnée. Par exemple, vous pourriez avoir besoin
@@ -424,18 +508,22 @@ Finished: SUCCESS</screen>
       Tag” (voir <xref linkend="fig-jenkins-parameterized-subversion-tag" />).
       Vous devez simplement fournir l'URL du dépôt Subversion pointant sur le
       répertoire des tags de votre projet.</para>
+
       <figure float="none" id="fig-jenkins-parameterized-subversion-tag">
         <title>Ajouter des paramètres pour construire à partir d'un tag
         Subversion</title>
+
         <mediaobject id="I_mediaobject10_d1e14250">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1010.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1010.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Quand vous exécuterez ce build, Jenkins proposera une liste de
       tags dans laquelle choisir <indexterm class="endofrange"
           id="I_indexterm10_d1e14257" significance="normal"
@@ -449,32 +537,41 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm> (voir <xref
       linkend="fig-jenkins-parameterized-subversion" />).</para>
+
       <figure float="none" id="fig-jenkins-parameterized-subversion">
         <title>Construire à partir d'un tag Subversion</title>
+
         <mediaobject id="I_mediaobject10_d1e14269">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1011.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1011.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2 id="sect-building-git-tag">
       <title>Construire à partir d'un tag Git</title>
+
       <para>Construire <indexterm class="startofrange" id="ch10-git1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>exécutées sur un tag Git</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-git2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>exécutées sur un tag Git</tertiary>
         </indexterm><indexterm class="startofrange" id="ch10-git3"
           significance="normal">
           <primary>Git</primary>
+
           <secondary>tags, exécuter sur</secondary>
         </indexterm>à partir d'un tag Git n'est pas aussi simple que de le
       faire à partir d'un tag Subversion, bien que vous puissisez toujours
@@ -485,6 +582,7 @@ Finished: SUCCESS</screen>
       vous pouvez ensuite procéder à la récupération d'une version en
       utilisant <literal moreinfo="none">git checkout
       &lt;tagname&gt;</literal>.</para>
+
       <para>Pour configurer cela avec Jenkins, vous devez commencer par
       ajouter un paramètre String à votre tâche de build (appelée <literal
       moreinfo="none">RELEASE</literal> dans cet exemple — voir <xref
@@ -492,17 +590,21 @@ Finished: SUCCESS</screen>
       Subversion, il n'est pas possible de lister les tags Git disponibles
       dans une liste déroulante, les utilisateur devront donc connaître le nom
       du tag qu'ils veulent livrer.</para>
+
       <figure float="none" id="fig-jenkins-git-release-param">
         <title>Configurer un paramètre pour un tag Git</title>
+
         <mediaobject id="I_mediaobject10_d1e14310">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1012.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1012.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Une fois que vous avez ajouté ce paramètre, vous devez faire un
       checkout du tag correspondant quand le dépôt a été cloné localement.
       Ainsi, si vous avez un build freestyle, la première étape du build sera
@@ -521,36 +623,48 @@ Finished: SUCCESS</screen>
           significance="normal" startref="ch10-git3">
           <primary></primary>
         </indexterm> indépendante du système d'exploitation.</para>
+
       <figure float="0" id="fig-jenkins-git-tag">
         <title>Construire à partir d'un tag Git</title>
+
         <mediaobject id="I_mediaobject10_d1e14332">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1013.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1013.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Démarrer une tâche de build paramétrée à distance</title>
+
       <para>Vous <indexterm class="startofrange" id="ch10-remote1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>démarrage à distance</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-remote2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>démarrées à distance</tertiary>
         </indexterm>pouvez aussi démarrer une tâche de build paramétrée à
       distance, en invoquant l'URL de la tâche de build. La forme typique
       d'une URL de tâche de build est illustrée ci-après :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14355">http://jenkins.acme.org/job/myjob/buildWithParameters?PARAMETER=Value</programlisting>
+
       <para>Ainsi, dans l'exemple ci-dessus, vous pourriez déclencher un build
       de la façon suivante :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14359">http://jenkins.acme.org/job/parameterized-build/buildWithParameters?VERSION=1.2.3</programlisting>
+
       <para>Quand vous utilisez une URL pour démarrer une tâche de build de
       cette façon, rappelez-vous que les noms de paramètres sont sensibles à
       la casse, et que les valeurs doivent être échappées (comme n'importe
@@ -566,20 +680,26 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm> <phrase role="keep-together">d'exécution</phrase>.</para>
     </sect2>
+
     <sect2>
       <title>Historique des tâches de build paramétrées</title>
+
       <para>Enfin, <indexterm id="I_indexterm10_d1e14383"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
+
           <secondary>historique de</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e14388"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>paramétrées</secondary>
+
           <tertiary>historique de</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14395"
           significance="normal">
           <primary>historique de build</primary>
+
           <secondary>paramétré</secondary>
         </indexterm>il est indispensable de savoir quels paramètres ont été
       utilisés pour lancer un build paramétré particulier. Par exemple, dans
@@ -595,13 +715,16 @@ Finished: SUCCESS</screen>
         </indexterm> build (voir <xref
       linkend="fig-hudson-build-parameter-history" />), afin que vous puissiez
       toujours retrouver un ancien build et en vérifier les paramètres.</para>
+
       <figure float="none" id="fig-hudson-build-parameter-history">
         <title>Jenkins stocke les valeurs de paramètres utilisées pour chaque
         build</title>
+
         <mediaobject id="I_mediaobject10_d1e14411">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1014.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1014.png" format="PNG" />
           </imageobject>
@@ -609,14 +732,17 @@ Finished: SUCCESS</screen>
       </figure>
     </sect2>
   </sect1>
+
   <sect1 id="sect-advanced-builds-triggers">
     <title>Déclencheurs paramétrés</title>
+
     <para>Quand <indexterm class="startofrange" id="ch10-trig1"
         significance="normal">
         <primary>déclencheurs paramétrés</primary>
       </indexterm><indexterm class="startofrange" id="ch10-trig2"
         significance="normal">
         <primary>déclencheurs de build</primary>
+
         <secondary>paramétrés</secondary>
       </indexterm>vous déclenchez une autre tâche de build depuis une tâche de
     build paramétrée, il est souvent utile de pouvoir passer les paramètres du
@@ -626,13 +752,16 @@ Finished: SUCCESS</screen>
     configurant une tâche de build paramétrée qui accepte la base de données
     cible en paramètre. Vous sélectionneriez une série de builds, et tous
     auraient besoin de ce paramètre.</para>
+
     <para>Si vous essayez de faire cela en utiliser l'option conventionnelle
     "Construire d'autres projets" dans la section Actions Post-Build, cela ne
     marchera pas. En effet, vous ne pouvez pas déclencher un build paramétré
     de cette façon.</para>
+
     <para>Toutefois, <indexterm id="I_indexterm10_d1e14434"
         significance="normal">
         <primary>plugins</primary>
+
         <secondary>Parameterized Trigger</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e14439" significance="normal">
         <primary>Parameterized Trigger plugin</primary>
@@ -640,6 +769,7 @@ Finished: SUCCESS</screen>
     Parameterized Trigger. Ce plugin vous permet de configurer vos tâches de
     build à la fois pour déclencher des builds paramétrés et pour passer des
     paramètres arbitraires à ces builds.</para>
+
     <para>Une fois que vous avez installé ce plugin, vous trouverez l'option
     “Déclencher des builds paramétrés sur d'autres projets” dans la page de
     configuration de votre tâche de build (voir <xref
@@ -649,40 +779,49 @@ Finished: SUCCESS</screen>
     paramètres courant à cette nouvelle tâche, ce qui est impossible à faire
     avec un builld paramétré normal. La meilleure façon de voir comment cela
     fonctionne est au travers d'un exemple.</para>
+
     <para>Dans <xref linkend="fig-hudson-build-parameters-unit-test" /> nous
     avons une tâche de build initiale. Cette tâche prend un unique paramètre,
     <literal moreinfo="none">DATABASE</literal>, qui spécifie la base de
     données à utiliser pour les tests. Comme nous l'avons vu, Jenkins
     demandera à l'utilisateur de saisir cette valeur à chaque fois qu'un build
     sera lancé.</para>
+
     <figure float="0" id="fig-hudson-build-parameters-unit-test">
       <title>Tâche de build paramétrée pour des tests unitaires</title>
+
       <mediaobject id="I_mediaobject10_d1e14457">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1015.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
           <imagedata fileref="figs/web/jtdg_1015.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>Supposons maintenant que nous voulons déclencher une seconde tâche
     de build pour exécuter des tests d'intégration plus complets une fois que
     la première tâche a terminé. Cependant nous avons besoin d'exécuter les
     tests sur la même base de données. On peut faire cela en configurant un
     déclencheur paramétré pour démarrer cette seconde tâche (voir <xref
     linkend="fig-hudson-build-parameters-trigger" />).</para>
+
     <figure float="0" id="fig-hudson-build-parameters-trigger">
       <title>Ajouter un déclencheur paramétré à une tâche de build</title>
+
       <mediaobject id="I_mediaobject10_d1e14469">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1016.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
           <imagedata fileref="figs/web/jtdg_1016.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>Dans ce cas, nous passons simplement les paramètres de build
     courants. Cette seconde tâche de build démarrera automatiquement après la
     première, avec la valeur du paramètre <literal
@@ -695,22 +834,27 @@ Finished: SUCCESS</screen>
     échoue ou demander à ce qu'il soit déclenché quoi qu'il arrive au premier
     build. Vous pouvez même configurer plusieurs déclencheurs pour la même
     tâche de build.</para>
+
     <para>Naturellement, la tâche de build que vous déclenchez doit être une
     tâche de build paramétrée (comme illustré dans <xref
     linkend="fig-hudson-build-parameters-integration-test" />), et vous devez
     transmettre tous les paramètres qu'elle requiert.</para>
+
     <figure float="0" id="fig-hudson-build-parameters-integration-test">
       <title>La tâche de build que vous déclenchez doit aussi être une tâche
       paramétrée</title>
+
       <mediaobject id="I_mediaobject10_d1e14487">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1017.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
           <imagedata fileref="figs/web/jtdg_1017.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
+
     <para>Cette fonctionnalité possède en fait des applications bien plus
     larges que de simplement transmettre les paramètres du build courant. Vous
     pouvez aussi déclencher une tâche de build paramétrée avec un ensemble
@@ -729,30 +873,37 @@ Finished: SUCCESS</screen>
         <primary></primary>
       </indexterm>appelé <literal
     moreinfo="none">TARGET_PLATFORM</literal>.</para>
+
     <figure float="0" id="fig-hudson-build-parameters-deploy-trigger">
       <title>Passer un paramètre prédéfini à une tâche de build
       paramétrée</title>
+
       <mediaobject id="I_mediaobject10_d1e14510">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1018.pdf" format="PDF" />
         </imageobject>
+
         <imageobject role="web">
           <imagedata fileref="figs/web/jtdg_1018.png" format="PNG" />
         </imageobject>
       </mediaobject>
     </figure>
   </sect1>
+
   <sect1 id="sect-multi-configuration-build-jobs">
     <title>Tâches de build multiconfiguration</title>
+
     <para>Les tâches de build <indexterm class="startofrange" id="ch10-multi1"
         significance="normal">
         <primary>tâches de build</primary>
+
         <secondary>multiconfiguration</secondary>
       </indexterm><indexterm class="startofrange" id="ch10-multi2"
         significance="normal">
         <primary>tâche de build multiconfiguration</primary>
       </indexterm><indexterm id="I_indexterm10_d1e14528" significance="normal">
         <primary>tâches de build paramétrées</primary>
+
         <seealso>tâches de build multiconfiguration</seealso>
       </indexterm>multiconfiguration sont une fonctionnalité extrêmement
     puissante de Jenkins. Une tâche de build multiconfiguration peut être vue
@@ -762,48 +913,61 @@ Finished: SUCCESS</screen>
     permettant en effet de tester votre application avec une seule tâche de
     build, mais avec une grande variété de conditions (navigateurs, bases de
     données, et ainsi de suite).</para>
+
     <sect2>
       <title>Configurer un build multiconfiguration</title>
+
       <para>Pour <indexterm class="startofrange" id="ch10-mcreate1"
           significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>créer</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-mcreate2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>créer</tertiary>
         </indexterm>créer une nouvelle tâche de build multiconfiguration,
       choisissez simplement l'option suivante sur la page Nouvelle Tâche (voir
       <xref linkend="fig-hudson-build-multi-configuration" />).</para>
+
       <figure float="0" id="fig-hudson-build-multi-configuration">
         <title>Créer une tâche de build multiconfiguration</title>
+
         <mediaobject id="I_mediaobject10_d1e14557">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1019.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1019.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Une tâche de build multiconfiguration ressemble à n'importe quelle
       autre tâche, mais avec un élément supplémentaire très important : la
       <firstterm>Matrice de Configuration</firstterm> (voir <xref
       linkend="fig-hudson-build-multi-config" />). C'est là que vous
       définissez les différentes configurations qui seront utilisées pour
       exécuter vos builds.</para>
+
       <figure float="none" id="fig-hudson-build-multi-config">
         <title>Ajouter un axe à un build multiconfiguration</title>
+
         <mediaobject id="I_mediaobject10_d1e14572">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1020.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1020.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Vous pouvez définir différents axes d'options de configuration,
       incluant l'exécution de la tâche de build sur différents esclaves ou sur
       différents JDKs, ou en fournissant vos propres propriétés personnalisées
@@ -815,6 +979,7 @@ Finished: SUCCESS</screen>
       un autre axe définissant toutes les valeurs possibles de bases de
       données. Jenkins exécutera ensuite la tâche de build pour chaque base de
       données et chaque système d'exploitation possibles.</para>
+
       <para>Regardons à présent les types d'axes que nous pouvons<indexterm
           class="endofrange" id="I_indexterm10_d1e14581" significance="normal"
           startref="ch10-mcreate1">
@@ -824,20 +989,26 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm> définir.</para>
     </sect2>
+
     <sect2>
       <title>Configurer un axe Esclave</title>
+
       <para>La<indexterm class="startofrange" id="ch10-slave1"
           significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>axe esclave pour</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-slave2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>axe esclave pour</tertiary>
         </indexterm><indexterm class="startofrange" id="ch10-slave3"
           significance="normal">
           <primary>machines esclaves</primary>
+
           <secondary sortas="multi-config">pour tâches de build
           multiconfiguration</secondary>
         </indexterm> première option consiste à configurer votre build pour
@@ -858,17 +1029,21 @@ Finished: SUCCESS</screen>
       réellement vouloir exécuter un build sur une machine spécifique. Dans ce
       cas, vous pouvez utiliser l'option "Noeuds individuels" et choisir la
       machine dans la liste.</para>
+
       <figure float="none" id="fig-build-multi-config-slaves">
         <title>Définir un axe de noeuds esclave</title>
+
         <mediaobject id="I_mediaobject10_d1e14616">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1021.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1021.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Si vous avez besoin de plus de flexibilité, vous pouvez aussi
       utiliser une Label Expression, ce qui vous permet de définir quels
       noeuds esclaves peuvent être utilisés pour un axe particulier en
@@ -880,6 +1055,7 @@ Finished: SUCCESS</screen>
       machines Windows sur lesquelles est installé MySQL, vous pouvez utiliser
       une expression comme <literal moreinfo="none">windows &amp;&amp;
       mysql</literal>.</para>
+
       <para>Nous discutons du travail avec des noeuds esclaves et les builds
       distribués plus en <indexterm class="endofrange"
           id="I_indexterm10_d1e14628" significance="normal"
@@ -894,20 +1070,26 @@ Finished: SUCCESS</screen>
         </indexterm>détail dans <phrase role="keep-together"><xref
       linkend="chapter-distributed-builds" /></phrase>.</para>
     </sect2>
+
     <sect2>
       <title>Configurer un axe JDK</title>
+
       <para>Si vous<indexterm id="I_indexterm10_d1e14643"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>axe JDK pour</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e14648"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>axe JDK pour</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14655"
           significance="normal">
           <primary>JDK (Java Development Kit)</primary>
+
           <secondary>versions du, pour tâches de build
           multiconfiguration</secondary>
         </indexterm> déployez votre application sur une large base client sur
@@ -920,27 +1102,35 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-multi-config-jdk" />). Si vous avez besoin
       d'utiliser des JDKs additionnels, ajoutez les simplement à votre page de
       configuration Jenkins.</para>
+
       <figure float="0" id="fig-hudson-build-multi-config-jdk">
         <title>Définir un axe de versions de JDK</title>
+
         <mediaobject id="I_mediaobject10_d1e14666">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1022.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1022.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Axe personnalisé</title>
+
       <para>Le<indexterm id="I_indexterm10_d1e14676" significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>axe personnalisé</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e14681"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>axe personnalisé pour</tertiary>
         </indexterm> troisième type d'axe vous permet de définir différentes
       façons d'exécuter votre tâche de build, basées sur des variables
@@ -952,28 +1142,36 @@ Finished: SUCCESS</screen>
       d'interroger l'utilisateur pour qu'il entre une valeur, Jenkins lance le
       build avec <emphasis>toutes</emphasis> les valeurs fournies (<xref
       linkend="fig-hudson-build-mulit-config-custom" />).</para>
+
       <figure float="none" id="fig-hudson-build-mulit-config-custom">
         <title>Définir un axe spécifique à l'utilisateur</title>
+
         <mediaobject id="I_mediaobject10_d1e14697">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1023.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1023.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
       <title>Exécuter un Build Multiconfiguration</title>
+
       <para>Une fois que<indexterm class="startofrange" id="ch10-mrun1"
           significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>exécuter</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-mrun2"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>exécuter</tertiary>
         </indexterm> vous avez configuré les axes, vous pouvez exécuter votre
       build multiconfiguration comme n'importe quel autre. Toutefois, Jenkins
@@ -983,17 +1181,21 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-multi-config-results" />). Si vous cliquez sur
       les boules, Jenkins vous emmènera aux résultats détaillés pour un build
       particulier.</para>
+
       <figure float="0" id="fig-hudson-build-multi-config-results">
         <title>Résultats de build multiconfiguration</title>
+
         <mediaobject id="I_mediaobject10_d1e14725">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1024.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1024.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Par défaut, Jenkins exécutera les tâches de build en parallèle.
       Toutefois, il y a quelques cas où cela n'est pas une bonne idée. Par
       exemple, de nombreuses applications web Java utilisent des tests
@@ -1009,13 +1211,17 @@ Finished: SUCCESS</screen>
       configuration séquentiellement en bas <indexterm
           id="I_indexterm10_d1e14732" significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>matrice de configuration</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e14737"
           significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>matrice de configuration</tertiary>
         </indexterm> de la section Configuration de la matrice.</para>
+
       <para>Par défaut, Jenkins exécutera toutes les combinaisons possibles
       des différents axes. Donc, dans l'exemple ci-dessus, nous avons trois
       environnements, deux JDKs et quatre bases de données. Ceci résulte en un
@@ -1026,13 +1232,17 @@ Finished: SUCCESS</screen>
       (Firefox, Internet Explorer, Chrome, etc.) et un autre les systèmes
       d'exploitation (Linux, Windows, Mac OS), cela n'aurait pas beaucoup de
       sens d'exécuter Internet Explorer avec Linux ou Mac OS.</para>
+
       <para>L'<indexterm id="I_indexterm10_d1e14749" significance="normal">
           <primary>tâches de build</primary>
+
           <secondary>multiconfiguration</secondary>
+
           <tertiary>filtre de combinaison pour</tertiary>
         </indexterm><indexterm id="I_indexterm10_d1e14756"
           significance="normal">
           <primary>tâches de build multiconfiguration</primary>
+
           <secondary>filtre de combinaison pour</secondary>
         </indexterm>option de Filtre de Combinaison vous permet de mettre en
       place des règles définissant quelles combinaisons de variables sont
@@ -1045,38 +1255,48 @@ Finished: SUCCESS</screen>
       nécessitent d'exécuter Firefox, Internet Explorer et Chrome, sur
       Windows, Mac OS X, et Linux. Toutefois Internet Explorer ne fonctionne
       que sous Windows, et Chrome ne fonctionne pas sous Linux.</para>
+
       <figure float="none" id="fig-hudson-build-multi-config-filters">
         <title>Mettre en place un filtre de combinaison</title>
+
         <mediaobject id="I_mediaobject10_d1e14767">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1025.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1025.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Pour configurer un Filtre de Combinaison, nous pourrions utiliser
       une expression comme la suivante :</para>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e14774">(browser=="firefox")
 || (browser=="iexplorer" &amp;&amp; os=="windows")
 || (browser=="chrome" &amp;&amp; os != "linux")</programlisting>
+
       <para>Ceci résulterait dans le fait que seules les combinaisons
       correctes navigateur/système d'exploitation seraient exécutées (voir
       <xref linkend="fig-hudson-multi-config-filter-result" />). Les builds
       exécutés sont affichés dans les couleurs habituelles, alors que les
       builds sautés sont grisés.</para>
+
       <figure float="0" id="fig-hudson-multi-config-filter-result">
         <title>Résultats de build utilisant un filtre de combinaison</title>
+
         <mediaobject id="I_mediaobject10_d1e14783">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1026.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1026.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Une autre raison pour utiliser un filtre de build est qu'il y a
       simplement trop de combinaisons valides pour s'exécuter dans un temps
       raisonnable. Dans ce cas, la meilleure solution pourrait être
@@ -1087,6 +1307,7 @@ Finished: SUCCESS</screen>
       variable spéciale <code>index</code>. Si vous incluez l'expression
       <code>(index%2 == 0)</code>, par exemple, cela assurera que seulement un
       build sur deux est en fait exécuté.</para>
+
       <para>Vous pourriez aussi vouloir que certains builds s'exécutent avant
       les autres, comme tests de cohérence. Par exemple, vous pouvez vouloir
       exécuter la configuration par défaut (et, théoriquement, la plus fiable)
@@ -1113,12 +1334,16 @@ Finished: SUCCESS</screen>
         </indexterm> combinaisons.</para>
     </sect2>
   </sect1>
+
   <sect1 id="I_sect110_d1e14808">
     <title>Générer vos tâches de build Maven automatiquement</title>
+
     <para><emphasis>Rédigé par Evgeny Goldin</emphasis></para>
+
     <para>Comme <indexterm class="startofrange" id="ch10-mavengen"
         significance="normal">
         <primary>tâches de build Maven</primary>
+
         <secondary>générer automatiquement</secondary>
       </indexterm>mentionné dans la section précédente, le nombre de tâches de
     build que votre serveur Jenkins héberge peut varier. Lorsque ce nombre
@@ -1129,6 +1354,7 @@ Finished: SUCCESS</screen>
     configuration, comme des goals Maven ou des paramètres de configuration
     mémoire, ce qui résulte dans une configuration dupliquée et un surplus de
     maintenance.</para>
+
     <para>Par exemple, si vous décidez d'exécuter <literal moreinfo="none">mvn
     clean install</literal> au lieu de <literal moreinfo="none">mvn clean
     deploy</literal> pour vos tâches de release et de passer à des méthodes de
@@ -1136,6 +1362,7 @@ Finished: SUCCESS</screen>
     url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
     plugin</ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
     tâches concernées et de les mettre à jour manuellement.</para>
+
     <para>Sinon, vous pourriez tirer parti du fait que Jenkins est un outil
     simple et direct qui garde trace de toutes ses définitions dans des
     fichiers plats sur le disque. En effet, vous pouvez mettre à jour les
@@ -1145,6 +1372,7 @@ Finished: SUCCESS</screen>
     cette approche fonctionnerait, elle est loin d'être idéale parce qu'elle
     implique un nombre assez important de sélections manuelles et de
     remplacements fragiles dans des fichiers XML Jenkins.</para>
+
     <para>Il y a une troisième façon d'atteindre le nirvana des mises à jour
     massives de tâches : générer vos fichiers de configuration automatiquement
     en utilisant une sorte de fichier de définition. Le <indexterm
@@ -1152,6 +1380,7 @@ Finished: SUCCESS</screen>
         <primary>Maven Jenkins plugin</primary>
       </indexterm><indexterm id="I_indexterm10_d1e14846" significance="normal">
         <primary>plugins</primary>
+
         <secondary>Maven Jenkins</secondary>
       </indexterm> <ulink
     url="http://evgeny-goldin.com/wiki/Maven-jenkins-plugin">Maven Jenkins
@@ -1159,12 +1388,16 @@ Finished: SUCCESS</screen>
     moreinfo="none">config.xml</filename> pour toutes les tâches en utilisant
     des définitions standards conservées dans un unique fichier <filename
     moreinfo="none">pom.xml</filename>.</para>
+
     <sect2>
       <title>Configurer une tâche</title>
+
       <para>Quand <indexterm class="startofrange" id="ch10-mavenconfig"
           significance="normal">
           <primary>tâches de build Maven</primary>
+
           <secondary>générer automatiquement</secondary>
+
           <tertiary>configurer</tertiary>
         </indexterm>vous configurez une tâche avec le Maven Jenkins Plugin,
       vous pouvez définir tous les éléments habituels de configuration, comme
@@ -1172,9 +1405,11 @@ Finished: SUCCESS</screen>
       e-mail, le nombre de jours pendant lesquels conserver les logs, et ainsi
       de suite. Le plugin essaie de vous rapprocher au plus près de la
       configuration classique d'une tâche dans Jenkins.</para>
+
       <para>Jetons un oeil à la tâche de build de <ulink
       url="http://code.google.com/p/google-guice/">Google Guice</ulink>
       :</para>
+
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;google-guice-trunk&lt;/id&gt;
     &lt;description&gt;Building Google Guice trunk.&lt;/description&gt;
@@ -1207,6 +1442,7 @@ Finished: SUCCESS</screen>
         &lt;recipients&gt;jenkins@evgeny-goldin.org&lt;/recipients&gt;
     &lt;/mail&gt;
 &lt;/job&gt;</screen>
+
       <para>Cette tâche utilise un certain nombre de configurations standards
       comme <literal moreinfo="none">&lt;jdkName&gt;</literal>, <literal
       moreinfo="none">&lt;mavenName&gt;</literal> et <literal
@@ -1219,22 +1455,28 @@ Finished: SUCCESS</screen>
       moreinfo="none">&lt;mail&gt;</literal>. Cette configuration ajoute aussi
       un lien vers la page du projet dans le tableau de description généré
       automatiquement pour chaque tâche.</para>
+
       <para>Cette tâche générée est affichée dans votre serveur Jenkins comme
       illustré dans <xref
       linkend="jenkins-plugin-google-guice-trunk-job" />.</para>
+
       <figure float="none" id="jenkins-plugin-google-guice-trunk-job">
         <title>Une tâche générée avec le Maven Jenkins plugin</title>
+
         <mediaobject id="I_mediaobject10_d1e14909">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1027.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1027.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Voici une autre tâche construisant la branche master chez GitHub
       :</para>
+
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;jenkins-master&lt;/id&gt;
     &lt;jdkName&gt;jdk1.6.0&lt;/jdkName&gt;
@@ -1253,50 +1495,61 @@ Finished: SUCCESS</screen>
         &lt;sendForUnstable&gt;false&lt;/sendForUnstable&gt;
     &lt;/mail&gt;
 &lt;/job&gt;</screen>
+
       <para>Elle génère la tâche montrée dans <xref
       linkend="jenkins-plugin-jenkins-master-job" />.</para>
+
       <figure float="0" id="jenkins-plugin-jenkins-master-job">
         <title>Tâche générée jenkins-master</title>
+
         <mediaobject id="I_mediaobject10_d1e14925">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1028.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1028.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>La <ulink
       url="http://evgeny-goldin.com/wiki/Maven-jenkins-plugin#.3Cjob.3E">documentation</ulink>
-      du plugin fournit une référence détaillée de tous les paramètres qui
+      du plugin fournit une référence détaille de tous les paramètres qui
       peuvent être <indexterm class="endofrange" id="I_indexterm10_d1e14936"
           significance="normal" startref="ch10-mavenconfig">
           <primary></primary>
         </indexterm>configurés.</para>
     </sect2>
+
     <sect2>
       <title>Réutiliser une configuration de tâche par héritage</title>
+
       <para>Etre <indexterm class="startofrange" id="ch10-inherit"
           significance="normal">
           <primary>Tâches de build Maven</primary>
+
           <secondary>générer automatiquement</secondary>
+
           <tertiary>héritage de configuration</tertiary>
-        </indexterm> capable de générer des tâches Jenkins en utilisant une
-      configuration centralisée, comme un POM Maven, résout le problème de la
-      création et de la mise à jour de plusieurs tâches à la fois. Tout ce que
-      vous avez à faire est de modifier les définitions de tâches, relancer le
-      plugin et charger les définitions mises à jour avec <phrase
-      role="unicode">Administrer Jenkins→</phrase>“Recharger la configuration
-      à partir du disque”. Cette approche a aussi l'avantage de rendre facile
-      le stockage de vos configurations de tâche dans un système de gestion de
+        </indexterm> capable de générer des tâches Jenkins jobs en utilisant
+      une configuration centralisée, comme un POM Maven, résout le problème de
+      la création et de la mise à jour de plusieurs tâches à la fois. Tout ce
+      que vous avez à faire est de modifier les définitions de job, relancer
+      le plugin et charger les définitions mises à jour avec <phrase
+      role="unicode">Adminitrer Jenkins→</phrase>“Recharger la configuration à
+      partir du disque”. Cette approche a aussi l'avantage de rendre facile le
+      stockage de vos configurations de tâche dans un système de gestion de
       versions, ce qui rend par la même plus facile le suivi des changements
       faits aux configurations de build.</para>
+
       <para>Cela ne résout toutefois pas le problème consistant à maintenir
       des tâches qui partagent un certain nombre de propriétés identiques,
       comme les goals Maven, les destinataires email ou l'URL du dépôt de
       code. Pour cela, le Maven Jenkins Plugin fournit de l'héritage de
       tâches, démontré dans l'exemple suivant<phrase
       role="keep-together"></phrase>:</para>
+
       <screen format="linespecific">&lt;jobs&gt;
     &lt;job&gt;
         &lt;id&gt;google-guice-inheritance-base&lt;/id&gt;
@@ -1335,9 +1588,10 @@ Finished: SUCCESS</screen>
         &lt;/repository&gt;
     &lt;/job&gt;
 &lt;/jobs&gt;</screen>
+
       <para>Dans cette configuration,
-      <emphasis>google-guice-inheritance-base</emphasis> est une tâche parente
-      abstraite contenant toutes les propriétés communes : le nom du JDK, le
+      <emphasis>google-guice-inheritance-base</emphasis> est une tâche parent
+      abtraite contenant toutes les propriétés communes : le nom du JDK, le
       nom de Maven, le nombre de jours de conservation des logs, la politique
       de mise à jour SVN, les goals Maven et les destinataires email. Les
       trois tâches suivantes sont très courtes, spécifiant simplement qu'elles
@@ -1346,18 +1600,20 @@ Finished: SUCCESS</screen>
       cas)<phrase role="keep-together">. Une fois générées, elles héritent de
       toutes les propriétés de la tâche parente
       automatiquement</phrase>.</para>
+
       <para>Toute propriété héritée peut être rédéfinie, comme démontré dans
       la tâche <emphasis>google-guice-<phrase
       role="keep-together">inheritance-</phrase>2.0-maven</emphasis> où Maven
       2 est utilisé à la place de Maven 3. Si vous voulez "annuler" une
       propriété hériétée, vous devrez la redéfinir avec une valeur
       vide.</para>
+
       <para>L'héritage de tâches est un concept très puissant qui permet aux
       tâches de former des groupes hiérarchiques de n'importe quel type et
-      dans n'importe quel but. Vous pouvez grouper vos tâches d'IC, nocturnes
+      dans n'importe quel but. Vous pouvez grouper vos tâches d'IC, noctures
       ou de release de cette façon, en centralisant les déclencheurs
       d'exécution partagés, les goals Maven ou les destinataires email dans
-      des tâches parentes. Cette approche empruntée au monde orienté object
+      des tâches parentes. Cette approche emprunté au monde orienté object
       permet de résoudre le problème de maintenance de tâches partageant un
       certain nombre de propriétés <indexterm class="endofrange"
           id="I_indexterm10_d1e14986" significance="normal"
@@ -1365,28 +1621,36 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm>identiques.</para>
     </sect2>
+
     <sect2>
       <title>Le support des plugins</title>
+
       <para>En plus de configurer une tâche et de réutiliser ses définitions,
-      vous pouvez utiliser un support spécial pour un certain nombre de
-      plugins Jenkins. Dès à présent, une utilisation simplifiée des plugins
-      Parameterized Trigger et Artifactory est fournie, avec un support pour
-      d'autres plugins populaires planifié pour de futures versions.</para>
+      vous pouvez appliquer utiliser un support spécial pour un certain nombre
+      de plugins Jenkins. Dès à présent, une utilisation simplifiée des
+      plugins Parameterized Trigger et Artifactory est fournie, avec un
+      support pour d'autres plugins populaires planifié pour de futures
+      versions.</para>
+
       <para>Ci-dessous<indexterm id="I_indexterm10_d1e14996"
           significance="normal">
           <primary>plugin Parameterized Trigger</primary>
         </indexterm><indexterm id="I_indexterm10_d1e14999"
           significance="normal">
           <primary>plugins</primary>
+
           <secondary>Parameterized Trigger</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15004"
           significance="normal">
           <primary>Tâches de build Maven</primary>
-          <secondary>générer automatiquement</secondary>
+
+          <secondary>générer automatiquement </secondary>
+
           <tertiary>plugin Parameterized Trigger avec</tertiary>
         </indexterm> se trouve un exemple d'invocation de tâches avec le
       plugin Parameterized Trigger. Utiliser cette option suppose que vous
       avez déjà ce plugin installé :</para>
+
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;google-guice-inheritance-trunk&lt;/id&gt;
     ...
@@ -1407,6 +1671,7 @@ Finished: SUCCESS</screen>
     &lt;id&gt;google-guice-inheritance-2.0-maven&lt;/id&gt;
     ...
 &lt;/job&gt;</screen>
+
       <para>L'élément <literal moreinfo="none">&lt;invoke&gt;</literal> vous
       permet d'invoquer d'autres tâches chaque fois que la tâche courante se
       termine correctement. Vous pouvez créer un pipeline de tâches de cette
@@ -1415,9 +1680,11 @@ Finished: SUCCESS</screen>
       l'invocation, les tâches spécifiées démarreront en parallèle. Pour une
       exécution en série, vous devrez connecter chaque tâche amont à une tâche
       aval avec <literal moreinfo="none">&lt;invoke&gt;</literal>.</para>
-      <para>Par défaut, l'invocation ne se fait que si la tâche courante est
+
+      <para>Par défaut, l'invocation ne se fait que la tâche courante est
       stable. Ceci peut être modifié, comme montré dans les exemples suivants
       :</para>
+
       <screen format="linespecific">&lt;invoke&gt;
     &lt;jobs&gt;jobA, jobB, jobC&lt;/jobs&gt;
     &lt;always&gt;true&lt;/always&gt;
@@ -1434,29 +1701,36 @@ Finished: SUCCESS</screen>
     &lt;unstable&gt;false&lt;/unstable&gt;
     &lt;failed&gt;true&lt;/failed&gt;
 &lt;/invoke&gt;</screen>
+
       <para>La première invocation dans l'exemple ci-dessus invoque toujours
       les tâches avals. Ceci peut être utilisé pour un pipeline de tâches qui
       devraient toujours être exécutées même si certaines, ou leurs tests,
       échouent.</para>
+
       <para>La seconde invocation dans l'exemple ci-dessus invoque les tâches
       avals même si une tâche amont est instable : l'invocation prend place
       quels que soient les résultats des tests. Cela peut être utilisé pour un
       pipeline de tâches moins sensibles aux tests et leurs échecs.</para>
+
       <para>La troisième invocation ci-dessus invoque les tâches avals
-      seulement si une tâche amont échoue mais pas lorsqu'elle est stable ou
+      seulement une tâche amont échoue mais pas lorsqu'elle est stable ou
       instable. Cette configuration peut vous être utile si une tâche en échec
       doit effectuer des actions additionnelles autres que les notifications
-      email traditionnelles.</para>
+      email tradtionnelles.</para>
+
       <para><indexterm id="I_indexterm10_d1e15033" significance="normal">
           <primary>Artifactory plugin</primary>
         </indexterm><indexterm id="I_indexterm10_d1e15036"
           significance="normal">
           <primary>plugins</primary>
+
           <secondary>Artifactory</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15041"
           significance="normal">
           <primary>Tâches de build Maven</primary>
-          <secondary>générer automatiquement</secondary>
+
+          <secondary>générer automatiquement </secondary>
+
           <tertiary>Artifactory plugin avec</tertiary>
         </indexterm><ulink url="http://jfrog.org">Artifactory</ulink> est un
       dépôt de binaires à usage général qui peut être utilisé comme
@@ -1470,20 +1744,25 @@ Finished: SUCCESS</screen>
       capacité à déployer des artefacts à l'achèvement de la tâche ou
       d'envoyer avec des informations de l'environnement de build avec les
       artefacts pour une meilleure traçabilité.</para>
+
       <figure float="0" id="jenkins-plugin-artifactory">
         <title>Configuration du plugin Jenkins pour Artifactory</title>
+
         <mediaobject id="I_mediaobject10_d1e15062">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1029.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1029.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>Vous pouvez aussi utiliser le plugin Jenkins Artifactory en
       conjonction avec le Maven Jenkins Plugin pour déployer dans Artifactory,
       comme montré dans l'exemple suivant :</para>
+
       <screen format="linespecific">&lt;job&gt;
     ...
     &lt;artifactory&gt;
@@ -1493,6 +1772,7 @@ Finished: SUCCESS</screen>
         &lt;evenIfUnstable&gt;true&lt;/evenIfUnstable&gt;
     &lt;/artifactory&gt;
 &lt;/job&gt;</screen>
+
       <para>Les informations d'identité pour le déploiement sont spécifiées
       dans la configuration de Jenkins dans l'écran Administrer Jenkins<phrase
       role="unicode">→Configurer le système</phrase>. Elles peuvent aussi être
@@ -1502,10 +1782,13 @@ Finished: SUCCESS</screen>
       détails dans la documentation du plugin à l'adresse <ulink
       url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin"></ulink>.</para>
     </sect2>
+
     <sect2>
       <title>Les tâches Freestyle</title>
+
       <para>En <indexterm id="I_indexterm10_d1e15089" significance="normal">
-          <primary>tâches de build freestyle</primary>
+          <primary>tâches de build freestyle </primary>
+
           <secondary>générer automatiquement</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15094"
           significance="normal">
@@ -1513,10 +1796,12 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm id="I_indexterm10_d1e15097"
           significance="normal">
           <primary>plugins</primary>
+
           <secondary>Maven Jenkins</secondary>
         </indexterm>supplément des tâches Maven, le Maven Jenkins Plugin vous
       permet de configurer des tâches freestyle Jenkins. Un exemple est montré
       ici :</para>
+
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;free-style&lt;/id&gt;
     &lt;jobType&gt;free&lt;/jobType&gt;
@@ -1533,6 +1818,7 @@ Finished: SUCCESS</screen>
         &lt;shell&gt;&lt;command&gt;pwd; ls -al; du -hs .&lt;/command&gt;&lt;/shell&gt;
     &lt;/tasks&gt;
 &lt;/job&gt;</screen>
+
       <para>Les tâches Freestyle vous permettent d'exécuter un shell ou une
       commande batch, exécuter Maven ou Ant, et invoquer d'autres tâches.
       Elles fournissent un environnement d'exécution bien pratique pour les
@@ -1548,243 +1834,266 @@ Finished: SUCCESS</screen>
         </indexterm>et maintenable.</para>
     </sect2>
   </sect1>
+
   <sect1 id="I_sect110_d1e15110">
-    <title id="sect-advanced-builds-coordinating">Coordonner vos
-    builds</title>
-    <para>Déclencher des tâches avals est assez facile. Toutefois, quand on
-    met en place des configurations de tâches de build plus importantes et
-    plus compliquées, on aimerait parfois être capable de lancer des
-    exécutions simultanées, ou éventuellement attendre la fin de certaines
-    tâches de build afin de continuer. Dans cette section, nous allons
-    regarder les techniques et les plugins qui peuvent nous aider à faire
-    cela.</para>
+    <title id="sect-advanced-builds-coordinating">Coordinating Your
+    Builds</title>
+
+    <para>Triggering downstream build jobs is easy enough. However, when
+    setting up larger and more complicated build job setups, you sometimes
+    would like builds to be able to run concurrently, or possibly wait for
+    certain build jobs to finish before proceeding. In this section, we will
+    look at techniques and plugins that can help you do this.</para>
+
     <sect2>
-      <title>Les builds parallèles dans Jenkins</title>
+      <title>Parallel Builds in Jenkins</title>
+
       <para>Jenkins<indexterm class="startofrange" id="ch10-parallel"
           significance="normal">
-          <primary>tâches de build</primary>
-          <secondary>exécution en parallèle</secondary>
-        </indexterm> possède un support intégré pour les build parallèles —
-      quand une tâche démarre, Jenkins va lui assigner le premier noeud de
-      build disponible. Vous pouvez donc avoir potentiellement autant de
-      builds parallèles en exécution que vous avez de noeuds
-      disponibles.</para>
-      <para>Si vous avez besoin d'exécuter une légère variations de la même
-      tâche de build en parallèle, les tâches de build multiconfiguration
-      (voir <xref linkend="sect-multi-configuration-build-jobs" />) sont une
-      excellente option. Ceci peut s'avérer très pratique comme moyen
-      d'accéler votre processus de build. Une application typiquement des
-      tâches de build multiconfiguration mis en contexte est d'exécuter des
-      tests d'intégration en parallèle. Vous pourriez définir des profils
-      Maven par exemple, ou configurer votre build pour utiliser des
-      paramètres de ligne de commande pour décider quels tests exécuter. Une
-      fois que vous avez configuré vos scripts de build de cette façon, il est
-      aisé de configuration une tâche de build multiconfiguration pour
-      exécuter un sous ensemble de vos tests d'intégration en
-      parallèle.</para>
-      <para>Vous pouvez aussi faire que Jenkins déclenche plusieurs tâches
-      avals en parallèle, en les listant simplement dans le champ "Construire
-      d'autres projets" (voir <xref
-      linkend="fig-hudson-build-other-projects" />). Les tâches de build
-      suivantes seront exécutées en parallèle autant que possible. Toutefois,
-      comme nous le verrons plus loin, cela peut ne pas être toujours
-      exactement ce que dont vous avez besoin.</para>
+          <primary>build jobs</primary>
+
+          <secondary>running in parallel</secondary>
+        </indexterm> has built-in support for parallel builds—when a build job
+      starts, Jenkins will assign it to the first available build node, so you
+      can potentially have as many parallel builds running as you have build
+      nodes available.</para>
+
+      <para>If you need to run slight variations of the same build job in
+      parallel, multiconfiguration build jobs (see <xref
+      linkend="sect-multi-configuration-build-jobs" />) are an excellent
+      option. This can come in handy as a way of accelerating your build
+      process. A typical application of multiconfiguration build jobs in this
+      context is to run integration tests in parallel. One strategy is to set
+      up an integration test build job that can be run in different ways to
+      execute different subsets of the integration tests. You could define
+      separate Maven profiles, for example, or configure your build to use a
+      command-line parameter to decide which tests to run. Once you have set
+      up your build script in this way, it is easy to configure a
+      multiconfiguration build job to run the subsets of your integration
+      tests in parallel.</para>
+
+      <para>You can also get Jenkins to trigger several downstream builds in
+      parallel, simply by listing them all in the “Build other projects” field
+      (see <xref linkend="fig-hudson-build-other-projects" />). The subsequent
+      build jobs will be executed in parallel as much as possible. However, as
+      we will see further on, this may not always be exactly what you
+      need.</para>
+
       <figure float="none" id="fig-hudson-build-other-projects">
-        <title>Déclencher plusieurs autres builds après une tâche de
-        build</title>
+        <title>Triggering several other builds after a build job</title>
+
         <mediaobject id="I_mediaobject10_d1e15137">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1030.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1030.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
-      <title>Graphes de dépendance</title>
-      <para>Avant<indexterm id="I_indexterm10_d1e15147" significance="normal">
-          <primary>tâches de build</primary>
-          <secondary>dépendances entre</secondary>
+      <title>Dependency Graphs</title>
+
+      <para>Before<indexterm id="I_indexterm10_d1e15147" significance="normal">
+          <primary>build jobs</primary>
+
+          <secondary>dependencies between</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15152"
           significance="normal">
-          <primary>plugin Dependency Graph View</primary>
+          <primary>Dependency Graph View plugin</primary>
         </indexterm><indexterm id="I_indexterm10_d1e15155"
           significance="normal">
           <primary>plugins</primary>
+
           <secondary>Dependency Graph View</secondary>
-        </indexterm> d'étudier les points les plus fins des buils parallèles,
-      il est utile de pouvoir visualiser les relations entre vos tâches de
-      build. Le plugin Dependency Graph View analyse vos tâches de build et
-      affiche un graphe décrivant les connexions amont et aval entre vos
-      tâches. Ce plugin utilise <ulink
-      url="http://www.graphviz.org">graphviz</ulink>, que vous aurez besoin
-      d'installer sur votre serveur si vous ne l'avez pas déjà.</para>
-      <para>Ce plugin ajoute une icône Graphe de dépendance dans le menu
-      principal, qui affiche un graphe montrant les relations entre toutes les
-      tâches de build dans votre projet (au niveau tableau de bord), ou toutes
-      les tâches de build liées à la tâche de build courante (quand vous êtes
-      à l'intérieur d'un projet particulier [voir <xref
-      linkend="fig-hudson-dependency-graph" />]). De plus, si vous cliquez sur
-      une tâche de build dans le graphe, Jenkins vous emmènera directement
-      vers la page projet de cette tâche de build.</para>
+        </indexterm> we investigate the finer points of parallel builds, it is
+      useful to be able to visualize the relationships between your build
+      jobs. The Dependency Graph View plugin analyzes your build jobs and
+      displays a graph describing the upstream and downstream connections
+      between your jobs. This plugin uses <ulink
+      url="http://www.graphviz.org">graphviz</ulink>, which you will need to
+      install on your server if you don’t already have it.</para>
+
+      <para>This plugin adds a Dependency Graph icon in the main menu, which
+      displays a graph showing the relationships between all the build jobs in
+      your project (at the dashboard level), or all of the build jobs related
+      to the current build job (when you are inside a particular project [see
+      <xref linkend="fig-hudson-dependency-graph" />]). What’s more, if you
+      click on a build job in the graph, Jenkins will take you directly to the
+      project page of that build job.</para>
+
       <figure float="0" id="fig-hudson-dependency-graph">
-        <title>Un graphe de dépendance de tâche de build</title>
+        <title>A build job dependency graph</title>
+
         <mediaobject id="I_mediaobject10_d1e15171">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1031.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1031.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <sect2>
-      <title>Jonctions</title>
-      <para>Lors <indexterm class="startofrange" id="ch10-join1"
+      <title>Joins</title>
+
+      <para>When <indexterm class="startofrange" id="ch10-join1"
           significance="normal">
-          <primary>tâches de build</primary>
-          <secondary>jonctions dans</secondary>
+          <primary>build jobs</primary>
+
+          <secondary>joins in</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-join2"
           significance="normal">
           <primary>joins, in build jobs</primary>
-        </indexterm>de la configuration de pipelines de builds plus
-      compliqués, vous rencontrerez fréquemment des situations où une tâche de
-      build ne peut démarrer tant qu'un certain nombre d'autres tâches de
-      build ne sont pas terminées, mais que ces tâches amont ne nécessitent
-      pas d'être exécutées séquentiellement. Par exemple, dans <xref
-      linkend="fig-hudson-dependency-graph" />, imaginez que la tâche de build
-      <command moreinfo="none">phoenix-deploy-to-uat</command> ait en fait
-      besoin que trois tâches réussissent avant qu'elle puisse être exécutée :
+        </indexterm>setting up more complicated build pipelines, you
+      frequently come across situations where a build job cannot proceed until
+      a number of other build jobs have been completed, but that these
+      upstream build jobs do not need to be executed sequentially. For
+      example, in <xref linkend="fig-hudson-dependency-graph" />, imagine that
+      the <command moreinfo="none">phoenix-deploy-to-uat</command> build job
+      actually requires three jobs to succeed before it can be executed:
       <command moreinfo="none">phoenix-compatibility-tests</command>, <command
-      moreinfo="none">phoenix-load-tests</command>, et <command
+      moreinfo="none">phoenix-load-tests</command>, and <command
       moreinfo="none">phoenix-performance-tests</command>.</para>
-      <para>On peut configurer cela en utilisant le plugin Joins, que vous
-      devez installer de la façon habituelle via le centre de mise à jour. Une
-      fois qu'il est installé, vous configurez une jonction dans la tâche de
-      build qui initie le processus de jonction (ici, ce serait <command
-      moreinfo="none">phoenix-web-tests</command>). Dans notre exemple, nous
-      devons modifier la tâche de build <command
-      moreinfo="none">phoenix-web-tests</command> afin qu'elle déclenche en
-      premier <command moreinfo="none">phoenix-compatibility-tests</command>,
-      <command moreinfo="none">phoenix-load-tests</command>, et <command
-      moreinfo="none">phoenix-performance-tests</command>, et ensuite, si ces
-      trois réussissent, la tâche de build <command
-      moreinfo="none">phoenix-deploy-to-uat</command>.</para>
-      <para>Nous le faisons en configurant simplement le champ déclencheur de
-      jonction avec le nom de la tâche de build <command
-      moreinfo="none">phoenix-deploy-to-uat</command> (voir <xref
-      linkend="fig-hudson-build-join" />). Le champ “Construire d'autres
-      projets” n'est pas modifié, et liste encore les tâches de build à
-      déclencher immédiatement après la tâche courante. Le champ déclenchement
-      de buildfield is not modified, and still lists the build jobs to be
-      triggered immediately after the current one. Le champ déclencheur de
-      jonction contient les tâches de build à lancer une fois que toutes les
-      tâches avals immédiates se sont terminées.</para>
+
+      <para>We can set this up by using the Joins plugin, which you will need
+      to install in the usual way via the Update center. Once installed, you
+      configure a join in the build job that initiates the join process (in
+      our example, this would be <command
+      moreinfo="none">phoenix-web-tests</command>). In our example, we need to
+      modify the <command moreinfo="none">phoenix-web-tests</command> build
+      job so that it triggers the <command
+      moreinfo="none">phoenix-compatibility-tests</command>, <command
+      moreinfo="none">phoenix-load-tests</command>, and <command
+      moreinfo="none">phoenix-performance-tests</command> first, and then, if
+      these three succeed, the <command
+      moreinfo="none">phoenix-deploy-to-uat</command> build job.</para>
+
+      <para>We do this by simply configuring the Join Trigger field with the
+      name of the <command moreinfo="none">phoenix-deploy-to-uat</command>
+      build job (see <xref linkend="fig-hudson-build-join" />). The “Build
+      other projects” field is not modified, and still lists the build jobs to
+      be triggered immediately after the current one. The Join Trigger field
+      contains the build jobs to be built once all of the immediate downstream
+      build jobs have finished.</para>
+
       <figure float="0" id="fig-hudson-build-join">
-        <title>Configurer une jonction dans la tâche de build
-        phoenix-web-tests</title>
+        <title>Configuring a join in the phoenix-web-tests build job</title>
+
         <mediaobject id="I_mediaobject10_d1e15236">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1032.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1032.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Résultat, vous n'avez plus besoin du déclencheur de build original
-      pour la tâche de build final, puisque c'est à présent redondant.</para>
-      <para>Ce nouveau déroulement apparaît bien dans les graphes de
-      dépendance<indexterm class="endofrange" id="I_indexterm10_d1e15245"
+
+      <para>As a result, you no longer need the original build trigger for the
+      final build job, as it is now redundant.</para>
+
+      <para>This new flow shows up nicely in the dependency graphs
+      as<indexterm class="endofrange" id="I_indexterm10_d1e15245"
           significance="normal" startref="ch10-join1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15247"
           significance="normal" startref="ch10-join2">
           <primary></primary>
-        </indexterm> illustrés dans <xref
+        </indexterm> illustrated in <xref
       linkend="fig-build-dependency-graph-join" />.</para>
+
       <figure float="0" id="fig-build-dependency-graph-join">
-        <title>Un graphe de dépendance de tâche de build plus
-        compliqué</title>
+        <title>A more complicated build job dependency graph</title>
+
         <mediaobject id="I_mediaobject10_d1e15255">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1033.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1033.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
     </sect2>
+
     <?dbfo-need height=”1in”?>
+
     <sect2>
-      <title>Plugin Locks and Latches</title>
-      <para>Dans d'autres <indexterm class="startofrange" id="ch10-locks1"
+      <title>Locks and Latches</title>
+
+      <para>In other <indexterm class="startofrange" id="ch10-locks1"
           significance="normal">
-          <primary>tâches de build</primary>
-          <secondary>verrouiller les ressources pour</secondary>
+          <primary>build jobs</primary>
+
+          <secondary>locking resources for</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-locks2"
           significance="normal">
-          <primary>verrouiller des ressources pour des tâches de
-          build</primary>
-        </indexterm>situations, vous pourriez être capable de lancer une série
-      de builds en parallèle jusqu'à un certain point, mais certaines tâches
-      de build pourraient ne pas pouvoir être lancées en parallèle parce
-      qu'elles accèdent des ressources en concurrence. Bien sûr, des tâches de
-      build bien conçues devraient s'efforcer d'être aussi indépendantes que
-      possible, mais cela peut parfois être difficile. Par exemple,
-      différentes tâches de build peuvent accéder à la même base de données de
-      test, ou à des fichiers sur le disque dur, et faire cela simultanément
-      pourrait potentiellement compromettre le résultat des tests. Une tâche
-      de build de performance pourrait avoir besoin d'un accès exclusif au
-      serveur de test, afin d'avoir des résultats cohérents à chaque
-      fois.</para>
-      <para>Le<indexterm id="I_indexterm10_d1e15277" significance="normal">
+          <primary>locking resources for build jobs</primary>
+        </indexterm>situations, you might be able to run a series of builds in
+      parallel to some degree, but certain build jobs cannot be run in
+      parallel because they access concurrent resources. Of course,
+      well-designed build jobs should strive to be as independent as possible,
+      but sometimes this can be difficult. For example, different build jobs
+      may need to access the same test database or files on the hard disk, and
+      doing so simultaneously could potentially compromise the results of the
+      tests. Or a performance build job may need exclusive access to the test
+      server, in order to have consistent results each time.</para>
+
+      <para>The<indexterm id="I_indexterm10_d1e15277" significance="normal">
           <primary>plugins</primary>
+
           <secondary>Locks and Latches</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15282"
           significance="normal">
-          <primary>plugin Locks and Latches</primary>
-        </indexterm> plugin Locks and Latches vous permet d'une certaine façon
-      de contourner ce problème. Ce plugin permet de configuration des
-      “verrous” (ndt: locks) pour certaines ressources, de façon similaire aux
-      verrous en programmation multithreadée. Supposez, par exemple, dans les
-      tâches de build dépeintes dans <xref
-      linkend="fig-build-dependency-graph-join" />, que les tests de charge et
-      les tests de performance soient exécutés sur un serveur dédié, mais
-      qu'une seule tâche de build puisse être exécutée à la fois sur ce
-      serveur. Imaginez de plus que les tests de performance pour les autres
-      projets soient aussi exécutés sur ce serveur.</para>
-      <para>Pour éviter la contention sur le serveur de performance, vous
-      pourriez utiliser le plugin Locks and Latches pour mettre en place un
-      accès par réservation de "verrou" à ce serveur pour une tâche à un
-      instant donné. Premièrement, dans la page de configuration du système,
-      vous devez ajouter un nouveau verrou dans la section Verrous (voir <xref
-      linkend="fig-jenkins-build-lock" />). Ce verrou sera ensuite disponible
-      à toutes les tâches de build sur le serveur.</para>
+          <primary>Locks and Latches plugin</primary>
+        </indexterm> Locks and Latches plugin lets you get around this problem
+      to some extent. This plugin lets you set up “locks” for certain
+      resources, in a similar way to locks in multithreaded programming.
+      Suppose, for example, in the build jobs depicted in <xref
+      linkend="fig-build-dependency-graph-join" />, that the load tests and
+      the performance tests run against a dedicated server, but only one build
+      job can run against this server at any one time. Imagine furthermore
+      that the performance tests for other projects also run against this
+      server.</para>
+
+      <para>To avoid contention over the performance server, you could use the
+      Locks and Latches plugin to set up a “lock” reserving access to this
+      server to a single build job at a time. First, in the System
+      Configuration page, you need to add a new lock in the Locks section (see
+      <xref linkend="fig-jenkins-build-lock" />). This lock will then be
+      available to all build jobs on the server.</para>
+
       <figure float="0" id="fig-jenkins-build-lock">
-        <title>Ajouter un nouveau verrou</title>
+        <title>Adding a new lock</title>
+
         <mediaobject id="I_mediaobject10_d1e15295">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1034.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1034.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ensuite, vous devez configurer chaque tâche de build qui utilisera
-      la ressource en contention. Dans la section Environnement de build, vous
-      trouverez un champ Verrous. Cochez la case et sélectionnez le verrous
-      que vous venez juste de créer (voir <xref
-      linkend="fig-jenkins-build-locks" />). Une fois que avez fait cela pour
-      chacune des tâches de build qui ont besoin d'accéder à la ressource en
-      question, seule une de des tâches de build pourra s'exécuter à un
-      instant<indexterm class="endofrange" id="I_indexterm10_d1e15304"
-          significance="normal" startref="ch10-locks1">
+
+      <para>Next, you need to set up each build job that will be using the
+      contended resource. In the Build Environment section, you will find a
+      Locks field. Tick the checkbox and select the lock you just created (see
+      <xref linkend="fig-jenkins-build-locks" />). Once you do this for each
+      of the build jobs that need to access the resource in question, only one
+      of these build jobs will ever be able to run at a given<indexterm
+          class="endofrange" id="I_indexterm10_d1e15304" significance="normal"
+          startref="ch10-locks1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15306"
           significance="normal" startref="ch10-locks2">
@@ -1792,13 +2101,16 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15308"
           significance="normal" startref="ch10-parallel">
           <primary></primary>
-        </indexterm> donné.</para>
+        </indexterm> time.</para>
+
       <figure float="0" id="fig-jenkins-build-locks">
-        <title>Configurer une tâche de build pour utiliser un verrou</title>
+        <title>Configuring a build job to use a lock</title>
+
         <mediaobject id="I_mediaobject10_d1e15314">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1035.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1035.png" format="PNG" />
           </imageobject>
@@ -1806,186 +2118,203 @@ Finished: SUCCESS</screen>
       </figure>
     </sect2>
   </sect1>
+
   <sect1 id="sect-build-pipelines">
-    <title>Pipelines de build et Promotions</title>
-    <para>L'intégration<indexterm class="startofrange" id="ch10-pipe"
+    <title>Build Pipelines and Promotions</title>
+
+    <para>Continuous<indexterm class="startofrange" id="ch10-pipe"
         significance="normal">
-        <primary>pipelines de build</primary>
+        <primary>build pipelines</primary>
       </indexterm><indexterm id="I_indexterm10_d1e15327" significance="normal">
         <primary>pipelines</primary>
-        <see>pipelines de build</see>
-      </indexterm> Continue ne consiste pas simplement à construire et tester
-    automatiquement un logiciel, elle peut aussi apporter une aide dans un
-    contexte plus large de dévéloppement de produit logiciel et de cycle de
-    vie de release. Dans de nombreuses organisation, la vie d'une version
-    particulière d'une application ou d'un produit démarre en développement.
-    Lorsqu'on l'estime prête, elle est passée à l'équipe d'assurance qualité
-    pour la tester. S'ils considèrent la version acceptable, ils la
-    transmettent à des utilisateurs sélectionnés pour davantage de tests dans
-    un environnement de tests d'acceptation. Si les utilisateurs sont
-    contents, elle est envoyée en production. Bien sûr, il y a presque autant
-    de variations de cela qu'il y a d'équipes de développement, mais un
-    principe commun est que des versions spécifiques sont sélectionnées, selon
-    certaines critères de qualité, afin d'<indexterm
-        id="I_indexterm10_d1e15333" significance="normal">
-        <primary>pipelines de build</primary>
-        <secondary>promotions dans</secondary>
+
+        <see>build pipelines</see>
+      </indexterm> Integration is not just about automatically building and
+    testing software, but can also help in the broader context of the software
+    product development and release life cycle. In many organizations, the
+    life of a particular version of an application or product starts out in
+    development. When it is deemed ready, it is passed on to a QA team for
+    testing. If they consider the version acceptable, they pass it on to
+    selected users for more testing in a User Acceptance Testing (UAT)
+    environment. And if the users are happy, it is shipped out into
+    production. Of course, there are almost as many variations on this as
+    there are software development teams, but one common principle is that
+    specific versions of your software are selected, according to certain
+    quality-related criteria, to <indexterm id="I_indexterm10_d1e15333"
+        significance="normal">
+        <primary>build pipelines</primary>
+
+        <secondary>promotions in</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e15338" significance="normal">
         <primary>promotions</primary>
-      </indexterm>être “promues" à l'étape suivante du cycle de vie. Ceci est
-    connu sous l'appellation promotion de build, et le processus plus global
-    est connu sous le nom de pipeline de build. Dans cette section, nous
-    regarderons comment implémenter des pipelines de build en utilisant
-    Jenkins.</para>
+      </indexterm>be “promoted” to the next stage of the life cycle. This is
+    known as build promotion, and the broader process is known as a build
+    pipeline. In this section, we will look at how you can implement build
+    pipelines using Jenkins.</para>
+
     <sect2 id="jenkins-maven-releases">
-      <title>Gestion les Releases Maven avec le plugin M2Release</title>
-      <para>Une part importante de tout pipeline de build est d'avoir une
-      stratégie de release bien définie. Ceci implique, entre autres choses,
-      de dédier comment et quand lancer une nouvelle release, et comment
-      l'identifier avec un unique libellé ou numéro de version. Si <indexterm
-          class="startofrange" id="ch10-numbers1" significance="normal">
-          <primary>pipelines de build</primary>
-          <secondary>numéros de versions Maven pour</secondary>
+      <title>Managing Maven Releases with the M2Release Plugin</title>
+
+      <para>An important part of any build pipeline is a well-defined release
+      strategy. This involves, among other things, deciding how and when to
+      cut a new release, and how to identify it with a unique label or version
+      number. If <indexterm class="startofrange" id="ch10-numbers1"
+          significance="normal">
+          <primary>build pipelines</primary>
+
+          <secondary>Maven version numbers for</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-numbers2"
           significance="normal">
           <primary>Maven</primary>
-          <secondary>numéro de version pour</secondary>
+
+          <secondary>version numbers for</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-numbers3"
           significance="normal">
-          <primary>numéros de version, Maven</primary>
-        </indexterm>vous travaillez avec des projets Maven, utiliser
-      <indexterm id="I_indexterm10_d1e15361" significance="normal">
+          <primary>version numbers, Maven</primary>
+        </indexterm>you are working with Maven projects, using the <indexterm
+          id="I_indexterm10_d1e15361" significance="normal">
           <primary>plugins</primary>
+
           <secondary>Maven Release</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15366"
           significance="normal">
           <primary>Maven Release plugin</primary>
-        </indexterm>le Maven Release plugin pour gérer les numéros de versions
-      est une pratique hautement recommandée.</para>
-      <para>Les projets Maven utilisent des numéros de version bien définis et
-      bien structurés. Un numéro de version typique est composé de trois
-      digits (e.g., “1.0.1”). Les développeurs travaillent sur des versions
-      SNAPSHOT (e.g.,“1.0.1-SNAPSHOT”), qui, comme son nom l'indique, n'est
-      pas conçu pour être définitif. Les releases définitives (e.g., “1.0.1”)
-      sont construites une fois seule fois et déployées dans le dépôt local
-      d'entreprise (ou le dépôt central Maven pour les bibliothèques
-      opensource), où elles peuvent à leur tour utilisées par d'autres
-      projets. Les numéros de version utilisés dans des artefacts Maven sont
-      une part critique du système de gestion de dépendance Maven, et il est
-      fortement conseillé de respecter les conventions Maven.</para>
-      <para>Le Maven Release plugin aide à automatiser le processus de mise à
-      jour des numéros de version Maven de vos projets. En résumé, cela
-      vérifie, construit et teste votre application, monte les numéros de
-      version, met à jour votre système de contrôle de version avec les tags
-      appropriés, et déploie les versions de release de vos artefacts dans
-      votre dépôt Maven. C'est une tâche fastidieuse à faire manuellement, le
-      Maven Release plugin est donc un excellent moyen d'automatiser les
-      choses.</para>
-      <para>Toutefois, le Maven Release plugin peut aussi être capricieux. Des
-      fichiers locaux non committés ou modifiés peuvent faire échouer le
-      processus, par exemple. Le processus est aussi consommateur en temps et
-      consomme intensivement le CPU, plus spécialement pour les gros projets :
-      cela construit et exécute l'ensemble entier de tests unitaires et
-      d'intégration plusieurs fois, récupère une copie propre du code depuis
-      le dépôt, et envoie plusieurs artefacts au dépôt d'entreprise.
-      Clairement, ce n'est pas le genre de chose que vous voulez exécuter sur
-      une machine de développeur.</para>
-      <para>Il est donc de bon ton d'exécuter ce processus sur votre serveur
-      de build.</para>
-      <para>Une façon de faire cela est de configurer une tâche manuelle de
-      build spéciale invoquant le Maven Release plugin. Toutefois, le plugin
-      M2Release propose une approche plus simple. En utilisant ce plugin, vous
-      pouvez ajouter la possibilité de construire une version de release Maven
-      à une tâche existant. Vous pouvez ainsi éviter de dupliquer des tâches
-      de builds inutilement, facilitant par la même la maintenance du
-      serveur.</para>
-      <para>Une fois ce plugin installé, vous pouvez configurer toute tâche de
-      build pour qu'elle propose une étape manuelle de release Maven. Ceci
-      s'effectue en cochant la case “Maven release build” dans la section
-      Environnement de Build (voir <xref
-      linkend="fig-build-m2release-plugin" />). Ici, vous définissez les goals
-      que vous voulez exécuter pour le build (typiquement <literal
+        </indexterm>Maven Release plugin to handle version numbers comes as a
+      highly recommended practice.</para>
+
+      <para>Maven projects use well-defined and well-structured version
+      numbers. A typical version number is made up of three digits (e.g.,
+      “1.0.1”). Developers work on SNAPSHOT versions (e.g.,“1.0.1-SNAPSHOT”),
+      which, as the name would indicate, are not designed to be definitive.
+      The definitive releases (e.g., “1.0.1”) are built once and deployed to
+      the local enterprise repository (or the central Maven repository for
+      open source libraries), where they can be used in turn by other
+      projects. The version numbers used in Maven artifacts are a critical
+      part of Maven’s dependency management system, and it is strongly advised
+      to stick to the Maven conventions.</para>
+
+      <para>The Maven Release plugin helps automates the process of updating
+      Maven version numbers in your projects. In a nutshell, it verifies,
+      builds and tests your application, bumps up the version numbers, updates
+      your version control system with the appropriate tags, and deploys the
+      released versions of your artifacts to your Maven repository. This is a
+      tedious task to do by hand, so the Maven Release plugin is an excellent
+      way to automate things.</para>
+
+      <para>However the Maven Release plugin can be fickle, too. Uncommitted
+      or modified local files can cause the process to fail, for example. The
+      process is also time-consuming and CPU intensive, especially for large
+      projects: it builds the application and runs the entire set of unit and
+      integration tests several times, checks out a fresh copy of the source
+      code from the repository, and uploads many artifacts to the Enterprise
+      repository. Indeed, this is not the sort of thing you want running on a
+      developer machine.</para>
+
+      <para>So it makes good sense to run this process on your build
+      server.</para>
+
+      <para>One way to do this is to set up a special manual build job to
+      invoke the Maven Release plugin. However, the M2Release plugin proposes
+      a simpler approach. Using this <phrase
+      role="keep-together">plugin</phrase>, you can add the ability to build a
+      Maven release version in an existing build job. This way you can avoid
+      duplicating build jobs unnecessarily, making build job maintenance
+      easier.</para>
+
+      <para>Once you have installed this plugin, you can define any build job
+      to also propose a manual Maven Release step. You do this by ticking the
+      “Maven release build” checkbox in the Build Environment section (see
+      <xref linkend="fig-build-m2release-plugin" />). Here, you define the
+      goals you want to execute to trigger the build (typically <literal
       moreinfo="none">release:prepare release:perform</literal>).</para>
+
       <figure float="none" id="fig-build-m2release-plugin">
-        <title>Configurer une release Maven en utilisant le plugin
-        M2Release</title>
+        <title>Configuring a Maven release using the M2Release plugin</title>
+
         <mediaobject id="I_mediaobject10_d1e15393">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1036.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1036.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Lorsque ceci est configuré, vous pouvez déclencher manuellement
-      une release Maven en utilisant une nouvelle option de menu appelée
-      “Perform Maven Release” (voir <xref
-      linkend="fig-jenkins-m2-release-menu" />).</para>
+
+      <para>Once you have set this up, you can trigger a Maven release
+      manually using a new menu option called “Perform Maven Release” (see
+      <xref linkend="fig-jenkins-m2-release-menu" />).</para>
+
       <figure float="none" id="fig-jenkins-m2-release-menu">
         <title>The Perform Maven Release menu option</title>
+
         <mediaobject id="I_mediaobject10_d1e15405">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1037.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1037.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Cela déclenchera une tâche de build spéciale utilisant les goals
-      que vous avez fournis dans la configuration du plugin (voir <xref
-      linkend="fig-jenkins-perform-release" />). Jenkins vous offre le choix
-      d'utiliser soit les numéros de version par défaut fournis par Maven (par
-      exemple, la version 1.0.1-SNAPSHOT sera releasée 1.0.1, et le numéro de
-      version de développement monté à 1.0.2-<phrase
-      role="keep-together">SNAPSHOT</phrase>), soit de fournir vos propres
-      numéros de version personnalisés. Si vous voulez releaser une version
-      majeure, par exemple, vous pourriez décider de spécifier manuellement
-      1.1.0 comme numéro de version et 1.1.1-SNAPSHOT comme prochain numéro de
-      version de développement.</para>
-      <para>Si vous avez un projet multimodule Maven, vous pouvez choisir une
-      configuration de numéro de version unique pour tous les modules, ou de
-      fournir une mise à jour de numéro de version différente pour chaque
-      module. Notez que ce n'est généralement pas une pratique recommandée que
-      de fournir des numéros de version différents pour différents modules
-      dans un projet multimodule.</para>
+
+      <para>This will kick off a special build job using the goals you
+      provided in the plugin configuration (see <xref
+      linkend="fig-jenkins-perform-release" />). Jenkins gives you the option
+      to either use the default version numbers provided by Maven (for
+      example, version 1.0.1-SNAPSHOT will be released as version 1.0.1, and
+      the development version number bumped up to 1.0.2-<phrase
+      role="keep-together">SNAPSHOT</phrase>), or to provide your own custom
+      numbers. If you want to release a major version, for example, you might
+      choose to manually specify 1.1.0 as the release version number and
+      1.1.1-SNAPSHOT as the next development version number.</para>
+
+      <para>If you have a multimodule Maven project, you can choose to provide
+      a single version number configuration for all modules, or provide a
+      different version number update for each module. Note that it is
+      generally not recommended practice to provide different version numbers
+      for different modules in a multimodule project.</para>
+
       <figure float="none" id="fig-jenkins-perform-release">
-        <title>Effectuer une release Maven dans Jenkins</title>
+        <title>Performing a Maven release in Jenkins</title>
+
         <mediaobject id="I_mediaobject10_d1e15423">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1038.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1038.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>En fonction de votre configuration SCM, vous pourriez aussi avoir
-      besoin de fournir un nom d'utilisateur et un mot de passe valide pour
-      permettre à Maven de créer les tags dans votre dépôt de code
-      source.</para>
-      <para>L'<indexterm id="I_indexterm10_d1e15432" significance="normal">
+
+      <para>Depending on your SCM configuration, you may also need to provide
+      a valid SCM username and password to allow Maven to create tags in your
+      source code repository.</para>
+
+      <para>The <indexterm id="I_indexterm10_d1e15432" significance="normal">
           <primary>Nexus</primary>
-          <secondary>Gestionnaire de Dépôts d'Entreprise</secondary>
-        </indexterm>édition professionnelle du Dépôt d'Entreprise Nexus
-      fournit une fonctionnalité appelée des Staging Repositories, qui permet
-      de déployer des artefacts dans un espace spécial de staging afin de
-      faire davantage de tests avant de les releaser officiellement. Si vous
-      utilisez cette fonctionnalité, vous devez paramétrer plus finement votre
-      configuration de serveur de build pour de meilleurs résultats.</para>
-      <para>Nexus Professional travaille en créant un nouvel espace de staging
-      pour chaque adresse IP unique, utilisateur de déploiement et User agent
-      HTTP. Une machine de build Jenkins donnée aura toujours la même adresse
-      IP et le même utilisateur. Toutefois, vous voudrez typiquement avoir un
-      espace de staging séparé pour chaque build. L'astuce est alors de
-      configurer Maven pour qu'il utilise une chaîne de User-Agent HTTP unique
-      pour le processus de déploiement. Vous pouvez le faire en configurant le
-      fichier <filename moreinfo="none">settings.xml</filename> sur votre
-      serveur de build afin qu'il contienne quelque chose dans le genre des
-      lignes suivantes (l'ID doit correspondre à l'ID du dépôt de release de
-      la section <emphasis>deployment</emphasis> <indexterm class="endofrange"
-          id="I_indexterm10_d1e15443" significance="normal"
+
+          <secondary>Enterprise Repository Manager</secondary>
+        </indexterm>professional edition of the Nexus Enterprise Repository
+      provides a feature called Staging Repositories, which is a way of
+      deploying artifacts to a special staging area for further tests before
+      releasing them officially. If you are using this feature, you need to
+      fine-tune your build server configuration for best results.</para>
+
+      <para>Nexus Professional works by creating a new staging area for each
+      unique IP Address, deploy users and HTTP User agent. A given Jenkins
+      build machine will always have the same IP address and user. However,
+      you will typically want to have a separate staging area for each build.
+      The trick, then, is to configure Maven to use a unique HTTP User-Agent
+      for the deployment process. You can do this by configuring the <filename
+      moreinfo="none">settings.xml</filename> file on your build server to
+      contain something along the following lines (the ID must match the ID
+      for the release repository in the deployment section<indexterm
+          class="endofrange" id="I_indexterm10_d1e15443" significance="normal"
           startref="ch10-numbers1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15445"
@@ -1994,8 +2323,10 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15447"
           significance="normal" startref="ch10-numbers3">
           <primary></primary>
-        </indexterm> de votre projet) :</para>
+        </indexterm> of your project):</para>
+
       <?dbfo-need height=”1in”?>
+
       <programlisting format="linespecific" id="I_programlisting10_d1e15451"> &lt;server&gt;
     &lt;id&gt;nexus&lt;/id&gt;
     &lt;username&gt;my_login&lt;/username&gt;
@@ -2010,609 +2341,670 @@ Finished: SUCCESS</screen>
     &lt;/configuration&gt;
   &lt;/server&gt;</programlisting>
     </sect2>
+
     <sect2 id="sect-copying-artifacts">
-      <title>Copier des artefacts</title>
-      <para>Pendant<indexterm class="startofrange" id="ch10-art1"
+      <title>Copying Artifacts</title>
+
+      <para>During<indexterm class="startofrange" id="ch10-art1"
           significance="normal">
-          <primary>pipelines de build</primary>
-          <secondary>réutiliser des artefacts dans</secondary>
+          <primary>build pipelines</primary>
+
+          <secondary>reusing artifacts in</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-art2"
           significance="normal">
-          <primary>artefacts binaires</primary>
-          <secondary>réutiliser dans des pipelines de build</secondary>
+          <primary>binary artifacts</primary>
+
+          <secondary>reusing in build pipeline</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15468"
           significance="normal">
           <primary>artifacts</primary>
-          <see>artefacts binaires</see>
-        </indexterm> un processus de build impliquant plusieurs tâches de
-      build, comme celle illustrée dans <xref
-      linkend="fig-build-dependency-graph-join" />, il peut parfois être utile
-      de réutiliser des artefacts produits par un build dans une tâche de
-      build ultérieure. Par exemple, vous pourriez vouloir exécuter une série
-      de tests web en parallèles sur des machines séparées, en utilisant des
-      serveurs d'application locaux pour améliorer les performances. Dans ce
-      cas, il est normal de récupérer le binaire exact qui a été produit dans
-      le build précédent, plutôt que de le reconstruire chaque fois ou, si
-      vous utilisez Maven, de reposer sur un build SNAPSHOT déployé dans le
-      dépôt d'entreprise. En effet, ces deux approches pourraient vous faire
-      courir le risque de résultats de build incohérent : si vous utilisez une
-      SNAPSHOT d'un dépôt d'entreprise, par exemple, vous utiliserez le
-      dernier build SNAPSHOT, qui pourrait ne pas nécessairement être celui
-      construit dans la tâche de build amont.</para>
-      <para>Le <indexterm id="I_indexterm10_d1e15478" significance="normal">
+
+          <see>binary artifacts</see>
+        </indexterm> a build process involving several build jobs, such as the
+      one illustrated in <xref linkend="fig-build-dependency-graph-join" />,
+      it can sometimes be useful to reuse artifacts produced by one build job
+      in a subsequent build job. For example, you may want to run a series of
+      web tests in parallel on separate machines, using local application
+      servers for improved performance. In this case, it makes sense to
+      retrieve the exact binary artifact that was produced in the previous
+      build, rather than rebuilding it each time or, if you are using Maven,
+      relying on a SNAPSHOT build deployed to your enterprise repository.
+      Indeed, both these approaches may run the risk of inconsistent build
+      results: if you use a SNAPSHOT from the enterprise repository, for
+      example, you will be using the latest SNAPSHOT build, which may not
+      necessarily be the one built in the upstream build job.</para>
+
+      <para>The<indexterm id="I_indexterm10_d1e15478" significance="normal">
           <primary>plugins</primary>
+
           <secondary>Copy Artifact</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15483"
           significance="normal">
-          <primary>plugin Copy Artifact</primary>
-        </indexterm> plugin Copy Artifact vous permet de copier des artefacts
-      d'un build amont et de les réutiliser dans votre build courant. Une fois
-      que vous avez installé ce plugin et redémarré Jenkins, vous pourrez
-      ajouter une nouvelle étape de build appelée “Copier des artefacts d'un
-      autre projet” à vos tâches de build freestyle (voir <xref
+          <primary>Copy Artifact plugin</primary>
+        </indexterm> Copy Artifact plugin lets you copy artifacts from an
+      upstream build and reuse them in your current build. Once you have
+      installed this plugin and restarted Jenkins, you will be able to add a
+      new type of build step called “Copy artifacts from another project” to
+      your freestyle build jobs (see <xref
       linkend="fig-build-copy-artifacts" />).</para>
+
       <figure float="none" id="fig-build-copy-artifacts">
-        <title>Ajouter une étape de build “Copier des artefacts d'un autre
-        projet”</title>
+        <title>Adding a “Copy artifacts from another project” build
+        step</title>
+
         <mediaobject id="I_mediaobject10_d1e15492">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1039.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1039.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Cette nouvelle étape de build vous permet de copier des artefacts
-      d'un projet dans l'espace de travail du projet courant. Vous pouvez
-      spécifier n'importe quel autre projet, bien que ce sera typiquement
-      l'une des tâches de build amont. Et bien sûr vous pouvez spécifier, avec
-      une grande flexibilité et précision, les artefacts exacts que vous
-      souhaitez copier.</para>
-      <para>Vous devez spécifier où trouver les fichiers que vous voulez dans
-      l'espace de travail de l'autre tâche de build, et où Jenkins doit les
-      mettre dans votre espace de travail courant. Ceci peut être une
-      expression régulière flexible (comme <literal
-      moreinfo="none">**/*.war</literal>, pour tout fichier WAR produit par la
-      tâche de build), ou cela peut être beaucoup plus précis (comme <literal
-      moreinfo="none">gameoflife-web/target/gameoflife.war</literal>). Notez
-      que par défaut, Jenkins copiera la structure de répertoire en même temps
-      que le fichier que vous récupérez, ainsi si le fichier WAR se trouve
-      dans dans le répertoire target du module <literal
-      moreinfo="none">gameoflife-web</literal>, Jenkins le placera dans le
-      répertoire <filename moreinfo="none">gameoflife-web/target</filename> de
-      votre espace de travail courant. Si cela ne vous convient pas, vous
-      pouvez cocher l'option “Aplatir l'arborescence” pour dire à Jenkins de
-      mettre tous les artefacts à la racine du répertoire que vous spécifiez
-      (ou, par défaut, dans l'espace de travail de votre projet).</para>
-      <para>Souvent, vous voudrez simplement récupérer des artefacts depuis le
-      build en succès le plus récent. Toutefois, vous voudrez parfois plus de
-      précision. Le champ "Quel builds” vous permet de spécifier où chercher
-      des artefacts d'un bon nombre d'autres façons, incluant le dernier build
-      sauvé (builds qui ont été marqués à "toujours conserver"), le dernier
-      build réussi, ou même un numéro spécifique de build.</para>
-      <para>Si vous avez installé le plugin Build Promotion (voir <xref
-      linkend="sect-build-promotion" />), vous pouvez aussi sélectionner le
-      dernier artefact promu dans un processus de promotion en particulier.
-      Pour faire cela, choisissez "Spécifier par permalien", puis choisissez
-      le processus de promotion de build approprié. C'est un excellent moyen
-      de s'assurer d'un pipeline de build fiable et cohérent. Par exemple,
-      vous pouvez configurer un processus de promotion de build pour
-      déclencher un build qui copie un fichier WAR généré depui le dernier
-      build promu et le déploie sur un serveur particulier; Ceci vous assure
-      de déployer le bon fichier binaire, même si d'autres builds se sont
-      produits depuis.</para>
-      <para>Si vous copiez des artefacts d'une tâche de build multimodule
-      Maven, Jenkins copiera, par défaut, tous les artefacts de ce build.
-      Toutefois vous êtes souvent uniquement intéressé par un artefact
-      spécifique (comme l'artefact WAR pour une application web, par
-      exemple).</para>
-      <para>Ce plugin est particulièrement utile quand vous avez besoin
-      d'exécuter des tests fonctionnels ou de performance sur votre
-      application web. Il est souvent une stratégie utile de placer ces tests
-      dans un projet séparé, et non comme une partie de votre processus de
-      build principal. Cela facilite l'exécution de ces tests sur différents
-      serveurs ou d'exécuter le sous-ensemble des tests en parallèle, tout en
-      utilisant le même artefact binaire pour déployer et tester.</para>
-      <para>Par exemple, imaginez que vous avez une tâche de build par défaut
-      appelée <emphasis>gameoflife</emphasis> qui génère un fichier WAR, et
-      que vous vouliez déployer ce WAR sur un serveur d'application local et
-      exécuter une série de tests fonctionnels. De plus, vous voulez pouvoir
-      faire cela en parallèle sur plusieurs machines distribuées.</para>
-      <para>Une façon de faire cela serait de créer un projet Maven dédié pour
-      lancer les tests fonctionnels sur un serveur arbitraire. Ensuite, vous
-      mettriez en place une tâche de build pour exécuter ces tests
-      fonctionnels. La tâche de build utiliserait le plugin Copy Artifact pour
-      récupérer le dernier fichier WAR (ou même le dernier fichier WAR promu,
-      pour plus de précision), et le déploierait sur une instance Tomcat
-      locale en utilisant Cargo. Cette tâche de build pourrait ensuite être
-      configurée en tant que tâche de build (“matrix”) configurable, et
-      exécutée en parallèle sur plusieurs machines, éventuellement avec des
-      pramètres de configuration supplémentaires pour filtrer les exécutions
-      de test de chaque build. Chaque exécution de build utiliserait ensuite
-      sa propre copie du fichier WAR original. Un exemple d'une configuration
-      comme celle-ci est illustré dans <xref
+
+      <para>This new build step lets you copy artifacts from another project
+      into the workspace of the current project. You can specify any other
+      project, though most typically it will be one of the upstream build
+      jobs. And of course you can specify, with a great deal of flexibility
+      and precision, the exact artifacts that you want to copy.</para>
+
+      <para>You need to specify where to find the files you want in the other
+      build job’s workspace, and where Jenkins should put them in your current
+      project’s workspace. This can be a flexible regular expression (such as
+      <literal moreinfo="none">**/*.war</literal>, for any WAR file produced
+      by the build job), or it can be much more precise (such as <literal
+      moreinfo="none">gameoflife-web/target/gameoflife.war</literal>). Note
+      that by default, Jenkins will copy the directory structure along with
+      the file you retrieve, so if the WAR file you are after is nested inside
+      the <filename moreinfo="none">target</filename> directory of the
+      <literal moreinfo="none">gameoflife-web</literal> module, Jenkins will
+      place it inside the <filename
+      moreinfo="none">gameoflife-web/target</filename> directory in your
+      current workspace. If this is not to your tastes, you can tick the
+      “Flatten directories” option to tell Jenkins to put all of the artifacts
+      at the root of the directory you specify (or, by default, in your
+      project workspace).</para>
+
+      <para>In many cases, you will simply want to retrieve artifacts from the
+      most recent successful build. However, sometimes you may want more
+      precision. The “Which builds” field lets you specify where to look for
+      artifacts in a number of other ways, including the latest saved build
+      (builds which have been marked to “keep forever”), the latest successful
+      build, or even a specific build number.</para>
+
+      <para>If you have installed the Build Promotion plugin (see <xref
+      linkend="sect-build-promotion" />), you can also select the latest
+      promoted artifact in a particular promotion process. To do this, choose
+      “Specify by permalink”, then choose the appropriate build promotion
+      process. This is an excellent way of ensuring a consistent and reliable
+      build pipeline. For example, you can configure a build promotion process
+      to trigger a build that copies a generated WAR file from the latest
+      promoted build and deploys it to a particular server. This ensures that
+      you deploy precisely the right binary file, even if other builds have
+      occurred since.</para>
+
+      <para>If you are copying artifacts from a multimodule Maven build job,
+      Jenkins will, by default, copy all of the artifacts from that build.
+      However often times you are only interested in one specific artifact
+      (such as the WAR artifact in a web application, for example.</para>
+
+      <para>This plugin is particularly useful when you need to run functional
+      or performance tests on your web application. It is often a useful
+      strategy to place these tests in a separate project, and not as part of
+      your main build process. This makes it easier to run these tests against
+      different servers or run the subsets of the tests in parallel, all the
+      while using the same binary artifact to deploy and test.</para>
+
+      <para>For example, imagine that you have a default build job called
+      <emphasis>gameoflife</emphasis> that generates a WAR file, and you would
+      like to deploy this WAR file to a local application server and run a
+      series of functional tests. Furthermore, you want to be able to do this
+      in parallel on several distributed machines.</para>
+
+      <para>One way to do this would be to create a dedicated Maven project
+      designed to run the functional tests against an arbitrary server. Then,
+      you would set up a build job to run these functional tests. This build
+      job would use the Copy Artifact plugin to retrieve the latest WAR file
+      (or even the latest promoted WAR file, for more precision), and deploy
+      it to a local Tomcat instance using Cargo. This build job could then be
+      set up as a configurable (“matrix”) build job, and run in parallel on
+      several machines, possibly with extra configuration parameters to filter
+      the tests run by each build. Each build run would then be using its own
+      copy of the original WAR file. An example of a configuration like this
+      is illustrated in <xref
       linkend="fig-jenkins-copy-artifact-web" />.</para>
+
       <figure float="none" id="fig-jenkins-copy-artifact-web">
-        <title>Exécuter des tests web sur un fichier WAR copié</title>
+        <title>Running web tests against a copied WAR file</title>
+
         <mediaobject id="I_mediaobject10_d1e15539">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1040.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1040.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Le plugin Copy Artifact n'est pas limité à la récupération de
-      fichiers depuis des tâches de build conventionnelles. Vous pouvez aussi
-      copier des artefacts à partir de tâches de build multiconfiguration
-      (voir <xref linkend="sect-multi-configuration-build-jobs" />). Les
-      artefacts de chaque configuration exécutée seront copiés dans l'espace
-      de travail courant, chacun dans son propre répertoire. Jenkins
-      construira une structure de répertoire en se basant sur les axes
-      utilisés dans le build multiconfiguration. Par exemple, imaginez que
-      nous ayons besoin de produire une version hautement optimisée de notre
-      produit pour un certain nombre de bases de données et de serveurs
-      d'application cibles. Nous pourrions faire cela avec une tâche de build
-      multiconfiguration comme celle illustrée dans <xref
+
+      <para>The Copy Artifact plugin is not limited to fetching files from
+      conventional build jobs. You can also copy artifacts from
+      multiconfiguration build jobs (see <xref
+      linkend="sect-multi-configuration-build-jobs" />). Artifacts from each
+      executed configuration will be copied into the current workspace, each
+      in its own directory. Jenkins will build a directory structure using the
+      axes that were used in the multiconfiguration build. For example,
+      imagine we need to produce a highly-optimized version of our product for
+      a number of different targeted databases and application servers. We
+      could do this with a multiconfiguration build job like the one
+      illustrated in <xref
       linkend="fig-jenkins-multi-config-artifacts" />.</para>
+
       <figure float="0" id="fig-jenkins-multi-config-artifacts">
-        <title>Copier à partir d'une build multiconfiguration</title>
+        <title>Copying from a multiconfiguration build</title>
+
         <mediaobject id="I_mediaobject10_d1e15553">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1041.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1041.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Le plugin Copy Artifacts peut dupliquer n'importe lequel ou même
-      tous les artefactsp produits par cette tâche de build. Si vous spécifiez
-      un build multiconfiguration comme la source de vos artefacts, le plugin
-      copiera les artefacts de toutes les configurations dans l'espace de
-      travail de la tâche de build cible, en utilisant une structure de
-      répertoire imbriquée basée sur les axes du build multiconfiguration. Par
-      exemple, si vous définissez le répertoire target comme <filename
-      moreinfo="none">multi-config-artifacts</filename>, Jenkins copiera les
-      artefacts dans un certain nombre de sous-répertoires dans le répertoire
-      target, chacun avec un nomb correspondant à un ensemble de paramètres
-      particulier. Ainsi, en utilisant la tâche de build illustrée dans <xref
-      linkend="fig-jenkins-multi-config-artifacts" />, le fichier JAR
-      personnalisé pour Tomcat et MySql serait copié<indexterm
-          class="endofrange" id="I_indexterm10_d1e15565" significance="normal"
+
+      <para>The Copy Artifacts plugin can duplicate any and all of the
+      artifacts produced by this build job. If you specify a
+      multiconfiguration build as the source of your artifacts, the plugin
+      will copy artifacts from all of the configurations into the workspace of
+      the target build job, using a nested directory structure based on the
+      multiconfiguration build axes. For example, if you define the target
+      directory as <filename
+      moreinfo="none">multi-config-artifacts</filename>, Jenkins will copy
+      artifacts into a number of subdirectories in the target directory, each
+      with a name corresponding to the particular set of configuration
+      parameters. So, using the build job illustrated in <xref
+      linkend="fig-jenkins-multi-config-artifacts" />, the JAR file customized
+      for Tomcat and MySql would be copied<indexterm class="endofrange"
+          id="I_indexterm10_d1e15565" significance="normal"
           startref="ch10-art1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15567"
           significance="normal" startref="ch10-art2">
           <primary></primary>
-        </indexterm> dans <filename moreinfo="none">le répertoire
-      $WORKSPACE/multi-config-artifacts/APP_SERVER/tomcat/DATABASE/mysql</filename>.</para>
+        </indexterm> to the <filename
+      moreinfo="none">$WORKSPACE/multi-config-artifacts/APP_SERVER/tomcat/DATABASE/mysql</filename>
+      directory.</para>
     </sect2>
+
     <sect2 id="sect-build-promotion">
-      <title>Promotions de Build</title>
-      <para>Dans le <indexterm class="startofrange" id="ch10-promote1"
+      <title>Build Promotions</title>
+
+      <para>In the <indexterm class="startofrange" id="ch10-promote1"
           significance="normal">
-          <primary>pipelines de build</primary>
-          <secondary>promotions dans</secondary>
+          <primary>build pipelines</primary>
+
+          <secondary>promotions in</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-promote2"
           significance="normal">
           <primary>promotions</primary>
-        </indexterm>monde de l'Intégration Continue, tous les builds créés ne
-      sont pas égaux. Par exemple, vous pourriez vouloir déployer la dernière
-      version de votre application web sur un serveur de test, mais seulement
-      après avoir réussi un certain nombre de tests automatisés fonctionnels
-      ou de charge. Ou vous pourriez vouloir que les testeurs puissent marquer
-      certains builds comme étant prêts pour un déploiement pour des tests
-      d'acceptation utilisateur, une fois qu'ils ont terminé leurs propres
-      tests.</para>
-      <para>Le plugin<indexterm id="I_indexterm10_d1e15589"
-          significance="normal">
+        </indexterm>world of Continuous Integration, not all builds are
+      created equal. For example, you may want to deploy the latest version of
+      your web application to a test server, but only after it has passed a
+      number of automated functional and load tests. Or you may want testers
+      to be able to flag certain builds as being ready for UAT deployment,
+      once they have completed their own testing.</para>
+
+      <para>The<indexterm id="I_indexterm10_d1e15589" significance="normal">
           <primary>plugins</primary>
+
           <secondary>Promoted Builds</secondary>
         </indexterm><indexterm id="I_indexterm10_d1e15594"
           significance="normal">
-          <primary>plugin Promoted Builds</primary>
-        </indexterm> Promoted Builds vous permet d'identifier des builds
-      spécifiques ayant atteint des critères additionnels de qualité, et de
-      déclencher des actions sur ces builds. Par exemple, vous pourriez
-      construire une application web dans une tâche de build, exécuter une
-      série de tests automatisés dans un build ultérieur, puis déployer le
-      fichier WAR généré sur le serveur de tests d'acceptation utilisateur
-      pour effectuer davantage de tests.</para>
-      <para>Voyons comment cela fonctionne en pratique. Dans le projet
-      illustré ci-dessus, une tâche de build par défaut (<command
-      moreinfo="none">phoenix-default</command>) exécute des tests unitaires
-      et d'intégration, puis produit un fichier WAR. Ce WAR est ensuite
-      réutilisé pour des tests plus étendus (dans la tâche de build <command
-      moreinfo="none">phoenix-integration-tests</command>) et ensuite pour une
-      série de tests web automatisés (dans la tâche de build <command
-      moreinfo="none">phoenix-web-test</command>). Si le build réussit les
-      tests web automatisés, nous voudrions déployer l'application dans un
-      environnement de tests fonctionnel où elle pourrait être testée par des
-      testeurs humains. Le déploiement dans cet environnement est effectué
-      avec la tâche de build <command
-      moreinfo="none">phoenix-test-deploy</command>. Une fois que les testeurs
-      ont validé la version, elle peut être promue vers l'environnent de test
-      d'acceptation utilisateurs, et enfin en production. La stratégie
-      complète de promotion est illustrée dans <xref
-      linkend="fig-jenkins-build-promotion-jobs" />.</para>
+          <primary>Promoted Builds plugin</primary>
+        </indexterm> Promoted Builds plugin lets you identify specific builds
+      that have met additional quality criteria, and to trigger actions on
+      these builds. For example, you may build a web application in on build
+      job, run a series of automated web tests in a subsequent build, and then
+      deploy the WAR file generated to the UAT server for further manual
+      testing.</para>
+
+      <para>Let’s see how this works in practice. In the project illustrated
+      above, a default build job (<command
+      moreinfo="none">phoenix-default</command>) runs unit and some
+      integration tests, and produces a WAR file. This WAR file is then reused
+      for more extensive integration tests (in the <command
+      moreinfo="none">phoenix-integration-tests</command> build job) and then
+      for a series of automated web tests (in the <command
+      moreinfo="none">phoenix-web-test</command> build job). If the build
+      passes the automated web tests, we would like to deploy the application
+      to a functional testing environment where it can be tested by human
+      testers. The deployment to this environment is implemented in the
+      <command moreinfo="none">phoenix-test-deploy</command> build job. Once
+      the testers have validated a version, it can be promoted into UAT, and
+      then into production. The full promotion strategy is illustrated in
+      <xref linkend="fig-jenkins-build-promotion-jobs" />.</para>
+
       <figure float="none" id="fig-jenkins-build-promotion-jobs">
-        <title>Tâches de build dans le processus de promotion</title>
+        <title>Build jobs in the promotion process</title>
+
         <mediaobject id="I_mediaobject10_d1e15617">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1042.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1042.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Cette stratégie est facile à implémenter en utiliser le plugin
-      Promoted Builds. Une fois que vous l'avez installé de la façon
-      habituelle, vous trouvez une nouvelle case "Promouvoir builds quand"
-      dans la page de configuration de la tâche. Cette option est utilisé pour
-      configurer les processus de promotion de build. Vous définissez un ou
-      plusieurs processus de promotion de build dans la tâche de build
-      initiale du processus (<command
-      moreinfo="none">phoenix-default</command> dans cet exemple), comme
-      illustré dans <xref linkend="fig-jenkins-build-promotion" />. Une tâche
-      de build peut être le point de départ de plusieurs processus de
-      promotion de build, certains automatisés, certains manuels. Dans <xref
-      linkend="fig-jenkins-build-promotion" />, par exemple, il y a un
-      processus de promotion de build automatisé appelé
-      <emphasis>promote-to-test</emphasis> et un manuel appelé
-      <emphasis>promote-to-uat</emphasis>. Les processus de promotion de build
-      automatisés sont déclenchés par les résultats de tâches de build avals.
-      Les processus de promotion manuels (indiqués en cochant la case
-      ‘Seulement si approuvé manuellement’) peuvent uniquement être déclenchés
-      par une intervention utilisateur.</para>
+
+      <para>This strategy is easy to implement using the Promoted Builds
+      plugin. Once you have installed this in the usual way, you will find a
+      new “Promote builds when” checkbox on the job configuration page. You
+      use this option to set up build promotion processes. You define one or
+      more build promotion processes in the initial build job of process
+      (<command moreinfo="none">phoenix-default</command> in this example), as
+      illustrated in <xref linkend="fig-jenkins-build-promotion" />. A build
+      job may be the starting point of several build promotion processes, some
+      automated, and some manual. In <xref
+      linkend="fig-jenkins-build-promotion" />, for example, there is an
+      automated build promotion process called
+      <emphasis>promote-to-test</emphasis> and a manual one called
+      <emphasis>promote-to-uat</emphasis>. Automated build promotion processes
+      are triggered by the results of downstream build jobs. Manual <phrase
+      role="keep-together">promotion</phrase> processes (indicated by ticking
+      the ‘Only when manually approved’ checkbox) can only be triggered by
+      user intervention.</para>
+
       <figure float="none" id="fig-jenkins-build-promotion">
-        <title>Configurer un processus de promotion de build</title>
+        <title>Configuring a build promotion process</title>
+
         <mediaobject id="I_mediaobject10_d1e15644">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1043.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1043.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Regardons à présent comment configurer le processus de build
-      automatisé <emphasis>promote-to-test</emphasis>.</para>
-      <para>Vous devez commencer par définir comment le processus de promotion
-      de build sera déclenché. La Promotion de Build peut être soit
-      automatique, basée sur le résultat d'une tâche de build aval, soit
-      manuellement activée par un utilisateur. Dans <xref
-      linkend="fig-jenkins-build-promotion" />, la promotion de build pour
-      cette tâche de build sera automatiquement déclenchée lorsque les tests
-      web automatisés (exécuté par la tâche de build <command
-      moreinfo="none">phoenix-web-tests</command>) auront réussi.</para>
-      <para>Vous pouvez aussi faire que certaines tâches de build ne puissent
-      être promues que manuellement, comme illustré dans <xref
-      linkend="fig-jenkins-manual-build-promotion" />. La promotion de build
-      manuelle est utilisée pour les cas où une intervention humaine est
-      requise pour approuver une promotion de build. Le déploiement dans
-      l'environnement de test d'acceptation d'utilisateur ou de production
-      sont des exemples courants de cela. Un autre exemple est lorsque vous
-      voulez temporairement suspendre les promotions de build pour une courte
-      période, comme à l'approche d'une release.</para>
-      <para>Les builds manuels, comme leur nom le suggère, nécessite d'être
-      approuvés manuellement avant de pouvoir être exécutés. Si le processus
-      de promotion consiste à déclencher une tâche de build paramétrée, vous
-      pouvez aussi fournir des paramètres que l'approbateur devra entrer lors
-      de l'approbation. Dans certains, il peut être utile de désigner certains
-      utilisateurs autorisés à activer la promotion manuelle. Vous pouvez
-      faire cela en spécifiant une liste d'utilisateurs ou de groupes dans la
-      liste d'approbateurs.</para>
+
+      <para>Let’s look at configuring the automated
+      <emphasis>promote-to-test</emphasis> build process.</para>
+
+      <para>The first thing you need to define is how this build promotion
+      process will be triggered. Build promotion can be either automatic,
+      based on the result of a downstream build job, or manually activated by
+      a user. In <xref linkend="fig-jenkins-build-promotion" />, the build
+      promotion for this build job will be automatically triggered when the
+      automated web tests (executed by the <command
+      moreinfo="none">phoenix-web-tests</command> build job) are
+      successful.</para>
+
+      <para>You can also have certain build jobs that can only be promoted
+      manually, as illustrated in <xref
+      linkend="fig-jenkins-manual-build-promotion" />. Manual build promotion
+      is used for cases where human intervention is needed to approve a build
+      promotion. Deployment to UAT or production are common examples of this.
+      Another example is where you want to temporarily suspend automatic build
+      promotions for a short period, such as nearing a release.</para>
+
+      <para>Manual builds, as the name suggests, need to be manually approved
+      to be executed. If the promotion process is to trigger a parameterized
+      build job, you can also provide parameters that the approver will need
+      to enter when approving. In some cases, it can also be useful to
+      designate certain users who are allowed to activate the manual
+      promotion. You can do this by specifying a list of users or groups in
+      the Approvers list.</para>
+
       <figure float="0" id="fig-jenkins-manual-build-promotion">
-        <title>Configurer un processus manuel de promotion de build</title>
+        <title>Configuring a manual build promotion process</title>
+
         <mediaobject id="I_mediaobject10_d1e15671">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1044.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1044.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Parfois, il est utile de donner un peu de context à une personne
-      approuvant une promotion. Quand vous configurez un processus de
-      promotion manuel, vous pouvez aussi spécifier d'autres conditions devant
-      être remplies, en particulier des tâches de build avals (ou amonts) qui
-      doivent avoir été construites avec succès (voir <xref
-      linkend="fig-jenkins-promotion-details" />). Celles-ci apparaîtront dans
-      les “Met Qualifications” (pour les tâches de build en succès) et dans
-      les “Unmet Qualifications” (pour les tâches de builds qui ont échoué ou
-      n'ont pas encore été exécutées).</para>
+
+      <para>Sometimes, it is useful to give some context to the person
+      approving a promotion. When you set up a manual promotion process, you
+      can also specify other conditions which must be met, in particular
+      downstream (or upstream) build jobs which must have been built
+      successfully (see <xref linkend="fig-jenkins-promotion-details" />).
+      These will appear in the “Met Qualifications” (for the successful build
+      jobs) and in “Unmet Qualifications” (for the build jobs that failed or
+      have not been executed yet).</para>
+
       <figure float="0" id="fig-jenkins-promotion-details">
-        <title>Voir les détails d'une promotion de build</title>
+        <title>Viewing the details of a build promotion</title>
+
         <mediaobject id="I_mediaobject10_d1e15683">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1045.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1045.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Vous devez ensuite dire à Jenkins ce qu'il doit faire lorsque le
-      build est promu. Cela se fait en ajoutant des actions, tout comme dans
-      une tâche de build freestyle. Ceci rend les promotions de build
-      extrêmement flexible, parce que vous pouvez ajouter pratiquement
-      n'importe quelle action disponible dans une tâche de build freestyle
-      normale, incluant n'importe quelles étapes additionnelles offertes par
-      le plugins installés sur votre instance Jenkins. Les actions courantes
-      incluent l'invocation de script Maven ou Ant, le déploiement d'artefacts
-      dans un dépôt Maven, ou le déclenchement d'un autre build.</para>
-      <para>Une chose importante à garder à l'esprit ici est que vous ne
-      pouvez pas reposer sur des fichiers de l'espace de travail lors de la
-      promotion de votre build. En effet, au moment où vous promouvez votre
-      build, automatiquement ou manuellement, d'autres tâches de build
-      pourraient avoir supprimé ou réécrit les fichiers que vous avez besoin
-      d'utiliser. Pour cette raison, il est imprudent, par exemple, de
-      déployer un fichier WAR directement à partir de l'espace de travail vers
-      un serveur d'application pendant un processus de promotion de build. Une
-      solution plus robuste consiste à déclencher une tâche de build séparée
-      et d'utiliser le plugin Copy Artifacts (voir <xref
-      linkend="sect-copying-artifacts" />) pour récupérer précisément le bon
-      fichier. Dans ce cas, vous copierez des artefacts que vous avez demandé
-      à Jenkins de conserver, plutôt que de copier directement des fichiers de
-      l'espace de travail.</para>
+
+      <para>Next you need to tell Jenkins what to do when the build is
+      promoted. You do this by adding actions, just like in a freestyle build
+      job. This makes build promotions extremely flexible, as you can add
+      virtually any action available to a normal freestyle build job,
+      including any additional steps made available by the plugins installed
+      on your Jenkins instance. Common actions include invoking Maven or Ant
+      scripts, deploying artifacts to a Maven repository, or triggering
+      another build job.</para>
+
+      <para>One important thing to remember here is that you cannot rely on
+      files in the workspace when promoting your build. Indeed, by the time
+      you promote the build, either automatically or manually, other build
+      jobs may have deleted or rewritten the files you need to use. For this
+      reason, it is unwise, for example, to deploy a WAR file directly from
+      the workspace to an application server from within a build promotion
+      process. A more robust solution is to trigger a separate build job and
+      to use the Copy Artifacts plugin (see <xref
+      linkend="sect-copying-artifacts" />) to retrieve precisely the right
+      file. In this case, you will be copying artifacts that you have
+      configured Jenkins to conserve, rather than copying the files directly
+      from the workspace.</para>
+
       <para><indexterm id="I_indexterm10_d1e15695" significance="normal">
           <primary>fingerprints</primary>
-        </indexterm>Pour que la promotion de build fonctionne correctement,
-      Jenkins doit pouvoir lier précisément les tâches de build avals à celles
-      en amont. La façon la plus précise de faire cela est d'utiliser les
-      <emphasis>fingerprints</emphasis>. Dans Jenkins, un fingerprint est le
-      somme de contrôle MD5 d'un fichier produit ou utilisé dans une tâche de
-      build. En faisant correspondre les fingerprints, Jenkins est capable
-      d'identifier tous les builds utilisant un fichier particulier.</para>
-      <para>Dans le contexte de la promotion de build, une stratégie courante
-      est de construire votre application une seule fois, puis d'exécuter des
-      tests sur les fichiers binaires générés dans une série de tâches de
-      builds avals. Cette approche fonctionne bien avec la promotion de build,
-      mais vous devez vous assurer que Jenkins créer un fingerprint des
-      fichiers partagés ou copiés entre tâches de build. Dans l'exemple montré
-      dans <xref linkend="fig-jenkins-build-promotion" />, notamment, nous
-      avons besoin de faire deux choses (<xref
-      linkend="fig-jenkins-build-promotion-fingerprints" />). Premièrement,
-      nous devons archiver le fichier WAR généré afin qu'il puisse être
-      utilisé dans le projet aval. Deuxièmement, nous devons enregistrer un
-      fingerprint des artefacts archivés. Vous faites cela en cochant l'option
-      “Enregistrer les fingerprints de fichiers pour tracer leur utilisation”,
-      et en spécifiant les fichiers pour lesquels vous voulez créer un
-      fingerprint. Un raccourci utile consiste simplement à créer un
-      fingerprint pour tous les fichiers archivés, puisque ce sont les
-      fichiers qui vont typiquement être récupérés et réutilisés par les
-      tâches de build avals.</para>
+        </indexterm>For build promotion to work correctly, Jenkins needs to be
+      able to precisely link downstream build jobs to upstream ones. The more
+      accurate way to do this is by using fingerprints. In Jenkins, a
+      fingerprint is the MD5 checksum a file produced by or used in a build
+      job. By matching fingerprints, Jenkins is able to identify all of the
+      builds which use a particular file.</para>
+
+      <para>In the context of build promotion, a common strategy is to build
+      your application once, and then to run tests against the generated
+      binary files in a series of downstream build jobs. This approach works
+      well with build promotion, but you need to ensure that Jenkins
+      fingerprints the files that are shared or copied between build jobs. In
+      the example shown in <xref linkend="fig-jenkins-build-promotion" />, for
+      instance, we need to do two things (<xref
+      linkend="fig-jenkins-build-promotion-fingerprints" />). First, we need
+      to archive the generated WAR file so that it can be reused in the
+      downstream project. Secondly, we need to record a fingerprint of the
+      archived artifacts. You do this by ticking the “Record fingerprints of
+      files to track usage” option, and specifying the files you want to
+      fingerprint. A useful shortcut is simply to fingerprint all archived
+      files, since these are the files that will typically be retrieved and
+      reused by the downstream build jobs.</para>
+
       <figure float="0" id="fig-jenkins-build-promotion-fingerprints">
-        <title>Utiliser fingerprints dans le processus de promotion de
-        build</title>
+        <title>Using fingerprints in the build promotion process</title>
+
         <mediaobject id="I_mediaobject10_d1e15708">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1046.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1046.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>C'est tout ce que vous avez besoin de faire pour configurer le
-      processus initial de build. L'étape suivante consiste à configurer les
-      tests d'intégration exécutés dans la tâche de build <command
-      moreinfo="none">phoenix-integration</command>. Ici, nous utilisons le
-      plugin Copy Artifact pour récupérer le WAR généré par la tâche de build
-      <phrase role="keep-together"><command
-      moreinfo="none">phoenix-default</command></phrase> (voir <xref
-      linkend="fig-jenkins-build-promotion-integration" />). Comme cette tâche
-      de build est déclenchée immédiatement après la tâche de build <command
-      moreinfo="none">phoenix-default</command>, on peut simplement récupérer
-      le fichier WAR depuis le dernier build réussi.</para>
+
+      <para>This is all you need to do to configure the initial build process.
+      The next step is to configure the integration tests executed in the
+      <command moreinfo="none">phoenix-integration</command> build job. Here,
+      we use the Copy Artifact plugin to retrieve the WAR file generated by
+      the <phrase role="keep-together"><command
+      moreinfo="none">phoenix-default</command></phrase> build job (see <xref
+      linkend="fig-jenkins-build-promotion-integration" />). Since this build
+      job is triggered immediately after the <command
+      moreinfo="none">phoenix-default</command> build job, we can simply fetch
+      the WAR file from the latest successful build.</para>
+
       <figure float="none" id="fig-jenkins-build-promotion-integration">
-        <title>Récupérer le fichier WAR depuis la tâche de build amont</title>
+        <title>Fetching the WAR file from the upstream build job</title>
+
         <mediaobject id="I_mediaobject10_d1e15730">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1047.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1047.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ce n'est pas encore tout à fait tout ce que nous devons faire pour
-      les tests d'intégration, toutefois. La tâche de build <command
-      moreinfo="none">phoenix-integration</command> est suivie de la tâche de
-      build <command moreinfo="none">phoenix-web</command>, qui exécute les
-      tests web automatisés. Pour s'assurer que le même fichier WAR est
-      utilisé à chaque étape du processus de build, nous devons le récupérer
-      dans la tâche de build amont <command
-      moreinfo="none">phoenix-integration</command>, et non depuis la tâche
-      originale <command moreinfo="none">phoenix-default</command> (qui
-      pourrait avoir été exécutée à nouveau dans l'intervalle). Nous avons
-      donc aussi besoin d'archiver le fichier WAR dans la tâche de build
-      <command moreinfo="none">phoenix-integration</command> (voir <xref
+
+      <para>This is not quite all we need to do for the integration tests,
+      however. The <command moreinfo="none">phoenix-integration</command>
+      build job is followed by the <command
+      moreinfo="none">phoenix-web</command> build job, which executes the
+      automated web tests. To ensure that the same WAR file is used at each
+      stage of the build process, we need to retrieve it from the upstream
+      <command moreinfo="none">phoenix-integration</command> build job, and
+      not from the original <command moreinfo="none">phoenix-default</command>
+      build job (which may have been executed again in the meantime). So we
+      also need to archive the WAR file in the <command
+      moreinfo="none">phoenix-integration</command> build job (see <xref
       linkend="fig-jenkins-promotion-integration-archive" />).</para>
+
       <figure float="0" id="fig-jenkins-promotion-integration-archive">
-        <title>Archiver le fichier WAR dans la tâche aval</title>
+        <title>Archiving the WAR file for use in the downstream job</title>
+
         <mediaobject id="I_mediaobject10_d1e15759">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1048.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1048.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Dans la tâche de build <command
-      moreinfo="none">phoenix-web</command>, nous récupérons ensuite le WAR
-      depuis la tâche <phrase role="keep-together"><command
-      moreinfo="none">phoenix-integration</command></phrase>, en utilisant une
-      configuration très similaire à celle montrée ci-dessus (voir <xref
+
+      <para>In the <command moreinfo="none">phoenix-web</command> build job,
+      we then fetch the WAR file from the <phrase
+      role="keep-together"><command
+      moreinfo="none">phoenix-integration</command></phrase> build job, using
+      a configuration very similar to the one shown above (see <xref
       linkend="fig-jenkins-promotion-copy-from-integration" />).</para>
+
       <figure float="none" id="fig-jenkins-promotion-copy-from-integration">
-        <title>Récupérer le fichier WAR depuis la tâche d'intégration</title>
+        <title>Fetching the WAR file from the integration job</title>
+
         <mediaobject id="I_mediaobject10_d1e15778">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1049.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1049.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Pour que le processus de promotion de build fonctionne
-      correctement, il y a une chose importante de plus que nous devons
-      configurer dans la tâche de build <command
-      moreinfo="none">phoenix-web</command>. Comme nous l'avons évoqué
-      précédemment, Jenkins a besoin de pouvoir être sûr que le fichier WAR
-      utilisé dans ces tests est le même que celui généré dans le build
-      original. Nous faisons cela en activant la création de fingerpritn sur
-      le fichier WAR que nous avons récupéré depuis la tâche de build <command
-      moreinfo="none">phoenix-integration</command> (qui, rappelez-vous, a
-      originellement été construit par la tâche <command
-      moreinfo="none">phoenix-default</command>). Comme nous avons copié ce
-      fichier WAR dans l'espace de travail, une configuration comme celle de
-      <xref linkend="fig-jenkins-promotion-fingerprint-web" /> fonctionnera
-      très bien.</para>
+
+      <para>For the build promotion process to work properly, there is one
+      more important thing we need to configure in the <command
+      moreinfo="none">phoenix-web</command> build job. As we discussed
+      earlier, Jenkins needs to be able to be sure that the WAR file used in
+      these tests is the same one generated by the original build. We do this
+      by activating fingerprinting on the WAR file we fetched from the
+      <command moreinfo="none">phoenix-integration</command> build job (which,
+      remember, was originally built by the <command
+      moreinfo="none">phoenix-default</command> build job). Since we have
+      copied this WAR file into the workspace, a configuration like the one in
+      <xref linkend="fig-jenkins-promotion-fingerprint-web" /> will work just
+      fine.</para>
+
       <figure float="none" id="fig-jenkins-promotion-fingerprint-web">
-        <title>Nous avons besoin de déterminer le fingerprint du fichier WAR
-        que nous utilisons</title>
+        <title>We need to determine the fingerprint of the WAR file we
+        use</title>
+
         <mediaobject id="I_mediaobject10_d1e15799">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1050.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1050.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>L'étape final consiste à configurer la tâche de build <command
-      moreinfo="none">phoenix-deploy-to-test</command> pour récupérer le
-      dernier WAR promu (plutôt que simplement le dernier réussi). Pour faire
-      cela, nous utilisons à nouveau le plugin Copy Artifact, mais cette fois
-      nous choisissons l'option "Spécifier par permalien". Ici, Jenkins
-      proposera, entre autres choses, les processus de build configurés pour
-      la tâche de build à partir de laquelle vous êtes en train de copier.
-      Donc, dans <xref linkend="fig-jenkins-copy-promoted-war" />, nous
-      récupérons le dernier fichier WAR promu par la tâche <command
-      moreinfo="none">phoenix-default</command>, ce qui est précisément ce que
-      nous voulons.</para>
+
+      <para>The final step is to configure the <command
+      moreinfo="none">phoenix-deploy-to-test</command> build job to retrieve
+      the last promoted WAR file (rather than just the last successful one).
+      To do this, we use the Copy Artifact plugin again, but this time we
+      choose the “Specified by permalink” option. Here Jenkins will propose,
+      among other things, the build promotion processes configured for the
+      build job you are copying from. So, in <xref
+      linkend="fig-jenkins-copy-promoted-war" />, we are fetching the last
+      promoted WAR file build by the <command
+      moreinfo="none">phoenix-default</command> job, which is precisely what
+      we want.</para>
+
       <figure float="none" id="fig-jenkins-copy-promoted-war">
-        <title>Récupérer le dernier fichier WAR promu</title>
+        <title>Fetching the latest promoted WAR file</title>
+
         <mediaobject id="I_mediaobject10_d1e15817">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1051.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1051.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Notre processus de promotion est maintenant prêt pour l'action.
-      Quand les tests web automatisés réussiront lors d'un build particulier,
-      la tâche de build originale sera promu et le fichier WAR correspondant
-      déployé dans l'environnement de test. Les builds promus sotn indiqués
-      par une étoile dans l'historique de build (voir <xref
-      linkend="fig-jenkins-promoted-build-history" />). Par défaut, les
-      étoiles sont jaunes, mais vous pouvez configurer la couleur de l'étoile
-      dans la configuration de la promotion de build.</para>
+
+      <para>Our promotion process is now ready for action. When the automated
+      web tests succeed for a particular build, the original build job will be
+      promoted and the corresponding WAR file deployed to the test
+      environment. Promoted builds are indicated by a star in the build
+      history (see <xref linkend="fig-jenkins-promoted-build-history" />). By
+      default, the stars are yellow, but you can configure the color of the
+      star in the build promotion setup.</para>
+
       <figure float="0" id="fig-jenkins-promoted-build-history">
-        <title>Les builds promus sont indiqués par une étoile dans
-        l'historique de build</title>
+        <title>Promoted builds are indicated by a star in the build
+        history</title>
+
         <mediaobject id="I_mediaobject10_d1e15829">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1052.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1052.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Vous pouvez aussi utiliser l'entrée de menu “Etat de Promotion”
-      (ou cliquez sur l'étoile colorée dans l'historique de build) pour voir
-      les détails d'une promotion de build particulière, et même de réexécuter
-      manuellement une promotion (voir <xref
-      linkend="fig-jenkins-promotion-details" />). Toute promotion de build
-      peut être déclenchée manuellement, en cliquant sur "Forcer la promotion"
-      (si cette tâche de build n'a jamais été promue) <indexterm
-          class="endofrange" id="I_indexterm10_d1e15838" significance="normal"
+
+      <para>You can also use the “Promotion Status” menu entry (or click on
+      the colored star in the build history) to view the details of a
+      particular build promotion, and even to rerun a promotion manually (see
+      <xref linkend="fig-jenkins-promotion-details" />). Any build promotion
+      can be triggered manually, by clicking on “Force promotion” (if this
+      build job has never been promoted) <indexterm class="endofrange"
+          id="I_indexterm10_d1e15838" significance="normal"
           startref="ch10-promote1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15840"
           significance="normal" startref="ch10-promote2">
           <primary></primary>
-        </indexterm>ou “Ré-exécuter la promotion” (si elle l'a été).</para>
+        </indexterm>or “Re-execute promotion” (if it has).</para>
     </sect2>
+
     <sect2>
-      <title>Agréger des résultats de tests</title>
-      <para>Lorsqu'<indexterm class="startofrange" id="ch10-agg1"
+      <title>Aggregating Test Results</title>
+
+      <para>When<indexterm class="startofrange" id="ch10-agg1"
           significance="normal">
-          <primary>pipelines de build</primary>
-          <secondary>agréger les résultats de tests d'un</secondary>
+          <primary>build pipelines</primary>
+
+          <secondary>aggregating test results for</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-agg2"
           significance="normal">
           <primary>tests</primary>
-          <secondary>rapport de</secondary>
-          <tertiary>agrégation</tertiary>
+
+          <secondary>reports from</secondary>
+
+          <tertiary>aggregating</tertiary>
         </indexterm><indexterm class="startofrange" id="ch10-agg3"
           significance="normal">
-          <primary>agréger résultats tests</primary>
+          <primary>aggregate test results</primary>
         </indexterm><indexterm class="startofrange" id="ch10-agg4"
           significance="normal">
           <primary>reporting</primary>
-          <secondary>résultats de test</secondary>
-          <tertiary>agréger</tertiary>
-        </indexterm>on répartit différents types de tests dans différentes
-      tâches de build, il est facile de perdre la vision globale des résultats
-      de tests de l'ensemble. Ces résultats sont dispersés parmi les diverses
-      tâches de build, sans un endroit central où voir le nombre total de
-      tests exécutés et échoués.</para>
-      <para>Un bon moyen d'éviter ce problème est d'utiliser la fonctionnalité
-      d'agrégation de résultats de tests de Jenkins. Ceci récupérera tout
-      résultat de test depuis les tâches de build avals, et les agrégera dans
-      la tâche de build amont. Vous pouvez configurer cela dans la tâche de
-      build initiale (amont) en cochant l'option "Agréger les résultat de test
-      avals" (voir <xref
+
+          <secondary>test results</secondary>
+
+          <tertiary>aggregating</tertiary>
+        </indexterm> distributing different types of tests across different
+      build jobs, it is easy to loose a global vision about the overall test
+      results. Test results are scattered among the various build jobs,
+      without a central place to see the total number of executed and failing
+      tests.</para>
+
+      <para>A good way to avoid this problem is to use the Aggregated Test
+      Results feature of Jenkins. This will retrieve any test results recorded
+      in the downstream jobs, and aggregate them in the upstream build job.
+      You can configure this in the initial (upstream) build job by ticking
+      the “Aggregate downstream test results” option (see <xref
       linkend="fig-jenkins-aggregate-downstream-tests" />).</para>
+
       <figure float="0" id="fig-jenkins-aggregate-downstream-tests">
-        <title>Rapport sur l'agrégation des résultats de test</title>
+        <title>Reporting on aggregate test results</title>
+
         <mediaobject id="I_mediaobject10_d1e15878">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1053.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1053.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Les résultats de test agrégés peuvent être consultés dans la page
-      de détails du build (voir <xref
-      linkend="fig-jenkins-show-aggregate-tests" />). Malheureusement, ces
-      résultats de test agrégés n'apparaissent pas dans les résultats de test
-      globaux, mais bous pouvez afficher la liste complète des tests exécutés
-      en cliquant sur le lien Résultats de Test Agrégés sur la page du build
-      particulier.</para>
+
+      <para>The aggregate test results can be seen in the build details page
+      (see <xref linkend="fig-jenkins-show-aggregate-tests" />).
+      Unfortunately, these aggregate test results do not appear in the overall
+      test results, but you can display the full list of tests executed by
+      clicking on the Aggregate Test Result link on the individual build
+      page.</para>
+
       <figure float="0" id="fig-jenkins-show-aggregate-tests">
         <title>Viewing aggregate test results</title>
+
         <mediaobject id="I_mediaobject10_d1e15890">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1054.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1054.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Pour que cela fonctionne correctement, vous devez vous assurer
-      d'avoir configuré<indexterm id="I_indexterm10_d1e15897"
-          significance="normal">
+
+      <para>For this to work correctly, you need to ensure that you have
+      configured<indexterm id="I_indexterm10_d1e15897" significance="normal">
           <primary>fingerprints</primary>
-        </indexterm> la création de fingerprint pour les fichiers binaires
-      utilisés à chaque étape. Jenkins agrégera seulement les résultats de
-      test avals de builds contenant un artefact avec le <indexterm
-          class="endofrange" id="I_indexterm10_d1e15901" significance="normal"
+        </indexterm> fingerprinting for the binary files you use at each
+      stage. Jenkins will only aggregate downstream test results from builds
+      containing an artifact with the <indexterm class="endofrange"
+          id="I_indexterm10_d1e15901" significance="normal"
           startref="ch10-agg1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15903"
@@ -2624,133 +3016,153 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15907"
           significance="normal" startref="ch10-agg4">
           <primary></primary>
-        </indexterm>même fingerprint.</para>
+        </indexterm>same fingerprint.</para>
     </sect2>
+
     <sect2>
-      <title>Pipelines de Build</title>
-      <para>Le <indexterm class="startofrange" id="ch10-deploy1"
+      <title>Build Pipelines</title>
+
+      <para>The<indexterm class="startofrange" id="ch10-deploy1"
           significance="normal">
-          <primary>pipelines de build</primary>
-          <secondary>pipelines de déploiement</secondary>
+          <primary>build pipelines</primary>
+
+          <secondary>deployment pipelines from</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-deploy2"
           significance="normal">
-          <primary>pipelines de déploiement</primary>
-        </indexterm> dernier plugin que nous allons regarder dans cette
-      section est le plugin Build Pipeline. Le plugin Build Pipelines emmène
-      l'idée de la promotion de build encore plus loin, et vous aide à
-      concevoir et superviser des pipelines de déploiement. Un pipeline de
-      déploiement est une façon d'orchestrer vos builds au travers d'une série
-      de passage qualité, avec des approbations automatisées ou manuelles à
-      chaque étape, culminant avec le déploiement en production.</para>
-      <para>Le <indexterm id="I_indexterm10_d1e15926" significance="normal">
-          <primary>plugin Build Pipeline</primary>
+          <primary>deployment pipelines</primary>
+        </indexterm> final plugin we will be looking at in this section is the
+      Build Pipeline plugin. The Build Pipelines plugin takes the idea of
+      build promotion further, and helps you design and monitor deployment
+      pipelines. A deployment pipeline is a way of orchestrating your build
+      through a series of quality gates, with automated or manual approval
+      processes at each stage, culminating with deployment into
+      production.</para>
+
+      <para>The <indexterm id="I_indexterm10_d1e15926" significance="normal">
+          <primary>Build Pipeline plugin</primary>
         </indexterm><indexterm id="I_indexterm10_d1e15929"
           significance="normal">
           <primary>plugins</primary>
+
           <secondary>Build Pipeline</secondary>
-        </indexterm>plugin Build Pipeline fournit une autre façon de définir
-      des tâches de build avals. Un pipeline de build, contrairement aux
-      dépendances avals conventionnelles, est considéré comme un processus
-      linéaire, une série de tâches de build exécutées en séquence.</para>
-      <para>Pour utiliser ce plugin, commencez par configurer les tâches de
-      build avals pour chaque tâche de build dans le pipeline, en utilisant le
-      champ “Construire d'autres projets” comme vous feriez habituellement. Le
-      plugin Build Pipeline utilise les configurations de build amont ou aval
-      standards, et pour les étapes automatiques c'est tout ce que vous avez à
-      faire. Toutefois, le plugin Build Pipeline supporte aussi les étapes de
-      build manuelles, où un utilisateur doit manuellement approuver l'étape
-      suivante. Pour les étapes manuelles, vous devez aussi configurer les
-      <command moreinfo="none">Post-build Actions</command> de votre tâche de
-      build amont : cochez simplement la case “Build Pipeline Plugin -&gt;
-      Spécifier Projet Aval”, sélectionnez l'étape suivante dans votre projet,
-      et cochez l'option “Require manual build executor” (voir <xref
+        </indexterm>Build Pipeline plugin provides an alternative way to
+      define downstream build jobs. A build pipeline, unlike conventional
+      downstream dependencies, is considered to be a linear process, a series
+      of build jobs executed in sequence.</para>
+
+      <para>To use this plugin, start by configuring the downstream build jobs
+      for each build job in the pipeline, using the “Build other projects”
+      field just as you would normally do. The Build Pipelines plugin uses the
+      standard upstream and downstream build configurations, and for automatic
+      steps this is all you need to do. However the Build Pipeline plugin also
+      supports manual build steps, where a user has to manually approve the
+      next step. For manual steps, you also need to configure In the <command
+      moreinfo="none">Post-build Actions</command> of your upstream build job:
+      just tick the “Build Pipeline Plugin -&gt; Specify Downstream Project”
+      box, select the next step in your project, and tick the “Require manual
+      build executor” option (see <xref
       linkend="fig-jenkins-build-pipeline-downstream" />).</para>
+
       <figure float="none" id="fig-jenkins-build-pipeline-downstream">
-        <title>Configurer une étape manuelle dans le pipeline de build</title>
+        <title>Configuring a manual step in the build pipeline</title>
+
         <mediaobject id="I_mediaobject10_d1e15945">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1055.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1055.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Une fois que vous avez configuré votre processus de build à votre
-      convenance, vous pouvez configurer la vue build pipeline. Vous pouvez
-      créer cette vue comme n'importe quelle autre (voir <xref
+
+      <para>Once you have set up your build process to your satisfaction, you
+      can configure the build pipeline view. You can create this view just
+      like any other view (see <xref
       linkend="fig-jenkins-build-pipeline-view" />).</para>
+
       <figure float="none" id="fig-jenkins-build-pipeline-view">
-        <title>Créer une vue Build Pipeline</title>
+        <title>Creating a Build Pipeline view</title>
+
         <mediaobject id="I_mediaobject10_d1e15957">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1056.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1056.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Il y a une astuce à connaître lors de la configuration de la vue,
-      cependant. Au moment de l'écriture de ces lignes, il n'y a pas d'option
-      de menu ou de bouton vous permettant de configurer la vue directement.
-      En fait, vous devez entrer l'URL manuellement. Heureusement, ce n'est
-      pas difficile : ajoutez juste <filename
-      moreinfo="none">/configure</filename> à la fin de l'URL lorsque vous
-      affichez cette vue. par exemple, si vous avez appelé cette vue
-      “phoenix-build-pipeline”, comme montré ici, l'URL pour configurer cette
-      vue serait <filename
+
+      <para>There is a trick when it comes to configuring the view, however.
+      At the time of writing, there is no menu option or button that lets you
+      configure the view directly. In fact, you need to enter the URL
+      manually. Fortunately, this is not difficult: just add <filename
+      moreinfo="none">/configure</filename> to the end of the URL shown when
+      you are displaying this view. For example, if you have named your view
+      “phoenix-build-pipeline”, as shown here, the URL to configure this view
+      would be <filename
       moreinfo="none">http://my_jenkins_server/view/phoenix-build-pipeline</filename>.
-      (voir <xref linkend="fig-jenkins-build-pipeline-configure" />).</para>
+      (see <xref linkend="fig-jenkins-build-pipeline-configure" />).</para>
+
       <figure float="0" id="fig-jenkins-build-pipeline-configure">
-        <title>Configurer une vue Build Pipeline</title>
+        <title>Configuring a Build Pipeline view</title>
+
         <mediaobject id="I_mediaobject10_d1e15975">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1057.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1057.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
-      <para>La chose la plus important à configurer dans cet écran est la
-      tâche initiale. Ceci marque le point d'entrée de votre pipeline de
-      build. Vous pouvez définir de multiples vues de pipeline de build,
-      chacune avec une tâche initiale différente. Vous pouvez aussi configurer
-      le nombre maximum de séquences de build à faire apparaître à la fois sur
-      l'écran.</para>
-      <para>Une fois que vous avez configuré le point de départ, vous pouvez
-      retourner à la vue pour voir l'état courant de votre pipeline de build.
-      Jenkins affiche les tâches de build successives horizontalement, en
-      utilisant une couleur pour indiquer le résultat de chaque build (<xref
-      linkend="fig-jenkins-build-pipeline" />). Il y a une colonne pour chaque
-      tâche de build dans le pipeline. Dès lors que la tâche de build initiale
-      démarre, une nouvelle ligne apparaît sur cette page. Alors que le build
-      progresse parmi les tâches de build successives, Jenkins ajoute une
-      boîte colorée dans les colonnes successives, indiquant le résultat de
-      chaque étape. Vous pouvez cliquer sur la boîte pour descendre dans un
-      résultat de build particulier pour plus de détails. Enfin, si une
-      exécution manuelle est requise, un bouton sera affiché afin que
-      l'utilisateur puisse déclencher la tâche.</para>
+
+      <para>The most important thing to configure in this screen is the
+      initial job. This marks the starting point of your build pipeline. You
+      can define multiple build pipeline views, each with a different starting
+      job. You can also configure the maximum number of build sequences to
+      appear on the screen at once.</para>
+
+      <para>Once you have configured the starting point, you can return to the
+      view to see the current state of your build pipeline. Jenkins displays
+      the successive related build jobs horizontally, using a color to
+      indicate the outcome of each build (<xref
+      linkend="fig-jenkins-build-pipeline" />). There is a column for each
+      build job in the pipeline. Whenever the initial build job kicks off, a
+      new row appears on this page. As the build progresses through the
+      successive build jobs in the pipeline, Jenkins will add a colored box in
+      the successive columns, indicating the outcome of each stage. You can
+      click on the box to drill down into a particular build result for more
+      details. Finally, if a manual execution is required, a button will be
+      displayed where the user can trigger the job.</para>
+
       <figure float="0" id="fig-jenkins-build-pipeline">
-        <title>Un Pipeline de Build en action</title>
+        <title>A Build Pipeline in action</title>
+
         <mediaobject id="I_mediaobject10_d1e15990">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1058.pdf" format="PDF" />
           </imageobject>
+
           <imageobject role="web">
             <imagedata fileref="figs/web/jtdg_1058.png" format="PNG" />
           </imageobject>
         </mediaobject>
       </figure>
+
       <?dbfo-need height=”1in”?>
-      <para>Ce plugin est encore relativement nouveau, et ne s'intègre pas
-      avec les autres plugins que nous avons vus ici. En particulier, il est
-      vraiment conçu pour un pipeline de build linéaire, et ne s'en sort pas
-      très bien avec des branches ou des tâches de build parallèles.
-      Néanmoins, il donne une excellent vision globale d'un pipeline
-      <indexterm class="endofrange" id="I_indexterm10_d1e15998"
-          significance="normal" startref="ch10-deploy1">
+
+      <para>This plugin is still relatively new, and does not integrate with
+      all of the other plugins we have seen here. In particular, it is really
+      designed for a linear build pipeline, and does not cope well with
+      branches or parallel build jobs. Nevertheless, it does give an excellent
+      global vision of a build<indexterm class="endofrange"
+          id="I_indexterm10_d1e15998" significance="normal"
+          startref="ch10-deploy1">
           <primary></primary>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e16000"
           significance="normal" startref="ch10-deploy2">
@@ -2758,25 +3170,25 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e16002"
           significance="normal" startref="ch10-pipe">
           <primary></primary>
-        </indexterm> de build.</para>
+        </indexterm> pipeline.</para>
     </sect2>
   </sect1>
+
   <sect1 id="I_sect110_d1e16005">
     <title>Conclusion</title>
-    <para>Les tâches build d'Intégration Continue sont beaucoup plus que de
-    simples exécutions planifiées de scripts de build. Dans ce chapitre, nous
-    avons revu un certain nombre d'outils et de techniques vous permettant
-    d'aller au delà de vos tâches de build typiques, en les combinant afin
-    qu'elles travaillent ensemble comme partie d'un processus plus large. Nous
-    avons à présent vu comment les tâches de build paramétrées et
-    multiconfiguration ajoutent un élément de flexibilité aux tâches de build
-    ordinaires en vous permettant d'exécuter la même tâche de build avec
-    différents ensembles de paramètres. D'autres outils aident à coordonner et
-    à orchestrer des groupes de tâches de build reliées. Les plugins Joins et
-    Locks and Latches vous aident à coordonner des tâches de build s'exécutant
-    en parallèle. Et les plugins Build Promotions et Build Pipelines, avec
-    l'aide du plugin Copy Artifacts, rendent relativement facile la conception
-    et la configuration de stratégies de promotion de build complexes pour vos
-    projets.</para>
+
+    <para>Continuous Integration build jobs are much more than simply the
+    scheduled execution of build scripts. In this chapter we have reviewed a
+    number of tools and techniques enabling you to go beyond your typical
+    build jobs, combining them so that they can work together as part of a
+    larger process. We have seen how parameterized and multiconfiguration
+    build jobs add an element of flexibility to ordinary build jobs by
+    allowing you to run the same build job with different sets of parameters.
+    Other tools help coordinate and orchestrate groups of related build jobs.
+    The Joins and Locks and Latches plugins helps you coordinate build jobs
+    running in parallel. And the Build Promotions and Build Pipelines plugins,
+    with the help of the Copy Artifacts plugin, make it relatively easy to
+    design and configure complex build promotion strategies for your
+    projects.</para>
   </sect1>
 </chapter>
