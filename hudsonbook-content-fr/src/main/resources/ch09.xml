@@ -95,75 +95,79 @@
   </sect1>
 
   <sect1 id="sect-code-quality-build-process">
-    <title>Code Quality in Your Build Process</title>
+    <title>La qualité du code dans votre processus de build</title>
 
-    <para>Before we look at how to report on code quality metrics in Jenkins,
-    it can be useful to take a step back and look at the larger picture. Code
-    Quality metrics are of limited value in isolation—they need to be part of
-    a broader process improvement strategy.</para>
+    <para>Avant de voir comment rapporter les mesures de qualités dans
+    Jenkins, cela peut être utile de revenir en arrière pour avoir une vue
+    plus large. Les mesures de la qualité du code sont d’une valeur limitée en
+    isolation, elles doivent faire partie d’une stratégie plus large
+    d’amélioration des processus.</para>
 
-    <para>The<indexterm id="I_indexterm9_d1e12757" significance="normal">
-        <primary>code quality metrics</primary>
+    <para>Le<indexterm id="I_indexterm9_d1e12757" significance="normal">
+        <primary>mesures de qualité du code</primary>
 
-        <secondary sortas="IDE">with IDE</secondary>
+        <secondary sortas="IDE">avec l'EDI</secondary>
       </indexterm><indexterm id="I_indexterm9_d1e12762" significance="normal">
-        <primary>IDE, code quality metrics with</primary>
-      </indexterm> first level of code quality integration should be the IDE.
-    Modern<indexterm id="I_indexterm9_d1e12766" significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>EDI, mesures de qualité de code avec</primary>
+      </indexterm> premier niveau d’intégration de la qualité du code devrait
+    être l’EDI. Les EDI modernes ont un excellent support de beaucoup d’outils
+    de qualité de code — Checkstyle, PMD et FindBugs ont tous des plugins pour
+    Eclipse, NetBeans et IntelliJ, qui fournissent un retour d’information
+    rapide aux développeurs sur les problèmes de qualité du code. C’est le
+    moyen le plus rapide et le plus efficace pour fournir un retour
+    d’information à des développeurs individuels et pour enseigner aux
+    développeurs les normes de codage de l’organisation ou du projet.</para>
 
-        <secondary>software for</secondary>
-      </indexterm> IDEs have great support for many code quality
-    tools—Checkstyle, PMD, and FindBugs all have plugins for Eclipse,
-    NetBeans, and IntelliJ, which provide rapid feedback for developers on
-    code quality issues. This is a much faster and more efficient way to
-    provide feedback for individual developers, and to teach developers about
-    the organizational or project coding standards.</para>
+    <para>Le <indexterm id="I_indexterm9_d1e12774" significance="normal">
+        <primary>mesures de qualité du code</primary>
 
-    <para>The <indexterm id="I_indexterm9_d1e12774" significance="normal">
-        <primary>code quality metrics</primary>
-
-        <secondary sortas="build jobs">in build jobs</secondary>
+        <secondary sortas="build jobs">dans les tâches de build</secondary>
       </indexterm><indexterm id="I_indexterm9_d1e12779" significance="normal">
-        <primary>build jobs</primary>
+        <primary>les tâches de build</primary>
 
-        <secondary>code quality metrics in</secondary>
+        <secondary>les mesures de qualité de code dans</secondary>
 
-        <see>code quality metrics</see>
-      </indexterm>second level is your build server. In addition to your
-    normal unit and integration test build jobs, set up a dedicated code
-    quality build, which runs after the normal build and test. The aim of this
-    process is to produce project-wide code quality metrics, to keep tabs on
-    how the project is doing as a whole, and to address any issues from a high
-    level. The effectiveness of these reports can be increased by a weekly
-    code quality review, in which code quality issues and trends are discussed
-    within the team.</para>
+        <see>les mesures de qualité de code</see>
+      </indexterm>second niveau est votre serveur de build. En plus de vos
+    tâches de builds de tests unitaires et d’intégration normales, mettez en
+    place un build de qualité de code dédié, qui démarrera après le build
+    normal et les tests. Le but de ce processus est de fournir des mesures de
+    qualité de code à l’échelle du projet, de garder un œil sur la façon dont
+    le projet est trait d’être fait dans son ensemble et de traiter n’importe
+    quels problèmes d’un niveau élevé. L’efficacité des ces rapports peut être
+    augmentée par une revue de qualité de code hebdomadaire, dans lesquelles
+    les problèmes et les tendances sur de qualité du code sont discutées au
+    sein de l’équipe.</para>
 
-    <para>It is important to run this job separately, because code coverage
-    analysis and many static analysis tools can be quite slow to run. It is
-    also important to keep any code coverage tests well away from builds, as
-    the code coverage process produces instrumented code which should never be
-    deployed to a repository for production use.</para>
+    <para>C’est important de démarrer cette tâche séparément parce que les
+    outils d’analyse de couverture de code et d’analyse statique peuvent être
+    très longs à exécuter. Il est également important de garder n’importe
+    quels tests de couverture du code bien loin des builds, puisque le
+    processus de couverture du code produit du code instrumenté qui ne devrait
+    jamais être déployé vers un dépôt pour une utilisation en
+    production.</para>
 
-    <para>Code quality reporting is, by default, a relatively passive process.
-    No one will know the state of the project if they don’t seek out the
-    information on the build server. While this is better than nothing, if you
-    are serious about code quality, there is a better way. Rather than simply
-    reporting on code quality, set up a dedicated code quality build, which
-    runs after the normal build and test, and configure the build to fail if
-    code quality metrics are not at an acceptable level. You can do this in
-    Jenkins or in your build script, although one advantage of configuring
-    this outside of your build script is that you can change code quality
-    build failing criteria more easily without changing the project source
-    code.</para>
+    <para>L’établissement de rapports sur la de qualité de code est, par
+    défaut, un processus relativement passif. Personne ne connaîtra l’état du
+    projet s’ils ne cherchent pas l’information sur le serveur de build. Même
+    si c’est mieux que rien, si vous êtes sérieux concernant la qualité du
+    code, il y a un meilleur moyen. Au lieu de simplement établir des rapports
+    sur la qualité du code, mettez en place un build dédié à la qualité du
+    code, qui démarre après le build normal et les tests et configurez le
+    build pour échouer si les mesures de la qualité du code ne sont pas à un
+    niveau acceptable. Vous pouvez faire cela dans Jenkins ou dans votre
+    script de build, bien qu’un avantage de le configurer en dehors de votre
+    script de build soit que vous pouvez changer les critères de défaillance
+    du build de qualité du code sans changer le code source du projet.</para>
 
-    <para>As a final word, remember that coding standards are guidelines and
-    recommendations, not absolute rules. Use failing code quality builds and
-    code quality reports as indicators of a possible area of improvement, not
-    as measurements of absolute<indexterm class="endofrange"
+    <para>Comme dernier mot, souvenez vous que les normes de codage sont des
+    lignes directrices et des recommandations, pas des règles absolues.
+    Utilisez la défaillance des builds et les rapports de qualité de code
+    comme des indicateurs d’une zone possible d’amélioration, non pas comme
+    des mesures de valeur <indexterm class="endofrange"
         id="I_indexterm9_d1e12793" significance="normal" startref="ch09-cq">
         <primary/>
-      </indexterm> value.</para>
+      </indexterm> absolue.</para>
   </sect1>
 
   <sect1 id="sect-code-quality-tools">
