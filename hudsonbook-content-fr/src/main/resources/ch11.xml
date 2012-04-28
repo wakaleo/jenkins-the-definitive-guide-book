@@ -356,45 +356,48 @@
       </figure>
     </sect2>
     <sect2>
-      <title>Starting the Slave Agent Manually Using Java Web Start</title>
-      <para>Another <indexterm class="startofrange" id="ch11-jws1"
+      <title>Démarrer l'agent esclave manuellement via Java Web Start</title>
+      <para>Une autre <indexterm class="startofrange" id="ch11-jws1"
           significance="normal">
-          <primary>distributed builds</primary>
-          <secondary>slave nodes for</secondary>
-          <tertiary>starting with Java Web Start</tertiary>
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>lancés avec Java Web Start</tertiary>
         </indexterm><indexterm class="startofrange" id="ch11-jws2"
           significance="normal">
           <primary>Java Web Start</primary>
-          <secondary>starting slave nodes using</secondary>
-        </indexterm>option is to start a slave agent from the slave machine
-      itself using Java Web Start (JNLP). This approach is useful if the server
-      cannot connect to the slave, for example if the slave machine is running
-      on the other side of a firewall. It works no matter what operating system
-      your slave is running on, however it is more commonly used for Windows
-      slaves. It does suffer from a few major drawbacks: the slave node cannot
-      be started, or restarted, automatically by Jenkins. So, if the slave goes
-      down, the master instance cannot restart it.</para>
-      <para>When you do this on a Windows machine, you need to start the Jenkins
-      slave manually at least once. This involves opening a browser on the
-      machine, opening the slave node page on the Jenkins master, and launching
-      the slave using a very visible JNLP icon. However, once you have launched
-      the slave, you can install it as a Windows service.</para>
-      <para>There are also times when you need to do this from the command line,
-      in a Unix environment. You may need to do this because of firewalls or
-      other networking issues, or because SSH is not available in your
-      environment.</para>
-      <para>Lets step through both these processes.</para>
-      <para>The first thing you need to do in all cases is create a new slave.
-      As for any other slave node, you do this by clicking on the New Node menu
-      entry in the Nodes screen. When entering the details concerning your slave
-      node, make sure you choose “Launch slave agents via JNLP” in the Launch
-      Method field (see <xref linkend="fig-jenkins-jnlp-slave"/>). Also remember
-      that if this is to be a Windows slave node, the Remote FS root needs to be
-      a Windows path (such as <filename
-      moreinfo="none">C:\jenkins-slave</filename>). This directory does not have
-      to exist: Jenkins will create it automatically if it is missing.</para>
+          <secondary>lancer des noeuds esclaves avec</secondary>
+        </indexterm>option est de démarrer l'agent esclave depuis la machine
+      esclave elle-même en utilisant Java Web Start (JNLP). Cette approche est
+      utile si le serveur ne peut pas se connecter à l'esclave, par exemple si
+      la machine esclave s'exécute de l'autre côté d'un firewall. Cela
+      fonctionne quel que soit le système d'exploitation de votre esclave,
+      toutefois c'est le plus souvent utilisé pour des esclaves Windows. Cela
+      présente quelques inconvénients majeurs : le noeud esclave ne peut pas
+      être démarré, ou redémarré, automatiquement par Jenkins. Ainsi, si
+      l'esclave tombe, l'instance maître ne peut pas le redémarrer.</para>
+      <para>Quand vous faites cela sur une machine Windows, vous devez démarrer
+      l'esclave Jenkins manuellement au moins une fois. Ceci implique d'ouvrir
+      un navigateur sur la machine, ouvrir la page du noeud esclave sur le
+      maître Jenkins et de lancer l'esclave en utilisant l'icône JNLP bien
+      visible. Une fois que vous avez lancé l'esclave, vous pouvez l'installer
+      comme un service Windows.</para>
+      <para>Il y a aussi des fois où vous avez besoin de faire cela depuis la
+      ligne de commande, dans un environnement Unix. Vous pourriez avoir besoin
+      de ça à cause d'un firewall ou d'autres problèmes réseau, ou parce que SSH
+      n'est pas disponible dans votre environnement.</para>
+      <para>Détaillons à présent les deux processus.</para>
+      <para>La première chose que vous devez faire dans tous les cas est de
+      créer un nouvel esclave. Comme pour tout noeud esclave, vous faites cela
+      en cliquant sur l'entrée Nouveau noeud dans l'écran Noeuds. Lors de la
+      saisie des détails concernant votre noeud esclave, assurez-vous de choisir
+      “Lancer les agents esclave via JNLP” dans le champ Méthode de Lancement
+      (voir <xref linkend="fig-jenkins-jnlp-slave"/>). Rappelez-vous aussi que
+      c'est un noeud esclave Windows, la racine du système de fichiers distant
+      doit être un chemin Windows (comme <filename
+      moreinfo="none">C:\jenkins-slave</filename>). Ce répertoire n'a pas à
+      exister : Jenkins le créera automatiquement s'il manque.</para>
       <figure float="0" id="fig-jenkins-jnlp-slave">
-        <title>Creating a slave node for JNLP</title>
+        <title>Créer un noeud esclave pour JNLP</title>
         <mediaobject id="I_mediaobject11_d1e16289">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1107.pdf" format="PDF"/>
@@ -404,13 +407,14 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have saved this configuration, Next, log on to the slave
-      machine and open the Slave node screen in a browser, as shown in <xref
-      linkend="fig-jenkins-launch-jnlp"/>. You will see a large orange Launch
-      button—if you click on this button, you should be able to start a slave
-      agent directly from within your browser.</para>
+      <para>Une fois que vous avez sauvé cette configuration, ensuite,
+      connectez-vous sur la machine esclave et ouvrez l'écran du noeud esclave
+      dans un navigateur, comme montré sur <xref
+      linkend="fig-jenkins-launch-jnlp"/>. Vous verrez un large bouton orange
+      Lancer — si vous cliquez sur ce bouton, vous devriez être capable de
+      lancer un agent esclave directement depuis votre navigateur.</para>
       <figure float="0" id="fig-jenkins-launch-jnlp">
-        <title>Launching a slave via Java Web Start</title>
+        <title>Lancer un esclave via Java Web Start</title>
         <mediaobject id="I_mediaobject11_d1e16301">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1108.pdf" format="PDF"/>
@@ -420,11 +424,11 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>If all goes well, this will open up a small window indicating that
-      your slave agent is now running (see <xref
+      <para>Si tout va bien, ceci ouvrira une petite fenêtre indiquant que votre
+      esclave est à présent en fonctionnement (voir <xref
       linkend="fig-jenkins-slave-agent"/>).</para>
       <figure float="0" id="fig-jenkins-slave-agent">
-        <title>The Jenkins slave agent in action</title>
+        <title>L'agent esclave Jenkins en action</title>
         <mediaobject id="I_mediaobject11_d1e16313">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1109.pdf" format="PDF"/>
@@ -434,31 +438,33 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Browsers are fickle, however, and Java Web Start is not always easy
-      to use. This approach usually works best with Firefox, although you must
-      have the Java JRE installed beforehand to make Firefox Java-aware. Using
-      JNLP with Internet Explorer requires some (considerable) fiddling to
-      associate <filename moreinfo="none">*.jnlp</filename> files with the Java
-      Web Start executable, a file called <command
-      moreinfo="none">javaws</command>, which you will find in the Java
-      <filename moreinfo="none">bin</filename> directory. In fact it is probably
-      easier just to start it from the command line as discussed below.</para>
-      <para>A more reliable, albeit low-level, approach is to start the slave
-      from the command line. To do this, simply invoke the <command
-      moreinfo="none">javaws</command> executable from a command window as shown
-      here:</para>
+      <para>Les navigateurs sont inconstants, toutefois, et Java Web Start n'est
+      pas toujours simple à utiliser. Cette approche fonctionne habituellement
+      avec Firefox, bien que vous deviez auparavant avoir installé le JRE Java
+      pour que Firefox comprenne Java. Utiliser JNLP avec Internet Explorer
+      requiert un ensemble (non négligeable) de bricolages pour associer les
+      fichiers <filename moreinfo="none">*.jnlp</filename> avec l'exécutable
+      Java Web Start, un fichier appelé <command
+      moreinfo="none">javaws</command>, que vous trouverez dans le répertoire
+      <filename moreinfo="none">bin</filename> de Java. Il est en fait
+      probablement plus simple de le lancer depuis la ligne de commande comme
+      discuté ci-dessous.</para>
+      <para>Une approche plus fiable, quoique bas-niveau, est de démarrer
+      l'esclave depuis la ligne de commande. Pour faire ça, invoquez simplemet
+      l'exécutable <command moreinfo="none">javaws</command> depuis une fenêtre
+      de commande comme suit :</para>
       <screen format="linespecific">C:&gt; javaws http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp</screen>
-      <para>The exact command that you need to execute, including the correct
-      URL, is conveniently displayed on the Jenkins slave node window just below
-      the JNLP launch button (see <xref
+      <para>La commande exacte que vous devez exécuter, notamment avec l'URL
+      correcte, est idéalement affichée dans la fenêtre du noeud esclave Jenkins
+      juste en dessous du bouton de lancement JNLP (voir <xref
       linkend="fig-jenkins-launch-jnlp"/>).</para>
-      <para>If security is activated on your Jenkins server, Jenkins will
-      communicate with the slave on a specific nonstandard port. If for some
-      reason this port is inaccessible, the slave node will fail to start and
-      will display an error message similar to the one shown in <xref
-      linkend="fig-jenkins-slave-unable-to-connect"/>.</para>
+      <para>Si la sécurité est activée sur votre serveur Jenkins, Jenkins
+      communiquera avec l'esclave sur un port spécifique non standard. Si pour
+      une raison quelconque ce port est inaccessible, le noeud esclave échouera
+      au lancement et affichera un message d'erreur similaire à celui montré
+      dans <xref linkend="fig-jenkins-slave-unable-to-connect"/>.</para>
       <figure float="none" id="fig-jenkins-slave-unable-to-connect">
-        <title>The Jenkins slave failing to connect to the master</title>
+        <title>L'esclave Jenkins échouant à la connexion au maître</title>
         <mediaobject id="I_mediaobject11_d1e16348">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1110.pdf" format="PDF"/>
@@ -468,20 +474,20 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>This is usually a sign that a firewall is blocking a port. By
-      default, Jenkins picks a random port to use for TCP communication with its
-      slaves. However if you need to have a specific port that your firewall
-      will authorize, you can force Jenkins to use a fixed port in the System
-      configuration screen by selecting Fixed in the “TCP port for JNLP slave
-      agents” option, as <indexterm class="endofrange"
+      <para>Ceci est habituellement un signe qu'un firewall bloque un port. Par
+      défaut, Jenkins choisit un port par défaut pour la communication TCP avec
+      ses esclaves. Cependant si vous devez avoir un port spécifique que votre
+      firewall autorise, vous pouvez forcer Jenkins à utiliser un port fixe dans
+      l'écran de configuration système en sélectionnant l'option Fixe dans “Port
+      TCP pour les agents esclaves JNLP”, comme <indexterm class="endofrange"
           id="I_indexterm11_d1e16355" significance="normal" startref="ch11-jws1">
           <primary/>
         </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16357"
           significance="normal" startref="ch11-jws2">
           <primary/>
-        </indexterm>shown in <xref linkend="fig-jenkins-tcp-ports"/>.</para>
+        </indexterm>montré dans <xref linkend="fig-jenkins-tcp-ports"/>.</para>
       <figure float="0" id="fig-jenkins-tcp-ports">
-        <title>Configuring the Jenkins slave port</title>
+        <title>Configurer le port de l'esclave Jenkins</title>
         <mediaobject id="I_mediaobject11_d1e16365">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1111.pdf" format="PDF"/>
