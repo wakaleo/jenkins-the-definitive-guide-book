@@ -42,49 +42,53 @@
     ferme de serveurs de build en utilisant Jenkins.</para>
   </sect1>
   <sect1 id="sect-distributed-build-architecture">
-    <title>The Jenkins Distributed Build Architecture</title>
+    <title>L'Architecture de build distribuée de Jenkins</title>
     <para>Jenkins<indexterm class="startofrange" id="ch11-ms1"
         significance="normal">
-        <primary>distributed builds</primary>
-        <secondary>master/slave architecture for</secondary>
+        <primary>builds distribués</primary>
+        <secondary>architecture maître/esclave pour</secondary>
       </indexterm><indexterm class="startofrange" id="ch11-ms2"
         significance="normal">
-        <primary>build jobs</primary>
-        <secondary>distributed across build servers</secondary>
-        <tertiary>master/slave architecture for</tertiary>
+        <primary>tâches de build</primary>
+        <secondary>serveurs de build distribué parmi</secondary>
+        <tertiary>architecture maître/esclave pour</tertiary>
       </indexterm><indexterm class="startofrange" id="ch11-ms3"
         significance="normal">
-        <primary>master/slave architecture for distributed builds</primary>
+        <primary>architecture maître/esclave pour les builds
+        distribués</primary>
       </indexterm><indexterm class="startofrange" id="ch11-ms4"
         significance="normal">
-        <primary>slave machines</primary>
-        <secondary sortas="distributed builds">for distributed
-        builds</secondary>
-      </indexterm> uses a master/slave architecture to manage distributed
-    builds. Your main <phrase role="keep-together">Jenkins</phrase> server (the
-    one we have been using up until present) is the master. In a nutshell, the
-    master’s job is to handle scheduling build jobs, dispatching builds to the
-    slaves for the actual execution, monitor the slaves (possibly taking them
-    online and offline as required) and recording and presenting the build
-    results. Even in a distributed architecture, a master instance of Jenkins
-    can also execute build jobs directly.</para>
-    <para>The job of the slaves is to do as they are told, which involves
-    executing build jobs dispatched by the master. You can configure a project
-    to always run on a particular slave machine, or a particular type of slave
-    machine, or simply let Jenkins pick the next available slave.</para>
-    <para>A slave is a small Java executable that runs on a remote machine and
-    listens for requests from the Jenkins master instance. Slaves can (and
-    usually do) run on a variety of operating systems. The slave instance can be
-    started in a number of different ways, depending on the operating system and
-    network architecture. Once the slave instance is running, it communicates
-    with the master instance over a TCP/IP connection. We will look at different
-    setups in the rest of this <indexterm class="endofrange"
+        <primary>lmachine esclave</primary>
+        <secondary sortas="distributed builds">pour les builds
+        distribués</secondary>
+      </indexterm> utilise une architecture maître/esclave pour gérer les builds
+    distribués. Votre serveur Jenkins principal (celui que nous avons utilisé
+    jusqu'à présent) est le maître. En un mot, le rôle du maître est de gérer
+    l'ordonnancement des tâches de build, de répartir les builds sur les
+    esclaves pour leur exécution réelle, surveiller les esclaves (en les mettant
+    éventuellement hors-ligne si nécessaire) et enfin enregistrer et présenter
+    les résultats de build. Même dans une architecture distribuée, une instance
+    maître de Jenkins peut aussi exécuter des tâches de build
+    directement.</para>
+    <para>Le rôle des esclaves est de faire ce qu'on leur dit, ce qui inclut
+    l'exécution de tâches de build envoyées par le maître. Vous pouvez
+    configurer un projet pour qu'il s'exécute toujours sur un esclave
+    particulier, sur un type particulier de machine, ou simplement laisser
+    Jenkins sélectionner le prochain esclave disponible.</para>
+    <para>Un esclave est un petit exécutable Java qui fonctionne sur une machine
+    distante et se met en écoute de requêtes de la part de l'instance maître
+    Jenkins. Les esclaves peuvent (et c'est généralement le cas) s'exécuter sur
+    différents systèmes d'exploitation. L'instance esclave peut être démarrée de
+    façons diverses, en fonction du système d'exploitation et de l'architecture
+    réseau. Une fois que l'instance esclave est en marche, elle communique avec
+    l'instance maître au travers d'une connexion TCP/IP. Nous regarderons
+    différentes configurations dans le reste de ce <indexterm class="endofrange"
         id="I_indexterm11_d1e16072" significance="normal" startref="ch11-dist1">
         <primary/>
       </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16074"
         significance="normal" startref="ch11-dist2">
         <primary/>
-      </indexterm>chapter.</para>
+      </indexterm>chapitre.</para>
   </sect1>
   <sect1 id="sect-master-slave-strategies">
     <title>Master/Slave Strategies in Jenkins</title>
