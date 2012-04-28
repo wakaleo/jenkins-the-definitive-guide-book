@@ -1071,59 +1071,63 @@
     </sect2>
   </sect1>
   <sect1 id="sect-distributed-builds-Using-the-Cloudbees">
-    <title>Using the CloudBees DEV@cloud Service</title>
-    <para>Another option you might consider is running your Jenkins instance
-    using a dedicated cloud-based Jenkins architecture, such as the DEV@cloud
-    service offered by CloudBees. CloudBees provides Jenkins as a service as
-    well as various development services (like Sonar) around Jenkins. Using a
-    dedicated Jenkins-specific service, there is no need to install (or manage)
-    Jenkins masters or slaves on your machines. A master instance is
-    automatically configured for you, and when you give a job to be built,
-    CloudBees provisions a slave for you and takes it back when the job is
-    done.</para>
-    <para>How does this approach compare with the Amazon EC2-based architecture
-    we discussed in the previous section? The main advantage of this approach is
-    that there is much less work involved in managing your CI architecture
-    hardware. Using the Amazon EC2 infrastructure means you don't need to worry
-    about hardware, but you still need to configure and manage your server
-    images yourself. The CloudBees DEV@cloud architecture is more of a
-    high-level, CI-centric service, which provides not only a Jenkins server but
-    also other related tools such as SVN or Git repositories, user management,
-    and Sonar. In addition, the pricing model (pay by the minute) is arguably
-    better suited to a cloud-based CI architecture than the pay-by-the-hour
-    approach used by Amazon.</para>
-    <para>Amazon EC2-based services are often, though not always, used in a
-    “hybrid cloud” environment where you are offloading your jobs to the cloud,
-    but a bulk of your builds remain in-house. The CloudBees DEV@cloud service
-    is a public cloud solution where the whole build is happening on the cloud
-    (though CloudBees does also offer a similar solution running on a private
-    cloud).</para>
-    <para>Creating a CloudBees DEV@cloud account is straightforward, and you can
-    use a free one to experiment with the service (note that the free CloudBees
-    service only has a limited set of plugins available; you will need to sign
-    up for the professional version to use the full plugin range). To signup for
-    CloudBees, go to the <ulink
-    url="https://grandcentral.cloudbees.com/account/signup">signup page</ulink>.
-    You will need to enter some relevant information such as a user name, email
-    information, and an account name. Once signed up, you will have access to
-    both DEV@cloud and RUN@cloud (essentially the entire CloudBees platform)
-    services.</para>
-    <para>At this point, you will have to subscribe to the DEV@cloud service.
-    For our purposes, you can get away with simply choosing the “free” option.
-    You will have to wait for a few minutes as CloudBees provisions a Jenkins
-    master for you. The next step is to validate your account (this helps
-    CloudBees prevent dummy accounts from running spurious jobs on the service).
-    Click on the validation link, and enter your phone number. An automated
-    incoming phone call will give your pin; enter the pin on the form. Once this
-    is done, you can start running builds.</para>
-    <para>Your first port of call when you connect will be the management
-    console (called GrandCentral). Click on the “Take me to Jenkins” button to
-    go to your brand new Jenkins master instance.</para>
-    <para>From here, your interaction with DEV@cloud platform is exactly like in
-    a standalone Jenkins. When you can create a new build job, just point to
-    your existing source code repository and hit build. DEV@cloud will provision
-    a slave for you and kick off a build (it may take a minute or two for the
-    slave to be provisioned).</para>
+    <title>Utiliser le service CloudBees DEV@cloud</title>
+    <para>Un autre option que vous pourriez considérer est d'exécuter votre
+    instance Jenkins en utilisant une architecture basée sur le cloud dédiée à
+    Jenkins, comme le service DEV@cloud offert par CloudBees. CloudBees fournit
+    du <emphasis>"Jenkins as a service"</emphasis> et d'autres services de
+    développement variés (comme Sonar) autour de Jenkins. En utilisant un
+    service spécifique dédié à Jenkins, il n'est pas nécessaire d'installer (ou
+    de gérer) des maîtres ou esclaves Jenkins sur vos machines. Une instance
+    maître est automatiquement configurée pour vous, et quand vous donnez une
+    tâche à construire, CloudBees met à disposition un esclave pour vous et le
+    reprend quand la tâche est effectuée.</para>
+    <para>Comment cette approche se compare-t-elle à l'architecture basée sur
+    Amazon EC2 que nous avons présenté dans la section précédente ? L'avantage
+    principal est qu'il y a beaucoup moins de travail à effectuer dans la
+    gestion du matériel de votre architecture d'IC. Utiliser l'infrastructure
+    Amazon EC2 vous évite d'avoir à vous soucier du matériel, mais vous avez
+    encore à configurer et gérer vos images de serveur par vous-même.
+    L'architecture CloudBees DEV@cloud est de plus haut-niveau, un service
+    centré sur l'IC, qui fournit non seulement un serveur Jenkins mais aussi
+    d'autres outils en relation comme des dépôts SVN ou Git, de la gestion
+    utilisateur, et Sonar. En plus, le modèle de tarification (paiement à la
+    minute) est sans doute mieux adapté à une architecture d'IC basée sur le
+    cloud que l'approche par paiement à l'heure utilisée par Amazon.</para>
+    <para>Les services basés sur Amazon EC2 sont souvent, mais pas toujours,
+    utilisé dans un environnement de "cloud hybride" où vous déchargez vos
+    tâches sur le cloud, mais un certaine quantité de vos build restent chez
+    vous. Le service DEV@cloud de CloudBees est une solution de cloud public où
+    le build complet se déroule dans le cloud (bien que CloudBees offre une
+    solution similaire fonctionnant sur un cloud privé).</para>
+    <para>Créer un compte CloudBees DEV@cloud est facile, et vous pouvez en
+    utiliser un gratuit pour expérimenter le service (notez que le service
+    gratuit CloudBees a seulement un nombre limité de plugins disponibles ; vous
+    devrez vous inscrire à la versio professionnelle pour pouvoir utiliser la
+    gamme complète de plugins). Pour créer un compte CloudBees, allez sur la
+    <ulink url="https://grandcentral.cloudbees.com/account/signup">page
+    d'enregistrement</ulink>. Vous devrez entrer quelques informations telles
+    que le nom d'utilisateur, des informations email, et un nom de compte. Une
+    fois enregistré, vous aurez accès à la fois aux services DEV@cloud et
+    RUN@cloud (en résumé la plateforme entière CloudBees).</para>
+    <para>A ce stade, vous devrez souscrire au service DEV@cloud. Pour nos
+    besoins, vous pouvez vous en sortir en choisissant simplement l'option
+    gratuite. Vous devrez attendre quelques minutes que CloudBees mette à
+    disposition un maître Jenkins pour vous. L'étape suivante est de valider
+    votre compte (ceci aide CloudBees à éviter la création de comptes factices
+    de faire tourner des tâches fallacieuses sur le service). Cliquez sur le
+    lien de validation, et entrez votre numéro de téléphone. Un appel entrant
+    automatique vous donnera un code ; entrez le code sur le formulaire. Une
+    fois ceci fait, vous pouvez commencer à exécuter des builds.</para>
+    <para>Votre première escale après connexion sera la console de gestion
+    (appelée GrandCentral). Cliquez sur le bouton “Jenkins Builds” pour vous
+    rendre sur maître Jenkins flambant neuf.</para>
+    <para>A partir de là, votre interaction avec la plateforme DEV@cloud est
+    exactement comme un Jenkins autonome. Quand vous créez une nouvelle tâche de
+    build, pointez simplement sur votre dépôt de code source existant et appuyez
+    sur build repository. DEV@cloud mettra à disposition un esclave pour vous et
+    lancera un build (cela pourrait prendre une minute ou deux pour préparer
+    l'esclave).</para>
   </sect1>
   <?dbfo-need height=”2in”?>
   <sect1 id="sect-distributed-builds-conclusion">
