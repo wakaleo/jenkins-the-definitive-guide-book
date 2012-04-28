@@ -633,36 +633,41 @@
     </sect2>
   </sect1>
   <sect1 id="sect-build-job-ties">
-    <title>Associating a Build Job with a Slave or Group of Slaves</title>
-    <para>In the <indexterm class="startofrange" id="ch11-job1"
+    <title>Associer une tâche de build avec un esclave ou un groupe
+    d'esclaves</title>
+    <para>Dans la <indexterm class="startofrange" id="ch11-job1"
         significance="normal">
-        <primary>distributed builds</primary>
-        <secondary>slave nodes for</secondary>
-        <tertiary>associating with build jobs</tertiary>
+        <primary>builds distribués</primary>
+        <secondary>noeuds esclaves pour</secondary>
+        <tertiary>associer avec des tâches de build</tertiary>
       </indexterm><indexterm class="startofrange" id="ch11-job2"
         significance="normal">
-        <primary>build jobs</primary>
-        <secondary>distributed across build servers</secondary>
-        <tertiary>associating slave nodes to jobs</tertiary>
-      </indexterm>previous section, we saw how you can assign labels to your
-    slave nodes. This is a convenient way to group your slave nodes according to
-    characteristics such as operating system, target environment, database type,
-    or any other criteria that is relevant to your build process. A common
-    application of this practice is to run OS-specific functional tests on
-    dedicated slave nodes, or to reserve a particular machine exclusively to
-    performance tests.</para>
-    <para>Once you have assigned labels to your slave nodes, you also need to
-    tell Jenkins where it can run the build jobs. By default, Jenkins will
-    simply use the first available slave node, which usually results in the best
-    overall turn-around time. If you need to tie a build job to a particular
-    machine or group of machines, you need to tick the “Restrict where this
-    project can be run” checkbox in the build configuration page (see <xref
-    linkend="fig-jenkins-label-expression"/>). Next, enter the name of the
-    machine, or a label identifying a group of machines, into the Label
-    Expression field. Jenkins will provide a dynamic dropdown showing the
-    available machine names and labels as you type.</para>
+        <primary>taĉhes de build</primary>
+        <secondary>distribuées sur les serveurs de build</secondary>
+        <tertiary>associer les noeuds esclaves aux tâches</tertiary>
+      </indexterm>section précédente, nous avons vu comment attribuer des
+    libellés à vos noeuds esclaves. C'est un moyen commode pour grouper vos
+    esclaves en fonction de caractéristiques telles que le système
+    d'exploitation, l'environnement cible, le type de base de données, ou tout
+    autre critère pertinent dans votre processus de build. Une application
+    commune de cette pratique est d'exécuter des tests fonctionnels spécifiques
+    à un OS sur des noeuds esclaves dédiés, ou de réserver une machine
+    particulière aux tests de performance).</para>
+    <para>Une fois que vous avez affecté vos libellés à vos noeuds esclaves,
+    vous devez aussi dire à Jenkins où il peut exécuter les tâches de build. Par
+    défaut, Jenkins utilisera simplement le premier noeud esclave disponible, ce
+    qui offre généralement le meilleur temps de traitement global. Si vous avez
+    besoin d'attacher une tâche de build à une machine ou un groupe de machines
+    particulier, vous devez cocher la case “Resteindre les emplacements où ce
+    projet peut s'exécuter” dans la page de configuration du build (voir <xref
+    linkend="fig-jenkins-label-expression"/>). Ensuite, entrez le nom de la
+    machine, ou un libellé identifiant un groupe de machines, dans le champ
+    Expression de libellé. Jenkins fournira une liste déroulante dynamique
+    montrant les noms de machines et libellés de au fur et à mesure que vous
+    tapez.</para>
     <figure float="0" id="fig-jenkins-label-expression">
-      <title>Running a build job on a particular slave node</title>
+      <title>Exécuter une tâche de build sur un noeud esclave
+      particulier</title>
       <mediaobject id="I_mediaobject11_d1e16531">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1115.pdf" format="PDF"/>
@@ -672,61 +677,67 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This field also accepts boolean expressions, allowing you to define
-    more complicated constraints about where your build job should run. How to
-    use these expressions is best illustrated by an example. Suppose you have a
-    build farm with Windows and Linux slave nodes (identified by the labels
-    “windows” and “linux”), distributed over three sites (“sydney”,
-    “sanfrancisco”, and “london”). Your application also needs to be tested
-    against several different databases (“oracle”, “db2”, “mysql”, and
-    “postgres”). You also use labels to distinguish slave nodes used to deploy
-    to different environments (test, uat, production).</para>
-    <para>The simplest use of label expressions is to determine where a build
-    job can or cannot be executed. If your web tests require Internet Explorer,
-    for example, you will need them to run on a Windows machine. You could
-    express this by simply quoting the corresponding label:</para>
+    <para>Ce champ admet aussi des expressions booléennes, ce qui vous permet de
+    définir des contraintes plus compliquées spécifiant où votre build devrait
+    s'exécuter. Le plus simple pour expliquer comment utiliser ces expressions
+    est de montrer des exemples. Supposez que vous avez une ferme de
+    construction avec des noeuds esclaves Windows et Linux (identifiés par les
+    libellés “windows” et “linux”), distribués sur trois sites (“sydney”,
+    “sanfrancisco”, et “london”). Votre application nécessite aussi d'être
+    testée sur différentes bases de données (“oracle”, “db2”, “mysql”, et
+    “postgres”). Vous pouvez aussi utiliser des libellés pour distinguer les
+    noeuds esclaves utilisés pour déployer vers différents environnements (test,
+    test d'acceptation, production).</para>
+    <para>L'utilisation la plus simple des expressions de libellés est de
+    définir où une tâche de build peut ou ne pas être exécutée. Si vos tests web
+    nécessitent Internet Explorer, par exemple, vous aurez besoin de les
+    exécuter sur une machine Windows. Vous pourriez exprimer cela en indiquant
+    simplement le libellé suivant :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16540">windows</programlisting>
-    <para>Alternatively, you might want to run tests against Firefox, but only
-    on Linux machines. You could exclude Windows machines from the range of
-    candidate build nodes by using the <literal moreinfo="none">!</literal>
-    negation operator:</para>
+    <para>Sinon, vous pourriez vouloir exécuter vos tests sur Firefox, mais
+    seulement sur des machines Linux. Vous pourriez exclure les machines Windows
+    de l'éventails des noeuds candidats en utilisant l'opérateur ! :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16547">!windows</programlisting>
-    <para>You can also use the <command moreinfo="none">and</command> (<literal
-    moreinfo="none">&amp;&amp;</literal>) and <command
-    moreinfo="none">or</command> (<literal moreinfo="none">!!</literal>)
-    operators to combine expressions. For example, suppose the Postgres database
-    is only tested for Linux. You could tell Jenkins to run a particular build
-    job only on Linux machines installed with postgres using the following
-    expression:</para>
+    <para>Vous pouvez aussi utiliser les opérateurs <command
+    moreinfo="none">et</command> (<literal moreinfo="none">&amp;&amp;</literal>)
+    et <command moreinfo="none">ou</command> (<literal
+    moreinfo="none">!!</literal>) pour combiner les expressions. Par exemple,
+    supposez que la base Postgres soit testement uniquement pour Linux. Vous
+    pourriez dire à Jenkins d'exécuter une tâche de build particulière seulement
+    sur les machines Linux sur lesquelles est installé Postgres en utilisant
+    l'expression suivante :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16563">linux &amp;&amp; postgres</programlisting>
-    <para>Or you could specify that a particular build job is only to be run on
-    a UAT environment in Sydney or London:</para>
+    <para>Ou vous pourriez spécifier qu'une tâche de build particulière doit
+    uniquement tourner sur l'environnement de test d'acceptation utilisateur de
+    Sydney ou Londres :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16568">uat &amp;&amp; (sydney || london)</programlisting>
-    <para>If your machine names contain spaces, you will need to enclose them in
-    double quotes:</para>
+    <para>Si votre nom de machine contient des espaces, vous devrez les entourer
+    de double quotes :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16572">"Windows 7" || "Windows XP"</programlisting>
-    <para>There are also two more advanced logical operators that you may find
-    useful. The <command moreinfo="none">implies</command> operator (<literal
-    moreinfo="none">=&gt;</literal>) lets you define a logical constraint of the
-    form “if A is true, then B must also be true.” For example, suppose you have
-    a build job that can run on any Linux distribution, but if it is executed on
-    a Windows box, it must be Windows 7. You could express this constraint as
-    follows:</para>
+    <para>Il y a aussi deux opérateurs logiques plus avancés que vous pourriez
+    trouver utile. L'opérateur <command moreinfo="none">implique</command>
+    (<literal moreinfo="none">=&gt;</literal>) vous permet de définir une
+    contrainte logique de la forme “si A est vrai, alors B doit aussi être
+    vrai.” Par exemple, supposez que vous ayez une tâche de build qui peut
+    s'exécuter sur n'importe quelle distribution Linux, mais que si c'est une
+    machine Windows, ce doit être Windows 7. Vous pourriez exprimer cette
+    contrainte comme suit :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16582">windows -&gt; "Windows 7"</programlisting>
-    <para>The other logical operator is the <command
-    moreinfo="none">if-and-only-if</command> (<literal
-    moreinfo="none">&lt;=&gt;</literal>) operator. This operation lets you
-    define stronger constraints of the form “If A is true, then B must be true,
-    but if A is false, then B must be false.” For example, suppose that Windows
-    7 tests are only to be run in a UAT environment, and that only Windows 7
-    tests are to be run in the UAT environment. You could express this as
-    <indexterm class="endofrange" id="I_indexterm11_d1e16592"
-        significance="normal" startref="ch11-job1">
+    <para>L'autre opérateur logique est l'opérateur <command
+    moreinfo="none">si-et-seulement-si</command> (<literal
+    moreinfo="none">&lt;=&gt;</literal>. Cette opération vous permet de définir
+    des contraintes plus fortes de la forme "Si A est vrai, alors B doit être
+    vrai, mais si A est faux, alors B doit être faux". Par exemple, supposez que
+    les tests Windows 7 doivent uniquement être exécutés sur l'environnement de
+    tests d'acceptation utilisateur, et que seuls les tests Windows 7 doivent
+    être exécutés dans l'environnement de tests d'acceptation. Vous pourriez
+    exprimer cela comme <indexterm class="endofrange"
+        id="I_indexterm11_d1e16592" significance="normal" startref="ch11-job1">
         <primary/>
       </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16594"
         significance="normal" startref="ch11-job2">
         <primary/>
-      </indexterm>shown here:</para>
+      </indexterm>montré ici :</para>
     <programlisting format="linespecific" id="I_programlisting11_d1e16597">"Windows 7" &lt;-&gt; uat</programlisting>
   </sect1>
   <sect1 id="node-monitoring">
