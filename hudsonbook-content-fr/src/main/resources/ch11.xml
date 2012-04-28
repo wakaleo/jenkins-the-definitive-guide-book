@@ -91,30 +91,32 @@
       </indexterm>chapitre.</para>
   </sect1>
   <sect1 id="sect-master-slave-strategies">
-    <title>Master/Slave Strategies in Jenkins</title>
-    <para>There are a number of different ways that you can configure set up a
-    distributed build farm using Jenkins, depending on your operating systems
-    and network architecture. In all cases, the fact that a build job is being
-    run on a slave, and how that slave is managed, is transparent for the
-    end-user: the build results and artifacts will always end up on the master
-    server.</para>
-    <para>Creating<indexterm id="I_indexterm11_d1e16084" significance="normal">
-        <primary>build jobs</primary>
-        <secondary>distributed across build servers</secondary>
-        <tertiary>creating slave nodes</tertiary>
+    <title>Stratégies Maître/Esclave dans Jenkins</title>
+    <para>Il existe différentes façons de configurer une ferme de build
+    distribuée avec Jenkins, en fonction de votre système d'exploitation et de
+    votre architecture réseau. Dans tous les cas, le fait qu'une tâche de build
+    s'exécute sur un esclave, et comment cet esclave s'exécute, est transparent
+    pour l'utilisateur final : les résultats du build et les artefacts finiront
+    toujours sur le serveur maître.</para>
+    <para>Créer un nouveau<indexterm id="I_indexterm11_d1e16084"
+        significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>distribuées parmi des serveurs de build</secondary>
+        <tertiary>créer des noeuds esclaves</tertiary>
       </indexterm><indexterm id="I_indexterm11_d1e16091" significance="normal">
-        <primary>distributed builds</primary>
-        <secondary>slave nodes for</secondary>
-        <tertiary>creating</tertiary>
-      </indexterm> a new Jenkins slave node is a straightforward process. First,
-    go to the Manage Jenkins screen and click on Manage Nodes. This screen
-    displays the list of slave agents (also known as “Nodes” in more politically
-    correct terms), shown in <xref linkend="fig-jenkins-manage-nodes"/>. From
-    here, you can set up new nodes by clicking on the New Node button. You can
-    also configure some of the parameters related to your distributed build
-    setup (see <xref linkend="node-monitoring"/>).</para>
+        <primary>builds distribués</primary>
+        <secondary>noeuds esclaves pour</secondary>
+        <tertiary>créer</tertiary>
+      </indexterm> noeud esclave Jenkins est un processus simple. Premièrement,
+    rendez vous dans l'écran Administrer Jenkins et cliquez sur Gérer les
+    noeuds. Cet écran affiche la liste des agents esclaves (aussi connus en tant
+    que “Noeuds” en termes plus politiquement corrects), comme montré dans <xref
+    linkend="fig-jenkins-manage-nodes"/>. A partir de là, vous pouvez configurer
+    de nouveaux noeuds en cliquant sur le bouton Nouveau Noeud. Vous pouvez
+    aussi configurer quelques-uns des paramètres liés à votre installation de
+    build distribuée (see <xref linkend="node-monitoring"/>).</para>
     <figure float="none" id="fig-jenkins-manage-nodes">
-      <title>Managing slave nodes</title>
+      <title>Gérer les noeuds esclaves</title>
       <mediaobject id="I_mediaobject11_d1e16106">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1101.pdf" format="PDF"/>
@@ -124,29 +126,31 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>There are several different strategies when it comes to managing
-    Jenkins slave nodes, depending on your target operating systems and other
-    architectural considerations. These strategies affect the way you configure
-    your slave nodes, so we need to consider them separately. In the following
-    sections, we will look at the most frequently used ways to install and
-    configure Jenkins slaves:</para>
+    <para>Il y a plusieurs stratégies différentes lorsqu'il s'agit de gérer les
+    noeuds esclaves Jenkins, en fonction de vos systèmes d'exploitation cibles
+    et d'autres considérations architecturales. Ces stratégies affectent la
+    façon dont vous configurez vos noeuds esclaves, nous devons donc les
+    considérer séparément. Dans les sections suivantes, nous regarderons les
+    façons les plus fréquemment utilisées d'installer et de configurer des
+    esclaves Jenkins :</para>
     <itemizedlist>
       <listitem>
-        <para>The master starts the slave agents via ssh</para>
+        <para>Le maître démarre l'agent esclave via ssh</para>
       </listitem>
       <listitem>
-        <para>Starting the slave agent manually using Java Web Start</para>
+        <para>Démarrage de l'agent esclave manuellement en utilisant Java Web
+        Start</para>
       </listitem>
       <listitem>
-        <para>Installing the slave agent as a Window service</para>
+        <para>Installation de l'agent esclave en tant que service Windows</para>
       </listitem>
       <listitem>
-        <para>Starting the slave agent directly from the command line on the
-        slave machine from the command line</para>
+        <para>Démarrage de l'agent esclave directement depuis la ligne de
+        commande sur la machine esclave</para>
       </listitem>
     </itemizedlist>
-    <para>Each of these strategies has its uses, advantages, and inconveniences.
-    Let’s look at each in turn.</para>
+    <para>Chacune de ces stratégies possède ses utilisations, ses avantages et
+    ses inconvénients. Regardons chacune d'entre elles.</para>
     <sect2>
       <title>The Master Starts the Slave Agent Using SSH</title>
       <para>If you <indexterm class="startofrange" id="ch11-start"
