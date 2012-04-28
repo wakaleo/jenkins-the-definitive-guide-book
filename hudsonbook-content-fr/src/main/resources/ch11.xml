@@ -152,34 +152,36 @@
     <para>Chacune de ces stratégies possède ses utilisations, ses avantages et
     ses inconvénients. Regardons chacune d'entre elles.</para>
     <sect2>
-      <title>The Master Starts the Slave Agent Using SSH</title>
-      <para>If you <indexterm class="startofrange" id="ch11-start"
+      <title>Le Maître Démarre l'Agent Esclave en utilisant SSH</title>
+      <para>Si vous <indexterm class="startofrange" id="ch11-start"
           significance="normal">
-          <primary>build jobs</primary>
-          <secondary>distributed across build servers</secondary>
-          <tertiary>starting slave nodes</tertiary>
+          <primary>tâches de build</primary>
+          <secondary>distribuées parmi des serveurs de build</secondary>
+          <tertiary>démarrer des noeuds esclaves</tertiary>
         </indexterm><indexterm class="startofrange" id="ch11-ssh"
           significance="normal">
-          <primary>distributed builds</primary>
-          <secondary>slave nodes for</secondary>
-          <tertiary>starting using SSH</tertiary>
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>démarrer en utilisant SSH</tertiary>
         </indexterm><indexterm class="startofrange" id="ch11-ssh2"
           significance="normal">
-          <primary>SSH, starting slave node using</primary>
-        </indexterm>are working in a Unix environment, the most convenient way
-      to start a Jenkins slave is undoubtedly to use SSH. Jenkins has its own
-      build-in SSH client, and almost all Unix environments support SSH (usually
-      <literal moreinfo="none">sshd</literal>) out of the box.</para>
-      <para>To create a Unix-based slave, click on the New Node button as we
-      mentioned above. This will prompt you to enter the name of your slave, and
-      its type (see <xref linkend="fig-jenkins-new-slave"/>). At the time of
-      writing, only “dumb slaves” are supported out of the box; “dumb” slaves
-      are passive beasts, that simply respond to build job requests from the
-      master node. This is the most common way to set up a distributed build
-      architecture, and the only option available in a default
-      installation.</para>
+          <primary>SSH, démarrer un noeud esclave en utilisant</primary>
+        </indexterm>travaillez dans un environnement Unix, la façon la plus
+      pratique de démarrer un esclave Jenkins est sans aucun doute d'utiliser
+      SSH. Jenkins possède son propre client SSH intégré, et presque tous les
+      environnements Unix supportent SSH (habituellement <literal
+      moreinfo="none">sshd</literal>) de base.</para>
+      <para>Pour créer un esclave de type Unix, cliquez sur le bouton Nouveau
+      Noeud comme nous l'avons mentionné ci-dessus. Cela vous demande d'entrer
+      le nom de votre esclave, et son type (voir <xref
+      linkend="fig-jenkins-new-slave"/>). Au moment de l'écriture de ces lignes,
+      seuls les “esclaves passifs” sont supportés en standard ; ces esclaves
+      répondent simplement aux requêtes de build en provenance du noeud maître.
+      C'est la façon la plus commune de mettre en place une architecture de
+      build distribuée, et c'est la seule option disponible dans une
+      installation par défaut.</para>
       <figure float="none" id="fig-jenkins-new-slave">
-        <title>Creating a new slave node</title>
+        <title>Créer un nouveau noeud esclave</title>
         <mediaobject id="I_mediaobject11_d1e16161">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1102.pdf" format="PDF"/>
@@ -189,12 +191,12 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>In this screen, you simply need to provide a name for your slave.
-      When you click on OK, Jenkins will let you provide more specific details
-      about your slave machine (see <xref
+      <para>Dans cet écran, vous devez simplement fournir un nom pour votre
+      esclave. Lorsque vous cliquez sur OK, Jenkins vous permet de fournir plus
+      de détails sur vos machines esclaves (voir <xref
       linkend="fig-jenkins-slave-ssh"/>).</para>
       <figure float="0" id="fig-jenkins-slave-ssh">
-        <title>Creating a Unix slave node</title>
+        <title>Créer un noeud esclave Unix</title>
         <mediaobject id="I_mediaobject11_d1e16173">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1103.pdf" format="PDF"/>
@@ -204,67 +206,75 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>The name is simply a unique way of identifying your slave machine.
-      It can be anything, but it may help if the name reminds you of the
-      physical machine it is running on. It also helps if the name is
-      file-system and URL-friendly. It will work with spaces, but you will make
-      life easier for yourself if you avoid them. So “Slave-1” is better than
-      “Slave 1”.</para>
-      <para>The description is also purely for human consumption, and can be
-      used to indicate why you would use this slave rather than another.</para>
-      <para>Like on the main Jenkins configuration screen, the number of
-      executors lets you define how many concurrent build job this node can
-      execute.</para>
-      <para>Every Jenkins slave node also needs a place that it can call home,
-      or, more precisely, a dedicated directory on the slave machine that the
-      slave agent can use to run build jobs. You define this directory in the
-      Remote FS root field. You need to provide a local, OS-specific path, such
-      as <filename moreinfo="none">/var/jenkins</filename> for a Unix machine,
-      or <filename moreinfo="none">C:\jenkins</filename> on Windows. Nothing
-      mission-critical is stored in this directory—everything important is
-      transferred back to the master machine once the build is done. So you
-      usually don’t need to be so concerned with backing up these directories as
-      you should be with the master.</para>
-      <para>Labels are a particularly useful concept when your distributed build
-      architecture begins to grow in size. You can define labels, or tags, to
-      each build node, and then configure a build job to run only on a slave
-      node with a particular label. Labels might relate to operating systems
-      (unix, windows, macosx, etc.), environments (staging, UAT, development,
-      etc.) or any criteria that you find useful. For example, you could
-      configure your automated WebDriver/Selenium tests to run using Internet
-      Explorer, but only on slave nodes with the “windows” label.</para>
-      <para>The Usage field lets you configure how intensively Jenkins will use
-      this slave. You have the choice of three options: use it as much as
-      possible, reserve it for dedicated build jobs, or bring it online as
-      required.</para>
-      <para>The first option, “Utilize this slave as much as possible”, tells
-      Jenkins to use this slave freely as soon as it becomes available, for any
-      build job that it can run. This is by far the most commonly used one, and
-      is generally what you want.</para>
-      <para>There are times, however, when this second option comes in handy. In
-      the project configuration, you can tie a build job to a specific node—this
-      is useful when a particular task, such as automated deployment or a
-      performance test suite, needs to be executed on a specific machine. In
-      this case, the “Leave this machine for tied jobs only” option makes good
-      sense. You can take this further by setting the maximum number of
-      Executors to 1. In this case, not only will this slave be reserved for a
-      particular type of job, but it will only ever be able to run one of these
-      build jobs at any one time. This is a very useful configuration for
-      performance and load tests, where you need to reserve the machine so that
-      it can execute its tests without interference.</para>
-      <para>The third option is “Take this slave on-line when in demand and
-      off-line when idle” (see <xref linkend="fig-jenkins-slave-idle"/>). As the
-      name indicates, this option tells Jenkins to bring this slave online when
-      demand is high, and to take it offline when demand subsides. This lets you
-      keep some build slaves in reserve for periods of heavy use, without having
-      to maintain a slave agent running on them permanently. When you choose
-      this option, you also need to provide some extra details. The “In demand
-      delay” indicates how many minutes jobs must have been waiting in the queue
-      before this slave will be brought online. The Idle delay indicates how
-      long the slave needs to be idle before Jenkins will take it
-      off-line.</para>
+      <para>Ce nom est simplement un moyen unique pour identifier votre machine
+      esclave. Ce peut être n'importe quoi, mais il pourrait être utile que ce
+      nom vous rappelle la machine physique sur laquelle cela fonctionne. Il est
+      aussi utile que ce nom soit compatible avec le système de fichiers et un
+      format URL. Les espaces sont autorisés, mais cela vous facilitera la vie
+      de les éviter. Ainsi, “Slave-1” est meilleur que “Slave 1”.</para>
+      <para>La description est aussi purement destinée à la lecture humaine, et
+      peut être utilisée pour indiquer pourquoi utiliser cet esclave plutôt
+      qu'un autre.</para>
+      <para>Comme sur l'écran principal de configuration Jenkins, le nombre
+      d'exécuteurs vous permet de définir le nombre de tâches de build
+      concurrentes que ce noeud peut exécuter.</para>
+      <para>Tout noeud esclave Jenkins nécessite aussi un emplacement qu'il
+      puisse utiliser comme racine, ou, plus précisément un répertoire dédié sur
+      la machine esclave que l'agent esclave puisse utiliser pour exécuter des
+      tâches de build. Vous définissez ce répertoire dans le champ racine du
+      disque distant. Vous devez fournir un chemin local, spécifique à l'OS, tel
+      que <filename moreinfo="none">/var/jenkins</filename> pour une machine
+      Unix ou <filename moreinfo="none">C:\jenkins</filename> sur Windows. Rien
+      d'essentiel n'est stocké dans ce répertoire — tout ce qui est important
+      est renvoyé à la machine maître une fois que le build est effectué. Vous
+      n'avez donc généralement pas besoin de vous inquiéter de sauvegarder ces
+      répertoires comme c'est le cas avec ceux du maître.</para>
+      <para>Les libellés sont un concept particulièrement utile quand votre
+      architecture distribuée commence à grossir. Vous définissez des libellés,
+      des tags, pour chaque noeud de build, et configurez ensuite une tâche de
+      build afin qu'elle s'exécute avec un libellé particulier. Les libellés
+      peuvent avoir trait au système d'exploitation (unix, windows, macosx,
+      etc.), aux environnements (staging, recette, développement, etc.) ou
+      n'importe quel critère que vous trouveriez utile. Par exemple, vous pouvez
+      configurer vos tests automatisés WebDriver/Selenium pour qu'ils
+      s'exécutent avec Internet Explorer, mais seulement sur des noeuds esclaves
+      avec le libellé “windows”.</para>
+      <para>Le champ <emphasis>Usage</emphasis> vous permet de configurer
+      l'intensité avec laquelle Jenkins utilisera cet esclave. Vous avez le
+      choix parmi trois options : utiliser cet esclave autant que possible,
+      réserver pour les tâches de build dédiées, ou le mettre en ligne quand
+      c'est nécessaire.</para>
+      <para>La première option “Utiliser cet esclave autant que possible”,
+      indique à Jenkins d'utiliser librement cet esclave dès qu'il devient
+      disponible, pour toute tâche qu'il peut exécuter. C'est de loin l'option
+      la plus utilisée, et généralement celle que vous voulez.</para>
+      <para>Quelques fois, cependant, la seconde option peut s'avérer utile.
+      Dans la configuration du projet, vous pouvez lier une tâche de build à un
+      noeud spécifique — c'est utile quand une tâche particulière, comme un
+      déploiement automatisé ou une suite de tests de performance, nécessite
+      d'être exécutée sur une machine spécifique. Dans ce cas, l'option
+      “Réserver cette machine pour les tâches associées uniquement” peut avoir
+      du sens. Vous pouvez aller encore plus loin en positionnant le nombre
+      maximum d'Exécuteurs à 1. Dans ce cas, non seulement cet esclave sera
+      réservé pour un type particulier de tâche, mais il sera uniquement capable
+      d'exécuter une seule de ces tâches de build à tout instant time. C'est une
+      configuration très utile pour les tests de performance ou de charge, où
+      vous avez besoin de réserver la machine pour qu'elle exécute ses tests
+      sans interférence.</para>
+      <para>La troisième option est “Mettre cet esclave en ligne lors de demande
+      et hors-ligne sinon” (voir <xref linkend="fig-jenkins-slave-idle"/>).
+      Comme le nom l'indique, cette option indique à Jenkins de mettre cet
+      esclave en ligne lorsque la demande est élevée et de le mettre hors-ligne
+      lors la demande faiblit. Ceci permet de garder quelques esclaves de build
+      pour les périodes d'utilisation importante, sans avoir à maintenir un
+      agent esclave en fonctionnement sur en permanence. Quand vous choisissez
+      cette option, vous devez aussi fournir quelques détails supplémentaires.
+      Le “Délai de la demande” indique combien de minutes les tâches doivent
+      avoir attendu dans la file d'attente avant que cet esclave ne soit mis en
+      ligne. Le champ Délai d'inactivité indique combien de temps l'esclave doit
+      avoir été inactif avant que Jenkins ne le mette hors-ligne.</para>
       <figure float="none" id="fig-jenkins-slave-idle">
-        <title>Taking a slave off-line when idle</title>
+        <title>Mettre un esclave hors-ligne lorsqu'inactif</title>
         <mediaobject id="I_mediaobject11_d1e16208">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1104.pdf" format="PDF"/>
@@ -274,39 +284,43 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>The launch method is where you decide how Jenkins will start the
-      node, as we mentioned earlier. For the configuration we are discussing
-      here, you would choose “Launch slave agents on Unix machines via SSH”. The
-      Advanced button lets you enter the additional details that Jenkins needs
-      to connect to the Unix slave machine: a host name, a login and password,
-      and a port number. You can also provide a path to the SSH private key file
-      on the master machine (e.g., <literal moreinfo="none">id_dsa</literal> or
-      <literal moreinfo="none">id_rsa</literal>) to use for “password-less”
-      Public/Private Key authentication.</para>
-      <para>You can also configure when Jenkins starts and stops the slave. By
-      default, Jenkins will simply keep the slave running and use it whenever
-      required (the “Keep this slave on-line as much as possible” option). If
-      Jenkins notices that the slave has gone offline (for example due to a
-      server reboot), it will attempt to restart it if it can. Alternatively,
-      Jenkins can be more conservative with your system resources, and take the
-      slave offline when it doesn’t need it. To do this, simply choose the “Take
-      this slave on-line when in demand and off-line when idle” option. This is
-      useful if you have regular spikes and lulls of build activity, as an
-      unused slave can be taken offline to conserve system resources for other
-      tasks, and brought back online when required.</para>
-      <para>Jenkins also needs to know where it can find the build tools it
-      needs for your build jobs on the slave machines. This includes JDKs as
-      well as build tools such as Maven, Ant, and Gradle. If you have configured
-      your build tools to be automatically installed, you will usually have no
-      extra configuration to do for your slave machines; Jenkins will download
-      and install the tools as required. On the other hand, if your build tools
-      are installed locally on the slave machine, you will need to tell Jenkins
-      where it can find them. You do this by ticking the Tool Locations
-      checkbox, and providing the local paths for each of the tools you will
-      need for your build jobs (see <xref
+      <para>La méthode de lancement décide de comment Jenkins lancera le noeud,
+      comme nous l'avons mentionné précédemment. Pour la configuration dont nous
+      parlons ici, vous choisiriez “Lancer les agents esclaves sur machines Unix
+      via SSH”. Le bouton Avancé vous permet d'entrer des détails additionels
+      dont Jenkins a besoin pour se connecter à la machine esclave Unix : un nom
+      d'hôte, un login et mot de passe et un numéro de port. Vous pouvez aussi
+      fournir un chemin vers un fichier de clé privée SSH sur la machine maître
+      (e.g., <literal moreinfo="none">id_dsa</literal> ou <literal
+      moreinfo="none">id_rsa</literal>) à utiliser pour une authentification
+      “sans mot de passe” par clés Publique/Privée.</para>
+      <para>Vous pouvez aussi configurer quand Jenkins démarre ou arrête
+      l'esclave. Par défaut, Jenkins gardera simplement l'esclave en
+      fonctionnement et l'utilisera chaque fois qu'il en aura besoin (l'option
+      “Garder cet esclave en ligne autant que possible”). Si Jenkins remarque
+      que l'esclave est déconnecté (par exemple à cause d'un redémarrage
+      serveur), il essaiera de le redémarrer s'il le peut. Sinon, Jenkins peut
+      être plus conservateur avec vos ressources systèmes, et mettre l'esclave
+      hors-ligne lorsqu'il n'en a pas besoin. Pour faire cela, choisissez
+      simplement l'option “Mettre cet esclave en ligne si nécessaire et
+      hors-ligne en cas d'inactivité”. C'est utile si vous avez régulièrement
+      des pics et accalmies de l'activité de build, car un esclave peut être mis
+      hors-ligne pour conserver les ressources systèmes pour d'autres tâches, et
+      remis en ligne lorsque c'est nécessaire.</para>
+      <para>Jenkins a aussi besoin de savoir où il peut trouver les outils de
+      build dont il a besoin pour vos tâches de build sur les machines esclaves.
+      Ceci inclut aussi bien les JDKs que les outils de build comme Maven, Ant,
+      et Gradle. Si vous avez configuré vos outils de build pour être
+      automatiquement installés, vous n'aurez typiquement pas de configuration
+      supplémentaire à effectuer pour vos machines esclaves ; Jenkins
+      téléchargera et installera les outils au besoin. D'un autre côté, si vos
+      outils de build sont installés localement sur la machine esclave, vous
+      aurez besoin d'indiquer à Jenkins où il peut les trouver. Ceci se fait en
+      cochant la case Emplacement des outils, et en fournissant les chemins
+      locaux pour chaque outil nécessaire à vos tâches de build (voir <xref
       linkend="fig-jenkins-slave-node-tools"/>).</para>
       <figure float="none" id="fig-jenkins-slave-node-tools">
-        <title>Configuring tool locations</title>
+        <title>Configurer l'emplacement des outils</title>
         <mediaobject id="I_mediaobject11_d1e16230">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1105.pdf" format="PDF"/>
@@ -316,19 +330,21 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>You can also specify environment variables. These will be passed
-      into your build jobs, and can be a good way to allow your build jobs to
-      behave differently depending on where they are being executed.</para>
-      <para>Once you have done this, your new slave node will appear in the list
-      of computers on the Jenkins Nodes <indexterm class="endofrange"
-          id="I_indexterm11_d1e16239" significance="normal" startref="ch11-ssh">
+      <para>Vous pouvez aussi spécifier des variables d'environnement. Celles-ci
+      seront passées à vos tâches de build, et ce peut être un moyen de
+      permettre à vos tâches de se comporter différemment en fonction de
+      l'endroit où elles s'exécutent.</para>
+      <para>Une fois que vous avez fait cela, votre nouveau noeud esclave
+      apparaîtra dans la liste des ordinateurs sur la page des Noeuds Jenkins
+      <indexterm class="endofrange" id="I_indexterm11_d1e16239"
+          significance="normal" startref="ch11-ssh">
           <primary/>
         </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16241"
           significance="normal" startref="ch11-ssh2">
           <primary/>
-        </indexterm>page (see <xref linkend="fig-jenkins-slave-nodes"/>).</para>
+        </indexterm> (voir <xref linkend="fig-jenkins-slave-nodes"/>).</para>
       <figure float="0" id="fig-jenkins-slave-nodes">
-        <title>Your new slave node in action</title>
+        <title>Votre nouveau noeud esclave en action</title>
         <mediaobject id="I_mediaobject11_d1e16250">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1106.pdf" format="PDF"/>
