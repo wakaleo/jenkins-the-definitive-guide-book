@@ -1,71 +1,122 @@
-<?xml version="1.0"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-distributed-builds">
-  <title>Distributed Builds</title>
+  <title>Builds distribués</title>
   <sect1 id="sect-distributed-builds-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch11-dist1" significance="normal"><primary>distributed builds</primary></indexterm><indexterm class="startofrange" id="ch11-dist2" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary></indexterm><indexterm id="I_indexterm11_d1e16025" significance="normal"><primary>build server</primary><secondary>multiple, running builds on</secondary><see>distributed builds</see></indexterm>Arguably one of the more powerful features of Jenkins is its
-    ability to dispatch build jobs across a large number of machines. It is
-    quite easy to set up a farm of build servers, either to share the load
-    across multiple machines, or to run build jobs in different environments.
-    This is a very effective strategy which can potentially increase the
-    capacity of your CI infrastructure dramatically.</para>
-    <para>Distributed builds are generally used either to absorb extra load,
-    for example absorbing spikes in build activity by dynamically adding extra
-    machines as required, or to run specialized build jobs in specific
-    operating systems or environments. For example, you may need to run
-    particular build jobs on a particular machine or operating system. For
-    example, if you need to run web tests using Internet Explorer, you will
-    need to be use a Windows machine. Or one of your build jobs may be
-    particularly resource-heavy, and need to be run on its own dedicated
-    machine so as not to penalize your other build jobs.</para>
-    <para>Demand for build servers can also fluctuate over time. If you are
-    working with product release cycles, you may need to run a much higher
-    number of builds jobs towards the end of the cycle, for example, when more
-    comprehensive functional and regression test suites may be more
-    frequent.</para>
-    <para>In this chapter, we will discuss how to set up and manage a farm of
-    build servers using Jenkins.</para>
+    <para><indexterm class="startofrange" id="ch11-dist1" significance="normal">
+        <primary>distributed builds</primary>
+      </indexterm><indexterm class="startofrange" id="ch11-dist2"
+        significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>distribuées parmi des serveurs de build</secondary>
+      </indexterm><indexterm id="I_indexterm11_d1e16025" significance="normal">
+        <primary>serveur de build</primary>
+        <secondary>multiples, exécution des builds sur</secondary>
+        <see>builds distribués</see>
+      </indexterm>L'une des fonctionnalités les plus puissantes de Jenkins est
+    sans aucun doute sa capacité à répartir les tâches de build sur un large
+    nombre de machines. Il est assez simple de configurer une ferme de serveurs
+    de build, soit pour répartir la charge sur de multiples machines, soit pour
+    exécuter des tâches de build dans différents environnements. C'est une
+    stratégie très efficace qui peut potentiellement accroître considérablement
+    la capacité de votre infrastructure d'IC.</para>
+    <para>Les builds distribués sont généralement utilisés soit pour absorber
+    une charge additionnelle, par exemple pour absorber les pics d'activité dans
+    les builds en ajoutant dynamiquement des machines supplémentaires selon les
+    besoins, soit pour exécuter des tâches de build spécialisées dans des
+    systèmes d'exploitation ou des environnements spécifiques. Par exemple, vous
+    pourriez avoir besoin d'exécuter une tâche de build spéciale sur une machine
+    ou un système d'exploitation particulier. Si vous avez besoin d'exécuter des
+    tests web en utilisant Internet Explorer, vous devrez utiliser une machine
+    Windows. Ou alors une de vos tâches de build pourrait être particulièrement
+    consommatrice en ressources, et nécessiter de l'exécuter sur une machine
+    dédiée afin de ne pas pénaliser d'autres tâches de build.</para>
+    <para>La demande sur des serveurs de build peut aussi fluctuer dans le
+    temps. Si vous travaillez avec des cycles de release de produit, vous pouvez
+    avoir besoin de beaucoup plus de tâches de build en fin de cycle, par
+    exemple, lorsque des tests fonctionnels ou de régression plus complets
+    deviennent plus fréquents.</para>
+    <para>Dans ce chapitre, nous discuterons de comment configurer et gérer une
+    ferme de serveurs de build en utilisant Jenkins.</para>
   </sect1>
   <sect1 id="sect-distributed-build-architecture">
-    <title>The Jenkins Distributed Build Architecture</title>
-    <para>Jenkins<indexterm class="startofrange" id="ch11-ms1" significance="normal"><primary>distributed builds</primary><secondary>master/slave architecture for</secondary></indexterm><indexterm class="startofrange" id="ch11-ms2" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>master/slave architecture for</tertiary></indexterm><indexterm class="startofrange" id="ch11-ms3" significance="normal"><primary>master/slave architecture for distributed builds</primary></indexterm><indexterm class="startofrange" id="ch11-ms4" significance="normal"><primary>slave machines</primary><secondary sortas="distributed builds">for distributed
-        builds</secondary></indexterm> uses a master/slave architecture to manage distributed
-    builds. Your main <phrase role="keep-together">Jenkins</phrase> server
-    (the one we have been using up until present) is the master. In a
-    nutshell, the master’s job is to handle scheduling build jobs, dispatching
-    builds to the slaves for the actual execution, monitor the slaves
-    (possibly taking them online and offline as required) and recording and
-    presenting the build results. Even in a distributed architecture, a master
-    instance of Jenkins can also execute build jobs directly.</para>
-    <para>The job of the slaves is to do as they are told, which involves
-    executing build jobs dispatched by the master. You can configure a project
-    to always run on a particular slave machine, or a particular type of slave
-    machine, or simply let Jenkins pick the next available slave.</para>
-    <para>A slave is a small Java executable that runs on a remote machine and
-    listens for requests from the Jenkins master instance. Slaves can (and
-    usually do) run on a variety of operating systems. The slave instance can
-    be started in a number of different ways, depending on the operating
-    system and network architecture. Once the slave instance is running, it
-    communicates with the master instance over a TCP/IP connection. We will
-    look at different setups in the rest of this <indexterm id="I_indexterm11_d1e16072" class="endofrange" startref="ch11-dist1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16074" class="endofrange" startref="ch11-dist2" significance="normal"><primary/></indexterm>chapter.</para>
+    <title>L'Architecture de build distribuée de Jenkins</title>
+    <para>Jenkins<indexterm class="startofrange" id="ch11-ms1"
+        significance="normal">
+        <primary>builds distribués</primary>
+        <secondary>architecture maître/esclave pour</secondary>
+      </indexterm><indexterm class="startofrange" id="ch11-ms2"
+        significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>serveurs de build distribué parmi</secondary>
+        <tertiary>architecture maître/esclave pour</tertiary>
+      </indexterm><indexterm class="startofrange" id="ch11-ms3"
+        significance="normal">
+        <primary>architecture maître/esclave pour les builds
+        distribués</primary>
+      </indexterm><indexterm class="startofrange" id="ch11-ms4"
+        significance="normal">
+        <primary>lmachine esclave</primary>
+        <secondary sortas="distributed builds">pour les builds
+        distribués</secondary>
+      </indexterm> utilise une architecture maître/esclave pour gérer les builds
+    distribués. Votre serveur Jenkins principal (celui que nous avons utilisé
+    jusqu'à présent) est le maître. En un mot, le rôle du maître est de gérer
+    l'ordonnancement des tâches de build, de répartir les builds sur les
+    esclaves pour leur exécution réelle, surveiller les esclaves (en les mettant
+    éventuellement hors-ligne si nécessaire) et enfin enregistrer et présenter
+    les résultats de build. Même dans une architecture distribuée, une instance
+    maître de Jenkins peut aussi exécuter des tâches de build
+    directement.</para>
+    <para>Le rôle des esclaves est de faire ce qu'on leur dit, ce qui inclut
+    l'exécution de tâches de build envoyées par le maître. Vous pouvez
+    configurer un projet pour qu'il s'exécute toujours sur un esclave
+    particulier, sur un type particulier de machine, ou simplement laisser
+    Jenkins sélectionner le prochain esclave disponible.</para>
+    <para>Un esclave est un petit exécutable Java qui fonctionne sur une machine
+    distante et se met en écoute de requêtes de la part de l'instance maître
+    Jenkins. Les esclaves peuvent (et c'est généralement le cas) s'exécuter sur
+    différents systèmes d'exploitation. L'instance esclave peut être démarrée de
+    façons diverses, en fonction du système d'exploitation et de l'architecture
+    réseau. Une fois que l'instance esclave est en marche, elle communique avec
+    l'instance maître au travers d'une connexion TCP/IP. Nous regarderons
+    différentes configurations dans le reste de ce <indexterm class="endofrange"
+        id="I_indexterm11_d1e16072" significance="normal" startref="ch11-dist1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16074"
+        significance="normal" startref="ch11-dist2">
+        <primary/>
+      </indexterm>chapitre.</para>
   </sect1>
   <sect1 id="sect-master-slave-strategies">
-    <title>Master/Slave Strategies in Jenkins</title>
-    <para>There are a number of different ways that you can configure set up a
-    distributed build farm using Jenkins, depending on your operating systems
-    and network architecture. In all cases, the fact that a build job is being
-    run on a slave, and how that slave is managed, is transparent for the
-    end-user: the build results and artifacts will always end up on the master
-    server.</para>
-    <para>Creating<indexterm id="I_indexterm11_d1e16084" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>creating slave nodes</tertiary></indexterm><indexterm id="I_indexterm11_d1e16091" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>creating</tertiary></indexterm> a new Jenkins slave node is a straightforward process.
-    First, go to the Manage Jenkins screen and click on Manage Nodes. This
-    screen displays the list of slave agents (also known as “Nodes” in more
-    politically correct terms), shown in <xref linkend="fig-jenkins-manage-nodes"/>. From here, you can set up new nodes
-    by clicking on the New Node button. You can also configure some of the
-    parameters related to your distributed build setup (see <xref linkend="node-monitoring"/>).</para>
+    <title>Stratégies Maître/Esclave dans Jenkins</title>
+    <para>Il existe différentes façons de configurer une ferme de build
+    distribuée avec Jenkins, en fonction de votre système d'exploitation et de
+    votre architecture réseau. Dans tous les cas, le fait qu'une tâche de build
+    s'exécute sur un esclave, et comment cet esclave s'exécute, est transparent
+    pour l'utilisateur final : les résultats du build et les artefacts finiront
+    toujours sur le serveur maître.</para>
+    <para>Créer un nouveau<indexterm id="I_indexterm11_d1e16084"
+        significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>distribuées parmi des serveurs de build</secondary>
+        <tertiary>créer des noeuds esclaves</tertiary>
+      </indexterm><indexterm id="I_indexterm11_d1e16091" significance="normal">
+        <primary>builds distribués</primary>
+        <secondary>noeuds esclaves pour</secondary>
+        <tertiary>créer</tertiary>
+      </indexterm> noeud esclave Jenkins est un processus simple. Premièrement,
+    rendez vous dans l'écran Administrer Jenkins et cliquez sur Gérer les
+    noeuds. Cet écran affiche la liste des agents esclaves (aussi connus en tant
+    que “Noeuds” en termes plus politiquement corrects), comme montré dans <xref
+    linkend="fig-jenkins-manage-nodes"/>. A partir de là, vous pouvez configurer
+    de nouveaux noeuds en cliquant sur le bouton Nouveau Noeud. Vous pouvez
+    aussi configurer quelques-uns des paramètres liés à votre installation de
+    build distribuée (see <xref linkend="node-monitoring"/>).</para>
     <figure float="none" id="fig-jenkins-manage-nodes">
-      <title>Managing slave nodes</title>
+      <title>Gérer les noeuds esclaves</title>
       <mediaobject id="I_mediaobject11_d1e16106">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1101.pdf" format="PDF"/>
@@ -75,45 +126,62 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>There are several different strategies when it comes to managing
-    Jenkins slave nodes, depending on your target operating systems and other
-    architectural considerations. These strategies affect the way you
-    configure your slave nodes, so we need to consider them separately. In the
-    following sections, we will look at the most frequently used ways to
-    install and configure Jenkins slaves:</para>
+    <para>Il y a plusieurs stratégies différentes lorsqu'il s'agit de gérer les
+    noeuds esclaves Jenkins, en fonction de vos systèmes d'exploitation cibles
+    et d'autres considérations architecturales. Ces stratégies affectent la
+    façon dont vous configurez vos noeuds esclaves, nous devons donc les
+    considérer séparément. Dans les sections suivantes, nous regarderons les
+    façons les plus fréquemment utilisées d'installer et de configurer des
+    esclaves Jenkins :</para>
     <itemizedlist>
       <listitem>
-        <para>The master starts the slave agents via ssh</para>
+        <para>Le maître démarre l'agent esclave via ssh</para>
       </listitem>
       <listitem>
-        <para>Starting the slave agent manually using Java Web Start</para>
+        <para>Démarrage de l'agent esclave manuellement en utilisant Java Web
+        Start</para>
       </listitem>
       <listitem>
-        <para>Installing the slave agent as a Window service</para>
+        <para>Installation de l'agent esclave en tant que service Windows</para>
       </listitem>
       <listitem>
-        <para>Starting the slave agent directly from the command line on the
-        slave machine from the command line</para>
+        <para>Démarrage de l'agent esclave directement depuis la ligne de
+        commande sur la machine esclave</para>
       </listitem>
     </itemizedlist>
-    <para>Each of these strategies has its uses, advantages, and
-    inconveniences. Let’s look at each in turn.</para>
+    <para>Chacune de ces stratégies possède ses utilisations, ses avantages et
+    ses inconvénients. Regardons chacune d'entre elles.</para>
     <sect2>
-      <title>The Master Starts the Slave Agent Using SSH</title>
-      <para>If you <indexterm class="startofrange" id="ch11-start" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>starting slave nodes</tertiary></indexterm><indexterm class="startofrange" id="ch11-ssh" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>starting using SSH</tertiary></indexterm><indexterm class="startofrange" id="ch11-ssh2" significance="normal"><primary>SSH, starting slave node using</primary></indexterm>are working in a Unix environment, the most convenient way
-      to start a Jenkins slave is undoubtedly to use SSH. Jenkins has its own
-      build-in SSH client, and almost all Unix environments support SSH
-      (usually <literal moreinfo="none">sshd</literal>) out of the box.</para>
-      <para>To create a Unix-based slave, click on the New Node button as we
-      mentioned above. This will prompt you to enter the name of your slave,
-      and its type (see <xref linkend="fig-jenkins-new-slave"/>). At the time
-      of writing, only “dumb slaves” are supported out of the box; “dumb”
-      slaves are passive beasts, that simply respond to build job requests
-      from the master node. This is the most common way to set up a
-      distributed build architecture, and the only option available in a
-      default installation.</para>
+      <title>Le Maître Démarre l'Agent Esclave en utilisant SSH</title>
+      <para>Si vous <indexterm class="startofrange" id="ch11-start"
+          significance="normal">
+          <primary>tâches de build</primary>
+          <secondary>distribuées parmi des serveurs de build</secondary>
+          <tertiary>démarrer des noeuds esclaves</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch11-ssh"
+          significance="normal">
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>démarrer en utilisant SSH</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch11-ssh2"
+          significance="normal">
+          <primary>SSH, démarrer un noeud esclave en utilisant</primary>
+        </indexterm>travaillez dans un environnement Unix, la façon la plus
+      pratique de démarrer un esclave Jenkins est sans aucun doute d'utiliser
+      SSH. Jenkins possède son propre client SSH intégré, et presque tous les
+      environnements Unix supportent SSH (habituellement <literal
+      moreinfo="none">sshd</literal>) de base.</para>
+      <para>Pour créer un esclave de type Unix, cliquez sur le bouton Nouveau
+      Noeud comme nous l'avons mentionné ci-dessus. Cela vous demande d'entrer
+      le nom de votre esclave, et son type (voir <xref
+      linkend="fig-jenkins-new-slave"/>). Au moment de l'écriture de ces lignes,
+      seuls les “esclaves passifs” sont supportés en standard ; ces esclaves
+      répondent simplement aux requêtes de build en provenance du noeud maître.
+      C'est la façon la plus commune de mettre en place une architecture de
+      build distribuée, et c'est la seule option disponible dans une
+      installation par défaut.</para>
       <figure float="none" id="fig-jenkins-new-slave">
-        <title>Creating a new slave node</title>
+        <title>Créer un nouveau noeud esclave</title>
         <mediaobject id="I_mediaobject11_d1e16161">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1102.pdf" format="PDF"/>
@@ -123,11 +191,12 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>In this screen, you simply need to provide a name for your slave.
-      When you click on OK, Jenkins will let you provide more specific details
-      about your slave machine (see <xref linkend="fig-jenkins-slave-ssh"/>).</para>
+      <para>Dans cet écran, vous devez simplement fournir un nom pour votre
+      esclave. Lorsque vous cliquez sur OK, Jenkins vous permet de fournir plus
+      de détails sur vos machines esclaves (voir <xref
+      linkend="fig-jenkins-slave-ssh"/>).</para>
       <figure float="0" id="fig-jenkins-slave-ssh">
-        <title>Creating a Unix slave node</title>
+        <title>Créer un noeud esclave Unix</title>
         <mediaobject id="I_mediaobject11_d1e16173">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1103.pdf" format="PDF"/>
@@ -137,69 +206,75 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>The name is simply a unique way of identifying your slave machine.
-      It can be anything, but it may help if the name reminds you of the
-      physical machine it is running on. It also helps if the name is
-      file-system and URL-friendly. It will work with spaces, but you will
-      make life easier for yourself if you avoid them. So “Slave-1” is better
-      than “Slave 1”.</para>
-      <para>The description is also purely for human consumption, and can be
-      used to indicate why you would use this slave rather than
-      another.</para>
-      <para>Like on the main Jenkins configuration screen, the number of
-      executors lets you define how many concurrent build job this node can
-      execute.</para>
-      <para>Every Jenkins slave node also needs a place that it can call home,
-      or, more precisely, a dedicated directory on the slave machine that the
-      slave agent can use to run build jobs. You define this directory in the
-      Remote FS root field. You need to provide a local, OS-specific path,
-      such as <filename moreinfo="none">/var/jenkins</filename> for a Unix
-      machine, or <filename moreinfo="none">C:\jenkins</filename> on Windows.
-      Nothing mission-critical is stored in this directory—everything
-      important is transferred back to the master machine once the build is
-      done. So you usually don’t need to be so concerned with backing up these
-      directories as you should be with the master.</para>
-      <para>Labels are a particularly useful concept when your distributed
-      build architecture begins to grow in size. You can define labels, or
-      tags, to each build node, and then configure a build job to run only on
-      a slave node with a particular label. Labels might relate to operating
-      systems (unix, windows, macosx, etc.), environments (staging, UAT,
-      development, etc.) or any criteria that you find useful. For example,
-      you could configure your automated WebDriver/Selenium tests to run using
-      Internet Explorer, but only on slave nodes with the “windows”
-      label.</para>
-      <para>The Usage field lets you configure how intensively Jenkins will
-      use this slave. You have the choice of three options: use it as much as
-      possible, reserve it for dedicated build jobs, or bring it online as
-      required.</para>
-      <para>The first option, “Utilize this slave as much as possible”, tells
-      Jenkins to use this slave freely as soon as it becomes available, for
-      any build job that it can run. This is by far the most commonly used
-      one, and is generally what you want.</para>
-      <para>There are times, however, when this second option comes in handy.
-      In the project configuration, you can tie a build job to a specific
-      node—this is useful when a particular task, such as automated deployment
-      or a performance test suite, needs to be executed on a specific machine.
-      In this case, the “Leave this machine for tied jobs only” option makes
-      good sense. You can take this further by setting the maximum number of
-      Executors to 1. In this case, not only will this slave be reserved for a
-      particular type of job, but it will only ever be able to run one of
-      these build jobs at any one time. This is a very useful configuration
-      for performance and load tests, where you need to reserve the machine so
-      that it can execute its tests without interference.</para>
-      <para>The third option is “Take this slave on-line when in demand and
-      off-line when idle” (see <xref linkend="fig-jenkins-slave-idle"/>). As
-      the name indicates, this option tells Jenkins to bring this slave online
-      when demand is high, and to take it offline when demand subsides. This
-      lets you keep some build slaves in reserve for periods of heavy use,
-      without having to maintain a slave agent running on them permanently.
-      When you choose this option, you also need to provide some extra
-      details. The “In demand delay” indicates how many minutes jobs must have
-      been waiting in the queue before this slave will be brought online. The
-      Idle delay indicates how long the slave needs to be idle before Jenkins
-      will take it off-line.</para>
+      <para>Ce nom est simplement un moyen unique pour identifier votre machine
+      esclave. Ce peut être n'importe quoi, mais il pourrait être utile que ce
+      nom vous rappelle la machine physique sur laquelle cela fonctionne. Il est
+      aussi utile que ce nom soit compatible avec le système de fichiers et un
+      format URL. Les espaces sont autorisés, mais cela vous facilitera la vie
+      de les éviter. Ainsi, “Slave-1” est meilleur que “Slave 1”.</para>
+      <para>La description est aussi purement destinée à la lecture humaine, et
+      peut être utilisée pour indiquer pourquoi utiliser cet esclave plutôt
+      qu'un autre.</para>
+      <para>Comme sur l'écran principal de configuration Jenkins, le nombre
+      d'exécuteurs vous permet de définir le nombre de tâches de build
+      concurrentes que ce noeud peut exécuter.</para>
+      <para>Tout noeud esclave Jenkins nécessite aussi un emplacement qu'il
+      puisse utiliser comme racine, ou, plus précisément un répertoire dédié sur
+      la machine esclave que l'agent esclave puisse utiliser pour exécuter des
+      tâches de build. Vous définissez ce répertoire dans le champ racine du
+      disque distant. Vous devez fournir un chemin local, spécifique à l'OS, tel
+      que <filename moreinfo="none">/var/jenkins</filename> pour une machine
+      Unix ou <filename moreinfo="none">C:\jenkins</filename> sur Windows. Rien
+      d'essentiel n'est stocké dans ce répertoire — tout ce qui est important
+      est renvoyé à la machine maître une fois que le build est effectué. Vous
+      n'avez donc généralement pas besoin de vous inquiéter de sauvegarder ces
+      répertoires comme c'est le cas avec ceux du maître.</para>
+      <para>Les libellés sont un concept particulièrement utile quand votre
+      architecture distribuée commence à grossir. Vous définissez des libellés,
+      des tags, pour chaque noeud de build, et configurez ensuite une tâche de
+      build afin qu'elle s'exécute avec un libellé particulier. Les libellés
+      peuvent avoir trait au système d'exploitation (unix, windows, macosx,
+      etc.), aux environnements (staging, recette, développement, etc.) ou
+      n'importe quel critère que vous trouveriez utile. Par exemple, vous pouvez
+      configurer vos tests automatisés WebDriver/Selenium pour qu'ils
+      s'exécutent avec Internet Explorer, mais seulement sur des noeuds esclaves
+      avec le libellé “windows”.</para>
+      <para>Le champ <emphasis>Usage</emphasis> vous permet de configurer
+      l'intensité avec laquelle Jenkins utilisera cet esclave. Vous avez le
+      choix parmi trois options : utiliser cet esclave autant que possible,
+      réserver pour les tâches de build dédiées, ou le mettre en ligne quand
+      c'est nécessaire.</para>
+      <para>La première option “Utiliser cet esclave autant que possible”,
+      indique à Jenkins d'utiliser librement cet esclave dès qu'il devient
+      disponible, pour toute tâche qu'il peut exécuter. C'est de loin l'option
+      la plus utilisée, et généralement celle que vous voulez.</para>
+      <para>Quelques fois, cependant, la seconde option peut s'avérer utile.
+      Dans la configuration du projet, vous pouvez lier une tâche de build à un
+      noeud spécifique — c'est utile quand une tâche particulière, comme un
+      déploiement automatisé ou une suite de tests de performance, nécessite
+      d'être exécutée sur une machine spécifique. Dans ce cas, l'option
+      “Réserver cette machine pour les tâches associées uniquement” peut avoir
+      du sens. Vous pouvez aller encore plus loin en positionnant le nombre
+      maximum d'Exécuteurs à 1. Dans ce cas, non seulement cet esclave sera
+      réservé pour un type particulier de tâche, mais il sera uniquement capable
+      d'exécuter une seule de ces tâches de build à tout instant time. C'est une
+      configuration très utile pour les tests de performance ou de charge, où
+      vous avez besoin de réserver la machine pour qu'elle exécute ses tests
+      sans interférence.</para>
+      <para>La troisième option est “Mettre cet esclave en ligne lors de demande
+      et hors-ligne sinon” (voir <xref linkend="fig-jenkins-slave-idle"/>).
+      Comme le nom l'indique, cette option indique à Jenkins de mettre cet
+      esclave en ligne lorsque la demande est élevée et de le mettre hors-ligne
+      lors la demande faiblit. Ceci permet de garder quelques esclaves de build
+      pour les périodes d'utilisation importante, sans avoir à maintenir un
+      agent esclave en fonctionnement sur en permanence. Quand vous choisissez
+      cette option, vous devez aussi fournir quelques détails supplémentaires.
+      Le “Délai de la demande” indique combien de minutes les tâches doivent
+      avoir attendu dans la file d'attente avant que cet esclave ne soit mis en
+      ligne. Le champ Délai d'inactivité indique combien de temps l'esclave doit
+      avoir été inactif avant que Jenkins ne le mette hors-ligne.</para>
       <figure float="none" id="fig-jenkins-slave-idle">
-        <title>Taking a slave off-line when idle</title>
+        <title>Mettre un esclave hors-ligne lorsqu'inactif</title>
         <mediaobject id="I_mediaobject11_d1e16208">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1104.pdf" format="PDF"/>
@@ -209,38 +284,43 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>The launch method is where you decide how Jenkins will start the
-      node, as we mentioned earlier. For the configuration we are discussing
-      here, you would choose “Launch slave agents on Unix machines via SSH”.
-      The Advanced button lets you enter the additional details that Jenkins
-      needs to connect to the Unix slave machine: a host name, a login and
-      password, and a port number. You can also provide a path to the SSH
-      private key file on the master machine (e.g., <literal moreinfo="none">id_dsa</literal>
-      or <literal moreinfo="none">id_rsa</literal>) to use for “password-less” Public/Private
-      Key authentication.</para>
-      <para>You can also configure when Jenkins starts and stops the slave. By
-      default, Jenkins will simply keep the slave running and use it whenever
-      required (the “Keep this slave on-line as much as possible” option). If
-      Jenkins notices that the slave has gone offline (for example due to a
-      server reboot), it will attempt to restart it if it can. Alternatively,
-      Jenkins can be more conservative with your system resources, and take
-      the slave offline when it doesn’t need it. To do this, simply choose the
-      “Take this slave on-line when in demand and off-line when idle” option.
-      This is useful if you have regular spikes and lulls of build activity,
-      as an unused slave can be taken offline to conserve system resources for
-      other tasks, and brought back online when required.</para>
-      <para>Jenkins also needs to know where it can find the build tools it
-      needs for your build jobs on the slave machines. This includes JDKs as
-      well as build tools such as Maven, Ant, and Gradle. If you have
-      configured your build tools to be automatically installed, you will
-      usually have no extra configuration to do for your slave machines;
-      Jenkins will download and install the tools as required. On the other
-      hand, if your build tools are installed locally on the slave machine,
-      you will need to tell Jenkins where it can find them. You do this by
-      ticking the Tool Locations checkbox, and providing the local paths for
-      each of the tools you will need for your build jobs (see <xref linkend="fig-jenkins-slave-node-tools"/>).</para>
+      <para>La méthode de lancement décide de comment Jenkins lancera le noeud,
+      comme nous l'avons mentionné précédemment. Pour la configuration dont nous
+      parlons ici, vous choisiriez “Lancer les agents esclaves sur machines Unix
+      via SSH”. Le bouton Avancé vous permet d'entrer des détails additionels
+      dont Jenkins a besoin pour se connecter à la machine esclave Unix : un nom
+      d'hôte, un login et mot de passe et un numéro de port. Vous pouvez aussi
+      fournir un chemin vers un fichier de clé privée SSH sur la machine maître
+      (e.g., <literal moreinfo="none">id_dsa</literal> ou <literal
+      moreinfo="none">id_rsa</literal>) à utiliser pour une authentification
+      “sans mot de passe” par clés Publique/Privée.</para>
+      <para>Vous pouvez aussi configurer quand Jenkins démarre ou arrête
+      l'esclave. Par défaut, Jenkins gardera simplement l'esclave en
+      fonctionnement et l'utilisera chaque fois qu'il en aura besoin (l'option
+      “Garder cet esclave en ligne autant que possible”). Si Jenkins remarque
+      que l'esclave est déconnecté (par exemple à cause d'un redémarrage
+      serveur), il essaiera de le redémarrer s'il le peut. Sinon, Jenkins peut
+      être plus conservateur avec vos ressources systèmes, et mettre l'esclave
+      hors-ligne lorsqu'il n'en a pas besoin. Pour faire cela, choisissez
+      simplement l'option “Mettre cet esclave en ligne si nécessaire et
+      hors-ligne en cas d'inactivité”. C'est utile si vous avez régulièrement
+      des pics et accalmies de l'activité de build, car un esclave peut être mis
+      hors-ligne pour conserver les ressources systèmes pour d'autres tâches, et
+      remis en ligne lorsque c'est nécessaire.</para>
+      <para>Jenkins a aussi besoin de savoir où il peut trouver les outils de
+      build dont il a besoin pour vos tâches de build sur les machines esclaves.
+      Ceci inclut aussi bien les JDKs que les outils de build comme Maven, Ant,
+      et Gradle. Si vous avez configuré vos outils de build pour être
+      automatiquement installés, vous n'aurez typiquement pas de configuration
+      supplémentaire à effectuer pour vos machines esclaves ; Jenkins
+      téléchargera et installera les outils au besoin. D'un autre côté, si vos
+      outils de build sont installés localement sur la machine esclave, vous
+      aurez besoin d'indiquer à Jenkins où il peut les trouver. Ceci se fait en
+      cochant la case Emplacement des outils, et en fournissant les chemins
+      locaux pour chaque outil nécessaire à vos tâches de build (voir <xref
+      linkend="fig-jenkins-slave-node-tools"/>).</para>
       <figure float="none" id="fig-jenkins-slave-node-tools">
-        <title>Configuring tool locations</title>
+        <title>Configurer l'emplacement des outils</title>
         <mediaobject id="I_mediaobject11_d1e16230">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1105.pdf" format="PDF"/>
@@ -250,13 +330,21 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>You can also specify environment variables. These will be passed
-      into your build jobs, and can be a good way to allow your build jobs to
-      behave differently depending on where they are being executed.</para>
-      <para>Once you have done this, your new slave node will appear in the
-      list of computers on the Jenkins Nodes <indexterm id="I_indexterm11_d1e16239" class="endofrange" startref="ch11-ssh" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16241" class="endofrange" startref="ch11-ssh2" significance="normal"><primary/></indexterm>page (see <xref linkend="fig-jenkins-slave-nodes"/>).</para>
+      <para>Vous pouvez aussi spécifier des variables d'environnement. Celles-ci
+      seront passées à vos tâches de build, et ce peut être un moyen de
+      permettre à vos tâches de se comporter différemment en fonction de
+      l'endroit où elles s'exécutent.</para>
+      <para>Une fois que vous avez fait cela, votre nouveau noeud esclave
+      apparaîtra dans la liste des ordinateurs sur la page des Noeuds Jenkins
+      <indexterm class="endofrange" id="I_indexterm11_d1e16239"
+          significance="normal" startref="ch11-ssh">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16241"
+          significance="normal" startref="ch11-ssh2">
+          <primary/>
+        </indexterm> (voir <xref linkend="fig-jenkins-slave-nodes"/>).</para>
       <figure float="0" id="fig-jenkins-slave-nodes">
-        <title>Your new slave node in action</title>
+        <title>Votre nouveau noeud esclave en action</title>
         <mediaobject id="I_mediaobject11_d1e16250">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1106.pdf" format="PDF"/>
@@ -268,37 +356,48 @@
       </figure>
     </sect2>
     <sect2>
-      <title>Starting the Slave Agent Manually Using Java Web Start</title>
-      <para>Another <indexterm class="startofrange" id="ch11-jws1" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>starting with Java Web Start</tertiary></indexterm><indexterm class="startofrange" id="ch11-jws2" significance="normal"><primary>Java Web Start</primary><secondary>starting slave nodes using</secondary></indexterm>option is to start a slave agent from the slave machine
-      itself using Java Web Start (JNLP). This approach is useful if the
-      server cannot connect to the slave, for example if the slave machine is
-      running on the other side of a firewall. It works no matter what
-      operating system your slave is running on, however it is more commonly
-      used for Windows slaves. It does suffer from a few major drawbacks: the
-      slave node cannot be started, or restarted, automatically by Jenkins.
-      So, if the slave goes down, the master instance cannot restart
-      it.</para>
-      <para>When you do this on a Windows machine, you need to start the
-      Jenkins slave manually at least once. This involves opening a browser on
-      the machine, opening the slave node page on the Jenkins master, and
-      launching the slave using a very visible JNLP icon. However, once you
-      have launched the slave, you can install it as a Windows service.</para>
-      <para>There are also times when you need to do this from the command
-      line, in a Unix environment. You may need to do this because of
-      firewalls or other networking issues, or because SSH is not available in
-      your environment.</para>
-      <para>Lets step through both these processes.</para>
-      <para>The first thing you need to do in all cases is create a new slave.
-      As for any other slave node, you do this by clicking on the New Node
-      menu entry in the Nodes screen. When entering the details concerning
-      your slave node, make sure you choose “Launch slave agents via JNLP” in
-      the Launch Method field (see <xref linkend="fig-jenkins-jnlp-slave"/>).
-      Also remember that if this is to be a Windows slave node, the Remote FS
-      root needs to be a Windows path (such as <filename moreinfo="none">C:\jenkins-slave</filename>). This directory does not
-      have to exist: Jenkins will create it automatically if it is
-      missing.</para>
+      <title>Démarrer l'agent esclave manuellement via Java Web Start</title>
+      <para>Une autre <indexterm class="startofrange" id="ch11-jws1"
+          significance="normal">
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>lancés avec Java Web Start</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch11-jws2"
+          significance="normal">
+          <primary>Java Web Start</primary>
+          <secondary>lancer des noeuds esclaves avec</secondary>
+        </indexterm>option est de démarrer l'agent esclave depuis la machine
+      esclave elle-même en utilisant Java Web Start (JNLP). Cette approche est
+      utile si le serveur ne peut pas se connecter à l'esclave, par exemple si
+      la machine esclave s'exécute de l'autre côté d'un firewall. Cela
+      fonctionne quel que soit le système d'exploitation de votre esclave,
+      toutefois c'est le plus souvent utilisé pour des esclaves Windows. Cela
+      présente quelques inconvénients majeurs : le noeud esclave ne peut pas
+      être démarré, ou redémarré, automatiquement par Jenkins. Ainsi, si
+      l'esclave tombe, l'instance maître ne peut pas le redémarrer.</para>
+      <para>Quand vous faites cela sur une machine Windows, vous devez démarrer
+      l'esclave Jenkins manuellement au moins une fois. Ceci implique d'ouvrir
+      un navigateur sur la machine, ouvrir la page du noeud esclave sur le
+      maître Jenkins et de lancer l'esclave en utilisant l'icône JNLP bien
+      visible. Une fois que vous avez lancé l'esclave, vous pouvez l'installer
+      comme un service Windows.</para>
+      <para>Il y a aussi des fois où vous avez besoin de faire cela depuis la
+      ligne de commande, dans un environnement Unix. Vous pourriez avoir besoin
+      de ça à cause d'un firewall ou d'autres problèmes réseau, ou parce que SSH
+      n'est pas disponible dans votre environnement.</para>
+      <para>Détaillons à présent les deux processus.</para>
+      <para>La première chose que vous devez faire dans tous les cas est de
+      créer un nouvel esclave. Comme pour tout noeud esclave, vous faites cela
+      en cliquant sur l'entrée Nouveau noeud dans l'écran Noeuds. Lors de la
+      saisie des détails concernant votre noeud esclave, assurez-vous de choisir
+      “Lancer les agents esclave via JNLP” dans le champ Méthode de Lancement
+      (voir <xref linkend="fig-jenkins-jnlp-slave"/>). Rappelez-vous aussi que
+      c'est un noeud esclave Windows, la racine du système de fichiers distant
+      doit être un chemin Windows (comme <filename
+      moreinfo="none">C:\jenkins-slave</filename>). Ce répertoire n'a pas à
+      exister : Jenkins le créera automatiquement s'il manque.</para>
       <figure float="0" id="fig-jenkins-jnlp-slave">
-        <title>Creating a slave node for JNLP</title>
+        <title>Créer un noeud esclave pour JNLP</title>
         <mediaobject id="I_mediaobject11_d1e16289">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1107.pdf" format="PDF"/>
@@ -308,12 +407,14 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have saved this configuration, Next, log on to the slave
-      machine and open the Slave node screen in a browser, as shown in <xref linkend="fig-jenkins-launch-jnlp"/>. You will see a large orange Launch
-      button—if you click on this button, you should be able to start a slave
-      agent directly from within your browser.</para>
+      <para>Une fois que vous avez sauvé cette configuration, ensuite,
+      connectez-vous sur la machine esclave et ouvrez l'écran du noeud esclave
+      dans un navigateur, comme montré sur <xref
+      linkend="fig-jenkins-launch-jnlp"/>. Vous verrez un large bouton orange
+      Lancer — si vous cliquez sur ce bouton, vous devriez être capable de
+      lancer un agent esclave directement depuis votre navigateur.</para>
       <figure float="0" id="fig-jenkins-launch-jnlp">
-        <title>Launching a slave via Java Web Start</title>
+        <title>Lancer un esclave via Java Web Start</title>
         <mediaobject id="I_mediaobject11_d1e16301">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1108.pdf" format="PDF"/>
@@ -323,10 +424,11 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>If all goes well, this will open up a small window indicating that
-      your slave agent is now running (see <xref linkend="fig-jenkins-slave-agent"/>).</para>
+      <para>Si tout va bien, ceci ouvrira une petite fenêtre indiquant que votre
+      esclave est à présent en fonctionnement (voir <xref
+      linkend="fig-jenkins-slave-agent"/>).</para>
       <figure float="0" id="fig-jenkins-slave-agent">
-        <title>The Jenkins slave agent in action</title>
+        <title>L'agent esclave Jenkins en action</title>
         <mediaobject id="I_mediaobject11_d1e16313">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1109.pdf" format="PDF"/>
@@ -336,28 +438,33 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Browsers are fickle, however, and Java Web Start is not always
-      easy to use. This approach usually works best with Firefox, although you
-      must have the Java JRE installed beforehand to make Firefox Java-aware.
-      Using JNLP with Internet Explorer requires some (considerable) fiddling
-      to associate <filename moreinfo="none">*.jnlp</filename> files with the
-      Java Web Start executable, a file called <command moreinfo="none">javaws</command>, which you will find in the Java
-      <filename moreinfo="none">bin</filename> directory. In fact it is
-      probably easier just to start it from the command line as discussed
-      below.</para>
-      <para>A more reliable, albeit low-level, approach is to start the slave
-      from the command line. To do this, simply invoke the <command moreinfo="none">javaws</command> executable from a command window as
-      shown here:</para>
+      <para>Les navigateurs sont inconstants, toutefois, et Java Web Start n'est
+      pas toujours simple à utiliser. Cette approche fonctionne habituellement
+      avec Firefox, bien que vous deviez auparavant avoir installé le JRE Java
+      pour que Firefox comprenne Java. Utiliser JNLP avec Internet Explorer
+      requiert un ensemble (non négligeable) de bricolages pour associer les
+      fichiers <filename moreinfo="none">*.jnlp</filename> avec l'exécutable
+      Java Web Start, un fichier appelé <command
+      moreinfo="none">javaws</command>, que vous trouverez dans le répertoire
+      <filename moreinfo="none">bin</filename> de Java. Il est en fait
+      probablement plus simple de le lancer depuis la ligne de commande comme
+      discuté ci-dessous.</para>
+      <para>Une approche plus fiable, quoique bas-niveau, est de démarrer
+      l'esclave depuis la ligne de commande. Pour faire ça, invoquez simplemet
+      l'exécutable <command moreinfo="none">javaws</command> depuis une fenêtre
+      de commande comme suit :</para>
       <screen format="linespecific">C:&gt; javaws http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp</screen>
-      <para>The exact command that you need to execute, including the correct
-      URL, is conveniently displayed on the Jenkins slave node window just
-      below the JNLP launch button (see <xref linkend="fig-jenkins-launch-jnlp"/>).</para>
-      <para>If security is activated on your Jenkins server, Jenkins will
-      communicate with the slave on a specific nonstandard port. If for some
-      reason this port is inaccessible, the slave node will fail to start and
-      will display an error message similar to the one shown in <xref linkend="fig-jenkins-slave-unable-to-connect"/>.</para>
+      <para>La commande exacte que vous devez exécuter, notamment avec l'URL
+      correcte, est idéalement affichée dans la fenêtre du noeud esclave Jenkins
+      juste en dessous du bouton de lancement JNLP (voir <xref
+      linkend="fig-jenkins-launch-jnlp"/>).</para>
+      <para>Si la sécurité est activée sur votre serveur Jenkins, Jenkins
+      communiquera avec l'esclave sur un port spécifique non standard. Si pour
+      une raison quelconque ce port est inaccessible, le noeud esclave échouera
+      au lancement et affichera un message d'erreur similaire à celui montré
+      dans <xref linkend="fig-jenkins-slave-unable-to-connect"/>.</para>
       <figure float="none" id="fig-jenkins-slave-unable-to-connect">
-        <title>The Jenkins slave failing to connect to the master</title>
+        <title>L'esclave Jenkins échouant à la connexion au maître</title>
         <mediaobject id="I_mediaobject11_d1e16348">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1110.pdf" format="PDF"/>
@@ -367,14 +474,20 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>This is usually a sign that a firewall is blocking a port. By
-      default, Jenkins picks a random port to use for TCP communication with
-      its slaves. However if you need to have a specific port that your
-      firewall will authorize, you can force Jenkins to use a fixed port in
-      the System configuration screen by selecting Fixed in the “TCP port for
-      JNLP slave agents” option, as <indexterm id="I_indexterm11_d1e16355" class="endofrange" startref="ch11-jws1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16357" class="endofrange" startref="ch11-jws2" significance="normal"><primary/></indexterm>shown in <xref linkend="fig-jenkins-tcp-ports"/>.</para>
+      <para>Ceci est habituellement un signe qu'un firewall bloque un port. Par
+      défaut, Jenkins choisit un port par défaut pour la communication TCP avec
+      ses esclaves. Cependant si vous devez avoir un port spécifique que votre
+      firewall autorise, vous pouvez forcer Jenkins à utiliser un port fixe dans
+      l'écran de configuration système en sélectionnant l'option Fixe dans “Port
+      TCP pour les agents esclaves JNLP”, comme <indexterm class="endofrange"
+          id="I_indexterm11_d1e16355" significance="normal" startref="ch11-jws1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16357"
+          significance="normal" startref="ch11-jws2">
+          <primary/>
+        </indexterm>montré dans <xref linkend="fig-jenkins-tcp-ports"/>.</para>
       <figure float="0" id="fig-jenkins-tcp-ports">
-        <title>Configuring the Jenkins slave port</title>
+        <title>Configurer le port de l'esclave Jenkins</title>
         <mediaobject id="I_mediaobject11_d1e16365">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1111.pdf" format="PDF"/>
@@ -386,14 +499,24 @@
       </figure>
     </sect2>
     <sect2>
-      <title>Installing a Jenkins Slave as a Windows Service</title>
-      <para>Once <indexterm class="startofrange" id="ch11-win1" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>installing as Windows service</tertiary></indexterm><indexterm class="startofrange" id="ch11-win2" significance="normal"><primary>Windows services</primary><secondary>installing slave node as</secondary></indexterm>you have the slave up and running on your Windows machine,
-      you can save yourself the bother of having to restart it manually each
-      time your machine reboots by installing it as a Windows service. To do
-      this, select the “Install as Windows Service” menu option in the File
-      menu of the slave agent window (see <xref linkend="fig-jenkins-install-slave-service"/>).</para>
+      <title>Installer un esclave Jenkins comme Service Windows</title>
+      <para>Une fois <indexterm class="startofrange" id="ch11-win1"
+          significance="normal">
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>installer comme service Windows</tertiary>
+        </indexterm><indexterm class="startofrange" id="ch11-win2"
+          significance="normal">
+          <primary>services Windows</primary>
+          <secondary>installer des noeuds esclaves comme</secondary>
+        </indexterm>que vous avez démarré votre esclave sur votre machine
+      Windows, vous pouvez vous épargner la peine d'avoir à le redémarrer
+      manuellement chaque fois que votre machine redémarre en l'installant comme
+      service Windows. Pour faire cela, sélectionnez l'option de menu “Installer
+      comme Service Windows” dans le menu Fichier de la fenêtre de l'agent
+      esclave (voir <xref linkend="fig-jenkins-install-slave-service"/>).</para>
       <figure float="none" id="fig-jenkins-install-slave-service">
-        <title>Installing the Jenkins slave as a Windows service</title>
+        <title>Installer l'esclave Jenkins comme service Windows</title>
         <mediaobject id="I_mediaobject11_d1e16393">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1112.pdf" format="PDF"/>
@@ -403,11 +526,19 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once this is done, your Jenkins slave node will start
-      automatically whenever the machine starts up, and can be administered
-      just like any other Windows service<indexterm id="I_indexterm11_d1e16400" class="endofrange" startref="ch11-win1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16402" class="endofrange" startref="ch11-win2" significance="normal"><primary/></indexterm> (see <xref linkend="fig-jenkins-slave-service-installed"/>).</para>
+      <para>Une fois que c'est fait, votre noeud esclave Jenkins démarrera
+      automatiquement chaque fois que la machine démarre, et peut être
+      administré tout comme n'importe quel autre service Windows<indexterm
+          class="endofrange" id="I_indexterm11_d1e16400" significance="normal"
+          startref="ch11-win1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16402"
+          significance="normal" startref="ch11-win2">
+          <primary/>
+        </indexterm> (voir <xref
+      linkend="fig-jenkins-slave-service-installed"/>).</para>
       <figure float="none" id="fig-jenkins-slave-service-installed">
-        <title>Managing the Jenkins Windows service</title>
+        <title>Gérer le service Windows Jenkins</title>
         <mediaobject id="I_mediaobject11_d1e16410">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1113.pdf" format="PDF"/>
@@ -419,49 +550,77 @@
       </figure>
     </sect2>
     <sect2>
-      <title>Starting the Slave Node in Headless Mode</title>
-      <para>You <indexterm id="I_indexterm11_d1e16420" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>starting in headless mode</tertiary></indexterm><indexterm id="I_indexterm11_d1e16427" significance="normal"><primary>headless mode, starting slave nodes in</primary></indexterm>can also start a slave agent in headless mode, directly
-      from the command line. This is useful if you don’t have a user interface
-      available, for example if you are starting a JNLP slave node on a Unix
-      machine. If you are working with Unix machines, it is generally easier
-      and more flexible just to use an SSH connection, but there are sometimes
-      network or architecture constraints that prevent you from using SSH. In
-      cases like this, it is still possible to run a slave node from the
-      command line.</para>
-      <para>To start the slave node this way, you need to use Jenkins’
-      <filename moreinfo="none">slave.jar</filename> file. You can find this
-      in <filename moreinfo="none">JENKINS_HOME/war/WEB-INF/slave.jar</filename>. Once you
-      have located this file and copied it onto the Windows slave machine, you
-      can run it as follows:</para>
+      <title>Démarrer le noeud esclave en mode Headless</title>
+      <para>Vous <indexterm id="I_indexterm11_d1e16420" significance="normal">
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>démarrer en mode headless</tertiary>
+        </indexterm><indexterm id="I_indexterm11_d1e16427" significance="normal">
+          <primary>mode headless, démarrer des noeuds esclaves en</primary>
+        </indexterm>pouvez aussi démarrer un agent esclave en mode headless,
+      directement depuis la ligne de commande. C'est utile si vous n'avez pas
+      d'interface utilisateur disponible, par exemple si vous démarrer noeud
+      esclave JNLP sur une machine Unix. Si vous travaillez avec des machines
+      Unix, il est généralement plus facile et plus flexible d'utiliser
+      simplement une connexion SSH, mais il y a parfois des contraintes de
+      réseau ou d'archiecture qui vous empêchent d'utiliser SSH. Dans ce genre
+      de cas, il est encore possible d'exécuter un noeud esclave depuis la ligne
+      de commande.</para>
+      <para>Pour démarrer le noeud esclave de cette façon, vous devez utiliser
+      le fichier <filename moreinfo="none">slave.jar</filename> de Jenkins. Vous
+      pouvez le trouver dans <filename
+      moreinfo="none">JENKINS_HOME/war/WEB-INF/slave.jar</filename>. Une fois ce
+      fichier localisé et copié sur la machine esclave Windows, vous pouvez
+      l'exécuter comme suit :</para>
       <screen format="linespecific">java -jar slave.jar \
  -jnlpUrl http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp</screen>
-      <para>And if your Jenkins server requires authentication, just pass in
-      the <literal moreinfo="none">-auth username:password</literal> option:</para>
+      <para>Et si votre serveur Jenkins nécessite une authentification, passez
+      simplement l'option <literal moreinfo="none">-auth
+      username:password</literal> :</para>
       <screen format="linespecific">java -jar slave.jar \
  -jnlpUrl http://build.myorg.com/jenkins/computer/windows-slave-1/slave-agent.jnlp
  -auth scott:tiger</screen>
-      <para>Once you have started the slave agent, be sure to install it as a
-      Windows service, as discussed in the previous section.</para>
+      <para>Une fois que vous avez démarré l'agent esclave, assurez de
+      l'installer comme service Windows, comme indiqué dans la section
+      précédente.</para>
     </sect2>
     <sect2>
-      <title>Starting a Windows Slave as a Remote Service</title>
-      <para>Jenkins <indexterm id="I_indexterm11_d1e16456" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>starting as remote service</tertiary></indexterm><indexterm id="I_indexterm11_d1e16463" significance="normal"><primary>remote service, starting slave nodes as</primary></indexterm><indexterm id="I_indexterm11_d1e16466" significance="normal"><primary>Windows services</primary><secondary>starting slave nodes as</secondary></indexterm>can also manage a remote Windows slave as a Windows
-      service, using the Windows Management Instrumentation (WMI)<indexterm id="I_indexterm11_d1e16472" significance="normal"><primary>WMI (Windows Management Instrumentation)</primary></indexterm> service which is installed out of the box <phrase role="keep-together">on</phrase> Windows 2000 or later (see <xref linkend="fig-jenkins-slave-service"/>). When you choose this option,
-      you just need to provide a Windows username and password. The name of
-      the node must be the hostname of the slave machine.</para>
-      <para>This is certainly convenient, as it does not require you to
-      physically connect to the Windows machine to set it up. However, it does
-      have limitations—in particular, you cannot run any applications
-      requiring a graphical interface, so you can’t use a slave set up this
-      way for web testing, for example. In practice this can be a little
-      tricky to set up, as you may need to configure the Windows firewall to
-      open the appropriate services and ports. If you run into trouble, make
-      sure that your network configuration allows TCP connections to ports
-      135, 139, and 445, and UDP connections to <indexterm id="I_indexterm11_d1e16483" class="endofrange" startref="ch11-ms1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16485" class="endofrange" startref="ch11-ms2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16487" class="endofrange" startref="ch11-ms3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16489" class="endofrange" startref="ch11-start" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16491" class="endofrange" startref="ch11-ms4" significance="normal"><primary/></indexterm>ports 137 and 138 (see <ulink url="https://wiki.jenkins-ci.org/display/JENKINS/Windows+slaves+fail+to+start+via+DCOM"/>
-      for more details).</para>
+      <title>Démarrer un esclave Windows en tant que service distant</title>
+      <para>Jenkins <indexterm id="I_indexterm11_d1e16456" significance="normal">
+          <primary>builds distribués</primary>
+          <secondary>noeuds esclaves pour</secondary>
+          <tertiary>démarrer en tant que service distant</tertiary>
+        </indexterm><indexterm id="I_indexterm11_d1e16463" significance="normal">
+          <primary>service distant, démarrer des noeuds esclaves en tant
+          que</primary>
+        </indexterm><indexterm id="I_indexterm11_d1e16466" significance="normal">
+          <primary>services services</primary>
+          <secondary>démarrer des noeuds esclaves en tant que</secondary>
+        </indexterm>peut aussi gérer un esclave Windows distant comme un service
+      Windows, en utilisant le service Windows Management Instrumentation
+      (WMI)<indexterm id="I_indexterm11_d1e16472" significance="normal">
+          <primary>WMI (Windows Management Instrumentation)</primary>
+        </indexterm> qui est installé par défaut sur Windows 2000 ou après (voir
+      <xref linkend="fig-jenkins-slave-service"/>). Quand vous choisissez cette
+      option, vous avez seulement besoin de fournir un nom d'utilisateur et un
+      mot de passe Windows. Le nom du noeud doit être le nom de machine de la
+      machine esclave.</para>
+      <para>Ceci est certainement pratique, parce que cela ne requiert pas de se
+      connecter à la machine Windows pour la configurer. Toutefois, cette
+      méthode possède quelques limitations — en particulier, vous ne pouvez pas
+      exécuter d'applications nécessitant une interface graphique, vous ne
+      pouvez donc pas mettre en place un esclave de cette façon pour faire du
+      test Web, par exemple. En pratique, cela peut se révéler un peu compliqué
+      à paramétrer, parce que vous pourriez avoir besoin de configurer le
+      firewall Windows pour ouvrir les ports et services appropriés. Si vous
+      rencontrez des problèmes, assurez-vous que votre configuration réseau
+      autorise les connexions TCP aux ports 135, 139, et 445, ainsi que les
+      connexions UDP aux ports 137 et 138 (voir <ulink
+      url="https://wiki.jenkins-ci.org/display/JENKINS/Windows+slaves+fail+to+start+via+DCOM"/>
+      pour plus de détails).</para>
       <figure float="0" id="fig-jenkins-slave-service">
-        <title>Letting Jenkins control a Windows slave as a Windows
-        service</title>
+        <title>Permettre à Jenkins de contrôler un esclave Windows comme un
+        service Windows</title>
         <mediaobject id="I_mediaobject11_d1e16499">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1114.pdf" format="PDF"/>
@@ -474,26 +633,41 @@
     </sect2>
   </sect1>
   <sect1 id="sect-build-job-ties">
-    <title>Associating a Build Job with a Slave or Group of Slaves</title>
-    <para>In the <indexterm class="startofrange" id="ch11-job1" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>associating with build jobs</tertiary></indexterm><indexterm class="startofrange" id="ch11-job2" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>associating slave nodes to jobs</tertiary></indexterm>previous section, we saw how you can assign labels to your
-    slave nodes. This is a convenient way to group your slave nodes according
-    to characteristics such as operating system, target environment, database
-    type, or any other criteria that is relevant to your build process. A
-    common application of this practice is to run OS-specific functional tests
-    on dedicated slave nodes, or to reserve a particular machine exclusively
-    to performance tests.</para>
-    <para>Once you have assigned labels to your slave nodes, you also need to
-    tell Jenkins where it can run the build jobs. By default, Jenkins will
-    simply use the first available slave node, which usually results in the
-    best overall turn-around time. If you need to tie a build job to a
-    particular machine or group of machines, you need to tick the “Restrict
-    where this project can be run” checkbox in the build configuration page
-    (see <xref linkend="fig-jenkins-label-expression"/>). Next, enter the
-    name of the machine, or a label identifying a group of machines, into the
-    Label Expression field. Jenkins will provide a dynamic dropdown showing
-    the available machine names and labels as you type.</para>
+    <title>Associer une tâche de build avec un esclave ou un groupe
+    d'esclaves</title>
+    <para>Dans la <indexterm class="startofrange" id="ch11-job1"
+        significance="normal">
+        <primary>builds distribués</primary>
+        <secondary>noeuds esclaves pour</secondary>
+        <tertiary>associer avec des tâches de build</tertiary>
+      </indexterm><indexterm class="startofrange" id="ch11-job2"
+        significance="normal">
+        <primary>taĉhes de build</primary>
+        <secondary>distribuées sur les serveurs de build</secondary>
+        <tertiary>associer les noeuds esclaves aux tâches</tertiary>
+      </indexterm>section précédente, nous avons vu comment attribuer des
+    libellés à vos noeuds esclaves. C'est un moyen commode pour grouper vos
+    esclaves en fonction de caractéristiques telles que le système
+    d'exploitation, l'environnement cible, le type de base de données, ou tout
+    autre critère pertinent dans votre processus de build. Une application
+    commune de cette pratique est d'exécuter des tests fonctionnels spécifiques
+    à un OS sur des noeuds esclaves dédiés, ou de réserver une machine
+    particulière aux tests de performance).</para>
+    <para>Une fois que vous avez affecté vos libellés à vos noeuds esclaves,
+    vous devez aussi dire à Jenkins où il peut exécuter les tâches de build. Par
+    défaut, Jenkins utilisera simplement le premier noeud esclave disponible, ce
+    qui offre généralement le meilleur temps de traitement global. Si vous avez
+    besoin d'attacher une tâche de build à une machine ou un groupe de machines
+    particulier, vous devez cocher la case “Resteindre les emplacements où ce
+    projet peut s'exécuter” dans la page de configuration du build (voir <xref
+    linkend="fig-jenkins-label-expression"/>). Ensuite, entrez le nom de la
+    machine, ou un libellé identifiant un groupe de machines, dans le champ
+    Expression de libellé. Jenkins fournira une liste déroulante dynamique
+    montrant les noms de machines et libellés de au fur et à mesure que vous
+    tapez.</para>
     <figure float="0" id="fig-jenkins-label-expression">
-      <title>Running a build job on a particular slave node</title>
+      <title>Exécuter une tâche de build sur un noeud esclave
+      particulier</title>
       <mediaobject id="I_mediaobject11_d1e16531">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1115.pdf" format="PDF"/>
@@ -503,72 +677,99 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This field also accepts boolean expressions, allowing you to define
-    more complicated constraints about where your build job should run. How to
-    use these expressions is best illustrated by an example. Suppose you have
-    a build farm with Windows and Linux slave nodes (identified by the labels
-    “windows” and “linux”), distributed over three sites (“sydney”,
-    “sanfrancisco”, and “london”). Your application also needs to be tested
-    against several different databases (“oracle”, “db2”, “mysql”, and
-    “postgres”). You also use labels to distinguish slave nodes used to deploy
-    to different environments (test, uat, production).</para>
-    <para>The simplest use of label expressions is to determine where a build
-    job can or cannot be executed. If your web tests require Internet
-    Explorer, for example, you will need them to run on a Windows machine. You
-    could express this by simply quoting the corresponding label:</para>
-    <programlisting id="I_programlisting11_d1e16540" format="linespecific">windows</programlisting>
-    <para>Alternatively, you might want to run tests against Firefox, but only
-    on Linux machines. You could exclude Windows machines from the range of
-    candidate build nodes by using the <literal moreinfo="none">!</literal> negation
-    operator:</para>
-    <programlisting id="I_programlisting11_d1e16547" format="linespecific">!windows</programlisting>
-    <para>You can also use the <command moreinfo="none">and</command>
-    (<literal moreinfo="none">&amp;&amp;</literal>) and <command moreinfo="none">or</command>
-    (<literal moreinfo="none">!!</literal>) operators to combine expressions. For example,
-    suppose the Postgres database is only tested for Linux. You could tell
-    Jenkins to run a particular build job only on Linux machines installed
-    with postgres using the following expression:</para>
-    <programlisting id="I_programlisting11_d1e16563" format="linespecific">linux &amp;&amp; postgres</programlisting>
-    <para>Or you could specify that a particular build job is only to be run
-    on a UAT environment in Sydney or London:</para>
-    <programlisting id="I_programlisting11_d1e16568" format="linespecific">uat &amp;&amp; (sydney || london)</programlisting>
-    <para>If your machine names contain spaces, you will need to enclose them
-    in double quotes:</para>
-    <programlisting id="I_programlisting11_d1e16572" format="linespecific">"Windows 7" || "Windows XP"</programlisting>
-    <para>There are also two more advanced logical operators that you may find
-    useful. The <command moreinfo="none">implies</command> operator
-    (<literal moreinfo="none">=&gt;</literal>) lets you define a logical constraint of the
-    form “if A is true, then B must also be true.” For example, suppose you
-    have a build job that can run on any Linux distribution, but if it is
-    executed on a Windows box, it must be Windows 7. You could express this
-    constraint as follows:</para>
-    <programlisting id="I_programlisting11_d1e16582" format="linespecific">windows -&gt; "Windows 7"</programlisting>
-    <para>The other logical operator is the <command moreinfo="none">if-and-only-if</command> (<literal moreinfo="none">&lt;=&gt;</literal>)
-    operator. This operation lets you define stronger constraints of the form
-    “If A is true, then B must be true, but if A is false, then B must be
-    false.” For example, suppose that Windows 7 tests are only to be run in a
-    UAT environment, and that only Windows 7 tests are to be run in the UAT
-    environment. You could express this as <indexterm id="I_indexterm11_d1e16592" class="endofrange" startref="ch11-job1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16594" class="endofrange" startref="ch11-job2" significance="normal"><primary/></indexterm>shown here:</para>
-    <programlisting id="I_programlisting11_d1e16597" format="linespecific">"Windows 7" &lt;-&gt; uat</programlisting>
+    <para>Ce champ admet aussi des expressions booléennes, ce qui vous permet de
+    définir des contraintes plus compliquées spécifiant où votre build devrait
+    s'exécuter. Le plus simple pour expliquer comment utiliser ces expressions
+    est de montrer des exemples. Supposez que vous avez une ferme de
+    construction avec des noeuds esclaves Windows et Linux (identifiés par les
+    libellés “windows” et “linux”), distribués sur trois sites (“sydney”,
+    “sanfrancisco”, et “london”). Votre application nécessite aussi d'être
+    testée sur différentes bases de données (“oracle”, “db2”, “mysql”, et
+    “postgres”). Vous pouvez aussi utiliser des libellés pour distinguer les
+    noeuds esclaves utilisés pour déployer vers différents environnements (test,
+    test d'acceptation, production).</para>
+    <para>L'utilisation la plus simple des expressions de libellés est de
+    définir où une tâche de build peut ou ne pas être exécutée. Si vos tests web
+    nécessitent Internet Explorer, par exemple, vous aurez besoin de les
+    exécuter sur une machine Windows. Vous pourriez exprimer cela en indiquant
+    simplement le libellé suivant :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16540">windows</programlisting>
+    <para>Sinon, vous pourriez vouloir exécuter vos tests sur Firefox, mais
+    seulement sur des machines Linux. Vous pourriez exclure les machines Windows
+    de l'éventails des noeuds candidats en utilisant l'opérateur ! :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16547">!windows</programlisting>
+    <para>Vous pouvez aussi utiliser les opérateurs <command
+    moreinfo="none">et</command> (<literal moreinfo="none">&amp;&amp;</literal>)
+    et <command moreinfo="none">ou</command> (<literal
+    moreinfo="none">!!</literal>) pour combiner les expressions. Par exemple,
+    supposez que la base Postgres soit testement uniquement pour Linux. Vous
+    pourriez dire à Jenkins d'exécuter une tâche de build particulière seulement
+    sur les machines Linux sur lesquelles est installé Postgres en utilisant
+    l'expression suivante :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16563">linux &amp;&amp; postgres</programlisting>
+    <para>Ou vous pourriez spécifier qu'une tâche de build particulière doit
+    uniquement tourner sur l'environnement de test d'acceptation utilisateur de
+    Sydney ou Londres :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16568">uat &amp;&amp; (sydney || london)</programlisting>
+    <para>Si votre nom de machine contient des espaces, vous devrez les entourer
+    de double quotes :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16572">"Windows 7" || "Windows XP"</programlisting>
+    <para>Il y a aussi deux opérateurs logiques plus avancés que vous pourriez
+    trouver utile. L'opérateur <command moreinfo="none">implique</command>
+    (<literal moreinfo="none">=&gt;</literal>) vous permet de définir une
+    contrainte logique de la forme “si A est vrai, alors B doit aussi être
+    vrai.” Par exemple, supposez que vous ayez une tâche de build qui peut
+    s'exécuter sur n'importe quelle distribution Linux, mais que si c'est une
+    machine Windows, ce doit être Windows 7. Vous pourriez exprimer cette
+    contrainte comme suit :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16582">windows -&gt; "Windows 7"</programlisting>
+    <para>L'autre opérateur logique est l'opérateur <command
+    moreinfo="none">si-et-seulement-si</command> (<literal
+    moreinfo="none">&lt;=&gt;</literal>. Cette opération vous permet de définir
+    des contraintes plus fortes de la forme "Si A est vrai, alors B doit être
+    vrai, mais si A est faux, alors B doit être faux". Par exemple, supposez que
+    les tests Windows 7 doivent uniquement être exécutés sur l'environnement de
+    tests d'acceptation utilisateur, et que seuls les tests Windows 7 doivent
+    être exécutés dans l'environnement de tests d'acceptation. Vous pourriez
+    exprimer cela comme <indexterm class="endofrange"
+        id="I_indexterm11_d1e16592" significance="normal" startref="ch11-job1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16594"
+        significance="normal" startref="ch11-job2">
+        <primary/>
+      </indexterm>montré ici :</para>
+    <programlisting format="linespecific" id="I_programlisting11_d1e16597">"Windows 7" &lt;-&gt; uat</programlisting>
   </sect1>
   <sect1 id="node-monitoring">
-    <title>Node Monitoring</title>
-    <para>Jenkins <indexterm id="I_indexterm11_d1e16604" significance="normal"><primary>distributed builds</primary><secondary>slave nodes for</secondary><tertiary>monitoring</tertiary></indexterm><indexterm id="I_indexterm11_d1e16611" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>monitoring slave nodes</tertiary></indexterm><indexterm id="I_indexterm11_d1e16618" significance="normal"><primary>build agents</primary><secondary>monitoring</secondary></indexterm>doesn’t just dispatch build jobs to slave agents and hope
-    for the best: it pro-actively monitors your slave machines, and will take
-    a node offline if it considers that the node is incapable of safely
-    performing a build. You can fine-tune exactly what Jenkins monitors int
-    the Manage Nodes screen (see <xref linkend="fig-jenkins-node-monitoring"/>). Jenkins monitors the slave
-    agents in several different ways. It monitors the response time: an overly
-    slow response time can indicate either a network problem or that the slave
-    machine is down. It also monitors the amount of disk space, temporary
-    directory space and swap space available to the Jenkins user on the slave
-    machine, since build jobs can be notoriously disk-hungry. It also keeps
-    tabs on the system clocks, as if the clocks are not correctly
-    synchronized, odd errors can sometimes happen. If any of these criteria is
-    not up to scratch, Jenkins will automatically take the server
-    offline.</para>
+    <title>Surveillance des noeuds</title>
+    <para>Jenkins <indexterm id="I_indexterm11_d1e16604" significance="normal">
+        <primary>builds distribués</primary>
+        <secondary>noeuds esclaves pour</secondary>
+        <tertiary>surveillance</tertiary>
+      </indexterm><indexterm id="I_indexterm11_d1e16611" significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>distribués sur les serveurs de build</secondary>
+        <tertiary>surveillance de noeuds esclaves</tertiary>
+      </indexterm><indexterm id="I_indexterm11_d1e16618" significance="normal">
+        <primary>agents de build</primary>
+        <secondary>surveillance</secondary>
+      </indexterm>ne distribue pas les tâches de build aux agents esclaves et
+    advienne que pourra : il surveille pro-activement les machines esclaves, et
+    mettra un noeud offline s'il considère que celui-ci est incapable
+    d'effectuer un build sans danger. Vous pouvez affiner exactement ce que
+    Jenkins surveille dans l'écran Gérer les noeuds (voir <xref
+    linkend="fig-jenkins-node-monitoring"/>). Jenkins surveille les agents
+    esclave de plusieurs façons. Il surveille le temps de réponse : un temps de
+    réponse excessif peut indiquer soit un problème réseau soit que la machine
+    est tombée. Il surveille aussi la quantité d'espace disque, l'espace disque
+    temporaire et l'espace de swap disponible à l'utilisateur Jenkins sur la
+    machine esclave, puisque les tâches de build peuvent notoirement être
+    consommateur en espace disque. Il garde aussi un oeil sur les horloges
+    systèmes, parce que si les horloges ne sont pas correctement synchronisées,
+    des erreurs bizarres peuvent apparaître. Si l'un de ces critères n'est pas
+    rempli, Jenkins mettra automatiquement le serveur hors-ligne.</para>
     <figure float="none" id="fig-jenkins-node-monitoring">
-      <title>Jenkins proactively monitors your build agents</title>
+      <title>Jenkins surveille proactivement vos agents de build</title>
       <mediaobject id="I_mediaobject11_d1e16629">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1116.pdf" format="PDF"/>
@@ -581,69 +782,107 @@
   </sect1>
   <sect1 id="I_sect111_d1e16634">
     <title>Cloud Computing</title>
-    <para>Cloud computing<indexterm class="startofrange" id="ch11-cloud1" significance="normal"><primary>cloud computing, for builds</primary></indexterm><indexterm class="startofrange" id="ch11-cloud2" significance="normal"><primary>distributed builds</primary><secondary sortas="cloud-based">with cloud-based build
-        farm</secondary></indexterm><indexterm class="startofrange" id="ch11-cloud3" significance="normal"><primary>build jobs</primary><secondary>distributed across build servers</secondary><tertiary>cloud-based build farm for</tertiary></indexterm> involves using hardware resources on the Internet as an
-    extension and/or replacement of your local computing architecture. Cloud
-    computing is expanding into many areas of the enterprise, including email
-    and document sharing (Gmail and Google Apps are particularly well-known
-    examples, but there are many others), off-site data storage (such as
-    Amazon S3), as well as more technical services such as source code
-    repositories (such as GitHub, Bitbucket, etc.) and many others.</para>
-    <para>Of course externalized hardware architecture solutions have been
-    around for a long time. The main thing that distinguishes the cloud
-    computing with more traditional services is the speed and flexibility with
-    which a service can be brought up, and brought down when it is no longer
-    needed. In a cloud computing environment, a new machine can be running and
-    available within seconds.</para>
-    <para>However, cloud computing in the context of Continuous Integration is
-    not always as simple as it might seem. For any cloud-based approach to
-    work, some of your internal resources may need to be available to the
-    outside world. This can include opening access to your version control
-    system, your test databases, and to any other resources that your builds
-    and tests require. All these aspects need to be considered carefully when
-    choosing a cloud-based CI architecture, and may limit your options if
-    certain resources simply cannot be accessed from the Internet.
-    Nevertheless, cloud-based CI has the potential of providing huge benefits
-    when it comes to scalability.</para>
-    <para>In the following sections, we will look at how to use the Amazon EC2
-    cloud computing services to set up a cloud-based build farm.</para>
+    <para>Le Cloud computing<indexterm class="startofrange" id="ch11-cloud1"
+        significance="normal">
+        <primary>cloud computing, pour les builds</primary>
+      </indexterm><indexterm class="startofrange" id="ch11-cloud2"
+        significance="normal">
+        <primary>builds distribués</primary>
+        <secondary sortas="cloud-based">avec une ferme de build basée sur le
+        cloud</secondary>
+      </indexterm><indexterm class="startofrange" id="ch11-cloud3"
+        significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>distribuées sur des serveurs de build</secondary>
+        <tertiary>ferme de build basée sur le cloud pour</tertiary>
+      </indexterm> consiste à utiliser des ressources matérielles sur Internet
+    comme extension et/ou en remplacement de votre architecture informatique
+    locale. Le Cloud computing est en expansion dans plusieurs domaines de
+    l'entreprise, incluant l'email et le partage de document (Gmail et Google
+    Apps sont des exemples particulièrement connus, mais il y en a d'autres),
+    stockage de données hors-site (comme Amazon S3), aussi bien bien que des
+    services techniques comme des dépôts de code source (comme GitHub,
+    Bitbucket, etc.) et de nombreux autres.</para>
+    <para>Bien sûr les solutions d'architecture matérielle externalisée existent
+    depuis longtemps. Le point principal qui distingue le cloud computing des
+    services plus traditionnels est la vitesse et la flexibilité avec laquelle
+    un service peut être monté, et démonté quand il n'est plus nécessaire. Dans
+    un environnement de cloud computing, une nouvelle machine peut fonctionner
+    et être disponible en quelques secondes.</para>
+    <para>Cependant, le cloud computing dans le contexte de l'Intégration
+    Continue n'est pas toujours aussi simple qu'il n'y paraît. Pour qu'une
+    approche basée sur le cloud fonctionne, certaines de vos ressources internes
+    pourraient devoir être disponibles au monde extérieur. Ceci peut inclure
+    l'ouverture d'accès à votre système de contrôle de version, votre base de
+    données de test, et à n'importe quelle autre ressource que vos builds et vos
+    tests requièrent. Tous ces aspects doivent être examinés attentivement lors
+    du choix d'une architecture d'IC basée sur le cloud, et pourrait limiter vos
+    options si certaines ressources ne peuvent tout simplement pas être accédées
+    depuis Internet. Malgré tout, l'IC basée sur le cloud a le potentiel pour
+    vous offrir d'énormes bénéfices sur l'évolutivité de votre
+    infrastructure.</para>
+    <para>Dans les sections suivantes, nous regarderons comment utiliser les
+    services de cloud computing d'Amazon EC2 pour mettre en place une ferme de
+    build basée sur le cloud.</para>
     <sect2>
-      <title>Using Amazon EC2</title>
-      <para>In <indexterm class="startofrange" id="ch11-amazon" significance="normal"><primary>Amazon EC2 cloud computing service</primary></indexterm>addition to selling books, Amazon is one of the more
-      well-known providers of cloud computing services. If you are willing to
-      pay for the service, Amazon can provide you build machines that can be
-      either used permanently as part of your build farm, or brought online as
-      required when your existing build machines become overloaded. This is an
-      excellent and reasonably cost-efficient way to absorb extra build load
-      on an as-needed basis, and without the headache of extra physical
-      machines to maintain.</para>
-      <para>If you want the flexibility of a cloud-based CI architecture, but
-      don’t want to externalize your hardware, another option is to set up a
-      <indexterm id="I_indexterm11_d1e16672" significance="normal"><primary>Eucalyptus cloud</primary></indexterm>Eucalyptus cloud. Eucalyptus is an open source tool that
-      enables you to create a local private cloud on existing hardware.
-      Eucalyptus uses an API that is compatible with Amazon EC2 and S3, and
-      works well with Jenkins.</para>
+      <title>Utiliser Amazon EC2</title>
+      <para>En <indexterm class="startofrange" id="ch11-amazon"
+          significance="normal">
+          <primary>service de cloud computing Amazon EC2</primary>
+        </indexterm>plus de vendre des livres, Amazon est l'un des fournisseurs
+      les plus connus de services cloud computing. Si vous êtes prêt à payer
+      pour le sercice, Amazon peut vous fournir des machines de build qui
+      peuvent soit être utilisées de façon permanente comme partie de votre
+      ferme de build, soit mis en ligne au besoin lorsque vos machines de build
+      existantes deviennent surchargées. C'est un moyen excellent et
+      raisonnablement coûteux pour absorber la charge exceptionnel de build en
+      fonction de vos besoins, et sans le mal de tête associé à des machines
+      physiques supplémentaires à maintenir.</para>
+      <para>Si vous voulez la flexibilité d'une architecture d'IC basée sur le
+      cloud, mais que vous ne voulez pas externaliser votre matériel, une autre
+      option est de mettre en place un cloud <indexterm
+          id="I_indexterm11_d1e16672" significance="normal">
+          <primary>cloud Eucalyptus</primary>
+        </indexterm>Eucalyptus. Eucalyptus est un outil open source qui vous
+      permet de créer localement un cloud privé sur du matériel existant.
+      Eucalyptus utilise une API compatible avec Amazon EC2 et S3, et fonctionne
+      bien avec Jenkins.</para>
       <sect3>
-        <title>Setting up your Amazon EC2 build farm</title>
-        <para>Amazon EC2 is probably the most popular and well-known
-        commercial cloud computing service. To use this service, you will need
-        to create an EC2 account with Amazon if you do not already have one.
-        The process required to do this is well documented on the Amazon
-        website, so we will not dwell on this here. Once you have created your
-        account, you will be able to create the virtual machines and machine
-        images that will make up your EC2-based build farm.</para>
-        <para>When using Amazon EC2, you create virtual machines, called
-        instances, using the Amazon Web<indexterm id="I_indexterm11_d1e16683" significance="normal"><primary>AWS (Amazon Web Services)</primary></indexterm><indexterm id="I_indexterm11_d1e16686" significance="normal"><primary>Amazon Web Services (AWS)</primary></indexterm> Services (AWS) Management Console (see <xref linkend="fig-jenkins-aws-console"/>). This website is where you
-        manage your running instances and create new ones. You create these
-        instances from predefined images, called <indexterm id="I_indexterm11_d1e16692" significance="normal"><primary>AMI (Amazon Machine Image)</primary></indexterm><indexterm id="I_indexterm11_d1e16695" significance="normal"><primary>Amazon Machine Image (AMI)</primary></indexterm>Amazon Machine Images (AMIs). There are many AMI images,
-        both from Amazon and in the public domain, that you can use as a
-        starting point, covering most of the popular operating systems. Once
-        you have created a new instance, you can connect to it using either
-        SSH (for unix machines) or Windows Remote Desktop Connection, to
-        configure it for your purposes.</para>
+        <title>Mettre en place votre ferme de build Amazon EC2</title>
+        <para>Amazon EC2 est probablement le service de cloud computing
+        commercial le plus populaire et le plus connu. Pour utiliser ces
+        service, vous devrez créer un compte EC2 avec Amazon si vous n'en avez
+        pas déjà un. Le processus requis pour faire cela est bien documenté sur
+        le site web d'Amazon, nous n'insisterons donc ici sur le sujet. Une fois
+        que vous avez créé votre compte, vous pouvez créer des machines
+        virtuelles et des images de machines qui formeront votre ferme de build
+        basée sur EC2.</para>
+        <para>Quand vous utilisez Amazon EC2, vous créez des machines
+        virtuelles, appelées in instances, en utilisant la console de gestion
+        Amazon Web<indexterm id="I_indexterm11_d1e16683" significance="normal">
+            <primary>AWS (Amazon Web Services)</primary>
+          </indexterm><indexterm id="I_indexterm11_d1e16686"
+            significance="normal">
+            <primary>Amazon Web Services (AWS)</primary>
+          </indexterm> Services (AWS) (voir <xref
+        linkend="fig-jenkins-aws-console"/>). Ce site web vous permet de gérer
+        vos instances en fonctionnement et d'en créer de nouvelles. Vous créez
+        ces instances à partir d'images prédéfinies, appelées <indexterm
+            id="I_indexterm11_d1e16692" significance="normal">
+            <primary>AMI (Amazon Machine Image)</primary>
+          </indexterm><indexterm id="I_indexterm11_d1e16695"
+            significance="normal">
+            <primary>Amazon Machine Image (AMI)</primary>
+          </indexterm>Amazon Machine Images (AMIs). Il y a plusieurs images AMI,
+        à la fois d'Amazon et dans le domaine public, que vous pouvez utiliser
+        comme point de départ, couvrant la plupart des systèmes d'exploitation
+        populaires. Une fois que vous avez créé une nouvelle instance, vous
+        pouvez vous y connecter soit via (pour les machines unix) soit via une
+        connexion distance Windows, pour la configurer pour ce que vous voulez
+        en faire.</para>
         <figure float="none" id="fig-jenkins-aws-console">
-          <title>You manage your EC2 instances using the Amazon AWS Management
-          Console</title>
+          <title>Vous gérez vos instances EC2 en utilisant la console de gestion
+          Amazon AWS</title>
           <mediaobject id="I_mediaobject11_d1e16702">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1117.pdf" format="PDF"/>
@@ -653,41 +892,47 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>To set up a build farm, you will also need to configure your
-        have one, just go to the Key Pairs menu in the Security build server
-        to be able to access your EC2 instances. In particular, you will need
-        to install the Amazon EC2 API tools, set up the appropriate
-        private/public keys, and allow SSH connections from your server or
-        network to your Amazon instances. Again, the details of how to do this
-        are well documented for all the major operating systems on the EC2
-        website.</para>
-        <para>You can use Amazon EC2 instances in two ways—either create slave
-        machines on Amazon EC2 and use them as remote machines, or have
-        Jenkins create them for you dynamically on demand. Or you can have a
-        combination of the two. Both approaches have their uses, and we will
-        discuss each of them in the following sections.</para>
+        <para>Pour mettre en place une ferme de build, [TODO you will also need
+        to configure your have one, just go to the Key Pairs menu in the
+        Security build server to be able to access your EC2 instances]. En
+        particulier, vous aurez besoin d'installer les outils de l'API Amazon
+        EC2, de configurer les clés privées/publiques appropriées, et
+        d'autoriser les connexions SSH depuis votre serveur ou votre réseau vers
+        vos instances Amazon. Encore une fois, les détails indiquant comment
+        faire cela sont bien documentés pour tous les systèmes d'exploitation
+        principaux sur le site web EC2.</para>
+        <para>Vous pouvez utiliser les instances Amazon EC2 de deux façons —
+        soit vous créez les machines esclaves sur Amazon EC2 et les utilisez
+        comme machines distantes, soit vous demandez à Jenkins de les créer
+        dynamiquement pour vous à la demande. Ou vous pouvez avoir une
+        combinaison des deux. Les approches ont leur utilité, et nous
+        discuterons de chacune dans les sections suivantes.</para>
       </sect3>
       <sect3>
-        <title>Using EC2 instances as part of your build farm</title>
-        <para>Creating a new EC2 instance is as simple as choosing the base
-        image you want to use. You will just need to provide some details
-        about the instance, such as its size and capacity, and the private key
-        you want to use to access the machine. Amazon will then create a new
-        running virtual machine based on this image. Once you have set it up,
-        an EC2 instance is essentially a machine like any other, and it is
-        easy and convenient to set up permanent or semipermanent EC2 machines
-        as part of your build infrastructure. You may even opt to use an EC2
-        image as your master server.</para>
-        <para>Setting up an existing EC2 instance as a Jenkins slave is little
-        different to setting up any other remote slave. If you are setting up
-        a Unix or Linux EC2 slave, you will need to refer to the private key
-        file (see <xref linkend="fig-jenkins-ec2-linux"/>) that you used to
-        create the EC2 instance on the AWS Management console. Depending on
-        the flavor of Linux you are using, you may also need to provide a
-        username. Most distributions connect as root, but some, such as
-        Ubuntu, need a different user name.</para>
+        <title>Utiliser des instances EC2 comme partie de votre ferme de
+        build</title>
+        <para>Créer une nouvelle instance EC2 revient tout simplement à choisir
+        une image de base que vous voulez utiliser. Vous devrez juste fournir
+        quelques détails de base à propos de l'instance, comme sa taille et sa
+        capacité, et la clé privée que vous voulez utiliser pour accéder à la
+        machine. Amazon créera ensuite une nouvelle machine virtuelle basée sur
+        cette image. Une fois que vous avez configuré cela, une instance EC2 est
+        en substance une machine comme n'importe quelle autre, et il est simple
+        et commode de configurer des machines EC2 permanentes ou semipermanentes
+        comme part de votre infrastructure de build. Vous pourriez même opter
+        pour utiliser une image EC2 pour votre serveur maître.</para>
+        <para>Configurer une instance EC2 existante comme un esclave Jenkins est
+        peu différent que de configurer n'importe quel autre esclave distant. Si
+        vous mettez en place un esclave EC2 Unix ou Linux, vous devrez
+        référencer le fichier de clé privée (voir <xref
+        linkend="fig-jenkins-ec2-linux"/>) que vous avez utilisé pour créer
+        l'instance EC2 sur la console de gestion AWS. En fonction du type de
+        Linux que vous utilisez, vous pourriez aussi avoir besoin de fournir un
+        nom d'utilisateur. La plupart des distributions se connectent en tant
+        que root, mais certaines, comme Ubuntu, nécessitent un nom d'utilisateur
+        différent.</para>
         <figure float="none" id="fig-jenkins-ec2-linux">
-          <title>Configuring an Amazon EC2 slave</title>
+          <title>Configurer un esclave Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16723">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1118.pdf" format="PDF"/>
@@ -699,25 +944,38 @@
         </figure>
       </sect3>
       <sect3>
-        <title>Using dynamic instances</title>
-        <para>The second approach involves creating new Amazon EC2 machines
-        dynamically, as they are required. Setting up dedicated instances is
-        not difficult, but it does not scale well. A better approach is to let
-        Jenkins create new instances as require. To do this, you will need to
-        install the Jenkins<indexterm id="I_indexterm11_d1e16733" significance="normal"><primary>plugins</primary><secondary>Amazon EC2</secondary></indexterm><indexterm id="I_indexterm11_d1e16738" significance="normal"><primary>Amazon EC2 plugin</primary></indexterm> Amazon EC2 plugin. This plugin lets your Jenkins
-        instance start slaves on the EC2 cloud on demand, and then kill them
-        off when they are no longer needed. The plugin works both with Amazon
-        EC2, and the <indexterm id="I_indexterm11_d1e16742" significance="normal"><primary>Ubuntu Enterprise Cloud</primary></indexterm>Ubuntu Enterprise Cloud. We will be focusing on Amazon
-        EC2 here. Note that at the time of writing the Amazon EC2 Plugin only
-        supported managing Unix EC2 images.</para>
-        <para>Once you have installed the plugin and restarted Jenkins, go to
-        the main Jenkins configuration screen and click on Add a New Cloud
-        (see <xref linkend="fig-jenkins-ec2-cloud"/>). Choose Amazon EC2. You
-        will need to provide your Amazon Access Key ID and Secret Access Key
-        so that Jenkins can communicate with your Amazon EC2 account. You can
-        access these in the Key Pairs screen of your EC2 dashboard.</para>
+        <title>Utiliser des instances dynamiques</title>
+        <para>La seconde approche implique de créer de nouvelles machines Amazon
+        EC2 dynamiquement, lorsqu'elles sont nécessaires. Configurer des
+        instances dédiées n'est pas difficile, mais cela ne s'adapte pas très
+        bien à la charge. Une meilleure approche est de laisser Jenkins créer de
+        nouvelles instances en fonction du besoin. Pour faire cela, vous aurez
+        besoin d'installer le plugin Jenkins<indexterm
+            id="I_indexterm11_d1e16733" significance="normal">
+            <primary>plugins</primary>
+            <secondary>Amazon EC2</secondary>
+          </indexterm><indexterm id="I_indexterm11_d1e16738"
+            significance="normal">
+            <primary>Amazon EC2 plugin</primary>
+          </indexterm> Amazon EC2. Ce plugin permet de à Jenkins de démarrer des
+        esclaves EC2 sur le cloud à la demande, et de les éteindre ensuite
+        lorsqu'ils ne sont plus nécessaires. Le plugin fonctionne à la fois avec
+        Amazon EC2, et <indexterm id="I_indexterm11_d1e16742"
+            significance="normal">
+            <primary>Ubuntu Enterprise Cloud</primary>
+          </indexterm>Ubuntu Enterprise Cloud. Nous nous concentrerons ici sur
+        Amazon EC2. Notez qu'à l'écriture de ces lignes le plugin supportait
+        seulement la gestion des images EC2 Unix.</para>
+        <para>Une fois que vous avez installé le plugin et redémarré Jenkins,
+        allez dans l'écran principal de configuration et cliquez sur Ajouter un
+        Nouveau Cloud (voir <xref linkend="fig-jenkins-ec2-cloud"/>). Choisissez
+        Amazon EC2. Vous devez fournir votre clé d'identification d'accès Amazon
+        (NDT : Amazon Access Key ID) et votre clé d'accès secret afin que
+        Jenkins puisse communiquer avec votre compte Amazon EC2. Vous pouvez
+        accéder à ceux-ci dans l'écran Paires de clés de votre tableau de bord
+        EC2.</para>
         <figure float="0" id="fig-jenkins-ec2-cloud">
-          <title>Configuring an Amazon EC2 slave</title>
+          <title>Configurer un esclave Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16753">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1119.pdf" format="PDF"/>
@@ -727,42 +985,48 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>You will also need to provide your RSA private key. If you don’t
-        have one, just go to the Key Pairs menu in the Security Credentials
-        screen and create one. This will create a new key pair for you and
-        download the private key. Keep the private key in a safe place (you
-        will need it if you want to connect to your EC2 instances via
-        SSH).</para>
-        <para>In the advanced options, you can use the Instance Cap field to
-        limit the number of EC2 instances that Jenkins will launch. This limit
-        refers to the total number of active EC2 instances, not just the ones
-        that Jenkins is currently running. This is useful as a safety measure,
-        as you pay for the time your EC2 instances spend active.</para>
-        <para>Once you have configured your overall EC2 connection, you need
-        to define the machines you will work with. You do this by specifying
-        the Amazon Mirror Image (AMI) identifier of the server image you would
-        like to start. Amazon provides some starter images, and many more are
-        available from the community, however not all images will work with
-        EC2. At the time of writing, only certain images based on 32-bit Linux
-        distributions work correctly.</para>
-        <para>The predefined Amazon and public AMI images are useful starting
-        points for your permanent virtual machines, but for the purposes of
-        implementing a dynamic EC2-based cloud, you need to define your own
-        AMI with the essential tools (Java, build tools, SCM configuration and
-        so forth) preinstalled. Fortunately, this is a simple <phrase role="keep-together">process</phrase>: just start off with a generic
-        AMI (preferably one compatible with the Jenkins EC2 plugin), and
-        install everything your builds need. Make sure you use an EBS image.
-        This way, changes you make to your server instance are persisted on an
-        EBS volume so that you don't lose them when the server shuts down.
-        Then create a new image by selecting the Create Image option in the
-        Instances screen on the EC2 management console (see <xref linkend="fig-jenkins-ec2-create-image"/>). Make sure SSH is open from
-        your build server’s IP address in the default security group on Amazon
-        EC2. If you don’t do this, Jenkins will time out when it tries to
-        start up a new slave node.</para>
-        <para>Once you have prepared your image, you will be able to use it
-        for your EC2 <phrase role="keep-together">configuration</phrase>.</para>
+        <para>Vous devrez aussi fournir votre clé privée RSA. Si vous n'en avez
+        pas, rendez vous simplement dans le menu Paires de clé dans l'écran
+        Security Credential et créez en une. Cela créera une nouvelle paire de
+        clé pour vous et téléchargera la clé privée. Conservez la clé privée
+        dans un endroit sûr (vous en aurez besoin si vous voulez vous connecter
+        à vos instances EC3 via SSH).</para>
+        <para>Dans les options avancées, vous pouvez utiliser le champ Limite
+        d'Instances pour limiter le nombre d'instances EC2 que Jenkins lancera.
+        Cette limite est liée au nombre total d'instances en exécution, pas
+        seulement celles que Jenkins exécute en ce moment. C'est une mesure de
+        sécurité utile, parce que vous payez pour le temps pendant lequel vos
+        instances restent actives.</para>
+        <para>Une fois que vous avez configuré votre connexion EC2 globale, vous
+        devez définir les machines avec lesquelles vous travaillerez. Vous
+        faites cela en spécifiant l'identifiant dImage Miroir Amazon (AMI) de
+        l'image serveur avec laquelle vous aimeriez démarrer. Amazon fournit
+        quelques images de démarrage, et plusieurs autres le sont par la
+        communauté, toutefois elles ne fonctionneront pas toutes avec EC2. A
+        l'écriture de ces lignes, seules certaines images basées sur des
+        distributions Linux 32-bit fonctionnent correctement.</para>
+        <para>Les images AMI prédéfinies par Amazon et publiques sont des points
+        de départ utiles pour vos machines virtuelles permanentes, mais pour les
+        besoins inhérents à la mise en oeuvre d'un cloud dynamique basé sur EC2,
+        vous devez définir vos propres AMI avec les outils essentiels (Java,
+        outils de build, configuration SCM etc.) préinstallés. Heureusement,
+        c'est un processus simple : démarrez simplement avec une AMI génériqu
+        (de préférence une compatible avec le plugin Jenkins EC2), et installez
+        tout ce dont vous avez besoin. Assurez-vous d'utiliser une image EBS. De
+        cette façon, les changements que vous faites sur votre instance serveur
+        sont sauvegardés sur un volume EBS afin que vous ne les perdiez pas
+        lorsque le serveur s'éteint. Créez alors une nouvelle image en
+        sélectionnant l'option Créer une image dans l'écran Instances dans la
+        console de gestion EC2 (voir <xref
+        linkend="fig-jenkins-ec2-create-image"/>). Vérifiez que SSH est ouvert
+        depuis l'adresse IP de votre serveur de build dans le groupe de sécurité
+        par défaut sur Amazon EC2. Si vous ne faites pas cela, Jenkins échouera
+        après avoir attendu trop longtemps le démarrage du nouveau noeud
+        esclave.</para>
+        <para>Une fois que vous aurez préparé votre image, vous serez capable de
+        l'utiliser pour votre configuration EC2.</para>
         <figure float="0" id="fig-jenkins-ec2-create-image">
-          <title>Creating a new Amazon EC2 image</title>
+          <title>Créer une nouvelle image Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16779">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1120.pdf" format="PDF"/>
@@ -772,14 +1036,28 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Now Jenkins will automatically create a new EC2 instance using
-        this image when it needs to, and delete (or “terminate,” in Amazon
-        terms) the instance once it is no longer needed. Alternatively, you
-        can bring a new EC2 slave online manually from the Nodes screen using
-        the Provision via EC2 button (see <xref linkend="fig-jenkins-amazon-cloud-manual"/>). This is a useful way to
-        test your <indexterm id="I_indexterm11_d1e16788" class="endofrange" startref="ch11-cloud1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16790" class="endofrange" startref="ch11-cloud2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16792" class="endofrange" startref="ch11-cloud3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm11_d1e16794" class="endofrange" startref="ch11-amazon" significance="normal"><primary/></indexterm>configuration.</para>
+        <para>A présent, Jenkins créera automatiquement une nouvelle instance
+        EC2 en utilisant cette image lorsque c'est nécessaire, et supprimera (ou
+        la “terminera,” en termes Amazon) l'instance une fois qu'il n'en a plus
+        besoin. Sinon, vous pouvez ajouter un nouvel esclave EC2 manuellement
+        depuis l'écran Noeuds en utilisant le bouton Provisionner via EC2 (voir
+        <xref linkend="fig-jenkins-amazon-cloud-manual"/>). C'est un moyen utile
+        pour tester votre <indexterm class="endofrange"
+            id="I_indexterm11_d1e16788" significance="normal"
+            startref="ch11-cloud1">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16790"
+            significance="normal" startref="ch11-cloud2">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16792"
+            significance="normal" startref="ch11-cloud3">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16794"
+            significance="normal" startref="ch11-amazon">
+            <primary/>
+          </indexterm>configuration.</para>
         <figure float="none" id="fig-jenkins-amazon-cloud-manual">
-          <title>Bringing an Amazon EC2 slave online manually</title>
+          <title>Ajouter un nouvel esclave Amazon EC2 manuellement</title>
           <mediaobject id="I_mediaobject11_d1e16801">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1121.pdf" format="PDF"/>
@@ -793,72 +1071,79 @@
     </sect2>
   </sect1>
   <sect1 id="sect-distributed-builds-Using-the-Cloudbees">
-    <title>Using the CloudBees DEV@cloud Service</title>
-    <para>Another option you might consider is running your Jenkins instance
-    using a dedicated cloud-based Jenkins architecture, such as the DEV@cloud
-    service offered by CloudBees. CloudBees provides Jenkins as a service as
-    well as various development services (like Sonar) around Jenkins. Using a
-    dedicated Jenkins-specific service, there is no need to install (or
-    manage) Jenkins masters or slaves on your machines. A master instance is
-    automatically configured for you, and when you give a job to be built,
-    CloudBees provisions a slave for you and takes it back when the job is
-    done.</para>
-    <para>How does this approach compare with the Amazon EC2-based
-    architecture we discussed in the previous section? The main advantage of
-    this approach is that there is much less work involved in managing your CI
-    architecture hardware. Using the Amazon EC2 infrastructure means you don't
-    need to worry about hardware, but you still need to configure and manage
-    your server images yourself. The CloudBees DEV@cloud architecture is more
-    of a high-level, CI-centric service, which provides not only a Jenkins
-    server but also other related tools such as SVN or Git repositories, user
-    management, and Sonar. In addition, the pricing model (pay by the minute)
-    is arguably better suited to a cloud-based CI architecture than the
-    pay-by-the-hour approach used by Amazon.</para>
-    <para>Amazon EC2-based services are often, though not always, used in a
-    “hybrid cloud” environment where you are offloading your jobs to the
-    cloud, but a bulk of your builds remain in-house. The CloudBees DEV@cloud
-    service is a public cloud solution where the whole build is happening on
-    the cloud (though CloudBees does also offer a similar solution running on
-    a private cloud).</para>
-    <para>Creating a CloudBees DEV@cloud account is straightforward, and you
-    can use a free one to experiment with the service (note that the free
-    CloudBees service only has a limited set of plugins available; you will
-    need to sign up for the professional version to use the full plugin
-    range). To signup for CloudBees, go to the <ulink url="https://grandcentral.cloudbees.com/account/signup">signup
-    page</ulink>. You will need to enter some relevant information such as a
-    user name, email information, and an account name. Once signed up, you
-    will have access to both DEV@cloud and RUN@cloud (essentially the entire
-    CloudBees platform) services.</para>
-    <para>At this point, you will have to subscribe to the DEV@cloud service.
-    For our purposes, you can get away with simply choosing the “free” option.
-    You will have to wait for a few minutes as CloudBees provisions a Jenkins
-    master for you. The next step is to validate your account (this helps
-    CloudBees prevent dummy accounts from running spurious jobs on the
-    service). Click on the validation link, and enter your phone number. An
-    automated incoming phone call will give your pin; enter the pin on the
-    form. Once this is done, you can start running builds.</para>
-    <para>Your first port of call when you connect will be the management
-    console (called GrandCentral). Click on the “Take me to Jenkins” button to
-    go to your brand new Jenkins master instance.</para>
-    <para>From here, your interaction with DEV@cloud platform is exactly like
-    in a standalone Jenkins. When you can create a new build job, just point
-    to your existing source code repository and hit build. DEV@cloud will
-    provision a slave for you and kick off a build (it may take a minute or
-    two for the slave to be provisioned).</para>
+    <title>Utiliser le service CloudBees DEV@cloud</title>
+    <para>Un autre option que vous pourriez considérer est d'exécuter votre
+    instance Jenkins en utilisant une architecture basée sur le cloud dédiée à
+    Jenkins, comme le service DEV@cloud offert par CloudBees. CloudBees fournit
+    du <emphasis>"Jenkins as a service"</emphasis> et d'autres services de
+    développement variés (comme Sonar) autour de Jenkins. En utilisant un
+    service spécifique dédié à Jenkins, il n'est pas nécessaire d'installer (ou
+    de gérer) des maîtres ou esclaves Jenkins sur vos machines. Une instance
+    maître est automatiquement configurée pour vous, et quand vous donnez une
+    tâche à construire, CloudBees met à disposition un esclave pour vous et le
+    reprend quand la tâche est effectuée.</para>
+    <para>Comment cette approche se compare-t-elle à l'architecture basée sur
+    Amazon EC2 que nous avons présenté dans la section précédente ? L'avantage
+    principal est qu'il y a beaucoup moins de travail à effectuer dans la
+    gestion du matériel de votre architecture d'IC. Utiliser l'infrastructure
+    Amazon EC2 vous évite d'avoir à vous soucier du matériel, mais vous avez
+    encore à configurer et gérer vos images de serveur par vous-même.
+    L'architecture CloudBees DEV@cloud est de plus haut-niveau, un service
+    centré sur l'IC, qui fournit non seulement un serveur Jenkins mais aussi
+    d'autres outils en relation comme des dépôts SVN ou Git, de la gestion
+    utilisateur, et Sonar. En plus, le modèle de tarification (paiement à la
+    minute) est sans doute mieux adapté à une architecture d'IC basée sur le
+    cloud que l'approche par paiement à l'heure utilisée par Amazon.</para>
+    <para>Les services basés sur Amazon EC2 sont souvent, mais pas toujours,
+    utilisé dans un environnement de "cloud hybride" où vous déchargez vos
+    tâches sur le cloud, mais un certaine quantité de vos build restent chez
+    vous. Le service DEV@cloud de CloudBees est une solution de cloud public où
+    le build complet se déroule dans le cloud (bien que CloudBees offre une
+    solution similaire fonctionnant sur un cloud privé).</para>
+    <para>Créer un compte CloudBees DEV@cloud est facile, et vous pouvez en
+    utiliser un gratuit pour expérimenter le service (notez que le service
+    gratuit CloudBees a seulement un nombre limité de plugins disponibles ; vous
+    devrez vous inscrire à la versio professionnelle pour pouvoir utiliser la
+    gamme complète de plugins). Pour créer un compte CloudBees, allez sur la
+    <ulink url="https://grandcentral.cloudbees.com/account/signup">page
+    d'enregistrement</ulink>. Vous devrez entrer quelques informations telles
+    que le nom d'utilisateur, des informations email, et un nom de compte. Une
+    fois enregistré, vous aurez accès à la fois aux services DEV@cloud et
+    RUN@cloud (en résumé la plateforme entière CloudBees).</para>
+    <para>A ce stade, vous devrez souscrire au service DEV@cloud. Pour nos
+    besoins, vous pouvez vous en sortir en choisissant simplement l'option
+    gratuite. Vous devrez attendre quelques minutes que CloudBees mette à
+    disposition un maître Jenkins pour vous. L'étape suivante est de valider
+    votre compte (ceci aide CloudBees à éviter la création de comptes factices
+    de faire tourner des tâches fallacieuses sur le service). Cliquez sur le
+    lien de validation, et entrez votre numéro de téléphone. Un appel entrant
+    automatique vous donnera un code ; entrez le code sur le formulaire. Une
+    fois ceci fait, vous pouvez commencer à exécuter des builds.</para>
+    <para>Votre première escale après connexion sera la console de gestion
+    (appelée GrandCentral). Cliquez sur le bouton “Jenkins Builds” pour vous
+    rendre sur maître Jenkins flambant neuf.</para>
+    <para>A partir de là, votre interaction avec la plateforme DEV@cloud est
+    exactement comme un Jenkins autonome. Quand vous créez une nouvelle tâche de
+    build, pointez simplement sur votre dépôt de code source existant et appuyez
+    sur build repository. DEV@cloud mettra à disposition un esclave pour vous et
+    lancera un build (cela pourrait prendre une minute ou deux pour préparer
+    l'esclave).</para>
   </sect1>
   <?dbfo-need height=”2in”?>
   <sect1 id="sect-distributed-builds-conclusion">
     <title>Conclusion</title>
-    <para>In Continuous Integration, distributed builds are the key to a truly
-    scalable architecture. Whether you need to be able to add extra build
-    capacity at the drop of a hat, or your build patterns are subject to
-    periodic spikes in demand, a distributed build architecture is an
-    excellent way to absorb extra load. Distributed builds are also a great
-    way to delegate specialized tasks, such as OS-specific web testing, to
-    certain dedicated <phrase role="keep-together">machines</phrase>.</para>
-    <para>Once you start down the path of distributed builds, cloud-based
-    distributed build farms are a very logical extension. Putting your build
-    servers on the cloud makes it easier and more convenient to scale your
-    build infrastructure when required, as much as is <phrase role="keep-together">required</phrase>.</para>
+    <para>Dans le domaine de l'Intégration Continue, les builds distribués sont
+    la clé d'une architecture vraiment évolutive. Que vous ayez besoin de
+    capacité de build supplémentaire en un claquement de doigt, ou si vos
+    modèles de build sont sujet à des périodes de pics de demande, une
+    architecture de build distribuée est un excellent moyen d'absorber une
+    charge additionnelle. Les builds distribués sont aussi un bon moyen pour
+    déléguer des tâches spécialisées, comme du test web spécifique à un OS, à
+    certaines machines dédiées.</para>
+    <para>Une fois que vous commencez à suivre le chemin des builds distribués,
+    les fermes distribuées basées sur le cloud sont une extension très logique.
+    Mettre vos serveurs de build dans le cloud simplifie l'évolutivité de votre
+    infrastructure de build lorsque cela devient nécessaire, et autant que
+    nécessaire.</para>
   </sect1>
 </chapter>
