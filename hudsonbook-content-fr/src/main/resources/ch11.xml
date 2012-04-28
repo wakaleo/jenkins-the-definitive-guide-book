@@ -825,60 +825,64 @@
     services de cloud computing d'Amazon EC2 pour mettre en place une ferme de
     build basée sur le cloud.</para>
     <sect2>
-      <title>Using Amazon EC2</title>
-      <para>In <indexterm class="startofrange" id="ch11-amazon"
+      <title>Utiliser Amazon EC2</title>
+      <para>En <indexterm class="startofrange" id="ch11-amazon"
           significance="normal">
-          <primary>Amazon EC2 cloud computing service</primary>
-        </indexterm>addition to selling books, Amazon is one of the more
-      well-known providers of cloud computing services. If you are willing to
-      pay for the service, Amazon can provide you build machines that can be
-      either used permanently as part of your build farm, or brought online as
-      required when your existing build machines become overloaded. This is an
-      excellent and reasonably cost-efficient way to absorb extra build load on
-      an as-needed basis, and without the headache of extra physical machines to
-      maintain.</para>
-      <para>If you want the flexibility of a cloud-based CI architecture, but
-      don’t want to externalize your hardware, another option is to set up a
-      <indexterm id="I_indexterm11_d1e16672" significance="normal">
-          <primary>Eucalyptus cloud</primary>
-        </indexterm>Eucalyptus cloud. Eucalyptus is an open source tool that
-      enables you to create a local private cloud on existing hardware.
-      Eucalyptus uses an API that is compatible with Amazon EC2 and S3, and
-      works well with Jenkins.</para>
+          <primary>service de cloud computing Amazon EC2</primary>
+        </indexterm>plus de vendre des livres, Amazon est l'un des fournisseurs
+      les plus connus de services cloud computing. Si vous êtes prêt à payer
+      pour le sercice, Amazon peut vous fournir des machines de build qui
+      peuvent soit être utilisées de façon permanente comme partie de votre
+      ferme de build, soit mis en ligne au besoin lorsque vos machines de build
+      existantes deviennent surchargées. C'est un moyen excellent et
+      raisonnablement coûteux pour absorber la charge exceptionnel de build en
+      fonction de vos besoins, et sans le mal de tête associé à des machines
+      physiques supplémentaires à maintenir.</para>
+      <para>Si vous voulez la flexibilité d'une architecture d'IC basée sur le
+      cloud, mais que vous ne voulez pas externaliser votre matériel, une autre
+      option est de mettre en place un cloud <indexterm
+          id="I_indexterm11_d1e16672" significance="normal">
+          <primary>cloud Eucalyptus</primary>
+        </indexterm>Eucalyptus. Eucalyptus est un outil open source qui vous
+      permet de créer localement un cloud privé sur du matériel existant.
+      Eucalyptus utilise une API compatible avec Amazon EC2 et S3, et fonctionne
+      bien avec Jenkins.</para>
       <sect3>
-        <title>Setting up your Amazon EC2 build farm</title>
-        <para>Amazon EC2 is probably the most popular and well-known commercial
-        cloud computing service. To use this service, you will need to create an
-        EC2 account with Amazon if you do not already have one. The process
-        required to do this is well documented on the Amazon website, so we will
-        not dwell on this here. Once you have created your account, you will be
-        able to create the virtual machines and machine images that will make up
-        your EC2-based build farm.</para>
-        <para>When using Amazon EC2, you create virtual machines, called
-        instances, using the Amazon Web<indexterm id="I_indexterm11_d1e16683"
-            significance="normal">
+        <title>Mettre en place votre ferme de build Amazon EC2</title>
+        <para>Amazon EC2 est probablement le service de cloud computing
+        commercial le plus populaire et le plus connu. Pour utiliser ces
+        service, vous devrez créer un compte EC2 avec Amazon si vous n'en avez
+        pas déjà un. Le processus requis pour faire cela est bien documenté sur
+        le site web d'Amazon, nous n'insisterons donc ici sur le sujet. Une fois
+        que vous avez créé votre compte, vous pouvez créer des machines
+        virtuelles et des images de machines qui formeront votre ferme de build
+        basée sur EC2.</para>
+        <para>Quand vous utilisez Amazon EC2, vous créez des machines
+        virtuelles, appelées in instances, en utilisant la console de gestion
+        Amazon Web<indexterm id="I_indexterm11_d1e16683" significance="normal">
             <primary>AWS (Amazon Web Services)</primary>
           </indexterm><indexterm id="I_indexterm11_d1e16686"
             significance="normal">
             <primary>Amazon Web Services (AWS)</primary>
-          </indexterm> Services (AWS) Management Console (see <xref
-        linkend="fig-jenkins-aws-console"/>). This website is where you manage
-        your running instances and create new ones. You create these instances
-        from predefined images, called <indexterm id="I_indexterm11_d1e16692"
-            significance="normal">
+          </indexterm> Services (AWS) (voir <xref
+        linkend="fig-jenkins-aws-console"/>). Ce site web vous permet de gérer
+        vos instances en fonctionnement et d'en créer de nouvelles. Vous créez
+        ces instances à partir d'images prédéfinies, appelées <indexterm
+            id="I_indexterm11_d1e16692" significance="normal">
             <primary>AMI (Amazon Machine Image)</primary>
           </indexterm><indexterm id="I_indexterm11_d1e16695"
             significance="normal">
             <primary>Amazon Machine Image (AMI)</primary>
-          </indexterm>Amazon Machine Images (AMIs). There are many AMI images,
-        both from Amazon and in the public domain, that you can use as a
-        starting point, covering most of the popular operating systems. Once you
-        have created a new instance, you can connect to it using either SSH (for
-        unix machines) or Windows Remote Desktop Connection, to configure it for
-        your purposes.</para>
+          </indexterm>Amazon Machine Images (AMIs). Il y a plusieurs images AMI,
+        à la fois d'Amazon et dans le domaine public, que vous pouvez utiliser
+        comme point de départ, couvrant la plupart des systèmes d'exploitation
+        populaires. Une fois que vous avez créé une nouvelle instance, vous
+        pouvez vous y connecter soit via (pour les machines unix) soit via une
+        connexion distance Windows, pour la configurer pour ce que vous voulez
+        en faire.</para>
         <figure float="none" id="fig-jenkins-aws-console">
-          <title>You manage your EC2 instances using the Amazon AWS Management
-          Console</title>
+          <title>Vous gérez vos instances EC2 en utilisant la console de gestion
+          Amazon AWS</title>
           <mediaobject id="I_mediaobject11_d1e16702">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1117.pdf" format="PDF"/>
@@ -888,41 +892,47 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>To set up a build farm, you will also need to configure your have
-        one, just go to the Key Pairs menu in the Security build server to be
-        able to access your EC2 instances. In particular, you will need to
-        install the Amazon EC2 API tools, set up the appropriate private/public
-        keys, and allow SSH connections from your server or network to your
-        Amazon instances. Again, the details of how to do this are well
-        documented for all the major operating systems on the EC2
-        website.</para>
-        <para>You can use Amazon EC2 instances in two ways—either create slave
-        machines on Amazon EC2 and use them as remote machines, or have Jenkins
-        create them for you dynamically on demand. Or you can have a combination
-        of the two. Both approaches have their uses, and we will discuss each of
-        them in the following sections.</para>
+        <para>Pour mettre en place une ferme de build, [TODO you will also need
+        to configure your have one, just go to the Key Pairs menu in the
+        Security build server to be able to access your EC2 instances]. En
+        particulier, vous aurez besoin d'installer les outils de l'API Amazon
+        EC2, de configurer les clés privées/publiques appropriées, et
+        d'autoriser les connexions SSH depuis votre serveur ou votre réseau vers
+        vos instances Amazon. Encore une fois, les détails indiquant comment
+        faire cela sont bien documentés pour tous les systèmes d'exploitation
+        principaux sur le site web EC2.</para>
+        <para>Vous pouvez utiliser les instances Amazon EC2 de deux façons —
+        soit vous créez les machines esclaves sur Amazon EC2 et les utilisez
+        comme machines distantes, soit vous demandez à Jenkins de les créer
+        dynamiquement pour vous à la demande. Ou vous pouvez avoir une
+        combinaison des deux. Les approches ont leur utilité, et nous
+        discuterons de chacune dans les sections suivantes.</para>
       </sect3>
       <sect3>
-        <title>Using EC2 instances as part of your build farm</title>
-        <para>Creating a new EC2 instance is as simple as choosing the base
-        image you want to use. You will just need to provide some details about
-        the instance, such as its size and capacity, and the private key you
-        want to use to access the machine. Amazon will then create a new running
-        virtual machine based on this image. Once you have set it up, an EC2
-        instance is essentially a machine like any other, and it is easy and
-        convenient to set up permanent or semipermanent EC2 machines as part of
-        your build infrastructure. You may even opt to use an EC2 image as your
-        master server.</para>
-        <para>Setting up an existing EC2 instance as a Jenkins slave is little
-        different to setting up any other remote slave. If you are setting up a
-        Unix or Linux EC2 slave, you will need to refer to the private key file
-        (see <xref linkend="fig-jenkins-ec2-linux"/>) that you used to create
-        the EC2 instance on the AWS Management console. Depending on the flavor
-        of Linux you are using, you may also need to provide a username. Most
-        distributions connect as root, but some, such as Ubuntu, need a
-        different user name.</para>
+        <title>Utiliser des instances EC2 comme partie de votre ferme de
+        build</title>
+        <para>Créer une nouvelle instance EC2 revient tout simplement à choisir
+        une image de base que vous voulez utiliser. Vous devrez juste fournir
+        quelques détails de base à propos de l'instance, comme sa taille et sa
+        capacité, et la clé privée que vous voulez utiliser pour accéder à la
+        machine. Amazon créera ensuite une nouvelle machine virtuelle basée sur
+        cette image. Une fois que vous avez configuré cela, une instance EC2 est
+        en substance une machine comme n'importe quelle autre, et il est simple
+        et commode de configurer des machines EC2 permanentes ou semipermanentes
+        comme part de votre infrastructure de build. Vous pourriez même opter
+        pour utiliser une image EC2 pour votre serveur maître.</para>
+        <para>Configurer une instance EC2 existante comme un esclave Jenkins est
+        peu différent que de configurer n'importe quel autre esclave distant. Si
+        vous mettez en place un esclave EC2 Unix ou Linux, vous devrez
+        référencer le fichier de clé privée (voir <xref
+        linkend="fig-jenkins-ec2-linux"/>) que vous avez utilisé pour créer
+        l'instance EC2 sur la console de gestion AWS. En fonction du type de
+        Linux que vous utilisez, vous pourriez aussi avoir besoin de fournir un
+        nom d'utilisateur. La plupart des distributions se connectent en tant
+        que root, mais certaines, comme Ubuntu, nécessitent un nom d'utilisateur
+        différent.</para>
         <figure float="none" id="fig-jenkins-ec2-linux">
-          <title>Configuring an Amazon EC2 slave</title>
+          <title>Configurer un esclave Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16723">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1118.pdf" format="PDF"/>
@@ -934,34 +944,38 @@
         </figure>
       </sect3>
       <sect3>
-        <title>Using dynamic instances</title>
-        <para>The second approach involves creating new Amazon EC2 machines
-        dynamically, as they are required. Setting up dedicated instances is not
-        difficult, but it does not scale well. A better approach is to let
-        Jenkins create new instances as require. To do this, you will need to
-        install the Jenkins<indexterm id="I_indexterm11_d1e16733"
-            significance="normal">
+        <title>Utiliser des instances dynamiques</title>
+        <para>La seconde approche implique de créer de nouvelles machines Amazon
+        EC2 dynamiquement, lorsqu'elles sont nécessaires. Configurer des
+        instances dédiées n'est pas difficile, mais cela ne s'adapte pas très
+        bien à la charge. Une meilleure approche est de laisser Jenkins créer de
+        nouvelles instances en fonction du besoin. Pour faire cela, vous aurez
+        besoin d'installer le plugin Jenkins<indexterm
+            id="I_indexterm11_d1e16733" significance="normal">
             <primary>plugins</primary>
             <secondary>Amazon EC2</secondary>
           </indexterm><indexterm id="I_indexterm11_d1e16738"
             significance="normal">
             <primary>Amazon EC2 plugin</primary>
-          </indexterm> Amazon EC2 plugin. This plugin lets your Jenkins instance
-        start slaves on the EC2 cloud on demand, and then kill them off when
-        they are no longer needed. The plugin works both with Amazon EC2, and
-        the <indexterm id="I_indexterm11_d1e16742" significance="normal">
+          </indexterm> Amazon EC2. Ce plugin permet de à Jenkins de démarrer des
+        esclaves EC2 sur le cloud à la demande, et de les éteindre ensuite
+        lorsqu'ils ne sont plus nécessaires. Le plugin fonctionne à la fois avec
+        Amazon EC2, et <indexterm id="I_indexterm11_d1e16742"
+            significance="normal">
             <primary>Ubuntu Enterprise Cloud</primary>
-          </indexterm>Ubuntu Enterprise Cloud. We will be focusing on Amazon EC2
-        here. Note that at the time of writing the Amazon EC2 Plugin only
-        supported managing Unix EC2 images.</para>
-        <para>Once you have installed the plugin and restarted Jenkins, go to
-        the main Jenkins configuration screen and click on Add a New Cloud (see
-        <xref linkend="fig-jenkins-ec2-cloud"/>). Choose Amazon EC2. You will
-        need to provide your Amazon Access Key ID and Secret Access Key so that
-        Jenkins can communicate with your Amazon EC2 account. You can access
-        these in the Key Pairs screen of your EC2 dashboard.</para>
+          </indexterm>Ubuntu Enterprise Cloud. Nous nous concentrerons ici sur
+        Amazon EC2. Notez qu'à l'écriture de ces lignes le plugin supportait
+        seulement la gestion des images EC2 Unix.</para>
+        <para>Une fois que vous avez installé le plugin et redémarré Jenkins,
+        allez dans l'écran principal de configuration et cliquez sur Ajouter un
+        Nouveau Cloud (voir <xref linkend="fig-jenkins-ec2-cloud"/>). Choisissez
+        Amazon EC2. Vous devez fournir votre clé d'identification d'accès Amazon
+        (NDT : Amazon Access Key ID) et votre clé d'accès secret afin que
+        Jenkins puisse communiquer avec votre compte Amazon EC2. Vous pouvez
+        accéder à ceux-ci dans l'écran Paires de clés de votre tableau de bord
+        EC2.</para>
         <figure float="0" id="fig-jenkins-ec2-cloud">
-          <title>Configuring an Amazon EC2 slave</title>
+          <title>Configurer un esclave Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16753">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1119.pdf" format="PDF"/>
@@ -971,43 +985,48 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>You will also need to provide your RSA private key. If you don’t
-        have one, just go to the Key Pairs menu in the Security Credentials
-        screen and create one. This will create a new key pair for you and
-        download the private key. Keep the private key in a safe place (you will
-        need it if you want to connect to your EC2 instances via SSH).</para>
-        <para>In the advanced options, you can use the Instance Cap field to
-        limit the number of EC2 instances that Jenkins will launch. This limit
-        refers to the total number of active EC2 instances, not just the ones
-        that Jenkins is currently running. This is useful as a safety measure,
-        as you pay for the time your EC2 instances spend active.</para>
-        <para>Once you have configured your overall EC2 connection, you need to
-        define the machines you will work with. You do this by specifying the
-        Amazon Mirror Image (AMI) identifier of the server image you would like
-        to start. Amazon provides some starter images, and many more are
-        available from the community, however not all images will work with EC2.
-        At the time of writing, only certain images based on 32-bit Linux
-        distributions work correctly.</para>
-        <para>The predefined Amazon and public AMI images are useful starting
-        points for your permanent virtual machines, but for the purposes of
-        implementing a dynamic EC2-based cloud, you need to define your own AMI
-        with the essential tools (Java, build tools, SCM configuration and so
-        forth) preinstalled. Fortunately, this is a simple <phrase
-        role="keep-together">process</phrase>: just start off with a generic AMI
-        (preferably one compatible with the Jenkins EC2 plugin), and install
-        everything your builds need. Make sure you use an EBS image. This way,
-        changes you make to your server instance are persisted on an EBS volume
-        so that you don't lose them when the server shuts down. Then create a
-        new image by selecting the Create Image option in the Instances screen
-        on the EC2 management console (see <xref
-        linkend="fig-jenkins-ec2-create-image"/>). Make sure SSH is open from
-        your build server’s IP address in the default security group on Amazon
-        EC2. If you don’t do this, Jenkins will time out when it tries to start
-        up a new slave node.</para>
-        <para>Once you have prepared your image, you will be able to use it for
-        your EC2 <phrase role="keep-together">configuration</phrase>.</para>
+        <para>Vous devrez aussi fournir votre clé privée RSA. Si vous n'en avez
+        pas, rendez vous simplement dans le menu Paires de clé dans l'écran
+        Security Credential et créez en une. Cela créera une nouvelle paire de
+        clé pour vous et téléchargera la clé privée. Conservez la clé privée
+        dans un endroit sûr (vous en aurez besoin si vous voulez vous connecter
+        à vos instances EC3 via SSH).</para>
+        <para>Dans les options avancées, vous pouvez utiliser le champ Limite
+        d'Instances pour limiter le nombre d'instances EC2 que Jenkins lancera.
+        Cette limite est liée au nombre total d'instances en exécution, pas
+        seulement celles que Jenkins exécute en ce moment. C'est une mesure de
+        sécurité utile, parce que vous payez pour le temps pendant lequel vos
+        instances restent actives.</para>
+        <para>Une fois que vous avez configuré votre connexion EC2 globale, vous
+        devez définir les machines avec lesquelles vous travaillerez. Vous
+        faites cela en spécifiant l'identifiant dImage Miroir Amazon (AMI) de
+        l'image serveur avec laquelle vous aimeriez démarrer. Amazon fournit
+        quelques images de démarrage, et plusieurs autres le sont par la
+        communauté, toutefois elles ne fonctionneront pas toutes avec EC2. A
+        l'écriture de ces lignes, seules certaines images basées sur des
+        distributions Linux 32-bit fonctionnent correctement.</para>
+        <para>Les images AMI prédéfinies par Amazon et publiques sont des points
+        de départ utiles pour vos machines virtuelles permanentes, mais pour les
+        besoins inhérents à la mise en oeuvre d'un cloud dynamique basé sur EC2,
+        vous devez définir vos propres AMI avec les outils essentiels (Java,
+        outils de build, configuration SCM etc.) préinstallés. Heureusement,
+        c'est un processus simple : démarrez simplement avec une AMI génériqu
+        (de préférence une compatible avec le plugin Jenkins EC2), et installez
+        tout ce dont vous avez besoin. Assurez-vous d'utiliser une image EBS. De
+        cette façon, les changements que vous faites sur votre instance serveur
+        sont sauvegardés sur un volume EBS afin que vous ne les perdiez pas
+        lorsque le serveur s'éteint. Créez alors une nouvelle image en
+        sélectionnant l'option Créer une image dans l'écran Instances dans la
+        console de gestion EC2 (voir <xref
+        linkend="fig-jenkins-ec2-create-image"/>). Vérifiez que SSH est ouvert
+        depuis l'adresse IP de votre serveur de build dans le groupe de sécurité
+        par défaut sur Amazon EC2. Si vous ne faites pas cela, Jenkins échouera
+        après avoir attendu trop longtemps le démarrage du nouveau noeud
+        esclave.</para>
+        <para>Une fois que vous aurez préparé votre image, vous serez capable de
+        l'utiliser pour votre configuration EC2.</para>
         <figure float="0" id="fig-jenkins-ec2-create-image">
-          <title>Creating a new Amazon EC2 image</title>
+          <title>Créer une nouvelle image Amazon EC2</title>
           <mediaobject id="I_mediaobject11_d1e16779">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1120.pdf" format="PDF"/>
@@ -1017,14 +1036,15 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Now Jenkins will automatically create a new EC2 instance using
-        this image when it needs to, and delete (or “terminate,” in Amazon
-        terms) the instance once it is no longer needed. Alternatively, you can
-        bring a new EC2 slave online manually from the Nodes screen using the
-        Provision via EC2 button (see <xref
-        linkend="fig-jenkins-amazon-cloud-manual"/>). This is a useful way to
-        test your <indexterm class="endofrange" id="I_indexterm11_d1e16788"
-            significance="normal" startref="ch11-cloud1">
+        <para>A présent, Jenkins créera automatiquement une nouvelle instance
+        EC2 en utilisant cette image lorsque c'est nécessaire, et supprimera (ou
+        la “terminera,” en termes Amazon) l'instance une fois qu'il n'en a plus
+        besoin. Sinon, vous pouvez ajouter un nouvel esclave EC2 manuellement
+        depuis l'écran Noeuds en utilisant le bouton Provisionner via EC2 (voir
+        <xref linkend="fig-jenkins-amazon-cloud-manual"/>). C'est un moyen utile
+        pour tester votre <indexterm class="endofrange"
+            id="I_indexterm11_d1e16788" significance="normal"
+            startref="ch11-cloud1">
             <primary/>
           </indexterm><indexterm class="endofrange" id="I_indexterm11_d1e16790"
             significance="normal" startref="ch11-cloud2">
@@ -1037,7 +1057,7 @@
             <primary/>
           </indexterm>configuration.</para>
         <figure float="none" id="fig-jenkins-amazon-cloud-manual">
-          <title>Bringing an Amazon EC2 slave online manually</title>
+          <title>Ajouter un nouvel esclave Amazon EC2 manuellement</title>
           <mediaobject id="I_mediaobject11_d1e16801">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1121.pdf" format="PDF"/>
