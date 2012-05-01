@@ -1,112 +1,227 @@
-<?xml version="1.0"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-automated-testing">
   <title>Tests automatisés</title>
   <sect1 id="sect-chapter-automated-testing-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automatisés  </secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>tâches de build</primary><secondary>tests in</secondary><see>tests</see></indexterm>Si vous n'utilisez pas les tests automatisés avec votre environnement d'intégration
-    continue, vous passez à coté d'un aspect important. Croyez-
-    moi—IC sans les tests automatisés représente juste une petite amélioration pour
-    les tâches de build lancées automatiquement. Maintenant, ne vous méprenez pas, si vous partez 
-    de zéro, c'est quand même un grand pas en avant, mais vous pouvez faire
-    mieux. En résumé, si vous utilisez Jenkins sans tests automatisés,
-    vous n'obtenez pas autant de valeur de votre infrastructure d'intégration
-    continue que vous le devriez.</para>
-    <para>Un des principes de base de l'intégration continue est qu'un
-    build doit être vérifiable. Vous devez être capable de déterminer objectivement
-    si un build donnée est prête à passer à la prochaine étape du
-    processus de constuction, et le meilleur moyen de le faire est d'utiliser les tests
+    <para><indexterm class="startofrange" id="ch06-auto2" significance="normal">
+        <primary>tests</primary>
+        <secondary>automatisés</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>tests in</secondary>
+        <see>tests</see>
+      </indexterm>Si vous n'utilisez pas les tests automatisés avec votre
+    environnement d'intégration continue, vous passez à coté d'un aspect
+    important. Croyez- moi—IC sans les tests automatisés représente juste une
+    petite amélioration pour les tâches de build lancées automatiquement.
+    Maintenant, ne vous méprenez pas, si vous partez de zéro, c'est quand même
+    un grand pas en avant, mais vous pouvez faire mieux. En résumé, si vous
+    utilisez Jenkins sans tests automatisés, vous n'obtenez pas autant de valeur
+    de votre infrastructure d'intégration continue que vous le devriez.</para>
+    <para>Un des principes de base de l'intégration continue est qu'un build
+    doit être vérifiable. Vous devez être capable de déterminer objectivement si
+    un build donnée est prête à passer à la prochaine étape du processus de
+    constuction, et le meilleur moyen de le faire est d'utiliser les tests
     automatisés. Sans une bonne automatisation des tests, vous allez devoir
-    conserver de nombreux artefacts construits et les tester manuellement, ce qui est constaire à 
-    l'esprit de l'intégration continue.</para>
-    <para>Il <indexterm id="I_indexterm6_d1e8524" significance="normal"><primary>tests d'intégration</primary></indexterm><indexterm id="I_indexterm6_d1e8527" significance="normal"><primary>tests</primary><secondary>tests d'intégration</secondary></indexterm>y a plusieurs façons d'intégrer les tests automatisés dans votre 
-    application. Une des façons la plus efficace pour écrire des tests de haute qualité est 
-    de les écrire en premier, en utisant des techniques comme  <indexterm id="I_indexterm6_d1e8533" significance="normal"><primary>TDD (Test Driven Development)</primary></indexterm>Test-Driven Development (TDD) ou <indexterm id="I_indexterm6_d1e8537" significance="normal"><primary>BDD (Behavior-Driven Development)</primary></indexterm>Behavior-Driven Development (BDD). Dans cette approche, 
-    utilisée courament dans de nombreux projets agiles, le but de vos tests unitaires est à la fois
-    de clarifier votre compréhension du comportement du code et d'écrire un
-    test automatisé prouvant que le code implémente le comportement. En se concentrant 
-    sur le test du comportement attendu, plutôt que sur l'implémentation, de votre
-    code rend les tests plus compréhensibles et plus pertinents, et par conséquent
-    aide Jenkins à fournir une information plus <phrase role="keep-together">pertinente</phrase>.</para>
-    <para>Bien <indexterm id="I_indexterm6_d1e8546" significance="normal"><primary>tests unitaires</primary></indexterm><indexterm id="I_indexterm6_d1e8549" significance="normal"><primary>tests</primary><secondary>tests unitaires</secondary></indexterm>entendu, les plus classiques tests unitaires, quand le code a été
-    implémenté, est aussi une approche courament utilisée, et est certainement
-    mieux que pas de tests du tout.</para>
+    conserver de nombreux artefacts construits et les tester manuellement, ce
+    qui est constaire à l'esprit de l'intégration continue.</para>
+    <para>Il <indexterm id="I_indexterm6_d1e8524" significance="normal">
+        <primary>tests d'intégration</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8527" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests d'intégration</secondary>
+      </indexterm>y a plusieurs façons d'intégrer les tests automatisés dans
+    votre application. Une des façons la plus efficace pour écrire des tests de
+    haute qualité est de les écrire en premier, en utisant des techniques comme
+    <indexterm id="I_indexterm6_d1e8533" significance="normal">
+        <primary>TDD (Test Driven Development)</primary>
+      </indexterm>Test-Driven Development (TDD) ou <indexterm
+        id="I_indexterm6_d1e8537" significance="normal">
+        <primary>BDD (Behavior-Driven Development)</primary>
+      </indexterm>Behavior-Driven Development (BDD). Dans cette approche,
+    utilisée courament dans de nombreux projets agiles, le but de vos tests
+    unitaires est à la fois de clarifier votre compréhension du comportement du
+    code et d'écrire un test automatisé prouvant que le code implémente le
+    comportement. En se concentrant sur le test du comportement attendu, plutôt
+    que sur l'implémentation, de votre code rend les tests plus compréhensibles
+    et plus pertinents, et par conséquent aide Jenkins à fournir une information
+    plus <phrase role="keep-together">pertinente</phrase>.</para>
+    <para>Bien <indexterm id="I_indexterm6_d1e8546" significance="normal">
+        <primary>tests unitaires</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8549" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests unitaires</secondary>
+      </indexterm>entendu, les plus classiques tests unitaires, quand le code a
+    été implémenté, est aussi une approche courament utilisée, et est
+    certainement mieux que pas de tests du tout.</para>
     <?dbfo-need height=”1in”?>
-    <para>Jenkins n'est pas limité aux tests unitaires, cependant. Il y a beaucoup d'autres
-    types de tests automatisés que vous devriez considérer, selon la
-    nature de votre application, parmi les tests d'intégration, les tests web,
-    les tests fonctionnels, les tests de performance, les tests de charge et d'autres. Tous ceux
-    ont leur place dans un environnement de build automatisé.</para>
-    <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal"><primary>tests d'acceptance, automatisé</primary></indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal"><primary>tests</primary><secondary>tests d'acceptance</secondary></indexterm>peut aussi être utilisé, en conjonction avec des techniques telles
-    que Behavior-Driven Development et Acceptance Test Driven Development, comme un
-    outil de communication destiné à la fois aux développeurs et aux autres intervenants
-    d'un projet. Des frameworks BDD tels que easyb, fitnesse, jbehave, rspec,
-    Cucumber, et beaucoup d'autres, essaient de présenter les tests d'acceptance en termes que 
-    les testers, les Product Owners, et les utilisateurs  peuvent comprendre. Avec de tels
-    outils, Jenkins peut fournir des informations sur l'avancement d'un projet en termes business, et
-    ainsi faciliter la communication entre developpeurs and non developpeurs à l'intérieur
-    d'une équipe.</para>
+    <para>Jenkins n'est pas limité aux tests unitaires, cependant. Il y a
+    beaucoup d'autres types de tests automatisés que vous devriez considérer,
+    selon la nature de votre application, parmi les tests d'intégration, les
+    tests web, les tests fonctionnels, les tests de performance, les tests de
+    charge et d'autres. Tous ceux ont leur place dans un environnement de build
+    automatisé.</para>
+    <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal">
+        <primary>tests d'acceptance, automatisé</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests d'acceptance</secondary>
+      </indexterm>peut aussi être utilisé, en conjonction avec des techniques
+    telles que Behavior-Driven Development et Acceptance Test Driven
+    Development, comme un outil de communication destiné à la fois aux
+    développeurs et aux autres intervenants d'un projet. Des frameworks BDD tels
+    que easyb, fitnesse, jbehave, rspec, Cucumber, et beaucoup d'autres,
+    essaient de présenter les tests d'acceptance en termes que les testers, les
+    Product Owners, et les utilisateurs peuvent comprendre. Avec de tels outils,
+    Jenkins peut fournir des informations sur l'avancement d'un projet en termes
+    business, et ainsi faciliter la communication entre developpeurs and non
+    developpeurs à l'intérieur d'une équipe.</para>
     <para>Pour des applications existantes avec peu ou pas de tests automatisés
-    existants, cela peut être difficile et consommateur de temps d'installer
-    des tests unitaires complets dans le code. De plus, les tests peuvent ne pas être
-    très efficaces, parce qu'ils auront tendance à valider l'implémentation existante
-    plutôt que vérifier le fonctionnel attendu. Une appoche intéressante dans
-    ces situations est d'écrire <indexterm id="I_indexterm6_d1e8571" significance="normal"><primary>tests fonctionnels (regression)</primary></indexterm><indexterm id="I_indexterm6_d1e8574" significance="normal"><primary>tests</primary><secondary>tests fonctionnels (regression)</secondary></indexterm><indexterm id="I_indexterm6_d1e8579" significance="normal"><primary>tests de regression</primary><see>tests fonctionnels (regression)</see></indexterm>des tests fonctionnels automatisés (“regression”) qui
-    simulent les manières les plus courantes d'utilisation de l'application. Par
-    exemple, les outils de tests web automatisés <indexterm id="I_indexterm6_d1e8585" significance="normal"><primary>tests web</primary></indexterm><indexterm id="I_indexterm6_d1e8588" significance="normal"><primary>tests</primary><secondary>tests web</secondary></indexterm>tels que Selenium et WebDriver peuvent être
-    utilisés efficacement pour tester les applications web à un haut niveau. Alors que cette
-    approche n'est pas aussi complête que la combinaison de tests unitaires,
-    d'integration et d'acceptance de bonne qualité, c'est quand même un façon efficace et
-    économique d'intégrer des tests de regression automatisés dans une
-    application existante.</para>
-    <para>Dans ce chapitre, nous allons voir comment Jenkins vous aide à conserver les traces
-    des résultats des tests automatisés, et comment vous pouvez utiliser cette information pour surveiller
-    et disséquer votre processus de build.</para>
+    existants, cela peut être difficile et consommateur de temps d'installer des
+    tests unitaires complets dans le code. De plus, les tests peuvent ne pas
+    être très efficaces, parce qu'ils auront tendance à valider l'implémentation
+    existante plutôt que vérifier le fonctionnel attendu. Une appoche
+    intéressante dans ces situations est d'écrire <indexterm
+        id="I_indexterm6_d1e8571" significance="normal">
+        <primary>tests fonctionnels (regression)</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8574" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests fonctionnels (regression)</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8579" significance="normal">
+        <primary>tests de regression</primary>
+        <see>tests fonctionnels (regression)</see>
+      </indexterm>des tests fonctionnels automatisés (“regression”) qui simulent
+    les manières les plus courantes d'utilisation de l'application. Par exemple,
+    les outils de tests web automatisés <indexterm id="I_indexterm6_d1e8585"
+        significance="normal">
+        <primary>tests web</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8588" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests web</secondary>
+      </indexterm>tels que Selenium et WebDriver peuvent être utilisés
+    efficacement pour tester les applications web à un haut niveau. Alors que
+    cette approche n'est pas aussi complête que la combinaison de tests
+    unitaires, d'integration et d'acceptance de bonne qualité, c'est quand même
+    un façon efficace et économique d'intégrer des tests de regression
+    automatisés dans une application existante.</para>
+    <para>Dans ce chapitre, nous allons voir comment Jenkins vous aide à
+    conserver les traces des résultats des tests automatisés, et comment vous
+    pouvez utiliser cette information pour surveiller et disséquer votre
+    processus de build.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-unit">
     <title>Automatisez vos tests unitaires et d'intégration</title>
-    <para>Le <indexterm id="I_indexterm6_d1e8601" significance="normal"><primary>tests unitaires</primary></indexterm><indexterm id="I_indexterm6_d1e8604" significance="normal"><primary>tests</primary><secondary>tests unitaires</secondary></indexterm>premier sujet que nous allons regarder est comment intégrer vos tests
-    unitaires dans Jenkins. Que vous maitrisiez l'approche Test-Driven Development, ou
-    que vous écriviez des tests unitaires avec une approche plus conventionnelle, ce seront probablement
-    les premiers tests que vous voudrez automatiser avec Jenkins.</para>
+    <para>Le <indexterm id="I_indexterm6_d1e8601" significance="normal">
+        <primary>tests unitaires</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8604" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests unitaires</secondary>
+      </indexterm>premier sujet que nous allons regarder est comment intégrer
+    vos tests unitaires dans Jenkins. Que vous maitrisiez l'approche Test-Driven
+    Development, ou que vous écriviez des tests unitaires avec une approche plus
+    conventionnelle, ce seront probablement les premiers tests que vous voudrez
+    automatiser avec Jenkins.</para>
     <para>Jenkins est excellent dans l'analyse des résultats de vos tests.
-    Cependant, c'est à vous d'écrire les tests appropriés et de configurer
-    votre script de build pour qu'il les exécute automatiquement. Heureusement, intégrer des tests
-    unitaires dans vos builds automatisés est généralement aisé.</para>
-    <para>Il y a de nombreux outils de tests unitaires, avec la famille <indexterm id="I_indexterm6_d1e8614" significance="normal"><primary>xUnit</primary></indexterm>xUnit occupant une place prépondérente. Dans le monde Java,
-    <indexterm id="I_indexterm6_d1e8618" significance="normal"><primary>rapports JUnit</primary></indexterm>JUnit est le standard de facto, bien que <indexterm id="I_indexterm6_d1e8622" significance="normal"><primary>TestNG</primary></indexterm>TestNG soit aussi un framework de test unitaire populaire avec
-    un certain nombre de fonctionnalités innovantes. Pour les applications C#, le framework <indexterm id="I_indexterm6_d1e8626" significance="normal"><primary>NUnit</primary></indexterm>NUnit propose des fonctionnalités similaires à
-    celles fournies par JUnit, comme le fait<indexterm id="I_indexterm6_d1e8630" significance="normal"><primary>Test::Unit</primary></indexterm> <literal moreinfo="none">Test::Unit</literal> pour Ruby. Pour C/C++, il y a
-    <indexterm id="I_indexterm6_d1e8638" significance="normal"><primary>CppUnit</primary></indexterm>CppUnit, et les développeurs PHP peuvent utiliser <indexterm id="I_indexterm6_d1e8642" significance="normal"><primary>PHPUnit</primary></indexterm>PHPUnit. Et cette liste n'est pas exhaustive!</para>
-    <para>Ces outils peuvent aussi être utilisés pour <indexterm id="I_indexterm6_d1e8648" significance="normal"><primary>tests</primary><secondary>tests d'intégration</secondary></indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal"><primary>tests d'intégration</primary></indexterm>tests d'intégration, <indexterm id="I_indexterm6_d1e8657" significance="normal"><primary>tests</primary><secondary>tests fonctionnels (regression)</secondary></indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal"><primary>tests fonctionnels (regression)</primary></indexterm>les tests fonctionnels, les tests web et ainsi de suite. De nombreux <indexterm id="I_indexterm6_d1e8666" significance="normal"><primary>tests web</primary></indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal"><primary>tests</primary><secondary>tests web</secondary></indexterm>outils de tests web, comme Selenium, WebDriver, et Watir,
-    génèrent des rapports compatibles xUnit. Les outils Behaviour-Driven Development et
-    de tests d'acceptance automatisés comme easyb, Fitnesse, Concordion sont
-    aussi orientés xUnit. Dans les sections suivantes, nous ne faisons pas de distinction
-    entre ces différents types de test, parce que, d'un point de vue
-    configuration, ils sont traités de la même façon par Jenkins. Cependant, vous
-    aurez certainement à faire la distinction dans vos tâches de build. Afin
-    d'obtenir un compte rendu le plus rapide, vos tests devront être
-    groupés dans des catégories bien définies, en commençant par les rapides tests unitaires,
-    ensuite viendront les tests d'intégration, pour finir
-    par exécuter les tests fonctionnels et web, plus longs.</para>
-    <para>Une discussion détaillée sur la façon d'automatiser vos tests est en dehors
-    du sujet de ce livre, mais nous couvrons quelques techniques utilies pour Apache Maven
-    et<indexterm id="I_indexterm6_d1e8677" class="endofrange" startref="ch06-auto2" significance="normal"><primary/></indexterm> Ant dans <xref linkend="appendix-automating-your-tests"/>.</para>
+    Cependant, c'est à vous d'écrire les tests appropriés et de configurer votre
+    script de build pour qu'il les exécute automatiquement. Heureusement,
+    intégrer des tests unitaires dans vos builds automatisés est généralement
+    aisé.</para>
+    <para>Il y a de nombreux outils de tests unitaires, avec la famille
+    <indexterm id="I_indexterm6_d1e8614" significance="normal">
+        <primary>xUnit</primary>
+      </indexterm>xUnit occupant une place prépondérente. Dans le monde Java,
+    <indexterm id="I_indexterm6_d1e8618" significance="normal">
+        <primary>rapports JUnit</primary>
+      </indexterm>JUnit est le standard de facto, bien que <indexterm
+        id="I_indexterm6_d1e8622" significance="normal">
+        <primary>TestNG</primary>
+      </indexterm>TestNG soit aussi un framework de test unitaire populaire avec
+    un certain nombre de fonctionnalités innovantes. Pour les applications C#,
+    le framework <indexterm id="I_indexterm6_d1e8626" significance="normal">
+        <primary>NUnit</primary>
+      </indexterm>NUnit propose des fonctionnalités similaires à celles fournies
+    par JUnit, comme le fait<indexterm id="I_indexterm6_d1e8630"
+        significance="normal">
+        <primary>Test::Unit</primary>
+      </indexterm> <literal moreinfo="none">Test::Unit</literal> pour Ruby. Pour
+    C/C++, il y a <indexterm id="I_indexterm6_d1e8638" significance="normal">
+        <primary>CppUnit</primary>
+      </indexterm>CppUnit, et les développeurs PHP peuvent utiliser <indexterm
+        id="I_indexterm6_d1e8642" significance="normal">
+        <primary>PHPUnit</primary>
+      </indexterm>PHPUnit. Et cette liste n'est pas exhaustive!</para>
+    <para>Ces outils peuvent aussi être utilisés pour <indexterm
+        id="I_indexterm6_d1e8648" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests d'intégration</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal">
+        <primary>tests d'intégration</primary>
+      </indexterm>tests d'intégration, <indexterm id="I_indexterm6_d1e8657"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>tests fonctionnels (regression)</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal">
+        <primary>tests fonctionnels (regression)</primary>
+      </indexterm>les tests fonctionnels, les tests web et ainsi de suite. De
+    nombreux <indexterm id="I_indexterm6_d1e8666" significance="normal">
+        <primary>tests web</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal">
+        <primary>tests</primary>
+        <secondary>tests web</secondary>
+      </indexterm>outils de tests web, comme Selenium, WebDriver, et Watir,
+    génèrent des rapports compatibles xUnit. Les outils Behaviour-Driven
+    Development et de tests d'acceptance automatisés comme easyb, Fitnesse,
+    Concordion sont aussi orientés xUnit. Dans les sections suivantes, nous ne
+    faisons pas de distinction entre ces différents types de test, parce que,
+    d'un point de vue configuration, ils sont traités de la même façon par
+    Jenkins. Cependant, vous aurez certainement à faire la distinction dans vos
+    tâches de build. Afin d'obtenir un compte rendu le plus rapide, vos tests
+    devront être groupés dans des catégories bien définies, en commençant par
+    les rapides tests unitaires, ensuite viendront les tests d'intégration, pour
+    finir par exécuter les tests fonctionnels et web, plus longs.</para>
+    <para>Une discussion détaillée sur la façon d'automatiser vos tests est en
+    dehors du sujet de ce livre, mais nous couvrons quelques techniques utilies
+    pour Apache Maven et<indexterm class="endofrange" id="I_indexterm6_d1e8677"
+        significance="normal" startref="ch06-auto2">
+        <primary/>
+      </indexterm> Ant dans <xref
+    linkend="appendix-automating-your-tests"/>.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-reporting">
     <title>Configuration des rapports de test dans Jenkins</title>
-    <para>Une fois que <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>configurer</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>rapporter</primary><secondary>résultats de test</secondary><tertiary>configurer</tertiary></indexterm>votre build génère des résultats de test, vous devez configurer
-    votre tache de build Jenkins afin de les afficher. Comme mentionné précedemment, Jenkins sait
-    traiter n'importe quel rapport de test compatible xUnit, quel que soit le language
-    avec lequel ils ont été écrit.</para>
-    <para>Pour <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>tâches de build Maven</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">dans des tâches de build Maven</secondary></indexterm>les tâches de build Maven, aucune configuration spécifique n'est requise—uniquement
-    assurez vous que vous lancez bien un "goal" qui va exécuter vos tests, tel que <literal moreinfo="none">mvn
-    test</literal> (pour vos tests unitaires) ou <literal moreinfo="none">mvn verify</literal> (pour
-    les test unitaires et d'intégration). Un exemple de configuration de tache de build Maven
-    est donné dans <xref linkend="fig-testing-maven-verify-goal"/>.</para>
+    <para>Une fois que <indexterm class="startofrange" id="ch06-config"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>rapports de</secondary>
+        <tertiary>configurer</tertiary>
+      </indexterm><indexterm class="startofrange" id="ch06-config2"
+        significance="normal">
+        <primary>rapporter</primary>
+        <secondary>résultats de test</secondary>
+        <tertiary>configurer</tertiary>
+      </indexterm>votre build génère des résultats de test, vous devez
+    configurer votre tache de build Jenkins afin de les afficher. Comme
+    mentionné précedemment, Jenkins sait traiter n'importe quel rapport de test
+    compatible xUnit, quel que soit le language avec lequel ils ont été
+    écrit.</para>
+    <para>Pour <indexterm id="I_indexterm6_d1e8704" significance="normal">
+        <primary>tâches de build Maven</primary>
+        <secondary>rapport sur des résultats de test</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal">
+        <primary>tests</primary>
+        <secondary sortas="Maven">dans des tâches de build Maven</secondary>
+      </indexterm>les tâches de build Maven, aucune configuration spécifique
+    n'est requise—uniquement assurez vous que vous lancez bien un "goal" qui va
+    exécuter vos tests, tel que <literal moreinfo="none">mvn test</literal>
+    (pour vos tests unitaires) ou <literal moreinfo="none">mvn verify</literal>
+    (pour les test unitaires et d'intégration). Un exemple de configuration de
+    tache de build Maven est donné dans <xref
+    linkend="fig-testing-maven-verify-goal"/>.</para>
     <figure float="none" id="fig-testing-maven-verify-goal">
-      <title>Vous configurez votre installation Jenkins installation dans l'écran Administrer Jenkins
-      </title>
+      <title>Vous configurez votre installation Jenkins installation dans
+      l'écran Administrer Jenkins</title>
       <mediaobject id="I_mediaobject6_d1e8726">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0601.pdf" format="PDF" scale="90"/>
@@ -116,18 +231,30 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pour <indexterm id="I_indexterm6_d1e8733" significance="normal"><primary>tâches de build free-style</primary><secondary>rapport sur des résultats de test</secondary></indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal"><primary>tests</primary><secondary sortas="free-style">dans des tâches de build free-style</secondary></indexterm>les tâches de build free-style, vous devez effectuer une petit
+    <para>Pour <indexterm id="I_indexterm6_d1e8733" significance="normal">
+        <primary>tâches de build free-style</primary>
+        <secondary>rapport sur des résultats de test</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8738" significance="normal">
+        <primary>tests</primary>
+        <secondary sortas="free-style">dans des tâches de build
+        free-style</secondary>
+      </indexterm>les tâches de build free-style, vous devez effectuer une petit
     travail de configuration. En plus de vous assurer que votre build exécute
-    les tests, vous devez indiquer à Jenkins de publier les rapport de test JUnit. Vous
-    <indexterm id="I_indexterm6_d1e8744" significance="normal"><primary>tâches de build free-style</primary><secondary>Actions à la suite du build</secondary></indexterm>le configurez dans la section “Actions à la suite du build” (voir
-    <xref linkend="fig-testing-freestyle-junit-config"/>). Ici, vous fournissez
-    un chemin vers les rapports XML JUnit ou TestNG. Leur chemin exact dépend
-    du projet—pour un projet Maven, un chemin tel
-    <filename moreinfo="none">**/target/surefire-reports/*.xml</filename> les trouvera pour
-    la plupart des projets. Pour un projet Ant, cela dépendra de la façon dont vous avez
-    configuré la tache Ant JUnit, comme discuté précédement.</para>
+    les tests, vous devez indiquer à Jenkins de publier les rapport de test
+    JUnit. Vous <indexterm id="I_indexterm6_d1e8744" significance="normal">
+        <primary>tâches de build free-style</primary>
+        <secondary>Actions à la suite du build</secondary>
+      </indexterm>le configurez dans la section “Actions à la suite du build”
+    (voir <xref linkend="fig-testing-freestyle-junit-config"/>). Ici, vous
+    fournissez un chemin vers les rapports XML JUnit ou TestNG. Leur chemin
+    exact dépend du projet—pour un projet Maven, un chemin tel <filename
+    moreinfo="none">**/target/surefire-reports/*.xml</filename> les trouvera
+    pour la plupart des projets. Pour un projet Ant, cela dépendra de la façon
+    dont vous avez configuré la tache Ant JUnit, comme discuté
+    précédement.</para>
     <figure float="none" id="fig-testing-freestyle-junit-config">
-      <title>Configurer les rapports de test Maven dans un projet free-style</title>
+      <title>Configurer les rapports de test Maven dans un projet
+      free-style</title>
       <mediaobject id="I_mediaobject6_d1e8758">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0602.pdf" format="PDF" scale="85"/>
@@ -137,13 +264,30 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pour <indexterm id="I_indexterm6_d1e8765" significance="normal"><primary>applications Java</primary><secondary>rapports de test de</secondary></indexterm>projets Java, qu'ils utilisent<indexterm id="I_indexterm6_d1e8771" significance="normal"><primary>rapports JUnit</primary><secondary>configurer dans une tache de build free-style</secondary></indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal"><primary>TestNG</primary></indexterm> JUnit ou TestNG, Jenkins fournit une excellent intégration de
+    <para>Pour <indexterm id="I_indexterm6_d1e8765" significance="normal">
+        <primary>applications Java</primary>
+        <secondary>rapports de test de</secondary>
+      </indexterm>projets Java, qu'ils utilisent<indexterm
+        id="I_indexterm6_d1e8771" significance="normal">
+        <primary>rapports JUnit</primary>
+        <secondary>configurer dans une tache de build free-style</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal">
+        <primary>TestNG</primary>
+      </indexterm> JUnit ou TestNG, Jenkins fournit une excellent intégration de
     base. Si vous utilisez Jenkins pour des projets non Java, vous aurez besoin
-    du<indexterm id="I_indexterm6_d1e8780" significance="normal"><primary>xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8783" significance="normal"><primary>plugin xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8786" significance="normal"><primary>plugins</primary><secondary>xUnit</secondary></indexterm> plugin xUnit. Ce plugin permet à Jenkins de traiter les rapports de test
-    de projets non Java d'une façon uniforme. Il fournit un support de MSUnit
-    et NUnit (pour C# et d'autres langages .NET), UnitTest++ et Boost Test
-    (pour C++), PHPUnit (pour PHP), ainsi que quelques autres librairies xUnit via
-    d'autres plugins (voir <xref linkend="fig-hudson-xunit-plugin"/>).</para>
+    du<indexterm id="I_indexterm6_d1e8780" significance="normal">
+        <primary>xUnit</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8783" significance="normal">
+        <primary>plugin xUnit</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e8786" significance="normal">
+        <primary>plugins</primary>
+        <secondary>xUnit</secondary>
+      </indexterm> plugin xUnit. Ce plugin permet à Jenkins de traiter les
+    rapports de test de projets non Java d'une façon uniforme. Il fournit un
+    support de MSUnit et NUnit (pour C# et d'autres langages .NET), UnitTest++
+    et Boost Test (pour C++), PHPUnit (pour PHP), ainsi que quelques autres
+    librairies xUnit via d'autres plugins (voir <xref
+    linkend="fig-hudson-xunit-plugin"/>).</para>
     <figure float="0" id="fig-hudson-xunit-plugin">
       <title>Installer le plugin xUnit</title>
       <mediaobject id="I_mediaobject6_d1e8797">
@@ -156,12 +300,18 @@
       </mediaobject>
     </figure>
     <para>Une fois que vous avez installé le plugin xUnit, vous devez configurer
-    le traitement pour vos rapports xUnit dans la section “Actions à la suite du build”.
-    Selectionnez la case “Publish testing tools result report”,
-    et saisissez le chemin vers les rapports XML générés par votre librairie
-    de test (voir <xref linkend="fig-hudson-xunit-plugin-config"/>). Quand la
-    tache de build s'exécute, Jenkins convertira ces rapports en rapports JUnit de telle manière
-    à ce qu'ils soient affichés<indexterm id="I_indexterm6_d1e8806" class="endofrange" startref="ch06-config" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8808" class="endofrange" startref="ch06-config2" significance="normal"><primary/></indexterm> dans Jenkins.</para>
+    le traitement pour vos rapports xUnit dans la section “Actions à la suite du
+    build”. Selectionnez la case “Publish testing tools result report”, et
+    saisissez le chemin vers les rapports XML générés par votre librairie de
+    test (voir <xref linkend="fig-hudson-xunit-plugin-config"/>). Quand la tache
+    de build s'exécute, Jenkins convertira ces rapports en rapports JUnit de
+    telle manière à ce qu'ils soient affichés<indexterm class="endofrange"
+        id="I_indexterm6_d1e8806" significance="normal" startref="ch06-config">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e8808"
+        significance="normal" startref="ch06-config2">
+        <primary/>
+      </indexterm> dans Jenkins.</para>
     <figure float="0" id="fig-hudson-xunit-plugin-config">
       <title>Publier les résultat de test xUnit</title>
       <mediaobject id="I_mediaobject6_d1e8814">
@@ -176,34 +326,61 @@
   </sect1>
   <sect1 id="sect-chapter-automated-testing-results">
     <title>Afficher les résultats de test</title>
-    <para>Une fois que<indexterm class="startofrange" id="ch06-disp1" significance="normal"><primary>tests</primary><secondary>rapports de</secondary><tertiary>afficher</tertiary></indexterm><indexterm class="startofrange" id="ch06-disp2" significance="normal"><primary>rapporter</primary><secondary>résultats de test</secondary><tertiary>afficher</tertiary></indexterm> Jenkins sait où se trouvent les rapports de test, il fournit un
-    excellent travail de rapport sur ces derniers. En effect, une des tâches principales de Jenkins est de
-    détecter et de fournir des rapports sur des échecs de build. Et un test unitaire échoué est un des
-    symptomes les plus évidents.</para>
-    <para>Comme nous le mentionnions plus tôt, Jenkins <indexterm class="startofrange" id="ch06-fail1" significance="normal"><primary>tâches de build</primary><secondary>échouées</secondary><tertiary>détails à propos de</tertiary></indexterm><indexterm id="I_indexterm6_d1e8848" significance="normal"><primary>tâches de buid</primary><secondary>build instable de</secondary></indexterm><indexterm id="I_indexterm6_d1e8853" significance="normal"><primary>builds instables</primary></indexterm>fait la distinction entre les builds <emphasis>échoués</emphasis>
-    et les builds <emphasis>instables</emphasis>. Un build échoué (indiqué
-    par une balle rouge) signale des tests échoués, ou une tache de build qui est cassée d'une
-    façon brutale, telle qu'une erreur de compilation. Un build instable, de l'autre
-    coté, est un build qui n'est pas considéré de qualité suffisante. C'est
-    intentionnellement vague: ce qui définit la “qualité” est généralement
-    donné par vous, mais c'est typiquement lié aux métriques de code
-    comme la couverture de code ou les standards de codage, ce que nous discuterons
-    plus tard dans le livre. Pour l'instant, concentrons nous sur les builds
-    <emphasis>échoués</emphasis>.</para>
+    <para>Une fois que<indexterm class="startofrange" id="ch06-disp1"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>rapports de</secondary>
+        <tertiary>afficher</tertiary>
+      </indexterm><indexterm class="startofrange" id="ch06-disp2"
+        significance="normal">
+        <primary>rapporter</primary>
+        <secondary>résultats de test</secondary>
+        <tertiary>afficher</tertiary>
+      </indexterm> Jenkins sait où se trouvent les rapports de test, il fournit
+    un excellent travail de rapport sur ces derniers. En effect, une des tâches
+    principales de Jenkins est de détecter et de fournir des rapports sur des
+    échecs de build. Et un test unitaire échoué est un des symptomes les plus
+    évidents.</para>
+    <para>Comme nous le mentionnions plus tôt, Jenkins <indexterm
+        class="startofrange" id="ch06-fail1" significance="normal">
+        <primary>tâches de build</primary>
+        <secondary>échouées</secondary>
+        <tertiary>détails à propos de</tertiary>
+      </indexterm><indexterm id="I_indexterm6_d1e8848" significance="normal">
+        <primary>tâches de buid</primary>
+        <secondary>build instable de</secondary>
+      </indexterm><indexterm id="I_indexterm6_d1e8853" significance="normal">
+        <primary>builds instables</primary>
+      </indexterm>fait la distinction entre les builds
+    <emphasis>échoués</emphasis> et les builds <emphasis>instables</emphasis>.
+    Un build échoué (indiqué par une balle rouge) signale des tests échoués, ou
+    une tache de build qui est cassée d'une façon brutale, telle qu'une erreur
+    de compilation. Un build instable, de l'autre coté, est un build qui n'est
+    pas considéré de qualité suffisante. C'est intentionnellement vague: ce qui
+    définit la “qualité” est généralement donné par vous, mais c'est typiquement
+    lié aux métriques de code comme la couverture de code ou les standards de
+    codage, ce que nous discuterons plus tard dans le livre. Pour l'instant,
+    concentrons nous sur les builds <emphasis>échoués</emphasis>.</para>
     <para>Dans <xref linkend="fig-testing-maven-test-failure-dashboard"/>
-    nous<indexterm id="I_indexterm6_d1e8870" significance="normal"><primary>tâches de build Maven</primary><secondary>résultats de test de</secondary></indexterm> pouvons voir comment Jenkins affiche une tâche de build Maven contenant
-    des échecs de test. Ceci est la page d'accueil de la tache de build, qui devrait être votre premier
-    point d'entrée quand un build échoue. Quand un build contient des tests en échec,
-    le lien Dernier résultats des tests indique <phrase role="keep-together">le nombre
-    </phrase> courant d'échecs de test dans cette tâche de build (“5 échecs”
-    dans l'illustration), <phrase role="keep-together">et aussi</phrase> la
-    difference dans le nombre d'échecs de test depuis le dernier build (“+5” dans
-    <phrase role="keep-together">l'illustration—</phrase>cinq nouveaux échecs de
-    test). Vous pouvez aussi voir comment les tests ont réussi dans le <phrase role="keep-together">temps—</phrase>les échecs de test des build précédents apparaittront
-    en rouge dans le graphique Tendance des résultats des tests.</para>
+    nous<indexterm id="I_indexterm6_d1e8870" significance="normal">
+        <primary>tâches de build Maven</primary>
+        <secondary>résultats de test de</secondary>
+      </indexterm> pouvons voir comment Jenkins affiche une tâche de build Maven
+    contenant des échecs de test. Ceci est la page d'accueil de la tache de
+    build, qui devrait être votre premier point d'entrée quand un build échoue.
+    Quand un build contient des tests en échec, le lien Dernier résultats des
+    tests indique <phrase role="keep-together">le nombre </phrase> courant
+    d'échecs de test dans cette tâche de build (“5 échecs” dans l'illustration),
+    <phrase role="keep-together">et aussi</phrase> la difference dans le nombre
+    d'échecs de test depuis le dernier build (“+5” dans <phrase
+    role="keep-together">l'illustration—</phrase>cinq nouveaux échecs de test).
+    Vous pouvez aussi voir comment les tests ont réussi dans le <phrase
+    role="keep-together">temps—</phrase>les échecs de test des build précédents
+    apparaittront en rouge dans le graphique Tendance des résultats des
+    tests.</para>
     <figure float="0" id="fig-testing-maven-test-failure-dashboard">
-      <title>Jenkins affiche la tendance des résultats de test sur la page d'accueil du projet
-      </title>
+      <title>Jenkins affiche la tendance des résultats de test sur la page
+      d'accueil du projet</title>
       <mediaobject id="I_mediaobject6_d1e8892">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0605.pdf" format="PDF"/>
@@ -213,12 +390,13 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Si vous cliquez sur le lien Derniers résultats des tests, Jenkins vous donnera un
-    aperçu des résultats des derniers tests (voir <xref linkend="fig-testing-test-result-details"/>). Jenkins supporte les structures de projets
-    multi-modules Maven, et pour une tâche de build Maven, Jenkins va
-    afficher une vue synthétique des résultats de test par module. Pour voir plus de
-    détails sur les tests en échec dans un module particulier, cliquez simplement sur le
-    module qui vous intéresse.</para>
+    <para>Si vous cliquez sur le lien Derniers résultats des tests, Jenkins vous
+    donnera un aperçu des résultats des derniers tests (voir <xref
+    linkend="fig-testing-test-result-details"/>). Jenkins supporte les
+    structures de projets multi-modules Maven, et pour une tâche de build Maven,
+    Jenkins va afficher une vue synthétique des résultats de test par module.
+    Pour voir plus de détails sur les tests en échec dans un module particulier,
+    cliquez simplement sur le module qui vous intéresse.</para>
     <figure float="none" id="fig-testing-test-result-details">
       <title>Jenkins affiche une vue synthétique des résultats de test</title>
       <mediaobject id="I_mediaobject6_d1e8904">
@@ -230,33 +408,41 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pour <indexterm id="I_indexterm6_d1e8911" significance="normal"><primary>tâches de build free-style</primary><secondary>échoué</secondary></indexterm>les tâches de build free-style, Jenkins vous donnera directement un
-    aperçu de vos résultats de test, mais organisé par packages de haut niveau plutôt que
-    par modules.</para>
-    <para>Dans les deux cas, Jenkins commence par présenter un aperçu des résultats
-    de test pour chaque package. A partir d'ici, vous pouvez affiner, voir les résultats
-    de test pour chaque classe de test pour finir par les tests dans les classes
-    de test. Et s'il y a des tests en échec, ils seront
+    <para>Pour <indexterm id="I_indexterm6_d1e8911" significance="normal">
+        <primary>tâches de build free-style</primary>
+        <secondary>échoué</secondary>
+      </indexterm>les tâches de build free-style, Jenkins vous donnera
+    directement un aperçu de vos résultats de test, mais organisé par packages
+    de haut niveau plutôt que par modules.</para>
+    <para>Dans les deux cas, Jenkins commence par présenter un aperçu des
+    résultats de test pour chaque package. A partir d'ici, vous pouvez affiner,
+    voir les résultats de test pour chaque classe de test pour finir par les
+    tests dans les classes de test. Et s'il y a des tests en échec, ils seront
     surlignés en haut de la page.</para>
-    <para>Cette vue complète vous donne à la fois un bon aperçu de l'état courant
-    de vos tests, et une indication sur leur historique. La colonne Age indique
-    depuis combien de temps un test a été cassé, avec un hyperlien qui vous ramène
-    vers le premier build dans lequel le test a échoué.</para>
-    <para>Vous pouvez aussi rajouter une description aux résultats de test, en utilisant le lien
-    ajouter une description dans le coin en haut à droite de l'écran. C'est une bonne
-    manière d'annoter un échec de build avec des détails additionnels, afin
-    de rajouter une information supplémentaire sur l'origine du problème des échecs de test ou des
-    notes sur la façon de les corriger.</para>
-    <para>Lorsqu'un test échoue, vous voulez généralement savoir pourquoi. Pour voir les
-    détails d'un échec d'un test donné, cliquez sur le lien correspondant
-    sur cet écran. Cela va afficher l'ensemble des détails, y compris le
-    message d'erreur et la pile, ainsi qu'un rappel du temps depuis lequel le
-    test est en échec (voir <xref linkend="fig-testing-test-failure-details"/>). Vous devriez vous méfier des
-    tests qui sont en échec depuis plus de deux builds—cela signale
-    soit un problème technique pointu qui doit être
-    investigué, soit une attitude complaisante envers les tests en échec (les developpeurs ignorent
-    peut-être les échecs de build), ce qui est plus sérieux et doit 
-    surement être<indexterm id="I_indexterm6_d1e8928" class="endofrange" startref="ch06-fail1" significance="normal"><primary/></indexterm> investigué.</para>
+    <para>Cette vue complète vous donne à la fois un bon aperçu de l'état
+    courant de vos tests, et une indication sur leur historique. La colonne Age
+    indique depuis combien de temps un test a été cassé, avec un hyperlien qui
+    vous ramène vers le premier build dans lequel le test a échoué.</para>
+    <para>Vous pouvez aussi rajouter une description aux résultats de test, en
+    utilisant le lien ajouter une description dans le coin en haut à droite de
+    l'écran. C'est une bonne manière d'annoter un échec de build avec des
+    détails additionnels, afin de rajouter une information supplémentaire sur
+    l'origine du problème des échecs de test ou des notes sur la façon de les
+    corriger.</para>
+    <para>Lorsqu'un test échoue, vous voulez généralement savoir pourquoi. Pour
+    voir les détails d'un échec d'un test donné, cliquez sur le lien
+    correspondant sur cet écran. Cela va afficher l'ensemble des détails, y
+    compris le message d'erreur et la pile, ainsi qu'un rappel du temps depuis
+    lequel le test est en échec (voir <xref
+    linkend="fig-testing-test-failure-details"/>). Vous devriez vous méfier des
+    tests qui sont en échec depuis plus de deux builds—cela signale soit un
+    problème technique pointu qui doit être investigué, soit une attitude
+    complaisante envers les tests en échec (les developpeurs ignorent peut-être
+    les échecs de build), ce qui est plus sérieux et doit surement
+    être<indexterm class="endofrange" id="I_indexterm6_d1e8928"
+        significance="normal" startref="ch06-fail1">
+        <primary/>
+      </indexterm> investigué.</para>
     <figure float="none" id="fig-testing-test-failure-details">
       <title>Les détails d'un échec de test</title>
       <mediaobject id="I_mediaobject6_d1e8934">
@@ -268,24 +454,36 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Assurez-vous <indexterm class="startofrange" id="ch06-perf1" significance="normal"><primary>tests</primary><secondary>performance de</secondary></indexterm><indexterm class="startofrange" id="ch06-perf2" significance="normal"><primary>performance</primary><secondary sortas="tests">des tests</secondary></indexterm>que vous gardez un oeil sur le temps que prennent vos tests pour
-    s'exécuter, et pas uniquement s'ils passent ou échouent. Les tests unitaires doivent être conçus
-    pour s'exécuter rapidement, et des tests trop longs peuvent être le signe d'un
-    problème de performance. Des tests unitaires lents retardent aussi le retour, et en IC, un retour
-    rapide est la clé. Par exemple, exécuter un millier de tests unitaires
-    en cinq minutes est bon—prendre une heure ne l'est pas. Donc c'est
-    une bonne idée de vérifier régulièrement combien de temps vos tests unitaires prennent pour s'exécuter,
+    <para>Assurez-vous <indexterm class="startofrange" id="ch06-perf1"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>performance de</secondary>
+      </indexterm><indexterm class="startofrange" id="ch06-perf2"
+        significance="normal">
+        <primary>performance</primary>
+        <secondary sortas="tests">des tests</secondary>
+      </indexterm>que vous gardez un oeil sur le temps que prennent vos tests
+    pour s'exécuter, et pas uniquement s'ils passent ou échouent. Les tests
+    unitaires doivent être conçus pour s'exécuter rapidement, et des tests trop
+    longs peuvent être le signe d'un problème de performance. Des tests
+    unitaires lents retardent aussi le retour, et en IC, un retour rapide est la
+    clé. Par exemple, exécuter un millier de tests unitaires en cinq minutes est
+    bon—prendre une heure ne l'est pas. Donc c'est une bonne idée de vérifier
+    régulièrement combien de temps vos tests unitaires prennent pour s'exécuter,
     et si nécessaire invstiguer pourquoi ils prennent autant de temps.</para>
-    <para>Heureusement, Jenkins peut facilement vous dire la durée que prennent vos tests pour s'exécuter
-    dans le temps. Sur la page d'accueil de la tâche de build, cliquez sur le lien “tendance”
-    dans la boite Historique des builds sur la gauche de l'écran. Cela vous donnera
-    un graphique à l'instar de celui dans <xref linkend="fig-testing-test-trend"/>, vous montrant combien de temps chacun de vos builds
-    a pris pour s'exécuter. Maintenant, les tests ne sont pas la seule chose qui apparait dans une tache de build,
-    mais si vous avez suffisamment de tests à regarder de près, ils vont probablement prendre une
-    grande partie du temps. Ainsi, ce graphique est aussi un excellent moyen de voir comment
-    vos tests se comportent.</para>
+    <para>Heureusement, Jenkins peut facilement vous dire la durée que prennent
+    vos tests pour s'exécuter dans le temps. Sur la page d'accueil de la tâche
+    de build, cliquez sur le lien “tendance” dans la boite Historique des builds
+    sur la gauche de l'écran. Cela vous donnera un graphique à l'instar de celui
+    dans <xref linkend="fig-testing-test-trend"/>, vous montrant combien de
+    temps chacun de vos builds a pris pour s'exécuter. Maintenant, les tests ne
+    sont pas la seule chose qui apparait dans une tache de build, mais si vous
+    avez suffisamment de tests à regarder de près, ils vont probablement prendre
+    une grande partie du temps. Ainsi, ce graphique est aussi un excellent moyen
+    de voir comment vos tests se comportent.</para>
     <figure float="none" id="fig-testing-test-trend">
-      <title>Les tendances de temps de build peuvent vous donner un bon indicateur de la rapidité de vos tests</title>
+      <title>Les tendances de temps de build peuvent vous donner un bon
+      indicateur de la rapidité de vos tests</title>
       <mediaobject id="I_mediaobject6_d1e8959">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0608.pdf" format="PDF"/>
@@ -295,20 +493,40 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Quand vous êtes sur la page Résultats des tests (voir <xref linkend="fig-testing-test-result-details"/>), vous pouvez aussi affiner et
-    voir le temps que prennent les tests dans un module, package ou classe donné.
-    Cliquez sur la durée du test dans la page Résultats des tests (“A duré 31
-    ms” in <xref linkend="fig-testing-test-result-details"/>) pour voir
-    l'historique du test pour un package, une classe, ou un test individuel (voir <xref linkend="fig-testing-test-result-history"/>). Cela rend facile
-    l'isolation d'un test qui prend plus de temps qu'il ne le devrait, ou même décider
-    quand une optimisation générale de vos tests unitaires est<indexterm id="I_indexterm6_d1e8972" class="endofrange" startref="ch06-disp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8974" class="endofrange" startref="ch06-disp2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8976" class="endofrange" startref="ch06-perf1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e8978" class="endofrange" startref="ch06-perf2" significance="normal"><primary/></indexterm> requise.</para>
+    <para>Quand vous êtes sur la page Résultats des tests (voir <xref
+    linkend="fig-testing-test-result-details"/>), vous pouvez aussi affiner et
+    voir le temps que prennent les tests dans un module, package ou classe
+    donné. Cliquez sur la durée du test dans la page Résultats des tests (“A
+    duré 31 ms” in <xref linkend="fig-testing-test-result-details"/>) pour voir
+    l'historique du test pour un package, une classe, ou un test individuel
+    (voir <xref linkend="fig-testing-test-result-history"/>). Cela rend facile
+    l'isolation d'un test qui prend plus de temps qu'il ne le devrait, ou même
+    décider quand une optimisation générale de vos tests unitaires est<indexterm
+        class="endofrange" id="I_indexterm6_d1e8972" significance="normal"
+        startref="ch06-disp1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e8974"
+        significance="normal" startref="ch06-disp2">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e8976"
+        significance="normal" startref="ch06-perf1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e8978"
+        significance="normal" startref="ch06-perf2">
+        <primary/>
+      </indexterm> requise.</para>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-ignoring">
     <title>Ignorer des tests</title>
-    <para>Jenkins<indexterm class="startofrange" id="ch06-ignore" significance="normal"><primary>tests</primary><secondary>ignorer</secondary></indexterm> fait la distinction entre les tests échoués et les tests ignorés.
-    Les tests ignorés sont ceux qui ont été désactivés, par exemple en utilisant
-    l'annotation <literal moreinfo="none">@Ignore</literal> dans JUnit 4:</para>
-    <programlisting id="I_programlisting6_d1e8995" format="linespecific">@Ignore("Pending more details from the BA")
+    <para>Jenkins<indexterm class="startofrange" id="ch06-ignore"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>ignorer</secondary>
+      </indexterm> fait la distinction entre les tests échoués et les tests
+    ignorés. Les tests ignorés sont ceux qui ont été désactivés, par exemple en
+    utilisant l'annotation <literal moreinfo="none">@Ignore</literal> dans JUnit
+    4:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e8995">@Ignore("Pending more details from the BA")
 @Test 
 public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Account account = new Account();
@@ -317,7 +535,8 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     assertThat(account.getBalance(), is(40));
 }</programlisting>
     <figure float="none" id="fig-testing-test-result-history">
-      <title>Jenkins vous permet de voir combien de temps les tests ont mis pour s'exécuter</title>
+      <title>Jenkins vous permet de voir combien de temps les tests ont mis pour
+      s'exécuter</title>
       <mediaobject id="I_mediaobject6_d1e9000">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0609.pdf" format="PDF"/>
@@ -327,41 +546,50 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Ignorer des tests est parfaitement légitime dans certaines circonstances,
-    telles que placer un test d'acceptance automatisé, ou un test technique de plus haut niveau
-    , en attente pendant que vous implémentez les couches inférieures. Dans de tels cas, vous
-    ne voulez pas être distrait par le test d'acceptance échoué, mais vous ne voulez pas
-    non plus oublier que le test existe. Utilser des techniques telles que l'annotation
-    <literal moreinfo="none">@Ignore</literal> est certainement meilleur que de commenter simplement
-    le test ou de le renommer (dans JUnit 3), car cela permet à Jenkins de garder un oeil
-    sur les tests ignorés pour vous.</para>
-    <para>Avec <indexterm id="I_indexterm6_d1e9012" significance="normal"><primary>TestNG</primary></indexterm>TestNG, vous pouvez aussi ignorer des tests, en utilisant la
+    <para>Ignorer des tests est parfaitement légitime dans certaines
+    circonstances, telles que placer un test d'acceptance automatisé, ou un test
+    technique de plus haut niveau , en attente pendant que vous implémentez les
+    couches inférieures. Dans de tels cas, vous ne voulez pas être distrait par
+    le test d'acceptance échoué, mais vous ne voulez pas non plus oublier que le
+    test existe. Utilser des techniques telles que l'annotation <literal
+    moreinfo="none">@Ignore</literal> est certainement meilleur que de commenter
+    simplement le test ou de le renommer (dans JUnit 3), car cela permet à
+    Jenkins de garder un oeil sur les tests ignorés pour vous.</para>
+    <para>Avec <indexterm id="I_indexterm6_d1e9012" significance="normal">
+        <primary>TestNG</primary>
+      </indexterm>TestNG, vous pouvez aussi ignorer des tests, en utilisant la
     propriété <literal moreinfo="none">enabled</literal>:</para>
-    <programlisting id="I_programlisting6_d1e9019" format="linespecific">@Test(enabled=false)
+    <programlisting format="linespecific" id="I_programlisting6_d1e9019">@Test(enabled=false)
 public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     Account account = new Account();
     account.makeDeposit(100);
     account.makeCashWithdraw(60);
     assertThat(account.getBalance(), is(40));
 }</programlisting>
-    <para>Avec TestNG, vois pouvez aussi définir des dépendences entre tests, de façon que
-    certains tests s'exécuteront après qu'un autre test ou un groupe de tests se soit exécuté,
-    comme illustré ici:</para>
-    <programlisting id="I_programlisting6_d1e9023" format="linespecific">@Test
+    <para>Avec TestNG, vois pouvez aussi définir des dépendences entre tests, de
+    façon que certains tests s'exécuteront après qu'un autre test ou un groupe
+    de tests se soit exécuté, comme illustré ici:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e9023">@Test
 public void serverStartedOk() {...}
  
 @Test(dependsOnMethods = { "serverStartedOk" })
 public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed(){..}</programlisting>
-    <para>Ici, si le premier test (<literal moreinfo="none">serverStartedOk()</literal>)
-    échoue, le test suivant sera ignoré.</para>
-    <para>Dans tous ces cas, Jenkins marquera les tests qui n'ont pas été exécutés
-    en jaune, à la fois dans la tendance de résultats de test globale, et dans les détails du test
-    (voir <xref linkend="fig-testing-test-skipped"/>). Les tests ignorés ne sont pas
-    aussi mauvais que des tests échoués, mais il est important de ne pas avoir l'habitude
-    de les négliger. Les tests ignorés sont comme des branches dans un système de gestion
-    de version: un test doit être ignoré pour une raison particulière, avec une idée claire
-    de la date à laquelle il sera réactivé. Un test ignoré qui reste ignoré
-    pendant une période trop longue ne sent pas<indexterm id="I_indexterm6_d1e9034" class="endofrange" startref="ch06-ignore" significance="normal"><primary/></indexterm> bon.</para>
+    <para>Ici, si le premier test (<literal
+    moreinfo="none">serverStartedOk()</literal>) échoue, le test suivant sera
+    ignoré.</para>
+    <para>Dans tous ces cas, Jenkins marquera les tests qui n'ont pas été
+    exécutés en jaune, à la fois dans la tendance de résultats de test globale,
+    et dans les détails du test (voir <xref
+    linkend="fig-testing-test-skipped"/>). Les tests ignorés ne sont pas aussi
+    mauvais que des tests échoués, mais il est important de ne pas avoir
+    l'habitude de les négliger. Les tests ignorés sont comme des branches dans
+    un système de gestion de version: un test doit être ignoré pour une raison
+    particulière, avec une idée claire de la date à laquelle il sera réactivé.
+    Un test ignoré qui reste ignoré pendant une période trop longue ne sent
+    pas<indexterm class="endofrange" id="I_indexterm6_d1e9034"
+        significance="normal" startref="ch06-ignore">
+        <primary/>
+      </indexterm> bon.</para>
     <figure float="none" id="fig-testing-test-skipped">
       <title>Jenkins affiche les tests ignorés en jaune</title>
       <mediaobject id="I_mediaobject6_d1e9041">
@@ -376,66 +604,104 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   </sect1>
   <sect1 id="sect-chapter-automated-testing-coverage">
     <title>Couverture de code</title>
-    <para>Une autre <indexterm class="startofrange" id="ch06-coverage" significance="normal"><primary>métriques de couverture de code</primary></indexterm>métrique liée aux tests très utile est la couverture de code. La
-    couverture de code donne une indication sur les parties de votre application qui ont
-    été exécutées pendant les tests. Alors que ce n'est pas en soit une indication suffisante
-    sur la qualité du test (il est facile d'exécuter une application entière
-    sans réellement tester quoique ce soit, et les métriques de couverture de code ne fournissent pas une
-    indication de la qualité ou de l'exactitude de vos tests), c'est une bonne
-    indication du code qui <emphasis>n'a pas</emphasis> été testé. Et, si
-    votre équipe est en train d'adopter des pratiques de test rigoureuses telles que
-    Test-Driven-Development, la couverture de code peut être un bon indicateur sur la façon dont ces
-    pratiques ont été mises en place.</para>
-    <para>L'analyse de la couverture de code<indexterm id="I_indexterm6_d1e9060" significance="normal"><primary>performance</primary><secondary sortas="code coverage">de l'analyse de la couverture
-        de code</secondary></indexterm> est un traitement consommateur en CPU et mémoire, et va
-    ralentir votre tâche de build de façon significative. Pour cette raison, vous allez
-    généralement exécuter les métriques de couverture de code dans une tâche de build Jenkins séparée, exécutée
-    après que vos tests unitaires et d'intégration soient <phrase role="keep-together">réussis</phrase>.</para>
-    <para>Il y a<indexterm id="I_indexterm6_d1e9071" significance="normal"><primary>métriques de couverture de code</primary><secondary>logiciels pour</secondary></indexterm> de nombreux outils de couverture de code disponibles, et plusieurs sont
-    supportés dans Jenkins, tous via des plugins dédiés. Les développeurs Java peuvent
-    choisir entre Cobertura et Emma, deux outils populaires de couverture de code open source
-    , ou Clover, un puissant outil commercial de couverture de code d'Atlassian.
-    Pour les projets .NET, vous pouvez utiliser NCover.</para>
-    <para>Le fonctionnement et la configuration de tous ces outils sont semblables. Dans
-    cette section, nous allons examiner Cobertura.</para>
+    <para>Une autre <indexterm class="startofrange" id="ch06-coverage"
+        significance="normal">
+        <primary>métriques de couverture de code</primary>
+      </indexterm>métrique liée aux tests très utile est la couverture de code.
+    La couverture de code donne une indication sur les parties de votre
+    application qui ont été exécutées pendant les tests. Alors que ce n'est pas
+    en soit une indication suffisante sur la qualité du test (il est facile
+    d'exécuter une application entière sans réellement tester quoique ce soit,
+    et les métriques de couverture de code ne fournissent pas une indication de
+    la qualité ou de l'exactitude de vos tests), c'est une bonne indication du
+    code qui <emphasis>n'a pas</emphasis> été testé. Et, si votre équipe est en
+    train d'adopter des pratiques de test rigoureuses telles que
+    Test-Driven-Development, la couverture de code peut être un bon indicateur
+    sur la façon dont ces pratiques ont été mises en place.</para>
+    <para>L'analyse de la couverture de code<indexterm id="I_indexterm6_d1e9060"
+        significance="normal">
+        <primary>performance</primary>
+        <secondary sortas="code coverage">de l'analyse de la couverture de
+        code</secondary>
+      </indexterm> est un traitement consommateur en CPU et mémoire, et va
+    ralentir votre tâche de build de façon significative. Pour cette raison,
+    vous allez généralement exécuter les métriques de couverture de code dans
+    une tâche de build Jenkins séparée, exécutée après que vos tests unitaires
+    et d'intégration soient <phrase
+    role="keep-together">réussis</phrase>.</para>
+    <para>Il y a<indexterm id="I_indexterm6_d1e9071" significance="normal">
+        <primary>métriques de couverture de code</primary>
+        <secondary>logiciels pour</secondary>
+      </indexterm> de nombreux outils de couverture de code disponibles, et
+    plusieurs sont supportés dans Jenkins, tous via des plugins dédiés. Les
+    développeurs Java peuvent choisir entre Cobertura et Emma, deux outils
+    populaires de couverture de code open source , ou Clover, un puissant outil
+    commercial de couverture de code d'Atlassian. Pour les projets .NET, vous
+    pouvez utiliser NCover.</para>
+    <para>Le fonctionnement et la configuration de tous ces outils sont
+    semblables. Dans cette section, nous allons examiner Cobertura.</para>
     <sect2>
       <title>Mesurer la couverture de code avec Cobertura</title>
-      <para><ulink url="http://cobertura.sourceforge.net">Cobertura</ulink><indexterm class="startofrange" id="ch06-cobertura1" significance="normal"><primary>métriques de couverture de code</primary><secondary sortas="Cobertura">avec Cobertura</secondary></indexterm><indexterm class="startofrange" id="ch06-cobertura2" significance="normal"><primary>Cobertura</primary></indexterm> est un outil de couverture de code open source pour Java et Groovy
-      qui est facile d'utilisation et s'intègre parfaitement à la fois dans Maven et
-      Jenkins.</para>
+      <para><ulink
+      url="http://cobertura.sourceforge.net">Cobertura</ulink><indexterm
+          class="startofrange" id="ch06-cobertura1" significance="normal">
+          <primary>métriques de couverture de code</primary>
+          <secondary sortas="Cobertura">avec Cobertura</secondary>
+        </indexterm><indexterm class="startofrange" id="ch06-cobertura2"
+          significance="normal">
+          <primary>Cobertura</primary>
+        </indexterm> est un outil de couverture de code open source pour Java et
+      Groovy qui est facile d'utilisation et s'intègre parfaitement à la fois
+      dans Maven et Jenkins.</para>
       <para>Comme tous les plugins Jenkins de métriques de qualité de code
-      ,<footnote><para>avec l'exception notable de Sonar, que nous allons examiner
-          plus tard dans le livre.</para></footnote> le plugin Cobertura pour Jenkins ne va pas lancer les tests
-      de couverture de code pour vous. C'est à vous de générer les informations de couverture de code
-      dans le cadre de votre processus de build automatisé. Jenkins, d'autre
-      part, fournit un excellent travail de <emphasis>rapport</emphasis> sur
-      les métriques de couverture de code, notamment le suivi de la couverture de code dans
-      le temps, et fournissant une couverture de code aggrégée sur plusieurs modules
-      applicatifs.</para>
-      <para>La couverture de code peut être une affaire complexe, et il est utile de
-      comprendre le traitement que Cobertura suit, surtout quand vous
-      devez le mettre en place dans des outils de scripting de plus bas niveau comme Ant. L'analyse
-      de la couverture de code fonctionne en trois étapes. D'abord, il modifie (ou
-      “instrumente”) les classes de votre application, afin qu'elles conservent
-      le nombre de fois que chaque ligne de code a été exécutée.<footnote><para>C'est en fait une légère simplification; en fait,
-          Cobertura stocke aussi d'autres informations, telles que combien de fois chaque
-            résultat possible d'un test booléen a été exécuté. Cependant, cela ne
-            modifie pas l'approche générale.</para></footnote> Il stocke ces informations dans un fichier spécial (Cobertura
-      utilise un fichier nommé <filename moreinfo="none">cobertura.ser</filename>).</para>
+      ,<footnote>
+          <para>avec l'exception notable de Sonar, que nous allons examiner plus
+          tard dans le livre.</para>
+        </footnote> le plugin Cobertura pour Jenkins ne va pas lancer les tests
+      de couverture de code pour vous. C'est à vous de générer les informations
+      de couverture de code dans le cadre de votre processus de build
+      automatisé. Jenkins, d'autre part, fournit un excellent travail de
+      <emphasis>rapport</emphasis> sur les métriques de couverture de code,
+      notamment le suivi de la couverture de code dans le temps, et fournissant
+      une couverture de code aggrégée sur plusieurs modules applicatifs.</para>
+      <para>La couverture de code peut être une affaire complexe, et il est
+      utile de comprendre le traitement que Cobertura suit, surtout quand vous
+      devez le mettre en place dans des outils de scripting de plus bas niveau
+      comme Ant. L'analyse de la couverture de code fonctionne en trois étapes.
+      D'abord, il modifie (ou “instrumente”) les classes de votre application,
+      afin qu'elles conservent le nombre de fois que chaque ligne de code a été
+      exécutée.<footnote>
+          <para>C'est en fait une légère simplification; en fait, Cobertura
+          stocke aussi d'autres informations, telles que combien de fois chaque
+          résultat possible d'un test booléen a été exécuté. Cependant, cela ne
+          modifie pas l'approche générale.</para>
+        </footnote> Il stocke ces informations dans un fichier spécial
+      (Cobertura utilise un fichier nommé <filename
+      moreinfo="none">cobertura.ser</filename>).</para>
       <para>Quand le code de l'application a été instrumenté, vous exécutez vos
-      tests avec le code instrumenté. A la fin des tests, Cobertura
-      aura généré un fichier de données contenant le nombre de fois chaque ligne
-      de code a été exécutée au cours des tests.</para>
+      tests avec le code instrumenté. A la fin des tests, Cobertura aura généré
+      un fichier de données contenant le nombre de fois chaque ligne de code a
+      été exécutée au cours des tests.</para>
       <para>Une fois que ce fichier a été généré, Cobertura peut utiliser cette
       donnée pour générer un rapport dans une format plus lisible, comme XML ou
       HTML.</para>
       <sect3>
         <title>Intégrer Cobertura avec Maven</title>
-        <para>Produire<indexterm class="startofrange" id="ch06-maven1" significance="normal"><primary>Cobertura</primary><secondary sortas="Maven">avec Maven</secondary></indexterm><indexterm class="startofrange" id="ch06-maven2" significance="normal"><primary>Maven</primary><secondary>Cobertura avec</secondary></indexterm> des métriques de couverture de code avec Cobertura dans Maven est
-        relativement simple. Si vous êtes intéressés par la génération des données
-        de couverture de code, il vous suffit de rajouter le <command moreinfo="none">cobertura-maven-plugin</command> à la section build
-        de votre fichier <filename moreinfo="none">pom.xml</filename>:</para>
-        <programlisting id="I_programlisting6_d1e9138" format="linespecific"> &lt;project&gt;
+        <para>Produire<indexterm class="startofrange" id="ch06-maven1"
+            significance="normal">
+            <primary>Cobertura</primary>
+            <secondary sortas="Maven">avec Maven</secondary>
+          </indexterm><indexterm class="startofrange" id="ch06-maven2"
+            significance="normal">
+            <primary>Maven</primary>
+            <secondary>Cobertura avec</secondary>
+          </indexterm> des métriques de couverture de code avec Cobertura dans
+        Maven est relativement simple. Si vous êtes intéressés par la génération
+        des données de couverture de code, il vous suffit de rajouter le
+        <command moreinfo="none">cobertura-maven-plugin</command> à la section
+        build de votre fichier <filename
+        moreinfo="none">pom.xml</filename>:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9138"> &lt;project&gt;
    ...
    &lt;build&gt;
       &lt;plugins&gt;
@@ -455,16 +721,19 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
    &lt;build&gt;
    ...
 &lt;/project&gt;</programlisting>
-        <para>Cela va générer les métriques de couverture de code quand vous lancerez le
-        plugin Cobertura <phrase role="keep-together">directement</phrase>:</para>
+        <para>Cela va générer les métriques de couverture de code quand vous
+        lancerez le plugin Cobertura <phrase
+        role="keep-together">directement</phrase>:</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn cobertura:cobertura</userinput></screen>
-        <para>Les données de couverture de code seront générées dans le répertoire <filename moreinfo="none">target/site/cobertura</filename>, dans un fichier
-        nommé <filename moreinfo="none">coverage.xml</filename>.</para>
+        <para>Les données de couverture de code seront générées dans le
+        répertoire <filename moreinfo="none">target/site/cobertura</filename>,
+        dans un fichier nommé <filename
+        moreinfo="none">coverage.xml</filename>.</para>
         <para>Cependant, cette approche va instrumenter vos classes et produire
-        les données de couverture de code pour chaque build, ce qui est inéfficace. Une meilleure
-        approche est de placer cette configuration dans un profil spécifique, comme montré
-        ici:</para>
-        <programlisting id="I_programlisting6_d1e9159" format="linespecific"> &lt;project&gt;
+        les données de couverture de code pour chaque build, ce qui est
+        inéfficace. Une meilleure approche est de placer cette configuration
+        dans un profil spécifique, comme montré ici:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9159"> &lt;project&gt;
    ...
    &lt;profiles&gt;
     &lt;profile&gt;
@@ -491,14 +760,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         <para>Dans ce cas, vous lancerez le plugin Cobertura en utilisant le
         profil metrics pour générer les données de couverture de code:</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn cobertura:cobertura -Pmetrics</userinput></screen>
-        <para>Une autre approche est d'inclure les rapports de couverture de code dans vos
-        rapports Maven. Cette approche est beaucoup plus lente et plus
-        consommatrice de mémoire que juste générer les données de couverture de code, mais cela peut avoir du sens
-        si vous générez aussi d'autres métriques de qualité de code et
-        leurs rapports en même temps. Si vous voulez le faire avec Maven 2, vous
-        devez aussi inclure le plugin Maven Cobertura plugin dans la section
-        reporting, comme montré ici:</para>
-        <programlisting id="I_programlisting6_d1e9170" format="linespecific"> &lt;project&gt;
+        <para>Une autre approche est d'inclure les rapports de couverture de
+        code dans vos rapports Maven. Cette approche est beaucoup plus lente et
+        plus consommatrice de mémoire que juste générer les données de
+        couverture de code, mais cela peut avoir du sens si vous générez aussi
+        d'autres métriques de qualité de code et leurs rapports en même temps.
+        Si vous voulez le faire avec Maven 2, vous devez aussi inclure le plugin
+        Maven Cobertura plugin dans la section reporting, comme montré
+        ici:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9170"> &lt;project&gt;
    ...
   &lt;reporting&gt;
     &lt;plugins&gt;
@@ -516,46 +786,71 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;/plugins&gt;
   &lt;/reporting&gt;
 &lt;/project&gt;</programlisting>
-        <para>Maintenant, les données de couverture de code seront générées quand vous générerez le
-        site Maven pour ce projet:</para>
+        <para>Maintenant, les données de couverture de code seront générées
+        quand vous générerez le site Maven pour ce projet:</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn site</userinput></screen>
-        <para>Si votre projet Maven contient des modules (comme il est de pratique
-        courante pour des gros projets Maven), vous devez mettre en place la configuration
-        Cobertura dans le <phrase role="keep-together">fichier </phrase><filename moreinfo="none">pom.xml</filename> parent-
-        les métriques de couverture de code et
-        le rapports seront générés séparément pour chaque module. Si vous utilisez l'option de configuration
-        <literal moreinfo="none">aggregate</literal>, le plugin Maven Cobertura
-        génèrera aussi un rapport de plus haut niveau combinant les données de couverture de code
-        de tous les modules. Cependant, que vous utilisiez cette option ou non,
-        le plugin Jenkins Cobertura va lire les données de couverture de code de plusieurs
-        fichiers et les combiner dans un seul rapport aggrégé.</para>
-        <para>Au moment de la rédaction, il y a une limitation avec le plugin Maven
-        Cobertura—la couverture de code sera uniquement enregistrée pour les tests
-        exécutés pendant la phase <command moreinfo="none">test</command>
-        , et pas les tests exécutés pendant la phase <command moreinfo="none">integration-test</command>. Cela peut être un problème
-        si vous utilisez cette phase pour lancer des tests d'intégration ou des tests web qui
-        nécessite une application complêtement packagée et déployée—dans ce cas,
-        la couverture de code des tests qui sont uniquement exécutés pendant la phase integration
-        test ne seront pas comptés dans les métriques de couverture de code<indexterm id="I_indexterm6_d1e9197" class="endofrange" startref="ch06-maven1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9199" class="endofrange" startref="ch06-maven2" significance="normal"><primary/></indexterm> Cobertura.</para>
+        <para>Si votre projet Maven contient des modules (comme il est de
+        pratique courante pour des gros projets Maven), vous devez mettre en
+        place la configuration Cobertura dans le <phrase
+        role="keep-together">fichier </phrase><filename
+        moreinfo="none">pom.xml</filename> parent- les métriques de couverture
+        de code et le rapports seront générés séparément pour chaque module. Si
+        vous utilisez l'option de configuration <literal
+        moreinfo="none">aggregate</literal>, le plugin Maven Cobertura génèrera
+        aussi un rapport de plus haut niveau combinant les données de couverture
+        de code de tous les modules. Cependant, que vous utilisiez cette option
+        ou non, le plugin Jenkins Cobertura va lire les données de couverture de
+        code de plusieurs fichiers et les combiner dans un seul rapport
+        aggrégé.</para>
+        <para>Au moment de la rédaction, il y a une limitation avec le plugin
+        Maven Cobertura—la couverture de code sera uniquement enregistrée pour
+        les tests exécutés pendant la phase <command
+        moreinfo="none">test</command> , et pas les tests exécutés pendant la
+        phase <command moreinfo="none">integration-test</command>. Cela peut
+        être un problème si vous utilisez cette phase pour lancer des tests
+        d'intégration ou des tests web qui nécessite une application
+        complêtement packagée et déployée—dans ce cas, la couverture de code des
+        tests qui sont uniquement exécutés pendant la phase integration test ne
+        seront pas comptés dans les métriques de couverture de code<indexterm
+            class="endofrange" id="I_indexterm6_d1e9197" significance="normal"
+            startref="ch06-maven1">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9199"
+            significance="normal" startref="ch06-maven2">
+            <primary/>
+          </indexterm> Cobertura.</para>
       </sect3>
       <sect3>
         <title>Intégrer Cobertura avec Ant</title>
-        <para>Intégrer <indexterm class="startofrange" id="ch06-ant1" significance="normal"><primary>Cobertura</primary><secondary sortas="Ant">avec Ant</secondary></indexterm><indexterm class="startofrange" id="ch06-ant2" significance="normal"><primary>Ant</primary><secondary>métriques de couverture de code avec Cobertura</secondary></indexterm>Cobertura dans votre build Ant est un peu plus compliqué que
-        le faire avec Maven. Cependant, cela vous permet d'avoir un contrôle plus fin sur
-        les classes qui sont instrumentées, et quand la couverture de code est mesurée.</para>
-        <para>Cobertura est livré avec une tâche Ant que vous pouvez utiliser pour
-        intégrer Cobertura dans vos builds Ant. You devez télécharger
-        la dernière distribution Cobertura, et la décompresser quelque part sur votre disque
-        dur. Afin que votre build soit plus portable, et donc plus facile à déployer
-        dans Jenkins, c'est une bonne idée de placer la distribution Cobertura
-        que vous utilisez dans votre répertoire projet, et de la sauvegarder dans votre
-        système de gestion de version. Ainsi, c'est le moyen le plus facile pour guarantir que le build
-        utilisera la même version de Corbertura quelque soit la façon dont il est
+        <para>Intégrer <indexterm class="startofrange" id="ch06-ant1"
+            significance="normal">
+            <primary>Cobertura</primary>
+            <secondary sortas="Ant">avec Ant</secondary>
+          </indexterm><indexterm class="startofrange" id="ch06-ant2"
+            significance="normal">
+            <primary>Ant</primary>
+            <secondary>métriques de couverture de code avec
+            Cobertura</secondary>
+          </indexterm>Cobertura dans votre build Ant est un peu plus compliqué
+        que le faire avec Maven. Cependant, cela vous permet d'avoir un contrôle
+        plus fin sur les classes qui sont instrumentées, et quand la couverture
+        de code est mesurée.</para>
+        <para>Cobertura est livré avec une tâche Ant que vous pouvez utiliser
+        pour intégrer Cobertura dans vos builds Ant. You devez télécharger la
+        dernière distribution Cobertura, et la décompresser quelque part sur
+        votre disque dur. Afin que votre build soit plus portable, et donc plus
+        facile à déployer dans Jenkins, c'est une bonne idée de placer la
+        distribution Cobertura que vous utilisez dans votre répertoire projet,
+        et de la sauvegarder dans votre système de gestion de version. Ainsi,
+        c'est le moyen le plus facile pour guarantir que le build utilisera la
+        même version de Corbertura quelque soit la façon dont il est
         exécuté.</para>
-        <para>En supposant que vous avez téléchargé la dernière installation Cobertura
-        et placé à l'intérieur de votre projet dans un répertoire nommé <filename moreinfo="none">tools</filename>, vous pourriez faire quelque chose comme
-        ceci:</para>
-        <programlisting id="I_programlisting6_d1e9225" format="linespecific">&lt;property name="cobertura.dir" value="${basedir}/tools/cobertura" /&gt;<co id="co-ch04-cobertura-dir"/>
+        <para>En supposant que vous avez téléchargé la dernière installation
+        Cobertura et placé à l'intérieur de votre projet dans un répertoire
+        nommé <filename moreinfo="none">tools</filename>, vous pourriez faire
+        quelque chose comme ceci:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9225">&lt;property name="cobertura.dir" value="${basedir}/tools/cobertura" /&gt;<co
+            id="co-ch04-cobertura-dir"/>
 
 &lt;path id="cobertura.classpath"&gt;<co id="co-ch04-cobertura-path"/>
     &lt;fileset dir="${cobertura.dir}"&gt;
@@ -570,8 +865,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <para>Indique Ant où se trouve l'installation de Cobertura.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-path">
-            <para>Nous devons mettre un place un classpath que Cobertura utilisera pour
-            s'exécuter.</para>
+            <para>Nous devons mettre un place un classpath que Cobertura
+            utilisera pour s'exécuter.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-jar">
             <para>Le chemin contient l'application Corbertura elle-même.</para>
@@ -580,14 +875,17 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <para>Et toutes ses dépendences.</para>
           </callout>
         </calloutlist>
-        <para>Ensuite, vous devez instrumenter les classes de l'application. Vous devez faire attention
-        de placer ces classes instrumentées dans un répertoire
-        différent, de telle manière qu'elles ne seront pas déployées en
-        production par accident:</para>
-        <programlisting id="I_programlisting6_d1e9250" format="linespecific">&lt;target name="instrument" depends="init,compile"&gt;<co id="co-ch04-cobertura-instrumentation"/>
+        <para>Ensuite, vous devez instrumenter les classes de l'application.
+        Vous devez faire attention de placer ces classes instrumentées dans un
+        répertoire différent, de telle manière qu'elles ne seront pas déployées
+        en production par accident:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9250">&lt;target name="instrument" depends="init,compile"&gt;<co
+            id="co-ch04-cobertura-instrumentation"/>
     &lt;delete file="cobertura.ser"/&gt;<co id="co-ch04-cobertura-delete"/>
-    &lt;delete dir="${instrumented.dir}" /&gt;<co id="co-ch04-cobertura-delete-instrumented"/>
-    &lt;cobertura-instrument todir="${instrumented.dir}"&gt;<co id="co-ch04-cobertura-instrument"/>
+    &lt;delete dir="${instrumented.dir}" /&gt;<co
+            id="co-ch04-cobertura-delete-instrumented"/>
+    &lt;cobertura-instrument todir="${instrumented.dir}"&gt;<co
+            id="co-ch04-cobertura-instrument"/>
         &lt;fileset dir="${classes.dir}"&gt;
             &lt;include name="**/*.class" /&gt;
             &lt;exclude name="**/*Test.class" /&gt;
@@ -596,8 +894,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 &lt;/target&gt;</programlisting>
         <calloutlist>
           <callout arearefs="co-ch04-cobertura-instrumentation">
-            <para>Nous ne pouvons instrumenter les classes de l'application qu'une fois qu'elles
-            ont été compilées.</para>
+            <para>Nous ne pouvons instrumenter les classes de l'application
+            qu'une fois qu'elles ont été compilées.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-delete">
             <para>Détruit toutes les données de couverture de code générées par
@@ -608,19 +906,23 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </callout>
           <callout arearefs="co-ch04-cobertura-instrument">
             <para>Instrumente les classes de l'application (mais les classes des
-            tests) et les place dans le répertoire <phrase role="keep-together"><filename moreinfo="none">${instrumented.dir}</filename></phrase>
-            .</para>
+            tests) et les place dans le répertoire <phrase
+            role="keep-together"><filename
+            moreinfo="none">${instrumented.dir}</filename></phrase> .</para>
           </callout>
         </calloutlist>
-        <para>A ce stade, le répertoire <filename moreinfo="none">${instrumented.dir}</filename>
-        contient une version instrumentée de nos classes applicatives.
-        Maintenant, tout ce que nous devons faire pour générer des données utiles de couverture de code est de
-        exécuter nos tests unitaires avec les classes de ce répertoire:</para>
-        <programlisting id="I_programlisting6_d1e9282" format="linespecific">&lt;target name="test-coverage" depends="instrument"&gt;
+        <para>A ce stade, le répertoire <filename
+        moreinfo="none">${instrumented.dir}</filename> contient une version
+        instrumentée de nos classes applicatives. Maintenant, tout ce que nous
+        devons faire pour générer des données utiles de couverture de code est
+        de exécuter nos tests unitaires avec les classes de ce
+        répertoire:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9282">&lt;target name="test-coverage" depends="instrument"&gt;
     &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit"/>
         &lt;classpath location="${instrumented.dir}" /&gt;
         &lt;classpath location="${classes.dir}" /&gt;
-        &lt;classpath refid="cobertura.classpath" /&gt;<co id="co-ch04-cobertura-classpath"/>
+        &lt;classpath refid="cobertura.classpath" /&gt;<co
+            id="co-ch04-cobertura-classpath"/>
 
         &lt;formatter type="xml" /&gt;
         &lt;test name="${testcase}" todir="${reports.xml.dir}" if="testcase" /&gt;
@@ -636,22 +938,25 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <para>Exéute les tests JUnit avec les classes instrumentées.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-classpath">
-            <para>Les classes instrumentées utilisent les classes de Cobertura, donc les
-            bibliothèques Cobertura doivent aussi se trouver dans le classpath.</para>
+            <para>Les classes instrumentées utilisent les classes de Cobertura,
+            donc les bibliothèques Cobertura doivent aussi se trouver dans le
+            classpath.</para>
           </callout>
         </calloutlist>
-        <para>Cela va produire les données brut de couverture de code dont nous avons besoin pour produire
-        les rapports XML de coouverture que Jenkins peut utiliser. Pour
-        produire ces rapports, nous devons lancer une autre tâche, comme montré
-        ici:</para>
-        <programlisting id="I_programlisting6_d1e9298" format="linespecific">&lt;target name="coverage-report" depends="test-coverage"&gt;
+        <para>Cela va produire les données brut de couverture de code dont nous
+        avons besoin pour produire les rapports XML de coouverture que Jenkins
+        peut utiliser. Pour produire ces rapports, nous devons lancer une autre
+        tâche, comme montré ici:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9298">&lt;target name="coverage-report" depends="test-coverage"&gt;
     &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" 
                       format="xml" /&gt;
 &lt;/target&gt;</programlisting>
-        <para>Enfin, n'oubliez pas de faire le ménage une fois que tout est fini: la cible <command moreinfo="none">clean</command> ne doit pas détruire uniquement
-        les classes générées, mais aussi les classes générées instrumentées, les
-        données de couverture de code Cobertura, et les rapports Cobertura:</para>
-        <programlisting id="I_programlisting6_d1e9305" format="linespecific">&lt;target name="clean" 
+        <para>Enfin, n'oubliez pas de faire le ménage une fois que tout est
+        fini: la cible <command moreinfo="none">clean</command> ne doit pas
+        détruire uniquement les classes générées, mais aussi les classes
+        générées instrumentées, les données de couverture de code Cobertura, et
+        les rapports Cobertura:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9305">&lt;target name="clean" 
         description="Remove all files created by the build/test process."&gt;
     &lt;delete dir="${classes.dir}" /&gt;
     &lt;delete dir="${instrumented.dir}" /&gt;
@@ -659,23 +964,38 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;delete file="cobertura.log" /&gt;
     &lt;delete file="cobertura.ser" /&gt;
 &lt;/target&gt;</programlisting>
-        <para>Une fois cela fait, vous êtes prêt à intégrer vos
-        <indexterm id="I_indexterm6_d1e9309" class="endofrange" startref="ch06-ant1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9311" class="endofrange" startref="ch06-ant2" significance="normal"><primary/></indexterm>rapports de couverture de code dans Jenkins.</para>
+        <para>Une fois cela fait, vous êtes prêt à intégrer vos <indexterm
+            class="endofrange" id="I_indexterm6_d1e9309" significance="normal"
+            startref="ch06-ant1">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9311"
+            significance="normal" startref="ch06-ant2">
+            <primary/>
+          </indexterm>rapports de couverture de code dans Jenkins.</para>
       </sect3>
       <sect3>
         <title>Installer le plugin de couverture de code Cobertura</title>
-        <para>Une fois que <indexterm id="I_indexterm6_d1e9319" significance="normal"><primary>plugin Cobertura</primary></indexterm><indexterm id="I_indexterm6_d1e9322" significance="normal"><primary>plugins</primary><secondary>Cobertura</secondary></indexterm>les données de couverture de code sont générées dans le cadre de votre
-        processus de build, vous pouvez configurer Jenkins pour les afficher. Ceci
-        implique l'installation du plugin Jenkins Cobertura. Nous avons décrit ce
-        processus dans <xref linkend="sect-first-steps-metrics"/><phrase role="keep-together">, mais</phrase> nous allons le décrire à nouveau pour
-        rafraîchir votre mémoire. Allez sur l'écran Administrer Jenkins, et cliquez sur
-        Gestion des plugins. Cela va vous amener à l'écran du gestionnaire des plugins. Si
-        Cobertura n'a pas été installé, vous trouverez le plugin Cobertura
-        dans l'onglet Disponibles, dans la section Build Reports (voir <xref linkend="fig-hudson-cobertura-plugin"/>). Pour l'installer, cochez simplement
-        la case et appuyez sur ENTER (ou faites défiler jusqu'au bas de
-        l'écran et cliquez sur le bouton “Installer”). Jenkins va télécharger et
-        installer le plugin pour vous. Une fois que le téléchargement est fini, vous devez
-        redémarrer votre serveur Jenkins.</para>
+        <para>Une fois que <indexterm id="I_indexterm6_d1e9319"
+            significance="normal">
+            <primary>plugin Cobertura</primary>
+          </indexterm><indexterm id="I_indexterm6_d1e9322" significance="normal">
+            <primary>plugins</primary>
+            <secondary>Cobertura</secondary>
+          </indexterm>les données de couverture de code sont générées dans le
+        cadre de votre processus de build, vous pouvez configurer Jenkins pour
+        les afficher. Ceci implique l'installation du plugin Jenkins Cobertura.
+        Nous avons décrit ce processus dans <xref
+        linkend="sect-first-steps-metrics"/><phrase role="keep-together">,
+        mais</phrase> nous allons le décrire à nouveau pour rafraîchir votre
+        mémoire. Allez sur l'écran Administrer Jenkins, et cliquez sur Gestion
+        des plugins. Cela va vous amener à l'écran du gestionnaire des plugins.
+        Si Cobertura n'a pas été installé, vous trouverez le plugin Cobertura
+        dans l'onglet Disponibles, dans la section Build Reports (voir <xref
+        linkend="fig-hudson-cobertura-plugin"/>). Pour l'installer, cochez
+        simplement la case et appuyez sur ENTER (ou faites défiler jusqu'au bas
+        de l'écran et cliquez sur le bouton “Installer”). Jenkins va télécharger
+        et installer le plugin pour vous. Une fois que le téléchargement est
+        fini, vous devez redémarrer votre serveur Jenkins.</para>
         <figure float="none" id="fig-hudson-cobertura-plugin">
           <title>Installer le plugin Cobertura</title>
           <mediaobject id="I_mediaobject6_d1e9337">
@@ -690,24 +1010,31 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       </sect3>
       <sect3>
         <title>Les rapports de couverture de code dans votre build</title>
-        <para>Une fois que <indexterm class="startofrange" id="ch06-job2" significance="normal"><primary>Cobertura</primary><secondary>configuration dans vos tâches de build</secondary></indexterm>vous avez installé le plugin, vous pouvez mettre en place les rapports
-        de couverture de code dans vos tâches de build. Puisque la couverture de code peut être lente
-        et consommatrice de mémoire, vous devrez généralement créer une tâche de build séparée pour
-        cela et les autres métriques de qualité de code, qui sera exécutée après les tests unitaires
-        et d'intégration. Pour de gros projets, vous pouvez même le
-        mettre en place via un build qui s'exécute sur une base quotidienne. En effet,
-        le retour sur les métriques de couverture de code et autres n'est généralement aussi
-        critique que le retour sur les résultats de test, et cela va libérer
-        des exécuteurs de build par des tâches de build qui peuvent bénéficier de retour
-        rapide.</para>
-        <para>Comme nous le mentionnions précédemment, Jenkins ne fait pas d'analyse de couverture
-        par lui-même—vous devez configurer votre build pour produire le fichier
-        Cobertura <filename moreinfo="none">coverage.xml</filename> (ou
-        fichiers) avant que vous puissiez générer de jolis graphes ou rapports, généralement
-        en utilisant une des techniques dont nous avons discuté précédemment (voir <xref linkend="fig-hudson-coverage-build-config"/>).</para>
+        <para>Une fois que <indexterm class="startofrange" id="ch06-job2"
+            significance="normal">
+            <primary>Cobertura</primary>
+            <secondary>configuration dans vos tâches de build</secondary>
+          </indexterm>vous avez installé le plugin, vous pouvez mettre en place
+        les rapports de couverture de code dans vos tâches de build. Puisque la
+        couverture de code peut être lente et consommatrice de mémoire, vous
+        devrez généralement créer une tâche de build séparée pour cela et les
+        autres métriques de qualité de code, qui sera exécutée après les tests
+        unitaires et d'intégration. Pour de gros projets, vous pouvez même le
+        mettre en place via un build qui s'exécute sur une base quotidienne. En
+        effet, le retour sur les métriques de couverture de code et autres n'est
+        généralement aussi critique que le retour sur les résultats de test, et
+        cela va libérer des exécuteurs de build par des tâches de build qui
+        peuvent bénéficier de retour rapide.</para>
+        <para>Comme nous le mentionnions précédemment, Jenkins ne fait pas
+        d'analyse de couverture par lui-même—vous devez configurer votre build
+        pour produire le fichier Cobertura <filename
+        moreinfo="none">coverage.xml</filename> (ou fichiers) avant que vous
+        puissiez générer de jolis graphes ou rapports, généralement en utilisant
+        une des techniques dont nous avons discuté précédemment (voir <xref
+        linkend="fig-hudson-coverage-build-config"/>).</para>
         <figure float="none" id="fig-hudson-coverage-build-config">
-          <title>Votre build de couverture de code doit produire les
-          données de couverture de code</title>
+          <title>Votre build de couverture de code doit produire les données de
+          couverture de code</title>
           <mediaobject id="I_mediaobject6_d1e9363">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_0612.pdf" format="PDF"/>
@@ -717,12 +1044,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Une fois que vous avez configuré votre build pour produire des données
-        de couverture de code, vous pouvez configurer Cobertura dans la section “Actions à la suite du build”
-        de votre tâche de build. Si vous cochez la case “Publish Cobertura
-        Coverage Report”, vous devriez voir quelque chose comme <xref linkend="fig-hudson-coverage-config"/>.</para>
+        <para>Une fois que vous avez configuré votre build pour produire des
+        données de couverture de code, vous pouvez configurer Cobertura dans la
+        section “Actions à la suite du build” de votre tâche de build. Si vous
+        cochez la case “Publish Cobertura Coverage Report”, vous devriez voir
+        quelque chose comme <xref linkend="fig-hudson-coverage-config"/>.</para>
         <figure float="none" id="fig-hudson-coverage-config">
-          <title>Configurer les métriques de couverture de code dans Jenkins</title>
+          <title>Configurer les métriques de couverture de code dans
+          Jenkins</title>
           <mediaobject id="I_mediaobject6_d1e9375">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_0613.pdf" format="PDF"/>
@@ -732,48 +1061,55 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Le premier et plus important champ ici est le chemin des
-        données XML Cobertura que nous avons généré. Votre projet peut contenir un
-        seul fichier <filename moreinfo="none">coverage.xml</filename>, ou
-        plusieurs. Si vous avez un projet Maven multi-modules, par exemple, le
-        plugin Maven Cobertura va générer un fichier <filename moreinfo="none">coverage.xml</filename> distinct pour chaque module.</para>
-        <para>Le chemin accepte des caractères génériques du style Ant, et il est donc facile d'inclure
-        les données de couverture de code à partir de plusieurs fichiers. Pour tout projet Maven, un chemin
-        tel que <filename moreinfo="none">**/target/site/cobertura/coverage.xml</filename>
-        inclura toutes les métriques de couverture de code de tous les modules dans le
+        <para>Le premier et plus important champ ici est le chemin des données
+        XML Cobertura que nous avons généré. Votre projet peut contenir un seul
+        fichier <filename moreinfo="none">coverage.xml</filename>, ou plusieurs.
+        Si vous avez un projet Maven multi-modules, par exemple, le plugin Maven
+        Cobertura va générer un fichier <filename
+        moreinfo="none">coverage.xml</filename> distinct pour chaque
+        module.</para>
+        <para>Le chemin accepte des caractères génériques du style Ant, et il
+        est donc facile d'inclure les données de couverture de code à partir de
+        plusieurs fichiers. Pour tout projet Maven, un chemin tel que <filename
+        moreinfo="none">**/target/site/cobertura/coverage.xml</filename> inclura
+        toutes les métriques de couverture de code de tous les modules dans le
         projet.</para>
         <para>Il y a en fait plusieurs types de couverture de code, et il est
-        parfois utile de les distinguer. La plus intuitive est
-        la couverture de lignes, qui compte le nombre de fois qu'une ligne donnée est
-        exécutée pendant les tests automatisés. “Conditional Coverage” (aussi
-        appelé “Branch Coverage”) prend en compte si les
-        expressions booléennes dans les instructions <literal moreinfo="none">if</literal> et semblables
-        sont testées d'une manière qui vérifie tous les résultats possibles d'une
-        expression conditionnelle. Par exemple, étant donné le fragment de code
-        suivant:</para>
-        <programlisting id="I_programlisting6_d1e9398" format="linespecific">if (price &gt; 10000) {
+        parfois utile de les distinguer. La plus intuitive est la couverture de
+        lignes, qui compte le nombre de fois qu'une ligne donnée est exécutée
+        pendant les tests automatisés. “Conditional Coverage” (aussi appelé
+        “Branch Coverage”) prend en compte si les expressions booléennes dans
+        les instructions <literal moreinfo="none">if</literal> et semblables
+        sont testées d'une manière qui vérifie tous les résultats possibles
+        d'une expression conditionnelle. Par exemple, étant donné le fragment de
+        code suivant:</para>
+        <programlisting format="linespecific" id="I_programlisting6_d1e9398">if (price &gt; 10000) {
   managerApprovalRequired = true;
 }</programlisting>
-        <para>Pour obtenir une couverture de code complète pour ce code, vous devez
-        l'exécuter deux fois: une fois avec une valeur supérieure à 10,000,
-        le l'autre avec une valeur inférieure ou égale à 10,000.</para>
-        <para>D'autres métriques de couverture de code plus basiques incluent les méthodes (combien de
-        méthodes dans l'application ont été exécutées par les tests), classes et
-        packages.</para>
-        <para>Jenkins vous permet de définir lesquelles de ces métriques vous voulez
-        suivre. Par défaut, le plugin Cobertura enregistre les couvertures conditionnelles, lignes,
-        et méthodes, ce qui est généralement suffisant. Cependant, il est facile de
-        rajouter d'autres métriques de couverture de code if vous pensez que ce peut être utile pour votre
-        équipe.</para>
-        <para>Le traitement par Jenkins des métriques de couverture de code n'est pas uniquement un affichage 
-        passif—Jenkins vous permet de définir comment ces métriques affectent le résultat du build
-        . Vous pouvez définir des valeurs de palier pour les métriques de couverture de code qui
-        affectent à la fois le résultat du build et le rapport météo sur le tableau de bord
-        Jenkins (voir <xref linkend="fig-hudson-testing-coverage-stabiliy"/>). Chaque métrique
-        de couverture de code que vous suivez possède trois valeurs de palier.</para>
+        <para>Pour obtenir une couverture de code complète pour ce code, vous
+        devez l'exécuter deux fois: une fois avec une valeur supérieure à
+        10,000, le l'autre avec une valeur inférieure ou égale à 10,000.</para>
+        <para>D'autres métriques de couverture de code plus basiques incluent
+        les méthodes (combien de méthodes dans l'application ont été exécutées
+        par les tests), classes et packages.</para>
+        <para>Jenkins vous permet de définir lesquelles de ces métriques vous
+        voulez suivre. Par défaut, le plugin Cobertura enregistre les
+        couvertures conditionnelles, lignes, et méthodes, ce qui est
+        généralement suffisant. Cependant, il est facile de rajouter d'autres
+        métriques de couverture de code if vous pensez que ce peut être utile
+        pour votre équipe.</para>
+        <para>Le traitement par Jenkins des métriques de couverture de code
+        n'est pas uniquement un affichage passif—Jenkins vous permet de définir
+        comment ces métriques affectent le résultat du build . Vous pouvez
+        définir des valeurs de palier pour les métriques de couverture de code
+        qui affectent à la fois le résultat du build et le rapport météo sur le
+        tableau de bord Jenkins (voir <xref
+        linkend="fig-hudson-testing-coverage-stabiliy"/>). Chaque métrique de
+        couverture de code que vous suivez possède trois valeurs de
+        palier.</para>
         <figure float="none" id="fig-hudson-testing-coverage-stabiliy">
-          <title>Les résultats des tests de couverture de code contribuent à l'état du projet sur le
-          tableau de bord</title>
+          <title>Les résultats des tests de couverture de code contribuent à
+          l'état du projet sur le tableau de bord</title>
           <mediaobject id="I_mediaobject6_d1e9414">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_0614.pdf" format="PDF"/>
@@ -783,32 +1119,58 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Le premier (celui avec une icône ensoleillée) est la valeur minimale
-        que le build doit atteindre pour avoir une icône ensolleillée. La seconde
-        indique la valeur en dessous de laquelle le build aura une icône orageuse. Jenkins va extrapoler entre ces deux valeurs pour
+        <para>Le premier (celui avec une icône ensoleillée) est la valeur
+        minimale que le build doit atteindre pour avoir une icône ensolleillée.
+        La seconde indique la valeur en dessous de laquelle le build aura une
+        icône orageuse. Jenkins va extrapoler entre ces deux valeurs pour
         d'autres icônes météos plus nuancées.</para>
-        <para>La<indexterm id="I_indexterm6_d1e9423" significance="normal"><primary>tâches de build</primary><secondary>build instable de</secondary><tertiary>critère pour</tertiary></indexterm><indexterm id="I_indexterm6_d1e9430" significance="normal"><primary>builds instables</primary><secondary>critère pour</secondary></indexterm> dernier palier est simplement la valeur en dessous de laquelle un
-        build sera marqué comme “instable”—avec une balle jaunne. Bien que n'étant pas aussi
-        mauvais qu'une balle rouge (pour un build cassé), une balle jaune entrainera
-        un message de notification et apparaitra comme mauvais sur le <phrase role="keep-together">tableau de bord</phrase>.</para>
-        <para>Cette fonctionnalité n'est pas un simple détail esthétique—il fournit un
-        moyen précieux de fixer des objectifs de qualité de code pour vos
-        projets. Bien qu'il ne peut pas être interprété seul, une couverture de code
-        incomplête n'est généralement pas un bon signe pour un projet. Donc si vous prenez
-        la couverture de code au sérieux, utilisez ces valeurs de palier pour fournir
-        un retour douloureux quand les choses ne sont pas à la<indexterm id="I_indexterm6_d1e9441" class="endofrange" startref="ch06-job2" significance="normal"><primary/></indexterm> hauteur.</para>
+        <para>La<indexterm id="I_indexterm6_d1e9423" significance="normal">
+            <primary>tâches de build</primary>
+            <secondary>build instable de</secondary>
+            <tertiary>critère pour</tertiary>
+          </indexterm><indexterm id="I_indexterm6_d1e9430" significance="normal">
+            <primary>builds instables</primary>
+            <secondary>critère pour</secondary>
+          </indexterm> dernier palier est simplement la valeur en dessous de
+        laquelle un build sera marqué comme “instable”—avec une balle jaunne.
+        Bien que n'étant pas aussi mauvais qu'une balle rouge (pour un build
+        cassé), une balle jaune entrainera un message de notification et
+        apparaitra comme mauvais sur le <phrase role="keep-together">tableau de
+        bord</phrase>.</para>
+        <para>Cette fonctionnalité n'est pas un simple détail esthétique—il
+        fournit un moyen précieux de fixer des objectifs de qualité de code pour
+        vos projets. Bien qu'il ne peut pas être interprété seul, une couverture
+        de code incomplête n'est généralement pas un bon signe pour un projet.
+        Donc si vous prenez la couverture de code au sérieux, utilisez ces
+        valeurs de palier pour fournir un retour douloureux quand les choses ne
+        sont pas à la<indexterm class="endofrange" id="I_indexterm6_d1e9441"
+            significance="normal" startref="ch06-job2">
+            <primary/>
+          </indexterm> hauteur.</para>
       </sect3>
       <sect3>
         <title>Interpréter les métriques de couverture de code</title>
-        <para>Jenkins<indexterm class="startofrange" id="ch06-coreport1" significance="normal"><primary>rapporter</primary><secondary>métriques de couverture de code</secondary><tertiary sortas="Cobertura">de Cobertura</tertiary></indexterm><indexterm class="startofrange" id="ch06-coreport2" significance="normal"><primary>Cobertura</primary><secondary>rapports de</secondary></indexterm> affiche vos rapports de couverture de code sur la page d'accueil
-        de la tâche de build. La première fois qu'il est exécuté, il produit un simple graphique à barres (voir
-        <xref linkend="fig-hudson-initial-coverage-report"/>). A partir
-        du second build, un graphique est affiché, indiquant les différents types
-        de couverture que vous suivez dans le temps (voir <xref linkend="fig-hudson-code-coverage-graph-over-time"/>). Dans les deux cas,
-        le graphique affichera aussi les métriques de couverture de code pour le dernier
-        build.</para>
+        <para>Jenkins<indexterm class="startofrange" id="ch06-coreport1"
+            significance="normal">
+            <primary>rapporter</primary>
+            <secondary>métriques de couverture de code</secondary>
+            <tertiary sortas="Cobertura">de Cobertura</tertiary>
+          </indexterm><indexterm class="startofrange" id="ch06-coreport2"
+            significance="normal">
+            <primary>Cobertura</primary>
+            <secondary>rapports de</secondary>
+          </indexterm> affiche vos rapports de couverture de code sur la page
+        d'accueil de la tâche de build. La première fois qu'il est exécuté, il
+        produit un simple graphique à barres (voir <xref
+        linkend="fig-hudson-initial-coverage-report"/>). A partir du second
+        build, un graphique est affiché, indiquant les différents types de
+        couverture que vous suivez dans le temps (voir <xref
+        linkend="fig-hudson-code-coverage-graph-over-time"/>). Dans les deux
+        cas, le graphique affichera aussi les métriques de couverture de code
+        pour le dernier build.</para>
         <figure float="none" id="fig-hudson-code-coverage-graph-over-time">
-          <title>Configurer les métriques de couverture de code dans Jenkins</title>
+          <title>Configurer les métriques de couverture de code dans
+          Jenkins</title>
           <mediaobject id="I_mediaobject6_d1e9469">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_0615.pdf" format="PDF"/>
@@ -818,12 +1180,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Jenkins offre une grande valeur ajoutée en vous permettant de descendre dans les
-        métriques de couverture de code, affichant les erreurs de couverture de code pour les packages, classes
-        à l'intérieur d'un package, et les lignes de code à l'intérieur d'une classe (voir <xref linkend="fig-hudson-code-coverage-package"/>). Quelques soit le niveau
-        de détail que vous regardiez, Jenkins affichera un graphe en haut de
-        la page montrant la tendance de couverture dans le temps. Plus bas, vous
-        trouverez la répartition par package ou classe.</para>
+        <para>Jenkins offre une grande valeur ajoutée en vous permettant de
+        descendre dans les métriques de couverture de code, affichant les
+        erreurs de couverture de code pour les packages, classes à l'intérieur
+        d'un package, et les lignes de code à l'intérieur d'une classe (voir
+        <xref linkend="fig-hudson-code-coverage-package"/>). Quelques soit le
+        niveau de détail que vous regardiez, Jenkins affichera un graphe en haut
+        de la page montrant la tendance de couverture dans le temps. Plus bas,
+        vous trouverez la répartition par package ou classe.</para>
         <figure float="0" id="fig-hudson-code-coverage-package">
           <title>Afficher les métriques de couverture de code</title>
           <mediaobject id="I_mediaobject6_d1e9481">
@@ -835,26 +1199,47 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Lorsque vous arrivez au niveau de détail de classe, Jenkins affichera aussi
-        le code source de la classe, avec les lignes colorées
-        en fonction de leur niveau de couverture. Les lignes qui ont été complêtement
-        exécutées pendant les tests sont en vert, et les lignes qui n'ont jamais été
-        exécutées sont marquées en rouge. Un nombre dans la marge indique le
-        nombre de fois que la ligne en question a été exécutée. Enfin, un ombrage jaune dans la
-        marge est utilisée pour indiquée une couverture conditionnelle insuffisante (par
-        exemple, une instruction <literal moreinfo="none">if</literal> qui a seulement été testé avec
-        <indexterm id="I_indexterm6_d1e9491" class="endofrange" startref="ch06-cobertura1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9493" class="endofrange" startref="ch06-cobertura2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9495" class="endofrange" startref="ch06-coreport1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9497" class="endofrange" startref="ch06-coreport2" significance="normal"><primary/></indexterm>un <phrase role="keep-together">résultat</phrase>).</para>
+        <para>Lorsque vous arrivez au niveau de détail de classe, Jenkins
+        affichera aussi le code source de la classe, avec les lignes colorées en
+        fonction de leur niveau de couverture. Les lignes qui ont été
+        complêtement exécutées pendant les tests sont en vert, et les lignes qui
+        n'ont jamais été exécutées sont marquées en rouge. Un nombre dans la
+        marge indique le nombre de fois que la ligne en question a été exécutée.
+        Enfin, un ombrage jaune dans la marge est utilisée pour indiquée une
+        couverture conditionnelle insuffisante (par exemple, une instruction
+        <literal moreinfo="none">if</literal> qui a seulement été testé avec
+        <indexterm class="endofrange" id="I_indexterm6_d1e9491"
+            significance="normal" startref="ch06-cobertura1">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9493"
+            significance="normal" startref="ch06-cobertura2">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9495"
+            significance="normal" startref="ch06-coreport1">
+            <primary/>
+          </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9497"
+            significance="normal" startref="ch06-coreport2">
+            <primary/>
+          </indexterm>un <phrase role="keep-together">résultat</phrase>).</para>
       </sect3>
     </sect2>
     <sect2 id="sect-clover">
       <title>Mesurer la couverture de code avec Clover</title>
-      <para>Clover<indexterm class="startofrange" id="ch06-clover1" significance="normal"><primary>métriques de couverture de code</primary><secondary sortas="Clover">avec Clover</secondary></indexterm><indexterm class="startofrange" id="ch06-clover2" significance="normal"><primary>Clover</primary></indexterm> est un excellent outil de couverture de code commercial d'<ulink url="http://www.atlassian.com/software/clover">Atlassian</ulink>. Clover
-      fonctionne parfaitement pour des projets Ant, Maven, ou même Grails. La
-      configuration et l'utilisation de Clover est bien documentée sur le site web d'Atlassian
-      , donc nous ne regarderons pas ces aspects en détail. Cependant, en guise
-      d'exemple, voici une configuration Maven typique de Clover
-      pour une utilisation avec Jenkins:</para>
-      <programlisting id="I_programlisting6_d1e9520" format="linespecific">      &lt;build&gt;
+      <para>Clover<indexterm class="startofrange" id="ch06-clover1"
+          significance="normal">
+          <primary>métriques de couverture de code</primary>
+          <secondary sortas="Clover">avec Clover</secondary>
+        </indexterm><indexterm class="startofrange" id="ch06-clover2"
+          significance="normal">
+          <primary>Clover</primary>
+        </indexterm> est un excellent outil de couverture de code commercial
+      d'<ulink url="http://www.atlassian.com/software/clover">Atlassian</ulink>.
+      Clover fonctionne parfaitement pour des projets Ant, Maven, ou même
+      Grails. La configuration et l'utilisation de Clover est bien documentée
+      sur le site web d'Atlassian , donc nous ne regarderons pas ces aspects en
+      détail. Cependant, en guise d'exemple, voici une configuration Maven
+      typique de Clover pour une utilisation avec Jenkins:</para>
+      <programlisting format="linespecific" id="I_programlisting6_d1e9520">      &lt;build&gt;
         ...
         &lt;plugins&gt;
           ...
@@ -870,25 +1255,35 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         &lt;/plugins&gt;
       &lt;/build&gt;
       ...</programlisting>
-      <para>Cela va générer à la fois des rapports de couverture de code HTML et XML, y compris
-      les données aggrégées si le projet Maven contient plusieurs modules.</para>
-      <para>Pour <indexterm id="I_indexterm6_d1e9526" significance="normal"><primary>plugin Clover</primary></indexterm><indexterm id="I_indexterm6_d1e9529" significance="normal"><primary>plugins</primary><secondary>Clover</secondary></indexterm>intégrer Clover dans Jenkins, vous devez installer le
-      plugin Jenkins Clover selon la manière habituelle en utilisant l'écran du gestionnaire de plugins
-      . Une fois que vous avez redémarré Jenkins, vous pourrez intégrer
-      les données de couverture de code Clover dans vos builds.</para>
-      <para>Exécuter Clover sur votre projet est un projet en plusieurs étapes: vous
-      instrumentez votre code applicatif, exécutez les tests, aggrégez les données
-      de test (pour les projets Maven à plusieurs modules) et générez les rapports HTML et XML
-      . Puisque cela peut être une operation assez lente, vous allez généralement l'exécuter
-      dans une tâche de build séparée, et pas avec vos test classiques. Vous pouvez le faire
-      comme suit:</para>
+      <para>Cela va générer à la fois des rapports de couverture de code HTML et
+      XML, y compris les données aggrégées si le projet Maven contient plusieurs
+      modules.</para>
+      <para>Pour <indexterm id="I_indexterm6_d1e9526" significance="normal">
+          <primary>plugin Clover</primary>
+        </indexterm><indexterm id="I_indexterm6_d1e9529" significance="normal">
+          <primary>plugins</primary>
+          <secondary>Clover</secondary>
+        </indexterm>intégrer Clover dans Jenkins, vous devez installer le plugin
+      Jenkins Clover selon la manière habituelle en utilisant l'écran du
+      gestionnaire de plugins . Une fois que vous avez redémarré Jenkins, vous
+      pourrez intégrer les données de couverture de code Clover dans vos
+      builds.</para>
+      <para>Exécuter Clover sur votre projet est un projet en plusieurs étapes:
+      vous instrumentez votre code applicatif, exécutez les tests, aggrégez les
+      données de test (pour les projets Maven à plusieurs modules) et générez
+      les rapports HTML et XML . Puisque cela peut être une operation assez
+      lente, vous allez généralement l'exécuter dans une tâche de build séparée,
+      et pas avec vos test classiques. Vous pouvez le faire comme suit:</para>
       <screen format="linespecific">$ clover2:setup test clover2:aggregate clover2:clover</screen>
-      <para>Ensuite, vous devez mettre en place les rapports Clover dans Jenkins. Cochez la 
-      case Publish Clover <phrase role="keep-together">Coverage</phrase> Report
-      pour l'activer. La configuration est similaire à celle de <phrase role="keep-together">Cobertura—</phrase>vous devez fournir le chemin du
+      <para>Ensuite, vous devez mettre en place les rapports Clover dans
+      Jenkins. Cochez la case Publish Clover <phrase
+      role="keep-together">Coverage</phrase> Report pour l'activer. La
+      configuration est similaire à celle de <phrase
+      role="keep-together">Cobertura—</phrase>vous devez fournir le chemin du
       répertoire du rapport HTML Clover, et du fichier rapport XML, et vous
-      pouvez aussi définir des valeurs de palier pour les icônes méteo ensoleillées et orageuses, et pour
-      les builds instables (voir <xref linkend="fig-hudson-clover-config"/>).</para>
+      pouvez aussi définir des valeurs de palier pour les icônes méteo
+      ensoleillées et orageuses, et pour les builds instables (voir <xref
+      linkend="fig-hudson-clover-config"/>).</para>
       <figure float="none" id="fig-hudson-clover-config">
         <title>Configurer les rapports Clover dans Jenkins</title>
         <mediaobject id="I_mediaobject6_d1e9552">
@@ -900,9 +1295,25 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Une fois que <indexterm id="I_indexterm6_d1e9559" significance="normal"><primary>rapports</primary><secondary>métriques de couverture de code</secondary><tertiary sortas="Clover">de Clover</tertiary></indexterm>vous l'aurez fait, Jenkins affichera le niveau actuel
-      de couverture de code, ainsi qu'un graphe de la couverture de code dans le temps, sur
-      la page d'accueil de votre tâche de build de votre <indexterm id="I_indexterm6_d1e9567" class="endofrange" startref="ch06-coverage" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9569" class="endofrange" startref="ch06-clover1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9571" class="endofrange" startref="ch06-clover2" significance="normal"><primary/></indexterm>projet (voir <xref linkend="fig-hudson-clover-report"/>).</para>
+      <para>Une fois que <indexterm id="I_indexterm6_d1e9559"
+          significance="normal">
+          <primary>rapports</primary>
+          <secondary>métriques de couverture de code</secondary>
+          <tertiary sortas="Clover">de Clover</tertiary>
+        </indexterm>vous l'aurez fait, Jenkins affichera le niveau actuel de
+      couverture de code, ainsi qu'un graphe de la couverture de code dans le
+      temps, sur la page d'accueil de votre tâche de build de votre <indexterm
+          class="endofrange" id="I_indexterm6_d1e9567" significance="normal"
+          startref="ch06-coverage">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9569"
+          significance="normal" startref="ch06-clover1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9571"
+          significance="normal" startref="ch06-clover2">
+          <primary/>
+        </indexterm>projet (voir <xref
+      linkend="fig-hudson-clover-report"/>).</para>
       <figure float="0" id="fig-hudson-clover-report">
         <title>Tendance de couverture de code Clover</title>
         <mediaobject id="I_mediaobject6_d1e9579">
@@ -918,47 +1329,70 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   </sect1>
   <sect1 id="sect-chapter-automated-testing-acceptance">
     <title>Tests d'acceptance automatisés</title>
-    <para>Les tests <indexterm class="startofrange" id="ch06-accept2" significance="normal"><primary>tests d'acceptance, automatisés</primary></indexterm><indexterm class="startofrange" id="ch06-accept3" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>d'acceptance automatisés jouent un rôle important dans de nombreux projets
-    agiles, à la fois pour la vérification et pour la communication. Comme outil de
-    vérification, les tests d'acceptance jouent un rôle similaire aux tests d'intégration, et
-    visent à démontrer que l'application fait effectivement ce qui est attendu
-    d'elle. Mais ce n'est seulement qu'un aspect secondaire des tests d'acceptance
-    automatisés. L'objectif principal est en fait la communication—montrer aux
-    non développeurs (experts métier, analystes métiers, testeurs, et ainsi de suite)
-    précisement où en est le projet.</para>
-    <para>Les tests d'acceptance ne doivent pas être mélangés avec des tests orientés développeurs,
-    parce qu'à la fois leur finalité et leur audience sont très différents. Les tests d'acceptance
-    doivent être des exemples montrant comment le système fonctionne, avec un accent sur
-    la démonstration plutôt que sur une preuve exhaustive. Les tests exhaustifs doivent être
-    fait au niveau test unitaire.</para>
-    <para>Les tests d'acceptance peuvent être automatisés en utilisant des outils conventionnels tels que
-    JUnit, mais il y a une tendance croissante à utiliser <indexterm id="I_indexterm6_d1e9602" significance="normal"><primary>BDD (Behaviour Driven Development)</primary></indexterm>des frameworks Behavior-Driven Development (BDD) à cet
-    effet, parce qu'ils correspondent mieux à l'audience non technique des
-    tests d'acceptance. Les outils Behavior-driven development utilisés pour les tests d'acceptance
-    automatisés <phrase role="keep-together">génèrent</phrase> généralement
-    des rapports HTML avec une mise en page bien adaptée aux non développeurs.
-    Ils produisent aussi souvent <indexterm id="I_indexterm6_d1e9609" significance="normal"><primary>rapports JUnit</primary><secondary sortas="acceptance">pour tests d'acceptance</secondary></indexterm>des rapports compatibles JUnit qui peuvent être traités directement par
-    Jenkins.</para>
+    <para>Les tests <indexterm class="startofrange" id="ch06-accept2"
+        significance="normal">
+        <primary>tests d'acceptance, automatisés</primary>
+      </indexterm><indexterm class="startofrange" id="ch06-accept3"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>acceptance tests</secondary>
+      </indexterm>d'acceptance automatisés jouent un rôle important dans de
+    nombreux projets agiles, à la fois pour la vérification et pour la
+    communication. Comme outil de vérification, les tests d'acceptance jouent un
+    rôle similaire aux tests d'intégration, et visent à démontrer que
+    l'application fait effectivement ce qui est attendu d'elle. Mais ce n'est
+    seulement qu'un aspect secondaire des tests d'acceptance automatisés.
+    L'objectif principal est en fait la communication—montrer aux non
+    développeurs (experts métier, analystes métiers, testeurs, et ainsi de
+    suite) précisement où en est le projet.</para>
+    <para>Les tests d'acceptance ne doivent pas être mélangés avec des tests
+    orientés développeurs, parce qu'à la fois leur finalité et leur audience
+    sont très différents. Les tests d'acceptance doivent être des exemples
+    montrant comment le système fonctionne, avec un accent sur la démonstration
+    plutôt que sur une preuve exhaustive. Les tests exhaustifs doivent être fait
+    au niveau test unitaire.</para>
+    <para>Les tests d'acceptance peuvent être automatisés en utilisant des
+    outils conventionnels tels que JUnit, mais il y a une tendance croissante à
+    utiliser <indexterm id="I_indexterm6_d1e9602" significance="normal">
+        <primary>BDD (Behaviour Driven Development)</primary>
+      </indexterm>des frameworks Behavior-Driven Development (BDD) à cet effet,
+    parce qu'ils correspondent mieux à l'audience non technique des tests
+    d'acceptance. Les outils Behavior-driven development utilisés pour les tests
+    d'acceptance automatisés <phrase role="keep-together">génèrent</phrase>
+    généralement des rapports HTML avec une mise en page bien adaptée aux non
+    développeurs. Ils produisent aussi souvent <indexterm
+        id="I_indexterm6_d1e9609" significance="normal">
+        <primary>rapports JUnit</primary>
+        <secondary sortas="acceptance">pour tests d'acceptance</secondary>
+      </indexterm>des rapports compatibles JUnit qui peuvent être traités
+    directement par Jenkins.</para>
     <para>Les frameworks Behavior-Driven Development ont aussi la notion de
-    “tests en attente,” tests qui sont automatisés, mais qui n'ont pas encore été
-    implementés par l'équipe de développement. Cette distinction joue un rôle important
-    dans la communication avec les autres acteurs non développeurs: si vous pouvez
-    automatiser ces tests tôt dans le processus, ils vous donneront un excellent
-    indicateur des fonctionnalités qui ont été implémentées, qui fonctionnent, et qui
-    n'ont pa encore été démarrées.</para>
-    <para>En <indexterm class="startofrange" id="ch06-acceptrep" significance="normal"><primary>rapports</primary><secondary>résultats de test d'acceptance</secondary></indexterm>règle générale, vos tests d'acceptance doivent être affichés séparément
-    des autres tests automatisés plus conventionnels. S'ils utilisent le même
-    framework de test que vos tests classiques (e.g., JUnit), assurez vous qu'ils sont
-    exécutés dans une tâche de build séparée, de telle façon que les non développeurs peuvent les visualiser
-    et se concentrer sur les tests orientés métier sans être distrait par
-    ceux de plus bas niveau ou techniques. Il peut être aussi utile d'adopter des conventions de nommage
-    orientées métier et fonctionnel pour vos tests et classes de test, afin
-    de les rendre plus accessible aux non développeurs (voir <xref linkend="fig-hudson-junit-acceptance-tests"/>). La façon dont vous nommez
-    vos tests et classes de test peut faire une réelle différence quand à la lecture
-    des rapports de test et la compréhension des fonctionnalités et comportements métier
-    qui sont testés.</para>
+    “tests en attente,” tests qui sont automatisés, mais qui n'ont pas encore
+    été implementés par l'équipe de développement. Cette distinction joue un
+    rôle important dans la communication avec les autres acteurs non
+    développeurs: si vous pouvez automatiser ces tests tôt dans le processus,
+    ils vous donneront un excellent indicateur des fonctionnalités qui ont été
+    implémentées, qui fonctionnent, et qui n'ont pa encore été démarrées.</para>
+    <para>En <indexterm class="startofrange" id="ch06-acceptrep"
+        significance="normal">
+        <primary>rapports</primary>
+        <secondary>résultats de test d'acceptance</secondary>
+      </indexterm>règle générale, vos tests d'acceptance doivent être affichés
+    séparément des autres tests automatisés plus conventionnels. S'ils utilisent
+    le même framework de test que vos tests classiques (e.g., JUnit), assurez
+    vous qu'ils sont exécutés dans une tâche de build séparée, de telle façon
+    que les non développeurs peuvent les visualiser et se concentrer sur les
+    tests orientés métier sans être distrait par ceux de plus bas niveau ou
+    techniques. Il peut être aussi utile d'adopter des conventions de nommage
+    orientées métier et fonctionnel pour vos tests et classes de test, afin de
+    les rendre plus accessible aux non développeurs (voir <xref
+    linkend="fig-hudson-junit-acceptance-tests"/>). La façon dont vous nommez
+    vos tests et classes de test peut faire une réelle différence quand à la
+    lecture des rapports de test et la compréhension des fonctionnalités et
+    comportements métier qui sont testés.</para>
     <figure float="0" id="fig-hudson-junit-acceptance-tests">
-      <title>Utilisation de conventions de nommage orienté métier pour des tests JUnit</title>
+      <title>Utilisation de conventions de nommage orienté métier pour des tests
+      JUnit</title>
       <mediaobject id="I_mediaobject6_d1e9630">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0619.pdf" format="PDF"/>
@@ -968,13 +1402,22 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Si vous utilisez un outil qui génère des rapports HTML, vous pouvez les afficher
-    dans le même build que vos tests classiques, tant qu'ils apparaissent
-    dans un rapport séparé. Jenkins fournit un plugin très pratique pour ce genre
-    de rapport HTML, appelé le<indexterm class="startofrange" id="ch06-html1" significance="normal"><primary>plugin HTML Publisher</primary></indexterm><indexterm class="startofrange" id="ch06-html2" significance="normal"><primary>plugins</primary><secondary>HTML Publisher</secondary></indexterm> plugin HTML Publisher (voir <xref linkend="fig-hudson-html-publisher-plugin"/>). Bien que ce soit à vous
-    de vous assurer que votre build <phrase role="keep-together">produisse</phrase>
-    les bons rapports, Jenkins peut les afficher sur la page de votre tâche de build,
-    les rendant facilement accessible à tous les membres de l'équipe.</para>
+    <para>Si vous utilisez un outil qui génère des rapports HTML, vous pouvez
+    les afficher dans le même build que vos tests classiques, tant qu'ils
+    apparaissent dans un rapport séparé. Jenkins fournit un plugin très pratique
+    pour ce genre de rapport HTML, appelé le<indexterm class="startofrange"
+        id="ch06-html1" significance="normal">
+        <primary>plugin HTML Publisher</primary>
+      </indexterm><indexterm class="startofrange" id="ch06-html2"
+        significance="normal">
+        <primary>plugins</primary>
+        <secondary>HTML Publisher</secondary>
+      </indexterm> plugin HTML Publisher (voir <xref
+    linkend="fig-hudson-html-publisher-plugin"/>). Bien que ce soit à vous de
+    vous assurer que votre build <phrase role="keep-together">produisse</phrase>
+    les bons rapports, Jenkins peut les afficher sur la page de votre tâche de
+    build, les rendant facilement accessible à tous les membres de
+    l'équipe.</para>
     <figure float="0" id="fig-hudson-html-publisher-plugin">
       <title>Installer le plugin HTML Publisher</title>
       <mediaobject id="I_mediaobject6_d1e9654">
@@ -986,11 +1429,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Ce plugin est facile à configurer. Allez jusqu'à la section  “Actions à la suite du build”
-    et cochez la case “Publish HTML reports” (voir <xref linkend="fig-hudson-html-reports"/>). Ensuite, indiquez à Jenkins le répertoire
-    où ont été générés vos rapports HTML, une page d'index, et un titre pour votre
-    rapport. Vous pouvez aussi demander à Jenkins de stocker les rapports générés pour chaque
-    build, ou de ne conserver que le dernier.</para>
+    <para>Ce plugin est facile à configurer. Allez jusqu'à la section “Actions à
+    la suite du build” et cochez la case “Publish HTML reports” (voir <xref
+    linkend="fig-hudson-html-reports"/>). Ensuite, indiquez à Jenkins le
+    répertoire où ont été générés vos rapports HTML, une page d'index, et un
+    titre pour votre rapport. Vous pouvez aussi demander à Jenkins de stocker
+    les rapports générés pour chaque build, ou de ne conserver que le
+    dernier.</para>
     <figure float="none" id="fig-hudson-html-reports">
       <title>Publier les rapports HTML</title>
       <mediaobject id="I_mediaobject6_d1e9666">
@@ -1002,12 +1447,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Une fois que cela est fait, Jenkins affichera une icône spéciale sur votre page d'accueil de votre
-    tâche de build, avec un lien vers votre rapport HTML. Sur <xref linkend="fig-hudson-easyb-report"/>, vous pouvez voir les rapports easyb que nous
-    avions configuré précédemment en action.</para>
+    <para>Une fois que cela est fait, Jenkins affichera une icône spéciale sur
+    votre page d'accueil de votre tâche de build, avec un lien vers votre
+    rapport HTML. Sur <xref linkend="fig-hudson-easyb-report"/>, vous pouvez
+    voir les rapports easyb que nous avions configuré précédemment en
+    action.</para>
     <figure float="none" id="fig-hudson-easyb-report">
-      <title>Jenkins affiche un lien spécial sur la page d'accueil de la tâche de build pour
-      votre rapport</title>
+      <title>Jenkins affiche un lien spécial sur la page d'accueil de la tâche
+      de build pour votre rapport</title>
       <mediaobject id="I_mediaobject6_d1e9679">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0622.pdf" format="PDF"/>
@@ -1017,16 +1464,39 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Le plugin HTML Publisher fonctionne parfaitement pour les rapports HTML. Si, 
-    d'autre part, vous voulez (aussi) publier des documents non-HTML, tels que
-    des fichiers texte, PDFs, et ainsi de suite, alors le<indexterm id="I_indexterm6_d1e9686" significance="normal"><primary>plugin DocLinks</primary></indexterm><indexterm id="I_indexterm6_d1e9689" significance="normal"><primary>plugins</primary><secondary>DocLinks</secondary></indexterm> plugin DocLinks est fait pour vous. Ce plugin est semblable au
-    plugin HTML Publisher, mais il vous permet d'archiver à la fois des rapports HTML aussi bien
-    que des documents dans d'autres formats. Par exemple, dans <xref linkend="fig-jenkins-doclinks-plugin"/>, nous avons configuré une tâche de build
-    qui archive à la fois un document PDF et un rapport HTML. Ces deux documents
-    seront maintenant listés sur la page d'accueil de la tache de <indexterm id="I_indexterm6_d1e9697" class="endofrange" startref="ch06-accept2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9699" class="endofrange" startref="ch06-accept3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9701" class="endofrange" startref="ch06-acceptrep" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9703" class="endofrange" startref="ch06-html1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9705" class="endofrange" startref="ch06-html2" significance="normal"><primary/></indexterm>build.</para>
+    <para>Le plugin HTML Publisher fonctionne parfaitement pour les rapports
+    HTML. Si, d'autre part, vous voulez (aussi) publier des documents non-HTML,
+    tels que des fichiers texte, PDFs, et ainsi de suite, alors le<indexterm
+        id="I_indexterm6_d1e9686" significance="normal">
+        <primary>plugin DocLinks</primary>
+      </indexterm><indexterm id="I_indexterm6_d1e9689" significance="normal">
+        <primary>plugins</primary>
+        <secondary>DocLinks</secondary>
+      </indexterm> plugin DocLinks est fait pour vous. Ce plugin est semblable
+    au plugin HTML Publisher, mais il vous permet d'archiver à la fois des
+    rapports HTML aussi bien que des documents dans d'autres formats. Par
+    exemple, dans <xref linkend="fig-jenkins-doclinks-plugin"/>, nous avons
+    configuré une tâche de build qui archive à la fois un document PDF et un
+    rapport HTML. Ces deux documents seront maintenant listés sur la page
+    d'accueil de la tache de <indexterm class="endofrange"
+        id="I_indexterm6_d1e9697" significance="normal" startref="ch06-accept2">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9699"
+        significance="normal" startref="ch06-accept3">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9701"
+        significance="normal" startref="ch06-acceptrep">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9703"
+        significance="normal" startref="ch06-html1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9705"
+        significance="normal" startref="ch06-html2">
+        <primary/>
+      </indexterm>build.</para>
     <figure float="0" id="fig-jenkins-doclinks-plugin">
-      <title>Le plugin DocLinks vous permet d'archiver des documents HTML et non-HTML
-      </title>
+      <title>Le plugin DocLinks vous permet d'archiver des documents HTML et
+      non-HTML</title>
       <mediaobject id="I_mediaobject6_d1e9711">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0623.pdf" format="PDF"/>
@@ -1039,47 +1509,62 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   </sect1>
   <sect1 id="sect-chapter-automated-testing-performance">
     <title>Tests de performance automatisés avec JMeter</title>
-    <para>La performance<indexterm class="startofrange" id="ch06-perf6" significance="normal"><primary>performance</primary><secondary>des applications</secondary></indexterm><indexterm class="startofrange" id="ch06-perf3" significance="normal"><primary>JMeter</primary></indexterm><indexterm class="startofrange" id="ch06-perf4" significance="normal"><primary>tests</primary><secondary>tests de performance</secondary></indexterm> applicative est un autre domaine de test important.
-    Les tests de performance peuvent être utilisés pour vérifier beaucoup de choses, telles que la rapidité avec laquelle
-    une application répond aux requêtes d'un nombre donné d'utilisateurs
-    simultanés, ou comment une application réagit à un nombre croissant
-    d'utilisateurs. De nombreuses applications ont des contrats de niveau de service (SLAs), qui
-    définissent contractuellement comment elles doivent réagir.</para>
-    <para>Les tests de performance sont souvent une activité unique, prise en compte
-    uniquement juste à la fin du projet ou quand les choses commencent à aller
-    mal. Néanmoins, les problèmes de performance sont comme n'importe quelle autre sorte de bug-le
-    plus tard dans le processus, ils sont détectés, le plus coûteux, ils sont à
-    corriger. Il fait donc sens d'automatiser ces tests de performance et de
-    charge, de sorte que vous pouvez repérer les zones de dégradation des performances avant
-    qu'elles ne sortent dans la nature.</para>
+    <para>La performance<indexterm class="startofrange" id="ch06-perf6"
+        significance="normal">
+        <primary>performance</primary>
+        <secondary>des applications</secondary>
+      </indexterm><indexterm class="startofrange" id="ch06-perf3"
+        significance="normal">
+        <primary>JMeter</primary>
+      </indexterm><indexterm class="startofrange" id="ch06-perf4"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>tests de performance</secondary>
+      </indexterm> applicative est un autre domaine de test important. Les tests
+    de performance peuvent être utilisés pour vérifier beaucoup de choses,
+    telles que la rapidité avec laquelle une application répond aux requêtes
+    d'un nombre donné d'utilisateurs simultanés, ou comment une application
+    réagit à un nombre croissant d'utilisateurs. De nombreuses applications ont
+    des contrats de niveau de service (SLAs), qui définissent contractuellement
+    comment elles doivent réagir.</para>
+    <para>Les tests de performance sont souvent une activité unique, prise en
+    compte uniquement juste à la fin du projet ou quand les choses commencent à
+    aller mal. Néanmoins, les problèmes de performance sont comme n'importe
+    quelle autre sorte de bug-le plus tard dans le processus, ils sont détectés,
+    le plus coûteux, ils sont à corriger. Il fait donc sens d'automatiser ces
+    tests de performance et de charge, de sorte que vous pouvez repérer les
+    zones de dégradation des performances avant qu'elles ne sortent dans la
+    nature.</para>
     <para><ulink url="http://jakarta.apache.org/jmeter/">JMeter</ulink> est un
     populaire outil de performance et de charge open source. Il fonctionne en
-    simulant la charge sur votre application, et en mesurant le temps de réponse alors que
-    le nombre d'utilisateurs simulés et les reuêtes augmentent. Il
-    simule les actions d'un navigateur ou une application cliente, envoyant des requêtes
-    de toutes sortes (HTTP, SOAP, JDBC, JMS, etc) vers votre serveur. Vous
-    configurez un ensemble de requêtes à envoyer à votre application, ainsi que
-    des pauses aléatoires, conditions et boucles, et d'autres variantes destinées à
-    mieux imiter les actions utilisateurs réelles.</para>
-    <para>JMeter s'exécute comme une application Swing, dans laquelle vous pouvez configurer vos
-    scripts de test (voir <xref linkend="fig-jmeter-console"/>). Vous pouvez même exécuter
-    JMeter comme proxy, et utiliser votre application dans un navigateur
-    traditionnel pour préparer une version initiale de votre script de test.</para>
-    <para>Un tutoriel complet sur l'utilisation de JMeter est en dehors du scope de ce livre.
-    Cependant, il est assez facile à apprendre, et vous pouvez trouver amples détails sur
-    son utilisation sur le site de JMeter. Avec un peu de travail, vous pouvez avoir un
-    script de test respectable et l'exécuter en quelques heures.</para>
+    simulant la charge sur votre application, et en mesurant le temps de réponse
+    alors que le nombre d'utilisateurs simulés et les reuêtes augmentent. Il
+    simule les actions d'un navigateur ou une application cliente, envoyant des
+    requêtes de toutes sortes (HTTP, SOAP, JDBC, JMS, etc) vers votre serveur.
+    Vous configurez un ensemble de requêtes à envoyer à votre application, ainsi
+    que des pauses aléatoires, conditions et boucles, et d'autres variantes
+    destinées à mieux imiter les actions utilisateurs réelles.</para>
+    <para>JMeter s'exécute comme une application Swing, dans laquelle vous
+    pouvez configurer vos scripts de test (voir <xref
+    linkend="fig-jmeter-console"/>). Vous pouvez même exécuter JMeter comme
+    proxy, et utiliser votre application dans un navigateur traditionnel pour
+    préparer une version initiale de votre script de test.</para>
+    <para>Un tutoriel complet sur l'utilisation de JMeter est en dehors du scope
+    de ce livre. Cependant, il est assez facile à apprendre, et vous pouvez
+    trouver amples détails sur son utilisation sur le site de JMeter. Avec un
+    peu de travail, vous pouvez avoir un script de test respectable et
+    l'exécuter en quelques heures.</para>
     <para>Ce qui nous interesse ici est le processus d'automatisation de ces
-    tests de performance. Il y a plusieurs façons pour intégrer des tests JMeter dans
-    votre processus de build Jenkins. Bien qu'à l'époque de la rédaction, il n'y ait pas
-    de plugin JMeter pour Maven officiel disponible dans les dépots Maven,
-    il y a un plugin Ant. Donc, la méthode la plus simple est d'écrire un script Ant
-    pour exécuter vos tests de performance, et ensuite soit d'appeler ce script Ant
-    directement, ou (si vous utilisez un projet Maven, et voulez exécuter JMeter
-    via Maven) utiliser l'intégration Ant Maven pour lancer le script Ant à partir de
-    Maven. Un simple script Ant exécutant quelques tests JMeter est illustré
-    ici:</para>
-    <programlisting id="I_programlisting6_d1e9749" format="linespecific">&lt;project default="jmeter"&gt;
+    tests de performance. Il y a plusieurs façons pour intégrer des tests JMeter
+    dans votre processus de build Jenkins. Bien qu'à l'époque de la rédaction,
+    il n'y ait pas de plugin JMeter pour Maven officiel disponible dans les
+    dépots Maven, il y a un plugin Ant. Donc, la méthode la plus simple est
+    d'écrire un script Ant pour exécuter vos tests de performance, et ensuite
+    soit d'appeler ce script Ant directement, ou (si vous utilisez un projet
+    Maven, et voulez exécuter JMeter via Maven) utiliser l'intégration Ant Maven
+    pour lancer le script Ant à partir de Maven. Un simple script Ant exécutant
+    quelques tests JMeter est illustré ici:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e9749">&lt;project default="jmeter"&gt;
     &lt;path id="jmeter.lib.path"&gt;
       &lt;pathelement location="${basedir}/tools/jmeter/extras/ant-jmeter-1.0.9.jar"/&gt;
     &lt;/path&gt;
@@ -1097,12 +1582,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       &lt;/jmeter&gt;
     &lt;/target&gt;
 &lt;/project&gt;</programlisting>
-    <para>Cela suppose que l'installation JMeter est disponible dans le répertoire
-    <filename moreinfo="none">tools</filename> de votre projet.
-    Placer des outils tels que JMeter au sein de votre structure de projet est une bonne
-    habitude, car il rend vos scripts de build plus portables et plus faciles à exécuter sur
-    n'importe quelle machine, ce qui est précisément ce que nous avons besoin pour les exécuter sur
-    Jenkins.</para>
+    <para>Cela suppose que l'installation JMeter est disponible dans le
+    répertoire <filename moreinfo="none">tools</filename> de votre projet.
+    Placer des outils tels que JMeter au sein de votre structure de projet est
+    une bonne habitude, car il rend vos scripts de build plus portables et plus
+    faciles à exécuter sur n'importe quelle machine, ce qui est précisément ce
+    que nous avons besoin pour les exécuter sur Jenkins.</para>
     <figure float="none" id="fig-jmeter-console">
       <title>Préparer un script de test de performance dans JMeter</title>
       <mediaobject id="I_mediaobject6_d1e9759">
@@ -1114,24 +1599,27 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Notons que nous utilisons aussi le tag
-    <literal moreinfo="none">&lt;jvmarg&gt;</literal> optionnel pour fournir à JMeter une quantité
-    de mémoire suffisante—les tests de performance sont une activité consommatrice de mémoire.</para>
-    <para>Le script affiché ici exécutera les tests de performance JMeter
-    sur une application lancée. Donc vous devez vous assurer que l'application
-    que vous voulez tester est active et lancée avant que vous lanciez vos tests. Il y a
-    plusieurs façons de le faire. Pour des tests de performance plus lourds, vous voudrez
-    généralement déployer votre application sur un serveur de test avant de lancer
-    les tests. Pour la plupart des applications ce n'est généralement pas trop difficile—le
-    plugin Maven Cargo, par exemple, vous permet d'automatiser le processus de déploiement
-    sur une variété de serveurs locaux et distants. Nous verrons aussi comment le faire
-    dans Jenkins plus loin dans le livre.</para>
-    <para>Alternativement, si vous utilisez Maven pour une application Web, vous pouvez
-    utiliser le plugin Jetty ou Cargo pour vous assurer que l'application est déployée
-    avant le démarrage des tests d'intégration, et ensuite appeler le script Ant JMeter
-    à partir de Maven pendant la phase de test d'intégration. Avec Jetty, par
-    exemple, vous pouvez faire quelque chose comme cela:</para>
-    <programlisting id="I_programlisting6_d1e9774" format="linespecific">&lt;project...&gt;
+    <para>Notons que nous utilisons aussi le tag <literal
+    moreinfo="none">&lt;jvmarg&gt;</literal> optionnel pour fournir à JMeter une
+    quantité de mémoire suffisante—les tests de performance sont une activité
+    consommatrice de mémoire.</para>
+    <para>Le script affiché ici exécutera les tests de performance JMeter sur
+    une application lancée. Donc vous devez vous assurer que l'application que
+    vous voulez tester est active et lancée avant que vous lanciez vos tests. Il
+    y a plusieurs façons de le faire. Pour des tests de performance plus lourds,
+    vous voudrez généralement déployer votre application sur un serveur de test
+    avant de lancer les tests. Pour la plupart des applications ce n'est
+    généralement pas trop difficile—le plugin Maven Cargo, par exemple, vous
+    permet d'automatiser le processus de déploiement sur une variété de serveurs
+    locaux et distants. Nous verrons aussi comment le faire dans Jenkins plus
+    loin dans le livre.</para>
+    <para>Alternativement, si vous utilisez Maven pour une application Web, vous
+    pouvez utiliser le plugin Jetty ou Cargo pour vous assurer que l'application
+    est déployée avant le démarrage des tests d'intégration, et ensuite appeler
+    le script Ant JMeter à partir de Maven pendant la phase de test
+    d'intégration. Avec Jetty, par exemple, vous pouvez faire quelque chose
+    comme cela:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e9774">&lt;project...&gt;
   &lt;build&gt;
     &lt;plugins&gt;
       &lt;plugin&gt;
@@ -1176,13 +1664,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   &lt;/build&gt;
 &lt;/project&gt;</programlisting>
     <para>Cela va démarrer une instance de Jetty et y déployer votre application
-    web avant les tests d'integration, et l'arrêter
-    après.</para>
-    <para>Enfin, vous devez exécuter vos tests de performance JMeter pendant cette
-    phase. Vous pouvez le faire en utilisant le
-    <emphasis>maven-antrun-plugin</emphasis> pour lancer le script Ant que nous avons écrit
-    précédemment pendant la phase integration test:</para>
-    <programlisting id="I_programlisting6_d1e9783" format="linespecific">&lt;project...&gt;
+    web avant les tests d'integration, et l'arrêter après.</para>
+    <para>Enfin, vous devez exécuter vos tests de performance JMeter pendant
+    cette phase. Vous pouvez le faire en utilisant le
+    <emphasis>maven-antrun-plugin</emphasis> pour lancer le script Ant que nous
+    avons écrit précédemment pendant la phase integration test:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e9783">&lt;project...&gt;
   ...
   &lt;profiles&gt;
     &lt;profile&gt;
@@ -1213,18 +1700,21 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   &lt;/profiles&gt;
   ...
 &lt;/project&gt;</programlisting>
-    <para>Maintenant, tout ce que vous devez faire est de lancer les tests d'intégration avec
-    le profil performance pour que Maven exécute la suite de test JMeter. Vous pouvez le faire
-    en invoquant les phases de cycle de vie Maven <command moreinfo="none">integration-test</command>
-    ou <command moreinfo="none">verify</command>:</para>
+    <para>Maintenant, tout ce que vous devez faire est de lancer les tests
+    d'intégration avec le profil performance pour que Maven exécute la suite de
+    test JMeter. Vous pouvez le faire en invoquant les phases de cycle de vie
+    Maven <command moreinfo="none">integration-test</command> ou <command
+    moreinfo="none">verify</command>:</para>
     <screen format="linespecific">$ mvn verify -Pperformance</screen>
-    <para>Une fois que vous avez configuré votre script de build pour gérer JMeter, vous pouvez
-    mettre en place un build de test de performance dans Jenkins. Pour cela, nous allons utiliser
-    le plugin <phrase role="keep-together">Jenkins Performance Test</phrase>,
-    qui interprête les logs JMeter logs et peut générer et peut générer des statistiques et des jolis graphes
-    en utilisant ces données. Donc allez sur l'écran du gestionnaire des plugins sur votre serveur Jenkins
-    et installez ce plugin (voir <xref linkend="fig-hudson-installing-performance-plugin"/>). Quand vous aurez
-    installé ce plugin, vous devez redémarrer Jenkins.</para>
+    <para>Une fois que vous avez configuré votre script de build pour gérer
+    JMeter, vous pouvez mettre en place un build de test de performance dans
+    Jenkins. Pour cela, nous allons utiliser le plugin <phrase
+    role="keep-together">Jenkins Performance Test</phrase>, qui interprête les
+    logs JMeter logs et peut générer et peut générer des statistiques et des
+    jolis graphes en utilisant ces données. Donc allez sur l'écran du
+    gestionnaire des plugins sur votre serveur Jenkins et installez ce plugin
+    (voir <xref linkend="fig-hudson-installing-performance-plugin"/>). Quand
+    vous aurez installé ce plugin, vous devez redémarrer Jenkins.</para>
     <figure float="none" id="fig-hudson-installing-performance-plugin">
       <title>Préparer un script de test de performance dans JMeter</title>
       <mediaobject id="I_mediaobject6_d1e9805">
@@ -1236,11 +1726,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Une fois que le plugin est installé, vous pouvez mettre en place une tâche de build
-    de performance dans Jenkins. Cette tâche de build sera généralement séparé
-    des autres builds. Dans <xref linkend="fig-hudson-midnight-build"/>,
-    nous avons mis en place un build de performance fonctionnant sur une base quotidienne, ce qui est
-    probablement assez pour des tests de robustesse ou de performance.</para>
+    <para>Une fois que le plugin est installé, vous pouvez mettre en place une
+    tâche de build de performance dans Jenkins. Cette tâche de build sera
+    généralement séparé des autres builds. Dans <xref
+    linkend="fig-hudson-midnight-build"/>, nous avons mis en place un build de
+    performance fonctionnant sur une base quotidienne, ce qui est probablement
+    assez pour des tests de robustesse ou de performance.</para>
     <figure float="none" id="fig-hudson-midnight-build">
       <title>Mise en place du build de performance pour s'exécuter chaque nuit à
       minuit</title>
@@ -1253,13 +1744,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Tout ce qui reste est de configurer votre tâche de build pour qu'elle exécute vos
-    tests performance. Dans <xref linkend="fig-hudson-performance-build-config"/>, nous exécutons le build
-    Maven que nous avons configuré précédemment. Notez que nous utilisons le champ
-    MAVEN_OPTS (accessible en cliquant sur le bouton Avancé) pour fournir suffisament de
-    mémoire à la tâche de build.</para>
+    <para>Tout ce qui reste est de configurer votre tâche de build pour qu'elle
+    exécute vos tests performance. Dans <xref
+    linkend="fig-hudson-performance-build-config"/>, nous exécutons le build
+    Maven que nous avons configuré précédemment. Notez que nous utilisons le
+    champ MAVEN_OPTS (accessible en cliquant sur le bouton Avancé) pour fournir
+    suffisament de mémoire à la tâche de build.</para>
     <figure float="0" id="fig-hudson-performance-build-config">
-      <title>Les tests de performance peuvent demander de grandes quantités de mémoire</title>
+      <title>Les tests de performance peuvent demander de grandes quantités de
+      mémoire</title>
       <mediaobject id="I_mediaobject6_d1e9830">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0627.pdf" format="PDF"/>
@@ -1269,27 +1762,33 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pour <indexterm class="startofrange" id="ch06-perfrep" significance="normal"><primary>rapports</primary><secondary>résultats de test de performance</secondary></indexterm>mettre en place des rapports de performance, sélectionnez simplement l'option “Publish
-    Performance test result report” dans la section Actions à la suite du build
-    (voir <xref linkend="fig-hudson-performance-setup"/>). Vous devez
-    indiquer à Jenkins où se trouvent les résultats de test JMeter (les fichiers de sortie, pas
-    les scripts de test). Le plugin Performance peut traiter plusieurs
-    résultats JMeter, donc vous pouvez mettre des caractères génériques dans le chemin pour vous assurer que tous vos
-    rapports JMeter seront affichés.</para>
+    <para>Pour <indexterm class="startofrange" id="ch06-perfrep"
+        significance="normal">
+        <primary>rapports</primary>
+        <secondary>résultats de test de performance</secondary>
+      </indexterm>mettre en place des rapports de performance, sélectionnez
+    simplement l'option “Publish Performance test result report” dans la section
+    Actions à la suite du build (voir <xref
+    linkend="fig-hudson-performance-setup"/>). Vous devez indiquer à Jenkins où
+    se trouvent les résultats de test JMeter (les fichiers de sortie, pas les
+    scripts de test). Le plugin Performance peut traiter plusieurs résultats
+    JMeter, donc vous pouvez mettre des caractères génériques dans le chemin
+    pour vous assurer que tous vos rapports JMeter seront affichés.</para>
     <para>Si vous prenez vos mesures de performance au sérieux, alors le build
-    doit échouer si les niveaux de service attendus ne sont pas atteint. Dans un environnement d'intégration
-    continue, toute mesure qui n'échoue pas si un critère de qualité minimum n'est
-    pas atteint a tendance à être ignorée.</para>
-    <para>Vous pouvez configurer le plugin Performance afin de marquer un build instable
-    ou échoué si un certain pourcentage des requêtes finissent en erreur. Par
-    défaut, ces valeurs ne seront atteintes que dans les cas d'erreurs
-    applicatives (i.e., bugs) ou plantages de serveur. Toutefois, vous devriez vraiment configurer
-    vos scripts de test JMeter pour placer une limite sur le maximum acceptable
-    pour le temps de réponse pour vos requêtes. Ceci est particulièrement important si votre
-    application a des obligations contractuelles à cet égard. Une façon de le faire avec
-    JMeter est d'ajouter un élément Duration Assertion à votre script. Cela
-    va provoquer une erreur si une requête prend plus d'un certain temps
-    pour s'exécuter.</para>
+    doit échouer si les niveaux de service attendus ne sont pas atteint. Dans un
+    environnement d'intégration continue, toute mesure qui n'échoue pas si un
+    critère de qualité minimum n'est pas atteint a tendance à être
+    ignorée.</para>
+    <para>Vous pouvez configurer le plugin Performance afin de marquer un build
+    instable ou échoué si un certain pourcentage des requêtes finissent en
+    erreur. Par défaut, ces valeurs ne seront atteintes que dans les cas
+    d'erreurs applicatives (i.e., bugs) ou plantages de serveur. Toutefois, vous
+    devriez vraiment configurer vos scripts de test JMeter pour placer une
+    limite sur le maximum acceptable pour le temps de réponse pour vos requêtes.
+    Ceci est particulièrement important si votre application a des obligations
+    contractuelles à cet égard. Une façon de le faire avec JMeter est d'ajouter
+    un élément Duration Assertion à votre script. Cela va provoquer une erreur
+    si une requête prend plus d'un certain temps pour s'exécuter.</para>
     <figure float="none" id="fig-hudson-performance-setup">
       <title>Configurer le plugin Performance dans votre tâche de build</title>
       <mediaobject id="I_mediaobject6_d1e9852">
@@ -1301,16 +1800,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Maintenant, lorsque la tâche de build s'exécute, le plugin Performance va produire
-    des graphes permettant de suivre les temps de réponse globaux et le nombre d'erreurs
-    (voir <xref linkend="fig-hudson-performance-trend"/>). Il y aura un
-    graphe séparé pour chaque rapport JMeter que vous avez généré. S'il n'y a qu'un
-    seul graphe, il sera aussi affiché sur la page d'accueil du build; sinon vous pouvez les visualiser
-    sur une page dédiée que vous pouvez accéder via le menu Performance Trend
-    .</para>
+    <para>Maintenant, lorsque la tâche de build s'exécute, le plugin Performance
+    va produire des graphes permettant de suivre les temps de réponse globaux et
+    le nombre d'erreurs (voir <xref linkend="fig-hudson-performance-trend"/>).
+    Il y aura un graphe séparé pour chaque rapport JMeter que vous avez généré.
+    S'il n'y a qu'un seul graphe, il sera aussi affiché sur la page d'accueil du
+    build; sinon vous pouvez les visualiser sur une page dédiée que vous pouvez
+    accéder via le menu Performance Trend .</para>
     <figure float="0" id="fig-hudson-performance-trend">
-      <title>Le plugin Jenkins Performance garde une trace des temps de réponse et des
-      erreurs</title>
+      <title>Le plugin Jenkins Performance garde une trace des temps de réponse
+      et des erreurs</title>
       <mediaobject id="I_mediaobject6_d1e9864">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0629.pdf" format="PDF"/>
@@ -1320,35 +1819,51 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Ce graphe vous donne un aperçu de la performance dans le temps. Vous utilisez
-    généralement ce graphe pour vous assurer que les temps de réponse moyens sont
-    dans la limite prévue, et aussi repérer des variations anormales des
-    temps de réponse moyens ou maximums. Cependant, si vous avez besoin de suivre
-    et d'isoler des problèmes de performance, l'écran Performance Breakdown peut être
-    plus utile. A partir du rapport Performance Trend, cliquez sur le lien Last
-    Report en haut de l'écran. Cela fera apparaître une répartition des
-    temps de réponse et des erreurs par demande (voir <xref linkend="fig-hudson-performance-breakdown"/>). Vous pouvez faire la même chose 
-    pour les builds précédents, en cliquant sur le lien Performance Report sur la page de détails du
-    <indexterm id="I_indexterm6_d1e9873" class="endofrange" startref="ch06-perfrep" significance="normal"><primary/></indexterm>build.</para>
-    <para>Avec quelques variations mineures, un script de test JMeter travaille essentiellement en
-    simulant un nombre donné d'utilisateurs simultanés. Généralement, cependant, vous
-    voudez voir comment votre application gère des nombres différents d'utilisateurs
-    . Le plugin Jenkins Performance le prend en compte assez bien, et peut
-    traiter des graphes de plusieurs rapports JMeter. Assurez-vous juste que vous utilisez une
-    expression générique quand vous dites Jenkins où se trouvent les
-    rapports.</para>
-    <para>Bien sur, il serait agréable de pouvoir réutiliser le même script de test JMeter
-    pour chaque test exécuté. JMeter supporte les paramêtres, donc vous pouvez facilement
-    réutiliser le même script JMeter avec un nombre différent d'utilisateurs simulés.
-    Utilisez simplement une expression de propriété dans votre script JMeter, et passez
-    cette propriété à JMeter quand vous lancez le script. Si votre propriété est nommée
-    <literal moreinfo="none">request.threads</literal>, alors l'expression de propriété dans votre
-    script JMeter sera <literal moreinfo="none">${__property(request.threads)}</literal>.
-    Ensuite, vous pouvez utiliser l'élément <literal moreinfo="none">&lt;property&gt;</literal> dans la tache Ant
-    <literal moreinfo="none">&lt;jmeter&gt;</literal> pour passer la propriété quand vous
+    <para>Ce graphe vous donne un aperçu de la performance dans le temps. Vous
+    utilisez généralement ce graphe pour vous assurer que les temps de réponse
+    moyens sont dans la limite prévue, et aussi repérer des variations anormales
+    des temps de réponse moyens ou maximums. Cependant, si vous avez besoin de
+    suivre et d'isoler des problèmes de performance, l'écran Performance
+    Breakdown peut être plus utile. A partir du rapport Performance Trend,
+    cliquez sur le lien Last Report en haut de l'écran. Cela fera apparaître une
+    répartition des temps de réponse et des erreurs par demande (voir <xref
+    linkend="fig-hudson-performance-breakdown"/>). Vous pouvez faire la même
+    chose pour les builds précédents, en cliquant sur le lien Performance Report
+    sur la page de détails du <indexterm class="endofrange"
+        id="I_indexterm6_d1e9873" significance="normal" startref="ch06-perfrep">
+        <primary/>
+      </indexterm>build.</para>
+    <para>Avec quelques variations mineures, un script de test JMeter travaille
+    essentiellement en simulant un nombre donné d'utilisateurs simultanés.
+    Généralement, cependant, vous voudez voir comment votre application gère des
+    nombres différents d'utilisateurs . Le plugin Jenkins Performance le prend
+    en compte assez bien, et peut traiter des graphes de plusieurs rapports
+    JMeter. Assurez-vous juste que vous utilisez une expression générique quand
+    vous dites Jenkins où se trouvent les rapports.</para>
+    <para>Bien sur, il serait agréable de pouvoir réutiliser le même script de
+    test JMeter pour chaque test exécuté. JMeter supporte les paramêtres, donc
+    vous pouvez facilement réutiliser le même script JMeter avec un nombre
+    différent d'utilisateurs simulés. Utilisez simplement une expression de
+    propriété dans votre script JMeter, et passez cette propriété à JMeter quand
+    vous lancez le script. Si votre propriété est nommée <literal
+    moreinfo="none">request.threads</literal>, alors l'expression de propriété
+    dans votre script JMeter sera <literal
+    moreinfo="none">${__property(request.threads)}</literal>. Ensuite, vous
+    pouvez utiliser l'élément <literal
+    moreinfo="none">&lt;property&gt;</literal> dans la tache Ant <literal
+    moreinfo="none">&lt;jmeter&gt;</literal> pour passer la propriété quand vous
     exécutez le script. La cible Ant suivante, par exemple, exécute JMeter trois
-    fois, pour 200, 500 et 1000 <indexterm id="I_indexterm6_d1e9893" class="endofrange" startref="ch06-perf6" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9895" class="endofrange" startref="ch06-perf3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9898" class="endofrange" startref="ch06-perf4" significance="normal"><primary/></indexterm>utilsateurs simultanés:</para>
-    <programlisting id="I_programlisting6_d1e9901" format="linespecific">    &lt;target name="jmeter"&gt;
+    fois, pour 200, 500 et 1000 <indexterm class="endofrange"
+        id="I_indexterm6_d1e9893" significance="normal" startref="ch06-perf6">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9895"
+        significance="normal" startref="ch06-perf3">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e9898"
+        significance="normal" startref="ch06-perf4">
+        <primary/>
+      </indexterm>utilsateurs simultanés:</para>
+    <programlisting format="linespecific" id="I_programlisting6_d1e9901">    &lt;target name="jmeter"&gt;
       &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
               testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
               resultlog="${basedir}/target/jmeter-results-200-users.jtl"&gt;
@@ -1372,7 +1887,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       &lt;/jmeter&gt;
     &lt;/target&gt;</programlisting>
     <figure float="none" id="fig-hudson-performance-breakdown">
-      <title>Vous pouvez aussi visualiser les résultats de performance par requête</title>
+      <title>Vous pouvez aussi visualiser les résultats de performance par
+      requête</title>
       <mediaobject id="I_mediaobject6_d1e9906">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_0630.pdf" format="PDF"/>
@@ -1385,102 +1901,157 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   </sect1>
   <sect1 id="sect-tests-too-slow">
     <title>A l'aide! Mes tests sont trop lents!</title>
-    <para>Un <indexterm class="startofrange" id="ch06-imp1" significance="normal"><primary>tests</primary><secondary>performance de</secondary></indexterm><indexterm class="startofrange" id="ch06-imp2" significance="normal"><primary>performance</primary><secondary sortas="tests">des tests</secondary></indexterm>des principes fondamentaux de la conception de vos builds d'intégration continue est
-    que la valeur de l'information d'un échec de build diminue rapidement
-    avec le temps. En d'autres termes, plus le retour d'un échec de build met de temps à vous atteindre
-    , moins il vaut la  peine, et plus dur il est à corriger.</para>
-    <para>En effet, si vos tests fonctionnels ou d'intégration prennent plusieurs
-    heures pour s'exécuter, il y a des chances qu'ils ne seront pas exécutés à chaque changement. Ils sont
-    plus susceptibles d'être programmés comme un build quotidien. Le problème est alors
-    que beaucoup de choses peuvent intervenir en vingt-quatre heures, et, si le build quotidien
-    échoue, il sera difficile de déterminer lequel des nombreux changements
-    committés sur le contrôle de version pendant la journée était responsable. C'est un
-    problème sérieux, et pénalise la capacité de votre serveur d'intégration continue de fournir un retour
-    rapide qui le rend utile.</para>
+    <para>Un <indexterm class="startofrange" id="ch06-imp1"
+        significance="normal">
+        <primary>tests</primary>
+        <secondary>performance de</secondary>
+      </indexterm><indexterm class="startofrange" id="ch06-imp2"
+        significance="normal">
+        <primary>performance</primary>
+        <secondary sortas="tests">des tests</secondary>
+      </indexterm>des principes fondamentaux de la conception de vos builds
+    d'intégration continue est que la valeur de l'information d'un échec de
+    build diminue rapidement avec le temps. En d'autres termes, plus le retour
+    d'un échec de build met de temps à vous atteindre , moins il vaut la peine,
+    et plus dur il est à corriger.</para>
+    <para>En effet, si vos tests fonctionnels ou d'intégration prennent
+    plusieurs heures pour s'exécuter, il y a des chances qu'ils ne seront pas
+    exécutés à chaque changement. Ils sont plus susceptibles d'être programmés
+    comme un build quotidien. Le problème est alors que beaucoup de choses
+    peuvent intervenir en vingt-quatre heures, et, si le build quotidien échoue,
+    il sera difficile de déterminer lequel des nombreux changements committés
+    sur le contrôle de version pendant la journée était responsable. C'est un
+    problème sérieux, et pénalise la capacité de votre serveur d'intégration
+    continue de fournir un retour rapide qui le rend utile.</para>
     <para>Bien sur, certains builds <emphasis>sont</emphasis> lents, par nature
-    . Les tests de performance ou de charge rentrent dans cette catégorie, comme d'autres builds
-    lourds de métriques de qualité de code pour de gros projets. Cependant,
-    <indexterm id="I_indexterm6_d1e9934" significance="normal"><primary>tests d'intégration</primary><secondary>performance de</secondary></indexterm>les tests d'intégration et <indexterm id="I_indexterm6_d1e9940" significance="normal"><primary>tests functionnels (régression)</primary><secondary>performance de</secondary></indexterm>fonctionnels <emphasis>ne</emphasis>
-    rentrent pas dans cette catégorie. Vous devez faire tout ce que vous pouvez pour rendre ces tests aussi
-    rapides que possible. Moins de dix minutes est probablement acceptable pour une suite complète
-    d'intégration/fonctionnelle. Deux heures ne l'est pas.</para>
-    <para>Donc, si vous vous trouvez vous-même à devoir accélerer vos tests, voici
-    quelques stratégies qui seront utiles, par ordre approximatif de difficulté.</para>
+    . Les tests de performance ou de charge rentrent dans cette catégorie, comme
+    d'autres builds lourds de métriques de qualité de code pour de gros projets.
+    Cependant, <indexterm id="I_indexterm6_d1e9934" significance="normal">
+        <primary>tests d'intégration</primary>
+        <secondary>performance de</secondary>
+      </indexterm>les tests d'intégration et <indexterm
+        id="I_indexterm6_d1e9940" significance="normal">
+        <primary>tests functionnels (régression)</primary>
+        <secondary>performance de</secondary>
+      </indexterm>fonctionnels <emphasis>ne</emphasis> rentrent pas dans cette
+    catégorie. Vous devez faire tout ce que vous pouvez pour rendre ces tests
+    aussi rapides que possible. Moins de dix minutes est probablement acceptable
+    pour une suite complète d'intégration/fonctionnelle. Deux heures ne l'est
+    pas.</para>
+    <para>Donc, si vous vous trouvez vous-même à devoir accélerer vos tests,
+    voici quelques stratégies qui seront utiles, par ordre approximatif de
+    difficulté.</para>
     <sect2>
       <title>Ajouter plus de matériel</title>
-      <para>Quelquefois<indexterm id="I_indexterm6_d1e9956" significance="normal"><primary>serveur de build</primary><secondary>mise à jour</secondary></indexterm> la façon la plus facile pour accélérer vos builds est de
-      de rajouter du matériel. Cela pourrait être aussi simple que de mettre à jour votre serveur
-      de build. Comparé au temps et effort passés à identifier et corriger les
-      bugs liés à l'intégration, le coût d'achat d'un nouveau serveur flambant neuf est
-      relativement faible.</para>
-      <para>Une autre <indexterm id="I_indexterm6_d1e9964" significance="normal"><primary>machine virtuelle, pour serveur de build</primary></indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal"><primary>serveur de build</primary><secondary>machine virtuelle pour</secondary></indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal"><primary>cloud computing, pour les builds</primary></indexterm>option est d'envisager l'utilisation d'approches virtuelle ou basée sur le cloud
-      . Plus tard dans le livre, nous verrons comment vous pouvez utiliser des machines virtuelles VMWare
-      ou une infrastructure cloud telles que Amazon Web
-      Services (EC2) ou CloudBees pour augmenter votre capacité de build sur une base
-      “à la demande”, sans avoir à investir dans de nouvelles machines
-      permanentes.</para>
-      <para>Cette approche peut également impliquer la distribution de vos builds sur
-      plusieurs serveurs. Bien que cela ne va pas en tant que tel accélérer vos tests, cela
-      peut mener à un retour plus rapide si votre serveur de build est sous forte
-      demande, et si vos tâches de build sont constamment en attente.</para>
+      <para>Quelquefois<indexterm id="I_indexterm6_d1e9956"
+          significance="normal">
+          <primary>serveur de build</primary>
+          <secondary>mise à jour</secondary>
+        </indexterm> la façon la plus facile pour accélérer vos builds est de de
+      rajouter du matériel. Cela pourrait être aussi simple que de mettre à jour
+      votre serveur de build. Comparé au temps et effort passés à identifier et
+      corriger les bugs liés à l'intégration, le coût d'achat d'un nouveau
+      serveur flambant neuf est relativement faible.</para>
+      <para>Une autre <indexterm id="I_indexterm6_d1e9964" significance="normal">
+          <primary>machine virtuelle, pour serveur de build</primary>
+        </indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal">
+          <primary>serveur de build</primary>
+          <secondary>machine virtuelle pour</secondary>
+        </indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal">
+          <primary>cloud computing, pour les builds</primary>
+        </indexterm>option est d'envisager l'utilisation d'approches virtuelle
+      ou basée sur le cloud . Plus tard dans le livre, nous verrons comment vous
+      pouvez utiliser des machines virtuelles VMWare ou une infrastructure cloud
+      telles que Amazon Web Services (EC2) ou CloudBees pour augmenter votre
+      capacité de build sur une base “à la demande”, sans avoir à investir dans
+      de nouvelles machines permanentes.</para>
+      <para>Cette approche peut également impliquer la distribution de vos
+      builds sur plusieurs serveurs. Bien que cela ne va pas en tant que tel
+      accélérer vos tests, cela peut mener à un retour plus rapide si votre
+      serveur de build est sous forte demande, et si vos tâches de build sont
+      constamment en attente.</para>
     </sect2>
     <sect2>
       <title>Lancer moins de tests d'intégration/fonctionnels</title>
-      <para>Dans de nombreuses <indexterm id="I_indexterm6_d1e9983" significance="normal"><primary>tests d'intégration</primary><secondary>nombre de</secondary></indexterm><indexterm id="I_indexterm6_d1e9988" significance="normal"><primary>tests fonctionnels (régression)</primary><secondary>nombre de</secondary></indexterm>applications, les tests d'intégration ou fonctionnels sont utilisés par
-      défaut comme moyen standard pour tester presque tous les aspects du système.
-      Cependant, les tests d'intégration et fonctionnels ne sont pas le meilleur moyen de détecter
-      et d'identifier les bugs. En raison du grand nombre de composants impliqués dans
-      un test typique de bout en bout, il peut être très difficile de savoir où s'est
-      produit l'erreur. En outre, avec autant de pièces changeant, il est extrêmement
-      difficile, si pas totalement irréalisable, de couvrir l'ensemble des chemins
-      possibles à travers l'application.</para>
+      <para>Dans de nombreuses <indexterm id="I_indexterm6_d1e9983"
+          significance="normal">
+          <primary>tests d'intégration</primary>
+          <secondary>nombre de</secondary>
+        </indexterm><indexterm id="I_indexterm6_d1e9988" significance="normal">
+          <primary>tests fonctionnels (régression)</primary>
+          <secondary>nombre de</secondary>
+        </indexterm>applications, les tests d'intégration ou fonctionnels sont
+      utilisés par défaut comme moyen standard pour tester presque tous les
+      aspects du système. Cependant, les tests d'intégration et fonctionnels ne
+      sont pas le meilleur moyen de détecter et d'identifier les bugs. En raison
+      du grand nombre de composants impliqués dans un test typique de bout en
+      bout, il peut être très difficile de savoir où s'est produit l'erreur. En
+      outre, avec autant de pièces changeant, il est extrêmement difficile, si
+      pas totalement irréalisable, de couvrir l'ensemble des chemins possibles à
+      travers l'application.</para>
       <para>Pour cette raison, dans la mesure du possible, vous devriez préférer
-      les tests unitaires rapides aux tests d'intégration et fonctionnels beaucoup plus lents
-      . Quand vous êtes confiant que les <phrase role="keep-together">composants</phrase> individuels fonctionnent correctement, vous pouvez
-      compléter le tableau par quelques tests de bout en bout qui passent par des cas
-      d'utilisation communs du système, ou des cas d'utilisation qui ont causé des problèmes par le
-      passé. Cela va garantir que les composants s'emboîtent
-      correctement, ce qui est, après tout, ce que les tests d'intégration sont supposés
-      faire. Mais préférez, dans la mesure du possible, les tests unitaires aux tests plus complets.
-      Cette stratégie est probablement l'approche la plus viable pour maintenir votre
-      retour rapide, mais elle nécessite une certaine discipline et
-       effort.</para>
+      les tests unitaires rapides aux tests d'intégration et fonctionnels
+      beaucoup plus lents . Quand vous êtes confiant que les <phrase
+      role="keep-together">composants</phrase> individuels fonctionnent
+      correctement, vous pouvez compléter le tableau par quelques tests de bout
+      en bout qui passent par des cas d'utilisation communs du système, ou des
+      cas d'utilisation qui ont causé des problèmes par le passé. Cela va
+      garantir que les composants s'emboîtent correctement, ce qui est, après
+      tout, ce que les tests d'intégration sont supposés faire. Mais préférez,
+      dans la mesure du possible, les tests unitaires aux tests plus complets.
+      Cette stratégie est probablement l'approche la plus viable pour maintenir
+      votre retour rapide, mais elle nécessite une certaine discipline et
+      effort.</para>
     </sect2>
     <sect2>
       <title>Exécutez vos tests en parallèle</title>
-      <para>Si vos <indexterm id="I_indexterm6_d1e10004" significance="normal"><primary>tests fonctionnels (regression)</primary><secondary>exécution en parallèle</secondary></indexterm>tests fonctionnels prennent deux heures pour s'exécuter, il est peu probable
-      qu'ils aient tous besoin de s'exécuter à la suite. Il est aussi peu probable qu'ils
-      consomment toute la CPU disponible sur votre machine de build. Alors
-      découper vos tests d'intégration en petits lots et les exécuter en
-       parallèle a beaucoup de sens.</para>
-      <para>Il y a plusieurs stratégies que vous pouvez essayer, et votre choix va
-      probablement dépendre de la nature de votre application. Une approche,
-      par exemple, est de mettre en place plusieurs tâches de build pour exécuter des sous ensembles différents
-      de vos tests fonctionnels, et de lancer ces tâches en parallèle. Jenkins vous permet
-      d'aggréger les résultats de test. C'est une bonne façon de tirer avantage de
+      <para>Si vos <indexterm id="I_indexterm6_d1e10004" significance="normal">
+          <primary>tests fonctionnels (regression)</primary>
+          <secondary>exécution en parallèle</secondary>
+        </indexterm>tests fonctionnels prennent deux heures pour s'exécuter, il
+      est peu probable qu'ils aient tous besoin de s'exécuter à la suite. Il est
+      aussi peu probable qu'ils consomment toute la CPU disponible sur votre
+      machine de build. Alors découper vos tests d'intégration en petits lots et
+      les exécuter en parallèle a beaucoup de sens.</para>
+      <para>Il y a plusieurs stratégies que vous pouvez essayer, et votre choix
+      va probablement dépendre de la nature de votre application. Une approche,
+      par exemple, est de mettre en place plusieurs tâches de build pour
+      exécuter des sous ensembles différents de vos tests fonctionnels, et de
+      lancer ces tâches en parallèle. Jenkins vous permet d'aggréger les
+      résultats de test. C'est une bonne façon de tirer avantage de
       l'architecture de build distribuée pour accélerer vos builds encore plus.
-      Le point essentiel de cette stratégie est la capacité d'exécuter des sous-ensembles de vos tests
-      en isolation, ce qui peut demander une certain refactorisation.</para>
-      <para>A un plus bas niveau, vous pouvez aussi exécuter vos tests en parallèle au
-      niveau des scripts de build. Comme nous avons vu précédemment, TestNG et les
-      versions les plus récentes de JUnit supportent tous les deux l'exécution de tests en parallèle.
-      Néanmoins, vous devrez vous assurer que vos tests peuvent être exécutés
-      simultanément, ce qui peut demander une certaine refactorisation. Par exemple, les fichiers communs
-      ou des variables d'instance partagées vont causer des problèmes
+      Le point essentiel de cette stratégie est la capacité d'exécuter des
+      sous-ensembles de vos tests en isolation, ce qui peut demander une certain
+      refactorisation.</para>
+      <para>A un plus bas niveau, vous pouvez aussi exécuter vos tests en
+      parallèle au niveau des scripts de build. Comme nous avons vu
+      précédemment, TestNG et les versions les plus récentes de JUnit supportent
+      tous les deux l'exécution de tests en parallèle. Néanmoins, vous devrez
+      vous assurer que vos tests peuvent être exécutés simultanément, ce qui
+      peut demander une certaine refactorisation. Par exemple, les fichiers
+      communs ou des variables d'instance partagées vont causer des problèmes
       ici.</para>
-      <para>En général, vous devez être prudent sur ​​les interactions entre votre
-      tests. Si vos tests web démarrent un serveur Web intégré, comme Jetty,
-      par exemple, vous devez vous assurer que le port utilisé est différent pour chaque
-      ensemble de tests simultanés.</para>
-      <para>Néanmoins, si vous pouvez le faire fonctionner pour votre application,
-      exécuter vos tests en parallèle est un des moyens les plus efficaces pour accélérer <indexterm id="I_indexterm6_d1e10018" class="endofrange" startref="ch06-imp1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e10020" class="endofrange" startref="ch06-imp2" significance="normal"><primary/></indexterm>vos tests.</para>
+      <para>En général, vous devez être prudent sur ​​les interactions entre
+      votre tests. Si vos tests web démarrent un serveur Web intégré, comme
+      Jetty, par exemple, vous devez vous assurer que le port utilisé est
+      différent pour chaque ensemble de tests simultanés.</para>
+      <para>Néanmoins, si vous pouvez le faire fonctionner pour votre
+      application, exécuter vos tests en parallèle est un des moyens les plus
+      efficaces pour accélérer <indexterm class="endofrange"
+          id="I_indexterm6_d1e10018" significance="normal" startref="ch06-imp1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm6_d1e10020"
+          significance="normal" startref="ch06-imp2">
+          <primary/>
+        </indexterm>vos tests.</para>
     </sect2>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-conclusion">
     <title>Conclusion</title>
-    <para>L'automatisation des tests est un élément essentiel de tout environnement d'intégration continue
-    , et doit être pris très au sérieux. Comme dans d'autres domaines  dans l'intégration continue,
-    et peut-être plus encore, la retour est roi, il est donc important de s'assurer
-    que vos tests s'exécutent rapidement, même les tests d'intégration et fonctionnels.</para>
+    <para>L'automatisation des tests est un élément essentiel de tout
+    environnement d'intégration continue , et doit être pris très au sérieux.
+    Comme dans d'autres domaines dans l'intégration continue, et peut-être plus
+    encore, la retour est roi, il est donc important de s'assurer que vos tests
+    s'exécutent rapidement, même les tests d'intégration et fonctionnels.</para>
   </sect1>
 </chapter>
