@@ -1238,7 +1238,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       Grails. La configuration et l'utilisation de Clover est bien documentée
       sur le site web d'Atlassian , donc nous ne regarderons pas ces aspects en
       détail. Cependant, en guise d'exemple, voici une configuration Maven
-      typique de Clover pour une utilisation avec Jenkins:</para>
+      typique de Clover pour une utilisation avec Jenkins :</para>
       <programlisting format="linespecific" id="I_programlisting6_d1e9520">      &lt;build&gt;
         ...
         &lt;plugins&gt;
@@ -1256,7 +1256,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       &lt;/build&gt;
       ...</programlisting>
       <para>Cela va générer à la fois des rapports de couverture de code HTML et
-      XML, y compris les données aggrégées si le projet Maven contient plusieurs
+      XML, y compris les données agrégées si le projet Maven contient plusieurs
       modules.</para>
       <para>Pour <indexterm id="I_indexterm6_d1e9526" significance="normal">
           <primary>plugin Clover</primary>
@@ -1265,21 +1265,21 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           <secondary>Clover</secondary>
         </indexterm>intégrer Clover dans Jenkins, vous devez installer le plugin
       Jenkins Clover selon la manière habituelle en utilisant l'écran du
-      gestionnaire de plugins . Une fois que vous avez redémarré Jenkins, vous
+      gestionnaire de plugins. Une fois que vous avez redémarré Jenkins, vous
       pourrez intégrer les données de couverture de code Clover dans vos
       builds.</para>
-      <para>Exécuter Clover sur votre projet est un projet en plusieurs étapes:
-      vous instrumentez votre code applicatif, exécutez les tests, aggrégez les
+      <para>Exécuter Clover sur votre projet est un projet en plusieurs étapes :
+      vous instrumentez votre code applicatif, exécutez les tests, agrégez les
       données de test (pour les projets Maven à plusieurs modules) et générez
-      les rapports HTML et XML . Puisque cela peut être une operation assez
+      les rapports HTML et XML. Puisque cela peut être une operation assez
       lente, vous allez généralement l'exécuter dans une tâche de build séparée,
-      et pas avec vos test classiques. Vous pouvez le faire comme suit:</para>
+      et pas avec vos test classiques. Vous pouvez le faire comme suit :</para>
       <screen format="linespecific">$ clover2:setup test clover2:aggregate clover2:clover</screen>
       <para>Ensuite, vous devez mettre en place les rapports Clover dans
       Jenkins. Cochez la case Publish Clover <phrase
       role="keep-together">Coverage</phrase> Report pour l'activer. La
       configuration est similaire à celle de <phrase
-      role="keep-together">Cobertura—</phrase>vous devez fournir le chemin du
+      role="keep-together">Cobertura — </phrase>vous devez fournir le chemin du
       répertoire du rapport HTML Clover, et du fichier rapport XML, et vous
       pouvez aussi définir des valeurs de palier pour les icônes méteo
       ensoleillées et orageuses, et pour les builds instables (voir <xref
@@ -1328,66 +1328,67 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     </sect2>
   </sect1>
   <sect1 id="sect-chapter-automated-testing-acceptance">
-    <title>Tests d'acceptance automatisés</title>
+    <title>Tests d'acceptation automatisés</title>
     <para>Les tests <indexterm class="startofrange" id="ch06-accept2"
         significance="normal">
-        <primary>tests d'acceptance, automatisés</primary>
+        <primary>tests d'acceptation, automatisés</primary>
       </indexterm><indexterm class="startofrange" id="ch06-accept3"
         significance="normal">
         <primary>tests</primary>
-        <secondary>acceptance tests</secondary>
-      </indexterm>d'acceptance automatisés jouent un rôle important dans de
+        <secondary>tests d'acceptation</secondary>
+      </indexterm>d'acceptation automatisés jouent un rôle important dans de
     nombreux projets agiles, à la fois pour la vérification et pour la
-    communication. Comme outil de vérification, les tests d'acceptance jouent un
-    rôle similaire aux tests d'intégration, et visent à démontrer que
+    communication. Comme outil de vérification, les tests d'acceptation jouent
+    un rôle similaire aux tests d'intégration, et visent à démontrer que
     l'application fait effectivement ce qui est attendu d'elle. Mais ce n'est
-    seulement qu'un aspect secondaire des tests d'acceptance automatisés.
-    L'objectif principal est en fait la communication—montrer aux non
-    développeurs (experts métier, analystes métiers, testeurs, et ainsi de
-    suite) précisement où en est le projet.</para>
-    <para>Les tests d'acceptance ne doivent pas être mélangés avec des tests
+    qu'un aspect secondaire des tests d'acceptation automatisés. L'objectif
+    principal est en fait la communication — montrer aux non développeurs
+    (experts métier, analystes métiers, testeurs, et ainsi de suite) précisement
+    où en est le projet.</para>
+    <para>Les tests d'acceptation ne doivent pas être mélangés avec des tests
     orientés développeurs, parce qu'à la fois leur finalité et leur audience
-    sont très différents. Les tests d'acceptance doivent être des exemples
+    sont très différents. Les tests d'acceptation doivent être des exemples
     montrant comment le système fonctionne, avec un accent sur la démonstration
-    plutôt que sur une preuve exhaustive. Les tests exhaustifs doivent être fait
-    au niveau test unitaire.</para>
-    <para>Les tests d'acceptance peuvent être automatisés en utilisant des
+    plutôt que sur une preuve exhaustive. Les tests exhaustifs doivent être
+    faits au niveau test unitaire.</para>
+    <para>Les tests d'acceptation peuvent être automatisés en utilisant des
     outils conventionnels tels que JUnit, mais il y a une tendance croissante à
     utiliser <indexterm id="I_indexterm6_d1e9602" significance="normal">
         <primary>BDD (Behaviour Driven Development)</primary>
       </indexterm>des frameworks Behavior-Driven Development (BDD) à cet effet,
     parce qu'ils correspondent mieux à l'audience non technique des tests
-    d'acceptance. Les outils Behavior-driven development utilisés pour les tests
-    d'acceptance automatisés <phrase role="keep-together">génèrent</phrase>
-    généralement des rapports HTML avec une mise en page bien adaptée aux non
-    développeurs. Ils produisent aussi souvent <indexterm
-        id="I_indexterm6_d1e9609" significance="normal">
+    d'acceptation. Les outils Behavior-driven development utilisés pour les
+    tests d'acceptation automatisés <phrase
+    role="keep-together">génèrent</phrase> généralement des rapports HTML avec
+    une mise en page bien adaptée aux non développeurs. Ils produisent aussi
+    souvent <indexterm id="I_indexterm6_d1e9609" significance="normal">
         <primary>rapports JUnit</primary>
-        <secondary sortas="acceptance">pour tests d'acceptance</secondary>
+        <secondary sortas="acceptance">pour tests d'acceptation</secondary>
       </indexterm>des rapports compatibles JUnit qui peuvent être traités
     directement par Jenkins.</para>
     <para>Les frameworks Behavior-Driven Development ont aussi la notion de
     “tests en attente,” tests qui sont automatisés, mais qui n'ont pas encore
-    été implementés par l'équipe de développement. Cette distinction joue un
+    été implémentés par l'équipe de développement. Cette distinction joue un
     rôle important dans la communication avec les autres acteurs non
-    développeurs: si vous pouvez automatiser ces tests tôt dans le processus,
+    développeurs : si vous pouvez automatiser ces tests tôt dans le processus,
     ils vous donneront un excellent indicateur des fonctionnalités qui ont été
-    implémentées, qui fonctionnent, et qui n'ont pa encore été démarrées.</para>
+    implémentées, qui fonctionnent, ou qui n'ont pas encore été
+    démarrées.</para>
     <para>En <indexterm class="startofrange" id="ch06-acceptrep"
         significance="normal">
         <primary>rapports</primary>
-        <secondary>résultats de test d'acceptance</secondary>
-      </indexterm>règle générale, vos tests d'acceptance doivent être affichés
+        <secondary>résultats de test d'acceptation</secondary>
+      </indexterm>règle générale, vos tests d'acceptation doivent être affichés
     séparément des autres tests automatisés plus conventionnels. S'ils utilisent
-    le même framework de test que vos tests classiques (e.g., JUnit), assurez
-    vous qu'ils sont exécutés dans une tâche de build séparée, de telle façon
-    que les non développeurs peuvent les visualiser et se concentrer sur les
-    tests orientés métier sans être distrait par ceux de plus bas niveau ou
+    le même framework de test que vos tests classiques (e.g., JUnit),
+    assurez-vous qu'ils sont exécutés dans une tâche de build séparée, de telle
+    façon que les non développeurs peuvent les visualiser et se concentrer sur
+    les tests orientés métier sans être distrait par ceux de plus bas niveau ou
     techniques. Il peut être aussi utile d'adopter des conventions de nommage
     orientées métier et fonctionnel pour vos tests et classes de test, afin de
     les rendre plus accessible aux non développeurs (voir <xref
     linkend="fig-hudson-junit-acceptance-tests"/>). La façon dont vous nommez
-    vos tests et classes de test peut faire une réelle différence quand à la
+    vos tests et classes de test peut faire une réelle différence quant à la
     lecture des rapports de test et la compréhension des fonctionnalités et
     comportements métier qui sont testés.</para>
     <figure float="0" id="fig-hudson-junit-acceptance-tests">
