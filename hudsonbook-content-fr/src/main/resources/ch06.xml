@@ -567,7 +567,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     account.makeCashWithdraw(60);
     assertThat(account.getBalance(), is(40));
 }</programlisting>
-    <para>Avec TestNG, vois pouvez aussi définir des dépendances entre tests, de
+    <para>Avec TestNG, vous pouvez aussi définir des dépendances entre tests, de
     façon que certains tests s'exécuteront après qu'un autre test ou un groupe
     de tests se soit exécuté, comme illustré ici:</para>
     <programlisting format="linespecific" id="I_programlisting6_d1e9023">@Test
@@ -628,15 +628,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     ralentir votre tâche de build de façon significative. Pour cette raison,
     vous allez généralement exécuter les métriques de couverture de code dans
     une tâche de build Jenkins séparée, exécutée après que vos tests unitaires
-    et d'intégration soient <phrase
-    role="keep-together">réussis</phrase>.</para>
+    et d'intégration aient <phrase role="keep-together">réussi</phrase>.</para>
     <para>Il y a<indexterm id="I_indexterm6_d1e9071" significance="normal">
         <primary>métriques de couverture de code</primary>
         <secondary>logiciels pour</secondary>
       </indexterm> de nombreux outils de couverture de code disponibles, et
     plusieurs sont supportés dans Jenkins, tous via des plugins dédiés. Les
     développeurs Java peuvent choisir entre Cobertura et Emma, deux outils
-    populaires de couverture de code open source , ou Clover, un puissant outil
+    populaires de couverture de code open source, ou Clover, un puissant outil
     commercial de couverture de code d'Atlassian. Pour les projets .NET, vous
     pouvez utiliser NCover.</para>
     <para>Le fonctionnement et la configuration de tous ces outils sont
@@ -664,27 +663,27 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       automatisé. Jenkins, d'autre part, fournit un excellent travail de
       <emphasis>rapport</emphasis> sur les métriques de couverture de code,
       notamment le suivi de la couverture de code dans le temps, et fournissant
-      une couverture de code aggrégée sur plusieurs modules applicatifs.</para>
+      une couverture de code agrégée sur plusieurs modules applicatifs.</para>
       <para>La couverture de code peut être une affaire complexe, et il est
-      utile de comprendre le traitement que Cobertura suit, surtout quand vous
-      devez le mettre en place dans des outils de scripting de plus bas niveau
-      comme Ant. L'analyse de la couverture de code fonctionne en trois étapes.
-      D'abord, il modifie (ou “instrumente”) les classes de votre application,
-      afin qu'elles conservent le nombre de fois que chaque ligne de code a été
-      exécutée.<footnote>
-          <para>C'est en fait une légère simplification; en fait, Cobertura
-          stocke aussi d'autres informations, telles que combien de fois chaque
-          résultat possible d'un test booléen a été exécuté. Cependant, cela ne
-          modifie pas l'approche générale.</para>
-        </footnote> Il stocke ces informations dans un fichier spécial
-      (Cobertura utilise un fichier nommé <filename
+      utile de comprendre le traitement que Cobertura effectue, surtout quand
+      vous devez le mettre en place dans des outils de scripting de plus bas
+      niveau comme Ant. L'analyse de la couverture de code fonctionne en trois
+      étapes. D'abord, il modifie (ou “instrumente”) les classes de votre
+      application, afin qu'elles conservent le nombre de fois que chaque ligne
+      de code a été exécutée.<footnote>
+          <para>C'est en fait une légère simplification ; en fait, Cobertura
+          stocke aussi d'autres informations, telles que le nombre de fois que
+          chaque résultat possible d'un test booléen a été exécuté. Cependant,
+          cela ne modifie pas l'approche générale.</para>
+        </footnote>Il stocke ces informations dans un fichier spécial (Cobertura
+      utilise un fichier nommé <filename
       moreinfo="none">cobertura.ser</filename>).</para>
       <para>Quand le code de l'application a été instrumenté, vous exécutez vos
       tests avec le code instrumenté. A la fin des tests, Cobertura aura généré
-      un fichier de données contenant le nombre de fois chaque ligne de code a
-      été exécutée au cours des tests.</para>
+      un fichier de données indiquant pour chaque ligne le nombre de fois
+      qu'elle a été exécutée au cours des tests.</para>
       <para>Une fois que ce fichier a été généré, Cobertura peut utiliser cette
-      donnée pour générer un rapport dans une format plus lisible, comme XML ou
+      donnée pour générer un rapport dans un format plus lisible, comme XML ou
       HTML.</para>
       <sect3>
         <title>Intégrer Cobertura avec Maven</title>
@@ -724,7 +723,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 &lt;/project&gt;</programlisting>
         <para>Cela va générer les métriques de couverture de code quand vous
         lancerez le plugin Cobertura <phrase
-        role="keep-together">directement</phrase>:</para>
+        role="keep-together">directement</phrase> :</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn cobertura:cobertura</userinput></screen>
         <para>Les données de couverture de code seront générées dans le
         répertoire <filename moreinfo="none">target/site/cobertura</filename>,
@@ -732,8 +731,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         moreinfo="none">coverage.xml</filename>.</para>
         <para>Cependant, cette approche va instrumenter vos classes et produire
         les données de couverture de code pour chaque build, ce qui est
-        inéfficace. Une meilleure approche est de placer cette configuration
-        dans un profil spécifique, comme montré ici:</para>
+        inefficace. Une meilleure approche est de placer cette configuration
+        dans un profil spécifique, comme montré ici :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9159"> &lt;project&gt;
    ...
    &lt;profiles&gt;
@@ -759,16 +758,16 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   &lt;/profiles&gt;
 &lt;/project&gt;</programlisting>
         <para>Dans ce cas, vous lancerez le plugin Cobertura en utilisant le
-        profil metrics pour générer les données de couverture de code:</para>
+        profil metrics pour générer les données de couverture de code :</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn cobertura:cobertura -Pmetrics</userinput></screen>
-        <para>Une autre approche est d'inclure les rapports de couverture de
-        code dans vos rapports Maven. Cette approche est beaucoup plus lente et
-        plus consommatrice de mémoire que juste générer les données de
-        couverture de code, mais cela peut avoir du sens si vous générez aussi
-        d'autres métriques de qualité de code et leurs rapports en même temps.
-        Si vous voulez le faire avec Maven 2, vous devez aussi inclure le plugin
-        Maven Cobertura plugin dans la section reporting, comme montré
-        ici:</para>
+        <para>Une autre approche consiste à inclure les rapports de couverture
+        de code dans vos rapports Maven. Cette approche est beaucoup plus lente
+        et plus consommatrice en mémoire que de générer simplement les données
+        de couverture de code, mais cela peut avoir du sens si vous générez
+        aussi d'autres métriques de qualité de code et leurs rapports en même
+        temps. Si vous voulez le faire avec Maven 2, vous devez aussi inclure le
+        plugin Maven Cobertura plugin dans la section reporting, comme montré
+        ici :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9170"> &lt;project&gt;
    ...
   &lt;reporting&gt;
@@ -787,15 +786,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;/plugins&gt;
   &lt;/reporting&gt;
 &lt;/project&gt;</programlisting>
-        <para>Maintenant, les données de couverture de code seront générées
-        quand vous générerez le site Maven pour ce projet:</para>
+        <para>A présent, les données de couverture de code seront générées quand
+        vous générerez le site Maven pour ce projet :</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn site</userinput></screen>
         <para>Si votre projet Maven contient des modules (comme il est de
         pratique courante pour des gros projets Maven), vous devez mettre en
         place la configuration Cobertura dans le <phrase
         role="keep-together">fichier </phrase><filename
-        moreinfo="none">pom.xml</filename> parent- les métriques de couverture
-        de code et le rapports seront générés séparément pour chaque module. Si
+        moreinfo="none">pom.xml</filename> parent. Les métriques de couverture
+        de code et le rapport seront générés séparément pour chaque module. Si
         vous utilisez l'option de configuration <literal
         moreinfo="none">aggregate</literal>, le plugin Maven Cobertura génèrera
         aussi un rapport de plus haut niveau combinant les données de couverture
@@ -804,15 +803,15 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         code de plusieurs fichiers et les combiner dans un seul rapport
         aggrégé.</para>
         <para>Au moment de la rédaction, il y a une limitation avec le plugin
-        Maven Cobertura—la couverture de code sera uniquement enregistrée pour
+        Maven Cobertura — la couverture de code sera uniquement enregistrée pour
         les tests exécutés pendant la phase <command
-        moreinfo="none">test</command> , et pas les tests exécutés pendant la
+        moreinfo="none">test</command>, et pas les tests exécutés pendant la
         phase <command moreinfo="none">integration-test</command>. Cela peut
         être un problème si vous utilisez cette phase pour lancer des tests
-        d'intégration ou des tests web qui nécessite une application
-        complêtement packagée et déployée—dans ce cas, la couverture de code des
-        tests qui sont uniquement exécutés pendant la phase integration test ne
-        seront pas comptés dans les métriques de couverture de code<indexterm
+        d'intégration ou des tests web qui nécessitent une application
+        complètement packagée et déployée — dans ce cas, la couverture de code
+        des tests qui sont uniquement exécutés pendant la phase integration-test
+        ne sera pas comptée dans les métriques de couverture de code<indexterm
             class="endofrange" id="I_indexterm6_d1e9197" significance="normal"
             startref="ch06-maven1">
             <primary/>
@@ -833,9 +832,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <secondary>métriques de couverture de code avec
             Cobertura</secondary>
           </indexterm>Cobertura dans votre build Ant est un peu plus compliqué
-        que le faire avec Maven. Cependant, cela vous permet d'avoir un contrôle
-        plus fin sur les classes qui sont instrumentées, et quand la couverture
-        de code est mesurée.</para>
+        que de le faire avec Maven. Cependant, cela vous permet d'avoir un
+        contrôle plus fin sur les classes qui sont instrumentées, et quand la
+        couverture de code est mesurée.</para>
         <para>Cobertura est livré avec une tâche Ant que vous pouvez utiliser
         pour intégrer Cobertura dans vos builds Ant. You devez télécharger la
         dernière distribution Cobertura, et la décompresser quelque part sur
@@ -843,13 +842,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         facile à déployer dans Jenkins, c'est une bonne idée de placer la
         distribution Cobertura que vous utilisez dans votre répertoire projet,
         et de la sauvegarder dans votre système de gestion de version. Ainsi,
-        c'est le moyen le plus facile pour guarantir que le build utilisera la
-        même version de Corbertura quelque soit la façon dont il est
+        c'est le moyen le plus facile pour garantir que le build utilisera la
+        même version de Cobertura quelle que soit la façon dont il est
         exécuté.</para>
         <para>En supposant que vous avez téléchargé la dernière installation
-        Cobertura et placé à l'intérieur de votre projet dans un répertoire
-        nommé <filename moreinfo="none">tools</filename>, vous pourriez faire
-        quelque chose comme ceci:</para>
+        Cobertura et que vous l'avez placée à l'intérieur de votre projet dans
+        un répertoire nommé <filename moreinfo="none">tools</filename>, vous
+        pourriez faire quelque chose comme ceci :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9225">&lt;property name="cobertura.dir" value="${basedir}/tools/cobertura" /&gt;<co
             id="co-ch04-cobertura-dir"/>
 
@@ -863,23 +862,23 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 &lt;taskdef classpathref="cobertura.classpath" resource="tasks.properties" /&gt;</programlisting>
         <calloutlist>
           <callout arearefs="co-ch04-cobertura-dir">
-            <para>Indique Ant où se trouve l'installation de Cobertura.</para>
+            <para>Indique à Ant où se trouve l'installation de Cobertura.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-path">
-            <para>Nous devons mettre un place un classpath que Cobertura
+            <para>Nous devons mettre en place un classpath que Cobertura
             utilisera pour s'exécuter.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-jar">
-            <para>Le chemin contient l'application Corbertura elle-même.</para>
+            <para>Le chemin contient l'application Cobertura elle-même.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-libs">
-            <para>Et toutes ses dépendences.</para>
+            <para>Et toutes ses dépendances.</para>
           </callout>
         </calloutlist>
         <para>Ensuite, vous devez instrumenter les classes de l'application.
         Vous devez faire attention de placer ces classes instrumentées dans un
         répertoire différent, de telle manière qu'elles ne seront pas déployées
-        en production par accident:</para>
+        en production par accident :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9250">&lt;target name="instrument" depends="init,compile"&gt;<co
             id="co-ch04-cobertura-instrumentation"/>
     &lt;delete file="cobertura.ser"/&gt;<co id="co-ch04-cobertura-delete"/>
@@ -906,8 +905,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <para>Détruit toutes les classes précédemment instrumentées.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-instrument">
-            <para>Instrumente les classes de l'application (mais les classes des
-            tests) et les place dans le répertoire <phrase
+            <para>Instrumente les classes de l'application (mais pas les classes
+            des tests) et les place dans le répertoire <phrase
             role="keep-together"><filename
             moreinfo="none">${instrumented.dir}</filename></phrase> .</para>
           </callout>
@@ -916,8 +915,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         moreinfo="none">${instrumented.dir}</filename> contient une version
         instrumentée de nos classes applicatives. Maintenant, tout ce que nous
         devons faire pour générer des données utiles de couverture de code est
-        de exécuter nos tests unitaires avec les classes de ce
-        répertoire:</para>
+        d'exécuter nos tests unitaires avec les classes de ce répertoire
+        :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9282">&lt;target name="test-coverage" depends="instrument"&gt;
     &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit"/>
         &lt;classpath location="${instrumented.dir}" /&gt;
@@ -944,19 +943,19 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             classpath.</para>
           </callout>
         </calloutlist>
-        <para>Cela va produire les données brut de couverture de code dont nous
-        avons besoin pour produire les rapports XML de coouverture que Jenkins
-        peut utiliser. Pour produire ces rapports, nous devons lancer une autre
-        tâche, comme montré ici:</para>
+        <para>Cela va produire les données brutes de couverture de code dont
+        nous avons besoin pour produire les rapports XML de couverture que
+        Jenkins peut utiliser. Pour produire ces rapports, nous devons lancer
+        une autre tâche, comme montré ici :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9298">&lt;target name="coverage-report" depends="test-coverage"&gt;
     &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" 
                       format="xml" /&gt;
 &lt;/target&gt;</programlisting>
-        <para>Enfin, n'oubliez pas de faire le ménage une fois que tout est
-        fini: la cible <command moreinfo="none">clean</command> ne doit pas
-        détruire uniquement les classes générées, mais aussi les classes
-        générées instrumentées, les données de couverture de code Cobertura, et
-        les rapports Cobertura:</para>
+        <para>Enfin, n'oubliez pas de faire le ménage une fois que tout est fini
+        : la cible <command moreinfo="none">clean</command> ne doit pas détruire
+        uniquement les classes générées, mais aussi les classes générées
+        instrumentées, les données de couverture de code Cobertura, et les
+        rapports Cobertura :</para>
         <programlisting format="linespecific" id="I_programlisting6_d1e9305">&lt;target name="clean" 
         description="Remove all files created by the build/test process."&gt;
     &lt;delete dir="${classes.dir}" /&gt;
@@ -1017,17 +1016,17 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <secondary>configuration dans vos tâches de build</secondary>
           </indexterm>vous avez installé le plugin, vous pouvez mettre en place
         les rapports de couverture de code dans vos tâches de build. Puisque la
-        couverture de code peut être lente et consommatrice de mémoire, vous
+        couverture de code peut être lente et consommatrice en mémoire, vous
         devrez généralement créer une tâche de build séparée pour cela et les
         autres métriques de qualité de code, qui sera exécutée après les tests
         unitaires et d'intégration. Pour de gros projets, vous pouvez même le
         mettre en place via un build qui s'exécute sur une base quotidienne. En
         effet, le retour sur les métriques de couverture de code et autres n'est
-        généralement aussi critique que le retour sur les résultats de test, et
-        cela va libérer des exécuteurs de build par des tâches de build qui
+        généralement pas aussi critique que le retour sur les résultats de test,
+        et cela va libérer des exécuteurs de build par des tâches de build qui
         peuvent bénéficier de retour rapide.</para>
         <para>Comme nous le mentionnions précédemment, Jenkins ne fait pas
-        d'analyse de couverture par lui-même—vous devez configurer votre build
+        d'analyse de couverture par lui-même — vous devez configurer votre build
         pour produire le fichier Cobertura <filename
         moreinfo="none">coverage.xml</filename> (ou fichiers) avant que vous
         puissiez générer de jolis graphes ou rapports, généralement en utilisant
@@ -1063,10 +1062,10 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
           </mediaobject>
         </figure>
         <para>Le premier et plus important champ ici est le chemin des données
-        XML Cobertura que nous avons généré. Votre projet peut contenir un seul
-        fichier <filename moreinfo="none">coverage.xml</filename>, ou plusieurs.
-        Si vous avez un projet Maven multi-modules, par exemple, le plugin Maven
-        Cobertura va générer un fichier <filename
+        XML Cobertura que nous avons générées. Votre projet peut contenir un
+        seul fichier <filename moreinfo="none">coverage.xml</filename>, ou
+        plusieurs. Si vous avez un projet Maven multi-modules, par exemple, le
+        plugin Maven Cobertura va générer un fichier <filename
         moreinfo="none">coverage.xml</filename> distinct pour chaque
         module.</para>
         <para>Le chemin accepte des caractères génériques du style Ant, et il
@@ -1088,8 +1087,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
   managerApprovalRequired = true;
 }</programlisting>
         <para>Pour obtenir une couverture de code complète pour ce code, vous
-        devez l'exécuter deux fois: une fois avec une valeur supérieure à
-        10,000, le l'autre avec une valeur inférieure ou égale à 10,000.</para>
+        devez l'exécuter deux fois : une fois avec une valeur supérieure à
+        10,000, une autre avec une valeur inférieure ou égale à 10,000.</para>
         <para>D'autres métriques de couverture de code plus basiques incluent
         les méthodes (combien de méthodes dans l'application ont été exécutées
         par les tests), classes et packages.</para>
@@ -1097,14 +1096,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         voulez suivre. Par défaut, le plugin Cobertura enregistre les
         couvertures conditionnelles, lignes, et méthodes, ce qui est
         généralement suffisant. Cependant, il est facile de rajouter d'autres
-        métriques de couverture de code if vous pensez que ce peut être utile
+        métriques de couverture de code si vous pensez que ce peut être utile
         pour votre équipe.</para>
         <para>Le traitement par Jenkins des métriques de couverture de code
-        n'est pas uniquement un affichage passif—Jenkins vous permet de définir
-        comment ces métriques affectent le résultat du build . Vous pouvez
-        définir des valeurs de palier pour les métriques de couverture de code
-        qui affectent à la fois le résultat du build et le rapport météo sur le
-        tableau de bord Jenkins (voir <xref
+        n'est pas uniquement un affichage passif — Jenkins vous permet de
+        définir comment ces métriques affectent le résultat du build. Vous
+        pouvez définir des valeurs de palier pour les métriques de couverture de
+        code qui affectent à la fois le résultat du build et le rapport météo
+        sur le tableau de bord Jenkins (voir <xref
         linkend="fig-hudson-testing-coverage-stabiliy"/>). Chaque métrique de
         couverture de code que vous suivez possède trois valeurs de
         palier.</para>
@@ -1123,9 +1122,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         <para>Le premier (celui avec une icône ensoleillée) est la valeur
         minimale que le build doit atteindre pour avoir une icône ensolleillée.
         La seconde indique la valeur en dessous de laquelle le build aura une
-        icône orageuse. Jenkins va extrapoler entre ces deux valeurs pour
-        d'autres icônes météos plus nuancées.</para>
-        <para>La<indexterm id="I_indexterm6_d1e9423" significance="normal">
+        icône orageuse. Jenkins va extrapoler les valeurs intermédiaires entre
+        ces deux-ci pour d'autres icônes météo plus nuancées.</para>
+        <para>Le<indexterm id="I_indexterm6_d1e9423" significance="normal">
             <primary>tâches de build</primary>
             <secondary>build instable de</secondary>
             <tertiary>critère pour</tertiary>
@@ -1133,17 +1132,17 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <primary>builds instables</primary>
             <secondary>critère pour</secondary>
           </indexterm> dernier palier est simplement la valeur en dessous de
-        laquelle un build sera marqué comme “instable”—avec une balle jaunne.
+        laquelle un build sera marqué comme “instable” — avec une balle jaune.
         Bien que n'étant pas aussi mauvais qu'une balle rouge (pour un build
         cassé), une balle jaune entrainera un message de notification et
-        apparaitra comme mauvais sur le <phrase role="keep-together">tableau de
+        apparaîtra comme mauvais sur le <phrase role="keep-together">tableau de
         bord</phrase>.</para>
-        <para>Cette fonctionnalité n'est pas un simple détail esthétique—il
+        <para>Cette fonctionnalité n'est pas un simple détail esthétique — elle
         fournit un moyen précieux de fixer des objectifs de qualité de code pour
-        vos projets. Bien qu'il ne peut pas être interprété seul, une couverture
-        de code incomplête n'est généralement pas un bon signe pour un projet.
-        Donc si vous prenez la couverture de code au sérieux, utilisez ces
-        valeurs de palier pour fournir un retour douloureux quand les choses ne
+        vos projets. Bien qu'elle ne puisse pas être interprétée seule, une
+        mauvaise couverture de code n'est généralement pas un bon signe pour un
+        projet. Donc si vous prenez la couverture de code au sérieux, utilisez
+        ces valeurs de palier pour fournir un retour direct quand les choses ne
         sont pas à la<indexterm class="endofrange" id="I_indexterm6_d1e9441"
             significance="normal" startref="ch06-job2">
             <primary/>
@@ -1185,7 +1184,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         descendre dans les métriques de couverture de code, affichant les
         erreurs de couverture de code pour les packages, classes à l'intérieur
         d'un package, et les lignes de code à l'intérieur d'une classe (voir
-        <xref linkend="fig-hudson-code-coverage-package"/>). Quelques soit le
+        <xref linkend="fig-hudson-code-coverage-package"/>). Quel que soit le
         niveau de détail que vous regardiez, Jenkins affichera un graphe en haut
         de la page montrant la tendance de couverture dans le temps. Plus bas,
         vous trouverez la répartition par package ou classe.</para>
@@ -1200,10 +1199,10 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Lorsque vous arrivez au niveau de détail de classe, Jenkins
-        affichera aussi le code source de la classe, avec les lignes colorées en
+        <para>Lorsque vous arrivez au niveau de détail de la classe, Jenkins
+        affiche aussi le code source de la classe, avec les lignes colorées en
         fonction de leur niveau de couverture. Les lignes qui ont été
-        complêtement exécutées pendant les tests sont en vert, et les lignes qui
+        complètement exécutées pendant les tests sont en vert, et les lignes qui
         n'ont jamais été exécutées sont marquées en rouge. Un nombre dans la
         marge indique le nombre de fois que la ligne en question a été exécutée.
         Enfin, un ombrage jaune dans la marge est utilisée pour indiquée une
