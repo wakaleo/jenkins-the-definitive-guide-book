@@ -87,7 +87,7 @@
               <primary>écran configurer système</primary>
             </indexterm>C'est là que vous gérez les chemins vers les
           différents outils que vous utilisez dans vos constructions, comme
-          les JDKs, les version de Ant et Maven, les options de sécurité, les
+          les JDKs, les versions de Ant et Maven, les options de sécurité, les
           serveurs d'email, et autres détails de configuration de niveau
           système. Plusieurs des plugins que vous installerez nécessiteront
           aussi d'être configurés ici — Jenkins ajoutera les champs
@@ -265,9 +265,8 @@
             </indexterm>Jenkins gère aussi bien les constructions parallèles
           que distribuées. Dans cet écran, vous pouvez configurer le nombre de
           constructions que vous voulez. Jenkins les exécute simultanément,
-          et, si vous utilisez des constructions distribuées, vous pouvez
-          configurer les nœuds de construction (NDT : version anglaise
-          confuse, à revoir). Un nœud de construction est une autre machine
+          et, si vous utilisez des constructions distribuées, configure
+		  les nœuds de construction. Un nœud de construction est une autre machine
           que Jenkins peut utiliser pour exécuter ses constructions. Nous
           regarderons comment configurer les constructions distribuées en
           détail dans <xref linkend="chapter-distributed-builds" />.</para>
@@ -410,7 +409,7 @@
     Vous pouvez utiliser le champ Période d'attente pour éviter des problèmes
     de ce genre. Si vous mettez une valeur à cet endroit, Jenkins attendra
     qu'aucun changement n'ait été détecté pendant le nombre spécifié de
-    secondes avant de déclencher la construction. Ce permet de d'assurer que
+    secondes avant de déclencher la construction. Ceci permet de s'assurer que
     tous les changements ont été committés et que le dépôt est dans un état
     stable avant de démarrer la construction.</para>
 
@@ -466,7 +465,7 @@
         <secondary>propriétés globales pour</secondary>
       </indexterm>Propriétés globales (voir <xref
     linkend="fig-configure-global-properties" />) vous permet de définir des
-    variables de façon centralisée et utilisées dans toutes vos tâches de
+    variables de façon centralisée et de les utiliser dans toutes vos tâches de
     construction. Vous pouvez ajouter autant de propriétés que vous voulez, et
     les utiliser dans vos tâches. Jenkins les rendra disponible à l'intérieur
     de votre environnement de construction de tâches, vous permettant de les
@@ -600,7 +599,7 @@
     comme montré sur <xref linkend="fig-configure-jdk" />. Bien que vous
     deviez taper le chemin manuellement, Jenkins vérifiera en temps réel à la
     fois que le répertoire existe et que ça ressemble à un répertoire JDK
-    valide..</para>
+    valide.</para>
 
     <figure float="none" id="fig-configure-jdk">
       <title>Configuration des JDK dans Jenkins</title>
@@ -652,7 +651,7 @@
     <para>Par défaut, Jenkins propose de télécharger le JDK à partir du site
     web d'Oracle. Si votre installation Jenkins est derrière un serveur proxy,
     vous pourrez avoir besoin de modifier votre configuration de proxy pour
-    permettre à Jenkins d'accès aux sites externes de téléchargement (voir
+    permettre à Jenkins d'accéder aux sites externes de téléchargement (voir
     <xref linkend="sect-configuration-proxies" />). Une autre option est de
     fournir une URL pointant sur votre propre copie interne des binaires du
     JDK (soit sous la forme d'un ZIP soit sous la forme d'un fichier TAR
@@ -834,7 +833,7 @@
           significance="normal">
           <primary>Ant</primary>
         </indexterm>Ant est un langage de script de construction pour Java
-      largement utilisé et très connu. C'est un langage de scripting de
+      largement utilisé et très connu. C'est un langage de scripting
       flexible, extensible, relativement bas-niveau utilisé dans un grand
       nombre de projets opensource. Un script de construction Ant (typiquement
       nommé <filename moreinfo="none">build.xml</filename>) est constitué d'un
@@ -969,7 +968,7 @@
         <primary>systèmes de gestion de version</primary>
 
         <seealso>CVS; Git; Subversion</seealso>
-      </indexterm>Jenkins arrrive de base préinstallé avec des plugins pour
+      </indexterm>Jenkins arrive de base préinstallé avec des plugins pour
     CVS et Subversion. Les autres systèmes de gestion de version sont
     supportés par des plugins que vous pouvez télécharger depuis l'écran Gérer
     les plugins.</para>
@@ -1004,7 +1003,7 @@
           <primary>configuration</primary>
 
           <secondary>CVS</secondary>
-        </indexterm>nécessite peu voire aucune configuration. Par défaut,
+        </indexterm>nécessite peu voir aucune configuration. Par défaut,
       Jenkins cherchera des outils comme CVS dans le chemin système, bien que
       vous puissiez fournir le chemin explicitement s'il ne s'y trouve pas.
       CVS garde le login et le mot de passe dans un fichier appelé <filename
@@ -1044,7 +1043,7 @@
     fondamentale de Jenkins — quand une construction échoue, il envoie un
     email au développeur qui a committé les changements, et optionnellement
     aussi aux autres membres de l'équipe. Jenkins a donc besoin de connaître
-    votre serveur de messagerie de électronique (voir <xref
+    votre serveur de messagerie électronique (voir <xref
     linkend="fig-configure-email" />).</para>
 
     <figure float="none" id="fig-configure-email">
@@ -1090,11 +1089,11 @@
     <para><indexterm id="I_indexterm4_d1e4888" significance="normal">
         <primary>Gmail, configurer</primary>
       </indexterm>Par exemple, plusieurs organisations utilisent Google Apps
-    pour leur services d'email. Vous pouvez configurer Jenkins pour travailler
+    pour leurs services d'email. Vous pouvez configurer Jenkins pour travailler
     avec le service Gmail comme montré dans <xref
     linkend="fig-configure-gmail" os="" />. Tout ce que vous avez besoin de
     faire dans ce cas est d'utiliser le serveur SMTP Gmail, et de fournir
-    votre nom d'utilisateur Gmail et votre passe dans Authentication SMTP
+    votre nom d'utilisateur Gmail et votre mot de passe dans Authentication SMTP
     (vous devez aussi utiliser SSL et le port non-standard <indexterm
         class="endofrange" id="I_indexterm4_d1e4894" significance="normal"
         startref="ch04-email1">
@@ -1154,7 +1153,7 @@
       </indexterm>NTLM, vous devrez alors fournir un nom de domaine en plus
     d'un nom d'utilisateur. Vous pouvez placer les deux dans le champ Nom
     d'utilisateur : entrez simplement le nom de domaine, suivi par anti-slash
-    (\), suivi par le nom utilisateur, comme par exemple “MonDomain\Joe
+    (\), puis par le nom utilisateur, comme par exemple “MonDomain\Joe
     Bloggs”.</para>
 
     <figure float="none" id="fig-configuration-proxy">
@@ -1174,8 +1173,8 @@
     <para>Enfin, si vous mettez en place un accès Proxy sur votre serveur
     Jenkins, rappelez-vous que tous les autres outils de ce serveur auront
     besoin de connaître aussi l'existence de ce proxy. En particulier, cela
-    inclut des outils comme Subversion (si vous accédez un dépôt externeif you
-    are accessing) et Maven (si vous n'utilisez pas un <emphasis>Repository
+    inclut des outils comme Subversion (si vous accédez à un dépôt externe)
+	et Maven (si vous n'utilisez pas un <emphasis>Repository
     <indexterm class="endofrange" id="I_indexterm4_d1e4948"
         significance="normal" startref="ch04-proxy1">
         <primary></primary>
