@@ -171,82 +171,88 @@
   </sect1>
 
   <sect1 id="sect-code-quality-tools">
-    <title>Popular Java and Groovy Code Quality Analysis Tools</title>
+    <title>Les outils d’analyse de qualité du code populaires pour Java et
+    Groovy</title>
 
-    <para>There are many open source tools that can help identify poor coding
-    practices.</para>
+    <para>Il y a beaucoup d’outils open source qui peuvent aider à identifier
+    des mauvaises pratiques de codage.</para>
 
-    <para>In<indexterm id="I_indexterm9_d1e12803" significance="normal">
-        <primary>code quality metrics</primary>
+    <para>Dans<indexterm id="I_indexterm9_d1e12803" significance="normal">
+        <primary>mesures de qualité de code</primary>
 
-        <secondary>software for</secondary>
-      </indexterm> the Java world, three static analysis tools have stood the
-    test of time, and are widely used in very complementary ways. Checkstyle
-    excels at checking coding standards and conventions, coding practices, as
-    well as other metrics such code complexity. PMD is a static analysis tool
-    similar to Checkstyle, more focused on coding and design practices. And
-    FindBugs is an innovative tool issued from the ongoing research work of
-    Bill Pugh and his team at the University of Maryland that focuses on
-    identifying potentially dangerous and buggy code. And if you are working
-    with Groovy or Grails, you can use CodeNarc, which checks Groovy coding
-    practices and convention.</para>
+        <secondary>logiciel pour</secondary>
+      </indexterm> le monde Java, trois outils d’analyses statiques ont
+    résisté à l’épreuve du temps, et sont largement utilisés de manière très
+    complémentaire. Checkstyle excelle dans la vérification des conventions et
+    normes de codage, les pratiques de codage, aussi bien que d’autres mesures
+    telles que la complexité du code. PMD est un outil d’analyse statique
+    similaire à Checkstyle, plus focalisé sur les pratiques de codage et de
+    conception. Et FindBugs est un outil innovant, issu de la recherche en
+    cours du projet de Bill Pugh et son équipe de l’université du Maryland qui
+    se focalise sur l’identification du code dangereux et bogué. Et si vous
+    être en train de travailler avec Groovy ou Grails, vous pouvez utiliser
+    CodeNarc, qui vérifie la norme et les pratiques de codage de
+    Groovy.</para>
 
-    <para>All of these tools can be easily integrated into your build process.
-    In the following sections, we will look at how to set up these tools to
-    generate the XML reports that Jenkins can then use for its own
-    reporting.</para>
+    <para>Tous ces outils peuvent être facilement intégrés dans votre
+    processus de build. Dans les sections suivantes, nous verrons comment
+    configurer ces outils pour générer des rapports XML que Jenkins peut
+    ensuite utiliser dans ces propres rapports</para>
 
     <sect2>
       <title>Checkstyle</title>
 
       <para><ulink url="http://checkstyle.sourceforge.net">Checkstyle</ulink>
-      is<indexterm class="startofrange" id="ch09-check1" significance="normal">
+      est<indexterm class="startofrange" id="ch09-check1"
+          significance="normal">
           <primary>Checkstyle</primary>
         </indexterm><indexterm class="startofrange" id="ch09-check2"
           significance="normal">
-          <primary>code quality metrics</primary>
+          <primary>mesures de qualité de code</primary>
 
-          <secondary sortas="Checkstyle">with Checkstyle</secondary>
-        </indexterm> a static analysis tool for Java. Originally designed to
-      enforce a set of highly-configurable coding standards, Checkstyle now
-      also lets you check for poor coding practices, as well as overly complex
-      and duplicated code. Checkstyle is a versatile and flexible tool that
-      should have its place in any Java-based code quality analysis
-      strategy.</para>
+          <secondary sortas="Checkstyle">avec Checkstyle</secondary>
+        </indexterm> un outil d’analyse statique pour Java. A l’origine conçu
+      pour faire respecter un ensemble de normes de codage hautement
+      configurable, Checkstyle permet maintenant aussi de vérifier les
+      mauvaises pratiques de codage, aussi bien que le code trop complexe ou
+      dupliqué. Checkstyle st un outil versatile et flexible qui devrait avoir
+      sa place dans n’importe quelle stratégie d’analyse de code basé sur
+      Java.</para>
 
-      <para>Checkstyle supports a very large number of rules, including ones
-      relating to naming conventions, annotations, javadoc comments, class and
-      method size, code complexity metrics, poor coding practices, and many
-      others.</para>
+      <para>Checkstyle supporte un très grand nombre de lois, incluant celles
+      liées aux normes de nommage, annotations, commentaires javadoc, taille
+      de méthode et de classe, mesures de complexité de code, mauvaises
+      pratiques de codage, et beaucoup d’autres.</para>
 
-      <para>Duplicated code is another important code quality issue—duplicated
-      or near-<phrase role="keep-together">duplicated</phrase> code is harder
-      to maintain and to debug. Checkstyle provides some support for the
-      detection of duplicated code, but more specialized tools such as CPD do
-      a better job in this area.</para>
+      <para>Le code dupliqué est un autre problème important de la qualité de
+      code — le code dupliqué ou quasi-dupliqué est plus difficile à maintenir
+      et à déboguer. Checkstyle fournit un certain soutien pour la détection
+      de code dupliqué, mais des outils plus spécialisés comme CPD font un
+      meilleur travail dans ce domaine.</para>
 
-      <para>One of the nice things about Checkstyle is how easy it is to
-      configure. You can start off with the Sun coding conventions and tweak
-      them to suit your needs, or start from scratch. Using the <indexterm
-          id="I_indexterm9_d1e12836" significance="normal">
+      <para>Une des belles choses au sujet de Checkstyle est comment il est
+      facile à configurer. Vous pouvez commencer avec les normes de codage de
+      Sun et les adapter selon vos besoins, ou démarrer de zéro. En utilisant
+      <indexterm id="I_indexterm9_d1e12836" significance="normal">
           <primary>Eclipse</primary>
 
           <secondary>code quality metrics with Checkstyle</secondary>
-        </indexterm>Eclipse plugin (or even directly in XML), you can pick and
-      choose from several hundred different rules, and fine-tune the settings
-      of the rules you do choose (see <xref
-      linkend="fig-hudson-quality-checkstyle"/>). This is important, as
-      different organizations, teams and even projects have different
-      requirements and preferences with regards to coding standards, and it is
-      better to have a precise set of rules that can be adhered to, rather
-      than a broad set of rules that will be ignored. It is especially
-      important where large legacy code bases are involved—in these cases, it
-      is often better to start off with a more limited set of rules than to be
-      overwhelmed with a large number of relatively minor formatting
-      issues.</para>
+        </indexterm>le plugin Eclipse (ou même directement en XML), vous
+      pouvez choisir parmi plusieurs centaines de règles, et affiner les
+      options des règles que vous choisissez (voir <xref
+      linkend="fig-hudson-quality-checkstyle"/>). C’est important, comme des
+      organisations, des équipes ou même des projets ont des attentes et des
+      préférences différentes au regard des normes de codage, et c’est mieux
+      d’avoir un ensemble de règles précises qui peuvent être adoptées, plutôt
+      que un large éventail de règles qui seront ignorées. C’est spécialement
+      important lorsque de grandes bases de code existant sont impliquées —
+      dans ces cas, il est souvent préférable de commencer avec un ensemble
+      plus limité de règles que d’être submergé par un grand nombre de
+      problèmes de formatage relativement mineur.</para>
 
       <figure float="none" id="fig-hudson-quality-checkstyle">
-        <title>It is easy to configure Checkstyle rules in Eclipse</title>
+        <title>C’est facile de configurer les règles Checkstyle avec
+        Eclipse</title>
 
         <mediaobject id="I_mediaobject9_d1e12847">
           <imageobject role="print">
@@ -259,31 +265,30 @@
         </mediaobject>
       </figure>
 
-      <para>Configuring Checkstyle in your build is usually straightforward.
-      If <indexterm id="I_indexterm9_d1e12854" significance="normal">
+      <para>Configurer Checkstyle dans votre build est généralement simple. Si
+      <indexterm id="I_indexterm9_d1e12854" significance="normal">
           <primary>Ant</primary>
 
           <secondary>code quality metrics</secondary>
 
           <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
-        </indexterm>you are using Ant, you need to download the checkstyle JAR
-      file from the <ulink
-      url="http://checkstyle.sourceforge.net">website</ulink> and make it
-      available to Ant. You could place it in your Ant <filename
-      moreinfo="none">lib</filename> directory, but this would mean
-      customizing the Ant installation on your build server (and any slave
-      nodes), so it is not a very portable solution. A better approach would
-      be to place the Checkstyle JAR file in one of your project directories,
-      or to use Ivy or the Maven Ant Task library to declare a dependency on
-      Checkstyle. If you opt for keeping the Checkstyle JAR file in the
-      project directories, you could declare the Checkstyle task as shown
-      here:</para>
+        </indexterm>vous utilisez Ant, vous avez besoin de télécharger le
+      fichier JAR de Checkstyle depuis le site web et de le rendre disponible
+      à Ant. Vous pourriez le placer dans votre répertoire <filename
+      moreinfo="none">lib</filename> de Ant, mais cela signifierait de devoir
+      personnaliser l’installation de Ant sur votre serveur de build (et tout
+      les nœuds esclaves), ce n’est donc pas une solution très portable. Une
+      meilleure approche serait de placer le fichier JAR de Checkstyle dans
+      l’un de vos répertoires du projet, ou d’utiliser Ivy ou la librairie
+      Maven Ant Task pour déclarer une dépendance à Checkstyle. Si vous optez
+      pour garder le fichier JAR de Checkstyle dans les répertoires du projet,
+      vous pouvez déclarer la tâche Checkstyle comme indiqué ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12868">          &lt;taskdef resource="checkstyletask.properties"
                classpath="lib/checkstyle-5.3-all.jar"/&gt;</programlisting>
 
-      <para>Then, to generate Checkstyle reports in an XML format that Jenkins
-      can use, you could do the following:</para>
+      <para>Ensuite, pour générer les rapports Checkstyle dans le format XML
+      que Jenkins peut utiliser, vous pouvez procéder comme suit : </para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12872">&lt;target name="checkstyle"&gt;
   &lt;checkstyle config="src/main/config/company-checks.xml"&gt;
@@ -293,17 +298,18 @@
   &lt;/checkstyle&gt;
 &lt;/target&gt;</programlisting>
 
-      <para>Now, just invoke this task (e.g., <literal moreinfo="none">ant
-      checkstyle</literal>) to generate the Checkstyle reports.</para>
+      <para>Maintenant, invoquez juste cette tâche (e.g., <literal
+      moreinfo="none">ant checkstyle</literal>) afin de générer les rapports
+      Checkstyle.</para>
 
-      <para>In <indexterm id="I_indexterm9_d1e12882" significance="normal">
+      <para>Dans <indexterm id="I_indexterm9_d1e12882" significance="normal">
           <primary>Maven</primary>
 
           <secondary>code quality metrics</secondary>
 
           <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
-        </indexterm>Maven 2, you could add something like the following to the
-      <code>&lt;reporting&gt;</code> section:</para>
+        </indexterm>Maven 2, vous pouvez ajouter quelque chose comme la
+      section <code>&lt;reporting&gt;</code> qui suit :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12893">&lt;reporting&gt;
   &lt;plugins&gt;
@@ -320,10 +326,10 @@
   &lt;/plugins&gt;
 &lt;/reporting&gt;</programlisting>
 
-      <para>For a Maven 3 project, you need to add the plugin to the
-      <code>&lt;reportPlugins&gt;</code> element of the
-      <code>&lt;configuration&gt;</code> section of the
-      <emphasis>maven-site-plugin</emphasis>:</para>
+      <para>Pour un projet Maven 3, vous avez besoin d’ajouter un plugin sur
+      l’élément <code>&lt;reportPlugins&gt;</code> de la section
+      <code>&lt;configuration&gt;</code> du <emphasis>maven-site-plugin
+      </emphasis>:</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12906">&lt;project&gt;
   &lt;properties&gt;
@@ -356,42 +362,46 @@
     &lt;/build&gt;
 &lt;/project&gt;</programlisting>
 
-      <para>Now, running <literal moreinfo="none">mvn
-      checkstyle:checkstyle</literal> or <literal moreinfo="none">mvn
-      site</literal> will analyse your source code and generate XML reports
-      that Jenkins can use.</para>
+      <para>Maintenant, l’exécution de <literal moreinfo="none">mvn
+      checkstyle:checkstyle</literal> ou <literal moreinfo="none">mvn
+      site</literal> analysera votre code source et génèrera des rapports XML
+      que Jenkins peut utiliser.</para>
 
-      <para>Note that in the last example, we used a Checkstyle ruleset that
-      we have uploaded to a Sonar server (defined by the <literal
-      moreinfo="none">${sonar.url}</literal> property). This strategy makes it
-      easy to use the same set of Checkstyle rules for Eclipse, Maven,
-      Jenkins, and Sonar.</para>
+      <para>A noter que dans le dernier exemple, nous utilisons un ensemble de
+      règles de Checkstyle que nous avons transféré sur un serveur Sonar
+      (définie par la propriété <literal
+      moreinfo="none">${sonar.url}</literal>). Cette stratégie rend facile
+      l’utilisation du même ensemble des règles Checkstyle pour Eclipse,
+      Maven, Jenkins, et Sonar.</para>
 
-      <para>Recent<indexterm id="I_indexterm9_d1e12923" significance="normal">
+      <para>Les <indexterm id="I_indexterm9_d1e12923" significance="normal">
           <primary>Gradle</primary>
 
           <secondary>code quality metrics</secondary>
 
           <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
-        </indexterm> versions of Gradle also offer some integrated Checkstyle
-      support. You can set up Checkstyle for your builds as shown here:</para>
+        </indexterm> versions récentes de Gradle offrent aussi une certaine
+      prise en charge intégrée de Checkstyle. Vous pouvez configurer pour vos
+      builds comme indiquer : </para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12931">apply plugin: 'code-quality'</programlisting>
 
-      <para>This will use the checkstyle ruleset in <filename
-      moreinfo="none">config/checkstyle/checkstyle.xml</filename> by default.
-      You can override this with the <code>checkstyleConfigFileName</code>
-      property: at the time of writing, however, you can’t get the Gradle code
-      quality plugin to obtain the Checkstyle rules from a URL.</para>
+      <para>Cela utilisera l’ensemble de règle de Checkstyle dans <filename
+      moreinfo="none">config/checkstyle/checkstyle.xml</filename> par défaut.
+      Vous pouvez redéfinir cela avec la propriété
+      <code>checkstyleConfigFileName</code> : au moment de l’écriture de ce
+      livre, cependant, vous ne pouvez télécharger le plugin de qualité de
+      code de Gradle pour obtenir les règles Checkstyle à partir d’une
+      URL.</para>
 
-      <para>You can generate the Checkstyle reports here by <indexterm
+      <para>Vous pouvez générer les rapports Checkstyle ici <indexterm
           class="endofrange" id="I_indexterm9_d1e12943" significance="normal"
           startref="ch09-check1">
           <primary/>
         </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e12945"
           significance="normal" startref="ch09-check2">
           <primary/>
-        </indexterm>running <literal moreinfo="none">gradle
+        </indexterm>en exécutant <literal moreinfo="none">gradle
       checkstyleMain</literal> or <literal moreinfo="none">gradle
       check</literal>.</para>
     </sect2>
