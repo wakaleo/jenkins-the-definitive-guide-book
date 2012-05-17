@@ -1308,55 +1308,57 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1 id="sect-code-quality-checkstyle">
-    <title>Using the Checkstyle, PMD, and FindBugs Reports</title>
+    <title>Utiliser les rapports Checkstyle, PMD, et FindBugs</title>
 
-    <para>You <indexterm id="I_indexterm9_d1e13490" significance="normal">
+    <para>Vous <indexterm id="I_indexterm9_d1e13490" significance="normal">
         <primary>FindBugs</primary>
       </indexterm><indexterm id="I_indexterm9_d1e13493" significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>mesures de qualité de code</primary>
 
-        <secondary sortas="FindBugs">with FindBugs</secondary>
+        <secondary sortas="FindBugs">avec FindBugs</secondary>
       </indexterm><indexterm id="I_indexterm9_d1e13498" significance="normal">
-        <primary>reporting</primary>
+        <primary>rapports</primary>
 
-        <secondary>code quality metrics</secondary>
+        <secondary>mesures de qualité du code</secondary>
 
-        <tertiary sortas="FindBugs">with FindBugs</tertiary>
+        <tertiary sortas="FindBugs">avec FindBugs</tertiary>
       </indexterm><indexterm id="I_indexterm9_d1e13505" significance="normal">
         <primary>Checkstyle</primary>
       </indexterm><indexterm id="I_indexterm9_d1e13508" significance="normal">
         <primary>PMD</primary>
       </indexterm><indexterm id="I_indexterm9_d1e13511" significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>mesures de qualité du code</primary>
 
-        <secondary sortas="Checkstyle">with Checkstyle</secondary>
+        <secondary sortas="Checkstyle">avec Checkstyle</secondary>
       </indexterm><indexterm id="I_indexterm9_d1e13516" significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>mesures de qualité du code</primary>
 
-        <secondary sortas="PMD">with PMD</secondary>
+        <secondary sortas="PMD">avec PMD</secondary>
       </indexterm><indexterm id="I_indexterm9_d1e13521" significance="normal">
-        <primary>reporting</primary>
+        <primary>rapport</primary>
 
-        <secondary>code quality metrics</secondary>
+        <secondary>mesures de qualité de code</secondary>
 
-        <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
+        <tertiary sortas="Checkstyle">avec Checkstyle</tertiary>
       </indexterm><indexterm id="I_indexterm9_d1e13528" significance="normal">
-        <primary>reporting</primary>
+        <primary>rapports</primary>
 
-        <secondary>code quality metrics</secondary>
+        <secondary>mesures de qualité de code</secondary>
 
-        <tertiary sortas="PMD">with PMD</tertiary>
-      </indexterm>can also report individually on results from Checkstyle,
-    PMD, and FindBugs. In addition to the Violations plugin, there are also
-    Jenkins plugins that produce trend graphs and detailed reports for each of
-    these tools individually. We will look at how to do this for Checkstyle,
-    but the same approach also applies for PMD and FindBugs. You can even use
-    the Analysis Collector Plugin to display the combined results in a graph
-    similar to the one produced by the Violations plugin.</para>
+        <tertiary sortas="PMD">avec PMD</tertiary>
+      </indexterm>pouvez aussi effectuer des rapports individuellement sur les
+    résultats de Checkstyle, PMD, et FindBugs. En complément du plugin
+    Violations, il y a aussi des plugins Jenkins qui produisent des graphique
+    de tendance et des rapports détaillés pour chaque de ces outils
+    individuellement. Nous allons voir comment faire ceci pour Checkstyle,
+    mais la même approche s’applique aussi pour PMD et FindBugs. Vous pouvez
+    même utiliser le plugin Analysis Collector pour afficher les résultats
+    combinés dans un graph similaire de celui produit par le plugin
+    violation.</para>
 
     <?dbfo-need height=”1in”?>
 
-    <para>You <indexterm id="I_indexterm9_d1e13539" significance="normal">
+    <para>Vous <indexterm id="I_indexterm9_d1e13539" significance="normal">
         <primary>Checkstyle plugin</primary>
       </indexterm><indexterm id="I_indexterm9_d1e13542" significance="normal">
         <primary>PMD plugin</primary>
@@ -1374,15 +1376,16 @@ task pmd &lt;&lt; {
         <primary>plugins</primary>
 
         <secondary>FindBugs</secondary>
-      </indexterm>can install these plugins through the Plugin Manager in the
-    usual way. The plugins in question are called, unsurprisingly, Checkstyle
-    plugin, PMD plugin, and FindBugs plugin. All of these plugins use the
-    Static Analysis Utilities plugin, which you need to install as well (see
-    <xref linkend="fig-hudson-analysis-plugins"/>).</para>
+      </indexterm>pouvez installer ces plugins au travers du gestionnaire de
+    plugin de manière habituelle. Les plugins en question sont appelés, sans
+    surprise, le plugin Checkstyle, le plugin PMD, et le plugin FindBugs. Tout
+    ces plugins utilisent le plugin Static Analysis Utilities qui vous avez
+    aussi besoin d’installer (voir <xref
+    linkend="fig-hudson-analysis-plugins"/>).</para>
 
     <figure float="none" id="fig-hudson-analysis-plugins">
-      <title>Installing the Checkstyle and Static Analysis Utilities
-      plugins</title>
+      <title>Installer les plugins Checkstyle et Static Analysis
+      Utilities.</title>
 
       <mediaobject id="I_mediaobject9_d1e13569">
         <imageobject role="print">
@@ -1395,22 +1398,24 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>Once you have installed these plugins, you can set up the reporting
-    in your project configuration. Tick the “Publish Checkstyle analysis
-    results” checkbox. In a freestyle build, you will need to specify a path
-    pattern to find the Checkstyle XML reports; in a Maven 2 build, Jenkins
-    will figure out where to look for them by itself.</para>
+    <para>Une fois que vous avez installé ces plugins, vous pouvez spécifier
+    la déclaration dans la configuration de votre projet. Cochez la case
+    "Publiez les analyses de résultat Checkstyle". Dans un build free-style,
+    vous aurez besoin de spécifier le patron du chemin pour trouver les
+    rapports XML de Checkstyle ; dans un build Maven 2, Jenkins comprendrait
+    où les chercher par lui-même.</para>
 
-    <para>This will provide basic Checkstyle reporting, but as usual you can
-    fine-tune things further by clicking on the Advanced button. In a Maven 2
-    build, you can configure the health threshold values (how many violations
-    will cause the build to go from sunny to stormy), and also filter the
-    priority violations you want to include in this calculation. For example,
-    you may only want high priorityVous issues to be taken into account for
-    the weather icon status.</para>
+    <para>Ceci fournira des rapports Checkstyle basiques, mais comme
+    d’habitude, vous pouvez affiner les choses en cliquant sur le bouton
+    Avancé. Dans un build Maven 2, vous pouvez configurer les valeurs de
+    seuils de la santé (combien de violations passeront le build de ensoleillé
+    à orageux), et aussi filtrer les priorités de violations que vous voulez
+    inclure dans le calcul. Par exemple, vous pourriez seulement vouloir
+    prendre en compte les problèmes de hautes priorités pour le statut de
+    l’icône de temps.</para>
 
-    <para>The Freestyle builds have a few more options you can configure: in
-    particular, you can cause the build to become <indexterm
+    <para>Les builds free-style ont quelques options supplémentaires que vous
+    pouvez configurer ; en particulier, vous pouvez rendre le build <indexterm
         id="I_indexterm9_d1e13580" significance="normal">
         <primary>build jobs</primary>
 
@@ -1421,18 +1426,19 @@ task pmd &lt;&lt; {
         <primary>unstable builds</primary>
 
         <secondary>criteria for</secondary>
-      </indexterm>unstable (yellow ball) or even to fail (red ball) if there
-    are more than a given number of violations, or if there are more than a
-    given number of new violations (see <xref
-    linkend="fig-hudson-checkstyle-config"/>). So, in the configuration in the
-    illustration, if there are more than 50 new checkstyle violations of any
-    priority in a build, the build will be flagged as unstable. This certainly
-    has its uses for Checkstyle, but it can also come in very handy with
-    FindBugs, where high priority issues often represent dangerous and
-    potentially show-stopping bugs.</para>
+      </indexterm>instable instable (balle jaune) ou même en échec (balle
+    rouge) si vous avez plus qu’un nombre de violations, ou si il y a plus
+    qu’un nombre donné de nouvelle violations (voir <xref
+    linkend="fig-hudson-checkstyle-config"/>). Donc, dans la configuration
+    dans l’illustration, s’il y a plus de 50 nouvelles violations Checkstyle
+    sur n’importe quelle priorité dans un build, el build sera signalé comme
+    instable. Cela a certainement son utilité pour Checkstyle, mais cela peut
+    aussi se révéler très utile avec FindBugs, ou les problèmes de hautes
+    priorités représentent souvent des bugs dangereux et potentiellement
+    difficile à arrêter. </para>
 
     <figure float="0" id="fig-hudson-checkstyle-config">
-      <title>Configuring the Checkstyle plugin</title>
+      <title>Configurer le plugin Checkstyle</title>
 
       <mediaobject id="I_mediaobject9_d1e13598">
         <imageobject role="print">
@@ -1445,14 +1451,14 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>Now, when the build runs, Jenkins will now generate a trend graph
-    and detailed reports for the Checkstyle violations (see <xref
-    linkend="fig-hudson-checkstyle-trend"/>). From here, you can drill down to
-    see violations per priority, per category, per run type, per package, and
-    so on.</para>
+    <para>Maintenant, lorsque le build démarre, Jenkins générera maintenant un
+    graphique de tendance et des rapports détaillés pour les violations
+    Checkstyle (voir <xref linkend="fig-hudson-checkstyle-trend"/>). De là,
+    vous pouvez descendre pour voir les violations par priorité, par
+    catégorie, par type de démarrage, par package, et ainsi de suite.</para>
 
     <figure float="0" id="fig-hudson-checkstyle-trend">
-      <title>Displaying Checkstyle trends</title>
+      <title>Afficher les tendances Checkstyle</title>
 
       <mediaobject id="I_mediaobject9_d1e13610">
         <imageobject role="print">
@@ -1467,11 +1473,11 @@ task pmd &lt;&lt; {
 
     <?dbfo-need height=”1in”?>
 
-    <para>As we mentioned earlier, the same approach also works with the PMD
-    plugin and the FindBugs plugin. These plugins are a great way to provide
-    more focused reporting on the results of a particular tool, and also give
-    you more control over the impact that these violations will have on the
-    build results.</para>
+    <para>Comme nous l’avions mentionné plus tôt, la même approche marche
+    aussi avec le plugin PMD et le plugin FindBugs. Ces plugins sont un
+    excellent moyen de fournir des rapports plus concentrés sur les résultats
+    d’un outil particulier, et vous donnent aussi plus de contrôle sur
+    l’impact que ces violations auront sur les résultats du build.</para>
   </sect1>
 
   <sect1 id="sect-code-quality-complexity">
