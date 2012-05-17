@@ -798,7 +798,7 @@ task pmd &lt;&lt; {
       moreinfo="none">target</filename>.</para>
 
       <para>Au moment de la rédaction, il n’y a pas de prise en charge de
-      FindBugs dans Gradle, donc vous devez invoquer le plugin Ang de
+      FindBugs dans Gradle, donc vous devez invoquer le plugin Ant de
       FindBugs<indexterm class="endofrange" id="I_indexterm9_d1e13154"
           significance="normal" startref="ch09-find1">
           <primary/>
@@ -813,9 +813,9 @@ task pmd &lt;&lt; {
 
       <para>CodeNarc<indexterm class="startofrange" id="ch09-narc1"
           significance="normal">
-          <primary>code quality metrics</primary>
+          <primary>mesures de qualité de code</primary>
 
-          <secondary sortas="CodeNarc">with CodeNarc</secondary>
+          <secondary sortas="CodeNarc">avec CodeNarc</secondary>
         </indexterm><indexterm class="startofrange" id="ch09-narc2"
           significance="normal">
           <primary>CodeNarc</primary>
@@ -823,30 +823,31 @@ task pmd &lt;&lt; {
           significance="normal">
           <primary>Groovy scripts</primary>
 
-          <secondary>code quality metrics with CodeNarc</secondary>
-        </indexterm> is a static analysis tool for Groovy code, similar to PMD
-      for Java. It checks Groovy source code for potential defects, poor
-      coding practices and styles, overly complex code, and so on. Typical
-      rules include “Constant If Expression,” “Empty Else Block,” “GString As
-      Map Key,” and “Grails Stateless Service.”</para>
+          <secondary>mesures de qualité de code avec CodeNarc</secondary>
+        </indexterm> outil d’analyse statique de code Groovy, similaire à PMD
+      pour Java. Il vérifie le code source Groovy pour des défauts potentiels,
+      des mauvais style et pratiques de codage, du code trop complexe, et
+      ainsi de suite. Des règles typiques incluent « Constant If Expression »,
+      « Empty Else Block », « GString As Map Key », et «Grails Stateless
+      Service».</para>
 
-      <para>For <indexterm id="I_indexterm9_d1e13180" significance="normal">
+      <para>Pour <indexterm id="I_indexterm9_d1e13180" significance="normal">
           <primary>Ant</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="CodeNarc">with CodeNarc</tertiary>
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
         </indexterm><indexterm id="I_indexterm9_d1e13187"
           significance="normal">
           <primary>Maven</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="CodeNarc">with CodeNarc</tertiary>
-        </indexterm>Ant or Maven-based projects, the CodeNarc Ant plugin is
-      the simplest option (a Maven plugin is under development at the time of
-      writing). A typical Ant configuration for use with Jenkins would look
-      like this:</para>
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
+        </indexterm>des projets basés sur Maven ou Ant, le plugin Ant de
+      CodeNarc est l’option la plus simple (un plugin Maven est en
+      développement au moment de la rédaction). Une configuration typique de
+      Ant pour l’utiliser avec Jenkins ressemblerait à ceci : </para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13195">&lt;taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/&gt;
 &lt;target name="runCodeNarc"&gt;
@@ -863,39 +864,39 @@ task pmd &lt;&lt; {
     &lt;/codenarc&gt;
 &lt;/target&gt;</programlisting>
 
-      <para>You <indexterm id="I_indexterm9_d1e13199" significance="normal">
+      <para>Vous <indexterm id="I_indexterm9_d1e13199" significance="normal">
           <primary>Grails</primary>
 
-          <secondary>code quality metrics with CodeNarc</secondary>
-        </indexterm>can integrate CodeNarc into a Grails project simply by
-      installing the CodeNarc plugin:</para>
+          <secondary>mesures de qualité de code avec CodeNarc</secondary>
+        </indexterm>pouvez intégrer CodeNarc dans un projet Grails simplement
+      en installant le plugin CodeNarc : </para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13205">$ grails install-plugin codenarc</programlisting>
 
-      <para>This will configure CodeNarc to analyse the Groovy files in your
-      Grails application code, as well as in the <filename
-      moreinfo="none">src/groovy</filename> and <filename
-      moreinfo="none">test</filename> directories.</para>
+      <para>Cela configurera CodeNarc pour analyser les fichiers Groovy dans
+      le code de votre application Grails, aussi bien dans les
+      répertoires<filename moreinfo="none"> src/groovy</filename> et <filename
+      moreinfo="none">test</filename>.</para>
 
       <para>Gradle<indexterm id="I_indexterm9_d1e13217" significance="normal">
           <primary>Gradle</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="CodeNarc">with CodeNarc</tertiary>
-        </indexterm> 0.8 also provides support for CodeNarc in the
-      code-quality plugin, that you can configure in your builds as shown
-      here:</para>
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
+        </indexterm> 0.8 fournit aussi une prise en charge de CodeNarc dans le
+      plugin de qualité de code, que vous pouvez configurer dans vos builds
+      comme montré ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13225">apply plugin: 'code-quality'</programlisting>
 
-      <para>This will use the CodeNarc configuration file in <filename
-      moreinfo="none">config/codenarc/codenarc.xml</filename> by default. You
-      can override this with the <code>codeNarcConfigFileName</code>
-      property.</para>
+      <para>Cela utilisera le fichier de configuration de CodeNarc dans
+      <filename moreinfo="none">config/codenarc/codenarc.xml</filename> par
+      défaut. Vous pouvez redéfinir cela avec la propriété
+      <code>codeNarcConfigFileName</code>.</para>
 
-      <para>You can generate the CodeNarc reports here by running <literal
-      moreinfo="none">gradle codenarcMain</literal> or, more <indexterm
+      <para>Vous pouvez générer les rapports CodeNarc en exécutant <literal
+      moreinfo="none">gradle codenarcMain</literal> ou, plus <indexterm
           class="endofrange" id="I_indexterm9_d1e13240" significance="normal"
           startref="ch09-narc1">
           <primary/>
@@ -905,7 +906,7 @@ task pmd &lt;&lt; {
         </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13244"
           significance="normal" startref="ch09-narc3">
           <primary/>
-        </indexterm>simply, <literal moreinfo="none">gradle
+        </indexterm>simplement, <literal moreinfo="none">gradle
       check</literal>.</para>
     </sect2>
   </sect1>
@@ -1389,8 +1390,8 @@ task pmd &lt;&lt; {
     build, you can configure the health threshold values (how many violations
     will cause the build to go from sunny to stormy), and also filter the
     priority violations you want to include in this calculation. For example,
-    you may only want high priority issues to be taken into account for the
-    weather icon status.</para>
+    you may only want high priorityVous issues to be taken into account for
+    the weather icon status.</para>
 
     <para>The Freestyle builds have a few more options you can configure: in
     particular, you can cause the build to become <indexterm
