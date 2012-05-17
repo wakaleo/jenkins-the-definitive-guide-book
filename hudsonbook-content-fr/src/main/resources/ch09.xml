@@ -726,8 +726,8 @@ task pmd &lt;&lt; {
       <para>Puis, pour démarre FindBugs, vous pouvez configurer une cible
       ‘findbugs’ comme montré dans l’exemple suivant. A noter que FindBugs
       démarrer sur le byte-code de votre application, pas le code source, donc
-      vous avez besoin de compiler votre code source dans un premier temps :
-      </para>
+      vous avez besoin de compiler votre code source dans un premier temps
+      :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13122">&lt;target name="findbugs" depends="compile"&gt; 
   &lt;findbugs home="${findbugs.home}" output="xml" outputFile="target/findbugs.xml"&gt;
@@ -847,7 +847,7 @@ task pmd &lt;&lt; {
         </indexterm>des projets basés sur Maven ou Ant, le plugin Ant de
       CodeNarc est l’option la plus simple (un plugin Maven est en
       développement au moment de la rédaction). Une configuration typique de
-      Ant pour l’utiliser avec Jenkins ressemblerait à ceci : </para>
+      Ant pour l’utiliser avec Jenkins ressemblerait à ceci :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13195">&lt;taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/&gt;
 &lt;target name="runCodeNarc"&gt;
@@ -869,7 +869,7 @@ task pmd &lt;&lt; {
 
           <secondary>mesures de qualité de code avec CodeNarc</secondary>
         </indexterm>pouvez intégrer CodeNarc dans un projet Grails simplement
-      en installant le plugin CodeNarc : </para>
+      en installant le plugin CodeNarc :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13205">$ grails install-plugin codenarc</programlisting>
 
@@ -912,16 +912,17 @@ task pmd &lt;&lt; {
   </sect1>
 
   <sect1 id="sect-violations">
-    <title>Reporting on Code Quality Issues with the Violations Plugin</title>
+    <title>Rapports de problèmes de qualité de code avec le plugin
+    Violations</title>
 
-    <para>One<indexterm class="startofrange" id="ch09-vio1"
+    <para>Un<indexterm class="startofrange" id="ch09-vio1"
         significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>mesures de qualité de code</primary>
 
-        <secondary sortas="Violations">with Violations plugin</secondary>
+        <secondary sortas="Violations">avec le plugin Violations</secondary>
       </indexterm><indexterm class="startofrange" id="ch09-vio2"
         significance="normal">
-        <primary>Violations plugin</primary>
+        <primary>plugin Violations </primary>
       </indexterm><indexterm class="startofrange" id="ch09-vio3"
         significance="normal">
         <primary>plugins</primary>
@@ -931,19 +932,20 @@ task pmd &lt;&lt; {
         significance="normal">
         <primary>reporting</primary>
 
-        <secondary>code quality metrics</secondary>
+        <secondary>mesures de qualité de code</secondary>
 
-        <tertiary>Violations plugin for</tertiary>
-      </indexterm> of the most useful code quality plugins for Jenkins is the
-    Violations plugin. This plugin will not analyse your project source code
-    (you need to configure your build to do that), but it does a great job on
-    reporting on the code quality metrics generated for individual builds and
-    trends over time. The plugin caters for reports on code quality metrics
-    coming from a large range of static analysis tools, including:</para>
+        <tertiary>plugin Violations pour </tertiary>
+      </indexterm> des plugins de qualité de code les plus utiles est le
+    plugin Violation. Ce plugin n’analysera pas le code source de votre projet
+    (vous devez configurer le build pour faire cela), mais il fait un
+    excellent travail en élaborant des rapports sur les mesures de la qualité
+    du code pour les builds individuels et les tendances au fil du temps. Le
+    plugin s’adresse sur les mesures de qualité de code venant d’une large
+    gamme d’outils d’analyse statique, y compris :</para>
 
     <variablelist>
       <varlistentry>
-        <term>For Java</term>
+        <term>Pour Java</term>
 
         <listitem>
           <para>Checkstyle, CPD, PMD, FindBugs, and jcreport</para>
@@ -951,7 +953,7 @@ task pmd &lt;&lt; {
       </varlistentry>
 
       <varlistentry>
-        <term>For Groovy</term>
+        <term>Pour Groovy</term>
 
         <listitem>
           <para>codenarc</para>
@@ -959,7 +961,7 @@ task pmd &lt;&lt; {
       </varlistentry>
 
       <varlistentry>
-        <term>For JavaScript</term>
+        <term>Pour JavaScript</term>
 
         <listitem>
           <para>jslint</para>
@@ -967,7 +969,7 @@ task pmd &lt;&lt; {
       </varlistentry>
 
       <varlistentry>
-        <term>For .Net</term>
+        <term>Pour .Net</term>
 
         <listitem>
           <para>gendarme and stylecop</para>
@@ -975,23 +977,25 @@ task pmd &lt;&lt; {
       </varlistentry>
     </variablelist>
 
-    <para>Installing the plugin is straightforward. Just go to the Plugin
-    Manager screen and select the Jenkins Violations plugin. Once you have
-    installed the plugin and restarted Jenkins, you will be able to use it for
-    your projects.</para>
+    <para>Installer le plugin est simple. Il suffit d’aller sur l’écran du
+    Plugin Manager et de sélectionner le plugin Violations de Jenkins. Une
+    fois que vous installé le plugin et redémarré Jenkins, vous serez capable
+    de l’utiliser pour vos projets.</para>
 
-    <para>The Violations plugin does not generate the code quality metrics
-    data itself—you need to configure your built to do that, as shown in the
-    previous section. An example of doing this for a Maven build job is
-    illustrated in <xref linkend="fig-hudson-quality-goals"/>. Notice that
-    here we are invoking the Maven plugin goals directly. We could also just
-    run <literal moreinfo="none">mvn site</literal>, but if we are only
-    interested in the code quality metrics, and not the other elements of the
-    Maven-generated site, calling the plugins directly will result in faster
-    builds.</para>
+    <para>Le plugin Violations ne génère pas de mesures de qualité de code
+    lui-même—vous devez configurer votre build pour faire cela, comme montré
+    dans la section précédente. Un exemple pour faire cela pour une tâche de
+    build Maven est illustré dans la <xref
+    linkend="fig-hudson-quality-goals"/>. Notez que nous invoquons ici les
+    goals du plugin Maven directement. Nous aurions pu aussi juste exécuter
+    <literal moreinfo="none">mvn site</literal>, mais si nous sommes
+    uniquement intéressés par les mesures de qualité de code, et pas les
+    autres éléments du site généré par Maven, appeler le plugin directement se
+    traduira par des builds plus rapides.</para>
 
     <figure float="0" id="fig-hudson-quality-goals">
-      <title>Generating code quality reports in a Maven build</title>
+      <title>Générer les rapports de qualité de code dans un build
+      Maven</title>
 
       <mediaobject id="I_mediaobject9_d1e13313">
         <imageobject role="print">
@@ -1004,11 +1008,13 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>Once you have set this up, you can configure the violations plugin
-    to generate reports and, if required, trigger notifications, based on the
-    report results. Just go to the Post-build Actions and check the Report
-    Violations checkbox. The details of the configuration vary depending on
-    the project type. Lets look at Freestyle build jobs first.</para>
+    <para>Une fois que vous l’avez paramétré, vous pouvez configurer le plugin
+    de violations pour générer des rapports, et si besoin est, des
+    notifications de déclenchement, basés sur les résultats de rapport. Il
+    suffit d’aller dans ‘Actions à la suite du build’ et de cocher la case à
+    cocher Report Violations. Les détails de la configuration varient en
+    fonction du type de projet. Regardons les tâches de build Freestyle dans
+    un premier temps.</para>
 
     <sect2>
       <title>Working with Freestyle Build Jobs</title>
