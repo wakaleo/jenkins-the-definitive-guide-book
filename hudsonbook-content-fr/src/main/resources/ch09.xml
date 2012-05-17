@@ -1677,34 +1677,37 @@ task pmd &lt;&lt; {
   <?dbfo-need height=”1in”?>
 
   <sect1 id="sect-code-quality-sonar">
-    <title>Integrating with Sonar</title>
+    <title>Intégration avec Sonar</title>
 
     <para><ulink url="http://www.sonarsource.org">Sonar</ulink><indexterm
         class="startofrange" id="ch09-sonar1" significance="normal">
-        <primary>code quality metrics</primary>
+        <primary>mesures de qualité du code</primary>
 
         <secondary sortas="Sonar">with Sonar</secondary>
       </indexterm><indexterm class="startofrange" id="ch09-sonar2"
         significance="normal">
         <primary>Sonar</primary>
 
-        <secondary>code quality metrics with</secondary>
-      </indexterm> is a tool that centralizes a range of code quality metrics
-    into a single website (see <xref linkend="fig-hudson-sonar"/>). It uses
-    several Maven plugins (Checkstyle, PMD, FindBugs, Cobertura or Clover, and
-    others) to analyse Maven projects and generate a comprehensive set of code
-    quality metrics reports. Sonar reports on code coverage, rule compliance,
-    and documentation, but also on more high-level metrics such as complexity,
-    maintainability and even technical debt. You can use plugins to extend its
-    features and add support for other languages (such as support for CodeNarc
-    for Groovy source code). The rules used by the various tools are managed
-    and <phrase role="keep-together">configured</phrase> centrally on the
-    Sonar website, and the Maven projects being analyzed don’t require any
-    particular configuration. This makes Sonar a great fit for working on
-    Maven projects where you have limited control over the pom files.</para>
+        <secondary>les mesures de qualité de code avec</secondary>
+      </indexterm> est un outil qui centralise toute une gamme de mesures de
+    qualité de code dans un seul site web (voir <xref
+    linkend="fig-hudson-sonar"/>). Il utilise un certain nombre de plugins
+    Maven (Checkstyle, PMD, FindBugs, Cobertura ou Clover, et d’autres) pour
+    analyser des projets Maven et générer un ensemble compréhensible de
+    rapports sur la qualité du code. Les rapports Sonar sur la couverture du
+    code, le respect des règles, et la documentation, mais aussi sur des
+    mesures de plus haut niveau comme la complexité, la maintenabilité et même
+    la dette technique. Vous pouvez utiliser des plugins pour étendre ses
+    fonctionnalités et ajouter le support pour d’autres langages (comme le
+    support de CodeNarc pour du code source Groovy). Les règles utilisées par
+    divers outils sont gérées et configurées de manière centralisée sur le
+    site web de Sonar, et les projets Maven en cours d’analyse ne nécessitent
+    aucune configuration particulière. Cela fait de Sonar un ajustement
+    parfait pour travailler sur des projets Maven où vous avez un contrôle
+    limité sur les fichiers POM.</para>
 
     <figure float="0" id="fig-hudson-sonar">
-      <title>Code quality reporting by Sonar</title>
+      <title>Rapport de qualité de code par Sonar.</title>
 
       <mediaobject id="I_mediaobject9_d1e13785">
         <imageobject role="print">
@@ -1717,23 +1720,25 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>In one of the most common usages of Sonar, Sonar automatically runs
-    a set of Maven code quality related plugins against your Maven project,
-    and stores the results into a relational database. The Sonar server, which
-    you run separately, then analyzes and displays the results as shown in
+    <para>Dans l’une des utilisations les plus courantes de Sonar, Sonar
+    démarre automatiquement un ensemble de plugins liés à la qualité de code
+    de Maven sur votre projet Maven, et stocke les résultats dans une base de
+    données relationnelle. Le serveur Sonar, que vous démarrez séparément,
+    analyse alors les résultats et affiche les résultats comme indiqué dans
     <xref linkend="fig-hudson-sonar"/>.</para>
 
-    <para>Jenkins integrates well with Sonar. The Jenkins Sonar Plugin lets
-    you define Sonar instances for all of your projects, and then activate
-    Sonar in particular builds. You can run your Sonar server on a different
-    machine to your Jenkins instance, or on the same. The only constraint is
-    that the Jenkins instance must have JDBC access to the Sonar database, as
-    it injects code quality metrics directly into the database, without going
-    through the Sonar website (see <xref
+    <para>Jenkins s’intègre bien avec Sonar. Le plugin Sonar de Jenkins vous
+    laisse définir les instances Sonar pour tous vos projets, et active
+    ensuite Sonar pour des builds particuliers. Vous pouvez démarrer votre
+    serveur Sonar sur une machine différente de votre instance Jenkins, ou sur
+    la même. La seule contrainte est que l’instance Jenkins doit avoir un
+    accès JDBC à la base de données de Sonar, puisqu’il injecte des mesures de
+    qualité de code directement dans la base de données, sans passer par le
+    site web de Sonar (voir <xref
     linkend="fig-hudson-sonar-architecture"/>).</para>
 
     <figure float="0" id="fig-hudson-sonar-architecture">
-      <title>Jenkins and Sonar</title>
+      <title>Jenkins et Sonar</title>
 
       <mediaobject id="I_mediaobject9_d1e13801">
         <imageobject role="print">
@@ -1746,24 +1751,26 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>Sonar also has an Ant bootstrap (with a Gradle bootstrap in the
-    making at the time of writing) for non-Maven users.</para>
+    <para>Sonar a aussi une amorce Ant (avec une amorce Gradle en train d’être
+    construite durant la rédaction de ce livre) pour les utilisateurs
+    non-Maven.</para>
 
-    <para>You install the plugin in the usual way, via the Plugin Manager.
-    Once installed, you configure the Jenkins Sonar plugin in the Configure
-    System screen, in the Sonar section. This involves defining your Sonar
-    instances—you can configure as many instances of Sonar as you need. The
-    default configuration assumes that you are running a local instance of
-    Sonar with the default embedded database. This is useful for testing
-    purposes but not very scalable. For a production environment, you will
-    typically run Sonar on a real database such as MySQL or Postgres, and you
-    will need to configure the JDBC connection to the production Sonar
-    database in Jenkins. You do this by clicking on the Advanced button and
-    filling in the appropriate fields (see <xref
+    <para>Vous installez le plugin comme d’habitude, via le gestionnaire de
+    plugin. Une fois installé, vous configurez le plugin Sonar de Jenkins dans
+    l’écran Configurer le système, dans la section Sonar. Il s’agit de définir
+    vos instances Sonar – vous pouvez configurer autant d’instances que vous
+    avez besoin. La configuration par défaut assume que vous exécutez une
+    instance locale de Sonar avec la base de données imbriquée par défaut.
+    Ceci est utile à des fins de test, mais n’est pas très évolutif. Pour un
+    environnement de production, vous démarrera typiquement Sonar sur une base
+    de données réelle comme MySQL ou Postgres, et vous aurez besoin de
+    configurer la connexion JDBC sur la base de données de production de Sonar
+    dans Jenkins. Vous pouvez faire ceci en cliquant le bouton Avancé et en
+    remplissant les champs appropriés (voir <xref
     linkend="fig-hudson-sonar-config"/>).</para>
 
     <figure float="0" id="fig-hudson-sonar-config">
-      <title>Configuring Sonar in Jenkins</title>
+      <title>Configurer Sonar dans Jenkins</title>
 
       <mediaobject id="I_mediaobject9_d1e13815">
         <imageobject role="print">
@@ -1776,23 +1783,25 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>The other thing you need to configure is when the Sonar build will
-    kick off in a Sonar-enabled build job. You usually configure Sonar to run
-    with one of the long-running Jenkins build jobs, such as the code quality
-    metrics build. It is not very useful to run the Sonar build more than once
-    a day, as Sonar stores metrics in 24-hour slices. The default
-    configuration will kick off a Sonar build in a Sonar-enabled build job
-    whenever the job is triggered by a periodically scheduled build or by a
-    manual build.</para>
+    <para>L’autre chose que vous devez configurer est quand le build de Sonar
+    sera débutera dans une tâche de build où Sonar est activé. Vous configurez
+    généralement Sonar pour démarrer avec l’une des longues tâches de build
+    Jenkins, comme le build de mesure de qualité de code. Ce n’est pas très
+    utile de démarrer le build Sonar plus d’une fois par jour, puisque Sonar
+    stocke les mesures sur des tranches de 24 heures. La configuration par
+    défaut démarrera le build Sonar dans une tâche de build où est activé
+    Sonar chaque fois qu’une tâche est déclenchée par une build périodiquement
+    planifié ou par un build manuel.</para>
 
-    <para>To activate Sonar in your build job with the system-wide
-    configuration options, just check the Sonar option in the Post-build
-    Actions (see <xref linkend="fig-hudson-sonar-config-job"/>). Sonar will
-    run whenever your build is started by one of the trigger mechanisms
-    defined above.</para>
+    <para>Pour activer Sonar une tâche de build avec des options de
+    configuration à l’échelle du système, il suffit de cocher l’option Sonar
+    dans Actions à la suite du build (voir <xref
+    linkend="fig-hudson-sonar-config-job"/>). Sonar démarrera à chaque fois
+    que votre build commencera par l’un des mécanismes de déclenchements
+    définis ci-dessus.</para>
 
     <figure float="0" id="fig-hudson-sonar-config-job">
-      <title>Configuring Sonar in a build job</title>
+      <title>Configurer Sonar dans une tâche de build</title>
 
       <mediaobject id="I_mediaobject9_d1e13830">
         <imageobject role="print">
@@ -1805,17 +1814,18 @@ task pmd &lt;&lt; {
       </mediaobject>
     </figure>
 
-    <para>You typically set up Sonar to run on a regular basis, for example
-    every night or once a week. So you can activate Sonar on your normal
-    unit/integration test build job, simply by adding a schedule (see <xref
-    linkend="fig-hudson-sonar-build-schedule"/>). This avoids duplicated
-    configuration details between jobs. Or, if you already have a scheduled
-    build job that runs with an appropriate frequency (such as a dedicated
-    code quality metrics build), you can activate Sonar on this build
-    job.</para>
+    <para>Vous configurez généralement Sonar pour démarrer sur une base
+    régulière, par exemple tous les soirs ou une fois par semaine. Donc vous
+    pouvez activer Sonar sur votre tâche de build de test
+    unitaire/d’intégration normal, simplement en ajoutant un ordonnanceur
+    (voir <xref linkend="fig-hudson-sonar-build-schedule"/>). Cela évite les
+    détails de configuration en double entre les tâches. Ou, si vous avez déjà
+    une tâche de build ordonnancée qui démarre avec une fréquence appropriée
+    (comme un build dédié aux mesures de qualité de code), vous pouvez activer
+    Sonar sur cette tâche de build.</para>
 
     <figure float="0" id="fig-hudson-sonar-build-schedule">
-      <title>Scheduling Sonar builds</title>
+      <title>Planifier les builds Sonar</title>
 
       <mediaobject id="I_mediaobject9_d1e13842">
         <imageobject role="print">
@@ -1830,23 +1840,23 @@ task pmd &lt;&lt; {
 
     <?dbfo-need height=”1in”?>
 
-    <para>If you click on the Advanced button, you can specify other more
-    sophisticated options, such as running your Sonar build on a separate
-    branch, passing Maven additional command-line options (such as extra
-    memory), or overriding the default trigger <phrase
-    role="keep-together">configuration</phrase>.</para>
+    <para>Si vous cliquez sur le bouton Avancé, vous pouvez spécifier d’autres
+    options plus sophistiquées, comme lancer votre build Sonar sur une branche
+    séparée, passer des options de ligne de commande Maven supplémentaires
+    (comme de la mémoire supplémentaire), ou redéfinir la configuration par
+    défaut des déclencheurs.</para>
 
-    <para>By default, Sonar will run even if the normal build fails. This is
-    usually what you want, as Sonar should record build and test failures as
-    well as successful results. However, if required, you can deactivate this
-    option too in the Advanced <indexterm class="endofrange"
-        id="I_indexterm9_d1e13855" significance="normal"
-        startref="ch09-sonar1">
+    <para>Par défaut, Sonar démarrera même si le build normal échoue. C’est
+    généralement ce que l’on souhaite, puisque Sonar devrait enregistrer les
+    builds et les tests défaillants aussi bien que les résultats réussis.
+    Cependant, si c’est requis, vous pouvez désactiver cette option aussi dans
+    les options<indexterm class="endofrange" id="I_indexterm9_d1e13855"
+        significance="normal" startref="ch09-sonar1">
         <primary/>
       </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13857"
         significance="normal" startref="ch09-sonar2">
         <primary/>
-      </indexterm>options.</para>
+      </indexterm> avancées.</para>
   </sect1>
 
   <?dbfo-need height=”2in”?>
