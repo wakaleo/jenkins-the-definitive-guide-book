@@ -1189,29 +1189,32 @@ task pmd &lt;&lt; {
     </sect2>
 
     <sect2>
-      <title>Working with Maven Build Jobs</title>
+      <title>Travailler avec des tâches de build Maven</title>
 
-      <para>Maven <indexterm class="startofrange" id="ch09-mavenvio"
+      <para>Les <indexterm class="startofrange" id="ch09-mavenvio"
           significance="normal">
-          <primary>Maven build jobs</primary>
+          <primary> les tâches de build Maven</primary>
 
-          <secondary>code quality metrics in, with Violations</secondary>
-        </indexterm>build jobs in Jenkins use the Maven conventions and
-      information in the project <filename moreinfo="none">pom.xml</filename>
-      file to make configuration easier and more lightweight. When you use the
-      Violations plugin with a Maven build job, Jenkins uses these conventions
-      to reduce the amount of work you need to do to configure the plugin. You
-      don’t need to tell Jenkins where to find the XML reports for many of the
-      static analysis tools (for example, Checkstyle, PMD, FindBugs, and CPD),
-      as Jenkins can figure this out based from the Maven conventions and
-      plugin configurations (see <xref
-      linkend="fig-hudson-maven-violations"/>). If you do need to override
-      these conventions, you can choose the Pattern option in the “XML
-      filename pattern” drop-down list, and enter a path as you do for
-      freestyle build jobs.</para>
+          <secondary>mesures de qualité de code dans, avec
+          Violations</secondary>
+        </indexterm>tâches de build Maven dans Jenkins utilisent les
+      conventions de Maven et les informations du fichier <filename
+      moreinfo="none">pom.xml</filename> du projet pour rendre la
+      configuration plus facile et plus légère. Lorsque vous utilisez le
+      plugin Violations avec une tâche de build Maven, Jenkins utilise ces
+      conventions pour réduire la quantité de travail nécessaire pour
+      configurer le plugin. Vous n’avez pas besoin de dire à Jenkins où
+      trouver les rapports XML pour beaucoup d’outils d’analyse de code
+      statique (par exemple, Checkstyle, PMD, FindBugs, et CPD), puisque
+      Jenkins peut le comprendre depuis les conventions de Maven et les
+      configurations du plugin (voir <xref
+      linkend="fig-hudson-maven-violations"/>). Si vous devez surcharger ces
+      conventions, vous pouvez choisir l’option Pattern dans la liste
+      déroulante « XML filename pattern », et entrez le chemin comme vous
+      pouvez le faire pour les tâches de build free-style.</para>
 
       <figure float="0" id="fig-hudson-maven-violations">
-        <title>Configuring the violations plugin for a Maven project</title>
+        <title>Configurer le plugin Violations pour un projet Maven.</title>
 
         <mediaobject id="I_mediaobject9_d1e13439">
           <imageobject role="print">
@@ -1224,16 +1227,17 @@ task pmd &lt;&lt; {
         </mediaobject>
       </figure>
 
-      <para>The Violations plugin works well with multimodule Maven projects,
-      but at the time of writing it needs a little tweaking to obtain best
-      results. Maven build jobs understand the structure of multimodule
-      projects (see <xref linkend="fig-hudson-maven-modules"/>); furthermore,
-      you can drill down into any module and get a detailed view of the build
-      results for that build job.</para>
+      <para>Le plugin Violations travaille bien avec des projets multi-module
+      Maven, mais au moment de la rédaction (de ce livre), il a besoin d’un
+      peu de peaufinage pour obtenir de meilleurs résultats. Les tâches de
+      build Maven comprennent la structure des projets multi-module (voir
+      <xref linkend="fig-hudson-maven-modules"/>); de plus, vous pouvez
+      descendre dans n’importe quel module et obtenir une vue détaillée des
+      résultats de construction pour cette tâche de build.</para>
 
       <figure float="0" id="fig-hudson-maven-modules">
-        <title>Jenkins Maven build jobs understand Maven multimodule
-        structures</title>
+        <title>Les tâches de build Maven de Jenkins comprennent les structures
+        multi-module de Maven</title>
 
         <mediaobject id="I_mediaobject9_d1e13451">
           <imageobject role="print">
@@ -1246,27 +1250,28 @@ task pmd &lt;&lt; {
         </mediaobject>
       </figure>
 
-      <para>This is a very useful feature, but it means you need to do a
-      little extra work to get all of the benefits out of the Violations
-      plugins for the individual modules. By default, the violations plugin
-      will display an aggregated view of the code quality metrics like the one
-      in <xref linkend="fig-hudson-quality-violations-graph"/>. You can also
-      click on the violations graph, and view the detailed reports for each
-      module.</para>
+      <para>C’est une fonctionnalité très utile, mais cela signifie que vous
+      devez faire un peu de travail supplémentaire pour obtenir tous les
+      avantages des plugins de violations des modules individuels. Par défaut,
+      le plugin Violations affichera une vue agrégée des mesures de qualité de
+      code comme celle dans <xref
+      linkend="fig-hudson-quality-violations-graph"/>. Vous pouvez aussi
+      cliquer sur le graphique des violations, et voir les rapports détaillés
+      de chaque module.</para>
 
-      <para>However, for this to work correctly, you need to activate the
-      violations plugin individually for each module in addition to the main
-      project. To do this, click on the module you want to configure in the
-      Modules screen, and then click on the “Configure” menu. Here, you will
-      see a small subset of the usual configuration options (see <xref
-      linkend="fig-hudson-violations-module-config"/>). Here, you just need to
-      activate the Violations option, and configure the thresholds if
-      required. On the positive side, this means that you can define different
-      threshold values for different modules.</para>
+      <para>Cependant, pour que ceci puisse fonctionner correctement, vous
+      devez activer le plugin Violations individuellement pour chaque module
+      en complément du projet principal. Pour se faire, cliquez sur le module
+      que vous voulez configurer dans l’écran Modules, et ensuite cliquez sur
+      le menu ‘Configurer’. Ici, vous verrez un petit groupe des options de
+      configuration habituelles (voir <xref
+      linkend="fig-hudson-violations-module-config"/>). Ici, il vous suffit
+      d’activer l’option Violations, et de configurer les seuils si c’est
+      requis. Sur le côté positif, cela signifie que vous pouvez définir
+      différents valeurs de seuils pour des modules différents.</para>
 
       <figure float="0" id="fig-hudson-violations-module-config">
-        <title>Activating the Violations plugin for an individual
-        module</title>
+        <title>Activer le plugin Violations pour un module individuel</title>
 
         <mediaobject id="I_mediaobject9_d1e13467">
           <imageobject role="print">
@@ -1279,9 +1284,10 @@ task pmd &lt;&lt; {
         </mediaobject>
       </figure>
 
-      <para>Once you have done this, when you click on the violations
-      aggregate graph on the project build job home page, Jenkins will list
-      the individual violations graphs for each<indexterm class="endofrange"
+      <para>Une fois que vous avez fait ceci, lorsque vous cliquez sur le
+      graphique de violations agrégées sur la page d’accueil de la tâche de
+      build du projet, Jenkins listera les graphiques individuels de
+      violations pour chaque <indexterm class="endofrange"
           id="I_indexterm9_d1e13474" significance="normal"
           startref="ch09-mavenvio">
           <primary/>
