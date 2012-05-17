@@ -677,41 +677,43 @@ task pmd &lt;&lt; {
           <primary>FindBugs</primary>
         </indexterm><indexterm class="startofrange" id="ch09-find2"
           significance="normal">
-          <primary>code quality metrics</primary>
+          <primary>mesures de qualité de code</primary>
 
-          <secondary sortas="FindBugs">with FindBugs</secondary>
-        </indexterm> is a powerful code quality analysis tool that checks your
-      application byte code for potential bugs, performance problems, or poor
-      coding habits. FindBugs is the result of research carried out at the
-      University of Maryland lead by Bill Pugh, that studies byte code
-      patterns coming from bugs in large real-world projects, such as the
-      JDKs, Eclipse, and source code from Google applications. FindBugs can
-      detect some fairly significant issues such as null pointer exceptions,
-      infinite loops, and unintentionally accessing the internal state of an
-      object. Unlike many other static analysis tools, FindBugs tends to find
-      a smaller number of issues, but of those issues, a larger proportion
-      will be <phrase role="keep-together">important</phrase>.</para>
+          <secondary sortas="FindBugs">avec FindBugs</secondary>
+        </indexterm>un puissant outil d’analyse de code qui vérifie le byte
+      code de votre application pour contre bogues potentiels, des problèmes
+      de performances, ou des mauvaises habitudes de codage. FindBugs est le
+      résultat d’une recherche effectuée à l’université du Maryland menée par
+      Bill Pugh, qui étudie les modèles de byte code venant de bogues dans de
+      réels grand projets, comme les JDKs, Eclipse, et le code source
+      d’applications Google. FindBugs peut détecter des problèmes assez
+      importants tels que des exceptions de pointeurs nuls, des boucles
+      infinies, et un accès non intentionnel de l’état interne d’un objet.
+      Contrairement à beaucoup d’autres outils d’analyse statique, FindBugs
+      tend à trouver un plus petit nombre de problèmes, mais de ces problèmes,
+      une grande partie sera importante.</para>
 
-      <para>FindBugs is less configurable than the other tools we have seen,
-      though in practice you generally don’t need to fine-tune the rules as
-      much as the other tools we’ve discussed. You can list the individual
-      rules you want to apply, but you can’t configure a shared XML file
-      between your Maven builds and your IDE, for example.</para>
+      <para>FIndBugs est moins configurable que les autres outils que nous
+      avons vu, mais en pratique vous n’avez généralement pas besoin d’affiner
+      les règles autant que les autres outils dont nous avons discuté. Vous
+      pouvez lister les règles individuelles que vous voulez appliquer, mais
+      vous ne pouvez pas configurer un fichier XML partagé entre vos builds
+      Maven et votre IDE, par exemple.</para>
 
       <para>FindBugs <indexterm id="I_indexterm9_d1e13107"
           significance="normal">
           <primary>Ant</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="FindBugs">with FindBugs</tertiary>
-        </indexterm>comes bundled with an Ant task. You can define the
-      FindBugs task in Ant as shown below. FindBugs needs to refer to the
-      FindBugs home directory, which is where the binary distribution of
-      FindBugs has been unzipped. To make the build more portable, we are
-      storing the FindBugs installation in our project directory structure, in
-      the <filename moreinfo="none">tools/findbugs</filename>
-      directory:</para>
+          <tertiary sortas="FindBugs">avec FindBugs</tertiary>
+        </indexterm>est livrée empaqueté avec une tâche Ant. Vous pouvez
+      définir la tâche FindBugs dans Ant comme montré en dessous. FindBugs a
+      besoin de référencer le répertoire home de FindBugs, qui est où la
+      distribution binaire a été décompressée. Pour faire le build plus
+      portable, nous stockons l’installation de FIndBugs dans notre structure
+      de répertoire du projet, dans le répertoire <filename
+      moreinfo="none">tools/findbugs</filename> :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13118">&lt;property name="findbugs.home" value="tools/findbugs" /&gt;
 
@@ -721,10 +723,11 @@ task pmd &lt;&lt; {
   &lt;/classpath&gt;
 &lt;/taskdef&gt;</programlisting>
 
-      <para>Then, to run FindBugs, you could set up a “findbugs” target as
-      shown in the following example. Note that FindBugs runs against your
-      application byte-code, not your source code, so you need to compile your
-      source code first:</para>
+      <para>Puis, pour démarre FindBugs, vous pouvez configurer une cible
+      ‘findbugs’ comme montré dans l’exemple suivant. A noter que FindBugs
+      démarrer sur le byte-code de votre application, pas le code source, donc
+      vous avez besoin de compiler votre code source dans un premier temps :
+      </para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13122">&lt;target name="findbugs" depends="compile"&gt; 
   &lt;findbugs home="${findbugs.home}" output="xml" outputFile="target/findbugs.xml"&gt;
@@ -734,15 +737,15 @@ task pmd &lt;&lt; {
   &lt;/findbugs&gt;
 &lt;/target&gt;</programlisting>
 
-      <para>If <indexterm id="I_indexterm9_d1e13126" significance="normal">
+      <para>Si <indexterm id="I_indexterm9_d1e13126" significance="normal">
           <primary>Maven</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="FindBugs">with FindBugs</tertiary>
-        </indexterm>you are using Maven 2, you don’t need to keep a local copy
-      of the FindBugs installation. You just need to configure FindBugs in the
-      reporting section as shown here:</para>
+          <tertiary sortas="FindBugs">avec FindBugs</tertiary>
+        </indexterm>vous utiliser Maven 2, vous n’avez pas besoin de garder
+      une copie locale de l’installation de FindBugs. Vous avez juste qu’à
+      configurer FindBugs dans la section reporting comme montré ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13134">&lt;reporting&gt;
   &lt;plugins&gt;
@@ -758,7 +761,7 @@ task pmd &lt;&lt; {
   &lt;/plugins&gt;
 &lt;/reporting&gt;</programlisting>
 
-      <para>Or for a Maven 3 project:</para>
+      <para>Ou pour un projet Maven 3 :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13138">&lt;project&gt;
   ...
@@ -788,21 +791,21 @@ task pmd &lt;&lt; {
     &lt;/build&gt;
 &lt;/project&gt;</programlisting>
 
-      <para>In both cases, you can generate the XML reports by running
-      <literal moreinfo="none">mvn site</literal> or <literal
-      moreinfo="none">mvn findbugs:findbugs</literal>. The XML reports will be
-      placed in the <filename moreinfo="none">target</filename>
-      directory.</para>
+      <para>Dans les deux cas, vous pouvez générer vos rapports XML en
+      démarrant <literal moreinfo="none">mvn site</literal> ou <literal
+      moreinfo="none">mvn findbugs:findbugs</literal>. Les rapports XML seront
+      placés dans le répertoire <filename
+      moreinfo="none">target</filename>.</para>
 
-      <para>At the time of writing there is no special support for FindBugs in
-      Gradle, so you need to invoke the FindBugs<indexterm class="endofrange"
-          id="I_indexterm9_d1e13154" significance="normal"
-          startref="ch09-find1">
+      <para>Au moment de la rédaction, il n’y a pas de prise en charge de
+      FindBugs dans Gradle, donc vous devez invoquer le plugin Ang de
+      FindBugs<indexterm class="endofrange" id="I_indexterm9_d1e13154"
+          significance="normal" startref="ch09-find1">
           <primary/>
         </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13156"
           significance="normal" startref="ch09-find2">
           <primary/>
-        </indexterm> Ant plugin.</para>
+        </indexterm>.</para>
     </sect2>
 
     <sect2>
