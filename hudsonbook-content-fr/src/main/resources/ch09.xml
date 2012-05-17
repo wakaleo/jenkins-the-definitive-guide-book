@@ -215,9 +215,9 @@
       pour faire respecter un ensemble de normes de codage hautement
       configurable, Checkstyle permet maintenant aussi de vérifier les
       mauvaises pratiques de codage, aussi bien que le code trop complexe ou
-      dupliqué. Checkstyle st un outil versatile et flexible qui devrait avoir
-      sa place dans n’importe quelle stratégie d’analyse de code basé sur
-      Java.</para>
+      dupliqué. Checkstyle est un outil versatile et flexible qui devrait
+      avoir sa place dans n’importe quelle stratégie d’analyse de code basé
+      sur Java.</para>
 
       <para>Checkstyle supporte un très grand nombre de lois, incluant celles
       liées aux normes de nommage, annotations, commentaires javadoc, taille
@@ -288,7 +288,7 @@
                classpath="lib/checkstyle-5.3-all.jar"/&gt;</programlisting>
 
       <para>Ensuite, pour générer les rapports Checkstyle dans le format XML
-      que Jenkins peut utiliser, vous pouvez procéder comme suit : </para>
+      que Jenkins peut utiliser, vous pouvez procéder comme suit :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12872">&lt;target name="checkstyle"&gt;
   &lt;checkstyle config="src/main/config/company-checks.xml"&gt;
@@ -382,7 +382,7 @@
           <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
         </indexterm> versions récentes de Gradle offrent aussi une certaine
       prise en charge intégrée de Checkstyle. Vous pouvez configurer pour vos
-      builds comme indiquer : </para>
+      builds comme indiquer :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e12931">apply plugin: 'code-quality'</programlisting>
 
@@ -409,49 +409,51 @@
     <sect2>
       <title>PMD/CPD</title>
 
-      <para><ulink url="http://pmd.sourceforge.net">PMD</ulink> is<indexterm
+      <para><ulink url="http://pmd.sourceforge.net">PMD</ulink> est <indexterm
           class="startofrange" id="ch09-pmd1" significance="normal">
           <primary>PMD</primary>
         </indexterm><indexterm class="startofrange" id="ch09-pmd2"
           significance="normal">
-          <primary>code quality metrics</primary>
+          <primary>mesures de qualité de code</primary>
 
-          <secondary sortas="PMD">with PMD</secondary>
-        </indexterm> another popular static analysis tool. It focuses on
-      potential coding problems such as unused or suboptimal code, code size
-      and complexity, and good coding practices. Some typical rules include
-      “Empty If Statement,” “Broken Null Check,” “Avoid Deeply Nested If
-      Statements,” “Switch Statements Should Have Default,” and “Logger Is Not
-      Static Final.” There is a fair amount of overlap with some of the
-      Checkstyle rules, though PMD does have some more technical rules, and
-      more specialized ones such as rules related to JSF and Android.</para>
+          <secondary sortas="PMD">avec PMD</secondary>
+        </indexterm> un autre outil populaire d’analyse statique. Il se
+      focalise sur les problèmes potentiels de codage comme le code non
+      utilisé ou sous-optimisé, la taille et la complexité du code, et les
+      bonnes pratiques de codage. Certaines règles typiques intègrent « Empty
+      If Statement », « Broken Null Check », « Avoid Deeply Nested If
+      Statements, « Switch Statements Should Have Default», et « Logger Is Not
+      Static Final ». Il y a une bonne quantité de ressemblances avec
+      certaines règles de Checkstyle, bien que PMD a quelques règles plus
+      techniques, et d’autres plus spécialisées tels que les règles relatives
+      à JSF et Android.</para>
 
       <para>PMD <indexterm class="startofrange" id="ch09-cpd1"
           significance="normal">
           <primary>CPD</primary>
         </indexterm><indexterm class="startofrange" id="ch09-cpd2"
           significance="normal">
-          <primary>code quality metrics</primary>
+          <primary>mesures de qualité de code</primary>
 
-          <secondary sortas="CPD">with CPD</secondary>
-        </indexterm>also comes with CPD, a robust open source detector of
-      duplicated and near-duplicated code.</para>
+          <secondary sortas="CPD">avec CPD</secondary>
+        </indexterm>est aussi livré avec CPD, détecteur open source robuste de
+      code dupliqué ou quasi-dupliqué.</para>
 
       <?dbfo-need height=”1in”?>
 
-      <para>PMD is a little less flexible than Checkstyle, though you can
-      still pick and choose the rules you want to use in<indexterm
+      <para>PMD est un peu moins flexible que Checkstyle, bien que vous pouvez
+      choisir les règles que vous voulez utiliser dans <indexterm
           id="I_indexterm9_d1e12984" significance="normal">
           <primary>Eclipse</primary>
 
-          <secondary>code quality metrics with PMD</secondary>
-        </indexterm> Eclipse, and then export them as an XML file (see <xref
-      linkend="fig-hudson-quality-pmd"/>). You can then import this rule set
-      into other Eclipse projects, into Sonar, or use it in your Ant or Maven
-      builds.</para>
+          <secondary>mesures de qualité de code avec PMD</secondary>
+        </indexterm> Eclipse, et après les exporter comme un fichier XML (voir
+      <xref linkend="fig-hudson-quality-pmd"/>). Vous pouvez alors importer
+      ces règles dans les autres projets Eclipse, dans Sonar, ou les utiliser
+      dans vos builds Ant ou Maven.</para>
 
       <figure float="none" id="fig-hudson-quality-pmd">
-        <title>Configuring PMD rules in Eclipse</title>
+        <title>Configurer les règles PMD dans Eclipse</title>
 
         <mediaobject id="I_mediaobject9_d1e12995">
           <imageobject role="print">
@@ -467,12 +469,12 @@
       <para>PMD <indexterm id="I_indexterm9_d1e13002" significance="normal">
           <primary>Ant</primary>
 
-          <secondary>code quality metrics</secondary>
+          <secondary>mesures de qualité de code</secondary>
 
-          <tertiary sortas="PMD">with PMD and CPD</tertiary>
-        </indexterm>comes with an Ant task that you can use to generate the
-      PMD and CPD reports. First, though, you need to define these tasks, as
-      shown in the following example:</para>
+          <tertiary sortas="PMD">avec PMD et CPD</tertiary>
+        </indexterm>est livré avec une tâche Ant que vous pouvez utiliser pour
+      générer les rapports PMD et CPD. Tout d’abord, si, vous avez besoin de
+      définir ces tâches, comme le montre l’exemple suivant :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13010">&lt;path id="pmd.classpath"&gt;
     &lt;pathelement location="${build}"/&gt;
@@ -489,8 +491,8 @@
 
       <?dbfo-need height=”2in”?>
 
-      <para>Next, you can generate the PMD XML report by invoking the PMD task
-      as illustrated here:</para>
+      <para>Ensuite, vous pouvez générer le rapport PMD XML en invoquant la
+      tâche PMD comme illustré ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13015">&lt;target name="pmd"&gt;
  &lt;taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
@@ -502,8 +504,8 @@
  &lt;/pmd&gt;
 &lt;/target&gt;</programlisting>
 
-      <para>And, to generate the CPD XML report, you could do something like
-      this:</para>
+      <para>Et, pour générer le rapport CPD XML, vous pouvez quelque chose
+      comme ça :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13020">&lt;target name="cpd"&gt;
   &lt;cpd minimumTokenCount="100" format="xml" outputFile="/target/cpd.xml"&gt;
@@ -511,11 +513,12 @@
   &lt;/cpd&gt;
 &lt;/target&gt;</programlisting>
 
-      <para>You can place this XML ruleset in your project classpath (for
-      example, in <code>src/main/resources</code> for a Maven project), or in
-      a separate module (if you want to share the configuration between
-      projects). An example of how to configure Maven 2 to generate PMD and
-      CPD reports using an exported XML ruleset as shown here:</para>
+      <para>Vous pouvez placer l’ensemble de ces règles XML dans le classpath
+      de votre projet (par exemple, dans <code>src/main/resources</code> pour
+      un projet Maven), ou dans un module séparé (si vous voulez partager la
+      configuration entre les projets). Un exemple de la façon de configurer
+      Maven 2 pour générer des rapports PMD et CPD en utilisant un ensemble de
+      règles XML exporté est indiqué ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13027">&lt;reporting&gt;
   &lt;plugins&gt;
@@ -540,17 +543,17 @@
   &lt;/plugins&gt;
 &lt;/reporting&gt;</programlisting>
 
-      <para>If <indexterm id="I_indexterm9_d1e13031" significance="normal">
+      <para>Si <indexterm id="I_indexterm9_d1e13031" significance="normal">
           <primary>Maven</primary>
 
           <secondary>code quality metrics</secondary>
 
           <tertiary sortas="PMD">with PMD and CPD</tertiary>
-        </indexterm>you are using Maven 3, you would place the plugin
-      definition in the <code>&lt;maven-site-plugin&gt;</code> configuration
-      section. This example also shows how to use a ruleset in another
-      dependency (in this case the <filename
-      moreinfo="none">pmd-rules.jar</filename> file):</para>
+        </indexterm> vous utilisez Maven 3, vous devez placer la définition du
+      plugin dans la section de configuration
+      <code>&lt;maven-site-plugin&gt;</code>. Cet exemple montre aussi comment
+      utiliser un ensemble de règles dans une autre dépendance (dans ce cas,
+      le fichier <filename moreinfo="none">pmd-rules.jar</filename>):</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13045">&lt;project&gt;
   ...
@@ -596,13 +599,13 @@
     &lt;/build&gt;
 &lt;/project&gt;</programlisting>
 
-      <para>Now, you can run either <literal moreinfo="none">mvn
-      site</literal> or <literal moreinfo="none">mvn pmd:pmd pmd:cpd</literal>
-      to generate the PMD and CPD reports.</para>
+      <para>Maintenant, vous pouvez démarrer soit <literal moreinfo="none">mvn
+      site</literal> ou <literal moreinfo="none">mvn pmd:pmd pmd:cpd</literal>
+      pour générer les rapport PMD et CPD.</para>
 
-      <para>Unfortunately there is currently no built-in Gradle support for
-      PMD or CPD, so you have to fall back on invoking the PMD Ant plugin
-      directly, as shown here:</para>
+      <para>Malheureusement il n’existe actuellement aucune prise en charge de
+      Gradle pour PMD ou CPD, vous devez donc vous rabattre en appelant le
+      plugin PMD Ant directement, comme montré ici :</para>
 
       <programlisting format="linespecific" id="I_programlisting9_d1e13057">configurations {
     pmdConf
@@ -645,12 +648,12 @@ task pmd &lt;&lt; {
     }
 }</programlisting>
 
-      <para>This configuration will use the PMD rule set in the <filename
-      moreinfo="none">src/config</filename> directory, and generate a PMD XML
-      report called <filename moreinfo="none">pmd.xml</filename> in the
-      <filename moreinfo="none">build</filename> directory. It will also run
-      CPD and generate a CPD XML report <indexterm class="endofrange"
-          id="I_indexterm9_d1e13070" significance="normal"
+      <para>Cette configuration utilisera la règle PMD configuré dans le
+      répertoire <filename moreinfo="none">src/config</filename>, et génèrera
+      un rapport PMD XML appelé <filename moreinfo="none">pmd.xml</filename>
+      dans le répertoire <filename moreinfo="none">build</filename>. Il
+      démarrera aussi CPD et générera un rapport CPD XML <indexterm
+          class="endofrange" id="I_indexterm9_d1e13070" significance="normal"
           startref="ch09-pmd1">
           <primary/>
         </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13072"
@@ -662,8 +665,8 @@ task pmd &lt;&lt; {
         </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13076"
           significance="normal" startref="ch09-cpd2">
           <primary/>
-        </indexterm>called <filename moreinfo="none">cpd.xml</filename> in the
-      <filename moreinfo="none">build</filename> directory.</para>
+        </indexterm>appelé <filename moreinfo="none">cpd.xml</filename> dans
+      le répertoire <filename moreinfo="none">build</filename>.</para>
     </sect2>
 
     <sect2>
