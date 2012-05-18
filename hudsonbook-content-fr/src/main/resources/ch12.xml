@@ -1,135 +1,40 @@
 <?xml version="1.0"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-automated-deployment">
-  <title>Automated Deployment and Continuous Delivery</title>
+  <title>Déploiement Automatisé et Livraison Continue</title>
   <sect1 id="sect-continuous-deployment-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch12-auto1" significance="normal"><primary>automated deployment</primary></indexterm><indexterm class="startofrange" id="ch12-auto2" significance="normal"><primary>continuous deployment</primary></indexterm>Continuous Integration should not stop once your application
-    compiles correctly. Nor should it stop once you can run a set of automated
-    tests or automatically check and audit the code for potential quality
-    issues. The next logical step, once you have <phrase role="keep-together">achieved</phrase> all of these, is to extend your
-    build automation process to the deployment phase. This practice is
-    globally known as Automated <phrase role="keep-together">Deployment</phrase> or Continuous <phrase role="keep-together">Deployment</phrase>.</para>
-    <para>In its most advanced form, Continuous Deployment is the process
-    whereby any code change, subject to automated tests and other appropriate
-    verifications, is immediately deployed into production. The aim is to
-    reduce cycle time and reduce the time and effort involved in the
-    deployment process. This in turn helps development teams reduce the time
-    taken to deliver individual features or bug fixes, and as a consequence
-    significantly increase their throughput. Reducing or eliminating the
-    periods of intense activity leading up to a traditional release and
-    deployment also frees up time and resources for process improvement and
-    innovation. This approach is comparable to the philosophy of continual
-    improvement promoted by lean processes such as Kanban.</para>
-    <para>Systematically deploying the latest code into production is not
-    always suitable, however, no matter how good your automated tests are.
-    Many organizations are not well prepared for new versions appearing
-    unannounced every week; users might need to be trained, products may need
-    to be marketed, and so forth. A more conservative variation on this theme,
-    often seen in larger organizations, is to have the entire deployment
-    process automated but to trigger the actual deployment manually in a
-    one-click process. This is known as Continuous Delivery, and it has all
-    the advantages of Continuous Deployment without the disadvantages.
-    Variations on Continuous Delivery may also involve automatically deploying
-    code to certain environments (such as test and QA) while using a manual
-    one-click deployment for the other environments (such as UAT and
-    Production). The most important distinguishing characteristic of
-    Continuous Delivery is that any and every successful build that has passed
-    all the relevant automated tests and quality gates can potentially be
-    deployed into production via a fully automated one-click process and be in
-    the hands of the end-user within minutes. However, the process is not
-    automatic: it is the business, rather than IT, that decides the best time
-    to deliver the latest changes.</para>
-    <para>Both Continuous Deployment and Continuous Delivery are rightly
-    considered to represent a very high level of maturity in terms of build
-    automation and SDLC practices. These techniques cannot exist without an
-    extremely solid set of automated tests. Nor can they exist without a CI
-    environment and a robust built pipeline—indeed it typically represents the
-    final stage and goal of the build pipeline. However, considering the
-    significant advantages that Continuous Deployment/Delivery can bring to an
-    organization, it is a worthy goal. During the remainder of this chapter,
-    we will use the general term of “Continuous Deployment” to refer to both
-    Continuous Deployment and Continuous Delivery. Indeed, Continuous Delivery
-    can be viewed as Continuous Deployment with the final step (deployment
-    into production) being a manual one dictated by the business rather than
-    the development team.</para>
+    <para><indexterm class="startofrange" id="ch12-auto1" significance="normal">
+<primary>automated deployment</primary></indexterm><indexterm class="startofrange" id="ch12-auto2" significance="normal"><primary>continuous deployment</primary></indexterm>L'Intégration Continue ne devrait pas s'arrêter une fois que votre application compile correctement. Elle ne devrait pas non plus s'interrompre une fois que des tests, contrôles automatiques ou audit de la qualité du code puissent être lancés. L'enchainement naturel, une fois toutes ces étapes <phrase role="keep-together">mises en oeuvre</phrase>, est d'étendre votre processus de construction automatisé au déploiement. Cette pratique est connue globalement sous le nom de Déploiement <phrase role="keep-together">Automatisé</phrase> ou Déploiement <phrase role="keep-together">Continu</phrase>.
+    </para>
+    <para>Dans sa forme la plus élaborée, le Déploiement Continu est le processus où toute modification du code, dotée des tests automatisés et autres vérifications appropriées, est immédiatemement déployée en production. Le but est de réduire la durée du cycle ainsi que le temps et l'effort du processus de déploiement. Cela aide également les équipes de dévelopemment à réduire le temps nécessaire pour livrer des fonctionnalités individuelles ou des corrections de bug, et par conséquent augmente significativement la productivité des équipes. Réduire ou éliminer ces périodes d'intenses activités menant à une livraison traditionnelle ou à un déploiement libère également du temps et des ressources pour améliorer les processus et pour l'innovation. Cette approche est comparable à la philosophie de l'amélioration continue promue par des processus Lean tel que Kanban. </para>
+    <para>
+Cependant, déployer systématiquement le dernier code en production n'est pas toujours approprié, quelque soit la qualité de vos tests automatisés. De nombreuses organisations ne sont pas préparées à ce que de nouvelles versions apparaissent sans annonce chaque semaine. Des utilisateurs ont peut être besoin d'être formés, du marketing peut être nécessaire autour du produit et ainsi de suite. Une variante plus conservative de ce principe, souvent vue dans les organisations de grande taille, est d'avoir le processus de déploiement entièrement automatisé mais de déclencher le déploiement effectif via un mécanisme à un clic. Cela est connu sous le nom de Livraison Continue, et a tous les avantages du Déploiement Continu sans ses inconvénients. Des variantes au processus de Livraison Continue peuvent aussi impliquer des déploiement automatisés vers certains environnement (tels que test et AQ) tout en utilisant un déploiement manuel à un clic pour d'autres environnements (telle que recette ou production). La caractéristique la plus importante de la Livraison Continue est que chaque build ayant passé avec succès tous les tests automatisés et vérifications de qualités appropriés  puisse être potentiellement déployé en production au moyen d'un processus entièrement automatisé et déclenché via un clic, au choix de l'utilisateur final et en quelques minutes. Le processus n'est cependant pas automatique: c'est l'équipe métier et non informatique qui décide du meilleur moment pour livrer les dernières modifications.
+    </para>
+    <para>Le Déploiement Continu et la Livraison Continue sont tous deux considérés, à juste titre, comme signes d'un haut niveau de maturité en termes de processus de build et de pratiques SDLC. Ces techniques ne peuvent exister sans un ensemble très solide de tests automatisés. Pas plus qu'ils ne peuvent exister sans un environnement d'Intégration Continue et un séquenceur de build robuste. En effet, le Déploiement Continu ou la Livraison Continue représente généralement la dernière étape et le but d'un séquence de build. Cependant, vu les avantages significatifs que ces pratiques apportent, elles sont un objectif pertinent. Dans la suite de ce chapitre nous allons utiliser le terme "Déploiement Continu" pour parler tant de Déploiement Continu que de Livraison Continue. En effet, le Déploiement Continu peut être vu comme la Livraison Continue avec une étape finale (le déploiement en production) dictée par la partie métier plutôt que l'équipe de dévelopement. 
+    </para>
   </sect1>
   <sect1 id="sect-implementing-cd">
-    <title>Implementing Automated and Continuous Deployment</title>
-    <para>In its most elementary form, Automated Deployment can be as simple
-    as writing your own scripts to deploy your application to a particular
-    server. The main advantage of a scripted solution is simplicity and ease
-    of configuration. However, a simple scripted approach may run into limits
-    if you need to perform more advanced deployment activities, such as
-    installing software on a machine or rebooting the server. For more
-    advanced scenarios, you may need to use a more sophisticated
-    deployment/configuration management solution such as Puppet or
-    Chef.</para>
+    <title>Mise en oeuvre du Déploiement Automatisé et Continu</title>
+    <para>Dans sa forme la plus élémentaire, le Déploiement Automatisé peut être aussi simple que l'écriture de vos propres scripts afin de déployer votre application vers un serveur particulier. L'avantage principal de la solution scriptée est la simplicité et l'aisance en termes de configuration. Cependant, une telle approche peut atteindre ses limites si vous avez besoin de mettre en oeuvre des actions de déploiement plus élaborées, telles qu'installer un logiciel sur une machine ou redémarrer le serveur. Pour des scénarios plus avancés, vous pourriez avoir besoin d'un outil de déploiement/configuration plus sophistiqué tel que Puppet ou Chef.</para>
     <sect2 id="sect-deployment-script">
-      <title>The Deployment Script</title>
-      <para>An <indexterm id="I_indexterm12_d1e16879" significance="normal"><primary>automated deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16884" significance="normal"><primary>continuous deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16889" significance="normal"><primary>deployment script</primary></indexterm><indexterm id="I_indexterm12_d1e16892" significance="normal"><primary>scripts</primary><secondary>deployment script</secondary></indexterm>essential part of any Automated Deployment initiative is a
-      scriptable deployment process. While this may seem obvious, there are
-      still many organizations where deployment remains a cumbersome,
-      complicated and labor-intensive process, including manual file copying,
-      manual script execution, hand-written deployment notes, and so forth.
-      The good news is that, in general, it does not have to be this way, and,
-      with a little work, it is usually possible to write a script of some
-      sort to automate most, if not all, of the process.</para>
-      <para>The complexity of a deployment script varies enormously from
-      application to application. For a simple website, a deployment script
-      may be as simple as resyncing a directory on the target server. Many
-      Java application servers have Ant or Maven plugins that can be used to
-      deploy applications. For a more complicated infrastructure, deployment
-      may involve deploying several applications and services across multiple
-      <phrase role="keep-together">clustered</phrase> servers in a precisely
-      coordinated manner. Most deployment processes tend to fall somewhere
-      between these extremes.</para>
+      <title>Le Script de Déploiement</title>
+      <para>Une <indexterm id="I_indexterm12_d1e16879" significance="normal"><primary>automated deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16884" significance="normal"><primary>continuous deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16889" significance="normal"><primary>deployment script</primary></indexterm><indexterm id="I_indexterm12_d1e16892" significance="normal"><primary>scripts</primary><secondary>deployment script</secondary></indexterm>part essentielle de toute initiative de Déploiement Automatisée est un processus de déploiement scripté. Bien que celui puisse sembler évident, il y a encore de nombreuses organisations où le déploiement demeure un processus consommateur de resources, compliqué et lourd, incluant copie manuelle de fichiers, exécution manuelle de script, des notes écrites à la main et ainsi de suite. La bonne nouvelle est qu'en général cela n'a pas à vocation à rester ainsi. Avec un peu de travail, il est généralement possible d'écrire un script pour automatisé la plupart, voir l'intégralité, du processus.
+      </para>
+      <para>La complexité d'un script de déploiement varie énormément d'une application à une autre. Pour un simple site web, un déploiement de script peut se limiter à resynchroniser un dossier sur le serveur cible. De nombreuses applications Java ont Ant ou des plugins Maven qui peuvent être utilisés pour le déploiement. Pour une architecture plus compliquée, le déploiement peut impliquer plusieurs applications et services sur de multiples serveurs <phrase role="keep-together">en grappe</phrase>, le tout coordinné de façon extrêment précise. La plupart des processus de déploiement sont entre ces deux extrêmes.</para>
     </sect2>
     <sect2 id="sect-liquibase">
-      <title>Database Updates</title>
-      <para>Deploying<indexterm class="startofrange" id="ch12-db1" significance="normal"><primary>automated deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db2" significance="normal"><primary>continuous deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db3" significance="normal"><primary>database</primary><secondary>updating with automated deployment</secondary></indexterm> your app to the application server is often only one part
-      of the puzzle. Databases, relational or otherwise, almost always play a
-      central role in any application architecture. Of course, ideally, your
-      database would be perfect from the start, but this is rarely the case in
-      the real world. Indeed, when you update your application, you will
-      generally also need to update one or more databases as well.</para>
-      <para>Database updates are usually more difficult to manage smoothly
-      than application updates, as both the structure and the contents of the
-      database may be impacted. However, managing database updates is a
-      critical part of both the development and the deployment process, and
-      deserves some reflection and planning.</para>
-      <para>Some application frameworks, such as <indexterm id="I_indexterm12_d1e16928" significance="normal"><primary>Ruby on Rails projects</primary></indexterm>Ruby on Rails and <indexterm id="I_indexterm12_d1e16932" significance="normal"><primary>Hibernate, database updates with</primary></indexterm>Hibernate, can manage structural database changes
-      automatically to some extent. Using these frameworks, you can typically
-      specify if you want to create a new database schema from scratch at each
-      update, or whether you which to update the database schema while
-      conserving the existing data. While this sounds useful in theory, in
-      fact it is very limited for anything other than noncritical development
-      environments. In particular, these tools do not handle data migration
-      well. For example, if you rename a column in your database, the update
-      process will simply create a new column: it will not copy the data from
-      the old column into the new column, nor will it remove the old column
-      from the updated table.</para>
-      <para>Fortunately, this is not the only approach you can use. Another
-      tool that attempts to tackle the thorny problem of database updates is
-      <indexterm class="startofrange" id="ch12-liquibase" significance="normal"><primary>Liquibase</primary></indexterm><ulink url="http://www.liquibase.org/">Liquibase</ulink>.
-      Liquibase is an open source tool that can help manage and organize
-      upgrade paths between versions of a database using a high-level
-      approach.</para>
-      <para>Liquibase works by keeping a record of database updates applied in
-      a table in the database, so that it is easy to bring any target database
-      to the correct state for a given version of the application. As a
-      result, you don’t need to worry about running the same update script
-      twice—Liquibase will only apply the update scripts that have not already
-      been applied to your database. Liquibase is also capable of rolling back
-      changes, at least for certain types of changes. However, since this will
-      not work for every change (for example, data in a deleted table cannot
-      be restored), it is best not to place too much faith in this particular
-      feature.</para>
-      <para>In Liquibase, you keep track of database changes as a set of
-      “change sets,” each of which represents the database update in a
-      database-neutral XML format. Change sets can represent any changes you
-      would make in a database, from adding and deleting tables, to creating
-      or updating columns, indexes and foreign keys:</para>
+      <title>Mises à jour de Base de Données</title>
+      <para>Déployer<indexterm class="startofrange" id="ch12-db1" significance="normal"><primary>automated deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db2" significance="normal"><primary>continuous deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db3" significance="normal"><primary>database</primary><secondary>updating with automated deployment</secondary></indexterm> votre application vers le serveur d'application est généralement seulement une partie du puzzle. Les Bases de Données, relationnelles ou autres, jouent presque toujours un rôle central dans l'architecture logicielle. Bien sûr, idéalement, votre base de données devrait être parfaite dès le début, mais cela est rarement le cas dans le monde réel. En effet, lors que vous mettez à jour votre application, vous avez généralement également besoin de mettre une ou plusieurs bases de données à jour. 
+</para>
+      <para>Les mises à jour de base de données sont généralement plus difficile à mettre en oeuvre que les mises à jour applicatives, vu que tant la structure que les données sont susceptibles d'être modifiés. Cependant, les mises à jour de base de données sont critiques pour le développement et le déploiement. Elles méritent donc de l'attention et de la planification.</para>
+      <para>Certains frameworks, tels que <indexterm id="I_indexterm12_d1e16928" significance="normal"><primary>Ruby on Rails projects</primary></indexterm>Ruby on Rails et <indexterm id="I_indexterm12_d1e16932" significance="normal"><primary>Hibernate, database updates with</primary></indexterm>Hibernate, peuvent supporter automatiquement des changements structurels d'une base de données. En utilisant ces frameworks, vous pouvez usuellement spécifier si vous voulez créer un nouveau schéma de la base à chaque mise à jour ou si vous voulez mettre à jour le schéma tout en conservant les données. Bien que cela semble utile à première vue, ces fonctionnalités sont en fait juste suffisantes pour des environnements non critiques. Ces outils ne gèrent pas bien les migrations de données, point pourtant essentiel. Par exemple, si vous créez une colonne dans votre base de données, le processus de mise à jour va simplement créer une nouvelle colonne: il ne va pas copier les données de l'ancienne colonne vers la nouvelle, pas plus qu'il ne va supprimer l'ancienne colonne de la table mise à jour.
+      </para>
+      <para>Heuresement, cela n'est pas la seule approche disponible. Un autre outil qui tente de résoudre le problème complexe des mises à jour de base de données est  <indexterm class="startofrange" id="ch12-liquibase" significance="normal"><primary>Liquibase</primary></indexterm><ulink url="http://www.liquibase.org/">Liquibase</ulink>.
+      Liquibase est un outil open source qui permet d'organiser des processus de mises à jour entre versions d'une base de données à travers une approche de haut niveau.</para>
+      <para>Liquibase garde un historique des mises à jour appliquées dans une table de la base de données. Il peut ainsi aisément amener n'importe quelle base vers l'état souhait. Par conséquent, pas de risque d'appliquer deux fois le même script de mise à jour: Liquibase applique seulement les scripts qui n'ont pas encore été appliqués. Liquibase est aussi capable de défaire des changements, du moins pour certains types de changements. Vu que cela ne fonctionne pas pour tous les changements (les données d'une table supprimée, par exemple, ne peuvent pas être restaurées) il est préférable de ne pas trop compter sur cette fonctionnalité.
+  </para>
+      <para>Dans Liquibase, les changements de la base de données sont aggrégés sous la forme "d'ensembles de changement", chacun représentant la mise à jour dans un format XML indépendant de la base de données. Ces ensembles de changement peuvent inclure tous les changements que vous pourriez appliquer à une base, de la création ou suppression de table à la création ou mise à jour de colonne, index ou clés étrangères :</para>
       <programlisting id="I_programlisting12_d1e16948" format="linespecific">&lt;databaseChangeLog
 xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.6"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -147,18 +52,13 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
     &lt;/createTable&gt;
   &lt;/changeSet&gt;
 &lt;/databaseChangeLog&gt;</programlisting>
-      <para>Change sets can also reflect modifications to existing tables. For
-      example, the following change set represents the renaming of a
-      column:</para>
+      <para>Les ensembles de changement peuvent aussi refléter des modifications à une table existante. Par exemple, l'ensemble de changement suivant représente le renommage d'une colonne :
+      </para>
       <programlisting id="I_programlisting12_d1e16952" format="linespecific">&lt;changeSet id="1" author="bob"&gt;
   &lt;renameColumn tableName="person" oldColumnName="fname" newColumnName="firstName"/&gt;
 &lt;/changeSet&gt;</programlisting>
-      <para>Since this representation records the semantic nature of the
-      change, Liquibase is capable of handling both the schema updates and
-      data migration associated with this change correctly.</para>
-      <para>Liquibase can also handle updates to the contents of your
-      database, as well as to its structure. For example, the following change
-      set inserts a new row of data into a table:</para>
+      <para>Etant donné que cette représentation concerne la nature sémantique du changement, Liquibase est capable de réaliser correctement tant la mise à jour du schéma que la migration de données correspondante.</para>
+      <para>Liquibase peut aussi bien gérer les changements de données que de structure. Par exemple, l'ensemble de changement suivant insère une nouvelle ligne de données dans une table :</para>
       <programlisting id="I_programlisting12_d1e16959" format="linespecific">&lt;changeSet id="326" author="simon"&gt;
   &lt;insert tableName="country"&gt;
     &lt;column name="id" valueNumeric="1"/&gt;
@@ -166,18 +66,9 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
     &lt;column name="name" value="Albania"/&gt;
   &lt;/addColumn&gt;
 &lt;/changeSet&gt;</programlisting>
-      <para>Each changeset has an ID and an author, which makes it easier to
-      keep track of who made a particular change and reduces the risk of
-      conflict. Developers can test their change sets on their own database
-      schema, and then commit them to version control once they are ready. The
-      next obvious step is to configure a Jenkins build to run the Liquibase
-      updates against the appropriate database automatically before any
-      integration tests or application deployment is done, usually as part of
-      the ordinary project build script.</para>
-      <para>Liquibase integrates well into the build process—it can be
-      executed from the command line, or integrated into an Ant or Maven build
-      script. Using Maven, for example, you can configure the Maven Liquibase
-      Plugin as shown here:</para>
+      <para>Chaque ensemble de changements a un identifiant et un auteur, ce qui facilite la traçabilité et réduit le risque de conflit Les développeurs peuvent tester leurs ensembles de changements à leur propre base de données et "commit" une fois qu'ils sont prêts. Bien sûr, l'étape suivante est de configurer Jenkins pour qu'il applique les mises à jour Liquibase à la base de données appropriée avant que les tests d'intégration ou que les déploiement d'applications ne soient réalisés, généralement en tant que partie du script ordinaire de build du project.
+      </para>
+      <para>Liquibase s'intègre bien dans le processus de build. Il peut être exécuté depuis la ligne de commande ou intégré dans Ant ou Maven. Pour ce dernier, par exemple, vous pouvez configurer le "Maven Liquibase Plugin" comm suit :</para>
       <programlisting id="I_programlisting12_d1e16965" format="linespecific">&lt;project&gt;
   &lt;build&gt;
     &lt;plugins&gt;
@@ -194,12 +85,11 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
 &lt;/build&gt;
 ...
 &lt;/project&gt;</programlisting>
-      <para>Using Liquibase with Maven this way, you could update a given
-      target database to the current schema using this plugin:</para>
+      <para>En utilisant ainsi Liquibase avec Maven, vous pourriez mettre à jour une base de données cible vers le schéma courant en utilisant ce plugin:</para>
       <screen format="linespecific">$ mvn liquibase:update</screen>
-      <para>The default database connection details are specified in the
-      <filename moreinfo="none">src/main/resources/liquibase.properties</filename> file,
-      and might look something like this:</para>
+      <para>Les informations par défaut de connexion à la base sont spécifiées dans le fichier
+      <filename moreinfo="none">src/main/resources/liquibase.properties</filename>,
+et ont l'aspect suivant :</para>
       <programlisting id="I_programlisting12_d1e16976" format="linespecific">changeLogFile = changelog.xml
 driver = com.mysql.jdbc.Driver
 url = jdbc:mysql://localhost/ebank
@@ -207,124 +97,45 @@ username = scott
 password = tiger
 verbose = true
 dropFirst = false</programlisting>
-      <para>However you can override any of these properties from the command
-      line, which makes it easy to set up a Jenkins build to update different
-      databases.</para>
-      <para>Other similar commands let you generate an SQL script (if you need
-      to submit it to your local DBA for approval, for example), or rollback
-      to a previous version of the <indexterm id="I_indexterm12_d1e16982" class="endofrange" startref="ch12-liquibase" significance="normal"><primary/></indexterm>schema.</para>
-      <para>This is of course just one example of a possible approach. Other
-      teams prefer to manually maintain a series of SQL update scripts, or
-      write their own in-house solutions. The important thing is to have a
-      solution that you can use reliably and reproducibly to update different
-      databases to the correct state when deploying your <indexterm id="I_indexterm12_d1e16988" class="endofrange" startref="ch12-db1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16990" class="endofrange" startref="ch12-db2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16992" class="endofrange" startref="ch12-db3" significance="normal"><primary/></indexterm>applications.</para>
+      <para>Vous pouvez toutefois supplanter n'importe laquelle de ces propriétés depuis la ligne de commande, ce qui rend easy de configurer un build Jenkins pour mettre à jour différentes bases de données.</para>
+      <para>D'autres commandes similaires vous permettent de générer un script SQL (si vous avez besoin de le soumettre à votre administrateur de base données par exemple), ou de revenir à une version précédente du <indexterm id="I_indexterm12_d1e16982" class="endofrange" startref="ch12-liquibase" significance="normal"><primary/></indexterm>schéma.</para>
+      <para>Cela n'est bien sûr qu'un exemple d'une solution possible. D'autres équipes préfèrent maintenir manuellement une série de scripts SQL de mises à jour, voir écrivent leur propre solution. L'important est d'avoir un outillage vous permettant de mettre à jour différentes bases de données de façon fiable et reproductible lors de vos déploiements <indexterm id="I_indexterm12_d1e16988" class="endofrange" startref="ch12-db1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16990" class="endofrange" startref="ch12-db2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16992" class="endofrange" startref="ch12-db3" significance="normal"><primary/></indexterm>applicatifs.</para>
     </sect2>
     <sect2 id="sect-smoke-tests">
-      <title>Smoke Tests</title>
-      <para>Any <indexterm id="I_indexterm12_d1e17000" significance="normal"><primary>automated deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17005" significance="normal"><primary>continuous deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17010" significance="normal"><primary>smoke tests</primary></indexterm><indexterm id="I_indexterm12_d1e17013" significance="normal"><primary>tests</primary><secondary>smoke tests</secondary></indexterm>serious automated deployment needs to be followed up by a
-      series of automated smoke tests. A subset of the automated acceptance
-      tests can be a good candidate for smoke tests. Smoke tests should be
-      unobtrusive and relatively fast. They should be safe to run in a
-      production environment, which may restrict the number of modifications
-      the test cases can do in the system.</para>
+      <title>Tests Fumigatoires</title>
+      <para>N'importe <indexterm id="I_indexterm12_d1e17000" significance="normal"><primary>automated deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17005" significance="normal"><primary>continuous deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17010" significance="normal"><primary>smoke tests</primary></indexterm><indexterm id="I_indexterm12_d1e17013" significance="normal"><primary>tests</primary><secondary>smoke tests</secondary></indexterm>quel déploiement automatisé sérieux a besoin d'être suivi par une série de tests fumigatoires automatisés. Un sous ensemble des tests d'acceptance automatisés peut faire un bon candidat. Les tests fumigatoires devraient être non intrusifs et relativement rapides. Ils doivent pouvoir être exécutés en production, ce qui est susceptible de restreindre le nombre d'actions possibles durant les tests.</para>
     </sect2>
     <sect2 id="sect-rolling-back">
-      <title>Rolling Back Changes</title>
-      <para>Another<indexterm id="I_indexterm12_d1e17024" significance="normal"><primary>automated deployment</primary><secondary>rolling back changes in</secondary></indexterm><indexterm id="I_indexterm12_d1e17029" significance="normal"><primary>continuous deployment</primary><secondary>rolling back changes in</secondary></indexterm> important aspect to consider when setting up Automated
-      Deployment is how to back out if something goes wrong, particularly if
-      you are thinking of implementing Continuous Deployment. Indeed, it is
-      critical to be able to roll back to the previous version if
-      required.</para>
-      <para>How you will do this depends a lot on your application. While it
-      is relatively straight-forward to redeploy a previous version of an
-      application using Jenkins (we will look at a technique to do this
-      further on in this chapter), the application is often not the only
-      player in the game. In particular, you will need to consider how to
-      restore your database to a previous state.</para>
-      <para>We <indexterm id="I_indexterm12_d1e17039" significance="normal"><primary>database</primary><secondary>rolling back changes to</secondary></indexterm>saw how it is possible to use Liquibase to manage database
-      updates, and of course many other strategies are also possible. However
-      rolling back a database version presents its own challenges. Liquibase,
-      for example, lets you revert some, but not all changes to the database
-      structure. However data lost (in dropped tables, for example) cannot be
-      recovered using Liquibase alone.</para>
-      <para>The most reliable way to revert your database to a previous state
-      is probably to take a snapshot of the database just before the upgrade,
-      and use this snapshot to restore the database to its previous state. One
-      effective strategy is to automate this process in <phrase role="keep-together">Jenkins</phrase> in the deployment build job, and
-      then to save both the database snapshot and the deployable binary file
-      as artifacts. This way, you can easily restore the database using the
-      saved snapshot and then redeploy the application using the saved binary.
-      We will look at an example of this strategy in action further on in this
-      <indexterm id="I_indexterm12_d1e17050" class="endofrange" startref="ch12-auto1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17052" class="endofrange" startref="ch12-auto2" significance="normal"><primary/></indexterm>chapter.</para>
+      <title>Revenir sur des changements</title>
+      <para>Un autre<indexterm id="I_indexterm12_d1e17024" significance="normal"><primary>automated deployment</primary><secondary>rolling back changes in</secondary></indexterm><indexterm id="I_indexterm12_d1e17029" significance="normal"><primary>continuous deployment</primary><secondary>rolling back changes in</secondary></indexterm> aspect important à considérer lors de la mise en place du Déploiement Automatisé est comment revenir en arrière si quelque chose se passe mal. Cela est encore plus important si vous voulez implémenter du Déploiement Continu. Il est en effet critique de pouvoir revenir en arrière si besoin.</para>
+      <para>La mise en oeuvre varie grandement en fonction de l'application. Bien qu'il soit relativement simple de redéployer une version précédente d'une application en utilisant Jenkins (nous verrons cela plus loin dans ce chapitre), l'application n'est généralement pas le seul acteur en jeu. Un retour en arrière de la base de données à un état précédent est souvent à mettre en oeuvre.</para>
+      <para>Nous <indexterm id="I_indexterm12_d1e17039" significance="normal"><primary>database</primary><secondary>rolling back changes to</secondary></indexterm> avons vu comment il est possible d'utiliser Liquibase pour les mises à jour de base de données, et bien sûr de nombreuses autres stratégies sont également possibles.Cependant, revenir à un état précédent de la base de données présente des défis particuliers. Liquibase, par exemple permet de revenir sur certains changements de structure de la base, mais pas de tous. De plus, des données perdues (lors de la suppression de table par exemple) ne peuvent être restaurées en utilisant que Liquibise.</para>
+      <para>La façon la plus fiable de retourner à un état précédent est probablement de prendre une image de la base juste avant la mise à jour. Cette image peut ensuite être utilisée lors de la restauration. Une méthode efficace est d'automatiser ce processus dans <phrase role="keep-together">Jenkins</phrase> dans le job de déploiment, est de sauver l'image de la base et le fichier binaire déployable en tant qu'artefacts. De cette façon, vous pouvez aisément restaurer la base de données en utilisant l'image sauvegardée ainsi que re déployer l'application en utilisant le fichier déployable sauvé. Nous allons regarder un exemple de cette stratégie plus loin dans ce 
+      <indexterm id="I_indexterm12_d1e17050" class="endofrange" startref="ch12-auto1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17052" class="endofrange" startref="ch12-auto2" significance="normal"><primary/></indexterm>chapitre.</para>
     </sect2>
   </sect1>
   <sect1 id="sect-deploying-to-an-app-server">
-    <title>Deploying to an Application Server</title>
-    <para>Jenkins<indexterm class="startofrange" id="ch12-app1" significance="normal"><primary>automated deployment</primary><secondary sortas="application">to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-app2" significance="normal"><primary>continuous deployment</primary><secondary sortas="application">to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-app3" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary></indexterm> provides plugins to help you deploy your application to a
-    number of commonly-used application servers. The<indexterm id="I_indexterm12_d1e17076" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm id="I_indexterm12_d1e17081" significance="normal"><primary>Deploy plugin</primary></indexterm> Deploy plugin lets you deploy to Tomcat, JBoss, and
-    GlassFish. And the<indexterm id="I_indexterm12_d1e17085" significance="normal"><primary>WebSphere Application Server</primary></indexterm><indexterm id="I_indexterm12_d1e17088" significance="normal"><primary>plugins</primary><secondary>Deploy Websphere</secondary></indexterm><indexterm id="I_indexterm12_d1e17093" significance="normal"><primary>Deploy Websphere plugin</primary></indexterm> Deploy Websphere plugin tries to cater for the
-    particularities of IBM WebSphere Application Server.</para>
-    <para>For other application servers, you will typically have to integrate
-    the deployment process into your build scripts, or resort to custom
-    scripts to deploy your application. For other languages, too, your
-    deployment process will vary, but it will often involve some use of shell
-    scripting. For example, for a Ruby on Rails application, you may use a
-    tool like Capistrano or Chef, or simply a shell script. For a PHP
-    application, an FTP or SCP file transfer may suffice.</para>
-    <para>Let’s first look at some strategies for deploying your Java
-    applications to an application server.</para>
-    <para>This is known as a <indexterm id="I_indexterm12_d1e17103" significance="normal"><primary>hot-deploy</primary></indexterm>hot-deploy, where the application is deployed onto a running
-    server. This is generally a fast and efficient way of getting your
-    application online. However, depending on your application and on your
-    application server, this approach has been known to result in memory leaks
-    or resource locking issues—older versions of Tomcat, for example, were
-    particularly well-known for this. If you run into this sort of issue, you
-    may have to force the application to restart after each deployment, or
-    possibly schedule a nightly restart of the application server on your test
-    machine.</para>
+    <title>Déployer vers un serveur d'application</title>
+    <para>Jenkins<indexterm class="startofrange" id="ch12-app1" significance="normal"><primary>automated deployment</primary><secondary sortas="application">to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-app2" significance="normal"><primary>continuous deployment</primary><secondary sortas="application">to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-app3" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary></indexterm> fournit des plugins pour aider à déployer votre application vers un certain nombre de serveurs d'applications fréquemment utilisés. Le<indexterm id="I_indexterm12_d1e17076" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm id="I_indexterm12_d1e17081" significance="normal"><primary>Deploy plugin</primary></indexterm> plugin Deploy vous permet de déployer vers Tomcat, JBoss, et GlassFish. Et le plugin <indexterm id="I_indexterm12_d1e17085" significance="normal"><primary>WebSphere Application Server</primary></indexterm><indexterm id="I_indexterm12_d1e17088" significance="normal"><primary>plugins</primary><secondary>Deploy Websphere</secondary></indexterm><indexterm id="I_indexterm12_d1e17093" significance="normal"><primary>plugin Deploy Websphere </primary></indexterm> Deploy Websphere tente de s'occuper des particularités du serveur d'application IBM WebSphere.</para>
+    <para>Pour d'autres serveurs d'application, vous devez généralement intégrer le processus de déploiement dans vos scripts de build, ou de recourir à des scripts personnalisés, pour déployer votre application. De même, pour les autres langages, votre procesus de déploiement variera, mais il impliquera souvent d'utiliser des scripts shell. Par exemple, pour une application Ruby on Rails application, vous pouvez utiliser un outil tel que Capistrano or Chef, ou simplement un script shell. Pour une application PHP, un transfert FTP ou via scp peut suffire.</para>
+    <para>Regardons en premier certaines stratégies possibles pour déployer votre application Java vers un serveur d'application.</para>
+    <para>Lorsque l'application est déployée dans un serveur d'application en fonctionnement, cela est désigné sous le terme <indexterm id="I_indexterm12_d1e17103" significance="normal"><primary>hot-deploy</primary></indexterm>déploiement à chaud. Cela est généralement une façon rapide et efficace de mettre votre application en ligne. Cependant, en fonction de votre application et de votre serveur d'application, cette approche est connue pour causer des fuites de mémoire ou des problèmes de verrous sur des resources. Les anciennes versions de Tomcat, par exemple, étaient particulièrement connues pour cela. Si vous rencontrez ce type de problème, vous pourriez avoir à forcer un redémarrage de l'application à chaque déploiement, ou à planifier un redémarrage de l'application chaque nuit sur votre serveur de test.</para>
     <sect2 id="sect-deploying-java-app">
-      <title>Deploying a Java Application</title>
-      <para>In this<indexterm class="startofrange" id="ch12-java1" significance="normal"><primary>Java applications</primary><secondary>deploying to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-java2" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary><tertiary>Java applications</tertiary></indexterm> section we will look at an example of how to deploy your
-      Java web or <indexterm id="I_indexterm12_d1e17125" significance="normal"><primary>JEE applications</primary><see>Java applications</see></indexterm>JEE application to an application server such as<indexterm class="startofrange" id="ch12-java3" significance="normal"><primary>Tomcat application server</primary><secondary>deploying Java applications to</secondary></indexterm><indexterm class="startofrange" id="ch12-java4" significance="normal"><primary>JBoss application server, deploying Java applications
+      <title>Déployer une application Java</title>
+      <para>Dans cette <indexterm class="startofrange" id="ch12-java1" significance="normal"><primary>Java applications</primary><secondary>deploying to application server</secondary></indexterm><indexterm class="startofrange" id="ch12-java2" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary><tertiary>Java applications</tertiary></indexterm> section, nous allons regarder un exemple montant comment déployer votre application web Java ou <indexterm id="I_indexterm12_d1e17125" significance="normal"><primary>JEE applications</primary><see>Java applications</see></indexterm>JEE vers un serveur d'application tel que<indexterm class="startofrange" id="ch12-java3" significance="normal"><primary>Tomcat application server</primary><secondary>deploying Java applications to</secondary></indexterm><indexterm class="startofrange" id="ch12-java4" significance="normal"><primary>JBoss application server, deploying Java applications
           to</primary></indexterm><indexterm class="startofrange" id="ch12-java5" significance="normal"><primary>GlassFish application server, deploying Java applications
-          to</primary></indexterm> Tomcat, JBoss, or GlassFish.</para>
-      <para>One of the fundamental principles of automated deployment is to
-      reuse your binaries. It is inefficient, and potentially unreliable, to
-      rebuild your application during the deployment process. Indeed, imagine
-      that you run a series of unit and integration tests against a particular
-      version of your application, before deploying it to a test environment
-      for further testing. If you rebuild the binary before deploying it to
-      the test environment, the source code may have changed since the
-      original revision, which means you may not know exactly what you are
-      deploying.</para>
-      <para>A more efficient process is to reuse the binaries generated by a
-      previous build. For example, you may configure a build job to run unit
-      and integration tests before generating a deployable binary file
-      (typically a WAR or EAR file). You can do this very effectively using
-      the<indexterm id="I_indexterm12_d1e17147" significance="normal"><primary>plugins</primary><secondary>Copy Artifact</secondary></indexterm><indexterm id="I_indexterm12_d1e17152" significance="normal"><primary>Copy Artifact plugin</primary></indexterm> Copy Artifact plugin (see <xref linkend="sect-copying-artifacts"/>). This plugin lets you copy an
-      artifact from another build job workspace into the current build job
-      workspace. This, when combined with a normal build trigger or with
-      the<indexterm id="I_indexterm12_d1e17158" significance="normal"><primary>plugins</primary><secondary>Build Promotion</secondary></indexterm><indexterm id="I_indexterm12_d1e17163" significance="normal"><primary>Build Promotion plugin</primary></indexterm> Build Promotion plugin, lets you deploy precisely the
-      binary file that you built and tested in the previous phase.</para>
-      <para>This approach does put some constraints on the way you build your
-      application. In particular, any environment-specific configuration must
-      be externalized to the application; JDBC connections or other such
-      configuration details should not be defined in configuration files
-      embedded in your WAR file, for example, but rather be defined using JDNI
-      or in an externalized properties file. If this is not the case, you may
-      need to build from a given SCM revision, as discussed for Subversion in
+          to</primary></indexterm> Tomcat, JBoss, ou GlassFish.</para>
+      <para>L'un des principes fondamentaux du déploiement automatisé est de réutiliser vos fichiers binaires déployables. Il est inefficace et potentiellement dangereux de réaliser un nouveau build pendant le processus de déploiement. En effet, imaginer que vous exécutiez une série de tests unitaire et d'intégration sur une version donnée de votre application, avant de la déployer dans un environnement de test. Si vous reconstruisez le binaire avant de le déployer, le code source peut avoir changer depuis la version testée, et donc vous ne savez pas exacement ce que vous déployez.</para>
+      <para>Un processus plus efficace est de réutiliser des binaires générés par un build précédent. Par exemple, vous pourriez configurer une tâche de build de façon à exécuter les tests unitaires et d'intégration avant de déployer un fichier binaire (généralement un fichier WAR ou EAR). Vous pouvez faire cela très efficacement en utilisant  le plugin<indexterm id="I_indexterm12_d1e17147" significance="normal"><primary>plugins</primary><secondary>Copy Artifact</secondary></indexterm><indexterm id="I_indexterm12_d1e17152" significance="normal"><primary>Copy Artifact plugin</primary></indexterm> Copy Artifact (voir <xref linkend="sect-copying-artifacts"/>). Ce plugin vous permet de copier un artefact d'un autre espace de travail dans l'espace de travail de la tâche de build courante. Cela, lorsque combiné avec un trigger de build normal ou avec le plugin<indexterm id="I_indexterm12_d1e17158" significance="normal"><primary>plugins</primary><secondary>Build Promotion</secondary></indexterm><indexterm id="I_indexterm12_d1e17163" significance="normal"><primary>Build Promotion plugin</primary></indexterm> Build Promotion, vous permet de déployer précisément le fichier binaire que vous avez construit et testé dans la phase précédente.
+</para>
+      <para>Cette approche impose certaines contraintes dans la façon de construire votre application. En particulier, toute configuration spécifique à un environnement doit être externalisée hors de l'application; les connections JDBC et autres éléments de configuration ne doivent pas être inclus dans votre fichier WAR, mais plutôt, par exemple, être définis au moyen de JDNI ou dans un fichier de propriétés externe. Si ce n'est pas le cas, vous pourriez devoir construire à partir d'une révision données du gestionnaire de source, comme discuté pour Subversion dans 
       <xref linkend="sect-build-from-svn-tag"/>.</para>
       <sect3 id="sect-deploy-plugin">
-        <title>Using the Deploy plugin</title>
-        <para>If you<indexterm class="startofrange" id="ch12-plug1" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm class="startofrange" id="ch12-plug2" significance="normal"><primary>Deploy plugin</primary></indexterm> are deploying to a Tomcat, JBoss, or GlassFish server,
-        the most useful tool at your disposition will probably be the Deploy
-        plugin. This plugin makes it relatively straightforward to integrate
-        deployment to these platforms into your Jenkins build process. If you
-        are deploying to IBM Websphere, you can use the<indexterm id="I_indexterm12_d1e17185" significance="normal"><primary>WebSphere Application Server</primary></indexterm><indexterm id="I_indexterm12_d1e17188" significance="normal"><primary>plugins</primary><secondary>Deploy Websphere</secondary></indexterm><indexterm id="I_indexterm12_d1e17193" significance="normal"><primary>Deploy Websphere plugin</primary></indexterm> Websphere Deploy plugin to similar ends.</para>
-        <para>Let’s see how this plugin works in action, using the simple
-        automated build and deployment pipeline illustrated in <xref linkend="fig-cd-pipeline"/>.</para>
+        <title>Utiliser le plugin Deploy</title>
+        <para>Si vous<indexterm class="startofrange" id="ch12-plug1" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm class="startofrange" id="ch12-plug2" significance="normal"><primary>Deploy plugin</primary></indexterm> déployez sur serveur Tomcat, JBoss ou GlassFish, l'outil le plus utile à votre disposition sera probablement le plugin Deploy. Ce plugin rend relativement simple l'intégration de ces plateformes dans votre processus de build Jenkins. Si vous déployer sur IBM Websphere, vous pouvez utilisez le plugin<indexterm id="I_indexterm12_d1e17185" significance="normal"><primary>WebSphere Application Server</primary></indexterm><indexterm id="I_indexterm12_d1e17188" significance="normal"><primary>plugins</primary><secondary>Deploy Websphere</secondary></indexterm><indexterm id="I_indexterm12_d1e17193" significance="normal"><primary>Deploy Websphere plugin</primary></indexterm> Websphere Deploy dans le même but.</para>
+        <para>Voyons ce plugin en action, en utilisant le séquenceur de build illustré dans <xref linkend="fig-cd-pipeline"/>.</para>
         <figure float="0" id="fig-cd-pipeline">
-          <title>A simple automated deployment pipeline</title>
+          <title>Une chaîne simple de déploiement automatisé</title>
           <mediaobject id="I_mediaobject12_d1e17204">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1201.pdf" format="PDF"/>
@@ -334,18 +145,10 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Here, the default build (<command moreinfo="none">gameoflife-default</command>) runs the unit and
-        integration tests, and builds a deployable binary in the form of a WAR
-        file. The metrics build (<command moreinfo="none">gameoflife-metrics</command>) runs additional checks
-        regarding coding standards and code coverage. If both these builds are
-        successful, the application will be automatically deployed to the test
-        environment by the <command moreinfo="none">gameoflife-deploy-to-test</command> build job.</para>
-        <para>In the <emphasis>gameoflife-deploy-to-test</emphasis> build job,
-        we use the Copy Artifact plugin to retrieve the WAR file generated in
-        the <command moreinfo="none">gameoflife-default</command> build job
-        and copies it into the current build job’s workspace (see <xref linkend="fig-jenkins-cd-copy-artifacts"/>).</para>
+        <para>Ici, le build par défaut (<command moreinfo="none">gameoflife-default</command>) exécute les tests unitaires et d'intégration, puis créé un déployable binaire sous la forme d'un fichier WAR. Le build des métriques (<command moreinfo="none">gameoflife-metrics</command>) lance des contrôles supplémentaires sur les standards de codageet la couverture des tests. Si ces deux builds réussissent, l'application sera automatiquement déployée vers l'environnement de testpar la tâche de build <command moreinfo="none">gameoflife-deploy-to-test</command>.</para>
+        <para>Dans la tâche de build <emphasis>gameoflife-deploy-to-test</emphasis>, nous utilisons le plugin Copy Artifact plugin pour récupérer le fichier WAR généré dans la tâche <command moreinfo="none">gameoflife-default</command> puis nous le copions dans l'espace de travail du job courant (voir <xref linkend="fig-jenkins-cd-copy-artifacts"/>).</para>
         <figure float="none" id="fig-jenkins-cd-copy-artifacts">
-          <title>Copying the binary artifact to be deployed</title>
+          <title>Copier l'artefact binaire à déployer</title>
           <mediaobject id="I_mediaobject12_d1e17233">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1202.pdf" format="PDF"/>
@@ -355,19 +158,9 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Next, we use the Deploy plugin to deploy the WAR file to the
-        test server. Of course it is generally possible, and not too
-        difficult, to write a hand-rolled deployment script to get your
-        application on to your application server. In some cases, this may be
-        your only option. However, if a Jenkins plugin exists for your
-        application server, it can simplify things considerably to use it. If
-        you are deploying to Tomcat, JBoss, or GlassFish, the Deploy plugin
-        may work for you. This plugin uses Cargo to connect to your
-        application server and deploy (or redeploy) your application. Just
-        select the target server type, and specify the server’s URL along with
-        the username and password of a user with deployment rights (see <xref linkend="fig-jenkins-cd-deploy-plugin"/>).</para>
+        <para>Ensuite, nous utilisons le plugin Deploy pour déployer le fichier WAR sur le serveur de test. Bien sûr, il est généralement possible, et pas trop difficile, d'écrire à la main un tel script de déploiement. Dans certains cas, cela peut être votre seul recours. Toutefois, si un plugin Jenkins existe pour votre serveur d'application, cela peut simplifier considérablement les choses de l'utiliser. Si vous déployez sur Tomcat, JBoss, ou GlassFish, le plugin Deploy est susceptible de vous aider. Ce plugin utilise Cargo pour se connecter à votre serveur d'application et y déployer (ou redéployer) votre application. Il suffit sélectionner le type de serveur visé, spécifier son URL ainsi qu'un nom et mot de passe d'utilisateur ayant les droits de déploiement (voir <xref linkend="fig-jenkins-cd-deploy-plugin"/>).</para>
         <figure float="0" id="fig-jenkins-cd-deploy-plugin">
-          <title>Deploying to Tomcat using the Deploy Plugin</title>
+          <title>Déployer sur Tomcat avec le plugin Deploy</title>
           <mediaobject id="I_mediaobject12_d1e17245">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1203.pdf" format="PDF"/>
@@ -377,59 +170,23 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>This is known as a <indexterm id="I_indexterm12_d1e17252" significance="normal"><primary>hot-deploy</primary></indexterm>hot-deploy, where the application is deployed onto a
-        running server. This is generally a fast and efficient way of getting
-        your application online, and should be the preferred solution because
-        of its speed convenience. However, depending on your application and
-        on your application server, this approach has been known to result in
-        memory leaks or resource locking issues—older versions of Tomcat, for
-        example, were particularly well-known for this. If you run into this
-        sort of issue, you may have to force the application to restart after
-        each deployment, or possibly schedule a nightly restart of the
-        application server on your test<indexterm id="I_indexterm12_d1e17256" class="endofrange" startref="ch12-plug1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17258" class="endofrange" startref="ch12-plug2" significance="normal"><primary/></indexterm> machine.</para>
+        <para>Cela est connu comme le <indexterm id="I_indexterm12_d1e17252" significance="normal"><primary>hot-deploy</primary></indexterm>déploiement à chaud, c'est à dire que l'appplication est déployée sur un serveur en cours de fonctionnement. Cela est généralement une façon rapide et efficace d'avoir votre application en ligne, et devrait être votre solution préférée pour cela. Cependant, en fonction de votre application et de votre serveur, cette approche fut parfois source de  fuites de mémoire ou de verrouillage de ressources. Les anciennes versions de Tomcat, par exemple, étaient bien connues pour cela. Si cela vous arrive, vous pourriez avoir à planifier des redémarrages après chaque déploiement, ou éventuellement planifier des redémarrages nocturnes du serveur d'application de votre environnement de <indexterm id="I_indexterm12_d1e17256" class="endofrange" startref="ch12-plug1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17258" class="endofrange" startref="ch12-plug2" significance="normal"><primary/></indexterm> test.</para>
       </sect3>
       <sect3>
-        <title>Redeploying a specific version</title>
-        <para>When <indexterm id="I_indexterm12_d1e17266" significance="normal"><primary>Java applications</primary><secondary>redeploying a specific version</secondary></indexterm>you deploy your application automatically or
-        continually, it becomes of critical importance to precisely identify
-        the version of the application currently deployed. There are a several
-        ways you can do this, which vary essentially in the role Jenkins plays
-        in the build/deployment architecture.</para>
-        <para>Some teams use Jenkins as the central place of truth, where
-        artifacts are both built and stored for future reference. If you store
-        your deployable artifacts on Jenkins, then it may make perfect sense
-        to deploy your artifacts directly from your Jenkins instance. This is
-        not hard to do: in the next section we will look at how to do this
-        using a combination of the Copy Artifacts, Deploy, and Parameterized
-        Trigger plugins.</para>
-        <para>Alternatively, if you are using an Enterprise repository such as
-        Nexus or Artifactory to store your artifacts, then this repository
-        should act as the central point of reference: Jenkins should build and
-        deploy artifacts to your central repository, and then deploy them from
-        there. This is typically the case if you are using Maven as your build
-        tool, but teams using tools like Gradle or Ivy may also use this
-        approach. Repository managers such as Nexus and Artifactory,
-        particularly in their commercial editions, make this strategy easier
-        to implement by providing features such as build promotion and staging
-        repositories that help you manage the release state of your
-        artifacts.</para>
-        <para>Let’s look at how you might implement each of these strategies
-        using Jenkins.</para>
+        <title>Re déployer une version spécifique</title>
+        <para>Lorsque <indexterm id="I_indexterm12_d1e17266" significance="normal"><primary>Java applications</primary><secondary>redeploying a specific version</secondary></indexterm> vous déployez votre application de façon automatisée ou continuellement, il devient critique de bien identifier la version de l'application actuellement déployée. Il y a plusieurs façons de faire cela, qui varient essentiellement en fonction du rôle de Jenkins dans l'architecture de build et de déploiement.</para>
+        <para>Certaines équipes utilisent Jenkins comme la source de vérité, où les artefacts sont à la fois construits et gardés pour référence. Si vous stockez vos artefacts déployables dans Jenkins, il est alors parfaitement logique de déployer vos artefacts directement depuis votre instance Jenkins. Cela est facile à faire : dans la prochaine nous verrons comment faire cela au moyen des plugins Copy Artifacts, Deploy, et Parameterized
+        Trigger.</para>
+        <para>Alternativement, si vous gardez vos artefacts dans un dépôt d'entreprise tel que Nexus ou Artifactory, alors ce dépôt devrait être le point central de référence: les artefacts devraient être construits par Jenkins puis et déployés vers le dépôt central, et alors vous devriez déployer depuis ce dernier. Cela est typiquement le cas lorsque vous utilisez Maven comme votre outil de build. Des équipes utilisant Gradle ou Ivy sont aussi susceptibles d'utiliser cette approche. Les gestionnaires de dépôt tels que Nexus et Artifactory, particulièrement dans leur éditions commerciales, rendent cette stratégie plus aisée en offrant des fonctionnalités telles que la promotion de build et des dépôts intermédiaires qui aident à contrôler les versions des artefacts.</para>
+        <para>Voyons à présent comment vous pourriez implémenter chacune de ces stratégies en utilisant Jenkins.</para>
       </sect3>
       <sect3>
-        <title>Deploying a version from a previous Jenkins build</title>
-        <para>Redeploying<indexterm class="startofrange" id="ch12-previous" significance="normal"><primary>Java applications</primary><secondary>redeploying from previous build</secondary></indexterm> a previously-deployed artifact in Jenkins is relatively
-        straightforward. In <xref linkend="sect-deploy-plugin"/>, we saw how
-        to use the<indexterm id="I_indexterm12_d1e17291" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm id="I_indexterm12_d1e17296" significance="normal"><primary>Deploy plugin</primary></indexterm><indexterm id="I_indexterm12_d1e17299" significance="normal"><primary>plugins</primary><secondary>Copy Artifact</secondary></indexterm><indexterm id="I_indexterm12_d1e17304" significance="normal"><primary>Copy Artifact plugin</primary></indexterm> Copy Artifacts and Deploy plugins to deploy a WAR file
-        built by a previous build job to an application server. What we need
-        to do now is to let the user specify the version to be deployed,
-        rather than just deploying the latest build.</para>
-        <para>We can<indexterm id="I_indexterm12_d1e17310" significance="normal"><primary>plugins</primary><secondary>Parameterized Trigger</secondary></indexterm><indexterm id="I_indexterm12_d1e17315" significance="normal"><primary>Parameterized Trigger plugin</primary></indexterm> do this using the Parameterized Trigger plugin (see
-        <xref linkend="sect-advanced-builds-parameterized"/>). First, we add
-        a parameter to the build job, using the special “Build selector for
-        Copy Artifact” parameter type (see <xref linkend="fig-jenkins-build-selector-copy-artifact"/>).</para>
+        <title>Déployer une version depuis un build Jenkins précédent</title>
+        <para>Re déployer<indexterm class="startofrange" id="ch12-previous" significance="normal"><primary>Java applications</primary><secondary>redeploying from previous build</secondary></indexterm> un artefact prédédement déployé dans Jenkins est relativement simple. Dans <xref linkend="sect-deploy-plugin"/>, nous avons vu comment utiliser les plugins <indexterm id="I_indexterm12_d1e17291" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm id="I_indexterm12_d1e17296" significance="normal"><primary>Deploy plugin</primary></indexterm><indexterm id="I_indexterm12_d1e17299" significance="normal"><primary>plugins</primary><secondary>Copy Artifact</secondary></indexterm><indexterm id="I_indexterm12_d1e17304" significance="normal"><primary>Copy Artifact plugin</primary></indexterm> Copy Artifacts et Deploy pour déployer un fichier WAR produit par une tâche de build précédente vers un serveur d'application. Ce dont nous avons besoin à présent est de laisser l'utilisateur spécifier la version à déployer, plutôt que de se contenter de déployer le dernier build.</para>
+        <para>Nous pouvons<indexterm id="I_indexterm12_d1e17310" significance="normal"><primary>plugins</primary><secondary>Parameterized Trigger</secondary></indexterm><indexterm id="I_indexterm12_d1e17315" significance="normal"><primary>Parameterized Trigger plugin</primary></indexterm> faire cela en utilisant le plugin Parameterized Trigger (voir 
+        <xref linkend="sect-advanced-builds-parameterized"/>). En premier lieu, nous ajoutons un paramètre à la tâche de construction, en utilisant le type de paramètre “Build selector for Copy Artifact” TODO (voir <xref linkend="fig-jenkins-build-selector-copy-artifact"/>).</para>
         <figure float="none" id="fig-jenkins-build-selector-copy-artifact">
-          <title>Adding a “Build selector for Copy Artifact” parameter</title>
+          <title>Ajouter un paramètre  “Build selector for Copy Artifact”TODO </title>
           <mediaobject id="I_mediaobject12_d1e17326">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1204.pdf" format="PDF"/>
@@ -439,12 +196,9 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>This adds a new parameter to your build job (see <xref linkend="fig-jenkins-build-selector-parameter"/>). Here you need to
-        enter a name and a short description. The name you provide will be
-        used as an environment variable passed to the subsequent build
-        steps.</para>
+        <para>Cela ajoute un nouveau paramètre à votre tâche de build (voir <xref linkend="fig-jenkins-build-selector-parameter"/>). Vous devez entrer un nom et une description courte. Le nom fourni sera utilisé comme une variable d'environnement pour les étapes suivantes du build.</para>
         <figure float="none" id="fig-jenkins-build-selector-parameter">
-          <title>Configuring a build selector parameter</title>
+          <title>Configurer le sélecteur de paramétrage de build</title>
           <mediaobject id="I_mediaobject12_d1e17338">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1205.pdf" format="PDF"/>
@@ -454,36 +208,17 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>The build selector parameter type lets you pick a previous build
-        in a number of ways, including the latest successful build, the
-        upstream build that triggered this build job, or a specific build. All
-        of these options will be available to the user when he or she triggers
-        a build. The Default Selector lets you specify which of these options
-        will be proposed by default.</para>
-        <para>When the user selects a particular build job, the build number
-        will also be stored in the environment variables for use in the build
-        steps. The environment variable is called
+        <para>Le sélecteur de paramétrage de build vous permet de choisir un build précédent de diverses façons, y compris le dernier build réussi, le build en amont ayant déclenché cette tâche de build ou un build spécifique. Toutes ces options seront offertes à l'utilisateur lorsqu'il ou elle déclenchera un build. Le sélecteur par défaut vous permet de spécifier laquelle de ces options sera proposé par défaut.</para>
+        <para>Lorsque l'utilisateur sélectionne une taĉhe de build particulière, le numéro de build sera également stocké dans la variable d'environnement, pour utilisation dans les étapes du build. La variable d'environnement est appelé 
         <code>COPYARTIFACT_BUILD_NUMBER_</code><replaceable>MY_BUILD_JOB</replaceable>,
-        where <replaceable>MY_BUILD_JOB</replaceable> is the name of the
-        <phrase role="keep-together">original</phrase> build job (in upper
-        case and with characters other than A–Z converted to underscores). For
-        example, if we copy an artifact from build number 4 of the
-        <emphasis>gameoflife-default</emphasis> project, the
-        <code>COPYARTIFACT_BUILD_NUMBER_GAMEOFLIFE_DEFAULT</code> environment
-        variable would be set to 4.</para>
-        <para>The second part of the configuration is to tell Jenkins what to
-        fetch, and from which build job. In the Build section of our project
-        configuration, we add a “Copy artifacts from another project” step.
-        Here you specify the project where the artifact was built and archived
-        (<emphasis>gameoflife-default</emphasis> in our example). You also
-        need to make Jenkins use the build specified in the parameter we
-        defined earlier. You do this by choosing “Specified by a build
-        parameter” in the “Which build” option, and providing the variable
-        name we specified earlier in the build selector name field (see <xref linkend="fig-jenkins-copy-artifacts-build-parameter"/>). Then, just
-        configure the artifacts to copy as we did in the previous
-        example.</para>
+        où <replaceable>MY_BUILD_JOB</replaceable> est le nom de la tâche de build 
+        <phrase role="keep-together">originelle</phrase> (en elttres majuscules et avec les caractères autres que A–Z convertis en blanc soulignés). Par exemple, si nous copions un artefact avec le numéro de build 4 vers le project
+        <emphasis>gameoflife-default</emphasis>, la variable d'environnement
+        <code>COPYARTIFACT_BUILD_NUMBER_GAMEOFLIFE_DEFAULT</code>
+        aura la valeur de 4.</para>
+        <para>La seconde partie de la configuration est de dire à Jenkins ce qu'il doit récupérer, et en provenance de quelle tâche de build. Dans la section Build de la configuration de notre projet, nous ajoutons une étape TODO “Copy artifacts from another project”. Là nous spécifions le projet où l'artefact a été construit et archivé (<emphasis>gameoflife-default</emphasis> dans notre exemple). Vous devez aussi faire en sorte que Jenkins utilise le build spécifié dans le paramètre défini précédement. Cela se fait en choisissant “Specified by a build parameter” TODO dans l'option “Which build” TODO et en fournissant le nom de variable donné plus tôt dans le sélecteur de paramétrage de build (voir <xref linkend="fig-jenkins-copy-artifacts-build-parameter"/>). Ensuite, il suffit de configrer les artefacts à copier comme nous l'avons fait dans l'exemple précédent.</para>
         <figure float="none" id="fig-jenkins-copy-artifacts-build-parameter">
-          <title>Specify where to find the artifacts to be deployed</title>
+          <title>Specifier où trouver les artefacts à déployer</title>
           <mediaobject id="I_mediaobject12_d1e17374">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1206.pdf" format="PDF"/>
@@ -493,13 +228,10 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Finally, we deploy the copied artifact using the Deploy plugin,
-        as illustrated in <xref linkend="fig-jenkins-cd-deploy-plugin"/>.</para>
-        <para>So let’s see how this build works in practice. When we kick off
-        a build manually, Jenkins will propose a list of options letting you
-        select the build to redeploy (see <xref linkend="fig-jenkins-redeploy-choose-build"/>).</para>
+        <para>Enfin, nous déployons l'artefact copié en utilisant le plugin Deploy, comme illustré dans <xref linkend="fig-jenkins-cd-deploy-plugin"/>.</para>
+        <para>Voyons comment ce build fonctionne en pratique. Lorsque nous déclenchons un build manuellement, Jenkins va proposer une liste d'options vous permettant de choisir le build à redéployer (voir <xref linkend="fig-jenkins-redeploy-choose-build"/>).</para>
         <figure float="0" id="fig-jenkins-redeploy-choose-build">
-          <title>Choosing the build to redeploy</title>
+          <title>Choix du build à redéployer</title>
           <mediaobject id="I_mediaobject12_d1e17391">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1207.pdf" format="PDF"/>
@@ -509,31 +241,15 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Most of these options are fairly self-explanatory.</para>
+        <para>La plupat de ces options sont explicites.</para>
         <?dbfo-need height=”1in”?>
-        <para>The “latest successful build” is the most recent build excluding
-        any failing builds. So this option will typically just redeploy the
-        latest version again. If you use this option, you will probably want
-        to select the “Stable builds only” checkbox, which will exclude any
-        unstable builds as well.</para>
-        <para>If you have opted to discard old builds, you will be able to
-        flag certain build jobs to be kept forever (see <xref linkend="sect-general-options"/>). In this case, you can choose to
-        deploy the “Latest saved build”.</para>
-        <para>A sensible option for an automated build job at the end of a
-        build pipeline is “Upstream build that triggered this job”. This way,
-        you can be sure that you are deploying the artifact that was generated
-        by (or promoted through) the previous build job, even if other builds
-        have happened since. It is worth noting that, although this sort of
-        parameterized build job is often used to manual deploy a specific
-        artifact, it can also be effectively used as part of an automated
-        build process. If it is not triggered manually, it will simply use
-        whatever value you define in the “default selector” field.</para>
-        <para>You can also choose the “Specified by permalink” option (see
-        <xref linkend="fig-jenkins-build-permalink"/>). This lets you choose
-        from a number of shortcut values, such as the last build, the last
-        stable build, the last successful build, and so on.</para>
+        <para>L'option “latest successful build” TODO est le build le plus récent sans prendre en compte les builds échoués. Cette option va donc se contenter de déployer à nouveau la dernière version. Si vous utilisez cette option, vous voudrez probablement cocher la case “Stable builds only” TODO, qui excluera également tout build instable.</para>
+        <para>Si vous avez choisi de supprimer les anciens builds, vous serez capable d'indiquer que certaines tâches de build doivent être éternellement conservées  (voir <xref linkend="sect-general-options"/>). Dans ce cas, vous pouvez choisir de déployer le “Latest saved build” TODO.</para>
+        <para>Une option raisonnable pour une tâche de build automatisée à la fin d'un séquenceur de build est “Upstream build that triggered this job”. Ainsi, vous pouvez être sûr que vous allez déployer l'artefact qui a été généré (ou promu) par la précédente tâche de build, même si d'autres builds ont eu lieu depuis. Il est important de noter que, bien que ce type de build paramétré est souvent utilisé pour déployer manuellement un artefact spécifique, il peut aussi être utilisé efficacement au sein d'un build automatisé. S'il n'est pas déclenché manuellement, le build va simplement utiliser la valeur définie dans le champ “default selector” TODO.</para>
+        <para>Vous pouvez aussi choisir l'option “Specified by permalink” (voir
+        <xref linkend="fig-jenkins-build-permalink"/>). Cela vous permet de choisir parmi un certain nombre de valeurs, telles que le dernier build, le dernier build stable, le dernier build réussi et ainsi de suite.</para>
         <figure float="none" id="fig-jenkins-build-permalink">
-          <title>Using the “Specified by permalink” option</title>
+          <title>Utiliser l'option “Specified by permalink”TODO</title>
           <mediaobject id="I_mediaobject12_d1e17414">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1208.pdf" format="PDF"/>
@@ -543,14 +259,9 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>However if you want to redeploy a particular version of your
-        application, a more useful option is “Specific build” (see <xref linkend="fig-jenkins-specific-build"/>). This option lets you provide
-        a specific build number to be deployed. This is the most flexible way
-        to redeploy an application—you will just need to know the number of
-        the build you need to redeploy, but this usually isn’t too hard to
-        find by looking at the build history of the original build job.</para>
+        <para>Cependant, si vous voulez redéployer une version particulière de votre application, une option plus utile est “Specific build” TODO (voir <xref linkend="fig-jenkins-specific-build"/>). Cette option vous demande de fournir un numéro de build particulier indiquant le build à déployer. Cela est la façon la plus flexible de redéployer une application, vous avez seulement besoin de connaître le numéro du build à redéployer, mais cela n'est généralement pas difficile à trouver en regardant l'historique du build de la tâche de build originelle.</para>
         <figure float="none" id="fig-jenkins-specific-build">
-          <title>Using a specific build</title>
+          <title>Utiliser un build spécifique</title>
           <mediaobject id="I_mediaobject12_d1e17426">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1209.pdf" format="PDF"/>
@@ -560,32 +271,14 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>This is a convenient way to deploy or to redeploy artifacts from
-        previous Jenkins build jobs. However, in some cases you may prefer to
-        use an artifact stored in an enterprise repository like Nexus or
-        Artifactory. We will look at an example of how to do this in the
-        next<indexterm id="I_indexterm12_d1e17434" class="endofrange" startref="ch12-previous" significance="normal"><primary/></indexterm> section.</para>
+        <para>Cela est une façon pratique de déployer ou redéployer des artefacts de build Jenkins précédents. Cependant, dans certains cas, vous pourriez préférer utiliser un artefact stocké dans un dépôt d'entreprise comme Nexus ou Artifactory. Nous allons voir un exemple de cela dans la prochaine <indexterm id="I_indexterm12_d1e17434" class="endofrange" startref="ch12-previous" significance="normal"><primary/></indexterm> section.</para>
       </sect3>
       <sect3>
-        <title>Deploying a version from a Maven repository</title>
-        <para>Many <indexterm class="startofrange" id="ch12-mavenrep" significance="normal"><primary>Java applications</primary><secondary>deploying from Maven repository</secondary></indexterm>organizations use an Enterprise repository manager such
-        as Nexus and Artifactory to store and share binary artifacts such as
-        JAR files. This strategy is commonly used with Maven, but also with
-        other build tools such as Ant (with Ivy or the Maven Ant Tasks) and
-        Gradle. Using this approach in a CI environment, both snapshot and
-        release dependencies are built on your Jenkins server, and then
-        deployed to your repository manager (see <xref linkend="fig-jenkins-enterprise-repositories"/>). Whenever a
-        developer commits source code changes to the version control system,
-        Jenkins will pick up the changes and build new snapshot versions of
-        the corresponding artifacts. Jenkins then deploys these snapshot
-        artifacts to the local Enterprise Repository Manager, where they can
-        be made available to other developers on the team or on other teams
-        within the organization. We discussed how to get Jenkins to
-        automatically deploy Maven artifacts to an enterprise repository in
-        <xref linkend="fig-jenkins-enterprise-repositories"/>. A similar
-        approach can also be done using Gradle or Ivy.</para>
+        <title>Déployer une version depuis un dépôt Maven</title>
+        <para>De nombreuses <indexterm class="startofrange" id="ch12-mavenrep" significance="normal"><primary>Java applications</primary><secondary>deploying from Maven repository</secondary></indexterm>organisations utilisent un gestionnaire de dépôt tel que Nexus ou Artifactory afin de stocker et partager des artefacts binaires tels que des fichiers JAR. Cette stratégie est communément utilisée avec Maven, mais également avec d'autres outils de build tels que Ant (couplé à Ivy ou aux Maven Ant Tasks) et Gradle. Dans un environnement d'Intégration Continue, les versions snapshots et délivrables sont construites sur votre serveur Jenkins, puis déployées sur votre gestionnaire de dépôt (voir <xref linkend="fig-jenkins-enterprise-repositories"/>). A chaque fois qu'un développeur enregistre un changement dans le code source dans le système de contrôle des versions, Jenkins va prendre les changements et construire de nouvelles versions snapshot des artefacts correspondant. Jenkins deploie alors ces artefacts snapshots sur le gestionnaire de dépôt d'entreprise, où ils peuvent être mis à disposition des autres développeurs de l'équipe ou d'autres équipes au sein de l'organisation. Nous avons discuté sur la façon de faire pour que Jenkins déploie automatiquement les artefacts Maven dans 
+        <xref linkend="fig-jenkins-enterprise-repositories"/>. Une approche similaire peut être suivie avec Gradle ou Ivy.</para>
         <figure float="0" id="fig-jenkins-enterprise-repositories">
-          <title>Using a Maven Enterprise Repository</title>
+          <title>Utiliser un dépôt Maven d'entreprise</title>
           <mediaobject id="I_mediaobject12_d1e17455">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1210.pdf" format="PDF"/>
@@ -595,42 +288,12 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Maven conventions use a well-defined system of version numbers,
-        distinguishing between SNAPSHOT and RELEASE versions. SNAPSHOT
-        versions are considered to be potentially unstable builds of the
-        latest code base, whereas RELEASE versions are official releases
-        having undergone a more formal release process. Typically, SNAPSHOT
-        artifacts are reserved for use within a development team, whereas
-        RELEASE versions are considered ready for further testing.</para>
-        <para>A similar approach can be used for deployable artifacts such as
-        WAR or EAR files—they are built and tested on the CI server, then
-        automatically deployed to the Enterprise Repository, often as part of
-        a build pipeline involving automated tests and quality checks (see
-        <xref linkend="sect-build-pipelines"/>). SNAPSHOT versions are
-        typically deployed to a test server for automated and/or manual
-        testing, in order to decide whether a version is ready to be
-        officially released.</para>
-        <para>The exact strategy used to decide when a release version is to
-        be created, and how it is deployed, varies greatly from one
-        organization. For example, some teams prefer a formal release at the
-        end of each iteration or sprint, with a well-defined version number
-        and corresponding set of release notes that is distributed to QA teams
-        for further testing. When a particular version gets the go-ahead from
-        QA, it can then be deployed into production. Others, using a more lean
-        approach, prefer to cut a new release whenever a new feature or bug
-        fix is ready to be deployed. If a team is particularly confident in
-        their automated tests and code quality checks, it may even be possible
-        to automate this process completely, generating and releasing a new
-        version either periodically (say every night) or whenever new changes
-        are committed.</para>
-        <para>There are many ways to implement this sort of strategy. In the
-        rest of this section, we will see how to do it using a conventional
-        multimodule Maven project. Our sample project is a web application
-        called <command moreinfo="none">gameoflife</command>, consisting of
-        three modules: <command moreinfo="none">gameoflife-core</command>,
-        <command moreinfo="none">gameoflife-services</command> and <command moreinfo="none">gameoflife-web</command>. The <command moreinfo="none">gameoflife-web</command> module produces a WAR file
-        that includes JAR files from the other two modules. It is this WAR
-        file that we want to deploy:</para>
+        <para>Les conventions Maven se basent sur un système bien défini d'identifiants de version, faisant la distinction entre des versions SNAPSHOTS et RELEASE. Les versions SNAPSHOT sont considérées comme des builds potentiellent instables des dernières sources, tandis que les versions RELEASE sont des versions officielles étant passées à travers un processus de livraison plus formel. Typiquement, les artefacts SNAPSHOT sont réservés à un usage interne à l'équipe de développement, tandis que les versions RELEASE sont considérées comme prêtes pour des tests plus avancés.</para>
+        <para>Une approche très similaire peut être utilisée pour des artefacts déployables tels que les fichiers WAR ou EAR, qui sont construits et testés sur le serveur d'intégration continue, puis déployés automatiquement vers le dépôt d'entreprise, souvent au sein d'un séquenceur de build impliquant des tests automatisés et des contrôles qualité (voir 
+        <xref linkend="sect-build-pipelines"/>). Les versions SNAPSHOT sont typiquement déployées sur un serveur de test pour des tests automatisés ou manuels, afin de déterminer si une version est prête pour être officiellement publiées.</para>
+        <para>La stratégie exacte utilisée pour déterminer quand une version est à créer et comment elle est déployée varie grandement d'une organisation à une autre. Par exemple, certaines équipes préfèrent un processus formel à la fin de chaque itération, avec un version number TODO bien défini et des notes de livraison correspondantes distribuées aux équipes d'assurance qualité pour des tests supplémentaires. Quand une version particulière obtient le feu vert de l'assurance qualité, elle peut être déployée en production. D'autres préfèrent utiliser un processus lean, déployant une nouvelle version lorsqu'un correctif ou une nouvelle fonctionnalité est prêt à être déployé. Si une équipe est particulièrement confiante dans ses tests automatisés et ses contrôles qualité, il est même possible d'automatiser complètement le processus, en générant et livrant une nouvelle version périodiquement (par exemple chaque nuit) ou à chaque fois q'un changement a été réalisé.</para>
+        <para>Il y a de nombreuses façons d'implémenter ce type de stratégie. Dans le reste de cette section, nous verrons comment la réaliser via un project Maven multimodule conventionnel. Notre project de démonstration est une application web nommée <command moreinfo="none">gameoflife</command>, consistituée de trois modules : <command moreinfo="none">gameoflife-core</command>,
+        <command moreinfo="none">gameoflife-services</command> et <command moreinfo="none">gameoflife-web</command>. Le module <command moreinfo="none">gameoflife-web</command> génère un fichier WAR incluant les JAR des deux autres modules. Le WAR est ce que nous voulons déployer :</para>
         <screen format="linespecific">tuatara:gameoflife johnsmart$ ls -l
 total 32
 drwxr-xr-x  16 johnsmart  staff    544 16 May 09:58 gameoflife-core
@@ -638,26 +301,10 @@ drwxr-xr-x   8 johnsmart  staff    272  4 May 18:12 gameoflife-deploy
 drwxr-xr-x   8 johnsmart  staff    272 16 May 09:58 gameoflife-services
 drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
 -rw-r--r--@  1 johnsmart  staff  12182  4 May 18:07 pom.xml</screen>
-        <para>Earlier on in this chapter we saw how to use the Deploy plugin
-        to deploy a WAR file generated by the current build job to an
-        application server. What we want to do now is to deploy an arbitrary
-        version of the WAR file to an application server.</para>
-        <para>In <xref linkend="jenkins-maven-releases"/>, we discussed how
-        to configure Jenkins to invoke the Maven Release Plugin to generate a
-        formal release version of an application. The first step of the
-        deployment process starts here, so we will assume that this has been
-        configured and that a few releases have already been deployed to our
-        Enterprise Repository Manager.</para>
-        <para>The next step involves creating a dedicated project to manage
-        the deployment process. This project will be a standard Maven
-        project.</para>
-        <para>The first thing you need to do is to set up a dedicated
-        deployment project. In its simplest form, this project will simply
-        fetch the requested version of your WAR file from your enterprise
-        repository to be deployed by Jenkins. In the following <filename moreinfo="none">pom.xml</filename> file, we use the <filename moreinfo="none">maven-war-plugin</filename> to fetch a specified
-        version of the <command moreinfo="none">gameoflife-web</command> WAR
-        file from our enterprise repository. The version we want is specified
-        in the <literal moreinfo="none">target.version</literal> <phrase role="keep-together">property</phrase>:</para>
+        <para>Précédement dans ce chapitre, nous avons vu comment utiliser le plugin Deploy pour déployer un fichier WAR généré par la tâche de build courante vers un serveur d'application. Ce que nous voulons maintenant est déployer une version arbitraire du fichier WAR vers un serveur d'application.</para>
+        <para>Dans <xref linkend="jenkins-maven-releases"/>, nous avons discuté comment configurer Jenkins pour invoquer le plugin Maven Release afin de générer une version release formelle de l'application. La première étape du déploiement débute ici, nous assumerons donc que cela a été configuré et que plusieurs versions releases ont déjà été déployé sur notre gestionnaire de dépôt d'entreprise.</para>
+        <para>La prochaine étape implique de créer un projet dédié pour le processus de déploiement. Ce projet sera un projet Maven standard.</para>
+        <para>La première chose à faire est de mettre en place un projet de déploiement dédié. Dans sa forme la plus simple, ce projet va simplement récupérer la version requise de votre fichier WAR depuis le gestionnaire de dépôt pour le déployer avec Jenkins. Dans le fichier <filename moreinfo="none">pom.xml</filename>  qui suit, nous utilisons le <filename moreinfo="none">maven-war-plugin</filename> pour récupérer la version spécifiée du fichier WAR  <command moreinfo="none">gameoflife-web</command>. Cette version est spécifiée dans la <phrase role="keep-together">propriété</phrase> <literal moreinfo="none">target.version</literal> :</para>
         <programlisting id="I_programlisting12_d1e17513" format="linespecific">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/
         XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://
@@ -695,13 +342,9 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
     &lt;target.version&gt;RELEASE&lt;/target.version&gt;
   &lt;/properties&gt;
 &lt;/project&gt;</programlisting>
-        <para>Next, we configure a Jenkins build job to invoke this <filename moreinfo="none">pom.xml</filename> file using a property value
-        provided by the user (see <xref linkend="fig-jenkins-gameoflife-deploy"/>). Note that we have set the
-        default value to RELEASE so that, by default, the most recent release
-        version will be deployed. Otherwise, the user can provide the version
-        number of the version to be deployed or <phrase role="keep-together">redeployed</phrase>.</para>
+        <para>Ensuite, nous configurons un build Jenkins pour invoquer ce fichier <filename moreinfo="none">pom.xml</filename> en utilisant une valeur pour la propriété définie par l'utilisateur (voir <xref linkend="fig-jenkins-gameoflife-deploy"/>). Notez que nous avons défini la valeur par défaut à RELEASE pour qu'ainsi, par défaut, la version release la plus récente soit déployée. Sinon, l'utilisateur peut fournir le numéro de version de la version à déployer ou <phrase role="keep-together">redéployer</phrase>.</para>
         <figure float="none" id="fig-jenkins-gameoflife-deploy">
-          <title>Deploying an artifact from a Maven repository</title>
+          <title>Déployer un artefact depuis un dépôt Maven</title>
           <mediaobject id="I_mediaobject12_d1e17528">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1211.pdf" format="PDF"/>
@@ -711,14 +354,10 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
             </imageobject>
           </mediaobject>
         </figure>
-        <para>The rest of this build job simply checks out the deployment
-        project and invokes the <literal moreinfo="none">mvn package</literal> goal, and then
-        deploys the WAR file using the Deploy plugin (see <xref linkend="fig-jenkins-mvn-package"/>). The
-        <literal moreinfo="none">target.version</literal> property will be automatically
-        passed into the build job and used to deploy the correct
-        version.</para>
+        <para>La suite de cette tâche de build récupère simplement le projet à déployer et appelle le but <literal moreinfo="none">mvn package</literal>, puis déploie le fichier WAR en utilisant le plugin Deploy (voir <xref linkend="fig-jenkins-mvn-package"/>). La propriété 
+        <literal moreinfo="none">target.version</literal> sera automatiquement passée dans la tâche de job et utilisée pour déployer la bonne version.</para>
         <figure float="0" id="fig-jenkins-mvn-package">
-          <title>Preparing the WAR to be deployed</title>
+          <title>Préparer le WAR à déployer</title>
           <mediaobject id="I_mediaobject12_d1e17546">
             <imageobject role="print">
               <imagedata fileref="figs/print/jtdg_1212.pdf" format="PDF"/>
@@ -728,47 +367,18 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Similar techniques can be used for other project types. If you
-        are deploying to an application server that is not supported by the
-        Deploy plugin, you also have the option of writing a custom script in
-        whatever language is most convenient, and getting Jenkins to pass the
-        requested version number as a parameter as described <indexterm id="I_indexterm12_d1e17553" class="endofrange" startref="ch12-mavenrep" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17555" class="endofrange" startref="ch12-java1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17557" class="endofrange" startref="ch12-java2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17559" class="endofrange" startref="ch12-java3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17561" class="endofrange" startref="ch12-java4" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17563" class="endofrange" startref="ch12-java5" significance="normal"><primary/></indexterm>above.</para>
+        <para>Des techniques similaires peuvent être utilisées pour d'autres types de projet. Si vous déployez sur un serveur d'application non supporté par le plugin Deploy, vous avez aussi la possibilité d'écrire un script spécifique dans le langage de votre choix et en faisant en sorte que Jenkins passe le numéro de version demandé comme décrit <indexterm id="I_indexterm12_d1e17553" class="endofrange" startref="ch12-mavenrep" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17555" class="endofrange" startref="ch12-java1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17557" class="endofrange" startref="ch12-java2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17559" class="endofrange" startref="ch12-java3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17561" class="endofrange" startref="ch12-java4" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17563" class="endofrange" startref="ch12-java5" significance="normal"><primary/></indexterm>plus haut.</para>
       </sect3>
     </sect2>
     <sect2>
-      <title>Deploying Scripting-based Applications Like Ruby and PHP</title>
-      <para>Deploying <indexterm class="startofrange" id="ch12-scripting1" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary><tertiary>scripting-based applications</tertiary></indexterm><indexterm class="startofrange" id="ch12-scripting2" significance="normal"><primary>Ruby applications</primary></indexterm><indexterm class="startofrange" id="ch12-scripting3" significance="normal"><primary>PHP applications, deploying to application server</primary></indexterm><indexterm class="startofrange" id="ch12-scripting4" significance="normal"><primary>scripting-based applications, deploying to application
-          server</primary></indexterm>projects using scripting languages such as PHP and Ruby is
-      generally simpler than deploying Java applications, though the issues
-      related to database updates are similar. Indeed, very often these
-      deployments essentially involve copying files onto a remote server. To
-      obtain the files in the first place, you have the choice of either
-      copying them from another build job’s workspace using the Copy Artifacts
-      option, or checking the source code out directly from the source code
-      repository, if necessary using a specific revision or tag as described
-      for Subversion in <xref linkend="sect-build-from-svn-tag"/> and for Git
-      in <xref linkend="sect-building-git-tag"/>. Then, once you have the
-      source code in your Jenkins workspace, you simply need to deploy it onto
-      the target server.</para>
-      <para>A useful tool for this sort of deployment is the<indexterm id="I_indexterm12_d1e17594" significance="normal"><primary>plugins</primary><secondary>Publish Over</secondary></indexterm><indexterm id="I_indexterm12_d1e17599" significance="normal"><primary>Publish Over plugins</primary></indexterm> Publish Over series of plugins for Jenkins (Publish Over
-      FTP, Publish Over SSH, and Publish Over CIFS). These plugins provide a
-      consistent and flexible way to deploy your application artifacts to
-      other servers over a number of protocols, including CIFS (for Windows
-      shared drives), FTP, and SSH/SFTP.</para>
-      <para>The configuration for each of these plugins is similar. Once you
-      have installed the plugins, you need to set up the host configurations,
-      which are managed centrally in the main configuration screen. You can
-      create as many host configurations as you like—they will appear in a
-      drop-down list in the job configuration page.</para>
-      <para>Configuration of the hosts is fairly self-explanatory (see <xref linkend="fig-jenkins-ssh-config"/>). The name is the name that will
-      appear in the drop-down list in the build job configurations. You can
-      configure authentication using a username and password for FTP, or
-      either an SSH key or a username and password for SSH. You also need to
-      provide an existing directory on the remote server that will act at the
-      root directory for this configuration. In the Advanced options, you can
-      also configure the SSH port and timeout options.</para>
+      <title>Déployer des applications à base de scripts telles Ruby et PHP</title>
+      <para>Déployer <indexterm class="startofrange" id="ch12-scripting1" significance="normal"><primary>application server</primary><secondary>automated deployment to</secondary><tertiary>scripting-based applications</tertiary></indexterm><indexterm class="startofrange" id="ch12-scripting2" significance="normal"><primary>Ruby applications</primary></indexterm><indexterm class="startofrange" id="ch12-scripting3" significance="normal"><primary>PHP applications, deploying to application server</primary></indexterm><indexterm class="startofrange" id="ch12-scripting4" significance="normal"><primary>scripting-based applications, deploying to application
+          server</primary></indexterm> des projets utilisant des langages de script tels que PHP et Ruby est généralement plus simple que de déployer des applications Java, bien que les problématiques liées aux mises à jour de base de données soient similaires. En effet, bien souvent ces déploiement impliquent essentiellement de copier des fichiers vers un serveur distant. Pour obtenir les fichiers en premier lieu, vous avez le choix entre les copiers depuis l'espace de travail d'une autre tâche de build via l'option Copy Artifacts TODO, ou de récupérer directement le code source depuis le dépôt de code source, en utilisant au besoin une révision spécifique ou un tag comme décrit pour Subversion dans <xref linkend="sect-build-from-svn-tag"/> et pour Git dans <xref linkend="sect-building-git-tag"/>. Une fois le code source présent dans votre espace de travail Jenkins, vous n'avez simplement qu'à le copier vers le serveur cible.</para>
+      <para>Un outil util pour ce type de déploiement est la série de plugins <indexterm id="I_indexterm12_d1e17594" significance="normal"><primary>plugins</primary><secondary>Publish Over</secondary></indexterm><indexterm id="I_indexterm12_d1e17599" significance="normal"><primary>Publish Over plugins</primary></indexterm> Publish Over pour Jenkins (Publish Over FTP, Publish Over SSH, et Publish Over CIFS). Ces plugins fournissent une façon uniforme et flexible de déployer vos artefacts applicatifs vers d'autres serveurs via différents protocoles, incluant CIFS (pour les disques Windows partagés), FTP, et SSH/SFTP.</para>
+      <para>La configuration de chacun de ces plugins est similaire. Une fois les plugins installés, vous devez définir les configurations des hôtes, qui sont gérées ensemble dans l'écran principal de configuration. Vous pouvez créer autant de configurations d'hôtes que désiré. Elles apparaitront dans une liste déroulante dans la page de configuration de la tâche.</para>
+      <para>La configuration des hôtes a des libellés explicites (voir <xref linkend="fig-jenkins-ssh-config"/>). Le nom apparaîtra dans la liste déroulante des configurations de tâches de build. Vous pouvez configurer une authentification FTP au moyen d'un identifiant et mot de passe, au bien, pour le SSH, une clé SSH ou un identifiant/mot de passe. Vous devez également fournir un répertoire existant sur le serveur distant qui servira de répertoire racine pour cette configuration. Dans les Options Avancées, vous pouvez également configurer le port SSH et la durée d'expiration.</para>
       <figure float="0" id="fig-jenkins-ssh-config">
-        <title>Configuring a remote host</title>
+        <title>Configurer un hôte distant</title>
         <mediaobject id="I_mediaobject12_d1e17612">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1213.pdf" format="PDF"/>
@@ -778,13 +388,9 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have configured your hosts, you can set up your build
-      jobs to deploy artifacts to these hosts. You can do this either as a
-      build step (see <xref linkend="fig-jenkins-ssh-build-step"/>) or as a
-      post-build action (see <xref linkend="fig-jenkins-ssh-deploy"/>). In
-      both cases, the options are similar.</para>
+      <para>Une fois vos hôtes configurés, vous pouvez configurer vos tâches de build afin qu'elles déploient des artefacts vers ces hôtes.Vous pouvez faire cela en tant qu'étape de build (voir <xref linkend="fig-jenkins-ssh-build-step"/>) ou en tant qu'action faisant suite au build (voir <xref linkend="fig-jenkins-ssh-deploy"/>). Dans les deux cas, les options sont similaires.</para>
       <figure float="0" id="fig-jenkins-ssh-build-step">
-        <title>Deploying files to a remote host in the build section</title>
+        <title>Déployer des fichiers vers un hôte distant dans la section build TODO</title>
         <mediaobject id="I_mediaobject12_d1e17626">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1214.pdf" format="PDF"/>
@@ -795,22 +401,9 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
         </mediaobject>
       </figure>
       <?dbfo-need height=”1in”?>
-      <para>First of all, you select the target host from the list of hosts
-      you configured in the previous section. Next, you configure the files
-      you want to transfer. You do this by defining one or more “Transfer
-      sets.” A Transfer set is a set of files (defined by an Ant fileset
-      expression) that you deploy to a specified directory on the remote
-      server. You can also provide a prefix to be removed—this lets you strip
-      off unnecessary directories that you do not want to appear on the server
-      (such as the <filename moreinfo="none">target/site</filename> directory
-      path in the <phrase role="keep-together">example</phrase>). You can add
-      as many transfer sets as you need to get the files you want onto the
-      remote server. The plugin also provides options to execute commands on
-      the remote server once the transfer is complete (“Exec command”) or to
-      exclude certain files or flatten<indexterm id="I_indexterm12_d1e17640" class="endofrange" startref="ch12-scripting1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17642" class="endofrange" startref="ch12-scripting2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17644" class="endofrange" startref="ch12-scripting3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17646" class="endofrange" startref="ch12-scripting4" significance="normal"><primary/></indexterm> the <indexterm id="I_indexterm12_d1e17649" class="endofrange" startref="ch12-app1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17652" class="endofrange" startref="ch12-app2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17654" class="endofrange" startref="ch12-app3" significance="normal"><primary/></indexterm>directories.</para>
+      <para>En premier lieu, vous sélectionner l'hôte cible depuis la liste des hôtes que vous avez configuré dans la section précédente. Ensuite, vous indiquez les fichiers que vous voulez transférer. Cela se fait en définissant un ou plusieurs “Transfer sets.” TODO. Un Transfer set TODO est un ensemble de fichiers (définis par une expression Ant) que vous déployez vers le dossier spécifié sur le serveur distant. Vous pouvez aussi fournir un préfix à supprimer, cela vous permet de laisser de côté des dossiers non nécessaires que vous ne voulez pas voir apparaître sur le serveur (tel que le chemin <filename moreinfo="none">target/site</filename> dans l'<phrase role="keep-together">exemple</phrase>). Vous pouvez ajouter autant de transfert sets TODO que requis, de façon à avoir les fichiers voulus sur le serveur distant. Le plugin propose également plusieurs options d'exécuter des commandes sur le serveur distant une fois le transfert fini ou pour exclure certains fichiers ou applatir <indexterm id="I_indexterm12_d1e17640" class="endofrange" startref="ch12-scripting1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17642" class="endofrange" startref="ch12-scripting2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17644" class="endofrange" startref="ch12-scripting3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17646" class="endofrange" startref="ch12-scripting4" significance="normal"><primary/></indexterm> the <indexterm id="I_indexterm12_d1e17649" class="endofrange" startref="ch12-app1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17652" class="endofrange" startref="ch12-app2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17654" class="endofrange" startref="ch12-app3" significance="normal"><primary/></indexterm>des dossiers.</para>
       <figure float="0" id="fig-jenkins-ssh-deploy">
-        <title>Deploying files to a remote host in the post-build
-        actions</title>
+        <title>Déployer des fichiers vers un hôte distant dans les actions suite au build</title>
         <mediaobject id="I_mediaobject12_d1e17660">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1215.pdf" format="PDF"/>
@@ -824,30 +417,10 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
   </sect1>
   <sect1 id="I_sect112_d1e17665">
     <title>Conclusion</title>
-    <para>Automated Deployment, and in its most advanced form, Continuous
-    Deployment or Continuous Delivery, can be considered the culminating point
-    of a modern Continuous Integration infrastructure.</para>
-    <para>In this chapter we have reviewed several Automated Deployment
-    techniques, mostly centered around Java-based deployments. However, the
-    general principles discussed here apply for any technology. Indeed, the
-    actual deployment process in many other technologies, in particular
-    scripting languages such as Ruby and PHP, are considerably simpler than
-    when using Java, and essentially involve copying files onto the production
-    server. Ruby also benefits from tools such as Heroku and Capistrano to
-    facilitate the task.</para>
-    <para>There are several important aspects you need to consider when
-    setting up an Automated Deployment. First of all, Automated Deployment is
-    the end-point of your CI architecture: you need to define a build pipeline
-    to take your build from the initial compilation and unit tests, though
-    more comprehensive functional and automated acceptance tests and code
-    quality checks, culminating in deployment to one or more platforms. The
-    degree of confidence you can have in your build pipeline depends largely
-    on the degree of confidence you have in your tests. Or, in other terms,
-    the less reliable and comprehensive your tests, the earlier in the build
-    process you will have to fall back to manual testing and human
-    intervention.</para>
-    <para>Finally, if at all possible, it is important to build your
-    deployable artifact once and once only, and then reuse it in subsequent
-    steps for functional tests and deployment to different platforms.</para>
+    <para>Le Déploiement Automatisé, et ses formes plus avancées le Déploiement Continu ou la Livraison Continue, peuvent être considérés comme le point culminant d'une infrastructure moderne d'Intégration Continue.</para>
+    <para>Dans ce chapitre, nous avons vu plusieurs techniques de Déploiement Automatisé, essentiellement axé autour de déploiements Java. Cependant, les principaux généraux discutés ici sont valables pour n'importe quelle technologie. En effet, le processus de déploiement dans de nombreuses autres technologies, spécialement pour les langages de scripts tels Ruby et PHP, sont considérablement plus simple que leur équivalent Java, impliquant essentiellement de copier des fichiers vers le serveur de production. Ruby bénéficie aussi d'outils tels qu'Heroku et Capistrano pour aider à accomplir cette tâche.</para>
+    <para>Il y a plusieurs aspects importants à prendre en compte lors de la mise en place d'un Déploiement Automatisé. En premier lieu, le Déploiement Automatisé est le point final de votre architecture d'Intégration Continue: vous devez définir un séquenceur de build de la compilation initiale et des tests unitaires vers des tests fonctionnels et d'acceptation automatisés ainsi que des contrôles de qualité du code, le tout culminant en déploiement vers une ou plusieurs plate formes. Le degré de confiance dans votre séquenceur de build dépend largement du degré de confiance que avez en vos tests. En d'autres termes, le plus les tests sont douteux et limités, le plus tôt vous aurez à recourir à des tests manuels et à une intervention humaine.</para>
+    <para>Finallement, si possible, il est important de construire vos artefacts déployables en une fois seulement, et ensuite les réutiliser dans les étapes suivantes, que ce soit pour les tests fonctionnels ou des déploiements vers différentes plate formes.</para>
   </sect1>
 </chapter>
+
