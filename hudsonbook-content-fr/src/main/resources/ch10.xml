@@ -620,12 +620,12 @@ Finished: SUCCESS</screen>
         <primary>déclencheurs de build</primary>
         <secondary>paramétrés</secondary>
       </indexterm>vous déclenchez une autre tâche de build depuis une tâche de
-    build paramétrée, il est souvent utile de pouvoir passer les paramètres du
+    build paramétré, il est souvent utile de pouvoir passer les paramètres du
     build courant au nouveau. Supposons, par exemple, que vous ayez une
     application qui doit être testée sur plusieurs bases de données
     différentes. Comme nous l'avons vu, vous pourriez faire cela en
-    configurant une tâche de build paramétrée qui accepte la base de données
-    cible en paramètre. Vous sélectionneriez une série de builds, et tous
+    configurant une tâche de build paramétré qui accepte la base de données
+    cible comme un paramètre. Vous sélectionneriez une série de builds, et tous
     auraient besoin de ce paramètre.</para>
     <para>Si vous essayez de faire cela en utiliser l'option conventionnelle
     "Construire d'autres projets" dans la section Actions Post-Build, cela ne
@@ -636,7 +636,7 @@ Finished: SUCCESS</screen>
         <primary>plugins</primary>
         <secondary>Parameterized Trigger</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e14439" significance="normal">
-        <primary>Parameterized Trigger plugin</primary>
+        <primary>le plugin Parameterized Trigger</primary>
       </indexterm>vous pouvez le faire en utilisent le plugin Jenkins
     Parameterized Trigger. Ce plugin vous permet de configurer vos tâches de
     build à la fois pour déclencher des builds paramétrés et pour passer des
@@ -657,7 +657,7 @@ Finished: SUCCESS</screen>
     demandera à l'utilisateur de saisir cette valeur à chaque fois qu'un build
     sera lancé.</para>
     <figure float="0" id="fig-hudson-build-parameters-unit-test">
-      <title>Tâche de build paramétrée pour des tests unitaires</title>
+      <title>Tâche de build paramétré pour des tests unitaires</title>
       <mediaobject id="I_mediaobject10_d1e14457">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1015.pdf" format="PDF" />
@@ -684,20 +684,20 @@ Finished: SUCCESS</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Dans ce cas, nous passons simplement les paramètres de build
-    courants. Cette seconde tâche de build démarrera automatiquement après la
+    <para>Dans ce cas, nous passons simplement les paramètres du build
+    courant. Cette seconde tâche de build démarrera automatiquement après la
     première, avec la valeur du paramètre <literal
     moreinfo="none">DATABASE</literal> fournie par l'utilisateur. Vous pouvez
     aussi configurer finement la politique de déclenchement en indiquant à
     Jenkins quand le build doit être lancé. Typiquement, vous déclencheriez
-    seulement un build aval après que votre build a réussi, mais avec le
+    seulement un build aval après que votre build ait réussi, mais avec le
     plugin Parameterized Trigger vous pouvez aussi configurer les builds pour
-    se déclencher même si le build est instable, seulement quand le build
-    échoue ou demander à ce qu'il soit déclenché quoi qu'il arrive au premier
+    qu'ils déclenchent même si le build est instable, ou seulement quand le build
+    échoue ou encore demander à ce qu'il soit déclenché quoi qu'il arrive au premier
     build. Vous pouvez même configurer plusieurs déclencheurs pour la même
     tâche de build.</para>
     <para>Naturellement, la tâche de build que vous déclenchez doit être une
-    tâche de build paramétrée (comme illustré dans <xref
+    tâche de build paramétré (comme illustré dans <xref
     linkend="fig-hudson-build-parameters-integration-test" />), et vous devez
     transmettre tous les paramètres qu'elle requiert.</para>
     <figure float="0" id="fig-hudson-build-parameters-integration-test">
@@ -714,7 +714,7 @@ Finished: SUCCESS</screen>
     </figure>
     <para>Cette fonctionnalité possède en fait des applications bien plus
     larges que de simplement transmettre les paramètres du build courant. Vous
-    pouvez aussi déclencher une tâche de build paramétrée avec un ensemble
+    pouvez aussi déclencher une tâche de build paramétré avec un ensemble
     arbitraire de paramètres, ou utiliser une combinaison de paramètres passés
     au build courant, et vos propres paramètres traditionnels. Ou alors, si
     vous avez beaucoup de paramètres, vous pouvez les charger à partir d'un
@@ -732,7 +732,7 @@ Finished: SUCCESS</screen>
     moreinfo="none">TARGET_PLATFORM</literal>.</para>
     <figure float="0" id="fig-hudson-build-parameters-deploy-trigger">
       <title>Passer un paramètre prédéfini à une tâche de build
-      paramétrée</title>
+      paramétré</title>
       <mediaobject id="I_mediaobject10_d1e14510">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1018.pdf" format="PDF" />
@@ -753,14 +753,14 @@ Finished: SUCCESS</screen>
         significance="normal">
         <primary>tâche de build multiconfiguration</primary>
       </indexterm><indexterm id="I_indexterm10_d1e14528" significance="normal">
-        <primary>tâches de build paramétrées</primary>
+        <primary>tâches de build paramétré</primary>
         <seealso>tâches de build multiconfiguration</seealso>
       </indexterm>multiconfiguration sont une fonctionnalité extrêmement
     puissante de Jenkins. Une tâche de build multiconfiguration peut être vue
-    comme une tâche de build paramétrée qui peut peut être automatiquement
+    comme une tâche de build paramétré qui peut être automatiquement
     lancée avec toutes les combinaisons possibles de paramètres qu'elle puisse
     accepter. Elles sont particulièrement utiles pour les tests, vous
-    permettant en effet de tester votre application avec une seule tâche de
+    permettant ainsi de tester votre application avec une seule tâche de
     build, mais avec une grande variété de conditions (navigateurs, bases de
     données, et ainsi de suite).</para>
     <sect2>
@@ -844,7 +844,7 @@ Finished: SUCCESS</screen>
         </indexterm> première option consiste à configurer votre build pour
       exécuter simultanément le build sur différentes machines esclaves (voir
       <xref linkend="chapter-distributed-builds" />). Evidemment, l'idée
-      d'avoir un ensemble de machines esclaves est habituellement pour que
+      d'avoir un ensemble de machines esclaves est généralement pour que
       vous puissiez exécuter votre build sur n'importe laquelle. Mais il y a
       des cas où il est normal d'être plus sélectif. Par exemple, vous
       pourriez vouloir lancer vos tests sur Windows, Mac OS X, et Linux. Dans
@@ -881,7 +881,7 @@ Finished: SUCCESS</screen>
       machines Windows sur lesquelles est installé MySQL, vous pouvez utiliser
       une expression comme <literal moreinfo="none">windows &amp;&amp;
       mysql</literal>.</para>
-      <para>Nous discutons du travail avec des noeuds esclaves et les builds
+      <para>Nous traitons du travail avec des noeuds esclaves et les builds
       distribués plus en <indexterm class="endofrange"
           id="I_indexterm10_d1e14628" significance="normal"
           startref="ch10-slave1">
@@ -948,7 +948,7 @@ Finished: SUCCESS</screen>
       arbitraires que vous définissez. Par exemple, vous pouvez fournir une
       liste de bases de données que vous avez besoin de tester, ou une liste
       de navigateurs à utiliser dans vos tests web. Ceci est très similaire
-      aux paramètres pour une tâche de build paramétrée, excepté que vous
+      aux paramètres pour une tâche de build paramétré, excepté que vous
       fournissez la liste complète des valeurs possibles, et que plutôt que
       d'interroger l'utilisateur pour qu'il entre une valeur, Jenkins lance le
       build avec <emphasis>toutes</emphasis> les valeurs fournies (<xref
@@ -1066,7 +1066,7 @@ Finished: SUCCESS</screen>
       correctes navigateur/système d'exploitation seraient exécutées (voir
       <xref linkend="fig-hudson-multi-config-filter-result" />). Les builds
       exécutés sont affichés dans les couleurs habituelles, alors que les
-      builds sautés sont grisés.</para>
+      builds non-exécutés sont grisés.</para>
       <figure float="0" id="fig-hudson-multi-config-filter-result">
         <title>Résultats de build utilisant un filtre de combinaison</title>
         <mediaobject id="I_mediaobject10_d1e14783">
@@ -1078,7 +1078,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Une autre raison pour utiliser un filtre de build est qu'il y a
+      <para>Une autre raison d'utiliser un filtre de build est qu'il y a
       simplement trop de combinaisons valides pour s'exécuter dans un temps
       raisonnable. Dans ce cas, la meilleure solution pourrait être
       d'augmenter la capacité de votre serveur de build. La deuxième meilleure
@@ -1097,7 +1097,7 @@ Finished: SUCCESS</screen>
       de filtre (comme celle montrée ci-dessus) pour définir le ou les
       premiers builds à exécuter. Vous pouvez aussi spécifier si le build
       devrait continuer seulement si ces builds sont réussis, ou même s'ils
-      échouent. Une fois que ces builds ont terminé comme attendu, Jenkins
+      échouent. Une fois que ces builds se sont terminés comme prévu, Jenkins
       procédera au lancement des autres<indexterm class="endofrange"
           id="I_indexterm10_d1e14799" significance="normal"
           startref="ch10-mrun1">
