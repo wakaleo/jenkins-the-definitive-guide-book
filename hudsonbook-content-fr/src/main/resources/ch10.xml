@@ -1576,13 +1576,13 @@ Finished: SUCCESS</screen>
       tâche de build en parallèle, les tâches de build multiconfiguration
       (voir <xref linkend="sect-multi-configuration-build-jobs" />) sont une
       excellente option. Ceci peut s'avérer très pratique comme moyen
-      d'accéler votre processus de build. Une application typiquement des
-      tâches de build multiconfiguration mis en contexte est d'exécuter des
+      d'accéler votre processus de build. Une application typique des
+      tâches de build multiconfiguration dans ce contexte est d'exécuter des
       tests d'intégration en parallèle. Vous pourriez définir des profils
       Maven par exemple, ou configurer votre build pour utiliser des
       paramètres de ligne de commande pour décider quels tests exécuter. Une
       fois que vous avez configuré vos scripts de build de cette façon, il est
-      aisé de configuration une tâche de build multiconfiguration pour
+      aisé de configurer une tâche de build multiconfiguration pour
       exécuter un sous ensemble de vos tests d'intégration en
       parallèle.</para>
       <para>Vous pouvez aussi faire que Jenkins déclenche plusieurs tâches
@@ -1590,8 +1590,8 @@ Finished: SUCCESS</screen>
       d'autres projets" (voir <xref
       linkend="fig-hudson-build-other-projects" />). Les tâches de build
       suivantes seront exécutées en parallèle autant que possible. Toutefois,
-      comme nous le verrons plus loin, cela peut ne pas être toujours
-      exactement ce que dont vous avez besoin.</para>
+      comme nous le verrons plus loin, cela peut ne pas toujours être
+      exactement ce dont vous avez besoin.</para>
       <figure float="none" id="fig-hudson-build-other-projects">
         <title>Déclencher plusieurs autres builds après une tâche de
         build</title>
@@ -1681,9 +1681,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">phoenix-deploy-to-uat</command> (voir <xref
       linkend="fig-hudson-build-join" />). Le champ “Construire d'autres
       projets” n'est pas modifié, et liste encore les tâches de build à
-      déclencher immédiatement après la tâche courante. Le champ déclenchement
-      de buildfield is not modified, and still lists the build jobs to be
-      triggered immediately after the current one. Le champ déclencheur de
+      déclencher immédiatement après la tâche courante. Le champ déclencheur de
       jonction contient les tâches de build à lancer une fois que toutes les
       tâches avals immédiates se sont terminées.</para>
       <figure float="0" id="fig-hudson-build-join">
@@ -1736,7 +1734,7 @@ Finished: SUCCESS</screen>
         </indexterm>situations, vous pourriez être capable de lancer une série
       de builds en parallèle jusqu'à un certain point, mais certaines tâches
       de build pourraient ne pas pouvoir être lancées en parallèle parce
-      qu'elles accèdent des ressources en concurrence. Bien sûr, des tâches de
+      qu'elles accèdent à des ressources en concurrence. Bien sûr, des tâches de
       build bien conçues devraient s'efforcer d'être aussi indépendantes que
       possible, mais cela peut parfois être difficile. Par exemple,
       différentes tâches de build peuvent accéder à la même base de données de
@@ -1785,7 +1783,7 @@ Finished: SUCCESS</screen>
       que vous venez juste de créer (voir <xref
       linkend="fig-jenkins-build-locks" />). Une fois que avez fait cela pour
       chacune des tâches de build qui ont besoin d'accéder à la ressource en
-      question, seule une de des tâches de build pourra s'exécuter à un
+      question, seule une des tâches de build pourra s'exécuter à un
       instant<indexterm class="endofrange" id="I_indexterm10_d1e15304"
           significance="normal" startref="ch10-locks1">
           <primary></primary>
@@ -1810,14 +1808,14 @@ Finished: SUCCESS</screen>
     </sect2>
   </sect1>
   <sect1 id="sect-build-pipelines">
-    <title>Pipelines de build et Promotions</title>
+    <title>Pipelines de build et promotions</title>
     <para>L'intégration<indexterm class="startofrange" id="ch10-pipe"
         significance="normal">
         <primary>pipelines de build</primary>
       </indexterm><indexterm id="I_indexterm10_d1e15327" significance="normal">
         <primary>pipelines</primary>
         <see>pipelines de build</see>
-      </indexterm> Continue ne consiste pas simplement à construire et tester
+      </indexterm> continue ne consiste pas simplement à construire et tester
     automatiquement un logiciel, elle peut aussi apporter une aide dans un
     contexte plus large de dévéloppement de produit logiciel et de cycle de
     vie de release. Dans de nombreuses organisation, la vie d'une version
@@ -1841,11 +1839,11 @@ Finished: SUCCESS</screen>
     regarderons comment implémenter des pipelines de build en utilisant
     Jenkins.</para>
     <sect2 id="jenkins-maven-releases">
-      <title>Gestion les Releases Maven avec le plugin M2Release</title>
+      <title>Gestion des releases Maven avec le plugin M2Release</title>
       <para>Une part importante de tout pipeline de build est d'avoir une
       stratégie de release bien définie. Ceci implique, entre autres choses,
       de dédier comment et quand lancer une nouvelle release, et comment
-      l'identifier avec un unique libellé ou numéro de version. Si <indexterm
+      l'identifier avec un libellé unique ou numéro de version. Si <indexterm
           class="startofrange" id="ch10-numbers1" significance="normal">
           <primary>pipelines de build</primary>
           <secondary>numéros de versions Maven pour</secondary>
@@ -1863,7 +1861,7 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm id="I_indexterm10_d1e15366"
           significance="normal">
           <primary>Maven Release plugin</primary>
-        </indexterm>le Maven Release plugin pour gérer les numéros de versions
+        </indexterm>le plugin Maven Release pour gérer les numéros de versions
       est une pratique hautement recommandée.</para>
       <para>Les projets Maven utilisent des numéros de version bien définis et
       bien structurés. Un numéro de version typique est composé de trois
@@ -1876,27 +1874,27 @@ Finished: SUCCESS</screen>
       projets. Les numéros de version utilisés dans des artefacts Maven sont
       une part critique du système de gestion de dépendances Maven, et il est
       fortement conseillé de respecter les conventions Maven.</para>
-      <para>Le Maven Release plugin aide à automatiser le processus de mise à
+      <para>Le plugin Maven Release aide à automatiser le processus de mise à
       jour des numéros de version Maven de vos projets. En résumé, cela
       vérifie, construit et teste votre application, monte les numéros de
       version, met à jour votre système de contrôle de versions avec les tags
       appropriés, et déploie les versions de release de vos artefacts dans
       votre dépôt Maven. C'est une tâche fastidieuse à faire manuellement, le
-      Maven Release plugin est donc un excellent moyen d'automatiser les
+      plugin Maven Release est donc un excellent moyen d'automatiser les
       choses.</para>
-      <para>Toutefois, le Maven Release plugin peut aussi être capricieux. Des
-      fichiers locaux non committés ou modifiés peuvent faire échouer le
+      <para>Toutefois, le plugin Maven Release peut aussi être capricieux. Des
+      fichiers locaux non-archivés ou modifiés peuvent faire échouer le
       processus, par exemple. Le processus est aussi consommateur en temps et
       consomme intensivement le CPU, plus spécialement pour les gros projets :
-      cela construit et exécute l'ensemble entier de tests unitaires et
+      cela construit et exécute entièrement l'ensemble de tests unitaires et
       d'intégration plusieurs fois, récupère une copie propre du code depuis
       le dépôt, et envoie plusieurs artefacts au dépôt d'entreprise.
-      Clairement, ce n'est pas le genre de chose que vous voulez exécuter sur
+      Concrètement, ce n'est pas le genre de chose que vous voulez exécuter sur
       une machine de développeur.</para>
       <para>Il est donc de bon ton d'exécuter ce processus sur votre serveur
       de build.</para>
       <para>Une façon de faire cela est de configurer une tâche manuelle de
-      build spéciale invoquant le Maven Release plugin. Toutefois, le plugin
+      build spéciale invoquant le plugin Maven Release. Toutefois, le plugin
       M2Release propose une approche plus simple. En utilisant ce plugin, vous
       pouvez ajouter la possibilité de construire une version de release Maven
       à une tâche existante. Vous pouvez ainsi éviter de dupliquer des tâches
@@ -1926,7 +1924,7 @@ Finished: SUCCESS</screen>
       “Perform Maven Release” (voir <xref
       linkend="fig-jenkins-m2-release-menu" />).</para>
       <figure float="none" id="fig-jenkins-m2-release-menu">
-        <title>The Perform Maven Release menu option</title>
+        <title>L'option de menu Perform Maven Release</title>
         <mediaobject id="I_mediaobject10_d1e15405">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1037.pdf" format="PDF" />
@@ -1940,11 +1938,11 @@ Finished: SUCCESS</screen>
       que vous avez fournis dans la configuration du plugin (voir <xref
       linkend="fig-jenkins-perform-release" />). Jenkins vous offre le choix
       d'utiliser soit les numéros de version par défaut fournis par Maven (par
-      exemple, la version 1.0.1-SNAPSHOT sera releasée 1.0.1, et le numéro de
-      version de développement monté à 1.0.2-<phrase
+      exemple, la version 1.0.1-SNAPSHOT sera livrée avec la version 1.0.1, et le numéro de
+      version en développement sera positionnée à 1.0.2-<phrase
       role="keep-together">SNAPSHOT</phrase>), soit de fournir vos propres
-      numéros de version personnalisés. Si vous voulez releaser une version
-      majeure, par exemple, vous pourriez décider de spécifier manuellement
+      numéros de version personnalisés. Si, par exemple, vous voulez livrer une version
+      majeure vous pourriez décider de spécifier manuellement
       1.1.0 comme numéro de version et 1.1.1-SNAPSHOT comme prochain numéro de
       version de développement.</para>
       <para>Si vous avez un projet multimodule Maven, vous pouvez choisir une
@@ -1974,7 +1972,7 @@ Finished: SUCCESS</screen>
         </indexterm>édition professionnelle du Dépôt d'Entreprise Nexus
       fournit une fonctionnalité appelée Staging Repositories, qui permet
       de déployer des artefacts dans un espace spécial de staging afin de
-      faire davantage de tests avant de les releaser officiellement. Si vous
+      faire davantage de tests avant de les livrer officiellement. Si vous
       utilisez cette fonctionnalité, vous devez paramétrer plus finement votre
       configuration de serveur de build pour de meilleurs résultats.</para>
       <para>Nexus Professional travaille en créant un nouvel espace de staging
@@ -2081,7 +2079,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">gameoflife-web/target/gameoflife.war</literal>). Notez
       que par défaut, Jenkins copiera la structure de répertoire en même temps
       que le fichier que vous récupérez, ainsi si le fichier WAR se trouve
-      dans dans le répertoire target du module <literal
+      dans dans le répertoire <filename moreinfo="none">target</filename> du module <literal
       moreinfo="none">gameoflife-web</literal>, Jenkins le placera dans le
       répertoire <filename moreinfo="none">gameoflife-web/target</filename> de
       votre espace de travail courant. Si cela ne vous convient pas, vous
@@ -2089,7 +2087,7 @@ Finished: SUCCESS</screen>
       mettre tous les artefacts à la racine du répertoire que vous spécifiez
       (ou, par défaut, dans l'espace de travail de votre projet).</para>
       <para>Souvent, vous voudrez simplement récupérer des artefacts depuis le
-      build en succès le plus récent. Toutefois, vous voudrez parfois plus de
+      build réussi le plus récent. Toutefois, vous voudrez parfois plus de
       précision. Le champ "Quel build” vous permet de spécifier où chercher
       des artefacts d'un bon nombre d'autres façons, incluant le dernier build
       sauvé (builds qui ont été marqués à "toujours conserver"), le dernier
@@ -2107,12 +2105,12 @@ Finished: SUCCESS</screen>
       produits depuis.</para>
       <para>Si vous copiez des artefacts d'une tâche de build multimodule
       Maven, Jenkins copiera, par défaut, tous les artefacts de ce build.
-      Toutefois vous êtes souvent uniquement intéressé par un artefact
+      Toutefois vous êtes souvent intéressé uniquement par un artefact
       spécifique (comme l'artefact WAR pour une application web, par
       exemple).</para>
       <para>Ce plugin est particulièrement utile quand vous avez besoin
       d'exécuter des tests fonctionnels ou de performance sur votre
-      application web. Il est souvent une stratégie utile de placer ces tests
+      application web. Il est souvent stratégiquement utile de placer ces tests
       dans un projet séparé, et non comme une partie de votre processus de
       build principal. Cela facilite l'exécution de ces tests sur différents
       serveurs ou d'exécuter le sous-ensemble des tests en parallèle, tout en
@@ -2147,7 +2145,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Le plugin Copy Artifact n'est pas limité à la récupération de
+      <para>Le plugin Copy Artifact n'est pas restreint à la récupération de
       fichiers depuis des tâches de build conventionnelles. Vous pouvez aussi
       copier des artefacts à partir de tâches de build multiconfiguration
       (voir <xref linkend="sect-multi-configuration-build-jobs" />). Les
@@ -2161,7 +2159,7 @@ Finished: SUCCESS</screen>
       multiconfiguration comme celle illustrée dans <xref
       linkend="fig-jenkins-multi-config-artifacts" />.</para>
       <figure float="0" id="fig-jenkins-multi-config-artifacts">
-        <title>Copier à partir d'une build multiconfiguration</title>
+        <title>Copier à partir d'un build multiconfiguration</title>
         <mediaobject id="I_mediaobject10_d1e15553">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1041.pdf" format="PDF" />
@@ -2173,15 +2171,15 @@ Finished: SUCCESS</screen>
       </figure>
       <para>Le plugin Copy Artifacts peut dupliquer n'importe lequel ou même
       tous les artefacts produits par cette tâche de build. Si vous spécifiez
-      un build multiconfiguration comme la source de vos artefacts, le plugin
+      un build multiconfiguration comme source de vos artefacts, le plugin
       copiera les artefacts de toutes les configurations dans l'espace de
       travail de la tâche de build cible, en utilisant une structure de
       répertoire imbriquée basée sur les axes du build multiconfiguration. Par
-      exemple, si vous définissez le répertoire target comme <filename
+      exemple, si vous définissez le répertoire cible comme <filename
       moreinfo="none">multi-config-artifacts</filename>, Jenkins copiera les
       artefacts dans un certain nombre de sous-répertoires dans le répertoire
-      target, chacun avec un nombre correspondant à un ensemble de paramètres
-      particulier. Ainsi, en utilisant la tâche de build illustrée dans <xref
+      cible, chacun avec un nom correspondant à un ensemble particulier de 
+      paramètres. Ainsi, en utilisant la tâche de build illustrée dans <xref
       linkend="fig-jenkins-multi-config-artifacts" />, le fichier JAR
       personnalisé pour Tomcat et MySql serait copié<indexterm
           class="endofrange" id="I_indexterm10_d1e15565" significance="normal"
@@ -2190,11 +2188,11 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15567"
           significance="normal" startref="ch10-art2">
           <primary></primary>
-        </indexterm> dans <filename moreinfo="none">le répertoire
+        </indexterm> dans le répertoire <filename moreinfo="none">
       $WORKSPACE/multi-config-artifacts/APP_SERVER/tomcat/DATABASE/mysql</filename>.</para>
     </sect2>
     <sect2 id="sect-build-promotion">
-      <title>Promotions de Build</title>
+      <title>Promotions de build</title>
       <para>Dans le <indexterm class="startofrange" id="ch10-promote1"
           significance="normal">
           <primary>pipelines de build</primary>
@@ -2205,10 +2203,10 @@ Finished: SUCCESS</screen>
         </indexterm>monde de l'Intégration Continue, tous les builds créés ne
       sont pas égaux. Par exemple, vous pourriez vouloir déployer la dernière
       version de votre application web sur un serveur de test, mais seulement
-      après avoir réussi un certain nombre de tests automatisés fonctionnels
+      après avoir réussi un certain nombre de tests fonctionnels automatisés
       ou de charge. Ou vous pourriez vouloir que les testeurs puissent marquer
-      certains builds comme étant prêts pour un déploiement pour des tests
-      d'acceptation utilisateur, une fois qu'ils ont terminé leurs propres
+      certains builds comme étant prêts pour un déploiement pour les tests
+      d'acceptation utilisateur, une fois qu'ils aient terminé leurs propres
       tests.</para>
       <para>Le plugin<indexterm id="I_indexterm10_d1e15589"
           significance="normal">
@@ -2227,18 +2225,18 @@ Finished: SUCCESS</screen>
       <para>Voyons comment cela fonctionne en pratique. Dans le projet
       illustré ci-dessus, une tâche de build par défaut (<command
       moreinfo="none">phoenix-default</command>) exécute des tests unitaires
-      et d'intégration, puis produit un fichier WAR. Ce WAR est ensuite
+      et d'intégration, puis produit un fichier WAR. Ce fichier WAR est ensuite
       réutilisé pour des tests plus étendus (dans la tâche de build <command
       moreinfo="none">phoenix-integration-tests</command>) et ensuite pour une
       série de tests web automatisés (dans la tâche de build <command
       moreinfo="none">phoenix-web-test</command>). Si le build réussit les
-      tests web automatisés, nous voudrions déployer l'application dans un
-      environnement de tests fonctionnel où elle pourrait être testée par des
+      tests web automatisés, nous aimerions déployer l'application dans un
+      environnement de tests fonctionnels où elle pourrait être testée par des
       testeurs humains. Le déploiement dans cet environnement est effectué
       avec la tâche de build <command
       moreinfo="none">phoenix-test-deploy</command>. Une fois que les testeurs
-      ont validé la version, elle peut être promue vers l'environnent de test
-      d'acceptation utilisateurs, et enfin en production. La stratégie
+      ont validé la version, elle peut être promue vers l'environnement de tests
+      d'acceptation utilisateur, et enfin en production. La stratégie
       complète de promotion est illustrée dans <xref
       linkend="fig-jenkins-build-promotion-jobs" />.</para>
       <figure float="none" id="fig-jenkins-build-promotion-jobs">
@@ -2254,7 +2252,7 @@ Finished: SUCCESS</screen>
       </figure>
       <para>Cette stratégie est facile à implémenter en utiliser le plugin
       Promoted Builds. Une fois que vous l'avez installé de la façon
-      habituelle, vous trouvez une nouvelle case "Promouvoir builds quand"
+      habituelle, vous trouverez une nouvelle case "Promouvoir builds quand"
       dans la page de configuration de la tâche. Cette option est utilisé pour
       configurer les processus de promotion de build. Vous définissez un ou
       plusieurs processus de promotion de build dans la tâche de build
@@ -2285,9 +2283,9 @@ Finished: SUCCESS</screen>
       <para>Regardons à présent comment configurer le processus de build
       automatisé <emphasis>promote-to-test</emphasis>.</para>
       <para>Vous devez commencer par définir comment le processus de promotion
-      de build sera déclenché. La Promotion de Build peut être soit
+      de build sera déclenché. La promotion de build peut être soit
       automatique, basée sur le résultat d'une tâche de build aval, soit
-      manuellement activée par un utilisateur. Dans <xref
+      activée manuellement par un utilisateur. Dans <xref
       linkend="fig-jenkins-build-promotion" />, la promotion de build pour
       cette tâche de build sera automatiquement déclenchée lorsque les tests
       web automatisés (exécuté par la tâche de build <command
@@ -2297,15 +2295,15 @@ Finished: SUCCESS</screen>
       linkend="fig-jenkins-manual-build-promotion" />. La promotion de build
       manuelle est utilisée pour les cas où une intervention humaine est
       requise pour approuver une promotion de build. Le déploiement dans
-      l'environnement de test d'acceptation d'utilisateur ou de production
-      sont des exemples courants de cela. Un autre exemple est lorsque vous
-      voulez temporairement suspendre les promotions de build pour une courte
+      l'environnement de test d'acceptation utilisateur ou de production
+      en sont des exemples courants. Autre exemple, lorsque vous
+      voulez suspendre temporairement les promotions de build pour une courte
       période, comme à l'approche d'une release.</para>
       <para>Les builds manuels, comme leur nom le suggère, nécessite d'être
       approuvés manuellement avant de pouvoir être exécutés. Si le processus
       de promotion consiste à déclencher une tâche de build paramétrée, vous
       pouvez aussi fournir des paramètres que l'approbateur devra entrer lors
-      de l'approbation. Dans certains, il peut être utile de désigner certains
+      de l'approbation. Dans certains cas, il peut être utile de désigner certains
       utilisateurs autorisés à activer la promotion manuelle. Vous pouvez
       faire cela en spécifiant une liste d'utilisateurs ou de groupes dans la
       liste d'approbateurs.</para>
@@ -2350,7 +2348,7 @@ Finished: SUCCESS</screen>
       incluent l'invocation de script Maven ou Ant, le déploiement d'artefacts
       dans un dépôt Maven, ou le déclenchement d'un autre build.</para>
       <para>Une chose importante à garder à l'esprit ici est que vous ne
-      pouvez pas reposer sur des fichiers de l'espace de travail lors de la
+      pouvez pas vous reposer sur des fichiers de l'espace de travail lors de la
       promotion de votre build. En effet, au moment où vous promouvez votre
       build, automatiquement ou manuellement, d'autres tâches de build
       pourraient avoir supprimé ou réécrit les fichiers que vous avez besoin
@@ -2424,8 +2422,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ce n'est pas encore tout à fait tout ce que nous devons faire pour
-      les tests d'intégration, toutefois. La tâche de build <command
+      <para>Cependant, ce n'est pas encore tout à fait tout ce que nous devons faire pour
+      les tests d'intégration. La tâche de build <command
       moreinfo="none">phoenix-integration</command> est suivie de la tâche de
       build <command moreinfo="none">phoenix-web</command>, qui exécute les
       tests web automatisés. Pour s'assurer que le même fichier WAR est
@@ -2471,7 +2469,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">phoenix-web</command>. Comme nous l'avons évoqué
       précédemment, Jenkins a besoin de pouvoir être sûr que le fichier WAR
       utilisé dans ces tests est le même que celui généré dans le build
-      original. Nous faisons cela en activant la création de fingerpritn sur
+      original. Nous faisons cela en activant la création de fingerprint sur
       le fichier WAR que nous avons récupéré depuis la tâche de build <command
       moreinfo="none">phoenix-integration</command> (qui, rappelez-vous, a
       originellement été construit par la tâche <command
@@ -2493,10 +2491,10 @@ Finished: SUCCESS</screen>
       </figure>
       <para>L'étape final consiste à configurer la tâche de build <command
       moreinfo="none">phoenix-deploy-to-test</command> pour récupérer le
-      dernier WAR promu (plutôt que simplement le dernier réussi). Pour faire
+      dernier WAR promu (plutôt que le dernier réussi). Pour faire
       cela, nous utilisons à nouveau le plugin Copy Artifact, mais cette fois
       nous choisissons l'option "Spécifier par permalien". Ici, Jenkins
-      proposera, entre autres choses, les processus de build configurés pour
+      proposera, entre autres choses, les processus de promotion de build configurés pour
       la tâche de build à partir de laquelle vous êtes en train de copier.
       Donc, dans <xref linkend="fig-jenkins-copy-promoted-war" />, nous
       récupérons le dernier fichier WAR promu par la tâche <command
@@ -2516,7 +2514,7 @@ Finished: SUCCESS</screen>
       <para>Notre processus de promotion est maintenant prêt pour l'action.
       Quand les tests web automatisés réussiront lors d'un build particulier,
       la tâche de build originale sera promu et le fichier WAR correspondant
-      déployé dans l'environnement de test. Les builds promus sotn indiqués
+      déployé dans l'environnement de test. Les builds promus sont indiqués
       par une étoile dans l'historique de build (voir <xref
       linkend="fig-jenkins-promoted-build-history" />). Par défaut, les
       étoiles sont jaunes, mais vous pouvez configurer la couleur de l'étoile
@@ -2643,7 +2641,7 @@ Finished: SUCCESS</screen>
       l'idée de la promotion de build encore plus loin, et vous aide à
       concevoir et superviser des pipelines de déploiement. Un pipeline de
       déploiement est une façon d'orchestrer vos builds au travers d'une série
-      de passage qualité, avec des approbations automatisées ou manuelles à
+      de passages garantissant la qualité, avec des approbations automatisées ou manuelles à
       chaque étape, culminant avec le déploiement en production.</para>
       <para>Le <indexterm id="I_indexterm10_d1e15926" significance="normal">
           <primary>plugin Build Pipeline</primary>
@@ -2657,7 +2655,7 @@ Finished: SUCCESS</screen>
       linéaire, une série de tâches de build exécutées en séquence.</para>
       <para>Pour utiliser ce plugin, commencez par configurer les tâches de
       build avals pour chaque tâche de build dans le pipeline, en utilisant le
-      champ “Construire d'autres projets” comme vous feriez habituellement. Le
+      champ “Construire d'autres projets” comme vous le feriez habituellement. Le
       plugin Build Pipeline utilise les configurations de build amont ou aval
       standards, et pour les étapes automatiques c'est tout ce que vous avez à
       faire. Toutefois, le plugin Build Pipeline supporte aussi les étapes de
