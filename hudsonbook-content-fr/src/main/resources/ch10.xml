@@ -1128,24 +1128,24 @@ Finished: SUCCESS</screen>
     nécessiterait la configuration de 20 à 50 tâches une par une ! De plus,
     plusieurs de ces tâches pourraient avoir en commun des éléments de
     configuration, comme des goals Maven ou des paramètres de configuration
-    mémoire, ce qui résulte dans une configuration dupliquée et un surplus de
+    mémoire, ce qui résulte en une configuration dupliquée et un surplus de
     maintenance.</para>
     <para>Par exemple, si vous décidez d'exécuter <literal moreinfo="none">mvn
     clean install</literal> au lieu de <literal moreinfo="none">mvn clean
     deploy</literal> pour vos tâches de release et de passer à des méthodes de
-    déploiement alternatives, comme celles fournies par l'<ulink
+    déploiement alternatives, comme celles fournies par le plugin<ulink
     url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
-    plugin</ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
+    </ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
     tâches concernées et de les mettre à jour manuellement.</para>
     <para>Sinon, vous pourriez tirer parti du fait que Jenkins est un outil
-    simple et direct qui garde trace de toutes ses définitions dans des
-    fichiers plats sur le disque. En effet, vous pouvez mettre à jour les
+    simple et direct qui garde trace de toutes ses définitions sur le disque 
+    dans des fichiers bruts. En effet, vous pouvez mettre à jour les
     fichiers <filename moreinfo="none">config.xml</filename> de vos tâches
     directement dans le répertoire <filename
     moreinfo="none">.jenkins/jobs</filename> où ils sont conservés. Bien que
     cette approche fonctionnerait, elle est loin d'être idéale parce qu'elle
     implique un nombre assez important de sélections manuelles et de
-    remplacements fragiles dans des fichiers XML Jenkins.</para>
+    remplacements délicats dans des fichiers XML Jenkins.</para>
     <para>Il y a une troisième façon d'atteindre le nirvana des mises à jour
     massives de tâches : générer vos fichiers de configuration automatiquement
     en utilisant une sorte de fichier de définition. Le <indexterm
@@ -1234,7 +1234,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Voici une autre tâche construisant la branche master chez GitHub
+      <para>Voici une autre tâche réalisant la build de la branche master du projet 
+	  Jenkins hébergé chez GitHub
       :</para>
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;jenkins-master&lt;/id&gt;
@@ -1277,7 +1278,7 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Réutiliser une configuration de tâche par héritage</title>
-      <para>Etre <indexterm class="startofrange" id="ch10-inherit"
+      <para>Être <indexterm class="startofrange" id="ch10-inherit"
           significance="normal">
           <primary>Tâches de build Maven</primary>
           <secondary>générer automatiquement</secondary>
@@ -1286,8 +1287,8 @@ Finished: SUCCESS</screen>
       une configuration centralisée, comme un POM Maven, résout le problème de
       la création et de la mise à jour de plusieurs tâches à la fois. Tout ce
       que vous avez à faire est de modifier les définitions de job, relancer
-      le plugin et charger les définitions mises à jour avec <phrase
-      role="unicode">Adminitrer Jenkins→</phrase>“Recharger la configuration à
+      le plugin et charger les définitions mises à jour avec Administrer Jenkins<phrase
+      role="unicode">→</phrase>“Recharger la configuration à
       partir du disque”. Cette approche a aussi l'avantage de rendre facile le
       stockage de vos configurations de tâche dans un système de gestion de
       versions, ce qui rend par la même plus facile le suivi des changements
@@ -1338,7 +1339,7 @@ Finished: SUCCESS</screen>
 &lt;/jobs&gt;</screen>
       <para>Dans cette configuration,
       <emphasis>google-guice-inheritance-base</emphasis> est une tâche parent
-      abtraite contenant toutes les propriétés communes : le nom du JDK, le
+      abstraite contenant toutes les propriétés communes : le nom du JDK, le
       nom de Maven, le nombre de jours de conservation des logs, la politique
       de mise à jour SVN, les goals Maven et les destinataires email. Les
       trois tâches suivantes sont très courtes, spécifiant simplement qu'elles
@@ -1369,10 +1370,10 @@ Finished: SUCCESS</screen>
     <sect2>
       <title>Le support des plugins</title>
       <para>En plus de configurer une tâche et de réutiliser ses définitions,
-      vous pouvez appliquer utiliser un support spécial pour un certain nombre
-      de plugins Jenkins. Dès à présent, une utilisation simplifiée des
-      plugins Parameterized Trigger et Artifactory est fournie, avec un
-      support pour d'autres plugins populaires planifié pour de futures
+      vous pouvez bénéficier d'un support spécial pour un certain nombre
+      de plugins Jenkins. À l'heure actuelle, une utilisation simplifiée des
+      plugins Parameterized Trigger et Artifactory est fournie, un
+      support pour d'autres plugins populaires est prévu dans de futures
       versions.</para>
       <para>Ci-dessous<indexterm id="I_indexterm10_d1e14996"
           significance="normal">
@@ -1417,7 +1418,7 @@ Finished: SUCCESS</screen>
       l'invocation, les tâches spécifiées démarreront en parallèle. Pour une
       exécution en série, vous devrez connecter chaque tâche amont à une tâche
       aval avec <literal moreinfo="none">&lt;invoke&gt;</literal>.</para>
-      <para>Par défaut, l'invocation ne se fait que la tâche courante est
+      <para>Par défaut, l'invocation ne se fait que quand la tâche courante est
       stable. Ceci peut être modifié, comme montré dans les exemples suivants
       :</para>
       <screen format="linespecific">&lt;invoke&gt;
@@ -1443,9 +1444,9 @@ Finished: SUCCESS</screen>
       <para>La seconde invocation dans l'exemple ci-dessus invoque les tâches
       avals même si une tâche amont est instable : l'invocation prend place
       quels que soient les résultats des tests. Cela peut être utilisé pour un
-      pipeline de tâches moins sensibles aux tests et leurs échecs.</para>
+      pipeline de tâches moins sensibles aux tests et à leurs échecs.</para>
       <para>La troisième invocation ci-dessus invoque les tâches avals
-      seulement une tâche amont échoue mais pas lorsqu'elle est stable ou
+      seulement quand une tâche amont échoue mais pas lorsqu'elle est stable ou
       instable. Cette configuration peut vous être utile si une tâche en échec
       doit effectuer des actions additionnelles autres que les notifications
       email tradtionnelles.</para>
@@ -1465,9 +1466,9 @@ Finished: SUCCESS</screen>
       gestionnaire de dépôt Maven. Le <ulink
       url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">plugin
       Jenkins Artifactory</ulink>, montré dans <xref
-      linkend="jenkins-plugin-artifactory" />, fournit un certain nombre de
-      bénéfices pour les tâches de build Jenkins. Nous avons déjà revu
-      quelques unes d'entre elles dans <xref
+      linkend="jenkins-plugin-artifactory" />, fournit un certain nombre
+      d'avantages pour les tâches de build Jenkins. Nous avons déjà passé en revu
+      quelques-unes d'entre elles dans <xref
       linkend="sect-builds-deploy-enterprise-repository" />, notamment la
       capacité à déployer des artefacts à l'achèvement de la tâche ou
       d'envoyer avec des informations de l'environnement de build avec les
@@ -1483,8 +1484,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Vous pouvez aussi utiliser le plugin Jenkins Artifactory en
-      conjonction avec le Maven Jenkins Plugin pour déployer dans Artifactory,
+      <para>Vous pouvez aussi utiliser le plugin Jenkins Artifactory
+      conjointement au Maven Jenkins Plugin pour déployer dans Artifactory,
       comme montré dans l'exemple suivant :</para>
       <screen format="linespecific">&lt;job&gt;
     ...
@@ -1538,8 +1539,8 @@ Finished: SUCCESS</screen>
       <para>Les tâches Freestyle vous permettent d'exécuter un shell ou une
       commande batch, exécuter Maven ou Ant, et invoquer d'autres tâches.
       Elles fournissent un environnement d'exécution bien pratique pour les
-      scripts systèmes ou tout autre type d'activité pas directement
-      disponible dans Jenkins ou l'un des ses plugins. En utilisant cette
+      scripts systèmes ou tout autre type d'activité qui n'est pas directement
+      implémentée dans Jenkins ou l'un des ses plugins. En utilisant cette
       approche, vous pouvez générer des fichiers de configuration de tâche de
       build Freestyle de façon similaire à l'approche que nous avons vue pour
       les tâches de build Maven, ce qui peut aider à rendre votre
