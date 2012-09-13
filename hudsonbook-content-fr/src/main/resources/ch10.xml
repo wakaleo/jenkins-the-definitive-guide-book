@@ -6,12 +6,12 @@
   <sect1 id="sect-advanced-builds-introduction">
     <title>Introduction</title>
     <para>Dans ce chapitre, nous regarderons quelques configurations avancées
-    de tâches de build. Nous discuterons de builds paramétrés, qui permettent
+    de tâches de build. Nous traiterons des builds paramétrés, qui permettent
     à Jenkins de demander à l'utilisateur des paramètres supplémentaires qui
     seront passés à la tâche de build, et des tâches de build
     multiconfigurations, qui vous permettent d'exécuter une simple tâche selon
     de nombreuses variations. Nous verrons comment exécuter les tâches en
-    parallèle, et attendre le résultat d'une ou plusieurs tâches avant de
+    parallèle, et comment attendre le résultat d'une ou plusieurs tâches avant de
     continuer. Nous verrons enfin comment implémenter des stratégies de
     promotion de build et de pipelines de build afin de pouvoir utiliser
     Jenkins non seulement comme un serveur de build, mais aussi comme un
@@ -33,7 +33,7 @@
         <primary>plugins</primary>
         <secondary>Parameterized Build</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e13896" significance="normal">
-        <primary>Parameterized Build plugin</primary>
+        <primary>le plugin Parameterized Build</primary>
       </indexterm> Parameterized Build vous permet de configurer des
     paramètres pour vos tâches de build, qui peuvent être entrés par
     l'utilisateur lorsque le build est déclenché, ou (comme nous le verrons
@@ -43,8 +43,9 @@
     démarrez le build. Vous pourriez aussi vouloir spécifier la version de
     l'application que vous souhaitez déployer. Ou, en exécutant une tâche de
     build incluant des tests web, vous pourriez spécifier le navigateur dans
-    lequel vous voulez faire tourner vos tests. Vous pouvez même uploader un
-    fichier nécessaire à l'exécution de la tâche de build.</para>
+    lequel vous voulez faire tourner vos tests Selenium ou WebDriver. Vous 
+	pouvez même télétransférer un fichier nécessaire à l'exécution de la tâche
+	de build.</para>
     <para>Notez que c'est le rôle du script de build d'analyser et de traiter
     correctement les valeurs de paramètres — Jenkins fournit simplement une
     interface utilisateur permettant d'entrer les valeurs des paramètres, puis
@@ -119,10 +120,10 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Quand l'utilisateur démarre un build paramétré (les constructions
-      paramétrées sont très souvent démarrées manuellement), Jenkins propose
+      <para>Quand l'utilisateur démarre un build paramétré (les builds
+      paramétrés sont très souvent démarrées manuellement), Jenkins propose
       une page dans laquelle l'utilisateur peut entrer une valeur pour chacun
-      des paramètres de la tâche de construction (voir <xref
+      des paramètres de la tâche de build (voir <xref
       linkend="fig-hudson-enter-string-parameter" />).</para>
       <figure float="0" id="fig-hudson-enter-string-parameter">
         <title>Ajouter un paramètre à la tâche de build</title>
@@ -168,7 +169,7 @@
       basique de <xref linkend="fig-hudson-parameterized-shell" />, où on
       affiche simplement le paramètre de build en retour dans la console.
       Notez que, pour rendre les variables plus portables à travers différents
-      systèmes d'exploitation, il est une bonne pratique de les mettre en
+      systèmes d'exploitation, il est préférable de les mettre en
       majuscules.</para>
       <figure float="0" id="fig-hudson-parameterized-shell">
         <title>Démonstration d'un paramètre de build</title>
@@ -191,8 +192,8 @@ jenkins5862957776458050998.sh
 <userinput moreinfo="none">Version=1.2.3</userinput>
 Notifying upstream projects of job completion
 Finished: SUCCESS</screen>
-      <para>Vous pouvez aussi utiliser ces variables d'environnement depuis
-      l'intérieur de vos scripts de build. Par exemple, dans un build Ant ou
+      <para>Vous pouvez aussi utiliser ces variables d'environnement au
+      sein de vos scripts de build. Par exemple, dans un build Ant ou
       Maven, vous pouvez utiliser la propriété spéciale <literal
       moreinfo="none">env</literal> pour accéder aux variables d'environnement
       courantes :</para>
@@ -205,7 +206,7 @@ Finished: SUCCESS</screen>
           <primary>propriétés</primary>
           <secondary>paramètres de build comme</secondary>
         </indexterm>paramètres au script de build comme une valeur de
-      propriété. Ce qui suit est un exemple plus pratique d'un fichier de POM
+      propriété. Ce qui suit est un exemple plus pratique d'un fichier POM de
       Maven. Dans cet exemple, Maven est configuré pour déployer un fichier
       WAR spécifique. Nous fournissons la version du fichier WAR à déployer
       dans la propriété <literal moreinfo="none">target.version</literal>, qui
@@ -229,7 +230,7 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-inject-parameter-maven" />). On peut ensuite
       utiliser un outil comme Cargo pour faire le déploiement réel — Maven
       téléchargera la version demandée du WAR depuis le gestionnaire de dépôt
-      d'entreprise, et la déploiera dans le serveur d'application.</para>
+      d'entreprise, et la déploiera sur un serveur d'application.</para>
       <figure float="none" id="fig-hudson-inject-parameter-maven">
         <title>Ajouter un paramètre à la tâche de build Maven</title>
         <mediaobject id="I_mediaobject10_d1e14066">
@@ -241,9 +242,9 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ceci, en résumé, montre comment vous pouvez intégrer des
-      paramètres de tâches de build dans vos builds. En plus de bons vieux
-      paramètres de type chaîne de caractères, toutefois, il existe quelques
+      <para>En résumé, cela montre comment il vous est possible d'intégrer des
+      paramètres de tâches de build dans vos builds. Toutefois, en plus des bons vieux
+      paramètres de type chaîne de caractères, il existe quelques
       types de paramètres plus sophistiqués, que nous regarderons dans les
       <indexterm class="endofrange" id="I_indexterm10_d1e14074"
           significance="normal" startref="ch10-script">
@@ -270,28 +271,28 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Types de paramètres plus avancés</title>
-      <para><firstterm>Les paramètres Mot de Passe</firstterm> <indexterm
+      <para><firstterm>Les paramètres Mot de passe</firstterm> <indexterm
           id="I_indexterm10_d1e14098" significance="normal">
-          <primary>paramètres Mot de Passe</primary>
+          <primary>paramètres Mot de passe</primary>
         </indexterm><indexterm class="startofrange" id="ch10-type1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
-          <secondary>types of parameters</secondary>
+          <secondary>types des paramètres</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-type2"
           significance="normal">
-          <primary>build jobs</primary>
-          <secondary>parameterized</secondary>
-          <tertiary>types of parameters</tertiary>
+          <primary>tâches de build</primary>
+          <secondary>paramétrées</secondary>
+          <tertiary>types des paramètres</tertiary>
         </indexterm>sont, comme vous pourriez vous y attendre, très similaires
       aux paramètres String, mis à part qu'ils sont affichés comme des champs
       mot de passe.</para>
-      <para>Il y a plusieurs cas où vous souhaitez présenter un ensemble
+      <para>Il existe plusieurs cas où vous souhaiteriez présenter un ensemble
       limité d'options de paramètres. Dans un build de déploiement, vous
-      pourriez vouloir permettre à l'utilisateur de choisir parmi un ensemble
+      pourriez permettre à l'utilisateur de choisir parmi un ensemble
       de serveurs cibles. Ou vous pourriez présenter une liste de navigateurs
       supportés pour une suite de tests d'acceptation. <firstterm>Les
       paramètres Choix</firstterm> vous permettent de définir un ensemble de
-      valeur qui seront affichées dans une liste déroulante (voir <xref
+      valeurs qui seront affichées dans une liste déroulante (voir <xref
       linkend="fig-hudson-build-parameter-choice" />). Vous devez fournir une
       liste de valeurs possibles, une par ligne, en commençant par la valeur
       par défaut.</para>
@@ -310,7 +311,7 @@ Finished: SUCCESS</screen>
           id="I_indexterm10_d1e14133" significance="normal">
           <primary>paramètres Booléen</primary>
         </indexterm>sont, comme vous vous y attendez, des paramètres qui
-      prennent une valeur <literal moreinfo="none">true</literal> ou <literal
+      prennent comme valeur <literal moreinfo="none">true</literal> ou <literal
       moreinfo="none">false</literal>. Ils sont présentés en tant que case à
       cocher.</para>
       <para>Deux types de paramètres plus exotiques, qui se comportent un peu
@@ -341,12 +342,12 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>L'URL (qui ressemble à
+      <para>L'URL (qui devrait ressembler à
       <emphasis>http://jenkins.myorg.com/job/game-of-life/197/</emphasis>)
       peut être utilisée pour obtenir une information ou des artefacts d'une
       exécution de build. Par exemple, vous pourriez récupérer le fichier JAR
       ou WAR archivé lors d'un build précédent et exécuter des tests plus
-      poussés sur celui-ci dans une tâche de build séparée. Par exemple, pour
+      poussés sur celui-ci dans une tâche de build séparée. Ainsi, pour
       accéder au fichier WAR d'un build précédent dans un projet Maven
       multimodules, l'URL ressemblerait à celle-ci :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14177">http://buildserver/job/game-of-life/197/artifact/gameoflife-web/target/
@@ -355,18 +356,18 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-parameter-run-param" />, vous pourriez accéder
       au fichier WAR en utilisant l'expression suivante :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14184">${RELEASE_BUILD}gameoflife-web/target/gameoflife.war</programlisting>
-      <para>Les paramètres Fichier parameters <indexterm
+      <para>Les paramètres Fichier <indexterm
           id="I_indexterm10_d1e14188" significance="normal">
           <primary>paramètres Fichier</primary>
-        </indexterm>vous permettent d'uploader un fichier dans l'espace de
-      travail de la tâche de build, pour qu'il puisse être utilisé dans le
+        </indexterm>vous permettent de télétransférer un fichier dans l'espace de
+      travail de la tâche de build, afin qu'il puisse être utilisé dans le
       script de build (voir <xref
       linkend="fig-hudson-build-parameter-file" />). Jenkins stockera le
       fichier à l'emplacement spécifié dans l'espace de travail du projet, où
       vous pouvez y accéder dans vos scripts de build. Vous pouvez utiliser la
       variable <literal moreinfo="none">WORKSPACE</literal> pour faire
       référence au répertoire de l'espace de travail courant, afin que vous
-      puissiez manipuler le fichier uploadé dans <xref
+      puissiez manipuler le fichier télétransferé dans <xref
       linkend="fig-hudson-build-parameter-file" /> en utilisant l'<indexterm
           class="endofrange" id="I_indexterm10_d1e14199" significance="normal"
           startref="ch10-type1">
@@ -403,8 +404,8 @@ Finished: SUCCESS</screen>
           significance="normal">
           <primary>Subversion</primary>
           <secondary>tags, build à partir de</secondary>
-        </indexterm> plugin parameterized trigger possède un support spécial
-      pour Subversion, vous permettant de construire à partir d'un tag
+        </indexterm> déclenchement paramétré possède un support spécial
+      pour Subversion, vous permettant ainsi de réaliser un build à partir d'un tag
       Subversion spécifique. C'est utile si vous voulez lancer un build de
       release en utilisant un tag généré par un build précédent. Par exemple,
       une tâche de build amont pourrait créer un tag d'une révision
@@ -425,7 +426,7 @@ Finished: SUCCESS</screen>
       Vous devez simplement fournir l'URL du dépôt Subversion pointant sur le
       répertoire des tags de votre projet.</para>
       <figure float="none" id="fig-jenkins-parameterized-subversion-tag">
-        <title>Ajouter des paramètres pour construire à partir d'un tag
+        <title>Ajouter des paramètres pour réaliser un build à partir d'un tag
         Subversion</title>
         <mediaobject id="I_mediaobject10_d1e14250">
           <imageobject role="print">
@@ -450,7 +451,7 @@ Finished: SUCCESS</screen>
         </indexterm> (voir <xref
       linkend="fig-jenkins-parameterized-subversion" />).</para>
       <figure float="none" id="fig-jenkins-parameterized-subversion">
-        <title>Construire à partir d'un tag Subversion</title>
+        <title>Réaliser un build à partir d'un tag Subversion</title>
         <mediaobject id="I_mediaobject10_d1e14269">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1011.pdf" format="PDF" />
@@ -462,8 +463,8 @@ Finished: SUCCESS</screen>
       </figure>
     </sect2>
     <sect2 id="sect-building-git-tag">
-      <title>Construire à partir d'un tag Git</title>
-      <para>Construire <indexterm class="startofrange" id="ch10-git1"
+      <title>Réaliser un build à partir d'un tag Git</title>
+      <para>Réaliser un build <indexterm class="startofrange" id="ch10-git1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
           <secondary>exécutées sur un tag Git</secondary>
@@ -504,7 +505,7 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>Une fois que vous avez ajouté ce paramètre, vous devez faire un
-      checkout du tag correspondant quand le dépôt a été cloné localement.
+      checkout du tag correspondant une fois que le dépôt a été cloné localement.
       Ainsi, si vous avez un build freestyle, la première étape du build sera
       un appel en ligne de commande à Git pour faire un checkout du tag
       référencé par le paramètre <literal moreinfo="none">RELEASE</literal>
@@ -522,7 +523,7 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm> indépendante du système d'exploitation.</para>
       <figure float="0" id="fig-jenkins-git-tag">
-        <title>Construire à partir d'un tag Git</title>
+        <title>Réaliser un build à partir d'un tag Git</title>
         <mediaobject id="I_mediaobject10_d1e14332">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1013.pdf" format="PDF" />
@@ -552,10 +553,10 @@ Finished: SUCCESS</screen>
       de la façon suivante :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14359">http://jenkins.acme.org/job/parameterized-build/buildWithParameters?VERSION=1.2.3</programlisting>
       <para>Quand vous utilisez une URL pour démarrer une tâche de build de
-      cette façon, rappelez-vous que les noms de paramètres sont sensibles à
+      cette façon, rappelez-vous que les noms des paramètres sont sensibles à
       la casse, et que les valeurs doivent être échappées (comme n'importe
       quel autre paramètre HTTP). Et si vous utilisez un paramètre Run, vous
-      devez fournir le nom de la tâche de build <emphasis>and</emphasis> le
+      devez fournir le nom de la tâche de build <emphasis>et</emphasis> le
       numéro d'exécution (e.g., <literal
       moreinfo="none">game-of-life#197</literal>) et pas seulement le
       numéro<indexterm class="endofrange" id="I_indexterm10_d1e14369"
@@ -596,7 +597,7 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-parameter-history" />), afin que vous puissiez
       toujours retrouver un ancien build et en vérifier les paramètres.</para>
       <figure float="none" id="fig-hudson-build-parameter-history">
-        <title>Jenkins stocke les valeurs de paramètres utilisées pour chaque
+        <title>Jenkins stocke les valeurs des paramètres utilisées pour chaque
         build</title>
         <mediaobject id="I_mediaobject10_d1e14411">
           <imageobject role="print">
