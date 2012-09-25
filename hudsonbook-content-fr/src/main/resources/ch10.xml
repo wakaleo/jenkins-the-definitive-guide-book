@@ -6,12 +6,12 @@
   <sect1 id="sect-advanced-builds-introduction">
     <title>Introduction</title>
     <para>Dans ce chapitre, nous regarderons quelques configurations avancées
-    de tâches de build. Nous discuterons de builds paramétrés, qui permettent
+    de tâches de build. Nous traiterons des builds paramétrés, qui permettent
     à Jenkins de demander à l'utilisateur des paramètres supplémentaires qui
     seront passés à la tâche de build, et des tâches de build
     multiconfigurations, qui vous permettent d'exécuter une simple tâche selon
     de nombreuses variations. Nous verrons comment exécuter les tâches en
-    parallèle, et attendre le résultat d'une ou plusieurs tâches avant de
+    parallèle, et comment attendre le résultat d'une ou plusieurs tâches avant de
     continuer. Nous verrons enfin comment implémenter des stratégies de
     promotion de build et de pipelines de build afin de pouvoir utiliser
     Jenkins non seulement comme un serveur de build, mais aussi comme un
@@ -33,7 +33,7 @@
         <primary>plugins</primary>
         <secondary>Parameterized Build</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e13896" significance="normal">
-        <primary>Parameterized Build plugin</primary>
+        <primary>le plugin Parameterized Build</primary>
       </indexterm> Parameterized Build vous permet de configurer des
     paramètres pour vos tâches de build, qui peuvent être entrés par
     l'utilisateur lorsque le build est déclenché, ou (comme nous le verrons
@@ -43,8 +43,9 @@
     démarrez le build. Vous pourriez aussi vouloir spécifier la version de
     l'application que vous souhaitez déployer. Ou, en exécutant une tâche de
     build incluant des tests web, vous pourriez spécifier le navigateur dans
-    lequel vous voulez faire tourner vos tests. Vous pouvez même uploader un
-    fichier nécessaire à l'exécution de la tâche de build.</para>
+    lequel vous voulez faire tourner vos tests Selenium ou WebDriver. Vous 
+	pouvez même télétransférer un fichier nécessaire à l'exécution de la tâche
+	de build.</para>
     <para>Notez que c'est le rôle du script de build d'analyser et de traiter
     correctement les valeurs de paramètres — Jenkins fournit simplement une
     interface utilisateur permettant d'entrer les valeurs des paramètres, puis
@@ -119,10 +120,10 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Quand l'utilisateur démarre un build paramétré (les constructions
-      paramétrées sont très souvent démarrées manuellement), Jenkins propose
+      <para>Quand l'utilisateur démarre un build paramétré (les builds
+      paramétrés sont très souvent démarrées manuellement), Jenkins propose
       une page dans laquelle l'utilisateur peut entrer une valeur pour chacun
-      des paramètres de la tâche de construction (voir <xref
+      des paramètres de la tâche de build (voir <xref
       linkend="fig-hudson-enter-string-parameter" />).</para>
       <figure float="0" id="fig-hudson-enter-string-parameter">
         <title>Ajouter un paramètre à la tâche de build</title>
@@ -168,7 +169,7 @@
       basique de <xref linkend="fig-hudson-parameterized-shell" />, où on
       affiche simplement le paramètre de build en retour dans la console.
       Notez que, pour rendre les variables plus portables à travers différents
-      systèmes d'exploitation, il est une bonne pratique de les mettre en
+      systèmes d'exploitation, il est préférable de les mettre en
       majuscules.</para>
       <figure float="0" id="fig-hudson-parameterized-shell">
         <title>Démonstration d'un paramètre de build</title>
@@ -191,8 +192,8 @@ jenkins5862957776458050998.sh
 <userinput moreinfo="none">Version=1.2.3</userinput>
 Notifying upstream projects of job completion
 Finished: SUCCESS</screen>
-      <para>Vous pouvez aussi utiliser ces variables d'environnement depuis
-      l'intérieur de vos scripts de build. Par exemple, dans un build Ant ou
+      <para>Vous pouvez aussi utiliser ces variables d'environnement au
+      sein de vos scripts de build. Par exemple, dans un build Ant ou
       Maven, vous pouvez utiliser la propriété spéciale <literal
       moreinfo="none">env</literal> pour accéder aux variables d'environnement
       courantes :</para>
@@ -205,7 +206,7 @@ Finished: SUCCESS</screen>
           <primary>propriétés</primary>
           <secondary>paramètres de build comme</secondary>
         </indexterm>paramètres au script de build comme une valeur de
-      propriété. Ce qui suit est un exemple plus pratique d'un fichier de POM
+      propriété. Ce qui suit est un exemple plus pratique d'un fichier POM de
       Maven. Dans cet exemple, Maven est configuré pour déployer un fichier
       WAR spécifique. Nous fournissons la version du fichier WAR à déployer
       dans la propriété <literal moreinfo="none">target.version</literal>, qui
@@ -229,7 +230,7 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-inject-parameter-maven" />). On peut ensuite
       utiliser un outil comme Cargo pour faire le déploiement réel — Maven
       téléchargera la version demandée du WAR depuis le gestionnaire de dépôt
-      d'entreprise, et la déploiera dans le serveur d'application.</para>
+      d'entreprise, et la déploiera sur un serveur d'application.</para>
       <figure float="none" id="fig-hudson-inject-parameter-maven">
         <title>Ajouter un paramètre à la tâche de build Maven</title>
         <mediaobject id="I_mediaobject10_d1e14066">
@@ -241,9 +242,9 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ceci, en résumé, montre comment vous pouvez intégrer des
-      paramètres de tâches de build dans vos builds. En plus de bons vieux
-      paramètres de type chaîne de caractères, toutefois, il existe quelques
+      <para>En résumé, cela montre comment il vous est possible d'intégrer des
+      paramètres de tâches de build dans vos builds. Toutefois, en plus des bons vieux
+      paramètres de type chaîne de caractères, il existe quelques
       types de paramètres plus sophistiqués, que nous regarderons dans les
       <indexterm class="endofrange" id="I_indexterm10_d1e14074"
           significance="normal" startref="ch10-script">
@@ -270,28 +271,28 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Types de paramètres plus avancés</title>
-      <para><firstterm>Les paramètres Mot de Passe</firstterm> <indexterm
+      <para><firstterm>Les paramètres Mot de passe</firstterm> <indexterm
           id="I_indexterm10_d1e14098" significance="normal">
-          <primary>paramètres Mot de Passe</primary>
+          <primary>paramètres Mot de passe</primary>
         </indexterm><indexterm class="startofrange" id="ch10-type1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
-          <secondary>types of parameters</secondary>
+          <secondary>types des paramètres</secondary>
         </indexterm><indexterm class="startofrange" id="ch10-type2"
           significance="normal">
-          <primary>build jobs</primary>
-          <secondary>parameterized</secondary>
-          <tertiary>types of parameters</tertiary>
+          <primary>tâches de build</primary>
+          <secondary>paramétrées</secondary>
+          <tertiary>types des paramètres</tertiary>
         </indexterm>sont, comme vous pourriez vous y attendre, très similaires
       aux paramètres String, mis à part qu'ils sont affichés comme des champs
       mot de passe.</para>
-      <para>Il y a plusieurs cas où vous souhaitez présenter un ensemble
+      <para>Il existe plusieurs cas où vous souhaiteriez présenter un ensemble
       limité d'options de paramètres. Dans un build de déploiement, vous
-      pourriez vouloir permettre à l'utilisateur de choisir parmi un ensemble
+      pourriez permettre à l'utilisateur de choisir parmi un ensemble
       de serveurs cibles. Ou vous pourriez présenter une liste de navigateurs
       supportés pour une suite de tests d'acceptation. <firstterm>Les
       paramètres Choix</firstterm> vous permettent de définir un ensemble de
-      valeur qui seront affichées dans une liste déroulante (voir <xref
+      valeurs qui seront affichées dans une liste déroulante (voir <xref
       linkend="fig-hudson-build-parameter-choice" />). Vous devez fournir une
       liste de valeurs possibles, une par ligne, en commençant par la valeur
       par défaut.</para>
@@ -310,7 +311,7 @@ Finished: SUCCESS</screen>
           id="I_indexterm10_d1e14133" significance="normal">
           <primary>paramètres Booléen</primary>
         </indexterm>sont, comme vous vous y attendez, des paramètres qui
-      prennent une valeur <literal moreinfo="none">true</literal> ou <literal
+      prennent comme valeur <literal moreinfo="none">true</literal> ou <literal
       moreinfo="none">false</literal>. Ils sont présentés en tant que case à
       cocher.</para>
       <para>Deux types de paramètres plus exotiques, qui se comportent un peu
@@ -341,12 +342,12 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>L'URL (qui ressemble à
+      <para>L'URL (qui devrait ressembler à
       <emphasis>http://jenkins.myorg.com/job/game-of-life/197/</emphasis>)
       peut être utilisée pour obtenir une information ou des artefacts d'une
       exécution de build. Par exemple, vous pourriez récupérer le fichier JAR
       ou WAR archivé lors d'un build précédent et exécuter des tests plus
-      poussés sur celui-ci dans une tâche de build séparée. Par exemple, pour
+      poussés sur celui-ci dans une tâche de build séparée. Ainsi, pour
       accéder au fichier WAR d'un build précédent dans un projet Maven
       multimodules, l'URL ressemblerait à celle-ci :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14177">http://buildserver/job/game-of-life/197/artifact/gameoflife-web/target/
@@ -355,18 +356,18 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-parameter-run-param" />, vous pourriez accéder
       au fichier WAR en utilisant l'expression suivante :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14184">${RELEASE_BUILD}gameoflife-web/target/gameoflife.war</programlisting>
-      <para>Les paramètres Fichier parameters <indexterm
+      <para>Les paramètres Fichier <indexterm
           id="I_indexterm10_d1e14188" significance="normal">
           <primary>paramètres Fichier</primary>
-        </indexterm>vous permettent d'uploader un fichier dans l'espace de
-      travail de la tâche de build, pour qu'il puisse être utilisé dans le
+        </indexterm>vous permettent de télétransférer un fichier dans l'espace de
+      travail de la tâche de build, afin qu'il puisse être utilisé dans le
       script de build (voir <xref
       linkend="fig-hudson-build-parameter-file" />). Jenkins stockera le
       fichier à l'emplacement spécifié dans l'espace de travail du projet, où
       vous pouvez y accéder dans vos scripts de build. Vous pouvez utiliser la
       variable <literal moreinfo="none">WORKSPACE</literal> pour faire
       référence au répertoire de l'espace de travail courant, afin que vous
-      puissiez manipuler le fichier uploadé dans <xref
+      puissiez manipuler le fichier télétransferé dans <xref
       linkend="fig-hudson-build-parameter-file" /> en utilisant l'<indexterm
           class="endofrange" id="I_indexterm10_d1e14199" significance="normal"
           startref="ch10-type1">
@@ -403,8 +404,8 @@ Finished: SUCCESS</screen>
           significance="normal">
           <primary>Subversion</primary>
           <secondary>tags, build à partir de</secondary>
-        </indexterm> plugin parameterized trigger possède un support spécial
-      pour Subversion, vous permettant de construire à partir d'un tag
+        </indexterm> déclenchement paramétré possède un support spécial
+      pour Subversion, vous permettant ainsi de réaliser un build à partir d'un tag
       Subversion spécifique. C'est utile si vous voulez lancer un build de
       release en utilisant un tag généré par un build précédent. Par exemple,
       une tâche de build amont pourrait créer un tag d'une révision
@@ -425,7 +426,7 @@ Finished: SUCCESS</screen>
       Vous devez simplement fournir l'URL du dépôt Subversion pointant sur le
       répertoire des tags de votre projet.</para>
       <figure float="none" id="fig-jenkins-parameterized-subversion-tag">
-        <title>Ajouter des paramètres pour construire à partir d'un tag
+        <title>Ajouter des paramètres pour réaliser un build à partir d'un tag
         Subversion</title>
         <mediaobject id="I_mediaobject10_d1e14250">
           <imageobject role="print">
@@ -450,7 +451,7 @@ Finished: SUCCESS</screen>
         </indexterm> (voir <xref
       linkend="fig-jenkins-parameterized-subversion" />).</para>
       <figure float="none" id="fig-jenkins-parameterized-subversion">
-        <title>Construire à partir d'un tag Subversion</title>
+        <title>Réaliser un build à partir d'un tag Subversion</title>
         <mediaobject id="I_mediaobject10_d1e14269">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1011.pdf" format="PDF" />
@@ -462,8 +463,8 @@ Finished: SUCCESS</screen>
       </figure>
     </sect2>
     <sect2 id="sect-building-git-tag">
-      <title>Construire à partir d'un tag Git</title>
-      <para>Construire <indexterm class="startofrange" id="ch10-git1"
+      <title>Réaliser un build à partir d'un tag Git</title>
+      <para>Réaliser un build <indexterm class="startofrange" id="ch10-git1"
           significance="normal">
           <primary>tâches de build paramétrées</primary>
           <secondary>exécutées sur un tag Git</secondary>
@@ -504,7 +505,7 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>Une fois que vous avez ajouté ce paramètre, vous devez faire un
-      checkout du tag correspondant quand le dépôt a été cloné localement.
+      checkout du tag correspondant une fois que le dépôt a été cloné localement.
       Ainsi, si vous avez un build freestyle, la première étape du build sera
       un appel en ligne de commande à Git pour faire un checkout du tag
       référencé par le paramètre <literal moreinfo="none">RELEASE</literal>
@@ -522,7 +523,7 @@ Finished: SUCCESS</screen>
           <primary></primary>
         </indexterm> indépendante du système d'exploitation.</para>
       <figure float="0" id="fig-jenkins-git-tag">
-        <title>Construire à partir d'un tag Git</title>
+        <title>Réaliser un build à partir d'un tag Git</title>
         <mediaobject id="I_mediaobject10_d1e14332">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1013.pdf" format="PDF" />
@@ -552,10 +553,10 @@ Finished: SUCCESS</screen>
       de la façon suivante :</para>
       <programlisting format="linespecific" id="I_programlisting10_d1e14359">http://jenkins.acme.org/job/parameterized-build/buildWithParameters?VERSION=1.2.3</programlisting>
       <para>Quand vous utilisez une URL pour démarrer une tâche de build de
-      cette façon, rappelez-vous que les noms de paramètres sont sensibles à
+      cette façon, rappelez-vous que les noms des paramètres sont sensibles à
       la casse, et que les valeurs doivent être échappées (comme n'importe
       quel autre paramètre HTTP). Et si vous utilisez un paramètre Run, vous
-      devez fournir le nom de la tâche de build <emphasis>and</emphasis> le
+      devez fournir le nom de la tâche de build <emphasis>et</emphasis> le
       numéro d'exécution (e.g., <literal
       moreinfo="none">game-of-life#197</literal>) et pas seulement le
       numéro<indexterm class="endofrange" id="I_indexterm10_d1e14369"
@@ -596,7 +597,7 @@ Finished: SUCCESS</screen>
       linkend="fig-hudson-build-parameter-history" />), afin que vous puissiez
       toujours retrouver un ancien build et en vérifier les paramètres.</para>
       <figure float="none" id="fig-hudson-build-parameter-history">
-        <title>Jenkins stocke les valeurs de paramètres utilisées pour chaque
+        <title>Jenkins stocke les valeurs des paramètres utilisées pour chaque
         build</title>
         <mediaobject id="I_mediaobject10_d1e14411">
           <imageobject role="print">
@@ -623,8 +624,8 @@ Finished: SUCCESS</screen>
     build courant au nouveau. Supposons, par exemple, que vous ayez une
     application qui doit être testée sur plusieurs bases de données
     différentes. Comme nous l'avons vu, vous pourriez faire cela en
-    configurant une tâche de build paramétrée qui accepte la base de données
-    cible en paramètre. Vous sélectionneriez une série de builds, et tous
+    configurant une tâche de build paramétré qui accepte la base de données
+    cible comme un paramètre. Vous sélectionneriez une série de builds, et tous
     auraient besoin de ce paramètre.</para>
     <para>Si vous essayez de faire cela en utiliser l'option conventionnelle
     "Construire d'autres projets" dans la section Actions Post-Build, cela ne
@@ -635,7 +636,7 @@ Finished: SUCCESS</screen>
         <primary>plugins</primary>
         <secondary>Parameterized Trigger</secondary>
       </indexterm><indexterm id="I_indexterm10_d1e14439" significance="normal">
-        <primary>Parameterized Trigger plugin</primary>
+        <primary>le plugin Parameterized Trigger</primary>
       </indexterm>vous pouvez le faire en utilisent le plugin Jenkins
     Parameterized Trigger. Ce plugin vous permet de configurer vos tâches de
     build à la fois pour déclencher des builds paramétrés et pour passer des
@@ -656,7 +657,7 @@ Finished: SUCCESS</screen>
     demandera à l'utilisateur de saisir cette valeur à chaque fois qu'un build
     sera lancé.</para>
     <figure float="0" id="fig-hudson-build-parameters-unit-test">
-      <title>Tâche de build paramétrée pour des tests unitaires</title>
+      <title>Tâche de build paramétré pour des tests unitaires</title>
       <mediaobject id="I_mediaobject10_d1e14457">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1015.pdf" format="PDF" />
@@ -683,20 +684,20 @@ Finished: SUCCESS</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Dans ce cas, nous passons simplement les paramètres de build
-    courants. Cette seconde tâche de build démarrera automatiquement après la
+    <para>Dans ce cas, nous passons simplement les paramètres du build
+    courant. Cette seconde tâche de build démarrera automatiquement après la
     première, avec la valeur du paramètre <literal
     moreinfo="none">DATABASE</literal> fournie par l'utilisateur. Vous pouvez
     aussi configurer finement la politique de déclenchement en indiquant à
     Jenkins quand le build doit être lancé. Typiquement, vous déclencheriez
-    seulement un build aval après que votre build a réussi, mais avec le
+    seulement un build aval après que votre build ait réussi, mais avec le
     plugin Parameterized Trigger vous pouvez aussi configurer les builds pour
-    se déclencher même si le build est instable, seulement quand le build
-    échoue ou demander à ce qu'il soit déclenché quoi qu'il arrive au premier
+    qu'ils déclenchent même si le build est instable, ou seulement quand le build
+    échoue ou encore demander à ce qu'il soit déclenché quoi qu'il arrive au premier
     build. Vous pouvez même configurer plusieurs déclencheurs pour la même
     tâche de build.</para>
     <para>Naturellement, la tâche de build que vous déclenchez doit être une
-    tâche de build paramétrée (comme illustré dans <xref
+    tâche de build paramétré (comme illustré dans <xref
     linkend="fig-hudson-build-parameters-integration-test" />), et vous devez
     transmettre tous les paramètres qu'elle requiert.</para>
     <figure float="0" id="fig-hudson-build-parameters-integration-test">
@@ -713,7 +714,7 @@ Finished: SUCCESS</screen>
     </figure>
     <para>Cette fonctionnalité possède en fait des applications bien plus
     larges que de simplement transmettre les paramètres du build courant. Vous
-    pouvez aussi déclencher une tâche de build paramétrée avec un ensemble
+    pouvez aussi déclencher une tâche de build paramétré avec un ensemble
     arbitraire de paramètres, ou utiliser une combinaison de paramètres passés
     au build courant, et vos propres paramètres traditionnels. Ou alors, si
     vous avez beaucoup de paramètres, vous pouvez les charger à partir d'un
@@ -731,7 +732,7 @@ Finished: SUCCESS</screen>
     moreinfo="none">TARGET_PLATFORM</literal>.</para>
     <figure float="0" id="fig-hudson-build-parameters-deploy-trigger">
       <title>Passer un paramètre prédéfini à une tâche de build
-      paramétrée</title>
+      paramétré</title>
       <mediaobject id="I_mediaobject10_d1e14510">
         <imageobject role="print">
           <imagedata fileref="figs/print/jtdg_1018.pdf" format="PDF" />
@@ -752,14 +753,14 @@ Finished: SUCCESS</screen>
         significance="normal">
         <primary>tâche de build multiconfiguration</primary>
       </indexterm><indexterm id="I_indexterm10_d1e14528" significance="normal">
-        <primary>tâches de build paramétrées</primary>
+        <primary>tâches de build paramétré</primary>
         <seealso>tâches de build multiconfiguration</seealso>
       </indexterm>multiconfiguration sont une fonctionnalité extrêmement
     puissante de Jenkins. Une tâche de build multiconfiguration peut être vue
-    comme une tâche de build paramétrée qui peut peut être automatiquement
+    comme une tâche de build paramétré qui peut être automatiquement
     lancée avec toutes les combinaisons possibles de paramètres qu'elle puisse
     accepter. Elles sont particulièrement utiles pour les tests, vous
-    permettant en effet de tester votre application avec une seule tâche de
+    permettant ainsi de tester votre application avec une seule tâche de
     build, mais avec une grande variété de conditions (navigateurs, bases de
     données, et ainsi de suite).</para>
     <sect2>
@@ -843,7 +844,7 @@ Finished: SUCCESS</screen>
         </indexterm> première option consiste à configurer votre build pour
       exécuter simultanément le build sur différentes machines esclaves (voir
       <xref linkend="chapter-distributed-builds" />). Evidemment, l'idée
-      d'avoir un ensemble de machines esclaves est habituellement pour que
+      d'avoir un ensemble de machines esclaves est généralement pour que
       vous puissiez exécuter votre build sur n'importe laquelle. Mais il y a
       des cas où il est normal d'être plus sélectif. Par exemple, vous
       pourriez vouloir lancer vos tests sur Windows, Mac OS X, et Linux. Dans
@@ -880,7 +881,7 @@ Finished: SUCCESS</screen>
       machines Windows sur lesquelles est installé MySQL, vous pouvez utiliser
       une expression comme <literal moreinfo="none">windows &amp;&amp;
       mysql</literal>.</para>
-      <para>Nous discutons du travail avec des noeuds esclaves et les builds
+      <para>Nous traitons du travail avec des noeuds esclaves et les builds
       distribués plus en <indexterm class="endofrange"
           id="I_indexterm10_d1e14628" significance="normal"
           startref="ch10-slave1">
@@ -947,7 +948,7 @@ Finished: SUCCESS</screen>
       arbitraires que vous définissez. Par exemple, vous pouvez fournir une
       liste de bases de données que vous avez besoin de tester, ou une liste
       de navigateurs à utiliser dans vos tests web. Ceci est très similaire
-      aux paramètres pour une tâche de build paramétrée, excepté que vous
+      aux paramètres pour une tâche de build paramétré, excepté que vous
       fournissez la liste complète des valeurs possibles, et que plutôt que
       d'interroger l'utilisateur pour qu'il entre une valeur, Jenkins lance le
       build avec <emphasis>toutes</emphasis> les valeurs fournies (<xref
@@ -1065,7 +1066,7 @@ Finished: SUCCESS</screen>
       correctes navigateur/système d'exploitation seraient exécutées (voir
       <xref linkend="fig-hudson-multi-config-filter-result" />). Les builds
       exécutés sont affichés dans les couleurs habituelles, alors que les
-      builds sautés sont grisés.</para>
+      builds non-exécutés sont grisés.</para>
       <figure float="0" id="fig-hudson-multi-config-filter-result">
         <title>Résultats de build utilisant un filtre de combinaison</title>
         <mediaobject id="I_mediaobject10_d1e14783">
@@ -1077,7 +1078,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Une autre raison pour utiliser un filtre de build est qu'il y a
+      <para>Une autre raison d'utiliser un filtre de build est qu'il y a
       simplement trop de combinaisons valides pour s'exécuter dans un temps
       raisonnable. Dans ce cas, la meilleure solution pourrait être
       d'augmenter la capacité de votre serveur de build. La deuxième meilleure
@@ -1096,7 +1097,7 @@ Finished: SUCCESS</screen>
       de filtre (comme celle montrée ci-dessus) pour définir le ou les
       premiers builds à exécuter. Vous pouvez aussi spécifier si le build
       devrait continuer seulement si ces builds sont réussis, ou même s'ils
-      échouent. Une fois que ces builds ont terminé comme attendu, Jenkins
+      échouent. Une fois que ces builds se sont terminés comme prévu, Jenkins
       procédera au lancement des autres<indexterm class="endofrange"
           id="I_indexterm10_d1e14799" significance="normal"
           startref="ch10-mrun1">
@@ -1127,24 +1128,24 @@ Finished: SUCCESS</screen>
     nécessiterait la configuration de 20 à 50 tâches une par une ! De plus,
     plusieurs de ces tâches pourraient avoir en commun des éléments de
     configuration, comme des goals Maven ou des paramètres de configuration
-    mémoire, ce qui résulte dans une configuration dupliquée et un surplus de
+    mémoire, ce qui résulte en une configuration dupliquée et un surplus de
     maintenance.</para>
     <para>Par exemple, si vous décidez d'exécuter <literal moreinfo="none">mvn
     clean install</literal> au lieu de <literal moreinfo="none">mvn clean
     deploy</literal> pour vos tâches de release et de passer à des méthodes de
-    déploiement alternatives, comme celles fournies par l'<ulink
+    déploiement alternatives, comme celles fournies par le plugin<ulink
     url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
-    plugin</ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
+    </ulink>, vous n'aurez plus d'autre choix que d'ouvrir toutes les
     tâches concernées et de les mettre à jour manuellement.</para>
     <para>Sinon, vous pourriez tirer parti du fait que Jenkins est un outil
-    simple et direct qui garde trace de toutes ses définitions dans des
-    fichiers plats sur le disque. En effet, vous pouvez mettre à jour les
+    simple et direct qui garde trace de toutes ses définitions sur le disque 
+    dans des fichiers bruts. En effet, vous pouvez mettre à jour les
     fichiers <filename moreinfo="none">config.xml</filename> de vos tâches
     directement dans le répertoire <filename
     moreinfo="none">.jenkins/jobs</filename> où ils sont conservés. Bien que
     cette approche fonctionnerait, elle est loin d'être idéale parce qu'elle
     implique un nombre assez important de sélections manuelles et de
-    remplacements fragiles dans des fichiers XML Jenkins.</para>
+    remplacements délicats dans des fichiers XML Jenkins.</para>
     <para>Il y a une troisième façon d'atteindre le nirvana des mises à jour
     massives de tâches : générer vos fichiers de configuration automatiquement
     en utilisant une sorte de fichier de définition. Le <indexterm
@@ -1233,7 +1234,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Voici une autre tâche construisant la branche master chez GitHub
+      <para>Voici une autre tâche réalisant la build de la branche master du projet 
+	  Jenkins hébergé chez GitHub
       :</para>
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;jenkins-master&lt;/id&gt;
@@ -1276,7 +1278,7 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Réutiliser une configuration de tâche par héritage</title>
-      <para>Etre <indexterm class="startofrange" id="ch10-inherit"
+      <para>Être <indexterm class="startofrange" id="ch10-inherit"
           significance="normal">
           <primary>Tâches de build Maven</primary>
           <secondary>générer automatiquement</secondary>
@@ -1285,8 +1287,8 @@ Finished: SUCCESS</screen>
       une configuration centralisée, comme un POM Maven, résout le problème de
       la création et de la mise à jour de plusieurs tâches à la fois. Tout ce
       que vous avez à faire est de modifier les définitions de job, relancer
-      le plugin et charger les définitions mises à jour avec <phrase
-      role="unicode">Adminitrer Jenkins→</phrase>“Recharger la configuration à
+      le plugin et charger les définitions mises à jour avec Administrer Jenkins<phrase
+      role="unicode">→</phrase>“Recharger la configuration à
       partir du disque”. Cette approche a aussi l'avantage de rendre facile le
       stockage de vos configurations de tâche dans un système de gestion de
       versions, ce qui rend par la même plus facile le suivi des changements
@@ -1337,7 +1339,7 @@ Finished: SUCCESS</screen>
 &lt;/jobs&gt;</screen>
       <para>Dans cette configuration,
       <emphasis>google-guice-inheritance-base</emphasis> est une tâche parent
-      abtraite contenant toutes les propriétés communes : le nom du JDK, le
+      abstraite contenant toutes les propriétés communes : le nom du JDK, le
       nom de Maven, le nombre de jours de conservation des logs, la politique
       de mise à jour SVN, les goals Maven et les destinataires email. Les
       trois tâches suivantes sont très courtes, spécifiant simplement qu'elles
@@ -1368,10 +1370,10 @@ Finished: SUCCESS</screen>
     <sect2>
       <title>Le support des plugins</title>
       <para>En plus de configurer une tâche et de réutiliser ses définitions,
-      vous pouvez appliquer utiliser un support spécial pour un certain nombre
-      de plugins Jenkins. Dès à présent, une utilisation simplifiée des
-      plugins Parameterized Trigger et Artifactory est fournie, avec un
-      support pour d'autres plugins populaires planifié pour de futures
+      vous pouvez bénéficier d'un support spécial pour un certain nombre
+      de plugins Jenkins. À l'heure actuelle, une utilisation simplifiée des
+      plugins Parameterized Trigger et Artifactory est fournie, un
+      support pour d'autres plugins populaires est prévu dans de futures
       versions.</para>
       <para>Ci-dessous<indexterm id="I_indexterm10_d1e14996"
           significance="normal">
@@ -1416,7 +1418,7 @@ Finished: SUCCESS</screen>
       l'invocation, les tâches spécifiées démarreront en parallèle. Pour une
       exécution en série, vous devrez connecter chaque tâche amont à une tâche
       aval avec <literal moreinfo="none">&lt;invoke&gt;</literal>.</para>
-      <para>Par défaut, l'invocation ne se fait que la tâche courante est
+      <para>Par défaut, l'invocation ne se fait que quand la tâche courante est
       stable. Ceci peut être modifié, comme montré dans les exemples suivants
       :</para>
       <screen format="linespecific">&lt;invoke&gt;
@@ -1442,9 +1444,9 @@ Finished: SUCCESS</screen>
       <para>La seconde invocation dans l'exemple ci-dessus invoque les tâches
       avals même si une tâche amont est instable : l'invocation prend place
       quels que soient les résultats des tests. Cela peut être utilisé pour un
-      pipeline de tâches moins sensibles aux tests et leurs échecs.</para>
+      pipeline de tâches moins sensibles aux tests et à leurs échecs.</para>
       <para>La troisième invocation ci-dessus invoque les tâches avals
-      seulement une tâche amont échoue mais pas lorsqu'elle est stable ou
+      seulement quand une tâche amont échoue mais pas lorsqu'elle est stable ou
       instable. Cette configuration peut vous être utile si une tâche en échec
       doit effectuer des actions additionnelles autres que les notifications
       email tradtionnelles.</para>
@@ -1464,9 +1466,9 @@ Finished: SUCCESS</screen>
       gestionnaire de dépôt Maven. Le <ulink
       url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">plugin
       Jenkins Artifactory</ulink>, montré dans <xref
-      linkend="jenkins-plugin-artifactory" />, fournit un certain nombre de
-      bénéfices pour les tâches de build Jenkins. Nous avons déjà revu
-      quelques unes d'entre elles dans <xref
+      linkend="jenkins-plugin-artifactory" />, fournit un certain nombre
+      d'avantages pour les tâches de build Jenkins. Nous avons déjà passé en revue
+      quelques-unes d'entre elles dans <xref
       linkend="sect-builds-deploy-enterprise-repository" />, notamment la
       capacité à déployer des artefacts à l'achèvement de la tâche ou
       d'envoyer avec des informations de l'environnement de build avec les
@@ -1482,8 +1484,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Vous pouvez aussi utiliser le plugin Jenkins Artifactory en
-      conjonction avec le Maven Jenkins Plugin pour déployer dans Artifactory,
+      <para>Vous pouvez aussi utiliser le plugin Jenkins Artifactory
+      conjointement au Maven Jenkins Plugin pour déployer dans Artifactory,
       comme montré dans l'exemple suivant :</para>
       <screen format="linespecific">&lt;job&gt;
     ...
@@ -1537,8 +1539,8 @@ Finished: SUCCESS</screen>
       <para>Les tâches Freestyle vous permettent d'exécuter un shell ou une
       commande batch, exécuter Maven ou Ant, et invoquer d'autres tâches.
       Elles fournissent un environnement d'exécution bien pratique pour les
-      scripts systèmes ou tout autre type d'activité pas directement
-      disponible dans Jenkins ou l'un des ses plugins. En utilisant cette
+      scripts systèmes ou tout autre type d'activité qui n'est pas directement
+      implémentée dans Jenkins ou l'un des ses plugins. En utilisant cette
       approche, vous pouvez générer des fichiers de configuration de tâche de
       build Freestyle de façon similaire à l'approche que nous avons vue pour
       les tâches de build Maven, ce qui peut aider à rendre votre
@@ -1574,13 +1576,13 @@ Finished: SUCCESS</screen>
       tâche de build en parallèle, les tâches de build multiconfiguration
       (voir <xref linkend="sect-multi-configuration-build-jobs" />) sont une
       excellente option. Ceci peut s'avérer très pratique comme moyen
-      d'accéler votre processus de build. Une application typiquement des
-      tâches de build multiconfiguration mis en contexte est d'exécuter des
+      d'accéler votre processus de build. Une application typique des
+      tâches de build multiconfiguration dans ce contexte est d'exécuter des
       tests d'intégration en parallèle. Vous pourriez définir des profils
       Maven par exemple, ou configurer votre build pour utiliser des
       paramètres de ligne de commande pour décider quels tests exécuter. Une
       fois que vous avez configuré vos scripts de build de cette façon, il est
-      aisé de configuration une tâche de build multiconfiguration pour
+      aisé de configurer une tâche de build multiconfiguration pour
       exécuter un sous ensemble de vos tests d'intégration en
       parallèle.</para>
       <para>Vous pouvez aussi faire que Jenkins déclenche plusieurs tâches
@@ -1588,8 +1590,8 @@ Finished: SUCCESS</screen>
       d'autres projets" (voir <xref
       linkend="fig-hudson-build-other-projects" />). Les tâches de build
       suivantes seront exécutées en parallèle autant que possible. Toutefois,
-      comme nous le verrons plus loin, cela peut ne pas être toujours
-      exactement ce que dont vous avez besoin.</para>
+      comme nous le verrons plus loin, cela peut ne pas toujours être
+      exactement ce dont vous avez besoin.</para>
       <figure float="none" id="fig-hudson-build-other-projects">
         <title>Déclencher plusieurs autres builds après une tâche de
         build</title>
@@ -1679,9 +1681,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">phoenix-deploy-to-uat</command> (voir <xref
       linkend="fig-hudson-build-join" />). Le champ “Construire d'autres
       projets” n'est pas modifié, et liste encore les tâches de build à
-      déclencher immédiatement après la tâche courante. Le champ déclenchement
-      de buildfield is not modified, and still lists the build jobs to be
-      triggered immediately after the current one. Le champ déclencheur de
+      déclencher immédiatement après la tâche courante. Le champ déclencheur de
       jonction contient les tâches de build à lancer une fois que toutes les
       tâches avals immédiates se sont terminées.</para>
       <figure float="0" id="fig-hudson-build-join">
@@ -1734,7 +1734,7 @@ Finished: SUCCESS</screen>
         </indexterm>situations, vous pourriez être capable de lancer une série
       de builds en parallèle jusqu'à un certain point, mais certaines tâches
       de build pourraient ne pas pouvoir être lancées en parallèle parce
-      qu'elles accèdent des ressources en concurrence. Bien sûr, des tâches de
+      qu'elles accèdent à des ressources en concurrence. Bien sûr, des tâches de
       build bien conçues devraient s'efforcer d'être aussi indépendantes que
       possible, mais cela peut parfois être difficile. Par exemple,
       différentes tâches de build peuvent accéder à la même base de données de
@@ -1783,7 +1783,7 @@ Finished: SUCCESS</screen>
       que vous venez juste de créer (voir <xref
       linkend="fig-jenkins-build-locks" />). Une fois que avez fait cela pour
       chacune des tâches de build qui ont besoin d'accéder à la ressource en
-      question, seule une de des tâches de build pourra s'exécuter à un
+      question, seule une des tâches de build pourra s'exécuter à un
       instant<indexterm class="endofrange" id="I_indexterm10_d1e15304"
           significance="normal" startref="ch10-locks1">
           <primary></primary>
@@ -1808,14 +1808,14 @@ Finished: SUCCESS</screen>
     </sect2>
   </sect1>
   <sect1 id="sect-build-pipelines">
-    <title>Pipelines de build et Promotions</title>
+    <title>Pipelines de build et promotions</title>
     <para>L'intégration<indexterm class="startofrange" id="ch10-pipe"
         significance="normal">
         <primary>pipelines de build</primary>
       </indexterm><indexterm id="I_indexterm10_d1e15327" significance="normal">
         <primary>pipelines</primary>
         <see>pipelines de build</see>
-      </indexterm> Continue ne consiste pas simplement à construire et tester
+      </indexterm> continue ne consiste pas simplement à construire et tester
     automatiquement un logiciel, elle peut aussi apporter une aide dans un
     contexte plus large de dévéloppement de produit logiciel et de cycle de
     vie de release. Dans de nombreuses organisation, la vie d'une version
@@ -1839,11 +1839,11 @@ Finished: SUCCESS</screen>
     regarderons comment implémenter des pipelines de build en utilisant
     Jenkins.</para>
     <sect2 id="jenkins-maven-releases">
-      <title>Gestion les Releases Maven avec le plugin M2Release</title>
+      <title>Gestion des releases Maven avec le plugin M2Release</title>
       <para>Une part importante de tout pipeline de build est d'avoir une
       stratégie de release bien définie. Ceci implique, entre autres choses,
       de dédier comment et quand lancer une nouvelle release, et comment
-      l'identifier avec un unique libellé ou numéro de version. Si <indexterm
+      l'identifier avec un libellé unique ou numéro de version. Si <indexterm
           class="startofrange" id="ch10-numbers1" significance="normal">
           <primary>pipelines de build</primary>
           <secondary>numéros de versions Maven pour</secondary>
@@ -1861,7 +1861,7 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm id="I_indexterm10_d1e15366"
           significance="normal">
           <primary>Maven Release plugin</primary>
-        </indexterm>le Maven Release plugin pour gérer les numéros de versions
+        </indexterm>le plugin Maven Release pour gérer les numéros de versions
       est une pratique hautement recommandée.</para>
       <para>Les projets Maven utilisent des numéros de version bien définis et
       bien structurés. Un numéro de version typique est composé de trois
@@ -1874,27 +1874,27 @@ Finished: SUCCESS</screen>
       projets. Les numéros de version utilisés dans des artefacts Maven sont
       une part critique du système de gestion de dépendances Maven, et il est
       fortement conseillé de respecter les conventions Maven.</para>
-      <para>Le Maven Release plugin aide à automatiser le processus de mise à
+      <para>Le plugin Maven Release aide à automatiser le processus de mise à
       jour des numéros de version Maven de vos projets. En résumé, cela
       vérifie, construit et teste votre application, monte les numéros de
       version, met à jour votre système de contrôle de versions avec les tags
       appropriés, et déploie les versions de release de vos artefacts dans
       votre dépôt Maven. C'est une tâche fastidieuse à faire manuellement, le
-      Maven Release plugin est donc un excellent moyen d'automatiser les
+      plugin Maven Release est donc un excellent moyen d'automatiser les
       choses.</para>
-      <para>Toutefois, le Maven Release plugin peut aussi être capricieux. Des
-      fichiers locaux non committés ou modifiés peuvent faire échouer le
+      <para>Toutefois, le plugin Maven Release peut aussi être capricieux. Des
+      fichiers locaux non-archivés ou modifiés peuvent faire échouer le
       processus, par exemple. Le processus est aussi consommateur en temps et
       consomme intensivement le CPU, plus spécialement pour les gros projets :
-      cela construit et exécute l'ensemble entier de tests unitaires et
+      cela construit et exécute entièrement l'ensemble de tests unitaires et
       d'intégration plusieurs fois, récupère une copie propre du code depuis
       le dépôt, et envoie plusieurs artefacts au dépôt d'entreprise.
-      Clairement, ce n'est pas le genre de chose que vous voulez exécuter sur
+      Concrètement, ce n'est pas le genre de chose que vous voulez exécuter sur
       une machine de développeur.</para>
       <para>Il est donc de bon ton d'exécuter ce processus sur votre serveur
       de build.</para>
       <para>Une façon de faire cela est de configurer une tâche manuelle de
-      build spéciale invoquant le Maven Release plugin. Toutefois, le plugin
+      build spéciale invoquant le plugin Maven Release. Toutefois, le plugin
       M2Release propose une approche plus simple. En utilisant ce plugin, vous
       pouvez ajouter la possibilité de construire une version de release Maven
       à une tâche existante. Vous pouvez ainsi éviter de dupliquer des tâches
@@ -1924,7 +1924,7 @@ Finished: SUCCESS</screen>
       “Perform Maven Release” (voir <xref
       linkend="fig-jenkins-m2-release-menu" />).</para>
       <figure float="none" id="fig-jenkins-m2-release-menu">
-        <title>The Perform Maven Release menu option</title>
+        <title>L'option de menu Perform Maven Release</title>
         <mediaobject id="I_mediaobject10_d1e15405">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1037.pdf" format="PDF" />
@@ -1938,11 +1938,11 @@ Finished: SUCCESS</screen>
       que vous avez fournis dans la configuration du plugin (voir <xref
       linkend="fig-jenkins-perform-release" />). Jenkins vous offre le choix
       d'utiliser soit les numéros de version par défaut fournis par Maven (par
-      exemple, la version 1.0.1-SNAPSHOT sera releasée 1.0.1, et le numéro de
-      version de développement monté à 1.0.2-<phrase
+      exemple, la version 1.0.1-SNAPSHOT sera livrée avec la version 1.0.1, et le numéro de
+      version en développement sera positionnée à 1.0.2-<phrase
       role="keep-together">SNAPSHOT</phrase>), soit de fournir vos propres
-      numéros de version personnalisés. Si vous voulez releaser une version
-      majeure, par exemple, vous pourriez décider de spécifier manuellement
+      numéros de version personnalisés. Si, par exemple, vous voulez livrer une version
+      majeure vous pourriez décider de spécifier manuellement
       1.1.0 comme numéro de version et 1.1.1-SNAPSHOT comme prochain numéro de
       version de développement.</para>
       <para>Si vous avez un projet multimodule Maven, vous pouvez choisir une
@@ -1972,7 +1972,7 @@ Finished: SUCCESS</screen>
         </indexterm>édition professionnelle du Dépôt d'Entreprise Nexus
       fournit une fonctionnalité appelée Staging Repositories, qui permet
       de déployer des artefacts dans un espace spécial de staging afin de
-      faire davantage de tests avant de les releaser officiellement. Si vous
+      faire davantage de tests avant de les livrer officiellement. Si vous
       utilisez cette fonctionnalité, vous devez paramétrer plus finement votre
       configuration de serveur de build pour de meilleurs résultats.</para>
       <para>Nexus Professional travaille en créant un nouvel espace de staging
@@ -2079,7 +2079,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">gameoflife-web/target/gameoflife.war</literal>). Notez
       que par défaut, Jenkins copiera la structure de répertoire en même temps
       que le fichier que vous récupérez, ainsi si le fichier WAR se trouve
-      dans dans le répertoire target du module <literal
+      dans dans le répertoire <filename moreinfo="none">target</filename> du module <literal
       moreinfo="none">gameoflife-web</literal>, Jenkins le placera dans le
       répertoire <filename moreinfo="none">gameoflife-web/target</filename> de
       votre espace de travail courant. Si cela ne vous convient pas, vous
@@ -2087,7 +2087,7 @@ Finished: SUCCESS</screen>
       mettre tous les artefacts à la racine du répertoire que vous spécifiez
       (ou, par défaut, dans l'espace de travail de votre projet).</para>
       <para>Souvent, vous voudrez simplement récupérer des artefacts depuis le
-      build en succès le plus récent. Toutefois, vous voudrez parfois plus de
+      build réussi le plus récent. Toutefois, vous voudrez parfois plus de
       précision. Le champ "Quel build” vous permet de spécifier où chercher
       des artefacts d'un bon nombre d'autres façons, incluant le dernier build
       sauvé (builds qui ont été marqués à "toujours conserver"), le dernier
@@ -2105,12 +2105,12 @@ Finished: SUCCESS</screen>
       produits depuis.</para>
       <para>Si vous copiez des artefacts d'une tâche de build multimodule
       Maven, Jenkins copiera, par défaut, tous les artefacts de ce build.
-      Toutefois vous êtes souvent uniquement intéressé par un artefact
+      Toutefois vous êtes souvent intéressé uniquement par un artefact
       spécifique (comme l'artefact WAR pour une application web, par
       exemple).</para>
       <para>Ce plugin est particulièrement utile quand vous avez besoin
       d'exécuter des tests fonctionnels ou de performance sur votre
-      application web. Il est souvent une stratégie utile de placer ces tests
+      application web. Il est souvent stratégiquement utile de placer ces tests
       dans un projet séparé, et non comme une partie de votre processus de
       build principal. Cela facilite l'exécution de ces tests sur différents
       serveurs ou d'exécuter le sous-ensemble des tests en parallèle, tout en
@@ -2145,7 +2145,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Le plugin Copy Artifact n'est pas limité à la récupération de
+      <para>Le plugin Copy Artifact n'est pas restreint à la récupération de
       fichiers depuis des tâches de build conventionnelles. Vous pouvez aussi
       copier des artefacts à partir de tâches de build multiconfiguration
       (voir <xref linkend="sect-multi-configuration-build-jobs" />). Les
@@ -2159,7 +2159,7 @@ Finished: SUCCESS</screen>
       multiconfiguration comme celle illustrée dans <xref
       linkend="fig-jenkins-multi-config-artifacts" />.</para>
       <figure float="0" id="fig-jenkins-multi-config-artifacts">
-        <title>Copier à partir d'une build multiconfiguration</title>
+        <title>Copier à partir d'un build multiconfiguration</title>
         <mediaobject id="I_mediaobject10_d1e15553">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_1041.pdf" format="PDF" />
@@ -2171,15 +2171,15 @@ Finished: SUCCESS</screen>
       </figure>
       <para>Le plugin Copy Artifacts peut dupliquer n'importe lequel ou même
       tous les artefacts produits par cette tâche de build. Si vous spécifiez
-      un build multiconfiguration comme la source de vos artefacts, le plugin
+      un build multiconfiguration comme source de vos artefacts, le plugin
       copiera les artefacts de toutes les configurations dans l'espace de
       travail de la tâche de build cible, en utilisant une structure de
       répertoire imbriquée basée sur les axes du build multiconfiguration. Par
-      exemple, si vous définissez le répertoire target comme <filename
+      exemple, si vous définissez le répertoire cible comme <filename
       moreinfo="none">multi-config-artifacts</filename>, Jenkins copiera les
       artefacts dans un certain nombre de sous-répertoires dans le répertoire
-      target, chacun avec un nombre correspondant à un ensemble de paramètres
-      particulier. Ainsi, en utilisant la tâche de build illustrée dans <xref
+      cible, chacun avec un nom correspondant à un ensemble particulier de 
+      paramètres. Ainsi, en utilisant la tâche de build illustrée dans <xref
       linkend="fig-jenkins-multi-config-artifacts" />, le fichier JAR
       personnalisé pour Tomcat et MySql serait copié<indexterm
           class="endofrange" id="I_indexterm10_d1e15565" significance="normal"
@@ -2188,11 +2188,11 @@ Finished: SUCCESS</screen>
         </indexterm><indexterm class="endofrange" id="I_indexterm10_d1e15567"
           significance="normal" startref="ch10-art2">
           <primary></primary>
-        </indexterm> dans <filename moreinfo="none">le répertoire
+        </indexterm> dans le répertoire <filename moreinfo="none">
       $WORKSPACE/multi-config-artifacts/APP_SERVER/tomcat/DATABASE/mysql</filename>.</para>
     </sect2>
     <sect2 id="sect-build-promotion">
-      <title>Promotions de Build</title>
+      <title>Promotions de build</title>
       <para>Dans le <indexterm class="startofrange" id="ch10-promote1"
           significance="normal">
           <primary>pipelines de build</primary>
@@ -2203,9 +2203,9 @@ Finished: SUCCESS</screen>
         </indexterm>monde de l'Intégration Continue, tous les builds créés ne
       sont pas égaux. Par exemple, vous pourriez vouloir déployer la dernière
       version de votre application web sur un serveur de test, mais seulement
-      après avoir réussi un certain nombre de tests automatisés fonctionnels
+      après avoir réussi un certain nombre de tests fonctionnels automatisés
       ou de charge. Ou vous pourriez vouloir que les testeurs puissent marquer
-      certains builds comme étant prêts pour un déploiement pour des tests
+      certains builds comme étant prêts pour un déploiement pour les tests
       d'acceptation utilisateur, une fois qu'ils ont terminé leurs propres
       tests.</para>
       <para>Le plugin<indexterm id="I_indexterm10_d1e15589"
@@ -2225,18 +2225,18 @@ Finished: SUCCESS</screen>
       <para>Voyons comment cela fonctionne en pratique. Dans le projet
       illustré ci-dessus, une tâche de build par défaut (<command
       moreinfo="none">phoenix-default</command>) exécute des tests unitaires
-      et d'intégration, puis produit un fichier WAR. Ce WAR est ensuite
+      et d'intégration, puis produit un fichier WAR. Ce fichier WAR est ensuite
       réutilisé pour des tests plus étendus (dans la tâche de build <command
       moreinfo="none">phoenix-integration-tests</command>) et ensuite pour une
       série de tests web automatisés (dans la tâche de build <command
       moreinfo="none">phoenix-web-test</command>). Si le build réussit les
-      tests web automatisés, nous voudrions déployer l'application dans un
-      environnement de tests fonctionnel où elle pourrait être testée par des
+      tests web automatisés, nous aimerions déployer l'application dans un
+      environnement de tests fonctionnels où elle pourrait être testée par des
       testeurs humains. Le déploiement dans cet environnement est effectué
       avec la tâche de build <command
       moreinfo="none">phoenix-test-deploy</command>. Une fois que les testeurs
-      ont validé la version, elle peut être promue vers l'environnent de test
-      d'acceptation utilisateurs, et enfin en production. La stratégie
+      ont validé la version, elle peut être promue vers l'environnement de tests
+      d'acceptation utilisateur, et enfin en production. La stratégie
       complète de promotion est illustrée dans <xref
       linkend="fig-jenkins-build-promotion-jobs" />.</para>
       <figure float="none" id="fig-jenkins-build-promotion-jobs">
@@ -2252,7 +2252,7 @@ Finished: SUCCESS</screen>
       </figure>
       <para>Cette stratégie est facile à implémenter en utiliser le plugin
       Promoted Builds. Une fois que vous l'avez installé de la façon
-      habituelle, vous trouvez une nouvelle case "Promouvoir builds quand"
+      habituelle, vous trouverez une nouvelle case "Promouvoir builds quand"
       dans la page de configuration de la tâche. Cette option est utilisé pour
       configurer les processus de promotion de build. Vous définissez un ou
       plusieurs processus de promotion de build dans la tâche de build
@@ -2283,9 +2283,9 @@ Finished: SUCCESS</screen>
       <para>Regardons à présent comment configurer le processus de build
       automatisé <emphasis>promote-to-test</emphasis>.</para>
       <para>Vous devez commencer par définir comment le processus de promotion
-      de build sera déclenché. La Promotion de Build peut être soit
+      de build sera déclenché. La promotion de build peut être soit
       automatique, basée sur le résultat d'une tâche de build aval, soit
-      manuellement activée par un utilisateur. Dans <xref
+      activée manuellement par un utilisateur. Dans <xref
       linkend="fig-jenkins-build-promotion" />, la promotion de build pour
       cette tâche de build sera automatiquement déclenchée lorsque les tests
       web automatisés (exécuté par la tâche de build <command
@@ -2295,15 +2295,15 @@ Finished: SUCCESS</screen>
       linkend="fig-jenkins-manual-build-promotion" />. La promotion de build
       manuelle est utilisée pour les cas où une intervention humaine est
       requise pour approuver une promotion de build. Le déploiement dans
-      l'environnement de test d'acceptation d'utilisateur ou de production
-      sont des exemples courants de cela. Un autre exemple est lorsque vous
-      voulez temporairement suspendre les promotions de build pour une courte
+      l'environnement de test d'acceptation utilisateur ou de production
+      en sont des exemples courants. Autre exemple, lorsque vous
+      voulez suspendre temporairement les promotions de build pour une courte
       période, comme à l'approche d'une release.</para>
       <para>Les builds manuels, comme leur nom le suggère, nécessite d'être
       approuvés manuellement avant de pouvoir être exécutés. Si le processus
       de promotion consiste à déclencher une tâche de build paramétrée, vous
       pouvez aussi fournir des paramètres que l'approbateur devra entrer lors
-      de l'approbation. Dans certains, il peut être utile de désigner certains
+      de l'approbation. Dans certains cas, il peut être utile de désigner certains
       utilisateurs autorisés à activer la promotion manuelle. Vous pouvez
       faire cela en spécifiant une liste d'utilisateurs ou de groupes dans la
       liste d'approbateurs.</para>
@@ -2348,7 +2348,7 @@ Finished: SUCCESS</screen>
       incluent l'invocation de script Maven ou Ant, le déploiement d'artefacts
       dans un dépôt Maven, ou le déclenchement d'un autre build.</para>
       <para>Une chose importante à garder à l'esprit ici est que vous ne
-      pouvez pas reposer sur des fichiers de l'espace de travail lors de la
+      pouvez pas vous reposer sur des fichiers de l'espace de travail lors de la
       promotion de votre build. En effet, au moment où vous promouvez votre
       build, automatiquement ou manuellement, d'autres tâches de build
       pourraient avoir supprimé ou réécrit les fichiers que vous avez besoin
@@ -2422,8 +2422,8 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Ce n'est pas encore tout à fait tout ce que nous devons faire pour
-      les tests d'intégration, toutefois. La tâche de build <command
+      <para>Cependant, ce n'est pas encore tout à fait tout ce que nous devons faire pour
+      les tests d'intégration. La tâche de build <command
       moreinfo="none">phoenix-integration</command> est suivie de la tâche de
       build <command moreinfo="none">phoenix-web</command>, qui exécute les
       tests web automatisés. Pour s'assurer que le même fichier WAR est
@@ -2469,7 +2469,7 @@ Finished: SUCCESS</screen>
       moreinfo="none">phoenix-web</command>. Comme nous l'avons évoqué
       précédemment, Jenkins a besoin de pouvoir être sûr que le fichier WAR
       utilisé dans ces tests est le même que celui généré dans le build
-      original. Nous faisons cela en activant la création de fingerpritn sur
+      original. Nous faisons cela en activant la création de fingerprint sur
       le fichier WAR que nous avons récupéré depuis la tâche de build <command
       moreinfo="none">phoenix-integration</command> (qui, rappelez-vous, a
       originellement été construit par la tâche <command
@@ -2491,10 +2491,10 @@ Finished: SUCCESS</screen>
       </figure>
       <para>L'étape final consiste à configurer la tâche de build <command
       moreinfo="none">phoenix-deploy-to-test</command> pour récupérer le
-      dernier WAR promu (plutôt que simplement le dernier réussi). Pour faire
+      dernier WAR promu (plutôt que le dernier réussi). Pour faire
       cela, nous utilisons à nouveau le plugin Copy Artifact, mais cette fois
       nous choisissons l'option "Spécifier par permalien". Ici, Jenkins
-      proposera, entre autres choses, les processus de build configurés pour
+      proposera, entre autres choses, les processus de promotion de build configurés pour
       la tâche de build à partir de laquelle vous êtes en train de copier.
       Donc, dans <xref linkend="fig-jenkins-copy-promoted-war" />, nous
       récupérons le dernier fichier WAR promu par la tâche <command
@@ -2514,7 +2514,7 @@ Finished: SUCCESS</screen>
       <para>Notre processus de promotion est maintenant prêt pour l'action.
       Quand les tests web automatisés réussiront lors d'un build particulier,
       la tâche de build originale sera promu et le fichier WAR correspondant
-      déployé dans l'environnement de test. Les builds promus sotn indiqués
+      déployé dans l'environnement de test. Les builds promus sont indiqués
       par une étoile dans l'historique de build (voir <xref
       linkend="fig-jenkins-promoted-build-history" />). Par défaut, les
       étoiles sont jaunes, mais vous pouvez configurer la couleur de l'étoile
@@ -2641,7 +2641,7 @@ Finished: SUCCESS</screen>
       l'idée de la promotion de build encore plus loin, et vous aide à
       concevoir et superviser des pipelines de déploiement. Un pipeline de
       déploiement est une façon d'orchestrer vos builds au travers d'une série
-      de passage qualité, avec des approbations automatisées ou manuelles à
+      de passages garantissant la qualité, avec des approbations automatisées ou manuelles à
       chaque étape, culminant avec le déploiement en production.</para>
       <para>Le <indexterm id="I_indexterm10_d1e15926" significance="normal">
           <primary>plugin Build Pipeline</primary>
@@ -2655,7 +2655,7 @@ Finished: SUCCESS</screen>
       linéaire, une série de tâches de build exécutées en séquence.</para>
       <para>Pour utiliser ce plugin, commencez par configurer les tâches de
       build avals pour chaque tâche de build dans le pipeline, en utilisant le
-      champ “Construire d'autres projets” comme vous feriez habituellement. Le
+      champ “Construire d'autres projets” comme vous le feriez habituellement. Le
       plugin Build Pipeline utilise les configurations de build amont ou aval
       standards, et pour les étapes automatiques c'est tout ce que vous avez à
       faire. Toutefois, le plugin Build Pipeline supporte aussi les étapes de
