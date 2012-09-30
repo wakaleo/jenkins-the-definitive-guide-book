@@ -1,17 +1,69 @@
 <?xml version="1.0"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <chapter id="chapter-automated-deployment">
-  <title>Déploiement Automatisé et Livraison Continue</title>
+  <title>Déploiement automatisé et livraison continue</title>
   <sect1 id="sect-continuous-deployment-introduction">
     <title>Introduction</title>
     <para><indexterm class="startofrange" id="ch12-auto1" significance="normal">
-<primary>automated deployment</primary></indexterm><indexterm class="startofrange" id="ch12-auto2" significance="normal"><primary>continuous deployment</primary></indexterm>L'Intégration Continue ne devrait pas s'arrêter une fois que votre application compile correctement. Elle ne devrait pas non plus s'interrompre une fois que des tests, contrôles automatiques ou audit de la qualité du code puissent être lancés. L'enchainement naturel, une fois toutes ces étapes <phrase role="keep-together">mises en oeuvre</phrase>, est d'étendre votre processus de construction automatisé au déploiement. Cette pratique est connue globalement sous le nom de Déploiement <phrase role="keep-together">Automatisé</phrase> ou Déploiement <phrase role="keep-together">Continu</phrase>.
+		<primary>déploiement automatisé</primary>
+	</indexterm>
+	<indexterm class="startofrange" id="ch12-auto2" significance="normal">
+		<primary>déploiement continu</primary>
+	</indexterm>L'Intégration Continue ne devrait pas s'arrêter une fois que
+	votre application compile correctement. Elle ne devrait pas non plus 
+	s'interrompre une fois que des tests, contrôles automatiques ou audit de
+	la qualité du code puissent être lancés. L'enchainement naturel, une fois
+	toutes ces étapes <phrase role="keep-together">mises en oeuvre</phrase>,
+	est d'étendre votre processus de construction automatisé au déploiement. 
+	Cette pratique est connue globalement sous le nom de Déploiement 
+	<phrase role="keep-together">Automatisé</phrase> ou Déploiement 
+	<phrase role="keep-together">Continu</phrase>.
     </para>
-    <para>Dans sa forme la plus élaborée, le Déploiement Continu est le processus où toute modification du code, dotée des tests automatisés et autres vérifications appropriées, est immédiatemement déployée en production. Le but est de réduire la durée du cycle ainsi que le temps et l'effort du processus de déploiement. Cela aide également les équipes de dévelopemment à réduire le temps nécessaire pour livrer des fonctionnalités individuelles ou des corrections de bug, et par conséquent augmente significativement la productivité des équipes. Réduire ou éliminer ces périodes d'intenses activités menant à une livraison traditionnelle ou à un déploiement libère également du temps et des ressources pour améliorer les processus et pour l'innovation. Cette approche est comparable à la philosophie de l'amélioration continue promue par des processus Lean tel que Kanban. </para>
-    <para>
-Cependant, déployer systématiquement le dernier code en production n'est pas toujours approprié, quelque soit la qualité de vos tests automatisés. De nombreuses organisations ne sont pas préparées à ce que de nouvelles versions apparaissent sans annonce chaque semaine. Des utilisateurs ont peut être besoin d'être formés, du marketing peut être nécessaire autour du produit et ainsi de suite. Une variante plus conservative de ce principe, souvent vue dans les organisations de grande taille, est d'avoir le processus de déploiement entièrement automatisé mais de déclencher le déploiement effectif via un mécanisme à un clic. Cela est connu sous le nom de Livraison Continue, et a tous les avantages du Déploiement Continu sans ses inconvénients. Des variantes au processus de Livraison Continue peuvent aussi impliquer des déploiement automatisés vers certains environnement (tels que test et AQ) tout en utilisant un déploiement manuel à un clic pour d'autres environnements (telle que recette ou production). La caractéristique la plus importante de la Livraison Continue est que chaque build ayant passé avec succès tous les tests automatisés et vérifications de qualités appropriés  puisse être potentiellement déployé en production au moyen d'un processus entièrement automatisé et déclenché via un clic, au choix de l'utilisateur final et en quelques minutes. Le processus n'est cependant pas automatique: c'est l'équipe métier et non informatique qui décide du meilleur moment pour livrer les dernières modifications.
+    <para>Dans sa forme la plus élaborée, le Déploiement Continu est le processus
+	où toute modification du code, dotée des tests automatisés et autres vérifications
+	appropriées, est immédiatemement déployée en production. Le but est de réduire
+	la durée du cycle ainsi que le temps et l'effort du processus de déploiement. Cela
+	aide également les équipes de dévelopemment à réduire le temps nécessaire pour livrer
+	des fonctionnalités individuelles ou des corrections de bogue, et par conséquent
+	augmente significativement la productivité des équipes. Réduire ou éliminer ces
+	périodes d'intenses activités menant à une livraison traditionnelle ou à un
+	déploiement libère également du temps et des ressources pour améliorer les processus
+	et pour l'innovation. Cette approche est comparable à la philosophie de l'amélioration
+	continue promue par des processus Lean tel que Kanban. </para>
+    <para>Cependant, déployer systématiquement le dernier code en production
+	n'est pas toujours approprié, quelque soit la qualité de vos tests automatisés.
+	De nombreuses organisations ne sont pas préparées à ce que de nouvelles
+	versions apparaissent sans annonce chaque semaine. Des utilisateurs ont 
+	peut être besoin d'être formés, du marketing peut être nécessaire autour du
+	produit et ainsi de suite. Une variante plus conservative de ce principe,
+	souvent vue dans les organisations de grande taille, est d'avoir le processus
+	de déploiement entièrement automatisé mais de déclencher le déploiement
+	effectif via un mécanisme à un clic. Cela est connu sous le nom de Livraison
+	Continue, et a tous les avantages du Déploiement Continu sans ses inconvénients.
+	Des variantes au processus de Livraison Continue peuvent aussi impliquer des
+	déploiements automatisés vers certains environnement (tels que test et AQ) tout
+	en utilisant un déploiement manuel à un clic pour d'autres environnements (tels que
+	recette et production). La caractéristique la plus importante de la Livraison
+	Continue est que chaque build ayant passé avec succès tous les tests automatisés
+	et vérifications de qualités appropriés puisse être potentiellement déployé en
+	production au moyen d'un processus entièrement automatisé et déclenché via
+	un clic, au choix de l'utilisateur final et en quelques minutes. Le processus
+	n'est cependant pas automatique : c'est l'équipe métier et non informatique qui
+	décide du meilleur moment pour livrer les dernières modifications.
     </para>
-    <para>Le Déploiement Continu et la Livraison Continue sont tous deux considérés, à juste titre, comme signes d'un haut niveau de maturité en termes de processus de build et de pratiques SDLC. Ces techniques ne peuvent exister sans un ensemble très solide de tests automatisés. Pas plus qu'ils ne peuvent exister sans un environnement d'Intégration Continue et un séquenceur de build robuste. En effet, le Déploiement Continu ou la Livraison Continue représente généralement la dernière étape et le but d'un séquence de build. Cependant, vu les avantages significatifs que ces pratiques apportent, elles sont un objectif pertinent. Dans la suite de ce chapitre nous allons utiliser le terme "Déploiement Continu" pour parler tant de Déploiement Continu que de Livraison Continue. En effet, le Déploiement Continu peut être vu comme la Livraison Continue avec une étape finale (le déploiement en production) dictée par la partie métier plutôt que l'équipe de dévelopement. 
+    <para>Le Déploiement Continu et la Livraison Continue sont tous deux considérés,
+	à juste titre, comme signes d'un haut niveau de maturité en termes de
+	processus de build et de pratiques SDLC. Ces techniques ne peuvent exister
+	sans un ensemble très solide de tests automatisés. Pas plus qu'ils ne peuvent
+	exister sans un environnement d'Intégration Continue et un séquenceur de build
+	robuste. En effet, le Déploiement Continu ou la Livraison Continue représente
+	généralement la dernière étape et le but d'un pipeline de build. Cependant,
+	vu les avantages significatifs que ces pratiques apportent, elles sont un
+	objectif pertinent. Dans la suite de ce chapitre nous allons utiliser le terme
+	"Déploiement Continu" pour parler tant de Déploiement Continu que de Livraison
+	Continue. En effet, le Déploiement Continu peut être vu comme la Livraison
+	Continue avec une étape finale (le déploiement en production) dictée par
+	la partie métier plutôt que l'équipe de dévelopement. 
     </para>
   </sect1>
   <sect1 id="sect-implementing-cd">
