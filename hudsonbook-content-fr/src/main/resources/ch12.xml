@@ -67,26 +67,113 @@
     </para>
   </sect1>
   <sect1 id="sect-implementing-cd">
-    <title>Mise en oeuvre du Déploiement Automatisé et Continu</title>
-    <para>Dans sa forme la plus élémentaire, le Déploiement Automatisé peut être aussi simple que l'écriture de vos propres scripts afin de déployer votre application vers un serveur particulier. L'avantage principal de la solution scriptée est la simplicité et l'aisance en termes de configuration. Cependant, une telle approche peut atteindre ses limites si vous avez besoin de mettre en oeuvre des actions de déploiement plus élaborées, telles qu'installer un logiciel sur une machine ou redémarrer le serveur. Pour des scénarios plus avancés, vous pourriez avoir besoin d'un outil de déploiement/configuration plus sophistiqué tel que Puppet ou Chef.</para>
+    <title>Mise en oeuvre du déploiement automatisé et continu</title>
+    <para>Dans sa forme la plus élémentaire, le Déploiement Automatisé peut être
+	aussi simple que l'écriture de vos propres scripts afin de déployer votre
+	application vers un serveur particulier. L'avantage principal de la solution
+	scriptée est la simplicité et l'aisance en termes de configuration. Cependant,
+	une telle approche peut atteindre ses limites si vous avez besoin de mettre
+	en oeuvre des actions de déploiement plus élaborées, telles qu'installer un
+	logiciel sur une machine ou redémarrer le serveur. Pour des scénarios plus
+	avancés, vous pourriez avoir besoin d'un outil de déploiement/configuration
+	plus sophistiqué tel que Puppet ou Chef.</para>
     <sect2 id="sect-deployment-script">
-      <title>Le Script de Déploiement</title>
-      <para>Une <indexterm id="I_indexterm12_d1e16879" significance="normal"><primary>automated deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16884" significance="normal"><primary>continuous deployment</primary><secondary>deployment script for</secondary></indexterm><indexterm id="I_indexterm12_d1e16889" significance="normal"><primary>deployment script</primary></indexterm><indexterm id="I_indexterm12_d1e16892" significance="normal"><primary>scripts</primary><secondary>deployment script</secondary></indexterm>part essentielle de toute initiative de Déploiement Automatisée est un processus de déploiement scripté. Bien que celui puisse sembler évident, il y a encore de nombreuses organisations où le déploiement demeure un processus consommateur de resources, compliqué et lourd, incluant copie manuelle de fichiers, exécution manuelle de script, des notes écrites à la main et ainsi de suite. La bonne nouvelle est qu'en général cela n'a pas à vocation à rester ainsi. Avec un peu de travail, il est généralement possible d'écrire un script pour automatisé la plupart, voir l'intégralité, du processus.
+      <title>Le script de déploiement</title>
+      <para>Une <indexterm id="I_indexterm12_d1e16879" significance="normal">
+		<primary>déploiement automatisé</primary>
+		<secondary>script de déploiement pour</secondary>
+		</indexterm>
+		<indexterm id="I_indexterm12_d1e16884" significance="normal">
+		<primary>déploiement continu</primary>
+		<secondary>script de déploiement pour</secondary>
+		</indexterm>
+		<indexterm id="I_indexterm12_d1e16889" significance="normal">
+		<primary>script de déploiement</primary>
+		</indexterm>
+		<indexterm id="I_indexterm12_d1e16892" significance="normal">
+		<primary>scripts</primary>
+		<secondary>script de déploiement</secondary>
+		</indexterm>part essentielle de toute initiative de Déploiement Automatisé
+		est un processus de déploiement scripté. Bien que celui puisse sembler
+		évident, il y a encore de nombreuses organisations où le déploiement demeure
+		un processus consommateur de resources, compliqué et lourd, incluant copie
+		manuelle de fichiers, exécution manuelle de script, des notes écrites à la main
+		et ainsi de suite. La bonne nouvelle est qu'en général cela n'a vocation pas à
+		rester ainsi. Avec un peu de travail, il est généralement possible d'écrire un
+		script pour automatisé la plupart, voir l'intégralité, du processus.
       </para>
-      <para>La complexité d'un script de déploiement varie énormément d'une application à une autre. Pour un simple site web, un déploiement de script peut se limiter à resynchroniser un dossier sur le serveur cible. De nombreuses applications Java ont Ant ou des plugins Maven qui peuvent être utilisés pour le déploiement. Pour une architecture plus compliquée, le déploiement peut impliquer plusieurs applications et services sur de multiples serveurs <phrase role="keep-together">en grappe</phrase>, le tout coordinné de façon extrêment précise. La plupart des processus de déploiement sont entre ces deux extrêmes.</para>
+      <para>La complexité d'un script de déploiement varie énormément d'une application
+	  à une autre. Pour un simple site web, un déploiement de script peut se limiter à
+	  resynchroniser un dossier sur le serveur cible. De nombreuses applications Java ont
+	  Ant ou des plugins Maven qui peuvent être utilisés pour le déploiement. Pour une
+	  architecture plus compliquée, le déploiement peut impliquer plusieurs applications
+	  et services sur de multiples serveurs <phrase role="keep-together">en grappe</phrase>,
+	  le tout coordinné de façon extrêment précise. La plupart des processus de déploiement
+	  sont entre ces deux extrêmes.</para>
     </sect2>
     <sect2 id="sect-liquibase">
-      <title>Mises à jour de Base de Données</title>
-      <para>Déployer<indexterm class="startofrange" id="ch12-db1" significance="normal"><primary>automated deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db2" significance="normal"><primary>continuous deployment</primary><secondary>database updates with</secondary></indexterm><indexterm class="startofrange" id="ch12-db3" significance="normal"><primary>database</primary><secondary>updating with automated deployment</secondary></indexterm> votre application vers le serveur d'application est généralement seulement une partie du puzzle. Les Bases de Données, relationnelles ou autres, jouent presque toujours un rôle central dans l'architecture logicielle. Bien sûr, idéalement, votre base de données devrait être parfaite dès le début, mais cela est rarement le cas dans le monde réel. En effet, lors que vous mettez à jour votre application, vous avez généralement également besoin de mettre une ou plusieurs bases de données à jour. 
-</para>
-      <para>Les mises à jour de base de données sont généralement plus difficile à mettre en oeuvre que les mises à jour applicatives, vu que tant la structure que les données sont susceptibles d'être modifiés. Cependant, les mises à jour de base de données sont critiques pour le développement et le déploiement. Elles méritent donc de l'attention et de la planification.</para>
-      <para>Certains frameworks, tels que <indexterm id="I_indexterm12_d1e16928" significance="normal"><primary>Ruby on Rails projects</primary></indexterm>Ruby on Rails et <indexterm id="I_indexterm12_d1e16932" significance="normal"><primary>Hibernate, database updates with</primary></indexterm>Hibernate, peuvent supporter automatiquement des changements structurels d'une base de données. En utilisant ces frameworks, vous pouvez usuellement spécifier si vous voulez créer un nouveau schéma de la base à chaque mise à jour ou si vous voulez mettre à jour le schéma tout en conservant les données. Bien que cela semble utile à première vue, ces fonctionnalités sont en fait juste suffisantes pour des environnements non critiques. Ces outils ne gèrent pas bien les migrations de données, point pourtant essentiel. Par exemple, si vous créez une colonne dans votre base de données, le processus de mise à jour va simplement créer une nouvelle colonne: il ne va pas copier les données de l'ancienne colonne vers la nouvelle, pas plus qu'il ne va supprimer l'ancienne colonne de la table mise à jour.
+      <title>Mises à jour de base de données</title>
+      <para>Déployer<indexterm class="startofrange" id="ch12-db1" significance="normal">
+		<primary>déploiement automatisé</primary>
+		<secondary>mises à jour de base de donées avec</secondary>
+		</indexterm>
+		<indexterm class="startofrange" id="ch12-db2" significance="normal">
+		<primary>déploiement continu</primary>
+		<secondary>mises à jour de base de donées avec</secondary>
+		</indexterm>
+		<indexterm class="startofrange" id="ch12-db3" significance="normal">
+		<primary>base de données</primary>
+		<secondary>mettre à jour avec le déploiement automatisé</secondary>
+		</indexterm> votre application vers le serveur d'application est généralement
+		seulement une partie du puzzle. Les bases de données, relationnelles ou autres,
+		jouent presque toujours un rôle central dans l'architecture logiciel. Bien sûr,
+		idéalement, votre base de données devrait être parfaite dès le début, mais cela
+		est rarement le cas dans le monde réel. En effet, lorsque vous mettez à jour
+		votre application, vous avez généralement également besoin de mettre une ou
+		plusieurs bases de données à jour. 
+	  </para>
+      <para>Les mises à jour de base de données sont généralement plus difficile à mettre
+	  en oeuvre que les mises à jour applicatives, vu que tant la structure que les données
+	  sont susceptibles d'être modifiées. Cependant, les mises à jour de base de données sont
+	  critiques pour le développement et le déploiement. Elles méritent donc de l'attention
+	  et de la planification.</para>
+      <para>Certains frameworks, tels que <indexterm id="I_indexterm12_d1e16928" significance="normal">
+		<primary>les projets Ruby on Rails</primary>
+		</indexterm>Ruby on Rails et <indexterm id="I_indexterm12_d1e16932" significance="normal">
+			<primary>Hibernate, mises à jour de base de donées avec</primary>
+			</indexterm>Hibernate, peuvent supporter automatiquement des changements structurels
+	  d'une base de données. En utilisant ces frameworks, vous pouvez usuellement spécifier si
+	  vous voulez créer un nouveau schéma de la base à chaque mise à jour ou si vous voulez mettre
+	  à jour le schéma tout en conservant les données. Bien que cela semble utile à première vue,
+	  ces fonctionnalités sont en fait juste suffisantes pour des environnements non critiques.
+	  Ces outils ne gèrent pas bien les migrations de données, point pourtant essentiel.
+	  Par exemple, si vous créez une colonne dans votre base de données, 
+	  le processus de mise à jour va simplement créer une nouvelle colonne: il ne
+	  va pas copier les données de l'ancienne colonne vers la nouvelle, pas plus
+	  qu'il ne va supprimer l'ancienne colonne de la table mise à jour.
       </para>
-      <para>Heuresement, cela n'est pas la seule approche disponible. Un autre outil qui tente de résoudre le problème complexe des mises à jour de base de données est  <indexterm class="startofrange" id="ch12-liquibase" significance="normal"><primary>Liquibase</primary></indexterm><ulink url="http://www.liquibase.org/">Liquibase</ulink>.
-      Liquibase est un outil open source qui permet d'organiser des processus de mises à jour entre versions d'une base de données à travers une approche de haut niveau.</para>
-      <para>Liquibase garde un historique des mises à jour appliquées dans une table de la base de données. Il peut ainsi aisément amener n'importe quelle base vers l'état souhait. Par conséquent, pas de risque d'appliquer deux fois le même script de mise à jour: Liquibase applique seulement les scripts qui n'ont pas encore été appliqués. Liquibase est aussi capable de défaire des changements, du moins pour certains types de changements. Vu que cela ne fonctionne pas pour tous les changements (les données d'une table supprimée, par exemple, ne peuvent pas être restaurées) il est préférable de ne pas trop compter sur cette fonctionnalité.
-  </para>
-      <para>Dans Liquibase, les changements de la base de données sont aggrégés sous la forme "d'ensembles de changement", chacun représentant la mise à jour dans un format XML indépendant de la base de données. Ces ensembles de changement peuvent inclure tous les changements que vous pourriez appliquer à une base, de la création ou suppression de table à la création ou mise à jour de colonne, index ou clés étrangères :</para>
+      <para>Heuresement, cela n'est pas la seule approche disponible. Un autre outil
+	  qui tente de résoudre le problème complexe des mises à jour de base de données
+	  est <indexterm class="startofrange" id="ch12-liquibase" significance="normal">
+	  <primary>Liquibase</primary></indexterm><ulink url="http://www.liquibase.org/">Liquibase</ulink>.
+      Liquibase est un outil open source qui permet d'organiser des processus de
+	  mises à jour entre versions d'une base de données à travers une approche de
+	  haut niveau.</para>
+      <para>Liquibase garde un historique des mises à jour appliquées dans une table
+	  de la base de données. Il peut ainsi aisément amener n'importe quelle base vers
+	  l'état souhaité. Par conséquent, pas de risque d'appliquer deux fois le même script
+	  de mise à jour : Liquibase applique seulement les scripts qui n'ont pas encore
+	  été appliqués. Liquibase est aussi capable de défaire des changements, du moins
+	  pour certains types de changements. Vu que cela ne fonctionne pas pour tous les
+	  changements (les données d'une table supprimée, par exemple, ne peuvent pas être
+	  restaurées) il est préférable de ne pas trop compter sur cette fonctionnalité.
+      </para>
+      <para>Dans Liquibase, les changements de la base de données sont aggrégés sous
+	  la forme "d'ensembles de changement", chacun représentant la mise à jour dans
+	  un format XML indépendant de la base de données. Ces ensembles de changement
+	  peuvent inclure tous les changements que vous pourriez appliquer à une base de données,
+	  de la création ou suppression de table à la création ou mise à jour de colonne,
+	  index ou clés étrangères : </para>
       <programlisting id="I_programlisting12_d1e16948" format="linespecific">&lt;databaseChangeLog
 xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.6"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -104,13 +191,19 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
     &lt;/createTable&gt;
   &lt;/changeSet&gt;
 &lt;/databaseChangeLog&gt;</programlisting>
-      <para>Les ensembles de changement peuvent aussi refléter des modifications à une table existante. Par exemple, l'ensemble de changement suivant représente le renommage d'une colonne :
+      <para>Les ensembles de changement peuvent aussi refléter des modifications à
+	  une table existante. Par exemple, l'ensemble de changement suivant représente
+	  le renommage d'une colonne :
       </para>
       <programlisting id="I_programlisting12_d1e16952" format="linespecific">&lt;changeSet id="1" author="bob"&gt;
   &lt;renameColumn tableName="person" oldColumnName="fname" newColumnName="firstName"/&gt;
 &lt;/changeSet&gt;</programlisting>
-      <para>Etant donné que cette représentation concerne la nature sémantique du changement, Liquibase est capable de réaliser correctement tant la mise à jour du schéma que la migration de données correspondante.</para>
-      <para>Liquibase peut aussi bien gérer les changements de données que de structure. Par exemple, l'ensemble de changement suivant insère une nouvelle ligne de données dans une table :</para>
+      <para>Etant donné que cette représentation concerne la nature sémantique du
+	  changement, Liquibase est capable de réaliser correctement tant la mise à jour
+	  du schéma que la migration de données correspondante.</para>
+      <para>Liquibase peut aussi bien gérer les changements de données que de
+	  structure. Par exemple, l'ensemble de changement suivant insère une nouvelle
+	  ligne de données dans une table : </para>
       <programlisting id="I_programlisting12_d1e16959" format="linespecific">&lt;changeSet id="326" author="simon"&gt;
   &lt;insert tableName="country"&gt;
     &lt;column name="id" valueNumeric="1"/&gt;
@@ -118,9 +211,17 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
     &lt;column name="name" value="Albania"/&gt;
   &lt;/addColumn&gt;
 &lt;/changeSet&gt;</programlisting>
-      <para>Chaque ensemble de changements a un identifiant et un auteur, ce qui facilite la traçabilité et réduit le risque de conflit Les développeurs peuvent tester leurs ensembles de changements à leur propre base de données et "commit" une fois qu'ils sont prêts. Bien sûr, l'étape suivante est de configurer Jenkins pour qu'il applique les mises à jour Liquibase à la base de données appropriée avant que les tests d'intégration ou que les déploiement d'applications ne soient réalisés, généralement en tant que partie du script ordinaire de build du project.
+      <para>Chaque ensemble de changements a un identifiant et un auteur, ce qui facilite
+	  la traçabilité et réduit le risque de conflit. Les développeurs peuvent tester
+	  leurs ensembles de changements à leur propre base de données et les archiver une fois
+	  qu'ils sont prêts. Bien sûr, l'étape suivante est de configurer Jenkins pour qu'il
+	  applique les mises à jour Liquibase à la base de données appropriée avant que les tests
+	  d'intégration ou que les déploiements d'applications ne soient réalisés, généralement en
+	  tant que partie du script de build ordinaire du projet.
       </para>
-      <para>Liquibase s'intègre bien dans le processus de build. Il peut être exécuté depuis la ligne de commande ou intégré dans Ant ou Maven. Pour ce dernier, par exemple, vous pouvez configurer le "Maven Liquibase Plugin" comm suit :</para>
+      <para>Liquibase s'intègre bien dans le processus de build. Il peut être exécuté depuis
+	  la ligne de commande ou être intégré dans Ant ou Maven. Pour ce dernier, par exemple, vous
+	  pouvez configurer le "Maven Liquibase Plugin" comme suit :</para>
       <programlisting id="I_programlisting12_d1e16965" format="linespecific">&lt;project&gt;
   &lt;build&gt;
     &lt;plugins&gt;
@@ -137,11 +238,12 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.6.xsd"&gt;
 &lt;/build&gt;
 ...
 &lt;/project&gt;</programlisting>
-      <para>En utilisant ainsi Liquibase avec Maven, vous pourriez mettre à jour une base de données cible vers le schéma courant en utilisant ce plugin:</para>
+      <para>En utilisant ainsi Liquibase avec Maven, vous pourriez mettre à jour une
+	  base de données cible vers le schéma courant en utilisant ce plugin:</para>
       <screen format="linespecific">$ mvn liquibase:update</screen>
-      <para>Les informations par défaut de connexion à la base sont spécifiées dans le fichier
-      <filename moreinfo="none">src/main/resources/liquibase.properties</filename>,
-et ont l'aspect suivant :</para>
+      <para>Les informations de connexion par défaut à la base de données sont spécifiées
+	  dans le fichier <filename moreinfo="none">src/main/resources/liquibase.properties</filename>,
+	  et ont l'aspect suivant :</para>
       <programlisting id="I_programlisting12_d1e16976" format="linespecific">changeLogFile = changelog.xml
 driver = com.mysql.jdbc.Driver
 url = jdbc:mysql://localhost/ebank
@@ -149,21 +251,89 @@ username = scott
 password = tiger
 verbose = true
 dropFirst = false</programlisting>
-      <para>Vous pouvez toutefois supplanter n'importe laquelle de ces propriétés depuis la ligne de commande, ce qui rend easy de configurer un build Jenkins pour mettre à jour différentes bases de données.</para>
-      <para>D'autres commandes similaires vous permettent de générer un script SQL (si vous avez besoin de le soumettre à votre administrateur de base données par exemple), ou de revenir à une version précédente du <indexterm id="I_indexterm12_d1e16982" class="endofrange" startref="ch12-liquibase" significance="normal"><primary/></indexterm>schéma.</para>
-      <para>Cela n'est bien sûr qu'un exemple d'une solution possible. D'autres équipes préfèrent maintenir manuellement une série de scripts SQL de mises à jour, voir écrivent leur propre solution. L'important est d'avoir un outillage vous permettant de mettre à jour différentes bases de données de façon fiable et reproductible lors de vos déploiements <indexterm id="I_indexterm12_d1e16988" class="endofrange" startref="ch12-db1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16990" class="endofrange" startref="ch12-db2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e16992" class="endofrange" startref="ch12-db3" significance="normal"><primary/></indexterm>applicatifs.</para>
+      <para>Vous pouvez toutefois surcharger n'importe laquelle de ces propriétés
+	  depuis la ligne de commande, ce qui rend facile de configurer un build Jenkins
+	  pour mettre à jour différentes bases de données.</para>
+      <para>D'autres commandes similaires vous permettent de générer un script SQL
+	  (si vous avez besoin de le soumettre à votre administrateur de base données par
+	  exemple), ou de revenir à une version précédente du 
+	  <indexterm id="I_indexterm12_d1e16982" class="endofrange" startref="ch12-liquibase" significance="normal">
+		<primary/></indexterm>schéma.</para>
+      <para>Cela n'est bien sûr qu'un exemple d'une solution possible. D'autres équipes
+	  préfèrent maintenir manuellement une série de scripts SQL de mises à jour, voir
+	  écrivent leur propre solution. L'important est d'avoir un outillage vous permettant
+	  de mettre à jour différentes bases de données de façon fiable et reproductible lors
+	  de vos déploiements 
+	  <indexterm id="I_indexterm12_d1e16988" class="endofrange" startref="ch12-db1" significance="normal">
+		<primary/></indexterm>
+	  <indexterm id="I_indexterm12_d1e16990" class="endofrange" startref="ch12-db2" significance="normal">
+		<primary/></indexterm>
+	  <indexterm id="I_indexterm12_d1e16992" class="endofrange" startref="ch12-db3" significance="normal">
+		<primary/></indexterm>applicatifs.</para>
     </sect2>
     <sect2 id="sect-smoke-tests">
-      <title>Tests Fumigatoires</title>
-      <para>N'importe <indexterm id="I_indexterm12_d1e17000" significance="normal"><primary>automated deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17005" significance="normal"><primary>continuous deployment</primary><secondary>smoke tests for</secondary></indexterm><indexterm id="I_indexterm12_d1e17010" significance="normal"><primary>smoke tests</primary></indexterm><indexterm id="I_indexterm12_d1e17013" significance="normal"><primary>tests</primary><secondary>smoke tests</secondary></indexterm>quel déploiement automatisé sérieux a besoin d'être suivi par une série de tests fumigatoires automatisés. Un sous ensemble des tests d'acceptance automatisés peut faire un bon candidat. Les tests fumigatoires devraient être non intrusifs et relativement rapides. Ils doivent pouvoir être exécutés en production, ce qui est susceptible de restreindre le nombre d'actions possibles durant les tests.</para>
+      <title>Tests fumigatoires</title>
+      <para>N'importe <indexterm id="I_indexterm12_d1e17000" significance="normal">
+		<primary>déploiement automatisé</primary>
+		<secondary>tests fumigatoires pour</secondary>
+	  </indexterm>
+	  <indexterm id="I_indexterm12_d1e17005" significance="normal">
+		<primary>déploiement continu</primary>
+		<secondary>tests fumigatoires pour</secondary>
+	  </indexterm>
+		<indexterm id="I_indexterm12_d1e17010" significance="normal">
+		<primary>tests fumigatoires</primary>
+	  </indexterm>
+	  <indexterm id="I_indexterm12_d1e17013" significance="normal">
+		<primary>tests</primary>
+		<secondary>tests fumigatoires</secondary>
+	  </indexterm>quel déploiement automatisé sérieux a besoin d'être suivi par une série
+	  de tests fumigatoires automatisés. Un sous ensemble des tests d'acceptance automatisés
+	  peut faire un bon candidat. Les tests fumigatoires devraient être non intrusifs et
+	  relativement rapides. Ils doivent pouvoir être exécutés en production, ce qui est
+	  susceptible de restreindre le nombre d'actions possibles durant les tests.</para>
     </sect2>
     <sect2 id="sect-rolling-back">
       <title>Revenir sur des changements</title>
-      <para>Un autre<indexterm id="I_indexterm12_d1e17024" significance="normal"><primary>automated deployment</primary><secondary>rolling back changes in</secondary></indexterm><indexterm id="I_indexterm12_d1e17029" significance="normal"><primary>continuous deployment</primary><secondary>rolling back changes in</secondary></indexterm> aspect important à considérer lors de la mise en place du Déploiement Automatisé est comment revenir en arrière si quelque chose se passe mal. Cela est encore plus important si vous voulez implémenter du Déploiement Continu. Il est en effet critique de pouvoir revenir en arrière si besoin.</para>
-      <para>La mise en oeuvre varie grandement en fonction de l'application. Bien qu'il soit relativement simple de redéployer une version précédente d'une application en utilisant Jenkins (nous verrons cela plus loin dans ce chapitre), l'application n'est généralement pas le seul acteur en jeu. Un retour en arrière de la base de données à un état précédent est souvent à mettre en oeuvre.</para>
-      <para>Nous <indexterm id="I_indexterm12_d1e17039" significance="normal"><primary>database</primary><secondary>rolling back changes to</secondary></indexterm> avons vu comment il est possible d'utiliser Liquibase pour les mises à jour de base de données, et bien sûr de nombreuses autres stratégies sont également possibles.Cependant, revenir à un état précédent de la base de données présente des défis particuliers. Liquibase, par exemple permet de revenir sur certains changements de structure de la base, mais pas de tous. De plus, des données perdues (lors de la suppression de table par exemple) ne peuvent être restaurées en utilisant que Liquibise.</para>
-      <para>La façon la plus fiable de retourner à un état précédent est probablement de prendre une image de la base juste avant la mise à jour. Cette image peut ensuite être utilisée lors de la restauration. Une méthode efficace est d'automatiser ce processus dans <phrase role="keep-together">Jenkins</phrase> dans le job de déploiment, est de sauver l'image de la base et le fichier binaire déployable en tant qu'artefacts. De cette façon, vous pouvez aisément restaurer la base de données en utilisant l'image sauvegardée ainsi que re déployer l'application en utilisant le fichier déployable sauvé. Nous allons regarder un exemple de cette stratégie plus loin dans ce 
-      <indexterm id="I_indexterm12_d1e17050" class="endofrange" startref="ch12-auto1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm12_d1e17052" class="endofrange" startref="ch12-auto2" significance="normal"><primary/></indexterm>chapitre.</para>
+      <para>Un autre<indexterm id="I_indexterm12_d1e17024" significance="normal">
+	  <primary>déploiement automatisé</primary>
+	  <secondary>revenir sur des changements dans</secondary>
+	  </indexterm>
+	  <indexterm id="I_indexterm12_d1e17029" significance="normal">
+	  <primary>déploiement continu</primary>
+	  <secondary>revenir sur des changements dans</secondary>
+	  </indexterm> aspect important à considérer lors de la mise en place du Déploiement
+	  Automatisé est comment revenir en arrière si quelque chose se passe mal. Cela est
+	  encore plus important si vous voulez implémenter du Déploiement Continu. Il est en
+	  effet critique de pouvoir revenir en arrière si besoin.</para>
+      <para>La mise en oeuvre varie grandement en fonction de l'application. Bien qu'il
+	  soit relativement simple de redéployer une version précédente d'une application en
+	  utilisant Jenkins (nous verrons cela plus loin dans ce chapitre), l'application
+	  n'est généralement pas le seul acteur en jeu. Un retour en arrière de la base de
+	  données à un état précédent est souvent à mettre en oeuvre.</para>
+      <para>Nous <indexterm id="I_indexterm12_d1e17039" significance="normal">
+		<primary>base de données</primary>
+		<secondary>revenir sur des changements pour</secondary>
+	  </indexterm> avons vu comment il est possible d'utiliser Liquibase pour les mises à jour
+	  de base de données, et bien sûr de nombreuses autres stratégies sont également
+	  possibles. Cependant, revenir à un état précédent de la base de données présente des défis
+	  particuliers. Liquibase, par exemple, permet de revenir sur certains changements de
+	  structure de la base de données, mais pas de tous. De plus, des données perdues (lors 
+	  de la suppression de table par exemple) ne peuvent être restaurées en utilisant que
+	  Liquibase.</para>
+      <para>La façon la plus fiable de retourner à un état précédent est probablement
+	  de prendre une image de la base juste avant la mise à jour. Cette image peut ensuite
+	  être utilisée lors de la restauration. Une méthode efficace est d'automatiser ce
+	  processus dans <phrase role="keep-together">Jenkins</phrase> dans la tâche de déploiment,
+	  et de sauver l'image de la base et le fichier binaire déployable en tant qu'artéfacts.
+	  De cette façon, vous pouvez aisément restaurer la base de données en utilisant l'image
+	  sauvegardée et ensuite de redéployer l'application en utilisant le fichier déployable
+	  sauvé. Nous allons regarder un exemple de cette stratégie plus loin dans ce 
+      <indexterm id="I_indexterm12_d1e17050" class="endofrange" startref="ch12-auto1" significance="normal">
+	  <primary/>
+	  </indexterm>
+	  <indexterm id="I_indexterm12_d1e17052" class="endofrange" startref="ch12-auto2" significance="normal">
+	  <primary/></indexterm>chapitre.</para>
     </sect2>
   </sect1>
   <sect1 id="sect-deploying-to-an-app-server">
