@@ -12,15 +12,15 @@
 			<indexterm class="startofrange" id="ch13-maint2"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
+				<secondary>maintenance de</secondary>
 			</indexterm>
-			Dans ce chapitre, nous allons discuter quelques trucs et astuces que
+			Dans ce chapitre, nous allons discuter de quelques trucs et astuces que
 			vous pourriez trouver utile lors de la maintenance d'une instance
 			Jenkins conséquente. Nous regarderons des choses comme limiter et
 			surveiller l'espace disque, comment donner assez de mémoire à Jenkins
 			et comment archiver les tâches de build ou les migrer d'un serveur à un
 			autre. Certains de ces sujets sont abordés ailleurs dans le livre,
-			mais ici nous allons regarder à ces éléments du point de vue d'un
+			mais ici nous allons regarder ces éléments du point de vue d'un
 			administrateur système.
 		</para>
 	</sect1>
@@ -31,23 +31,23 @@
 			<indexterm class="startofrange" id="ch13-monitor1"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>monitoring disk space</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>Surveillance de l'espace disque</tertiary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>monitoring disk space</secondary>
+				<secondary>Surveillance de l'espace disque</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor3"
 				significance="normal">
-				<primary>disk space</primary>
-				<secondary>monitoring</secondary>
+				<primary>espace disque</primary>
+				<secondary>surveillance</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor4"
 				significance="normal">
-				<primary>build history</primary>
-				<secondary>disk usage of</secondary>
+				<primary>historique des builds</primary>
+				<secondary>utilisation disque de</secondary>
 			</indexterm>
 			prend de l'espace disque. De plus, Jenkins analyse les builds
 			précédents lorsqu'il charge la configuration d'un projet. Ainsi, le
@@ -85,7 +85,7 @@
 		<para>Le problème avec la suppresion des anciens builds est que vous
 			perdez l'historique des builds par la même occasion. Pourtant,
 			Jenkins utilise cet historique pour réaliser différents graphiques
-			sur les résultats des tests et les métriques du build. Limiter le
+			sur les résultats des tests et les métriques de build. Limiter le
 			nombre de build conservé à 20, par exemple, implique que Jenkins
 			affichera des graphiques contenant seulement 20 points. Cela peut
 			être un peu limité. Cette sorte d'information peut être très utile
@@ -96,9 +96,9 @@
 		<para>
 			Heuresement, Jenkins a un mécanisme à même de rendre les développeurs
 			et les administraturs systèmes heureux. En général, les éléments
-			prenant le plus de place sont les artefacts du build : fichiers JAR,
-			WAR et ainsi de suite. L'historique du build en elle même est
-			principalement des fichiers de log XML, qui ne prennent pas trop de
+			prenant le plus de place sont les artefacts de build : fichiers JAR,
+			WAR et ainsi de suite. L'historique de build en elle-même est
+			principalement constituée de fichiers de log XML, qui ne prennent pas trop de
 			place. Si vous cliquez sur le button "Avancé...", Jenkins vous
 			offre
 			la possibilité de supprimer les artefacts mais pas les données
@@ -107,11 +107,11 @@
 			<xref linkend="fig-maintenance-discard-old-builds-advanced" />
 			, par exemple, nous avons configuré Jenkins pour qu'il garde les
 			artefacts 7 jours au maximum. Cette option est vraiment pratique si
-			vous avez besoin de limiter l'utilisation disque tout en désirant
+			vous avez besoin de limiter l'utilisation du disque tout en désirant
 			fournir l'ensemble des métriques pour les équipes de développement.
 		</para>
 		<figure float="none" id="fig-maintenance-discard-old-builds-advanced">
-			<title>Supprimer les anciens builds—options avancées</title>
+			<title>Supprimer les anciens builds — options avancées</title>
 			<mediaobject id="I_mediaobject13_d1e17741">
 				<imageobject role="print">
 					<imagedata fileref="figs/print/jtdg_1302.pdf" format="PDF" />
@@ -143,7 +143,7 @@
 					significance="normal">
 					<primary>plugin Disk Usage</primary>
 				</indexterm>
-				est des plus utiles pour un administrateur Jenkins. Ce plugin
+				est un des plus utiles pour un administrateur Jenkins. Ce plugin
 				conserve et reporte l'espace disque utilisé par vos projets. Il vous
 				permet de repérer et corriger les projets qui utilisent trop
 				d'espace.
@@ -171,7 +171,7 @@
 				</mediaobject>
 			</figure>
 			<para>La liste est triée par utilisation totale d'espace disque,
-				ainsi les projets en utilisant le plus apparaissent en haut. La
+				ainsi les projets utilisant le plus d'espace apparaissent en haut. La
 				liste fournit deux valeurs par projet. La colonne "Builds" indique
 				l'espace disque total utilisé par l'historique des builds, tandis
 				que la colonne "Workspace" est l'espace disque utilisé pour
@@ -181,14 +181,14 @@
 				parfois à une vitesse excessivement rapide, à moins que vous ne
 				fassiez quelque chose. Vous pouvez garder sous contrôle l'espace
 				disque utilisé par l'historique d'un projet en limitant le nombre de
-				builds conservés et faisant attention à quels artefacts sont
+				builds conservés et en faisant attention à quels artefacts sont
 				conservés.
 			</para>
 			<para>
 				Pour se faire une idée sur la vitesse à laquelle l'espace disque est
-				utilisée, vous pouvez aussi afficher l'espace disque utilisé par
+				utilisé, vous pouvez aussi afficher l'espace disque utilisé par
 				chaque projet au cours du temps. Pour faire cela, vous devez
-				configurer le plugin dans sur la page "Configurer le système" (voir
+				configurer le plugin sur la page "Configurer le système" (voir
 				<xref linkend="fig-maintenance-disk-usage-project" />
 				).
 			</para>
@@ -208,7 +208,7 @@
 				consomment au cours du temps. Le plugin "Disk Usage" affiche un
 				graphique de l'utlisation du disque au cours du temps (voir
 				<xref linkend="fig-maintenance-project-disk-usage" />
-				) qui donne un bon rendu de la vitesse à laquelle votre projet
+				) qui donne un bon aperçu de la vitesse à laquelle votre projet
 				consomme l'espace disque, ou au contraire si l'espace utilisé est
 				stable au cours
 				<indexterm id="I_indexterm13_d1e17792" class="endofrange"
@@ -240,12 +240,12 @@
 				Si vous
 				<indexterm class="startofrange" id="ch13-musage"
 					significance="normal">
-					<primary>Maven build jobs</primary>
-					<secondary>disk usage of</secondary>
+					<primary>tâches de build Maven</primary>
+					<secondary>utilisation du disque des</secondary>
 				</indexterm>
 				utilisez les tâches de build Maven, il y a des détails
 				supplémentaires que vous devriez connaître. Dans Jenkins, les tâches de build
-				 Maven archivent automatiquement, par défaut, les artefacts du
+				Maven archivent automatiquement, par défaut, les artefacts du
 				build. Cela peut être différent de vos attentes.
 			</para>
 			<para>Le problème est que ces artefacts SNAPSHOT prennent de la
@@ -256,8 +256,8 @@
 				multimodules. En effet, Jenkins archive les artefacts générés pour
 				chaque module.
 			</para>
-			<para>En fait, si vous avez besoin d'archiver vos artefacts Maven
-				SNAPSHOT, il est probablement plus avisé de les déployer directement
+			<para>En fait, si vous avez besoin d'archiver vos artefacts SNAPSHOT
+				Maven, il est probablement plus avisé de les déployer directement
 				dans votre gestionnaire de dépôt local. Nexus Pro, par exemple,
 				peut être configuré pour faire cela. Artifactory peut être configuré
 				pour supprimer les vieux artefacts SNAPSHOT.
@@ -266,7 +266,7 @@
 				Heuresement, vous pouvez configurer Jenkins pour réaliser cela.
 				Allez dans la section "Buid" de l'écran de configuration de votre
 				tâche et cliquez sur le bouton "Avancé...". Des champs supplémentaires
-				sont alors affichés, comme montré là
+				sont alors affichés, comme montré dans
 				<xref linkend="fig-jenkins-maven-no-archives" />
 				.
 			</para>
@@ -282,8 +282,8 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Si vous cochez l'option “Désactive lachivage automatique des artefacts”,TODO
-				Jenkins ne stoquera pas les fichiers Jar généré par les builds de
+				Si vous cochez l'option “Désactive l'archivage automatique des artefacts”,
+				Jenkins ne stockera pas les fichiers Jar généré par les builds de
 				votre projet. C'est une bonne façon de rendre heureux votre
 				administrateur système.
 			</para>
@@ -294,8 +294,8 @@
 				souvent utiles quand vous implémentez un séquenceur de build 
 				(voir
 				<xref linkend="sect-build-pipelines" />
-				). Dans ce cas, vous pouvez toujours choisir les artefacts
-				nécessaires manuellement, et alors utiliser l'option "Supprimer les
+				). Dans ce cas, vous pouvez toujours choisir, manuellement, les 
+				artefacts nécessaires, et alors utiliser l'option "Supprimer les
 				anciens builds" pour définir la durée
 				<indexterm id="I_indexterm13_d1e17841" class="endofrange"
 					startref="ch13-musage" significance="normal">
