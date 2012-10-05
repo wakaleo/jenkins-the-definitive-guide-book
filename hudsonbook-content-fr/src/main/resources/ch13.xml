@@ -433,21 +433,21 @@
 			Sauvegarder
 			<indexterm class="startofrange" id="ch13-backups"
 				significance="normal">
-				<primary>backups</primary>
+				<primary>sauvegardes</primary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-backups2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>backups</secondary>
+				<secondary>sauvegardes</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-backups3"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>backups</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>sauvegardes</tertiary>
 			</indexterm>
-			vos données est pratique universellement recommandée, et vos serveurs
-			Jenkins ne devraient pas faire exception. Par chance, sauvergarder
+			vos données est une pratique universellement recommandée, et vos serveurs
+			Jenkins ne devraient pas y faire exception. Par chance, sauvergarder
 			Jenkins est relativement aisé. Dans cette section nous allons
 			regarder plusieurs façons de réaliser cela.
 		</para>
@@ -459,16 +459,16 @@
 				<filename moreinfo="none">JENKINS_HOME</filename>
 				.
 				Il contient la configuration de toutes vos tâches de build, les
-				configurations de vos noeuds esclaves et l'historique des build. La
+				configurations de vos noeuds esclaves et l'historique des builds. La
 				sauvegarde peut se faire pendant que Jenkins tourne. Il n'y a pas
 				besoin de couper votre serveur pendant la sauvegarde.
 			</para>
 			<para>
-				L'inconvénient de cette approche est que dossier
+				L'inconvénient de cette approche est que le dossier
 				<filename moreinfo="none">JENKINS_HOME</filename>
 				peut contenir un volume très important de données (voir
 				<xref linkend="sec-hudson-home-directory-contents" />
-				). Si cela devient un problème, vous pouvez gagner un peu en ne
+				). Si cela devient un problème, vous pouvez en gagner un peu en ne
 				sauvegardant pas les dossiers suivants, qui contiennent des données
 				aisément recrées à la demande par Jenkins :
 			</para>
@@ -521,7 +521,7 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Pour savoir comment optimiser vos backups Jenkins, vous devez
+				Pour savoir comment optimiser vos sauvegardes Jenkins, vous devez
 				comprendre comment sont organisés les dossiers de tâche de build. Au sein
 				du dossier
 				<emphasis>jobs</emphasis>
@@ -539,15 +539,15 @@
 				Au contraire, le dossier
 				<filename moreinfo="none">builds</filename>
 				requiert plus d'attention. Il contient l'historique de vos résultats
-				de builds et de vos artefacts générés précédement, avec un dossier
+				de build et de vos artefacts générés précédement, avec un dossier
 				horodaté pour chaque build précédent.
-				Si vous n'êtres pas intéressés par la restauration de votre historique
+				Si vous n'êtes pas intéressés par la restauration de votre historique
 				des builds ou d'anciens artefacts, vous n'avez pas besoin de sauver
 				ce dossier.
-				Si vous intéressés, continuez à lire! Dans chacun de ces dossiers,
+				Si vous l'êtes, continuez à lire! Dans chacun de ces dossiers,
 				vous trouverez l'historique des builds (stockés sous la forme de
 				fichiers XML, par exemple les résultats des tests JUnit)
-				et les artefacts archivés. Jenkins utilise les fichiers textes et XML
+				et les artefacts archivés. Jenkins utilise les fichiers texte et XML
 				pour réaliser les graphiques affichés sur le tableau de bord des tâche de build. 
 				Le dossier
 				<filename moreinfo="none">archive</filename>
@@ -561,10 +561,10 @@
 				De même qu'il est sage de réaliser des sauvegardes fréquentes, il
 				est également sage de tester votre procédure de sauvegarde. Avec
 				Jenkins, cela est facile à faire.
-				Les répertoires racine Jenkins sont totalement portables, pour tester
+				Les répertoires racine de Jenkins sont totalement portables, pour tester
 				votre sauvegarde, il suffit donc de l'extraire dans un dossier
-				temporaire et de lancer une instance d'y
-				lancer Jenkins. Par exemple, imaginons que vous avez extrait votre
+				temporaire et de lancer une instance
+				Jenkins. Par exemple, imaginons que vous ayez extrait votre
 				sauvegarde dans un dossier temporaire nommé
 				<filename moreinfo="none">/tmp/jenkins-backup</filename>
 				. Pour tester cette sauvegarde, assigner le chemin du dossier
@@ -592,7 +592,7 @@
 		<sect2>
 			<title>Utilisation du Backup Plugin</title>
 			<para>
-				L'approche via le
+				L'approche
 				<indexterm id="I_indexterm13_d1e18042" significance="normal">
 					<primary>Backup plugin</primary>
 				</indexterm>
@@ -600,16 +600,16 @@
 					<primary>plugins</primary>
 					<secondary>Backup</secondary>
 				</indexterm>
-				décrite dans la section précédente est suffisament simple pour
+				décrite dans la section précédente est suffisamment simple pour
 				s'intégrer dans vos procédures normales de sauvegardes, mais vous
 				pourriez préférer quelque chose de plus spécifique à Jenkins. Le
-				plugin Jenkins Backup Manager (voir
+				plugin Backup (voir
 				<xref linkend="fig-jenkins-backup-manager" />
-				) fournit une interface utilisateur simple utilisable pour
+				) fournit une interface utilisateur simple que vous pouvez utiliser pour
 				sauvegarder et restaurer vos configurations et données Jenkins.
 			</para>
 			<figure float="none" id="fig-jenkins-backup-manager">
-				<title>Plugin Jenkins Backup Manager</title>
+				<title>Le plugin Jenkins Backup Manager</title>
 				<mediaobject id="I_mediaobject13_d1e18056">
 					<imageobject role="print">
 						<imagedata fileref="figs/print/jtdg_1310.pdf" format="PDF" />
@@ -620,10 +620,9 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Ce plugin permet de configurer et lancer des sauvegardes tant des
+				Ce plugin vous permet de configurer et de lancer des sauvegardes tant des
 				configurations de vos tâches de build que de votre historique des
-				builds. L'écran "Configuration", dans l'écran "Administrer Jenkins" 
-				via "Gestionnaire de backup", vous donne un important contrôle sur les
+				builds. L'écran "Configuration" vous donne un important contrôle sur les
 				éléments à sauvegarder (voir
 				<xref linkend="fig-jenkins-backup-config" />
 				). Vous pouvez choisir de seulement sauvegarder les fichiers XML de
@@ -632,7 +631,7 @@
 				automatiquement générés (dans de nombreux processus de build, ces
 				artefacts sont disponibles dans votre Entreprise Repository Manager
 				local). Vous pouvez aussi sauvegarder les espaces de travail des
-				tâches  (généralement non nécessaire, comme discuté plus haut) et toutes
+				tâches (généralement non nécessaire, comme discuté plus haut) et toutes
 				empreintes numériques générées.
 			</para>
 			<figure float="none" id="fig-jenkins-backup-config">
@@ -652,7 +651,7 @@
 				La sauvegarde prend du temps et stoppe Jenkins durant cette période (à moins
 				de désactiver cette option dans la
 				<phrase role="keep-together">configuration</phrase>
-				du backup ).
+				de la sauvegarde).
 			</para>
 			<para>
 				A l'heure où ces lignes sont écrites, il n'est pas possible de
@@ -673,14 +672,14 @@
 			<para>
 				Si tout
 				<indexterm id="I_indexterm13_d1e18093" significance="normal">
-					<primary>Thin Backup plugin</primary>
+					<primary>plugin Thin Backup</primary>
 				</indexterm>
 				<indexterm id="I_indexterm13_d1e18096" significance="normal">
 					<primary>plugins</primary>
 					<secondary>Thin Backup</secondary>
 				</indexterm>
 				<indexterm id="I_indexterm13_d1e18101" significance="normal">
-					<primary>lightweight backups</primary>
+					<primary>sauvegardes plus légères</primary>
 				</indexterm>
 				ce que vous voulez sauvegarder est votre configuration des tâches de build,
 				le plugin Backup Manager peut être considéré excessif. Une
@@ -694,8 +693,8 @@
 			<para>
 				Tout comme le plugin Backup, ce plugin ajoute une icône dans la page
 				"Administrer Jenkins". De là, vous pouvez configurer et planifier
-				les sauvegardes de votre configuration, déclencher un backup
-				immédiat ou restaurer une sauvegarde précédente. La configuration
+				les sauvegardes de votre configuration, déclencher une sauvegarde
+				immédiate ou restaurer une sauvegarde précédente. La configuration
 				est sans détours (voir
 				<xref linkend="fig-lightweight-backup-config" />
 				). Elle implique simplement de configurer des sauvegardes complètes
