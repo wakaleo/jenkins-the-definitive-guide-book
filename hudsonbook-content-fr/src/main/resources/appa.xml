@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <appendix id="appendix-automating-your-tests">
-  <title>Automatiser vos tests unitaires et <phrase role="keep-together">tests
+  <title>Automatiser vos tests unitaires et <phrase role="keep-together">
   d’intégration</phrase></title>
   <sect1 id="sect-testing-maven">
     <title>Automatiser vos tests avec Maven</title>
     <para>Maven<indexterm class="startofrange" id="appa-maven1" significance="normal"><primary>tests</primary><secondary>automatiser</secondary><tertiary sortas="Maven">avec Maven</tertiary></indexterm><indexterm class="startofrange" id="appa-maven2" significance="normal"><primary>Maven</primary><secondary>automatiser les tests</secondary></indexterm> est un outil de build open source populaire dans le monde Java, qui
     fait usage de pratiques telles que les déclarations de dépendances, les
     répertoires et cycles de vie de build standards, et la convention préférée à la déclaration pour
-    encourager des scripts de build propres, maintenables et de bonne qualité. L’automatisation des test
+    encourager des scripts de build propres, maintenables et de bonne qualité. L’automatisation des tests
     est fortement prise en charge par Maven. Les projets Maven utilisent une structure de dossiers
     standard : les tests unitaires seront automatiquement recherchés dans un dossier nommé
     (par défaut) <filename moreinfo="none">src/test/java</filename>. Il y a
-    quelques petits réglages supplémentaires : en ajoutant juste un dépendance à un (ou plusieurs)
+    quelques petits réglages supplémentaires : en ajoutant juste une dépendance à un (ou plusieurs)
     framework(s) de test utilisé(s) par vos tests, Maven détectera et exécutera automatiquement
     les tests JUnit, TestNG, ou même Plain Old Java Objects (POJO)
     contenus dans cette structure de dossiers.</para>
@@ -41,11 +41,11 @@ Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec
 Results :
 
 Tests run: 38, Failures: 0, Errors: 0, Skipped: 0</screen>
-    <para>En plus d’exécuter vos tests, de mettre le build en échec dès qu’un
+    <para>En plus d’exécuter vos tests, et de mettre le build en échec dès qu’un
     test échoue, Maven va produire un ensemble de rapports de tests (encore, par
     défaut) dans le dossier <filename moreinfo="none">target/surefire-reports</filename>, dans les formats
     XML et texte. Pour nos objectifs d’intégration continue, ce sont les fichiers XML qui
-    nous intéressent puisque Jenkins est en mesure de comprendre et analyser ces fichiers
+    nous intéressent puisque Jenkins est en mesure de comprendre et d'analyser ces fichiers
     pour ses rapports d’intégration :</para>
     <screen format="linespecific">$ <userinput moreinfo="none">ls target/surefire-reports/*.xml</userinput>
 target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.HamcrestTest.xml
@@ -53,7 +53,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TagTest.xml
 target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweetFeeRangeTest.xm
 target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterTest.xml
 target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest.xml</screen>
-    <para>Maven définit deux phases de test distinctes : les tests unitaires et
+    <para>Maven définit deux phases de tests distinctes : les tests unitaires et
     les tests d’intégration. Les tests unitaires doivent être rapides et léger, en fournissant
     une quantité importante de retours de test en un minimum de temps. Les
     tests d’intégration sont plus lents et lourds, et requièrent souvent que
@@ -61,17 +61,17 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
     pour supporter des tests plus complets. Ces deux types de tests sont importants, et pour
     un environnement d’Intégration Continue bien conçu, il est nécessaire de bien les
     distinguer. Le build doit assurer que tous les tests unitaires
-    sont lancés en premier-si un test unitaire échoue, les développeurs
-    devraient en être notifiés très rapidement. Le lancement des tests d’intégration
-    lents et plus lourds ne vaut le coup que si tous les tests unitaires passent.</para>
+    sont lancés en premier - si un test unitaire échoue, les développeurs
+    devraient en être notifiés très rapidement. Le lancement des tests d’intégration,
+    lents et plus lourds, ne vaut le coup que si tous les tests unitaires passent.</para>
     <para>Avec Maven, les tests d’intégration sont exécutés pendant la phase <command moreinfo="none">integration-test</command> du cycle de vie, que vous pouvez
     invoquer en lançant <literal moreinfo="none">mvn integration-test</literal> ou (plus simplement)
     <literal moreinfo="none">mvn verify</literal>. Pendant cette phase, il est facile de configurer
-    Maven pour démarrer votre application web dans un serveur Jetty embarqué, ou
+    Maven pour démarrer votre application web sur un serveur Jetty embarqué, ou
     pour packager et déployer votre application sur un serveur de test, par exemple.
     Vos tests d’intégration peuvent ensuite être exécutés sur l’application en marche.
     Cependant, la partie délicate, est de dire à Maven comment distinguer les tests
-    unitaires des tests d’intégration, afin qu’il ne soient exécutés que si
+    unitaires des tests d’intégration, afin qu’ils ne soient exécutés que si
     une version fonctionnelle de l’application est disponible.</para>
     <para>Il y a plusieurs manières d’y parvenir, mais au moment de l’écriture il
     n’existe pas d’approche standard officielle utilisée à travers tous les projets Maven.
@@ -132,7 +132,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
       ...</programlisting>
     <calloutlist>
       <callout arearefs="maven-it-1">
-        <para>Passe tous les tests par défaut—ceci désactive la configuration
+        <para>Saute tous les tests par défaut — ceci désactive la configuration
         par défaut des tests pour Maven.</para>
       </callout>
       <callout arearefs="maven-it-2">
@@ -209,7 +209,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
     <para>TestNG a actuellement un support plus flexible des groupes de test que
     JUnit. Si vous utilisez TestNG, vous pouvez identifier vos tests d’intégration
     en utilisant les TestNG Groups. Avec TestNG, les classes et les méthodes de test peuvent être
-    taggés en utilisant l’attribut <literal moreinfo="none">groups</literal> de l’annotation
+    étiquetées en utilisant l’attribut <literal moreinfo="none">groups</literal> de l’annotation
     <literal moreinfo="none">@Test</literal>, comme présenté ici :</para>
     <programlisting id="I_programlisting_d1e18498" format="linespecific">@Test(groups = { "integration-test" })
 public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
@@ -260,18 +260,18 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         <para>Ne lance pas le groupe integration-tests pendant la phase test.</para>
       </callout>
       <callout arearefs="maven-it-ng-2">
-        <para>Lancement seulement les tests du groupe integration-tests pendant la phase
+        <para>Lance seulement les tests du groupe integration-tests pendant la phase
         integration-test.</para>
       </callout>
     </calloutlist>
     <para>Il est souvent intéressant de lancer les tests en parallèle dès que
-    possible, puisque cela peut accélérer vos tests de façon signicative (voir <xref linkend="sect-tests-too-slow"/>).
-    Les tests en parallèles sont particulièrement efficaces avec des tests lents qui utilisent
-    beaucoup d’accès IO, disque ou réseau (comme les tests web), ce qui est pratique,
-    puisque ce sont précisément le type de tests que nous voulons généralement accélérer.</para>
+    possible, puisque cela peut accélérer vos tests de façon significative (voir <xref linkend="sect-tests-too-slow"/>).
+    Les tests en parallèle sont particulièrement efficaces avec des tests lents qui utilisent
+    beaucoup d’accès E/S, disque ou réseau (comme les tests web), ce qui est pratique,
+    puisque ce sont précisément les types de tests que nous voulons généralement accélérer.</para>
     <para>TestNG propose un bon support des tests en parallèle. Par exemple, avec TestNG,
     vous pouvez configurer vos méthodes de tests pour qu’elles se lancent en parallèle sur
-    dix threads concurrents comme ça :</para>
+    dix threads concurrents comme ceci :</para>
     <programlisting id="I_programlisting_d1e18522" format="linespecific">      &lt;plugin&gt;
         &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
         &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
