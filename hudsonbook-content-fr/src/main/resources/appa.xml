@@ -295,11 +295,11 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
   </sect1>
   <sect1 id="sect-testing-ant">
     <title>Automatiser vos tests avec Ant</title>
-    <para>Mettre en place<indexterm class="startofrange" id="appa-ant2" significance="normal"><primary>Ant</primary><secondary>automatiser les tests</secondary></indexterm><indexterm class="startofrange" id="appa-ant3" significance="normal"><primary>tests</primary><secondary>automatiser</secondary><tertiary sortas="Ant">avec Ant</tertiary></indexterm> des tests automatisés avec Ant est aussi plutôt facile, bien que
-    ça requiert un peu plus de plomberie qu’avec Maven. En particulier, Ant ne fournit
+    <para>Mettre en place<indexterm class="startofrange" id="appa-ant2" significance="normal"><primary>Ant</primary><secondary>automatiser les tests</secondary></indexterm><indexterm class="startofrange" id="appa-ant3" significance="normal"><primary>tests</primary><secondary>automatiser</secondary><tertiary sortas="Ant">avec Ant</tertiary></indexterm> des tests automatisés avec Ant est aussi relativement facile, bien que
+    cela requiert un peu plus de plomberie qu’avec Maven. En particulier, Ant ne fournit
     pas directement les librairies JUnit et les tâches Ant adaptées, donc
     il faut les installer soi-même quelque part. L’approche la plus portable est
-    d’utiliser un outil de Gestion de dépendances tel  qu’Ivy, ou de placer
+    d’utiliser un outil de Gestion de dépendances tel qu’Ivy, ou de placer
     les fichiers JAR correspondants dans un répertoire à l’intérieur de la
     structure de votre projet.</para>
     <para>Pour lancer les tests avec Ant, vous appelez la tâche
@@ -334,7 +334,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 &lt;/target&gt;</programlisting>
     <calloutlist>
       <callout arearefs="junit-ant-1">
-        <para>Nous devons mettre en place un classpath contenant les fichiers JAR <filename moreinfo="none">junit</filename> et <filename moreinfo="none">junit-ant</filename>, sans oublier
+        <para>Nous devons mettre en place un <emphasis>classpath</emphasis> contenant les fichiers JAR <filename moreinfo="none">junit</filename> et <filename moreinfo="none">junit-ant</filename>, sans oublier
         les classes de l’application et toute autre dépendance de l’application pour la
         compilation et le lancement.</para>
       </callout>
@@ -349,17 +349,17 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         terminés.</para>
       </callout>
       <callout arearefs="junit-ant-3">
-        <para>Le classpath doit contenir les librairies JUnit, les
+        <para>Le <emphasis>classpath</emphasis> doit contenir les librairies JUnit, les
         classes de votre application et leurs dépendances, et vos classes de test
         compilées.</para>
       </callout>
       <callout arearefs="junit-ant-4">
-        <para>La tâche Junit de Ant peut produire des rapports au formats texte et XML, mais
+        <para>La tâche Junit de Ant peut produire des rapports aux formats texte et XML, mais
         pour Jenkins, nous avons seulement besoin de ceux en XML.</para>
       </callout>
       <callout arearefs="junit-ant-5">
         <para>L’option <literal moreinfo="none">fork</literal> lance vos test dans une JVM
-        séparée. C’est généralement une bonne idée, puisque cela peut éviter les problèmes de classloader
+        séparée. C’est généralement une bonne idée, puisque cela peut éviter les problèmes de type <emphasis>classloader</emphasis>
         liés à des conflits avec les librairies propres à Ant. Néanmoins, le comportement
         par défaut de la tâche Junit de Ant est de créer une nouvelle JVM pour chaque test,
         ce qui ralentit significativement les tests. L’option
@@ -367,8 +367,8 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         JVM pour chaque batch de tests.</para>
       </callout>
       <callout arearefs="junit-ant-6">
-        <para>Vous définissez les tests que vous voulez lancer au sein d’un élément fileset. Cela
-        permet une grande souplesse, et rend simple la définission d’autres objectifs
+        <para>Vous définissez les tests que vous voulez lancer au sein d’un élément <emphasis>fileset</emphasis>. Cela
+        permet une grande souplesse, et rend simple la définition d’autres objectifs
         pour différents sous-ensembles de tests (intégration, web, et autres).</para>
       </callout>
       <callout arearefs="junit-ant-7">
@@ -378,7 +378,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     </calloutlist>
     <para>Si vous préférez TestNG, Ant est évidemment bien supporté également.
     En utilisant TestNG pour l’exemple précédent, vous pourriez faire quelque chose comme
-    ça :</para>
+    ceci :</para>
     <programlisting id="I_programlisting_d1e18632" format="linespecific">&lt;property name="build.dir" value="target" /&gt;
 &lt;property name="java.classes" value="${build.dir}/classes" /&gt;
 &lt;property name="test.classes" value="${build.dir}/test-classes" /&gt;
@@ -404,8 +404,8 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
   &lt;fail message="TEST FAILURE" if="failed" /&gt;
 &lt;/target&gt;</programlisting>
     <para>TestNG est une librairie de test très flexible, et la tâche TestNG a
-    beaucoup plus d’options que ça. Par exemple, pour seulement lancer les tests
-    définis comme faisant partie du groupe “integration-test” que nous avons vu plus précédemment, nous pourrions faire
+    beaucoup plus d’options que ça. Par exemple, pour lancer seulement les tests
+    définis comme faisant partie du groupe “integration-test” que nous avons vu précédemment, nous pourrions faire
     ça :</para>
     <programlisting id="I_programlisting_d1e18636" format="linespecific">&lt;target name="integration-test" depends="test-compile"&gt;
   &lt;testng classpathref="test.classpath"
