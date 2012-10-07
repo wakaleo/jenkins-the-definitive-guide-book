@@ -12,15 +12,15 @@
 			<indexterm class="startofrange" id="ch13-maint2"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
+				<secondary>maintenance de</secondary>
 			</indexterm>
-			Dans ce chapitre, nous allons discuter quelques trucs et astuces que
+			Dans ce chapitre, nous allons discuter de quelques trucs et astuces que
 			vous pourriez trouver utile lors de la maintenance d'une instance
 			Jenkins conséquente. Nous regarderons des choses comme limiter et
 			surveiller l'espace disque, comment donner assez de mémoire à Jenkins
 			et comment archiver les tâches de build ou les migrer d'un serveur à un
 			autre. Certains de ces sujets sont abordés ailleurs dans le livre,
-			mais ici nous allons regarder à ces éléments du point de vue d'un
+			mais ici nous allons regarder ces éléments du point de vue d'un
 			administrateur système.
 		</para>
 	</sect1>
@@ -31,23 +31,23 @@
 			<indexterm class="startofrange" id="ch13-monitor1"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>monitoring disk space</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>Surveillance de l'espace disque</tertiary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>monitoring disk space</secondary>
+				<secondary>Surveillance de l'espace disque</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor3"
 				significance="normal">
-				<primary>disk space</primary>
-				<secondary>monitoring</secondary>
+				<primary>espace disque</primary>
+				<secondary>surveillance</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-monitor4"
 				significance="normal">
-				<primary>build history</primary>
-				<secondary>disk usage of</secondary>
+				<primary>historique des builds</primary>
+				<secondary>utilisation disque de</secondary>
 			</indexterm>
 			prend de l'espace disque. De plus, Jenkins analyse les builds
 			précédents lorsqu'il charge la configuration d'un projet. Ainsi, le
@@ -85,7 +85,7 @@
 		<para>Le problème avec la suppresion des anciens builds est que vous
 			perdez l'historique des builds par la même occasion. Pourtant,
 			Jenkins utilise cet historique pour réaliser différents graphiques
-			sur les résultats des tests et les métriques du build. Limiter le
+			sur les résultats des tests et les métriques de build. Limiter le
 			nombre de build conservé à 20, par exemple, implique que Jenkins
 			affichera des graphiques contenant seulement 20 points. Cela peut
 			être un peu limité. Cette sorte d'information peut être très utile
@@ -96,9 +96,9 @@
 		<para>
 			Heuresement, Jenkins a un mécanisme à même de rendre les développeurs
 			et les administraturs systèmes heureux. En général, les éléments
-			prenant le plus de place sont les artefacts du build : fichiers JAR,
-			WAR et ainsi de suite. L'historique du build en elle même est
-			principalement des fichiers de log XML, qui ne prennent pas trop de
+			prenant le plus de place sont les artefacts de build : fichiers JAR,
+			WAR et ainsi de suite. L'historique de build en elle-même est
+			principalement constituée de fichiers de log XML, qui ne prennent pas trop de
 			place. Si vous cliquez sur le button "Avancé...", Jenkins vous
 			offre
 			la possibilité de supprimer les artefacts mais pas les données
@@ -107,11 +107,11 @@
 			<xref linkend="fig-maintenance-discard-old-builds-advanced" />
 			, par exemple, nous avons configuré Jenkins pour qu'il garde les
 			artefacts 7 jours au maximum. Cette option est vraiment pratique si
-			vous avez besoin de limiter l'utilisation disque tout en désirant
+			vous avez besoin de limiter l'utilisation du disque tout en désirant
 			fournir l'ensemble des métriques pour les équipes de développement.
 		</para>
 		<figure float="none" id="fig-maintenance-discard-old-builds-advanced">
-			<title>Supprimer les anciens builds—options avancées</title>
+			<title>Supprimer les anciens builds — options avancées</title>
 			<mediaobject id="I_mediaobject13_d1e17741">
 				<imageobject role="print">
 					<imagedata fileref="figs/print/jtdg_1302.pdf" format="PDF" />
@@ -143,7 +143,7 @@
 					significance="normal">
 					<primary>plugin Disk Usage</primary>
 				</indexterm>
-				est des plus utiles pour un administrateur Jenkins. Ce plugin
+				est un des plus utiles pour un administrateur Jenkins. Ce plugin
 				conserve et reporte l'espace disque utilisé par vos projets. Il vous
 				permet de repérer et corriger les projets qui utilisent trop
 				d'espace.
@@ -171,7 +171,7 @@
 				</mediaobject>
 			</figure>
 			<para>La liste est triée par utilisation totale d'espace disque,
-				ainsi les projets en utilisant le plus apparaissent en haut. La
+				ainsi les projets utilisant le plus d'espace apparaissent en haut. La
 				liste fournit deux valeurs par projet. La colonne "Builds" indique
 				l'espace disque total utilisé par l'historique des builds, tandis
 				que la colonne "Workspace" est l'espace disque utilisé pour
@@ -181,14 +181,14 @@
 				parfois à une vitesse excessivement rapide, à moins que vous ne
 				fassiez quelque chose. Vous pouvez garder sous contrôle l'espace
 				disque utilisé par l'historique d'un projet en limitant le nombre de
-				builds conservés et faisant attention à quels artefacts sont
+				builds conservés et en faisant attention à quels artefacts sont
 				conservés.
 			</para>
 			<para>
 				Pour se faire une idée sur la vitesse à laquelle l'espace disque est
-				utilisée, vous pouvez aussi afficher l'espace disque utilisé par
+				utilisé, vous pouvez aussi afficher l'espace disque utilisé par
 				chaque projet au cours du temps. Pour faire cela, vous devez
-				configurer le plugin dans sur la page "Configurer le système" (voir
+				configurer le plugin sur la page "Configurer le système" (voir
 				<xref linkend="fig-maintenance-disk-usage-project" />
 				).
 			</para>
@@ -208,7 +208,7 @@
 				consomment au cours du temps. Le plugin "Disk Usage" affiche un
 				graphique de l'utlisation du disque au cours du temps (voir
 				<xref linkend="fig-maintenance-project-disk-usage" />
-				) qui donne un bon rendu de la vitesse à laquelle votre projet
+				) qui donne un bon aperçu de la vitesse à laquelle votre projet
 				consomme l'espace disque, ou au contraire si l'espace utilisé est
 				stable au cours
 				<indexterm id="I_indexterm13_d1e17792" class="endofrange"
@@ -240,12 +240,12 @@
 				Si vous
 				<indexterm class="startofrange" id="ch13-musage"
 					significance="normal">
-					<primary>Maven build jobs</primary>
-					<secondary>disk usage of</secondary>
+					<primary>tâches de build Maven</primary>
+					<secondary>utilisation du disque des</secondary>
 				</indexterm>
 				utilisez les tâches de build Maven, il y a des détails
 				supplémentaires que vous devriez connaître. Dans Jenkins, les tâches de build
-				 Maven archivent automatiquement, par défaut, les artefacts du
+				Maven archivent automatiquement, par défaut, les artefacts du
 				build. Cela peut être différent de vos attentes.
 			</para>
 			<para>Le problème est que ces artefacts SNAPSHOT prennent de la
@@ -256,8 +256,8 @@
 				multimodules. En effet, Jenkins archive les artefacts générés pour
 				chaque module.
 			</para>
-			<para>En fait, si vous avez besoin d'archiver vos artefacts Maven
-				SNAPSHOT, il est probablement plus avisé de les déployer directement
+			<para>En fait, si vous avez besoin d'archiver vos artefacts SNAPSHOT
+				Maven, il est probablement plus avisé de les déployer directement
 				dans votre gestionnaire de dépôt local. Nexus Pro, par exemple,
 				peut être configuré pour faire cela. Artifactory peut être configuré
 				pour supprimer les vieux artefacts SNAPSHOT.
@@ -266,7 +266,7 @@
 				Heuresement, vous pouvez configurer Jenkins pour réaliser cela.
 				Allez dans la section "Buid" de l'écran de configuration de votre
 				tâche et cliquez sur le bouton "Avancé...". Des champs supplémentaires
-				sont alors affichés, comme montré là
+				sont alors affichés, comme montré dans
 				<xref linkend="fig-jenkins-maven-no-archives" />
 				.
 			</para>
@@ -282,8 +282,8 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Si vous cochez l'option “Désactive lachivage automatique des artefacts”,TODO
-				Jenkins ne stoquera pas les fichiers Jar généré par les builds de
+				Si vous cochez l'option “Désactive l'archivage automatique des artefacts”,
+				Jenkins ne stockera pas les fichiers Jar généré par les builds de
 				votre projet. C'est une bonne façon de rendre heureux votre
 				administrateur système.
 			</para>
@@ -294,8 +294,8 @@
 				souvent utiles quand vous implémentez un séquenceur de build 
 				(voir
 				<xref linkend="sect-build-pipelines" />
-				). Dans ce cas, vous pouvez toujours choisir les artefacts
-				nécessaires manuellement, et alors utiliser l'option "Supprimer les
+				). Dans ce cas, vous pouvez toujours choisir, manuellement, les 
+				artefacts nécessaires, et alors utiliser l'option "Supprimer les
 				anciens builds" pour définir la durée
 				<indexterm id="I_indexterm13_d1e17841" class="endofrange"
 					startref="ch13-musage" significance="normal">
@@ -328,18 +328,18 @@
 			<indexterm class="startofrange" id="ch13-server1"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>monitoring server load</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>surveiller la charge serveur</tertiary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-server2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>monitoring server load</secondary>
+				<secondary>surveiller la charge serveur</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-server3"
 				significance="normal">
-				<primary>build server</primary>
-				<secondary>monitoring load of</secondary>
+				<primary>serveur de build</primary>
+				<secondary>surveiller la charge du</secondary>
 			</indexterm>
 			inclut une surveillance des activités serveur. Sur l'écran "Administrer Jenkins", 
 			cliquez sur l'icône "Statistiques d'utilisation". Cela affiche un
@@ -361,8 +361,8 @@
 			Le
 			<command moreinfo="none">nombre d'exécuteurs occupés</command>
 			(la ligne rouge) indique le nombre d'exécuteurs en train de réaliser
-			des buids. Vous devriez vous assurer que vous avez assez de capacités
-			de réserve afin de supporter les pics de builds. Si tous vos
+			des buids. Vous devriez vous assurer que vous avez une capacité suffisante
+			en réserve afin de supporter les pics de builds. Si tous vos
 			exécuteurs sont occupés de façon permanente, vous devriez ajouter
 			plus d'exécuteurs et/ou de noeuds esclaves.
 		</para>
@@ -370,14 +370,14 @@
 			La
 			<command moreinfo="none">longueur de la queue</command>
 			(la ligne grise) est le nombre de tâches de build attendant d'être
-			exécutés. Les tâches de build sont mis en attente lorsque tous les
+			exécutées. Les tâches de build sont mises en attente lorsque tous les
 			exécuteurs sont occupés. Cette métrique n'inclut pas les tâches en
-			attente qu'un build en amont soit fini. Ainsi il donne une idée
+			attente qu'un build en amont soit fini. Ainsi, elle donne une idée
 			raisonnable du moment où votre serveur pourrait bénéficier de plus de
 			capacités.
 		</para>
 		<figure float="0" id="fig-jenkins-load-statistics">
-			<title>Statistiques de charge Jenkins </title>
+			<title>Statistiques de charge Jenkins</title>
 			<mediaobject id="I_mediaobject13_d1e17895">
 				<imageobject role="print">
 					<imagedata fileref="figs/print/jtdg_1307.pdf" format="PDF" />
@@ -387,19 +387,19 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>Vous pouvez obtenir un graphique similaire pour des noeuds
+		<para>Vous pouvez obtenir un graphique similaire pour les noeuds
 			esclaves, en utilisant le bouton "Statistiques d'utilisation" dans la page de
 			détails du noeud esclave.
 		</para>
 		<para>
-			Une autre possibilité est d'installer le plugin de Surveillance. Ce
+			Une autre possibilité est d'installer le plugin Monitoring. Ce
 			plugin utilise JavaMelody afin de réaliser des rapports HTML
 			complets sur l'état de votre serveur de build. Les rapports
 			incluent la charge système et processeur, les temps moyen de réponse
 			et l'utilisation de la mémoire (voir
 			<xref linkend="fig-jenkins-monitoring-pluging" />
 			). Une fois ce plugin installé, vous pouvez accéder aux graphiques
-			JavaMelody depuis la page "Administrer Jenkins", en utilisant les entrés
+			JavaMelody depuis la page "Administrer Jenkins", en utilisant les entrées
 			du menu
 			<indexterm id="I_indexterm13_d1e17906" class="endofrange"
 				startref="ch13-server1" significance="normal">
@@ -416,7 +416,7 @@
 			"Monitoring of Hudson/Jenkins master" ou "Hudson/Jenkins nodes".
 		</para>
 		<figure float="0" id="fig-jenkins-monitoring-pluging">
-			<title>The Jenkins Monitoring plugin</title>
+			<title>Le plugin Jenkins Monitoring</title>
 			<mediaobject id="I_mediaobject13_d1e17916">
 				<imageobject role="print">
 					<imagedata fileref="figs/print/jtdg_1308.pdf" format="PDF" />
@@ -433,21 +433,21 @@
 			Sauvegarder
 			<indexterm class="startofrange" id="ch13-backups"
 				significance="normal">
-				<primary>backups</primary>
+				<primary>sauvegardes</primary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-backups2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>backups</secondary>
+				<secondary>sauvegardes</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-backups3"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>backups</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>sauvegardes</tertiary>
 			</indexterm>
-			vos données est pratique universellement recommandée, et vos serveurs
-			Jenkins ne devraient pas faire exception. Par chance, sauvergarder
+			vos données est une pratique universellement recommandée, et vos serveurs
+			Jenkins ne devraient pas y faire exception. Par chance, sauvergarder
 			Jenkins est relativement aisé. Dans cette section nous allons
 			regarder plusieurs façons de réaliser cela.
 		</para>
@@ -459,16 +459,16 @@
 				<filename moreinfo="none">JENKINS_HOME</filename>
 				.
 				Il contient la configuration de toutes vos tâches de build, les
-				configurations de vos noeuds esclaves et l'historique des build. La
+				configurations de vos noeuds esclaves et l'historique des builds. La
 				sauvegarde peut se faire pendant que Jenkins tourne. Il n'y a pas
 				besoin de couper votre serveur pendant la sauvegarde.
 			</para>
 			<para>
-				L'inconvénient de cette approche est que dossier
+				L'inconvénient de cette approche est que le dossier
 				<filename moreinfo="none">JENKINS_HOME</filename>
 				peut contenir un volume très important de données (voir
 				<xref linkend="sec-hudson-home-directory-contents" />
-				). Si cela devient un problème, vous pouvez gagner un peu en ne
+				). Si cela devient un problème, vous pouvez en gagner un peu en ne
 				sauvegardant pas les dossiers suivants, qui contiennent des données
 				aisément recrées à la demande par Jenkins :
 			</para>
@@ -521,7 +521,7 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Pour savoir comment optimiser vos backups Jenkins, vous devez
+				Pour savoir comment optimiser vos sauvegardes Jenkins, vous devez
 				comprendre comment sont organisés les dossiers de tâche de build. Au sein
 				du dossier
 				<emphasis>jobs</emphasis>
@@ -539,15 +539,15 @@
 				Au contraire, le dossier
 				<filename moreinfo="none">builds</filename>
 				requiert plus d'attention. Il contient l'historique de vos résultats
-				de builds et de vos artefacts générés précédement, avec un dossier
+				de build et de vos artefacts générés précédement, avec un dossier
 				horodaté pour chaque build précédent.
-				Si vous n'êtres pas intéressés par la restauration de votre historique
+				Si vous n'êtes pas intéressés par la restauration de votre historique
 				des builds ou d'anciens artefacts, vous n'avez pas besoin de sauver
 				ce dossier.
-				Si vous intéressés, continuez à lire! Dans chacun de ces dossiers,
+				Si vous l'êtes, continuez à lire! Dans chacun de ces dossiers,
 				vous trouverez l'historique des builds (stockés sous la forme de
 				fichiers XML, par exemple les résultats des tests JUnit)
-				et les artefacts archivés. Jenkins utilise les fichiers textes et XML
+				et les artefacts archivés. Jenkins utilise les fichiers texte et XML
 				pour réaliser les graphiques affichés sur le tableau de bord des tâche de build. 
 				Le dossier
 				<filename moreinfo="none">archive</filename>
@@ -561,10 +561,10 @@
 				De même qu'il est sage de réaliser des sauvegardes fréquentes, il
 				est également sage de tester votre procédure de sauvegarde. Avec
 				Jenkins, cela est facile à faire.
-				Les répertoires racine Jenkins sont totalement portables, pour tester
+				Les répertoires racine de Jenkins sont totalement portables, pour tester
 				votre sauvegarde, il suffit donc de l'extraire dans un dossier
-				temporaire et de lancer une instance d'y
-				lancer Jenkins. Par exemple, imaginons que vous avez extrait votre
+				temporaire et de lancer une instance
+				Jenkins. Par exemple, imaginons que vous ayez extrait votre
 				sauvegarde dans un dossier temporaire nommé
 				<filename moreinfo="none">/tmp/jenkins-backup</filename>
 				. Pour tester cette sauvegarde, assigner le chemin du dossier
@@ -592,7 +592,7 @@
 		<sect2>
 			<title>Utilisation du Backup Plugin</title>
 			<para>
-				L'approche via le
+				L'approche
 				<indexterm id="I_indexterm13_d1e18042" significance="normal">
 					<primary>Backup plugin</primary>
 				</indexterm>
@@ -600,16 +600,16 @@
 					<primary>plugins</primary>
 					<secondary>Backup</secondary>
 				</indexterm>
-				décrite dans la section précédente est suffisament simple pour
+				décrite dans la section précédente est suffisamment simple pour
 				s'intégrer dans vos procédures normales de sauvegardes, mais vous
 				pourriez préférer quelque chose de plus spécifique à Jenkins. Le
-				plugin Jenkins Backup Manager (voir
+				plugin Backup (voir
 				<xref linkend="fig-jenkins-backup-manager" />
-				) fournit une interface utilisateur simple utilisable pour
+				) fournit une interface utilisateur simple que vous pouvez utiliser pour
 				sauvegarder et restaurer vos configurations et données Jenkins.
 			</para>
 			<figure float="none" id="fig-jenkins-backup-manager">
-				<title>Plugin Jenkins Backup Manager</title>
+				<title>Le plugin Jenkins Backup Manager</title>
 				<mediaobject id="I_mediaobject13_d1e18056">
 					<imageobject role="print">
 						<imagedata fileref="figs/print/jtdg_1310.pdf" format="PDF" />
@@ -620,10 +620,9 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Ce plugin permet de configurer et lancer des sauvegardes tant des
+				Ce plugin vous permet de configurer et de lancer des sauvegardes tant des
 				configurations de vos tâches de build que de votre historique des
-				builds. L'écran "Configuration", dans l'écran "Administrer Jenkins" 
-				via "Gestionnaire de backup", vous donne un important contrôle sur les
+				builds. L'écran "Configuration" vous donne un important contrôle sur les
 				éléments à sauvegarder (voir
 				<xref linkend="fig-jenkins-backup-config" />
 				). Vous pouvez choisir de seulement sauvegarder les fichiers XML de
@@ -632,7 +631,7 @@
 				automatiquement générés (dans de nombreux processus de build, ces
 				artefacts sont disponibles dans votre Entreprise Repository Manager
 				local). Vous pouvez aussi sauvegarder les espaces de travail des
-				tâches  (généralement non nécessaire, comme discuté plus haut) et toutes
+				tâches (généralement non nécessaire, comme discuté plus haut) et toutes
 				empreintes numériques générées.
 			</para>
 			<figure float="none" id="fig-jenkins-backup-config">
@@ -652,7 +651,7 @@
 				La sauvegarde prend du temps et stoppe Jenkins durant cette période (à moins
 				de désactiver cette option dans la
 				<phrase role="keep-together">configuration</phrase>
-				du backup ).
+				de la sauvegarde).
 			</para>
 			<para>
 				A l'heure où ces lignes sont écrites, il n'est pas possible de
@@ -673,14 +672,14 @@
 			<para>
 				Si tout
 				<indexterm id="I_indexterm13_d1e18093" significance="normal">
-					<primary>Thin Backup plugin</primary>
+					<primary>plugin Thin Backup</primary>
 				</indexterm>
 				<indexterm id="I_indexterm13_d1e18096" significance="normal">
 					<primary>plugins</primary>
 					<secondary>Thin Backup</secondary>
 				</indexterm>
 				<indexterm id="I_indexterm13_d1e18101" significance="normal">
-					<primary>lightweight backups</primary>
+					<primary>sauvegardes plus légères</primary>
 				</indexterm>
 				ce que vous voulez sauvegarder est votre configuration des tâches de build,
 				le plugin Backup Manager peut être considéré excessif. Une
@@ -694,8 +693,8 @@
 			<para>
 				Tout comme le plugin Backup, ce plugin ajoute une icône dans la page
 				"Administrer Jenkins". De là, vous pouvez configurer et planifier
-				les sauvegardes de votre configuration, déclencher un backup
-				immédiat ou restaurer une sauvegarde précédente. La configuration
+				les sauvegardes de votre configuration, déclencher une sauvegarde
+				immédiate ou restaurer une sauvegarde précédente. La configuration
 				est sans détours (voir
 				<xref linkend="fig-lightweight-backup-config" />
 				). Elle implique simplement de configurer des sauvegardes complètes
@@ -748,34 +747,34 @@
 		</sect2>
 	</sect1>
 	<sect1 id="sect-maint-archiving-jobs">
-		<title>Archiver les Tâches de Build</title>
+		<title>Archiver les tâches de build</title>
 		<para>
 			Une autre façon
 			<indexterm class="startofrange" id="ch13-arc1"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>archiving build jobs</secondary>
+				<secondary>archiver les tâches de build</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-arc2"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>archiving build jobs</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>archiver les tâches de build</tertiary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-arc3"
 				significance="normal">
-				<primary>archiving build jobs</primary>
+				<primary>archiver les tâches de build</primary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-arc4"
 				significance="normal">
-				<primary>build jobs</primary>
-				<secondary>archiving</secondary>
+				<primary>tâches de build</primary>
+				<secondary>archiver</secondary>
 			</indexterm>
 			d'aborder la problématique de l'espace disque est de supprimer ou
 			d'archiver les projets qui ne sont plus actifs. Archiver un projet
 			vous permet de le restaurer aisément ultérieurement afin de consulter
 			ses données ou artefacts. Archiver un projet est facile : il suffit
-			de déplacer le répertoire de celui ci en dehors du répertoire des
+			de déplacer le répertoire de celui-ci en dehors du répertoire des
 			tâches. Bien sûr, généralement, le répertoire de la tâche est en premier
 			lieu compressé dans un fichier ZIP ou une tarball.
 		</para>
@@ -833,7 +832,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			Sur une machine Windows, vous pouvez faire exactement de même en
+			Sur une machine Windows, vous pouvez faire exactement la même chose en
 			créant un fichier ZIP du
 			<indexterm id="I_indexterm13_d1e18210" class="endofrange"
 				startref="ch13-arc1" significance="normal">
@@ -855,28 +854,28 @@
 		</para>
 	</sect1>
 	<sect1 id="sect-maint-migrating-jobs">
-		<title>Migrer les Build Jobs</title>
+		<title>Migrer les tâches de build</title>
 		<para>
 			Il arrive
 			<indexterm class="startofrange" id="ch13-migrate1"
 				significance="normal">
 				<primary>Jenkins</primary>
-				<secondary>maintenance of</secondary>
-				<tertiary>migrating build jobs</tertiary>
+				<secondary>maintenance de</secondary>
+				<tertiary>migrer les tâches de build</tertiary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-migrate2"
 				significance="normal">
 				<primary>maintenance</primary>
-				<secondary>migrating build jobs</secondary>
+				<secondary>migrer les tâches de build</secondary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-migrate3"
 				significance="normal">
-				<primary>migrating build jobs</primary>
+				<primary>migrer les tâches de build</primary>
 			</indexterm>
 			<indexterm class="startofrange" id="ch13-migrate4"
 				significance="normal">
-				<primary>build jobs</primary>
-				<secondary>migrating</secondary>
+				<primary>tâches de build</primary>
+				<secondary>migrer</secondary>
 			</indexterm>
 			que vous ayez à déplacer ou copier des tâches de build Jenkins d'une
 			instance Jenkins à une autre sans copier toute la configuration de
@@ -888,14 +887,14 @@
 		</para>
 		<para>
 			Comme nous l'avons vu, Jenkins stocke toutes les données nécessaires
-			pour un projet au sein d'un sous répertoire du répertoire
+			pour un projet au sein d'un sous-répertoire du répertoire
 			<filename moreinfo="none">jobs</filename>
-			dans votre répertoire racine de Jenkins. Ce sous répertoire est aisé
+			dans votre répertoire racine de Jenkins. Ce sous-répertoire est aisé
 			à
-			<phrase role="keep-together">identifier—</phrase>
+			<phrase role="keep-together">identifier — </phrase>
 			il a le même nom que votre projet. D'ailleurs, cela explique pourquoi
 			vos noms de projets ne doivent pas contenir d'espaces, spécialement
-			si Jenkins tourne sous Unix ou Linux— cela rend la maintenance et les
+			si Jenkins tourne sous Unix ou Linux — cela rend la maintenance et les
 			tâches d'administrtions bien plus aisées si les noms de projet sont
 			également des fichiers Unix correctement nommés.
 		</para>
@@ -903,8 +902,8 @@
 			Vous pouvez copier ou déplacer des tâches de build entre instances de
 			projets assez simplement en copiant ou déplaçant les répertoires des
 			tâches de build dans la nouvelle instance Jenkins. Le répertoire de la tâche du
-			projet est autonome—il contient tant la configuration complète du
-			projet que son historique des builds. Il est possible également de
+			projet est autonome — il contient tant la configuration complète du
+			projet que son historique des builds. Il est également possible de
 			copier des répertoires de tâches de build dans une instance Jenkins en
 			cours de fonctionnement. Toutefois, si vous effacez également ces
 			répertoires du serveur originel, vous devriez en premier stopper ce
@@ -917,11 +916,11 @@
 		<para>
 			Il y a quelques précautions à prendre toutefois. Si vous migrez vos
 			tâches vers une installation toute fraîche de Jenkins, souvenez vous
-			d'installer ou migrer les plugins de votre serveur précédent. Les
+			d'installer ou de migrer les plugins de votre précédent serveur. Les
 			plugins se trouvent dans le répertoire
 			<filename moreinfo="none">plugins</filename>
-			, il suffit donc simplement de copier tout le contenu de ce
-			répertoire dans le répertoire correspondant de votre nouvelle
+			, il suffit donc de simplement copier tout le contenu de ce
+			répertoire dans le répertoire correspondant à votre nouvelle
 			instance.
 		</para>
 		<para>
@@ -929,10 +928,10 @@
 			une nouvelle instance présicément
 			<emphasis>parce que</emphasis>
 			la configuration des plugins est problématique. Certains plugins
-			peuvent parfois être un peu buggés, et vous pourriez vouloir une
-			isntallation propre avec des plugins bien précis. Dans ce cas, vous
+			peuvent parfois être un peu bogués, et vous pourriez vouloir une
+			installation propre avec des plugins bien précis. Dans ce cas, vous
 			pourriez avoir à retravailler certaines configurations de projets une
-			fois ceux ci importés.
+			fois ceux-ci importés.
 		</para>
 		<para>
 			L'explication de cela est simple. Quand vous utilisez un plugin dans
@@ -980,7 +979,7 @@
 			version précédente de votre instance Jenkins. Vous pouvez
 			aussi laisser Jenkins ignorer les champs qu'il ne peut lire. Si vous
 			retenez cette option, Jenkins affichera un écran avec plus de détails
-			sur l'erreur et peut même, si vous le souhaitez, vous aider à
+			sur l'erreur et il pourra même, si vous le souhaitez, vous aider à
 			nettoyer votre fichier de configuration (voir
 			<xref linkend="fig-jenkins-manage-old-data" />
 			).
@@ -1000,7 +999,7 @@
 			données périmées ainsi que le message d'erreur obtenu. Cela offre
 			plusieurs possibilités. Si vous êtes sûr de ne plus avoir besoin du
 			plugin ayant originellement créé ces données, vous pouvez supprimer
-			en toute sécurité les champs fautifs en cliquant sur le bouton
+			les champs fautifs en toute sécurité en cliquant sur le bouton
 			"Discard Unreadable Data". Il est aussi possible que ces données
 			appartiennent à un plugin qui n'a pas encore été installé sur cette
 			instance Jenkins. Dans ce cas, installez le plugin et tout devrait
@@ -1095,7 +1094,7 @@
 		</para>
 		<para>
 			Au final, migrer des tâches de build entre des instances Jenkins n'est pas
-			si dur. Tout ce qu'il faut savoir est quelques astuces pour les cas
+			si dur. Vous avez juste besoin de connaitre quelques astuces pour les cas
 			particuliers, et, si vous savez où regarder, Jenkins fournit de beaux
 			outils pour rendre
 			<indexterm id="I_indexterm13_d1e18348" class="endofrange"
@@ -1131,7 +1130,7 @@
 		<para>Dans ce chapitre, nous avons abordé certains éléments à
 			connaitre afin d'administrer votre serveur Jenkins, notamment la
 			surveillance de l'espace disque et de la charge du serveur, comment
-			sauvegarder vos tâches de build et fichiers de configuration, ainsi que
+			sauvegarder vos tâches de build et les fichiers de configuration, ainsi que
 			comment migrer vos tâches de build en toute sécurité.
 </para>
 	</sect1>
