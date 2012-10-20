@@ -1,0 +1,1029 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-installing">
+  <title>Installing Jenkins</title>
+  <sect1 id="chapter-installing-introduction">
+    <title>Introduction</title>
+    <para><indexterm class="startofrange" id="ch03-install" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary></indexterm>One of the first things you will probably notice about
+    Jenkins is how easy it is to install. Indeed, in less than five minutes,
+    you can have a Jenkins server up and running. However, as always, in the
+    real world, things aren’t always that simple, and there are a few details
+    you should take into account when installing your Jenkins server for
+    production use. In this chapter, we look at how to install Jenkins onto
+    both your local machine and onto a fully fledged build server. We will
+    also look at how to take care of your Jenkins installation once it’s up
+    and running, and how to perform basic maintenance tasks such as backups
+    and upgrades.</para>
+  </sect1>
+  <sect1 id="chapter-installing-downloading">
+    <title>Downloading and Installing Jenkins</title>
+    <para>Jenkins is easy to install, and can run just about anywhere. You can
+    run it either as a stand-alone application, or deployed on a conventional
+    Java application server such as Tomcat or JBoss. This first option makes
+    it easy to install and try out on your local machine, and you can be up
+    and running with a bare-bones installation in a matter of minutes.</para>
+    <para>Since <indexterm id="I_indexterm3_d1e2510" significance="normal"><primary>Jenkins</primary><secondary>Java requirements for</secondary></indexterm><indexterm id="I_indexterm3_d1e2515" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>requirements for</secondary></indexterm>Jenkins is a Java application, you will need a recent
+    version of Java on your machine. More precisely, you will need at least
+    Java 5. In fact, on your build server, you will almost certainly need the
+    full features of the Java Development Kit (JDK) 5.0 or better to execute
+    your builds. If you’re not sure, you can check the version of <indexterm id="I_indexterm3_d1e2521" significance="normal"><primary>Java version installed, checking</primary></indexterm>Java on your machine by executing the <literal moreinfo="none">java
+    -version</literal> command:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -version</userinput>
+java version "1.6.0_17"
+Java(TM) SE Runtime Environment (build 1.6.0_17-b04-248-10M3025)
+Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>
+    <?dbfo-need height=”1in”?>
+    <para>Jenkins<indexterm id="I_indexterm3_d1e2536" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="WAR file">from WAR file</tertiary></indexterm> is distributed in the form of a bundled Java web
+    application (a WAR file). You can download the latest version from the
+    Jenkins website (<ulink url="http://jenkins-ci.org"/>—see <xref linkend="fig-jenkins-windows-installer"/>) or from the book website.
+    Jenkins is a dynamic project, and new releases come out at a regular
+    rate.</para>
+    <para>For <indexterm id="I_indexterm3_d1e2550" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Windows">on Windows</tertiary></indexterm><indexterm id="I_indexterm3_d1e2557" significance="normal"><primary>Windows</primary><secondary>installation package for Jenkins</secondary></indexterm>Windows users, there is a graphical Windows installation
+    package for Jenkins. The installer comes in the form of a ZIP file
+    containing an MSI package for Jenkins, as well as a <filename moreinfo="none">setup.exe</filename> file that can be used to install the
+    .NET libraries if they have not already been installed on your machine. In
+    most cases, all you need to do is to unzip the zip file and run the
+    <filename moreinfo="none">jenkins-x.x.msi</filename> file inside (see
+    <xref linkend="fig-hudson-home-page"/>). The MSI installer comes bundled
+    with a bundled JRE, so no separate Java installation is required.</para>
+    <figure float="none" id="fig-jenkins-windows-installer">
+      <title>You can download the Jenkins binaries from the Jenkins
+      website</title>
+      <mediaobject id="I_mediaobject3_d1e2574">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0301.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0301.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Once you have run the installer, <indexterm id="I_indexterm3_d1e2581" significance="normal"><primary>Jenkins</primary><secondary>port running on</secondary></indexterm>Jenkins will automatically start on port 8080 (see <xref linkend="fig-hudson-starting-page"/>). The installer will have created a
+    new Jenkins service for you, that you can start and stop just like any
+    other Windows service.</para>
+    <para>There are also excellent native packages for Mac OS X and most of
+    the major Linux distributions, including Ubuntu, RedHat (including CentOS
+    and Fedora) and OpenSolaris. We discuss how to install Jenkins on Ubuntu
+    and Redhat below.</para>
+    <para>If you<indexterm id="I_indexterm3_d1e2593" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="binary">from binary distribution</tertiary></indexterm> are not installing Jenkins using one of the native
+    packages, you can simply download the latest binary distribution from the
+    Jenkins website. Once you have downloaded the latest and greatest Jenkins
+    release, place it in an appropriate directory on your build server. On a
+    <indexterm id="I_indexterm3_d1e2601" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Windows">on Windows</tertiary></indexterm>Windows environment, you might put it in a directory called
+    <filename moreinfo="none">C:\Tools\Jenkins</filename> (it’s a good idea
+    <emphasis>not</emphasis> to place Jenkins in a directory containing spaces
+    in the path, such as <filename moreinfo="none">C:\Program
+    Files</filename>, as this can cause problems for Jenkins in some
+    circumstances). On a <indexterm id="I_indexterm3_d1e2619" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Linux">on Linux</tertiary></indexterm><indexterm id="I_indexterm3_d1e2626" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Unix">on Unix</tertiary></indexterm><indexterm id="I_indexterm3_d1e2633" significance="normal"><primary>Unix</primary><seealso>specific Unix platforms</seealso></indexterm>Linux or Unix box, it might go in <filename moreinfo="none">/usr/local/jenkins</filename>, <filename moreinfo="none">/opt/jenkins</filename>, or in some other directory,
+    depending on your local conventions and on the whim of your system
+    administrator.</para>
+    <figure float="0" id="fig-hudson-home-page">
+      <title>Jenkins setup wizard in Windows</title>
+      <mediaobject id="I_mediaobject3_d1e2649">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0302.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0302.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Before<indexterm id="I_indexterm3_d1e2656" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="command line">from command line</tertiary></indexterm> we go any further, let’s just start up Jenkins and take a
+    look. If you didn’t try this out in the previous chapter, now is the time
+    to get your hands dirty. Open a console in the directory containing the
+    <filename moreinfo="none">jenkins.war</filename> file and run the
+    following command:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war</userinput>
+[Winstone 2008/07/01 20:54:53] - Beginning extraction from war file
+...
+INFO: Took 35 ms to load
+...
+[Winstone 2008/07/01 20:55:08] - HTTP Listener started: port=8080
+[Winstone 2008/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: 
+    controlPort=disabled
+[Winstone 2008/07/01 20:55:08] - AJP13 Listener started: port=8009</screen>
+    <para>Jenkins should now be <indexterm id="I_indexterm3_d1e2674" significance="normal"><primary>Jenkins</primary><secondary>port running on</secondary></indexterm>running on port 8080. Open your browser at <ulink url="http://localhost:8080"/> and take a <indexterm id="I_indexterm3_d1e2682" class="endofrange" startref="ch03-install" significance="normal"><primary/></indexterm>look. (see <xref linkend="fig-hudson-starting-page"/>).</para>
+    <figure float="none" id="fig-hudson-starting-page">
+      <title>The Jenkins start page</title>
+      <mediaobject id="I_mediaobject3_d1e2690">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0303.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0303.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+  <sect1 id="chapter-installing-build-server">
+    <title>Preparing a Build Server for Jenkins</title>
+    <para>Installing<indexterm class="startofrange" id="ch03-build2" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="build server">on build server</tertiary></indexterm><indexterm class="startofrange" id="ch03-build3" significance="normal"><primary>build server</primary><secondary>installing Jenkins on</secondary></indexterm> Jenkins on your local development machine is one thing, but
+    installing <phrase role="keep-together">Jenkins</phrase> on a proper build
+    server deserves a little more forethought and planning.</para>
+    <para>Before <indexterm id="I_indexterm3_d1e2718" significance="normal"><primary>build server</primary><secondary>memory requirements for</secondary></indexterm><indexterm id="I_indexterm3_d1e2723" significance="normal"><primary>memory, requirements for</primary></indexterm><indexterm id="I_indexterm3_d1e2726" significance="normal"><primary>Jenkins</primary><secondary>memory requirements for</secondary></indexterm>you start your installation, the first thing you will need
+    is a build server. To work well, Jenkins needs both processor power and
+    memory. Jenkins itself is a relatively modest Java web application.
+    However, in most configurations, at least some of the builds will be run
+    on the principal build server. Builds tend to be both memory and
+    processor-intensive operations, and Jenkins can be configured to run
+    several builds in parallel. Depending on the number of build jobs you are
+    managing, Jenkins will also need memory of its own for its own internal
+    use. The amount of memory required will depend largely on the nature of
+    your builds, but memory is cheap these days (at least in non-hosted
+    environments), and it’s best not to be stingy.</para>
+    <para>A build<indexterm id="I_indexterm3_d1e2734" significance="normal"><primary>build server</primary><secondary>processor requirements for</secondary></indexterm><indexterm id="I_indexterm3_d1e2739" significance="normal"><primary>processors, build server requirements for</primary></indexterm><indexterm id="I_indexterm3_d1e2742" significance="normal"><primary>CPUs, build server requirements for</primary></indexterm> server also needs CPU horsepower. As a rule of thumb, you
+    will need one processor per parallel build, though, in practice, you can
+    capitalize on I/O delays to do a little better than this. It is also in
+    your best interest to dedicate your build server as much as possible to
+    the task of running continuous builds. In particular, you should avoid
+    memory or CPU-intensive applications such as test servers, heavily-used
+    <phrase role="keep-together">enterprise</phrase> applications, enterprise
+    databases such as Oracle, enterprise mail servers, and <phrase role="keep-together">so on</phrase>.</para>
+    <para>One very <indexterm id="I_indexterm3_d1e2754" significance="normal"><primary>build server</primary><secondary>virtual machine for</secondary></indexterm><indexterm id="I_indexterm3_d1e2759" significance="normal"><primary>virtual machine, for build server</primary></indexterm>practical option available in many organizations today is to
+    use a virtual machine. This way, you can choose the amount of memory and
+    number of processors you think appropriate for your initial installation,
+    and easily add more memory and processors later on as required. However,
+    if you are using a virtual machine, make sure that it has enough memory to
+    support the maximum number of parallel builds you expect to be running.
+    The memory usage of a Continuous Integration server is best described as
+    spiky—Jenkins will be creating additional JVMs as required for its build
+    jobs, and these need memory.</para>
+    <para>Another<indexterm id="I_indexterm3_d1e2765" significance="normal"><primary>slave machines</primary><secondary sortas="distributed builds">for distributed
+        builds</secondary></indexterm><indexterm id="I_indexterm3_d1e2770" significance="normal"><primary>distributed builds</primary></indexterm> useful approach is to set up multiple build machines.
+    Jenkins makes it quite easy to set up “slaves” on other machines that can
+    be used to run additional build jobs. The slaves remain inactive until a
+    new build job is requested—then the main Jenkins installation dispatches
+    the build job to the slave and reports on the results. This is a great way
+    to absorb sudden spikes of build activity, for example just before a major
+    release of your principal product. It is also a useful strategy if certain
+    heavy-weight builds tend to “hog” the main build server—just put them on
+    their own dedicated build agent! We will look at how to do this in detail
+    later on in the book.</para>
+    <para><indexterm id="I_indexterm3_d1e2775" significance="normal"><primary>Jenkins</primary><secondary>dedicated user for</secondary></indexterm><indexterm id="I_indexterm3_d1e2780" significance="normal"><primary>users</primary><secondary sortas="Jenkins">for Jenkins, on build server</secondary></indexterm>If you are installing Jenkins on a Linux or Unix build
+    server, it is a good idea to create a special user (and user group) for
+    Jenkins. This makes it easier to monitor at a glance the system resources
+    being used by the Jenkins builds, and to troubleshoot problematic builds
+    in real conditions. The native binary installation packages discussed
+    below do this for you. If you did not use one of these, you can create a
+    dedicated Jenkins user from the command line as shown here:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo groupadd build</userinput>
+$ <userinput moreinfo="none">sudo useradd --create-home --shell /bin/bash --groups build jenkins</userinput></screen>
+    <para>The exact details may vary depending on your environment. For
+    example, you may prefer to use a graphical administration console instead
+    of the command line, or, on a Debian-based Linux server (such as Ubuntu),
+    you might use the more user-friendly <literal moreinfo="none">adduser</literal> and
+    <literal moreinfo="none">addgroup</literal> commands.</para>
+    <para>In most environments, you will need to configure Java correctly for
+    this user. For example, you can do this by defining the
+    <literal moreinfo="none">JAVA_HOME</literal> and <literal moreinfo="none">PATH</literal> variables in the
+    <filename moreinfo="none">.bashrc</filename> file, as shown here:</para>
+    <programlisting id="I_programlisting3_d1e2812" format="linespecific">export JAVA_HOME=/usr/local/java/jdk1.6.0
+export PATH=$JAVA_HOME/bin:$PATH</programlisting>
+    <para>You will now be able to use this user to run Jenkins in an
+    isolated<indexterm id="I_indexterm3_d1e2817" class="endofrange" startref="ch03-build2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e2819" class="endofrange" startref="ch03-build3" significance="normal"><primary/></indexterm> environment.</para>
+  </sect1>
+  <sect1 id="sec-hudson-home-directory">
+    <title>The Jenkins Home Directory</title>
+    <para><indexterm class="startofrange" id="ch03-home" significance="normal"><primary>home directory for Jenkins</primary></indexterm><indexterm class="startofrange" id="ch03-home3" significance="normal"><primary>Jenkins</primary><secondary>home directory for</secondary></indexterm>Before we install Jenkins, however, there are some things
+    you need to know about how Jenkins stores its data. Indeed, no matter
+    where you store the Jenkins WAR file, Jenkins keeps all its important data
+    in a special separate directory called the Jenkins home directory. Here,
+    Jenkins stores information about your build server configuration, your
+    build jobs, build artifacts, user accounts, and other useful information,
+    as well as any plugins you may have installed. The Jenkins home directory
+    format is <phrase role="keep-together">backward</phrase> compatible across
+    versions, so you can freely update or reinstall your Jenkins executable
+    without affecting your Jenkins home directory.</para>
+    <para>Needless to say, this directory will need a lot of disk
+    space.</para>
+    <para>By default, the Jenkins home directory will be called <filename moreinfo="none">.jenkins,</filename> and will be placed in your home
+    directory. For example, if you are running a machine under Windows 7, if
+    your username is “john”, you would find the Jenkins home directory under
+    <filename moreinfo="none">C:\Users\john\.jenkins</filename>. Under Windows
+    XP, it would be <filename moreinfo="none">C:\Documents and
+    Settings\John\.jenkins</filename>. On a Linux machine, it would most
+    likely be under <filename moreinfo="none">/home/john/.jenkins</filename>.
+    And so on.</para>
+    <para>You <indexterm class="startofrange" id="ch03-home2" significance="normal"><primary>JENKINS_HOME environment variable</primary></indexterm>can force Jenkins to use a different directory as its home
+    directory by defining the <code>JENKINS_HOME</code> environment variable.
+    You may need to do this on a build server to conform to local directory
+    conventions or to make your system administrator happy. For example, if
+    your Jenkins WAR file is installed in <filename moreinfo="none">/usr/local/jenkins</filename>, and the Jenkins home
+    directory needs to be in the <filename moreinfo="none">/data/jenkins</filename> directory, you might write a
+    startup script along the following lines:</para>
+    <programlisting id="I_programlisting3_d1e2869" format="linespecific">export JENKINS_BASE=/usr/local/jenkins
+export JENKINS_HOME=/var/jenkins-data
+java -jar ${JENKINS_BASE}/jenkins.war</programlisting>
+    <para>If you are running Jenkins in a Java EE container such as Tomcat or
+    JBoss, you can configure the webapp to expose its own environments
+    variables. For example, if you are using Tomcat, you could create a file
+    called <filename moreinfo="none">jenkins.xml</filename> in the <filename moreinfo="none">$CATALINA_BASE/conf/localhost</filename> directory:</para>
+    <programlisting id="I_programlisting3_d1e2879" format="linespecific">&lt;Context docBase="../jenkins.war"&gt;
+  &lt;Environment name="JENKINS_HOME" type="java.lang.String" 
+               value="/data/jenkins" override="true"/&gt;
+&lt;/Context&gt;</programlisting>
+    <para>In a previous life, Jenkins was known as Hudson. Jenkins remains
+    compatible with previous Hudson installations, and upgrading from Hudson
+    to Jenkins can be as simple as replacing the old <filename moreinfo="none">hudson.war</filename> file with <filename moreinfo="none">jenkins.war</filename>. Jenkins will look for its home
+    directory in the following places (by order of <indexterm id="I_indexterm3_d1e2889" significance="normal"><primary>HUDSON_HOME environment variable</primary></indexterm>precedence):</para>
+    <orderedlist continuation="restarts" inheritnum="ignore">
+      <listitem>
+        <para>A JNDI environment entry called JENKINS_HOME</para>
+      </listitem>
+      <listitem>
+        <para>A JNDI environment entry called HUDSON_HOME</para>
+      </listitem>
+      <listitem>
+        <para>A system property named JENKINS_HOME</para>
+      </listitem>
+      <listitem>
+        <para>A system property named HUDSON_HOME</para>
+      </listitem>
+      <listitem>
+        <para>An environment variable named JENKINS_HOME</para>
+      </listitem>
+      <listitem>
+        <para>An environment variable named HUDSON_HOME</para>
+      </listitem>
+      <listitem>
+        <para>The <filename moreinfo="none">.hudson</filename> directory in
+        the user’s home directory, if it already exists</para>
+      </listitem>
+      <listitem>
+        <para>The <filename moreinfo="none">.jenkins</filename> directory in
+        the user’s home<indexterm id="I_indexterm3_d1e2924" class="endofrange" startref="ch03-home" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e2926" class="endofrange" startref="ch03-home2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e2928" class="endofrange" startref="ch03-home3" significance="normal"><primary/></indexterm> directory</para>
+      </listitem>
+    </orderedlist>
+  </sect1>
+  <sect1 id="sect-installing-debian">
+    <title>Installing Jenkins on Debian or Ubuntu</title>
+    <para><indexterm class="startofrange" id="ch03-du1" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Debian">on Debian</tertiary></indexterm><indexterm class="startofrange" id="ch03-du2" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Ubuntu">on Ubuntu</tertiary></indexterm><indexterm id="I_indexterm3_d1e2949" significance="normal"><primary>Linux</primary><seealso>specific Linux platforms</seealso></indexterm>If you are installing Jenkins on Debian and Ubuntu, it is
+    convenient to install the native binary package for these platforms. This
+    is easy enough to do, though these binaries are not provided in the
+    standard repositories because of the high frequency of updates. First, you
+    need to add the key to your system as shown here:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key \</userinput>
+  <userinput moreinfo="none">| sudo apt-key add -</userinput>
+$ <userinput moreinfo="none">sudo echo "deb http://pkg.jenkins-ci.org/debian binary/" &gt; \</userinput>
+  <userinput moreinfo="none">/etc/apt/sources.list.d/jenkins.list</userinput></screen>
+    <para>Now, update the Debian package repository:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo aptitude update</userinput></screen>
+    <para>Once this is done, you can install Jenkins using the <command moreinfo="none">aptitude</command> tool:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo aptitude install -y jenkins</userinput></screen>
+    <para>This will install Jenkins as a service, with a correctly configured
+    startup script in <filename moreinfo="none">/etc/init.d/jenkins</filename>
+    and a corresponding system user called “jenkins”. If you didn’t already
+    have Java installed on your server, it will also install the OpenJDK
+    version of Java. By default, you will find the Jenkins WAR file in
+    the<filename moreinfo="none">/usr/share/jenkins</filename> directory, and
+    the Jenkins home directory in <filename moreinfo="none">/var/lib/jenkins</filename>.</para>
+    <para>The installation process should have started Jenkins. In general, to
+    start Jenkins, simply invoke this script:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo /etc/init.d/jenkins start</userinput></screen>
+    <para>Jenkins will now be running on the default port of 8080 (<ulink url="http://localhost:8080/"/>).</para>
+    <para>You can stop Jenkins as follows:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo /etc/inid.d/jenkins stop</userinput></screen>
+    <para>Jenkins will write log files to <filename moreinfo="none">/var/log/jenkins/jenkins.log</filename>. You can also
+    fine-tune the configuration parameters in the <filename moreinfo="none">/etc/default/jenkins</filename> file. This is useful if
+    you need to modify the Java <indexterm id="I_indexterm3_d1e3019" significance="normal"><primary>JAVA_ARGS parameter</primary></indexterm>startup arguments (JAVA_ARGS). You can also use this file to
+    <phrase role="keep-together">configure</phrase> arguments that will be
+    passed to Jenkins in this file, such as the HTTP port or web application
+    <indexterm id="I_indexterm3_d1e3026" class="endofrange" startref="ch03-du1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3028" class="endofrange" startref="ch03-du2" significance="normal"><primary/></indexterm>context (see <xref linkend="sect-running-hudson-standalone"/>).</para>
+  </sect1>
+  <sect1 id="sect-hudson-redhat">
+    <title>Installing Jenkins on Redhat, Fedora, or CentOS</title>
+    <para><indexterm class="startofrange" id="ch03-rfc1" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="RedHat">on Redhat</tertiary></indexterm><indexterm class="startofrange" id="ch03-rfc2" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Fedora">on Fedora</tertiary></indexterm><indexterm class="startofrange" id="ch03-rfc3" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="CentOS">on CentOS</tertiary></indexterm>There are also native binary packages available for Redhat,
+    Fedora, and CentOS. First you need to set up the repository as
+    follows:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo wget -O /etc/yum.repos.d/jenkins.repo \</userinput>
+  <userinput moreinfo="none">http://jenkins-ci.org/redhat/jenkins.repo</userinput>
+$ <userinput moreinfo="none">sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key</userinput></screen>
+    <para>On a fresh installation, you may need to install the JDK:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo yum install java-1.6.0-openjdk</userinput></screen>
+    <para>Next, you can install the package as shown here:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo yum install jenkins</userinput></screen>
+    <para>This will install the latest version of Jenkins into the <filename moreinfo="none">/usr/lib/jenkins</filename> directory. The default Jenkins
+    home directory will be in <filename moreinfo="none">/var/lib/jenkins</filename>.</para>
+    <para>Now you can start Jenkins using the <literal moreinfo="none">service</literal>
+    command:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo service jenkins start</userinput></screen>
+    <para>Jenkins will now be running on the default port of 8080 (<ulink url="http://localhost:8080/"/>).</para>
+    <para>Jenkins’s configuration parameters are placed in the <filename moreinfo="none">/etc/sysconfig/jenkins</filename> file. However at the
+    time of writing the configuration options are more limited than those
+    provided by the Ubuntu package: you can define the HTTP port using
+    the<indexterm id="I_indexterm3_d1e3109" significance="normal"><primary>JENKINS_PORT parameter</primary></indexterm> JENKINS_PORT parameter, for example, but to specify an
+    application context you need to modify the startup script by hand. The
+    principal configuration options are listed here:</para>
+    <variablelist>
+      <varlistentry>
+        <term>JENKINS_JAVA_CMD</term>
+        <listitem>
+          <para>The <indexterm id="I_indexterm3_d1e3120" significance="normal"><primary>JENKINS_JAVA_CMD parameter</primary></indexterm>version of Java you want to use to run Jenkins</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>JENKINS_JAVA_OPTIONS</term>
+        <listitem>
+          <para>Command-line <indexterm id="I_indexterm3_d1e3130" significance="normal"><primary>JENKINS_JAVA_OPTIONS parameter</primary></indexterm>options to pass to Java, such as memory options</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>JENKINS_PORT</term>
+        <listitem>
+          <para>The port that Jenkins will to<indexterm id="I_indexterm3_d1e3140" class="endofrange" startref="ch03-rfc1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3142" class="endofrange" startref="ch03-rfc2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3144" class="endofrange" startref="ch03-rfc3" significance="normal"><primary/></indexterm> run on</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
+  <sect1 id="sect-install-jenkins-suse">
+    <title>Installing Jenkins on SUSE or OpenSUSE</title>
+    <para>Binary <indexterm class="startofrange" id="ch03-suse1" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="SUSE">on SUSE</tertiary></indexterm><indexterm class="startofrange" id="ch03-suse2" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="OpenSUSE">on OpenSUSE</tertiary></indexterm>packages are also available for SUSE and OpenSUSE, so the
+    installation process on these platforms is straightforward. First, you
+    need to add the Jenkins repository to the SUSE repository list:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo zypper addrepo http://pkg.jenkins-ci.org/opensuse/ jenkins</userinput></screen>
+    <para>Finally, you simply install Jenkins using the
+    <literal moreinfo="none">zypper</literal> command:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo zypper install jenkins</userinput></screen>
+    <para>As you can gather from the console output, this will install both
+    Jenkins and the latest JDK from Sun, if the latter is not already
+    installed. OpenSuse installations typically <phrase role="keep-together">have the</phrase> OpenJDK version of Java, but
+    Jenkins prefers the Sun variety. When it <phrase role="keep-together">downloads</phrase> the Sun JDK, it will prompt you to
+    validate the Sun Java license before continuing with the
+    installation.</para>
+    <para>This installation process will also create a <filename moreinfo="none">jenkins</filename> user and install Jenkins as a service,
+    so that it will start up automatically whenever the machine boots. To
+    start Jenkins manually, you can invoke the jenkins startup script in the
+    <filename moreinfo="none">/etc/init.d</filename> directory:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo /etc/init.d/jenkins jenkins start</userinput></screen>
+    <para>Jenkins will now be running on the default port of 8080 (<ulink url="http://localhost:8080/"/>).</para>
+    <para>The configuration options are similar to the Redhat installation
+    (see <xref linkend="sect-hudson-redhat"/>). You can define a limited
+    number of configuration variables in the <filename moreinfo="none">/etc/sysconfig/jenkins</filename> file, but for any
+    advanced configuration options, you need to modify the startup script in
+    <filename moreinfo="none">/etc/init.d/jenkins</filename>.</para>
+    <para>The <literal moreinfo="none">zypper</literal> tool also makes it easy to update your
+    Jenkins instance:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo zypper update jenkins</userinput></screen>
+    <para>This will download and install the latest version of Jenkins from
+    the Jenkins <indexterm id="I_indexterm3_d1e3226" class="endofrange" startref="ch03-suse1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3228" class="endofrange" startref="ch03-suse2" significance="normal"><primary/></indexterm>website.</para>
+  </sect1>
+  <sect1 id="sect-running-hudson-standalone">
+    <title>Running Jenkins as a Stand-Alone Application</title>
+    <para>You <indexterm class="startofrange" id="ch03-stand" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="stand-alone">as stand-alone application</tertiary></indexterm><indexterm class="startofrange" id="ch03-stand2" significance="normal"><primary>stand-alone application</primary><secondary>running Jenkins as</secondary></indexterm>can run the Jenkins server in one of two ways: either as a
+    stand-alone application, or deployed as a standard web application onto a
+    Java Servlet container or application server such as Tomcat, JBoss, or
+    GlassFish. Both approaches have their pros and cons, so we will look at
+    both here.</para>
+    <para>Jenkins <indexterm id="I_indexterm3_d1e3251" significance="normal"><primary>Servlet container</primary><secondary>running Jenkins stand-alone using</secondary></indexterm>comes bundled as a WAR file that you can run directly using
+    an embedded servlet container. Jenkins uses the lightweight Winstone
+    servlet engine to allow you to run the server out of the box, without
+    having to configure a web server yourself. This is probably the easiest
+    way to get started, allowing you to be up and running with Jenkins in a
+    matter of minutes. It is also a very flexible option, and provides some
+    extra features unavailable if you deploy Jenkins to a conventional
+    application server. In particular, if you are running Jenkins as a
+    stand-alone server, you will be able to install plugins and upgrades on
+    the fly, and restart Jenkins directly from the administration
+    screens.</para>
+    <para>To run Jenkins using the embedded servlet container, just go to the
+    command line and type the following:</para>
+    <screen format="linespecific">C:\Program Files\Jenkins&gt;
+        <userinput moreinfo="none">java -jar jenkins.war</userinput>
+[Winstone 2011/07/01 20:54:53] - Beginning extraction from war file
+[Winstone 2011/07/01 20:55:07] - No webapp classes folder found - C:\Users\john\
+    .jenkins\war\WEB-INF\classes
+jenkins home directory: C:\Users\john\.jenkins
+...
+INFO: Took 35 ms to load
+...
+[Winstone 2011/07/01 20:55:08] - HTTP Listener started: port=8080
+[Winstone 2011/07/01 20:55:08] - Winstone Servlet Engine v0.9.10 running: 
+    controlPort=disabled
+[Winstone 2011/07/01 20:55:08] - AJP13 Listener started: port=8009</screen>
+    <para>In a Linux environment, the procedure is similar. Note how we start
+    the Jenkins server from with the “jenkins” user account we created
+    earlier:</para>
+    <screen format="linespecific">john@lambton:~$ sudo su - jenkins
+jenkins@lambton:~$ java -jar /usr/local/jeknins/jenkins.war 
+[Winstone 2011/07/16 02:11:24] - Beginning extraction from war file
+[Winstone 2011/07/16 02:11:27] - No webapp classes folder found - /home/jenkins/
+    .jenkins/war/WEB-INF/classes
+jenkins home directory: /home/jenkins/.jenkins
+...
+[Winstone 2011/07/16 02:11:31] - HTTP Listener started: port=8080
+[Winstone 2011/07/16 02:11:31] - AJP13 Listener started: port=8009
+[Winstone 2011/07/16 02:11:31] - Winstone Servlet Engine v0.9.10 running: 
+    controlPort=disabled</screen>
+    <para>This will start the embedded servlet engine in the console window.
+    The Jenkins web application will now be available on port 8080. When you
+    run Jenkins using the embedded server, there is no web application
+    context, so you access Jenkins directly using the server URL (e.g., <ulink url="http://localhost:8080"/>).</para>
+    <para>To stop Jenkins, just press Ctrl-C.</para>
+    <para>By default, Jenkins will run on the 8080 port. If this doesn’t suit
+    your environment, you can specify the port manually, using the
+    <literal moreinfo="none">--httpPort</literal> option:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --httpPort=8081</userinput></screen>
+    <para>In a real-world architecture, Jenkins may not be the only web
+    application running on your build server. Depending on the capacity of
+    your server, Jenkins may have to cohabit with other web applications or
+    Maven repository managers, for example. If you are running Jenkins along
+    side another application server, such as Tomcat, Jetty, or GlassFish, you
+    will also need to override the ajp13 port, using the
+    <literal moreinfo="none">--ajp13Port</literal> option:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --httpPort=8081 --ajp13Port=8010</userinput></screen>
+    <para>Some other useful options are:</para>
+    <variablelist>
+      <varlistentry>
+        <term>
+          <literal moreinfo="none">--prefix</literal>
+        </term>
+        <listitem>
+          <para>This option lets you define a context path for your Jenkins
+          server. By default Jenkins will run on the port 8080 with no context
+          path (<ulink url="http://localhost:8080"/>). However, if you
+          use this option, you can force Jenkins to use whatever context path
+          suits you, for example:</para>
+          <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --prefix=jenkins</userinput></screen>
+          <para>In this case, Jenkins will be accessible on <ulink url="http://localhost:8080/hudson"/>.</para>
+          <para>This option is often used when integrating a stand-alone
+          instance of Jenkins with Apache.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+          <literal moreinfo="none">--daemon</literal>
+        </term>
+        <listitem>
+          <para>If you are running Jenkins on a Unix machine, you can use this
+          option to start Jenkins as a background task, running as a unix
+          daemon.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>
+          <literal moreinfo="none">--logfile</literal>
+        </term>
+        <listitem>
+          <para>By default, Jenkins writes its logfile into the current
+          directory. However, on a server, you often need to write your log
+          files into a predetermined directory. You can use this option to
+          redirect your messages to some other file:</para>
+          <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --logfile=/var/log/jenkins.log</userinput></screen>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    <para>Stopping Jenkins using Ctrl-C is a little brutal, of course—in
+    practice, you would set up a script to start and stop your server
+    automatically.</para>
+    <para>If you are running Jenkins using the embedded Winstone application
+    server, you can also restart and shutdown Jenkins elegantly by calling the
+    Winstone server directly. To do this, you need to specify the
+    <literal moreinfo="none">controlPort</literal> option when you start Jenkins, as shown
+    here:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --controlPort=8001</userinput></screen>
+    <para>A slightly more complete example in a Unix environment might look
+    like this:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">nohup java -jar jenkins.war --controlPort=8001 &gt; /var/log/jenkins.log 2&gt;&amp;1 &amp;</userinput></screen>
+    <para>The key here is the <literal moreinfo="none">controlPort</literal> option. This
+    option gives you the means of stopping or restarting Jenkins directly via
+    the Winstone tools. The only problem is that you need a matching version
+    of the Winstone JAR file. Fortunately, one comes bundled with your Jenkins
+    installation, so you don’t have to look far.</para>
+    <para>To restart the server, you can run the following command:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -cp $JENKINS_HOME/war/winstone.jar winstone.tools.WinstoneControl reload: \</userinput>
+  <userinput moreinfo="none">--host=localhost --port=8001</userinput></screen>
+    <para>And to shut it down completely, you can use the following:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -cp $JENKINS_HOME/war/winstone.jar winstone.tools.WinstoneControl shutdown \</userinput>
+  <userinput moreinfo="none">--host=localhost --port=8001</userinput></screen>
+    <para>Another way to shut down Jenkins cleanly is to invoke the special
+    “/exit” URL, as shown here:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">wget http://localhost:8080/exit</userinput></screen>
+    <para>On a real server, you would typically have set up security, so that
+    only a system administrator could access this URL. In this case, you will
+    need to provide a username and a password:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">wget --user=admin --password=secret http://localhost:8080/exit</userinput></screen>
+    <?dbfo-need height=”1in”?>
+    <para>Note that you can actually do this from a different server, not just
+    the local machine:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">wget --user=admin --password=secret http://buildserver.acme.com:8080/exit</userinput></screen>
+    <para>Note that while both these methods will shut down Jenkins relatively
+    cleanly (more so than killing the process directly, for example), they
+    will interrupt any builds in progress. So it is recommended practice to
+    prepare the shutdown cleanly by using the Prepare for Shutdown button on
+    the Manage Jenkins screen (see <xref linkend="sect-configuration-manage-hudson"/>).</para>
+    <para>Running Jenkins as a stand-alone application may not be to
+    everyone’s taste. For a production server, you might want to take
+    advantage of the more sophisticated monitoring and administration features
+    of a full blown Java application server such as JBoss, GlassFish, or
+    WebSphere Application Server. And system administrators may be wary of the
+    relatively little-known Winstone server, or may simply prefer Jenkins to
+    fit into a known pattern of Java web application development. If this is
+    the case, you may prefer to, or be obliged to, deploy Jenkins as a
+    standard Java web application. We look at this option in the following
+    <indexterm id="I_indexterm3_d1e3400" class="endofrange" startref="ch03-stand" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3402" class="endofrange" startref="ch03-stand2" significance="normal"><primary/></indexterm>section.</para>
+  </sect1>
+  <sect1 id="sect-jenkins-apache">
+    <title>Running Jenkins Behind an Apache Server</title>
+    <para>If you<indexterm class="startofrange" id="ch03-apache" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="Apache">on Apache server</tertiary></indexterm> are running Jenkins in a Unix environment, you may want to
+    hide it behind an Apache HTTP server in order to harmonize the server URLs
+    and simplify maintenance and access. This way, users can access the
+    Jenkins server using a URL <phrase role="keep-together">like</phrase>
+    <emphasis>http://myserver.myorg.com/jenkins</emphasis> rather than
+    <emphasis>http://myserver.myorg.com:8081</emphasis>.</para>
+    <para>One way to do this is to use the Apache <literal moreinfo="none">mod_proxy</literal>
+    and <literal moreinfo="none">mod_proxy_ajp</literal> modules. These modules let you use
+    implement proxying on your Apache server using the AJP13 (Apache JServer
+    Protocol version 1.3). Using this module, Apache will transfer requests to
+    particular URL patterns on your Apache server (running on port 80)
+    directly to the Jenkins server running on a different port. So when a user
+    opens a URL like <emphasis>http://www.myorg.com/jenkins</emphasis>, Apache
+    will transparently forward traffic to your Jenkins server running on
+    <emphasis>http://buildserver.myorg.com:8081/jenkins</emphasis>.Technically,
+    this is known as “Reverse Proxying,” as the client has no knowledge that
+    the server is doing any proxying, or where the proxied server is located.
+    So you can safely tuck your Jenkins server away behind a firewall, while
+    still providing broader access to your Jenkins instance via the
+    public-facing URL.</para>
+    <para>The exact configuration of this module will vary depending on the
+    details of your Apache version and installation details, but one possible
+    approach is shown here.</para>
+    <para>First of all, if you are running Jenkins as a stand-alone
+    application, make sure you start up Jenkins using the
+    <literal moreinfo="none">--prefix</literal> option. The prefix you choose must match the
+    suffix in the public-facing URL you want to use. So if you want to access
+    Jenkins via the URL
+    <emphasis>http://myserver.myorg.com/jenkins</emphasis>, you will need to
+    provide <literal moreinfo="none">jenkins</literal> as a prefix:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war --httpPort=8081 --ajp13Port=8010 --prefix=jenkins</userinput></screen>
+    <para>If you are running Jenkins on an application server such as Tomcat,
+    it will already be running under a particular web context
+    (<literal moreinfo="none">/jenkins</literal> by default).</para>
+    <para>Next, make sure the <literal moreinfo="none">mod_proxy</literal> and
+    <literal moreinfo="none">mod_proxy_ajp</literal> modules are activated. In your <filename moreinfo="none">httpd.conf</filename> file (often in the <filename moreinfo="none">/etc/httpf/conf</filename> directory), you should have the
+    following line:</para>
+    <screen format="linespecific">LoadModule proxy_module modules/mod_proxy.so</screen>
+    <para>The proxy is actually configured in the <filename moreinfo="none">proxy_ajp.conf</filename> file (often in the <filename moreinfo="none">/etc/httpd/conf.d</filename> directory). Note that the
+    name of the proxy path (<literal moreinfo="none">/jenkins</literal> in this example) must
+    match the prefix or web context that Jenkins is using. An example of such
+    a configuration file is given here:</para>
+    <screen format="linespecific">LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
+
+ProxyPass         /jenkins  http://localhost:8081/jenkins
+ProxyPassReverse  /jenkins  http://localhost:8081/jenkins
+ProxyRequests     Off</screen>
+    <para>Once this is done, you just need to restart your Apache
+    server:</para>
+    <screen format="linespecific">$ <userinput moreinfo="none">sudo /etc/init.d/httpd restart</userinput>
+Stopping httpd:                                            [  OK  ]
+Starting httpd:                                            [  OK  ]</screen>
+    <para>Now you should be able to access your Jenkins server using a URL
+    <indexterm id="I_indexterm3_d1e3502" class="endofrange" startref="ch03-apache" significance="normal"><primary/></indexterm><phrase role="keep-together">like</phrase>
+    <emphasis>http://myserver.myorg.com/jenkins</emphasis>.</para>
+  </sect1>
+  <sect1 id="sect-jenkins-app-server">
+    <title>Running Jenkins on an Application Server</title>
+    <para>Since<indexterm class="startofrange" id="ch03-app2" significance="normal"><primary>application server</primary><secondary>deploying Jenkins to</secondary></indexterm><indexterm class="startofrange" id="ch03-app" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="application">on application server</tertiary></indexterm> Jenkins is distributed as an ordinary WAR file, it is easy
+    to deploy it on any standard Java application server such as Tomcat,
+    Jetty, or GlassFish. Running Jenkins on an application server is arguably
+    more complicated to setup and to maintain. You also loose certain nice
+    administration features such as the ability to upgrade Jenkins or restart
+    the server directly from within Jenkins. On the other hand, your system
+    administrators might be more familiar with maintaining an application
+    running on Tomcat or GlassFish than on the more obscure Winstone
+    server.</para>
+    <para>Let’s look at how you would typically deploy Jenkins onto a Tomcat
+    server. The easiest approach is undoubtedly to simply unzip the Tomcat
+    binary distribution onto your disk (if it is not already installed) and
+    copy the <filename moreinfo="none">jenkins.war</filename> file <phrase role="keep-together">into</phrase> the Tomcat <phrase role="keep-together"><filename moreinfo="none">webapps</filename></phrase>
+    directory. You can download the Tomcat binaries from the <ulink url="http://tomcat.apache.org">Tomcat website</ulink>.</para>
+    <para>You start Tomcat by running the <filename moreinfo="none">startup.bat</filename> or <filename moreinfo="none">startup.sh</filename> script in the Tomcat bin directory.
+    Jenkins will be available when you start Tomcat. You should note that, in
+    this case, Jenkins will be executed in its own web application context
+    (typically “<phrase role="keep-together">jenkins</phrase>”), so you will
+    need to include this in the URL you use to access your Jenkins server
+    (e.g., <ulink url="http://localhost:8080/jenkins"/>).</para>
+    <para>However, this approach is not necessarily the most flexible or
+    robust option. If your build server is a Windows box, for example, you
+    probably should install Tomcat as a Windows service, so that you can
+    ensure that it starts automatically whenever the server reboots.
+    Similarly, if you are installing Tomcat in a Unix environment, it should
+    be set up as a <indexterm id="I_indexterm3_d1e3558" class="endofrange" startref="ch03-app" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3560" class="endofrange" startref="ch03-app2" significance="normal"><primary/></indexterm>service.</para>
+  </sect1>
+  <sect1 id="I_sect13_d1e3564">
+    <title>Memory Considerations</title>
+    <para>Continuous<indexterm class="startofrange" id="ch03-mem1" significance="normal"><primary>Jenkins</primary><secondary>memory requirements for</secondary></indexterm><indexterm class="startofrange" id="ch03-mem2" significance="normal"><primary>memory, requirements for</primary></indexterm> Integration servers use a lot of memory. This is the nature
+    of the beast—builds will consume memory, and multiple builds being run in
+    parallel will consume still more memory. So you should ensure that your
+    build server has enough RAM to cope with however many builds you intend to
+    run simultaneously.</para>
+    <para>Jenkins naturally needs RAM to run, but if you need to support a
+    large number of build processes, it is not enough just to give Jenkins a
+    lot of memory. In fact Jenkins spans a new Java process each time it kicks
+    off a build, so during a large build, the build process needs the memory,
+    not Jenkins.</para>
+    <para>You can define build-specific memory options for your Jenkins build
+    jobs—we will see how to do this later on in the book. However if you have
+    a lot of builds to maintain, you might want to define<indexterm id="I_indexterm3_d1e3582" significance="normal"><primary>JAVA_OPTS environment variable</primary></indexterm><indexterm id="I_indexterm3_d1e3585" significance="normal"><primary>MAVEN_OPTS environment variable</primary></indexterm><indexterm id="I_indexterm3_d1e3588" significance="normal"><primary>ANT_OPTS environment variable</primary></indexterm> the <literal moreinfo="none">JAVA_OPTS</literal>,
+    <literal moreinfo="none">MAVEN_OPTS</literal> and <literal moreinfo="none">ANT_OPTS</literal> environment
+    variables to be used as default values for your builds. The
+    <literal moreinfo="none">JAVA_OPTS</literal> options will apply for the main Jenkins
+    process, whereas the other two options will be used when Jenkins kicks off
+    new JVM processes for Maven and Ant build jobs respectively.</para>
+    <para>Here is an example of how these variables might be configured on a
+    Unix machine<indexterm id="I_indexterm3_d1e3607" class="endofrange" startref="ch03-mem1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3609" class="endofrange" startref="ch03-mem2" significance="normal"><primary/></indexterm> in the <filename moreinfo="none">.profile</filename>
+    file:</para>
+    <programlisting id="I_programlisting3_d1e3615" format="linespecific">export JAVA_OPTS=-Djava.awt.headless=true -Xmx512m -DJENKINS_HOME=/data/jenkins
+export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+export ANT_OPTS="-Xmx512m -XX:MaxPermSize=256m"</programlisting>
+  </sect1>
+  <sect1 id="sect-windows-service">
+    <title>Installing Jenkins as a Windows Service</title>
+    <para>If <indexterm class="startofrange" id="ch03-svc1" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Windows service">as Windows service</tertiary></indexterm><indexterm class="startofrange" id="ch03-svc2" significance="normal"><primary>Windows services</primary><secondary>installing Jenkins as</secondary></indexterm>you are running a production installation of Jenkins on a
+    Windows box, it is essential to have it running as a Windows service. This
+    way, Jenkins will automatically start whenever the server reboots, and can
+    be managed using the standard Windows administration tools.</para>
+    <para>One of the advantages of running Jenkins on an application server
+    such as Tomcat is that it is generally fairly easy to configure these
+    servers to run as a Windows service. However, it is also fairly easy to
+    install Jenkins as a service, without having to install Tomcat.</para>
+    <para>Jenkins has a very convenient feature designed to make it easy to
+    install Jenkins as a Windows servers. There is currently no graphical
+    installer that does this for you, but you get the next best thing—a
+    web-based graphical installer.</para>
+    <para>First, you need to start the Jenkins server on your target machine.
+    The simplest approach is to run Jenkins using Java Web Start (see <xref linkend="fig-hudson-java-web-start"/>). Alternatively, you can do this by
+    downloading Jenkins and running it from the command line, as we discussed
+    earlier:</para>
+    <screen format="linespecific">C:\jenkins&gt; <userinput moreinfo="none">java -jar jenkins.war</userinput></screen>
+    <para>This second option is useful if the default Jenkins port (8080) is
+    already being used by another application. It doesn’t actually matter
+    which port you use—you can change this later.</para>
+    <figure float="none" id="fig-hudson-java-web-start">
+      <title>Starting Jenkins using Java Web Start</title>
+      <mediaobject id="I_mediaobject3_d1e3652">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0304.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0304.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Once you have Jenkins running, connect to this server and go to the
+    Manage Jenkins screen. Here you will find an Install as Windows Service
+    button. This will create a Jenkins service on the server that will
+    automatically start and stop Jenkins in an orderly manner (see <xref linkend="fig-hudson-windows-service"/>).</para>
+    <para>Jenkins will prompt you for an installation directory. This will be
+    the Jenkins home directory (<literal moreinfo="none">JENKINS_HOME</literal>). The default
+    value is the default <literal moreinfo="none">JENKINS_HOME</literal> value: a directory
+    called <command moreinfo="none">.jenkins</command> in the current user’s
+    home directory. This is often not a good choice for a Windows
+    installation. When running Jenkins on Windows XP, you should avoid
+    installing your Jenkins home directory anywhere near your <filename moreinfo="none">C:\\Documents And Settings</filename> directory—not only
+    is it a ridiculously long name, the spaces can wreak havoc with your Ant
+    and Maven builds and any tests using classpath-based resources. It is much
+    better to use a short and sensible name such as <filename moreinfo="none">C:\Jenkins</filename>. The Vista and Windows 7 home
+    directory paths like <filename moreinfo="none">C:\Users\john</filename>
+    will also work fine.</para>
+    <figure float="0" id="fig-hudson-windows-service">
+      <title>Installing Jenkins as a Windows service</title>
+      <mediaobject id="I_mediaobject3_d1e3685">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0305.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0305.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>A short home directory path is sometimes required for other reasons,
+    too. On many versions of Windows (Windows XP, Windows Server 2003, etc.),
+    file path lengths are limited to around 260 characters. If you combine a
+    nested Jenkins work directory and a deep class path, you can often overrun
+    this, which will result in very obscure build errors. To minimize the
+    risks of over-running the Windows file path limits, you need to redefine
+    the <literal moreinfo="none">JENKINS_HOME</literal> environment variable to point to a
+    shorter path, as we discussed above.</para>
+    <para>This approach won’t always work with Windows Vista or Windows 7. An
+    alternative strategy is to use the <filename moreinfo="none">jenkins.exe</filename> program that the Web Start
+    installation process will have installed in the directory you specified
+    above. Open the command line prompt as an administrator (right-click, “Run
+    as administrator”) and run the <filename moreinfo="none">jenkins.exe</filename> executable with the
+    <literal moreinfo="none">install</literal> option:</para>
+    <screen format="linespecific">C:\Jenkins&gt; <userinput moreinfo="none">jenkins.exe install</userinput></screen>
+    <para>This basic installation will work fine in a simple context, but you
+    will often need to fine-tune your service. For example, by default, the
+    Jenkins service will be running under the local System account. However,
+    if you are using Maven, Jenkins will need an <filename moreinfo="none">.m2</filename> directory and a <filename moreinfo="none">settings.xml</filename> file in the home directory.
+    Similarly, if you are using Groovy, you might need a <filename moreinfo="none">.groovy/lib</filename> directory. And so on. To allow
+    this, and to make testing your Jenkins install easier, make sure you run
+    this service under a real user account with the correct development
+    environment set up (see <xref linkend="fig-hudson-windows-service-config"/>). Alternatively, run the
+    application as the system user, but use the System Information page in
+    Jenkins to check the <filename moreinfo="none">${user.dir}</filename>
+    directory, and place any files that must be placed in the user home
+    directory here.</para>
+    <figure float="none" id="fig-hudson-windows-service-config">
+      <title>Configuring the Jenkins Windows Service</title>
+      <mediaobject id="I_mediaobject3_d1e3730">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0306.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0306.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>You configure the finer details of the Jenkins service in a file
+    called <filename moreinfo="none">jenkins.xml</filename>, in the same
+    directory as your <filename moreinfo="none">jenkins.war</filename> file.
+    Here you can configure (or reconfigure) ports, JVM options, an the Jenkins
+    work directory. In the following example, we give Jenkins a bit more
+    memory and get it to run on port 8081:</para>
+    <programlisting id="I_programlisting3_d1e3743" format="linespecific">&lt;service&gt;
+  &lt;id&gt;jenkins&lt;/id&gt;
+  &lt;name&gt;Jenkins&lt;/name&gt;
+  &lt;description&gt;This service runs the Jenkins continuous integration system
+    &lt;/description&gt;
+  &lt;env name="JENKINS_HOME" value="D:\jenkins" /&gt;
+  &lt;executable&gt;java&lt;/executable&gt;
+  &lt;arguments&gt;-Xrs -Xmx512m 
+  -Dhudson.lifecycle=hudson.lifecycle.WindowsServiceLifecycle 
+  -jar "%BASE%\jenkins.war" --httpPort=8081 --ajp13Port=8010&lt;/arguments&gt;
+&lt;/service&gt;</programlisting>
+    <para>Finally, if you need to uninstall the Jenkins service, you can do
+    one of two things. The simplest is to run the Jenkins executable with the
+    <literal moreinfo="none">uninstall</literal> option:</para>
+    <screen format="linespecific">C:\jenkins&gt; <userinput moreinfo="none">jenkins.exe uninstall</userinput></screen>
+    <para>The other option is to use the Windows <indexterm id="I_indexterm3_d1e3756" class="endofrange" startref="ch03-svc1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e3758" class="endofrange" startref="ch03-svc2" significance="normal"><primary/></indexterm>service tool <literal moreinfo="none">sc</literal>:</para>
+    <screen format="linespecific">C:&gt; <userinput moreinfo="none">sc delete jenkins</userinput></screen>
+  </sect1>
+  <sect1 id="sec-hudson-home-directory-contents">
+    <title>What’s in the Jenkins Home Directory</title>
+    <para><indexterm class="startofrange" id="ch03-home4" significance="normal"><primary>home directory for Jenkins</primary></indexterm><indexterm class="startofrange" id="ch03-home5" significance="normal"><primary>Jenkins</primary><secondary>home directory for</secondary></indexterm>The Jenkins home directory contains all the details of your
+    Jenkins server configuration, details that you configure in the Manage
+    Jenkins screen. These configuration details are stored in the form of a
+    set of XML files. Much of the core configuration, for example, is stored
+    in the <filename moreinfo="none">config.xml</filename> file. Other
+    tools-specific configuration is stored in other appropriately-named XML
+    files: the details of your Maven installations, for example, are stored in
+    a file called <filename moreinfo="none">hudson.tasks.Maven.xml</filename>.
+    You rarely need to modify these files by hand, though occasionally it can
+    come in handy.</para>
+    <para>The Jenkins home directory also contains a number of subdirectories
+    (see <xref linkend="fig-hudson-home-directory"/>). Not all of the
+    files and directories will be present after a fresh installation, as some
+    are created when required by Jenkins. And if you look at an existing
+    Jenkins installation, you will see additional XML files relating to
+    Jenkins configuration and plugins.</para>
+    <para>The main directories are described in more detail in <xref linkend="hudson-home-directory-structure"/>.</para>
+    <table id="hudson-home-directory-structure">
+      <title>The Jenkins home directory structure</title>
+      <tgroup cols="2">
+        <colspec align="left" colwidth="100"/>
+        <colspec align="left"/>
+        <thead>
+          <row>
+            <entry>Directory</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <filename moreinfo="none">.jenkins</filename>
+            </entry>
+            <entry>The default Jenkins home directory (may be
+            <filename moreinfo="none">.hudson</filename> in older installations).</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">fingerprints</filename>
+            </entry>
+            <entry>This <indexterm id="I_indexterm3_d1e3823" significance="normal"><primary>fingerprints directory</primary></indexterm>directory is used by Jenkins to keep track of
+            artifact fingerprints. We look at how to track artifacts later on
+            in the book.</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">jobs</filename>
+            </entry>
+            <entry>This <indexterm class="startofrange" id="ch03-jobs" significance="normal"><primary>jobs directory</primary></indexterm>directory contains configuration details about the
+            build jobs that Jenkins manages, as well as the artifacts and data
+            resulting from these builds. We look at this directory in detail
+            below.</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">plugins</filename>
+            </entry>
+            <entry>This <indexterm id="I_indexterm3_d1e3843" significance="normal"><primary>plugins directory</primary></indexterm>directory contains any plugins that you have
+            installed. Plugins allow you to extend Jenkins by adding extra
+            feature. Note that, with the exception of the Jenkins core plugins
+            (subversion, cvs, ssh-slaves, maven, and scid-ad), plugins are not
+            stored with the <literal moreinfo="none">jenkins</literal> executable, or in the
+            expanded web application directory. This means that you can update
+            your Jenkins executable and not have to reinstall all your
+            plugins.</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">updates</filename>
+            </entry>
+            <entry>This<indexterm id="I_indexterm3_d1e3856" significance="normal"><primary>updates directory</primary></indexterm> is an internal directory used by Jenkins to store
+            information about available plugin updates.</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">userContent</filename>
+            </entry>
+            <entry>You <indexterm id="I_indexterm3_d1e3866" significance="normal"><primary>userContent directory</primary></indexterm>can use this directory to place your own custom
+            content onto your Jenkins server. You can access files in this
+            directory at
+            <emphasis>http://myserver/hudson/userContent</emphasis> (if you
+            are running Jenkins on an application server) or
+            <emphasis>http://myserver/userContent</emphasis> (if you are
+            running in stand-alone mode).</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">users</filename>
+            </entry>
+            <entry>If <indexterm id="I_indexterm3_d1e3882" significance="normal"><primary>users directory</primary></indexterm>you are using the native Jenkins user database, user
+            accounts will be stored in this directory.</entry>
+          </row>
+          <row>
+            <entry>
+              <filename moreinfo="none">war</filename>
+            </entry>
+            <entry>This <indexterm id="I_indexterm3_d1e3892" significance="normal"><primary>war directory</primary></indexterm>directory contains the expanded web application.
+            When you start Jenkins as a stand-alone application, it will
+            extract the web application into this directory.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <figure float="none" id="fig-hudson-home-directory">
+      <title>The Jenkins home directory</title>
+      <mediaobject id="I_mediaobject3_d1e3899">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0307.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0307.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>The <command moreinfo="none">jobs</command> directory is a crucial
+    part of the Jenkins directory structure, and deserves a bit more
+    attention. You can see an example of a real Jenkins jobs directory in
+    <xref linkend="fig-hudson-jobs-directory"/>.</para>
+    <figure float="0" id="fig-hudson-jobs-directory">
+      <title>The Jenkins jobs directory</title>
+      <mediaobject id="I_mediaobject3_d1e3914">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0308.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0308.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>This directory contains a subdirectory for each Jenkins build job
+    being managed by this instance of Jenkins. Each job directory in turn
+    contains two <indexterm class="startofrange" id="ch03-builds" significance="normal"><primary>builds directory</primary></indexterm><indexterm id="I_indexterm3_d1e3924" significance="normal"><primary>workspace directory</primary></indexterm>subdirectories: <filename moreinfo="none">builds</filename>
+    and <filename moreinfo="none">workspace</filename>, along with some other
+    files. In particular, it contains the build job<indexterm id="I_indexterm3_d1e3934" significance="normal"><primary>config.xml file</primary></indexterm> <filename moreinfo="none">config.xml</filename> file, which
+    contains, as you might expect, the configuration details for this build
+    job. There are also some other files used internally by Jenkins, that you
+    usually wouldn’t touch, such as the <command moreinfo="none">nextBuildNumber</command> file (which contains the number
+    that will be assigned to the next build in this build job), as well as
+    symbolic links to the most recent successful build and the last stable
+    one. A successful build is one that does not have any compilation errors.
+    A stable build is a successful build that has passed whatever quality
+    criteria you may have configured, such as unit tests, code coverage and so
+    forth.</para>
+    <para>Both the <filename moreinfo="none">build</filename> and the
+    <filename moreinfo="none">workspace</filename> directories are important.
+    The <filename moreinfo="none">workspace</filename> directory is where
+    Jenkins builds your project: it contains the source code Jenkins checks
+    out, plus any files generated by the build itself. This workspace is
+    reused for each successive build—there is only ever one <filename moreinfo="none">workspace</filename> directory per project, and the disk
+    space it requires tends to be relatively stable.</para>
+    <para>The <filename moreinfo="none">builds</filename> directory contains a
+    history of the builds executed for this job. You rarely need to intervene
+    directly in these directories, but it can be useful to know what they
+    contain. You can see a real example of the builds directory in <xref linkend="fig-hudson-jobs-directory-details"/>, where three builds have
+    been performed. Jenkins stores <indexterm class="startofrange" id="ch03-builds2" significance="normal"><primary>build history</primary><secondary sortas="builds">in builds directory</secondary></indexterm>build history and artifacts for each build it performs in a
+    directory labeled with a timestamp (“2010-03-12_20-42-05” and so forth in
+    <xref linkend="fig-hudson-jobs-directory-details"/>). It also contains
+    symbolic links with the actual build numbers that point to the build
+    history directories.</para>
+    <figure float="0" id="fig-hudson-jobs-directory-details">
+      <title>The builds directory</title>
+      <mediaobject id="I_mediaobject3_d1e3978">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0309.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0309.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Each build directory contains information such as the build result
+    log file, the Subversion revision number used for this build (if you are
+    using Subversion), the changes that triggered this build, and any other
+    data or metrics that you have asked Jenkins to keep track of. For example,
+    if your build job keeps track of unit test results or test coverage
+    metrics, this data will be stored here for each build. The build directory
+    also contains any artifacts you are storing—binary artifacts, but also
+    other generated files such as javadoc or code coverage metrics. Some types
+    of build jobs, such as the Jenkins Maven build jobs, will also archive
+    binary artifacts by default.</para>
+    <para>The<indexterm id="I_indexterm3_d1e3987" significance="normal"><primary>disk space</primary><secondary sortas="build directory">for build directory</secondary></indexterm> size of the <filename moreinfo="none">build</filename> directory will
+    naturally grow over time, as the build history cumulates. You will
+    probably want to take this into account when designing your build server
+    directory structure, especially if your build server is running in a
+    Unix-style environment with multiple disk partitions. A lot of this data
+    takes the form of text or XML files, which does not consume a large amount
+    of extra space for each build. However, if your build archives some of
+    your build artifacts, such as JAR or WAR files, they too will be stored
+    here. The size of these artifacts should be factored into your disk space
+    requirements. We will see later on how to limit the number of builds
+    stored for a particular build job if space is an issue. Limiting the
+    number of build jobs that Jenkins stores is always a trade-off between
+    disk space and keeping useful build statistics, as Jenkins does rely on
+    this build history for its powerful reporting features.</para>
+    <para>Jenkins uses the files in this directory extensively to display
+    build history and metrics data, so you should be particularly careful not
+    to delete any of the build history directories without knowing exactly
+    what you <indexterm id="I_indexterm3_d1e3998" class="endofrange" startref="ch03-builds" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4000" class="endofrange" startref="ch03-jobs" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4002" class="endofrange" startref="ch03-home4" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4004" class="endofrange" startref="ch03-home5" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4006" class="endofrange" startref="ch03-builds2" significance="normal"><primary/></indexterm>are doing.</para>
+  </sect1>
+  <sect1 id="sect-jenkins-backing-up-data">
+    <title>Backing Up Your Jenkins Data</title>
+    <para><indexterm id="I_indexterm3_d1e4013" significance="normal"><primary>backups</primary></indexterm><indexterm id="I_indexterm3_d1e4016" significance="normal"><primary>maintenance</primary><secondary>backups</secondary></indexterm><indexterm id="I_indexterm3_d1e4021" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>backups</tertiary></indexterm>It is important to ensure that your Jenkins data is
+    regularly backed up. This applies in particular to the Jenkins home
+    directory, which contains your server configuration details as well as
+    your build artifacts and build histories. This directory should be backed
+    up frequently and automatically. The Jenkins executable itself is less
+    critical, as it can easily be reinstalled without affecting your build
+    environment.</para>
+  </sect1>
+  <sect1 id="sect-installation-upgrading">
+    <title>Upgrading Your Jenkins Installation</title>
+    <para><indexterm class="startofrange" id="ch03-up1" significance="normal"><primary>upgrades</primary></indexterm><indexterm class="startofrange" id="ch03-up2" significance="normal"><primary>installation</primary><secondary>upgrading</secondary></indexterm><indexterm class="startofrange" id="ch03-up3" significance="normal"><primary>Jenkins</primary><secondary>upgrading</secondary></indexterm>Upgrading Jenkins is easy—you simply replace your local copy
+    of the <filename moreinfo="none">jenkins.war</filename> file and restart
+    Jenkins. However you should make sure there are no builds running when you
+    restart your server. Since your build environment configuration details,
+    plugins, and build history are stored in the Jenkins home directory,
+    upgrading your Jenkins executable will have no impact on your
+    installation. You can always check what version of Jenkins you are
+    currently running by referring to the version number in the bottom right
+    corner of every screen.</para>
+    <para>If you <indexterm id="I_indexterm3_d1e4052" significance="normal"><primary>Linux</primary><secondary>upgrading Jenkins on</secondary></indexterm>have installed Jenkins using one of the Linux packages,
+    Jenkins can be upgraded using the same process as the other system
+    packages on the server.</para>
+    <para>If you are <indexterm id="I_indexterm3_d1e4060" significance="normal"><primary>stand-alone application</primary><secondary>upgrading Jenkins as</secondary></indexterm>running Jenkins as a stand-alone instance, you can also
+    upgrade your Jenkins installation directly from the web interface, in the
+    Manage Jenkins section. Jenkins will indicate if a more recent version is
+    available, and give you the option to either download it manually or
+    upgrade automatically (see <xref linkend="fig-hudson-upgrade"/>).</para>
+    <figure float="none" id="fig-hudson-upgrade">
+      <title>Upgrading Jenkins from the web interface</title>
+      <mediaobject id="I_mediaobject3_d1e4071">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0310.pdf" format="PDF"/>
+        </imageobject>
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0310.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Once Jenkins has downloaded the upgrade, you can also tell it to
+    restart when no jobs are running. This is probably the most convenient way
+    to upgrade Jenkins, although it will not work in all environments. In
+    particular, you need to be running Jenkins as a stand-alone application,
+    and the user running Jenkins needs to have read-write access to the
+    <filename moreinfo="none">jenkins.war</filename> file.</para>
+    <para>If you <indexterm id="I_indexterm3_d1e4083" significance="normal"><primary>application server</primary><secondary>upgrading Jenkins on</secondary></indexterm>are running Jenkins on an application server such as Tomcat
+    or JBoss, you might need to do a bit more tidying up when you upgrade your
+    Jenkins instance. Tomcat, for example, places compiled JSP pages in the
+    <filename moreinfo="none">CATALINA_BASE/work</filename> directory. When
+    you upgrade your Jenkins version, these files need to be removed to
+    prevent the possibility of any stale pages being served.</para>
+    <para>Any <indexterm id="I_indexterm3_d1e4094" significance="normal"><primary>plugins</primary><secondary>upgrading</secondary></indexterm>plugins you have installed will be unaffected by your
+    Jenkins upgrades. However, plugins can also be upgraded, independently of
+    the main Jenkins executable. You upgrade your plugins directly in the
+    Jenkins web application, using the Jenkins Plugin Manager. We discuss
+    plugins in more detail further<indexterm id="I_indexterm3_d1e4100" class="endofrange" startref="ch03-up1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4102" class="endofrange" startref="ch03-up2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm3_d1e4104" class="endofrange" startref="ch03-up3" significance="normal"><primary/></indexterm> on in this book.</para>
+  </sect1>
+  <sect1 id="sect-installation-conclusion">
+    <title>Conclusion</title>
+    <para>In this chapter, we have seen how to install and run Jenkins in
+    different environments, and learned a few basic tips on how to maintain
+    your Jenkins installation once running. Jenkins is easy to install, both
+    as a stand-alone application and as a WAR file deployed to an existing
+    application server. The main things you need to consider when choosing a
+    build server to host Jenkins are CPU, memory, and disk space.</para>
+  </sect1>
+</chapter>

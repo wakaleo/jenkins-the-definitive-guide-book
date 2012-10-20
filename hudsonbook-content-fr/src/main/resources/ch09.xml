@@ -1,0 +1,1871 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="chapter-code-quality">
+  <title>Qualité du Code</title>
+
+  <sect1 id="sect-code-quality-introduction">
+    <title>Introduction</title>
+
+    <para><indexterm class="startofrange" id="ch09-cq" significance="normal">
+        <primary>mesures de qualité de code</primary>
+      </indexterm>Rares sont ceux qui nient l’importance de l’écriture d’un
+    code de qualité. Un code de grande qualité contient moins de bugs, est
+    plus facile à comprendre et plus facile à maintenir. Toutefois, les
+    définitions précises de la qualité d’un code peuvent être plus
+    subjectives, variant entre organisations, équipes, et même entre individus
+    d’une même équipe.</para>
+
+    <para>C’est <indexterm id="I_indexterm9_d1e12711" significance="normal">
+        <primary>normes de codage</primary>
+      </indexterm> ici que les normes de codage entrent en jeu. Les normes de
+    codage sont des règles, parfois relativement arbitraires, qui définissent
+    les styles et les conventions de codage qui sont considérées comme
+    acceptables au sein d’une équipe ou d’une organisation. Dans beaucoup de
+    cas, se mettre d’accord sur un ensemble de normes et les appliquer est
+    plus important que les normes elles-mêmes. En effet, un des aspects les
+    plus importants d'un code de qualité est qu’il soit facile à lire et à
+    comprendre. Si tous les développeurs d’une équipe appliquent les mêmes
+    normes et les mêmes pratiques, le code sera ainsi plus lisible, au moins pour les
+    membres de cette équipe. Et, si les normes sont communément utilisées dans
+    l’industrie, le code sera d’autant plus lisible pour les nouveaux
+    développeurs arrivant dans l’équipe.</para>
+
+    <para>Les normes de codage incluent à la fois des aspects esthétiques
+    comme la disposition et la mise en forme du code, les conventions de
+    nommage et ainsi de suite, ainsi que les potentielles mauvaises
+    pratiques comme les oublis d’accolades après une condition en Java. Un
+    style de codage cohérent réduit les coûts de maintenance, rend le code
+    plus propre et plus lisible et permet de travailler plus facilement avec
+    du code écrit par d’autres membres de l’équipe.</para>
+
+    <para>Seul un développeur expérimenté peut réellement juger de la
+    qualité d’un code dans tous ses aspects. C’est le rôle des revues de code
+    et, entre autres, des pratiques comme la programmation en binôme. En
+    particulier, seul un œil humain peut décider si un bout de code est
+    réellement bien écrit et s’il fait réellement ce que les exigences lui
+    demandent de faire. Néanmoins, les outils de mesure de qualité de code
+    peuvent être d'une grande aide. En effet, il n’est pas réaliste d’essayer de
+    forcer des normes de codage sans ce type d’outil.</para>
+
+    <para>Ces outils analysent le code source ou le byte code de votre
+    application et vérifient si le code respecte certaines règles. Les mesures
+    de qualité de code peuvent englober beaucoup d’aspects de la qualité d’un
+    code, des normes de codage et des meilleurs pratiques jusqu’à la
+    couverture du code, en passant par les avertissements du
+    compilateur jusqu’aux commentaires TODO. Certaines mesures
+    se concentrent sur les caractéristiques mesurables de votre base de code,
+    comme le nombre de lignes de code (NLOC), la moyenne de complexité du code
+    ou le nombre de lignes par classe. D’autres se focalisent sur des analyses
+    statiques plus sophistiquées, ou sur la recherche de bugs potentiels ou de
+    mauvaises pratiques dans votre code.</para>
+
+    <para>Il y a<indexterm id="I_indexterm9_d1e12727" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary>plugins pour</secondary>
+      </indexterm> une large gamme de plugins établissant des rapports sur la
+    qualité du code disponibles pour Jenkins. Beaucoup sont des outils
+    d’analyse statique Java, comme Checkstyle, PMD, FindBugs, Cobertura et
+    JDepends. D’autres, comme fxcop et NCover, se focalisent sur les
+    applications .NET.</para>
+
+    <para>Pour tous ces outils, vous devez configurer votre tâche de build
+    pour générer les données de mesure de qualité de code avant que Jenkins
+    puisse produire le moindre rapport.</para>
+
+    <para>L’<indexterm id="I_indexterm9_d1e12737" significance="normal">
+        <primary>mesures de qualité de code</primary>
+
+        <secondary sortas="Sonar">avec Sonar</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e12742" significance="normal">
+        <primary>Sonar</primary>
+
+        <secondary>mesures de qualité de code avec</secondary>
+      </indexterm>exception notable de cette règle est Sonar. Sonar peut
+    extraire des mesures de qualité de code depuis n’importe quel projet Maven, sans
+    aucune configuration supplémentaire dans votre projet. Ce qui est
+    excellent lorsque vous avez un nombre important de projets Maven
+    qui doivent être intégrés à Jenkins et que vous voulez configurer des
+    rapports de qualité de code cohérents sur tous les projets.</para>
+
+    <para>Dans le reste de ce chapitre, vous verrez comment configurer des
+    rapports de qualité de code dans vos builds Jenkins et également comment
+    les utiliser comme un élément efficace dans votre processus de build.</para>
+  </sect1>
+
+  <sect1 id="sect-code-quality-build-process">
+    <title>La qualité du code dans votre processus de build</title>
+
+    <para>Avant de voir comment rapporter les mesures de qualités dans
+    Jenkins, cela peut être utile de revenir en arrière pour avoir une vue
+    plus large. Les mesures de la qualité du code sont d’une valeur limitée si
+    elles sont isolées, elles doivent faire partie d’une stratégie plus large
+    d’amélioration des processus.</para>
+
+    <para>Le<indexterm id="I_indexterm9_d1e12757" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary sortas="IDE">avec l'EDI</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e12762" significance="normal">
+        <primary>EDI, mesures de qualité de code avec</primary>
+      </indexterm> premier niveau d’intégration de la qualité du code devrait
+    être l’EDI. Les EDI modernes ont un excellent support de beaucoup d’outils
+    de qualité de code — Checkstyle, PMD et FindBugs ont tous des plugins pour
+    Eclipse, NetBeans et IntelliJ, qui fournissent un retour d’information
+    rapide aux développeurs sur les problèmes de qualité du code. C’est le
+    moyen le plus rapide et le plus efficace pour fournir un retour
+    d’information à des développeurs et pour leur apprendre
+    les normes de codage de l’organisation ou du projet.</para>
+
+    <para>Le <indexterm id="I_indexterm9_d1e12774" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary sortas="build jobs">dans les tâches de build</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e12779" significance="normal">
+        <primary>les tâches de build</primary>
+
+        <secondary>les mesures de qualité de code dans</secondary>
+
+        <see>les mesures de qualité de code</see>
+      </indexterm>second niveau est votre serveur de build. En plus de vos
+    tâches régulières de tests unitaires et d’intégration, mettez en
+    place un build de qualité de code dédié, qui démarrera après le build
+    régulier et les tests. Le but de ce processus est de fournir des mesures de
+    qualité de code à l’échelle du projet, de garder un œil sur la façon dont
+    le projet est fait dans son ensemble et de traiter n’importe
+    quels problèmes d’un niveau élevé. L’efficacité des ces rapports peut être
+    augmentée par une revue hebdomadaire de la qualité du code, dans laquelle
+    les problèmes et les tendances sur la qualité du code sont discutés au
+    sein de l’équipe.</para>
+
+    <para>Il est important d'exécuter cette tâche séparément parce que les
+    outils d’analyse de couverture de code et d’analyse statique peuvent être
+    très longs à exécuter. Il est également important de garder éloigné des builds n’importe
+    quels tests de couverture du code, puisque le
+    processus de couverture du code produit du code instrumenté qui ne devrait
+    jamais être déployé vers un dépôt pour une utilisation en
+    production.</para>
+
+    <para>L’établissement de rapports sur la de qualité de code est, par
+    défaut, un processus relativement passif. Personne ne connaîtra l’état du
+    projet s’il ne cherche pas l’information sur le serveur de build. Même
+    si c’est mieux que rien, vous êtes peut-être exigeant sur la qualité du
+    code, il y a alors un meilleur moyen. Au lieu de simplement établir des rapports
+    sur la qualité du code, mettez en place un build dédié à la qualité du
+    code, qui démarre après le build normal et les tests et configurez le
+    build pour échouer si les mesures de la qualité du code ne sont pas à un
+    niveau acceptable. Vous pouvez faire cela dans Jenkins ou dans votre
+    script de build, bien qu’il soit avantageux de le configurer en dehors de votre
+    script de build car vous pourrez changer les critères de défaillance
+    du build de qualité du code sans changer le code source du projet.</para>
+
+    <para>Pour finir, souvenez-vous que les normes de codage sont des
+    lignes directrices et des recommandations, pas des règles absolues.
+    Utilisez la défaillance des builds et les rapports de qualité de code
+    comme des indicateurs d’une zone possible d’amélioration, non pas comme
+    des mesures de valeur <indexterm class="endofrange"
+        id="I_indexterm9_d1e12793" significance="normal" startref="ch09-cq">
+        <primary/>
+      </indexterm> absolue.</para>
+  </sect1>
+
+  <sect1 id="sect-code-quality-tools">
+    <title>Les outils d’analyse de qualité du code populaires pour Java et
+    Groovy</title>
+
+    <para>Il y a beaucoup d’outils open source qui peuvent aider à identifier
+    les mauvaises pratiques de codage.</para>
+
+    <para>Dans<indexterm id="I_indexterm9_d1e12803" significance="normal">
+        <primary>mesures de qualité de code</primary>
+
+        <secondary>logiciel pour</secondary>
+      </indexterm> le monde Java, trois outils d’analyses statiques ont
+    résisté à l’épreuve du temps, et sont largement utilisés de manière très
+    complémentaire. Checkstyle excelle dans la vérification des conventions et
+    normes de codage, les pratiques de codage, ainsi que d’autres mesures
+    telles que la complexité du code. PMD est un outil d’analyse statique
+    similaire à Checkstyle, plus focalisé sur les pratiques de codage et de
+    conception. Et FindBugs est un outil innovant, issu des travaux de recherche
+    de Bill Pugh et de son équipe de l’université du Maryland, qui
+    se focalise sur l’identification du code dangereux et bogué. Et si vous
+    être en train de travailler avec Groovy ou Grails, vous pouvez utiliser
+    CodeNarc, qui vérifie la norme et les pratiques de codage de
+    Groovy.</para>
+
+    <para>Tous ces outils peuvent être facilement intégrés dans votre
+    processus de build. Dans les sections suivantes, nous verrons comment
+    configurer ces outils pour générer des rapports XML que Jenkins peut
+    ensuite utiliser dans ses propres rapports.</para>
+
+    <sect2>
+      <title>Checkstyle</title>
+
+      <para><ulink url="http://checkstyle.sourceforge.net">Checkstyle</ulink>
+      est<indexterm class="startofrange" id="ch09-check1"
+          significance="normal">
+          <primary>Checkstyle</primary>
+        </indexterm><indexterm class="startofrange" id="ch09-check2"
+          significance="normal">
+          <primary>mesures de qualité de code</primary>
+
+          <secondary sortas="Checkstyle">avec Checkstyle</secondary>
+        </indexterm> un outil d’analyse statique pour Java. A l’origine conçu
+      pour faire respecter un ensemble de normes de codage hautement
+      configurable, Checkstyle permet aussi maintenant de vérifier les
+      mauvaises pratiques de codage, ainsi que le code trop complexe ou
+      dupliqué. Checkstyle est un outil polyvalent et flexible qui devrait
+      avoir sa place dans n’importe quelle stratégie d’analyse de code basé
+      sur Java.</para>
+
+      <para>Checkstyle supporte un très grand nombre de règles, incluant celles
+      liées aux normes de nommage, annotations, commentaires javadoc, taille
+      de méthode et de classe, mesures de complexité de code, mauvaises
+      pratiques de codage, et beaucoup d’autres.</para>
+
+      <para>Le code dupliqué est un autre problème important de la qualité de
+      code — le code dupliqué ou quasi-dupliqué est plus difficile à maintenir
+      et à déboguer. Checkstyle fournit un certain soutien pour la détection
+      de code dupliqué, mais des outils plus spécialisés comme CPD font un
+      meilleur travail dans ce domaine.</para>
+
+      <para>Une des choses intéressante au sujet de Checkstyle est la facilité
+      avec laquelle on peut le configurer. Vous pouvez commencer avec les normes de codage de
+      Sun et les adapter selon vos besoins, ou démarrer de zéro. En utilisant
+      <indexterm id="I_indexterm9_d1e12836" significance="normal">
+          <primary>Eclipse</primary>
+
+          <secondary>métriques de la qualité du code avec Checkstyle</secondary>
+        </indexterm>le plugin Eclipse (ou même directement en XML), vous
+      pouvez choisir parmi plusieurs centaines de règles, et affiner les
+      options des règles que vous choisissez (voir <xref
+      linkend="fig-hudson-quality-checkstyle"/>). C’est important, car les
+      organisations, les équipes ou même les projets ont des attentes et des
+      préférences différentes au regard des normes de codage, et c’est mieux
+      d’avoir un ensemble de règles précises qui peuvent être adoptées, plutôt
+      qu'un large éventail de règles qui seront ignorées. C’est encore plus
+      important lorsque de grandes bases de code existant sont impliquées —
+      dans ces cas, il est souvent préférable de commencer avec un ensemble
+      plus limité de règles que d’être submergé par un grand nombre de
+      problèmes de formatage relativement mineurs.</para>
+
+      <figure float="none" id="fig-hudson-quality-checkstyle">
+        <title>C’est facile de configurer les règles Checkstyle avec
+        Eclipse</title>
+
+        <mediaobject id="I_mediaobject9_d1e12847">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0901.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0901.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Configurer Checkstyle dans votre build est généralement simple. Si
+      <indexterm id="I_indexterm9_d1e12854" significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>code quality metrics</secondary>
+
+          <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
+        </indexterm>vous utilisez Ant, vous avez besoin de télécharger le
+      fichier JAR de Checkstyle depuis le site web et de le rendre disponible
+      à Ant. Vous pourriez le placer dans votre répertoire <filename
+      moreinfo="none">lib</filename> de Ant, mais cela signifierait de devoir
+      personnaliser l’installation de Ant sur votre serveur de build (et tout
+      les nœuds esclaves), ce n’est donc pas une solution très portable. Une
+      meilleure approche serait de placer le fichier JAR de Checkstyle dans
+      l’un des répertoires de votre projet, ou d’utiliser Ivy ou la librairie
+      Maven Ant Task pour déclarer une dépendance à Checkstyle. Si vous choisissez
+      de garder le fichier JAR de Checkstyle dans les répertoires du projet,
+      vous pourrez déclarer la tâche Checkstyle comme indiqué ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e12868">          &lt;taskdef resource="checkstyletask.properties"
+               classpath="lib/checkstyle-5.3-all.jar"/&gt;</programlisting>
+
+      <para>Ensuite, pour générer les rapports Checkstyle dans le format XML
+      exploitable par Jenkins, vous pourrez procéder comme suit :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e12872">&lt;target name="checkstyle"&gt;
+  &lt;checkstyle config="src/main/config/company-checks.xml"&gt;
+    &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+    &lt;formatter type="plain"/&gt; 
+    &lt;formatter type="xml"/&gt;
+  &lt;/checkstyle&gt;
+&lt;/target&gt;</programlisting>
+
+      <para>Maintenant, invoquez juste cette tâche (cf., <literal
+      moreinfo="none">ant checkstyle</literal>) afin de générer les rapports
+      Checkstyle.</para>
+
+      <para>Dans <indexterm id="I_indexterm9_d1e12882" significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>code quality metrics</secondary>
+
+          <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
+        </indexterm>Maven 2, vous pouvez ajouter quelque chose comme la
+      section <code>&lt;reporting&gt;</code> qui suit :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e12893">&lt;reporting&gt;
+  &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+        &lt;version&gt;2.4&lt;/version&gt;
+        &lt;configuration&gt;
+          &lt;configLocation&gt;
+            src/main/config/company-checks.xml
+          &lt;/configLocation&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting>
+
+      <para>Pour un projet Maven 3, vous avez besoin d’ajouter un plugin sur
+      l’élément <code>&lt;reportPlugins&gt;</code> de la section
+      <code>&lt;configuration&gt;</code> du <emphasis>maven-site-plugin
+      </emphasis>:</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e12906">&lt;project&gt;
+  &lt;properties&gt;
+    &lt;sonar.url&gt;http://buildserver.acme.org:9000&lt;/sonar.url&gt;
+  &lt;/properties&gt;
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+        &lt;version&gt;3.0-beta-2&lt;/version&gt;
+        &lt;configuration&gt;
+         &lt;reportPlugins&gt;
+          &lt;plugin&gt;
+           &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+           &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
+           &lt;version&gt;2.4&lt;/version&gt;
+           &lt;configuration&gt;
+            &lt;configLocation&gt;
+              ${sonar.url}/rules_configuration/export/java/My_Rules/checkstyle.xml
+            &lt;/configLocation&gt;
+           &lt;/configuration&gt;
+          &lt;/plugin&gt;
+         &lt;/reportPlugins&gt;
+        &lt;/configuration&gt;
+       &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting>
+
+      <para>Maintenant, l’exécution de <literal moreinfo="none">mvn
+      checkstyle:checkstyle</literal> ou <literal moreinfo="none">mvn
+      site</literal> analysera votre code source et génèrera des rapports XML
+      que Jenkins peut utiliser.</para>
+
+      <para>A noter que dans le dernier exemple, nous utilisons un ensemble de
+      règles de Checkstyle que nous avons transféré sur un serveur Sonar
+      (définie par la propriété <literal
+      moreinfo="none">${sonar.url}</literal>). Cette stratégie rend facile
+      l’utilisation du même ensemble des règles Checkstyle pour Eclipse,
+      Maven, Jenkins, et Sonar.</para>
+
+      <para>Les <indexterm id="I_indexterm9_d1e12923" significance="normal">
+          <primary>Gradle</primary>
+
+          <secondary>code quality metrics</secondary>
+
+          <tertiary sortas="Checkstyle">with Checkstyle</tertiary>
+        </indexterm> versions récentes de Gradle offrent aussi une certaine
+      prise en charge intégrée de Checkstyle. Vous pouvez le configurer pour vos
+      builds comme il suit :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e12931">apply plugin: 'code-quality'</programlisting>
+
+      <para>Cela utilisera par défaut l’ensemble de règles de Checkstyle définies 
+	  dans <filename moreinfo="none">config/checkstyle/checkstyle.xml</filename>.
+      Vous pouvez redéfinir cela avec la propriété
+      <code>checkstyleConfigFileName</code> : au moment de l’écriture de ce
+      livre, néanmoins, il n'est pas possible de télécharger le plugin de qualité de
+      code pour Gradle afin d'obtenir les règles Checkstyle depuis une URL.</para>
+
+      <para>Vous pouvez générer les rapports Checkstyle ici <indexterm
+          class="endofrange" id="I_indexterm9_d1e12943" significance="normal"
+          startref="ch09-check1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e12945"
+          significance="normal" startref="ch09-check2">
+          <primary/>
+        </indexterm>en exécutant <literal moreinfo="none">gradle
+      checkstyleMain</literal> or <literal moreinfo="none">gradle
+      check</literal>.</para>
+    </sect2>
+
+    <sect2>
+      <title>PMD/CPD</title>
+
+      <para><ulink url="http://pmd.sourceforge.net">PMD</ulink> est <indexterm
+          class="startofrange" id="ch09-pmd1" significance="normal">
+          <primary>PMD</primary>
+        </indexterm><indexterm class="startofrange" id="ch09-pmd2"
+          significance="normal">
+          <primary>mesures de qualité de code</primary>
+
+          <secondary sortas="PMD">avec PMD</secondary>
+        </indexterm> un autre outil populaire d’analyse statique. Il se
+      focalise sur les problèmes potentiels de codage comme le code non
+      utilisé ou sous-optimisé, la taille et la complexité du code, et les
+      bonnes pratiques de codage. Certaines règles typiques intègrent « Empty
+      If Statement », « Broken Null Check », « Avoid Deeply Nested If
+      Statements, « Switch Statements Should Have Default», et « Logger Is Not
+      Static Final ». Il y a une bonne quantité de ressemblances avec
+      certaines règles de Checkstyle, bien que PMD ait quelques règles plus
+      techniques, et d’autres plus spécialisées tels que les règles relatives
+      à JSF et Android.</para>
+
+      <para>PMD <indexterm class="startofrange" id="ch09-cpd1"
+          significance="normal">
+          <primary>CPD</primary>
+        </indexterm><indexterm class="startofrange" id="ch09-cpd2"
+          significance="normal">
+          <primary>mesures de qualité de code</primary>
+
+          <secondary sortas="CPD">avec CPD</secondary>
+        </indexterm>est aussi livré avec CPD, un détecteur open source robuste de
+      code dupliqué ou quasi-dupliqué.</para>
+
+      <?dbfo-need height=”1in”?>
+
+      <para>PMD est un peu moins flexible que Checkstyle, bien que vous puissiez
+      choisir les règles que vous voulez utiliser dans <indexterm
+          id="I_indexterm9_d1e12984" significance="normal">
+          <primary>Eclipse</primary>
+
+          <secondary>mesures de qualité de code avec PMD</secondary>
+        </indexterm> Eclipse, et les exporter ensuite dans un fichier XML (voir
+      <xref linkend="fig-hudson-quality-pmd"/>). Vous pouvez alors importer
+      ces règles dans les autres projets Eclipse, dans Sonar, ou les utiliser
+      dans vos builds Ant ou Maven.</para>
+
+      <figure float="none" id="fig-hudson-quality-pmd">
+        <title>Configurer les règles PMD dans Eclipse</title>
+
+        <mediaobject id="I_mediaobject9_d1e12995">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0902.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0902.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>PMD <indexterm id="I_indexterm9_d1e13002" significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="PMD">avec PMD et CPD</tertiary>
+        </indexterm>est livré avec une tâche Ant que vous pouvez utiliser pour
+      générer les rapports PMD et CPD. Tout d’abord, toutefois, vous devez
+      définir ces tâches, comme le montre l’exemple suivant :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13010">&lt;path id="pmd.classpath"&gt;
+    &lt;pathelement location="${build}"/&gt;
+    &lt;fileset dir="lib/pmd"&gt;
+        &lt;include name="*.jar"/&gt;
+    &lt;/fileset&gt;
+&lt;/path&gt;
+
+&lt;taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
+         classpathref="pmd.classpath"/&gt;
+
+ &lt;taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" 
+          classpathref="pmd.classpath"/&gt;</programlisting>
+
+      <?dbfo-need height=”2in”?>
+
+      <para>Ensuite, vous pouvez générer le rapport PMD XML en invoquant la
+      tâche PMD comme illustré ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13015">&lt;target name="pmd"&gt;
+ &lt;taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
+          classpathref="pmd.classpath"/&gt;
+
+ &lt;pmd rulesetfiles="basic" shortFilenames="true"&gt;
+  &lt;formatter type="xml" toFile="target/pmd.xml" /&gt;
+  &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+ &lt;/pmd&gt;
+&lt;/target&gt;</programlisting>
+
+      <para>Et, pour générer le rapport CPD XML, vous pouvez faire quelque chose
+      comme ça :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13020">&lt;target name="cpd"&gt;
+  &lt;cpd minimumTokenCount="100" format="xml" outputFile="/target/cpd.xml"&gt;
+    &lt;fileset dir="src/main/java" includes="**/*.java"/&gt; 
+  &lt;/cpd&gt;
+&lt;/target&gt;</programlisting>
+
+      <para>Vous pouvez placer l’ensemble de ces règles XML dans le classpath
+      de votre projet (par exemple, dans <code>src/main/resources</code> pour
+      un projet Maven), ou dans un module séparé (si vous voulez partager la
+      configuration entre les projets). Un exemple sur la façon de configurer
+      Maven 2 pour générer des rapports PMD et CPD en utilisant un ensemble de
+      règles XML exporté est indiqué ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13027">&lt;reporting&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+      &lt;artifactId&gt;maven-pmd-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.5&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;!-- PMD options --&gt;
+        &lt;targetJdk&gt;1.6&lt;/targetJdk&gt;
+        &lt;aggregate&gt;true&lt;/aggregate&gt;
+        &lt;format&gt;xml&lt;/format&gt;
+        &lt;rulesets&gt;
+          &lt;ruleset&gt;/pmd-rules.xml&lt;/ruleset&gt;
+        &lt;/rulesets&gt;
+
+        &lt;!-- CPD options --&gt;
+        &lt;minimumTokens&gt;20&lt;/minimumTokens&gt;
+        &lt;ignoreIdentifiers&gt;true&lt;/ignoreIdentifiers&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting>
+
+      <para>Si <indexterm id="I_indexterm9_d1e13031" significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>métriques de la qualité du code</secondary>
+
+          <tertiary sortas="PMD">avec PMD et CPD</tertiary>
+        </indexterm> vous utilisez Maven 3, vous devez placer la définition du
+      plugin dans la section de configuration
+      <code>&lt;maven-site-plugin&gt;</code>. Cet exemple montre aussi comment
+      utiliser un ensemble de règles dans une autre dépendance (dans ce cas,
+      le fichier <filename moreinfo="none">pmd-rules.jar</filename>):</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13045">&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+          &lt;version&gt;3.0-beta-2&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;reportPlugins&gt;
+              &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-pmd-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.5&lt;/version&gt;
+                &lt;configuration&gt;
+                  &lt;!-- PMD options --&gt;
+                  &lt;targetJdk&gt;1.6&lt;/targetJdk&gt;
+                  &lt;aggregate&gt;true&lt;/aggregate&gt;
+                  &lt;format&gt;xml&lt;/format&gt;
+                  &lt;rulesets&gt;
+                    &lt;ruleset&gt;/pmd-rules.xml&lt;/ruleset&gt;
+                  &lt;/rulesets&gt;
+
+                  &lt;!-- CPD options --&gt;
+                  &lt;minimumTokens&gt;50&lt;/minimumTokens&gt;
+                  &lt;ignoreIdentifiers&gt;true&lt;/ignoreIdentifiers&gt;
+                &lt;/configuration&gt;
+              &lt;/plugin&gt;
+            &lt;/reportPlugins&gt;
+          &lt;/configuration&gt;
+          &lt;dependencies&gt;
+            &lt;dependency&gt;
+              &lt;groupId&gt;com.wakaleo.code-quality&lt;/groupId&gt;
+              &lt;artifactId&gt;pmd-rules&lt;/artifactId&gt;
+              &lt;version&gt;1.0.1&lt;/version&gt;
+            &lt;/dependency&gt;
+          &lt;/dependencies&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting>
+
+      <para>Maintenant, vous pouvez exécuter soit <literal moreinfo="none">mvn
+      site</literal> soit <literal moreinfo="none">mvn pmd:pmd pmd:cpd</literal>
+      pour générer les rapports PMD et CPD.</para>
+
+      <para>Malheureusement, il n’existe actuellement aucune prise en charge de
+      Gradle pour PMD ou CPD, vous devez donc vous contenter d'appeler directement le
+      plugin PMD pour Ant, comme montré ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13057">configurations {
+    pmdConf
+}
+
+dependencies {
+    pmdConf 'pmd:pmd:4.2.5'
+}
+
+task pmd &lt;&lt; {
+    println 'Running PMD static code analysis'
+    ant {
+        taskdef(name:'pmd', classname:'net.sourceforge.pmd.ant.PMDTask', 
+                classpath: configurations.pmdConf.asPath)
+
+        taskdef(name:'cpd', classname:'net.sourceforge.pmd.cpd.CPDTask', 
+                        classpath: configurations.pmdConf.asPath)
+
+        pmd(shortFilenames:'true', failonruleviolation:'false', 
+            rulesetfiles:'conf/pmd-rules.xml') {
+            formatter(type:'xml', toFile:'build/pmd.xml')
+            fileset(dir: "src/main/java") {
+                include(name: '**/*.java')
+            }
+            fileset(dir: "src/test/java") {
+                include(name: '**/*.java')
+            }
+        }
+
+        cpd(minimumTokenCount:'50', format: 'xml',
+            ignoreIdentifiers: 'true',
+            outputFile:'build/cpd.xml') {
+            fileset(dir: "src/main/java") {
+                include(name: '**/*.java')
+            }
+            fileset(dir: "src/test/java") {
+                include(name: '**/*.java')
+            }        
+        }
+    }
+}</programlisting>
+
+      <para>Cette configuration utilisera la règle PMD configuré dans le
+      répertoire <filename moreinfo="none">src/config</filename>, et génèrera
+      un rapport PMD XML appelé <filename moreinfo="none">pmd.xml</filename>
+      dans le répertoire <filename moreinfo="none">build</filename>. Il
+      lancera aussi CPD et générera un rapport CPD XML <indexterm
+          class="endofrange" id="I_indexterm9_d1e13070" significance="normal"
+          startref="ch09-pmd1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13072"
+          significance="normal" startref="ch09-pmd2">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13074"
+          significance="normal" startref="ch09-cpd1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13076"
+          significance="normal" startref="ch09-cpd2">
+          <primary/>
+        </indexterm>appelé <filename moreinfo="none">cpd.xml</filename> dans
+      le répertoire <filename moreinfo="none">build</filename>.</para>
+    </sect2>
+
+    <sect2>
+      <title>FindBugs</title>
+
+      <para>FindBugs<indexterm class="startofrange" id="ch09-find1"
+          significance="normal">
+          <primary>FindBugs</primary>
+        </indexterm><indexterm class="startofrange" id="ch09-find2"
+          significance="normal">
+          <primary>mesures de qualité de code</primary>
+
+          <secondary sortas="FindBugs">avec FindBugs</secondary>
+        </indexterm>est un puissant outil d’analyse de code qui vérifie le byte
+      code de votre application afin de trouver des bogues potentiels, des problèmes
+      de performances, ou des mauvaises habitudes de codage. FindBugs est le
+      résultat d’une recherche  menée par Bill Pugh à l’université du Maryland,
+	  et qui étudie les modèles de byte code venant de bogues dans de
+      réels grands projets, comme les JDKs, Eclipse, ou le code source
+      d’applications Google. FindBugs peut détecter des problèmes assez
+      importants tels que des exceptions de pointeurs nuls, des boucles
+      infinies, et un accès non intentionnel de l’état interne d’un objet.
+      Contrairement à beaucoup d’autres outils d’analyse statique, FindBugs
+      tend à trouver un plus petit nombre de problèmes, mais de ces problèmes,
+      une grande partie sera importante.</para>
+
+      <para>FIndBugs est moins configurable que les autres outils que nous
+      avons vu, mais en pratique vous n’avez généralement pas besoin d’affiner
+      autant les règles qu'avec les autres outils dont nous avons discuté. Vous
+      pouvez lister les règles individuelles que vous voulez appliquer, mais
+      vous ne pouvez pas configurer un fichier XML partagé entre vos builds
+      Maven et votre IDE, par exemple.</para>
+
+      <para>FindBugs <indexterm id="I_indexterm9_d1e13107"
+          significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="FindBugs">avec FindBugs</tertiary>
+        </indexterm>est livrée empaqueté avec une tâche Ant. Vous pouvez
+      définir la tâche FindBugs dans Ant comme montré en dessous. FindBugs a
+      besoin de référencer le répertoire home de FindBugs, qui est où la
+      distribution binaire a été décompressée. Pour rendre le build plus
+      portable, nous stockons l’installation de FIndBugs dans la structure
+      de répertoire de notre projet, dans le répertoire <filename
+      moreinfo="none">tools/findbugs</filename> :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13118">&lt;property name="findbugs.home" value="tools/findbugs" /&gt;
+
+&lt;taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" &gt; 
+  &lt;classpath&gt;
+    &lt;fileset dir="${findbugs.home}/lib" includes="**/*.jar"/&gt;
+  &lt;/classpath&gt;
+&lt;/taskdef&gt;</programlisting>
+
+      <para>Ensuite, pour exécuter FindBugs, vous pourrez configurer une cible
+      ‘findbugs’ comme montré dans l’exemple suivant. A noter que FindBugs
+      s'exécute sur le byte code de votre application, et non sur le code source, donc
+      vous devez compiler votre code source en premier
+      :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13122">&lt;target name="findbugs" depends="compile"&gt; 
+  &lt;findbugs home="${findbugs.home}" output="xml" outputFile="target/findbugs.xml"&gt;
+    &lt;class location="${classes.dir}" /&gt; 
+    &lt;auxClasspath refId="dependency.classpath" /&gt; 
+    &lt;sourcePath path="src/main/java" /&gt;
+  &lt;/findbugs&gt;
+&lt;/target&gt;</programlisting>
+
+      <para>Si <indexterm id="I_indexterm9_d1e13126" significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="FindBugs">avec FindBugs</tertiary>
+        </indexterm>vous utilisez Maven 2, vous n’avez pas besoin de garder
+      une copie locale de l’installation de FindBugs. Vous avez juste besoin de
+      configurer FindBugs dans la section reporting comme montré ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13134">&lt;reporting&gt;
+  &lt;plugins&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+      &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+      &lt;version&gt;2.3.1&lt;/version&gt;
+      &lt;configuration&gt;
+        &lt;effort&gt;Max&lt;/effort&gt;
+        &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+      &lt;/configuration&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/reporting&gt;</programlisting>
+
+      <para>Ou pour un projet Maven 3 :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13138">&lt;project&gt;
+  ...
+  &lt;build&gt;
+    ...
+     &lt;plugins&gt;
+       ...
+       &lt;plugin&gt;
+          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+          &lt;artifactId&gt;maven-site-plugin&lt;/artifactId&gt;
+          &lt;version&gt;3.0-beta-2&lt;/version&gt;
+          &lt;configuration&gt;
+            &lt;reportPlugins&gt;
+                &lt;plugin&gt;
+                  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+                  &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+                  &lt;version&gt;2.3.1&lt;/version&gt;
+                  &lt;configuration&gt;
+                    &lt;effort&gt;Max&lt;/effort&gt;
+                    &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+                  &lt;/configuration&gt;
+                &lt;/plugin&gt;
+            &lt;/reportPlugins&gt;
+          &lt;/configuration&gt;
+        &lt;/plugin&gt;
+      &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</programlisting>
+
+      <para>Dans les deux cas, vous pouvez générer vos rapports XML en
+      lançant soit <literal moreinfo="none">mvn site</literal> soit <literal
+      moreinfo="none">mvn findbugs:findbugs</literal>. Les rapports XML seront
+      placés dans le répertoire <filename
+      moreinfo="none">target</filename>.</para>
+
+      <para>Au moment de la rédaction, il n’y a pas de prise en charge de
+      FindBugs dans Gradle, donc vous devez invoquer le plugin Ant de
+      FindBugs<indexterm class="endofrange" id="I_indexterm9_d1e13154"
+          significance="normal" startref="ch09-find1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13156"
+          significance="normal" startref="ch09-find2">
+          <primary/>
+        </indexterm>.</para>
+    </sect2>
+
+    <sect2>
+      <title>CodeNarc</title>
+
+      <para>CodeNarc<indexterm class="startofrange" id="ch09-narc1"
+          significance="normal">
+          <primary>mesures de qualité de code</primary>
+
+          <secondary sortas="CodeNarc">avec CodeNarc</secondary>
+        </indexterm><indexterm class="startofrange" id="ch09-narc2"
+          significance="normal">
+          <primary>CodeNarc</primary>
+        </indexterm><indexterm class="startofrange" id="ch09-narc3"
+          significance="normal">
+          <primary>Groovy scripts</primary>
+
+          <secondary>mesures de qualité de code avec CodeNarc</secondary>
+        </indexterm> est un outil d’analyse statique de code Groovy, similaire à PMD
+      pour Java. Il vérifie le code source Groovy afin de trouver des défauts potentiels,
+      des mauvais styles et pratiques de codage, du code trop complexe, et
+      ainsi de suite. Des règles typiques incluent « Constant If Expression »,
+      « Empty Else Block », « GString As Map Key », et « Grails Stateless
+      Service ».</para>
+
+      <para>Pour <indexterm id="I_indexterm9_d1e13180" significance="normal">
+          <primary>Ant</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
+        </indexterm><indexterm id="I_indexterm9_d1e13187"
+          significance="normal">
+          <primary>Maven</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
+        </indexterm>des projets basés sur Maven ou Ant, le plus simple est d'utiliser 
+		le plugin Ant de CodeNarc (un plugin Maven est en cours de 
+      développement au moment de l'écriture du livre). Une configuration typique de
+      Ant pour l’utiliser avec Jenkins ressemblerait à ceci :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13195">&lt;taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/&gt;
+&lt;target name="runCodeNarc"&gt;
+    &lt;codenarc ruleSetFiles="rulesets/basic.xml,rulesets/imports.xml"
+              maxPriority1Violations="0"&gt;
+
+        &lt;report type="xml"&gt;
+            &lt;option name="outputFile" value="reports/CodeNarc.xml" /&gt;
+        &lt;/report&gt;
+
+        &lt;fileset dir="src"&gt;
+            &lt;include name="**/*.groovy"/&gt;
+        &lt;/fileset&gt;
+    &lt;/codenarc&gt;
+&lt;/target&gt;</programlisting>
+
+      <para>Vous <indexterm id="I_indexterm9_d1e13199" significance="normal">
+          <primary>Grails</primary>
+
+          <secondary>mesures de qualité de code avec CodeNarc</secondary>
+        </indexterm>pouvez intégrer CodeNarc dans un projet Grails simplement
+      en installant le plugin CodeNarc :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13205">$ grails install-plugin codenarc</programlisting>
+
+      <para>Cela configurera CodeNarc pour analyser les fichiers Groovy dans
+      le code de votre application Grails, aussi bien que dans les
+      répertoires<filename moreinfo="none"> src/groovy</filename> et <filename
+      moreinfo="none">test</filename>.</para>
+
+      <para>Gradle<indexterm id="I_indexterm9_d1e13217" significance="normal">
+          <primary>Gradle</primary>
+
+          <secondary>mesures de qualité de code</secondary>
+
+          <tertiary sortas="CodeNarc">avec CodeNarc</tertiary>
+        </indexterm> 0.8 fournit aussi une prise en charge de CodeNarc dans le
+      plugin de qualité de code, que vous pouvez le configurer dans vos builds
+      comme montré ici :</para>
+
+      <programlisting format="linespecific" id="I_programlisting9_d1e13225">apply plugin: 'code-quality'</programlisting>
+
+      <para>Cela utilisera par défaut le fichier de configuration de CodeNarc suivant
+      <filename moreinfo="none">config/codenarc/codenarc.xml</filename>.
+      Vous pouvez redéfinir cela avec la propriété
+      <code>codeNarcConfigFileName</code>.</para>
+
+      <para>Vous pouvez générer les rapports CodeNarc en exécutant <literal
+      moreinfo="none">gradle codenarcMain</literal> ou, plus <indexterm
+          class="endofrange" id="I_indexterm9_d1e13240" significance="normal"
+          startref="ch09-narc1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13242"
+          significance="normal" startref="ch09-narc2">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13244"
+          significance="normal" startref="ch09-narc3">
+          <primary/>
+        </indexterm>simplement, <literal moreinfo="none">gradle
+      check</literal>.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="sect-violations">
+    <title>Rapports de problèmes de qualité de code avec le plugin
+    Violations</title>
+
+    <para>Un<indexterm class="startofrange" id="ch09-vio1"
+        significance="normal">
+        <primary>mesures de qualité de code</primary>
+
+        <secondary sortas="Violations">avec le plugin Violations</secondary>
+      </indexterm><indexterm class="startofrange" id="ch09-vio2"
+        significance="normal">
+        <primary>plugin Violations </primary>
+      </indexterm><indexterm class="startofrange" id="ch09-vio3"
+        significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>Violations</secondary>
+      </indexterm><indexterm class="startofrange" id="ch09-vio4"
+        significance="normal">
+        <primary>reporting</primary>
+
+        <secondary>mesures de qualité de code</secondary>
+
+        <tertiary>plugin Violations pour </tertiary>
+      </indexterm> des plugins de qualité de code les plus utiles est le
+    plugin Violations. Ce plugin n’analysera pas le code source de votre projet
+    (vous devez configurer le build pour faire cela), mais il fait un
+    excellent travail en élaborant des rapports sur les mesures de la qualité
+    du code pour les builds individuels et les tendances au fil du temps. Le
+    plugin s’adresse aux rapports sur les mesures de qualité de code venant d’une large
+    gamme d’outils d’analyse statique, comprenant :</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>Pour Java</term>
+
+        <listitem>
+          <para>Checkstyle, CPD, PMD, FindBugs, and jcreport</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Pour Groovy</term>
+
+        <listitem>
+          <para>codenarc</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Pour JavaScript</term>
+
+        <listitem>
+          <para>jslint</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Pour .Net</term>
+
+        <listitem>
+          <para>gendarme and stylecop</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+    <para>Installer ce plugin est d'une simplicité. Il suffit d’aller sur l’écran du
+    Plugin Manager et de sélectionner le plugin Violations de Jenkins. Une
+    fois que vous installé le plugin et redémarré Jenkins, vous serez capable
+    de l’utiliser pour vos projets.</para>
+
+    <para>Le plugin Violations ne génère pas de mesures de qualité de code
+    lui-même — vous devez configurer votre build pour faire cela, comme il est montré
+    dans la section précédente. Un exemple pour faire cela pour une tâche de
+    build Maven est illustré dans la <xref
+    linkend="fig-hudson-quality-goals"/>. Notez que nous invoquons ici les
+    goals du plugin Maven directement. Nous aurions pu aussi simplement exécuter
+    <literal moreinfo="none">mvn site</literal>, mais si nous sommes
+    uniquement intéressés par les mesures de qualité de code, et pas par les
+    autres éléments du site généré par Maven, appeler le plugin directement se
+    traduira par des builds plus rapides.</para>
+
+    <figure float="0" id="fig-hudson-quality-goals">
+      <title>Générer les rapports de qualité de code dans un build
+      Maven</title>
+
+      <mediaobject id="I_mediaobject9_d1e13313">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0903.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0903.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Une fois que vous l’avez paramétré, vous pouvez configurer le plugin
+    de violations pour générer des rapports, et si besoin est, des
+    notifications de déclenchement, basés sur les résultats de rapport. Il
+    suffit d’aller dans ‘Actions à la suite du build’ et de cocher la case
+    Report Violations. Les détails de la configuration varient en
+    fonction du type de projet. Penchons-nous sur les tâches de build Freestyle dans
+    un premier temps.</para>
+
+    <sect2>
+      <title>Travailler avec des tâches de build free-style</title>
+
+      <para>Les<indexterm class="startofrange" id="ch09-freevio"
+          significance="normal">
+          <primary>les tâches de build free-style</primary>
+
+          <secondary>mesures de qualité de code dans, avec
+          Violations</secondary>
+        </indexterm> tâches de build free-style vous permettent la
+      configuration la plus flexible, et sont votre unique option pour des
+      projets non Java.</para>
+
+      <para>Lorsque vous utilisez le plugin Violations avec une tâche de build
+      free-style, vous devez spécifier les chemins de chaque rapport XML
+      généré par les outils d’analyse de code statiques que vous avez utilisé
+      (voir <xref linkend="fig-hudson-quality-freestyle-violations"/>). Le
+      plugin peut répondre à plusieurs rapports depuis le même outil, ce qui
+      est utile pour des projets Maven multi-module — il suffit alors d’utiliser une
+      expression générique pour identifier les rapports que vous voulez (par
+      exemple, <literal
+      moreinfo="none">**/target/checkstyle.xml</literal>).</para>
+
+      <figure float="0" id="fig-hudson-quality-freestyle-violations">
+        <title>Configurer le plugin violation pour un projet
+        free-style</title>
+
+        <mediaobject id="I_mediaobject9_d1e13341">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0904.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0904.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Le plugin Violations génèrera un graphique de suivi pour chaque
+      type de problème au cours du temps (voir <xref
+      linkend="fig-hudson-quality-violations-graph"/>). Le graphique affiche
+      une ligne de différente couleur pour chaque type de violations que vous
+      suivez, ainsi qu’un résumé des derniers résultats.</para>
+
+      <figure float="0" id="fig-hudson-quality-violations-graph">
+        <title>Les violations au cours du temps</title>
+
+        <mediaobject id="I_mediaobject9_d1e13353">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0905.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0905.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Vous pouvez aussi cliquer sur le graphique pour vous rendre à un
+      build particulier. Ici, vous pouvez voir le nombre de problèmes soulevés
+      pour un build particulier (voir <xref
+      linkend="fig-hudson-quality-violations-build"/>), avec diverses
+      ventilations par type de violation, sévérité et fichier.</para>
+
+      <figure float="0" id="fig-hudson-quality-violations-build">
+        <title>Les violations pour un build particulier</title>
+
+        <mediaobject id="I_mediaobject9_d1e13365">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0906.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0906.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Enfin, vous pouvez descendre vers une classe particulière, pour
+      afficher la liste détaillée des problèmes avec leurs emplacements
+      dans le code source. </para>
+
+      <para>Mais le plugin Violations permet aussi une gestion plus proactive
+      de la qualité du code. Vous pouvez utiliser les résultats des rapports
+      d’analyse de la qualité du code pour influencer l’icône météorologique du
+      tableau de bord de Jenkins. Cette icône météorologique est normalement liée au
+      nombre de builds défaillants parmi les cinq derniers, mais Jenkins
+      peut aussi prendre en compte d’autres facteurs, comme les résultats de
+      la qualité du code. Afficher une icône pluvieuse ou orageuse pour un
+      projet sur le tableau de bord est une meilleure façon de sensibiliser
+      sur les problèmes de qualité du code que de simplement s’appuyer sur des
+      graphiques et des rapports sur la page de la tâche de build.</para>
+
+      <para>Pour le configurer, vous devez revenir dans la section Report
+      Violations dans Actions à la suite du build. Les trois premières
+      colonnes dans <xref linkend="fig-hudson-quality-freestyle-violations"/>
+      montre une icône ensoleillée, une icône orageuse et une balle jaune. Celle
+      avec l’icône de temps ensoleillé est le nombre maximum de
+      violations tolérées pour garder l’icône ensoleillée sur la page du tableau
+      de bord. La deuxième colonne, avec l’icône de temps orageux, est le
+      nombre de violations qui causera l’affichage de l’icône orageuse sur le
+      tableau de bord. Si vous avez un nombre de violations entre ces deux
+      extrêmes, vous aurez l’une des icônes nuageuses.</para>
+
+      <para>Vous pouvez spécifier différentes valeurs pour différents outils.
+      Les seuils exacts varieront entre les équipes et entre les projets, et
+      aussi entre les outils. Par exemple, Checkstyle soulèvera généralement
+      beaucoup plus de problèmes que FindBugs ou CPD, avec PMD quelque part
+      entre. Vous devez ajuster les valeurs utilisées pour refléter comment
+      ces outils travaillent avec votre code de base, et vos attentes.</para>
+
+      <para>Vous pouvez aller encore plus loin avec la troisième colonne
+      (celle avec la balle jaune). Cette colonne vous permet de spécifier le
+      nombre de violations qui déclarera le build comme <indexterm
+          id="I_indexterm9_d1e13386" significance="normal">
+          <primary>tâches de build</primary>
+
+          <secondary>build instable depuis</secondary>
+
+          <tertiary>critère pour</tertiary>
+        </indexterm><indexterm id="I_indexterm9_d1e13393"
+          significance="normal">
+          <primary>les builds instables</primary>
+
+          <secondary>critère pour</secondary>
+        </indexterm>instable. Souvenez-vous, lorsqu’un build devient instable,
+      Jenkins enverra des messages de notifications, donc c’est une stratégie
+      encore plus proactive.</para>
+
+      <para>Par exemple, dans <xref
+      linkend="fig-hudson-quality-freestyle-violations"/>, nous avons
+      configuré le nombre minimum des violations Checkstyle à 10, ce qui
+      signifie que l’icône du temps ensoleillé apparaîtra uniquement s’il y a
+      au maximum 10 violations Checkstyle. S’il y en a plus de 10, le temps se
+      dégradera progressivement, jusqu’à 200 violations marquées, où il
+      deviendra orageux. Et s’il y a 500 violations Checkstyle ou plus, le
+      projet sera signalé instable.</para>
+
+      <para>Maintenant regardez la configuration de CPD, le détecteur de code
+      dupliqué qui vient avec PMD. Dans ce projet, nous avons adopté une
+      politique zéro tolérance pour le code dupliqué, donc l’icône ensoleillée
+      est spécifiée à zéro. L’icône orageuse est spécifiée à 10, donc s’il y a
+      10 violations de copié/collé ou plus, il sera déclaré instable.</para>
+
+      <para>Maintenant, sur la page du tableau de bord, le projet apparaîtra
+      avec à la fois un une icône de temps orageux et comme instable, même
+      s’il n’y pas d’échecs de tests (voir <xref
+      linkend="fig-hudson-quality-violations-rollover"/>). Ce build
+      particulier est instable parce qu’il y a 16 violations CPD. En
+      complément, si vous placez votre souris sur l’icône du temps, Jenkins
+      affichera quelques détails supplémentaires sur comment il a calculé ce statut
+      <indexterm class="endofrange" id="I_indexterm9_d1e13409"
+          significance="normal" startref="ch09-freevio">
+          <primary/>
+        </indexterm> particulier.</para>
+
+      <figure float="none" id="fig-hudson-quality-violations-rollover">
+        <title>Configurer le plugin de violations pour un projet
+        free-style</title>
+
+        <mediaobject id="I_mediaobject9_d1e13415">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0907.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0907.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
+
+    <sect2>
+      <title>Travailler avec des tâches de build Maven</title>
+
+      <para>Les <indexterm class="startofrange" id="ch09-mavenvio"
+          significance="normal">
+          <primary> les tâches de build Maven</primary>
+
+          <secondary>mesures de qualité de code intégrés, avec
+          Violations</secondary>
+        </indexterm>tâches de build Maven dans Jenkins utilisent les
+      conventions de Maven et les informations du fichier <filename
+      moreinfo="none">pom.xml</filename> du projet pour rendre la
+      configuration plus facile et plus légère. Lorsque vous utilisez le
+      plugin Violations avec une tâche de build Maven, Jenkins utilise ces
+      conventions pour réduire la quantité de travail nécessaire pour
+      configurer le plugin. Vous n’avez pas besoin de dire à Jenkins où
+      trouver les rapports XML pour la plupart des outils d’analyse de code
+      statique (par exemple, Checkstyle, PMD, FindBugs, et CPD), puisque
+      Jenkins peut l'interpréter depuis les conventions de Maven et les
+      configurations du plugin (voir <xref
+      linkend="fig-hudson-maven-violations"/>). Si vous devez redéfinir ces
+      conventions, vous pouvez choisir l’option Pattern dans la liste
+      déroulante « XML filename pattern », et entrer le chemin comme vous
+      pouvez le faire pour les tâches de build free-style.</para>
+
+      <figure float="0" id="fig-hudson-maven-violations">
+        <title>Configurer le plugin Violations pour un projet Maven.</title>
+
+        <mediaobject id="I_mediaobject9_d1e13439">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0908.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0908.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Le plugin Violations fonctionne bien avec des projets multi-module
+      Maven, mais au moment de la rédaction (de ce livre), il a besoin d’un
+      peu de peaufinage pour obtenir de meilleurs résultats. Les tâches de
+      build Maven comprennent la structure des projets multi-module (voir
+      <xref linkend="fig-hudson-maven-modules"/>) ; de plus, vous pouvez
+      descendre dans n’importe quel module et obtenir une vue détaillée des
+      résultats de construction pour cette tâche de build.</para>
+
+      <figure float="0" id="fig-hudson-maven-modules">
+        <title>Les tâches de build Maven de Jenkins comprennent les structures
+        multi-modules de Maven</title>
+
+        <mediaobject id="I_mediaobject9_d1e13451">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0909.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0909.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>C’est une fonctionnalité très utile, mais cela signifie que vous
+      devez faire un peu de travail supplémentaire pour obtenir tous les
+      avantages des plugins de violations des modules individuels. Par défaut,
+      le plugin Violations affichera une vue agrégée des mesures de qualité de
+      code comme celle dans <xref
+      linkend="fig-hudson-quality-violations-graph"/>. Vous pouvez aussi
+      cliquer sur le graphique des violations, et voir les rapports détaillés
+      de chaque module.</para>
+
+      <para>Cependant, pour que ceci puisse fonctionner correctement, vous
+      devez activer le plugin Violations individuellement pour chaque module
+      en complément du projet principal. Pour ce faire, cliquez sur le module
+      que vous voulez configurer dans l’écran Modules, et ensuite cliquez sur
+      le menu ‘Configurer’. Ici, vous verrez un petit groupe des options de
+      configuration habituelles (voir <xref
+      linkend="fig-hudson-violations-module-config"/>). Ici, il vous suffit
+      d’activer l’option Violations, et de configurer les seuils si besoin
+      est. Le côté positif de cela est que vous pouvez définir
+      différentes valeurs de seuils pour des modules différents.</para>
+
+      <figure float="0" id="fig-hudson-violations-module-config">
+        <title>Activer le plugin Violations pour un module individuel</title>
+
+        <mediaobject id="I_mediaobject9_d1e13467">
+          <imageobject role="print">
+            <imagedata fileref="figs/print/jtdg_0910.pdf" format="PDF"/>
+          </imageobject>
+
+          <imageobject role="web">
+            <imagedata fileref="figs/web/jtdg_0910.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Une fois que cela est fait, lorsque vous cliquerez sur le
+      graphique de violations agrégées sur la page d’accueil de la tâche de
+      build du projet, Jenkins listera les graphiques individuels de
+      violations pour chaque <indexterm class="endofrange"
+          id="I_indexterm9_d1e13474" significance="normal"
+          startref="ch09-mavenvio">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13476"
+          significance="normal" startref="ch09-vio1">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13478"
+          significance="normal" startref="ch09-vio2">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13480"
+          significance="normal" startref="ch09-vio3">
+          <primary/>
+        </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13482"
+          significance="normal" startref="ch09-vio4">
+          <primary/>
+        </indexterm> module.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="sect-code-quality-checkstyle">
+    <title>Utiliser les rapports Checkstyle, PMD, et FindBugs</title>
+
+    <para>Vous <indexterm id="I_indexterm9_d1e13490" significance="normal">
+        <primary>FindBugs</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13493" significance="normal">
+        <primary>mesures de qualité de code</primary>
+
+        <secondary sortas="FindBugs">avec FindBugs</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13498" significance="normal">
+        <primary>rapports</primary>
+
+        <secondary>mesures de qualité du code</secondary>
+
+        <tertiary sortas="FindBugs">avec FindBugs</tertiary>
+      </indexterm><indexterm id="I_indexterm9_d1e13505" significance="normal">
+        <primary>Checkstyle</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13508" significance="normal">
+        <primary>PMD</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13511" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary sortas="Checkstyle">avec Checkstyle</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13516" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary sortas="PMD">avec PMD</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13521" significance="normal">
+        <primary>rapport</primary>
+
+        <secondary>mesures de qualité de code</secondary>
+
+        <tertiary sortas="Checkstyle">avec Checkstyle</tertiary>
+      </indexterm><indexterm id="I_indexterm9_d1e13528" significance="normal">
+        <primary>rapports</primary>
+
+        <secondary>mesures de qualité de code</secondary>
+
+        <tertiary sortas="PMD">avec PMD</tertiary>
+      </indexterm>pouvez aussi effectuer des rapports individuellement sur les
+    résultats de Checkstyle, PMD, et FindBugs. En complément du plugin
+    Violations, il y a des plugins Jenkins qui produisent des graphiques
+    de tendance et des rapports détaillés pour chacun de ces outils de façon
+    individuelle. Nous allons voir comment le faire avec Checkstyle,
+    mais cette approche s’applique aussi pour PMD et FindBugs. Vous pouvez
+    aussi utiliser le plugin Analysis Collector pour afficher les résultats
+    combinés dans un graphique similaire à celui produit par le plugin
+    Violations.</para>
+
+    <?dbfo-need height=”1in”?>
+
+    <para>Vous <indexterm id="I_indexterm9_d1e13539" significance="normal">
+        <primary>le plugin Checkstyle</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13542" significance="normal">
+        <primary>le plugin PMD</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13545" significance="normal">
+        <primary>le plugin FindBugs</primary>
+      </indexterm><indexterm id="I_indexterm9_d1e13548" significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>Checkstyle</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13553" significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>PMD</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13558" significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>FindBugs</secondary>
+      </indexterm>pouvez installer ces plugins au travers du gestionnaire de
+    plugin comme vous le faites habituellement. Les plugins en question sont appelés, sans
+    surprise, plugin Checkstyle, plugin PMD, et plugin FindBugs. Tous
+    ces plugins utilisent le plugin Static Analysis Utilities, qu'il vous faut 
+    aussi installer (voir <xref
+    linkend="fig-hudson-analysis-plugins"/>).</para>
+
+    <figure float="none" id="fig-hudson-analysis-plugins">
+      <title>Installer les plugins Checkstyle et Static Analysis
+      Utilities.</title>
+
+      <mediaobject id="I_mediaobject9_d1e13569">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0911.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0911.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Une fois que vous avez installé ces plugins, vous pouvez paramétrer la création
+    des rapports dans la configuration de votre projet. Cochez la case
+    "Publiez les analyses de résultat Checkstyle". Dans un build free-style,
+    vous aurez besoin de spécifier un patron de chemin pour trouver les
+    rapports XML de Checkstyle ; dans un build Maven 2, Jenkins saurait
+    où les chercher par lui-même.</para>
+
+    <para>Ceci fournira des rapports Checkstyle basiques, mais comme
+    d’habitude, vous pouvez personnaliser ceci en cliquant sur le bouton
+    Avancé. Dans un build Maven 2, vous pouvez configurer les valeurs de
+    seuils de la santé (combien de violations passeront le build d'ensoleillé
+    à orageux), et aussi filtrer les priorités de violations que vous voulez
+    inclure dans le calcul. Par exemple, vous pourriez ne vouloir
+    prendre en compte que les problèmes de haute priorité pour le statut de
+    l’icône météorologique.</para>
+
+    <para>Les builds free-style ont quelques options supplémentaires que vous
+    pouvez configurer ; en particulier, vous pouvez rendre le build <indexterm
+        id="I_indexterm9_d1e13580" significance="normal">
+        <primary>tâches de build</primary>
+
+        <secondary>build instable depuis</secondary>
+
+        <tertiary>critère de</tertiary>
+      </indexterm><indexterm id="I_indexterm9_d1e13587" significance="normal">
+        <primary>builds instables</primary>
+
+        <secondary>critère de</secondary>
+      </indexterm>instable (balle jaune) ou même en échec (balle
+    rouge) si vous avez un nombre de violations supérieur à celui défini, ou s'il y a plus
+    de nouvelle violations que le nombre donné(voir <xref
+    linkend="fig-hudson-checkstyle-config"/>). Ainsi, dans la configuration
+    de l’illustration, s’il y a plus de 50 nouvelles violations Checkstyle
+    de n’importe quelle priorité dans un build, le build sera signalé comme
+    instable. Cela a certainement son utilité pour Checkstyle, mais cela peut
+    aussi se révéler très utile avec FindBugs, où les problèmes de haute
+    priorité représentent souvent des bugs dangereux et potentiellement
+    bloquants.</para>
+
+    <figure float="0" id="fig-hudson-checkstyle-config">
+      <title>Configurer le plugin Checkstyle</title>
+
+      <mediaobject id="I_mediaobject9_d1e13598">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0912.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0912.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Maintenant, lorsque le build s'exécute, Jenkins générera un
+    graphique de tendance et des rapports détaillés pour les violations
+    Checkstyle (voir <xref linkend="fig-hudson-checkstyle-trend"/>). De là,
+    vous pouvez descendre pour voir les violations par priorité, par
+    catégorie, par type de démarrage, par package, etc.</para>
+
+    <figure float="0" id="fig-hudson-checkstyle-trend">
+      <title>Afficher les tendances Checkstyle</title>
+
+      <mediaobject id="I_mediaobject9_d1e13610">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0913.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0913.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <?dbfo-need height=”1in”?>
+
+    <para>Comme nous l’avons mentionné précédemment, la même approche marche
+    aussi avec le plugin PMD et le plugin FindBugs. Ces plugins sont un
+    excellent moyen de fournir des rapports plus concentrés sur les résultats
+    d’un outil particulier, et vous donnent aussi plus de contrôle sur
+    l’impact que ces violations auront sur les résultats du build.</para>
+  </sect1>
+
+  <sect1 id="sect-code-quality-complexity">
+    <title>Les rapports sur la complexité du code</title>
+
+    <para>La complexité du code<indexterm class="startofrange"
+        id="ch09-complex1" significance="normal">
+        <primary>mesures de qualité de code</primary>
+      </indexterm><indexterm class="startofrange" id="ch09-complex2"
+        significance="normal">
+        <primary>complexité du code</primary>
+      </indexterm> est un autre aspect important de la qualité du code. La
+    complexité du code est mesurée avec un certain nombre de moyens, mais une
+    mesure de complexité généralement utilisée (et facile à comprendre) est la
+    complexité cyclomatique, qui consiste à mesurer le nombre de chemins
+    différents à travers une méthode. En utilisant cette métrique, le code
+    complexe a généralement un grand nombre d’instructions conditionnelles
+    et de boucles imbriquées, qui rendent le code plus difficile à comprendre
+    et à déboguer. </para>
+
+    <para>Il y a aussi une théorie de qualité de code mettant en corrélation
+    la complexité du code et la couverture du code qui donne une idée
+    générale de la fiabilité d’une portion de code. Celle-ci est basée sur l’idée
+    (très compréhensible) que le code qui est à la fois complexe et peu testé
+    est plus susceptible de contenir des bugs que du code simple et bien
+    testé.</para>
+
+    <para>Le<indexterm id="I_indexterm9_d1e13637" significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>Coverage Complexity Scatter Plot</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13642" significance="normal">
+        <primary>Coverage Complexity Scatter Plot plugin</primary>
+      </indexterm> plugin Coverage Complexity Scatter Plot est conçu pour vous
+    laisser visualiser cette information dans vos builds Jenkins (voir <xref
+    linkend="fig-hudson-coverage-complexity"/>). Les méthodes dangereusement
+    complexes et/ou non testées apparaîtront hautes sur le graphique, alors
+    que les méthodes bien écrites et bien testées apparaîtront plus
+    basses.</para>
+
+    <figure float="none" id="fig-hudson-coverage-complexity">
+      <title>Un nuage de point couverture/complexité.</title>
+
+      <mediaobject id="I_mediaobject9_d1e13654">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0914.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0914.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Le graphique de dispersion vous donne un bon aperçu de l’état de
+    votre code en termes de complexité et de couverture de test, mais vous pouvez
+    aussi descendre pour poursuivre l’enquête. Si vous cliquez sur n’importe
+    quel point dans le graphique, vous pouvez voir les méthodes
+    correspondantes, avec leur couverture de test et leur complexité (voir
+    <xref linkend="fig-hudson-coverage-complexity-details"/>).</para>
+
+    <figure float="0" id="fig-hudson-coverage-complexity-details">
+      <title>Vous pouvez cliquer sur n’importe quel point du graphique pour
+      poursuivre l’enquête</title>
+
+      <mediaobject id="I_mediaobject9_d1e13666">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0915.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0915.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <?dbfo-need height=”1in”?>
+
+    <para>Au moment de la rédaction de ce livre, le plugin nécessite Clover,
+    donc votre build a besoin d’avoir généré un rapport XML de couverture de
+    Clover, et vous avez besoin d’avoir installé et configuré le plugin Clover
+    de Jenkins (voir <xref linkend="sect-clover"/>). Cependant, un support
+    pour Cobertura et d’autres outils<indexterm class="endofrange"
+        id="I_indexterm9_d1e13676" significance="normal"
+        startref="ch09-complex1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13678"
+        significance="normal" startref="ch09-complex2">
+        <primary/>
+      </indexterm> est prévu.</para>
+  </sect1>
+
+  <sect1 id="sect-code-quality-open-tasks">
+    <title>Les rapports sur les tâches ouvertes</title>
+
+    <para>Quand<indexterm class="startofrange" id="ch09-open1"
+        significance="normal">
+        <primary>mesures de qualité de code</primary>
+
+        <secondary>tâches ouvertes</secondary>
+      </indexterm><indexterm class="startofrange" id="ch09-open2"
+        significance="normal">
+        <primary>tâches ouvertes, rapport sur </primary>
+      </indexterm><indexterm class="startofrange" id="ch09-open3"
+        significance="normal">
+        <primary>rapport</primary>
+
+        <secondary>mesures de qualité de code</secondary>
+
+        <tertiary>tâches ouvertes</tertiary>
+      </indexterm> il s’agit de qualité de code, l’analyse statique n’est pas
+    le seul outil que vous pouvez utiliser. Un autre indicateur de la santé
+    générale de votre projet peut être trouvé avec le nombre de <literal
+    moreinfo="none">FIXME</literal>, <literal moreinfo="none">TODO</literal>,
+    <literal moreinfo="none">@deprecated</literal>, et autres balises
+    similaires dispersées dans le code source. S’il y en a beaucoup, cela peut
+    être un signe que le code de base a beaucoup de travail inachevé, et n’est
+    donc pas dans un état très finalisé.</para>
+
+    <para>Le<indexterm id="I_indexterm9_d1e13713" significance="normal">
+        <primary>plugins</primary>
+
+        <secondary>Task Scanners</secondary>
+      </indexterm><indexterm id="I_indexterm9_d1e13718" significance="normal">
+        <primary>Task Scanners plugin</primary>
+      </indexterm> plugin Task Scanners de Jenkins permet de garder une trace
+    de ces sortes de balises dans votre code source, et optionnellement de
+    signaler un build avec une mauvaise icône de temps sur le tableau de bord
+    s’il y a beaucoup trop de tâches ouvertes.</para>
+
+    <para>Pour le configurer, vous devez installer à la fois le plugin Static
+    Analysis Utilities et le plugin Task Scanner. Une fois qu'ils sont installés, vous
+    pouvez activer le plugin dans votre projet en cochant la case « Recherche
+    des tâches ouvertes dans le workspace » dans la section Configuration du
+    Build dans la configuration de la tâche de votre projet.</para>
+
+    <para>Configurer le plugin Task Scanner est assez simple (voir <xref
+    linkend="fig-hudson-task-scanner"/>). Vous entrez simplement les balises
+    que vous souhaitez suivre, avec différentes priorités si vous considérez
+    certaines balises comme étant plus importantes que d’autres. Par défaut,
+    le plugin scrutera tout le code source java dans le projet, mais vous pouvez
+    redéfinir ce comportement en complétant le champ Files to scan. Dans <xref
+    linkend="fig-hudson-task-scanner"/>, par exemple, nous vérifions les balises
+	pour les fichiers XML et JSP.</para>
+
+    <figure float="0" id="fig-hudson-task-scanner">
+      <title>Configurer le plugin Task Scanner est simple</title>
+
+      <mediaobject id="I_mediaobject9_d1e13733">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0916.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0916.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Le bouton Avancé vous donne accès à des options plus sophistiqués.
+    Probablement, les plus utiles sont les seuils de santé, qui vous laissent
+    définir le nombre maximum de problèmes tolérés avant que le build ne soit
+    plus considéré « ensoleillé », et le nombre minimum de problèmes requis
+    pour le statut de « temps orageux ».</para>
+
+    <para>Le plugin génère un graphique qui montre les tendances de balises
+    par ordre de priorité (voir <xref
+    linkend="fig-hudson-task-scanner-report"/>). Si vous cliquez sur le
+    rapport des tâches ouvertes, vous pouvez aussi voir le détail des tâches
+    par module Maven, package ou fichier, ou encore une liste des
+    tâches<indexterm class="endofrange" id="I_indexterm9_d1e13744"
+        significance="normal" startref="ch09-open1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13746"
+        significance="normal" startref="ch09-open2">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13748"
+        significance="normal" startref="ch09-open3">
+        <primary/>
+      </indexterm> ouvertes.</para>
+
+    <figure float="0" id="fig-hudson-task-scanner-report">
+      <title>Le graphique de tendances des tâches ouvertes</title>
+
+      <mediaobject id="I_mediaobject9_d1e13754">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0917.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0917.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+
+  <?dbfo-need height=”1in”?>
+
+  <sect1 id="sect-code-quality-sonar">
+    <title>Intégration avec Sonar</title>
+
+    <para><ulink url="http://www.sonarsource.org">Sonar</ulink><indexterm
+        class="startofrange" id="ch09-sonar1" significance="normal">
+        <primary>mesures de qualité du code</primary>
+
+        <secondary sortas="Sonar">with Sonar</secondary>
+      </indexterm><indexterm class="startofrange" id="ch09-sonar2"
+        significance="normal">
+        <primary>Sonar</primary>
+
+        <secondary>les mesures de qualité de code avec</secondary>
+      </indexterm> est un outil qui centralise toute une gamme de mesures de
+    qualité de code en un seul site web (voir <xref
+    linkend="fig-hudson-sonar"/>). Il utilise un certain nombre de plugins
+    Maven (Checkstyle, PMD, FindBugs, Cobertura ou Clover, et d’autres) pour
+    analyser des projets Maven et générer un ensemble complet de
+    rapports sur la qualité du code. Les rapports Sonar sur la couverture du
+    code, le respect des règles, et la documentation, mais aussi sur des
+    mesures de plus haut niveau comme la complexité, la maintenabilité et même
+    la dette technique. Vous pouvez utiliser des plugins pour étendre ses
+    fonctionnalités et ajouter le support pour d’autres langages (comme le
+    support de CodeNarc pour du code source Groovy). Les règles utilisées par
+    divers outils sont gérées et configurées de manière centralisée sur le
+    site web de Sonar, et les projets Maven en cours d’analyse ne nécessitent
+    aucune configuration particulière. Cela fait de Sonar l'outil
+    parfait pour travailler sur des projets Maven où vous avez un contrôle
+    limité sur les fichiers POM.</para>
+
+    <figure float="0" id="fig-hudson-sonar">
+      <title>Rapport de qualité de code par Sonar.</title>
+
+      <mediaobject id="I_mediaobject9_d1e13785">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0918.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0918.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Dans l’une des utilisations les plus courantes de Sonar, Sonar
+    exécute automatiquement un ensemble de plugins Maven liés à la qualité de code
+    sur votre projet Maven, et stocke les résultats dans une base de
+    données relationnelle. Le serveur Sonar, que vous exécutez séparément,
+    analyse alors les résultats et les affiche comme indiqué dans
+    <xref linkend="fig-hudson-sonar"/>.</para>
+
+    <para>Jenkins s’intègre bien avec Sonar. Le plugin Sonar de Jenkins vous
+    laisse définir les instances Sonar pour tous vos projets, et active
+    ensuite Sonar pour des builds particuliers. Vous pouvez exécuter votre
+    serveur Sonar sur une machine différente de votre instance Jenkins, ou sur
+    la même. La seule contrainte est que l’instance Jenkins doit avoir un
+    accès JDBC à la base de données de Sonar, puisqu’il injecte des mesures de
+    qualité de code directement dans la base de données, sans passer par le
+    site web de Sonar (voir <xref
+    linkend="fig-hudson-sonar-architecture"/>).</para>
+
+    <figure float="0" id="fig-hudson-sonar-architecture">
+      <title>Jenkins et Sonar</title>
+
+      <mediaobject id="I_mediaobject9_d1e13801">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0919.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0919.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Sonar a aussi une amorce Ant (avec une amorce Gradle en cours de
+    développement au moment de la rédaction de ce livre) pour les utilisateurs
+    non-Maven.</para>
+
+    <para>Vous installez le plugin comme d’habitude, via le gestionnaire de
+    plugin. Une fois installé, vous configurez le plugin Sonar de Jenkins dans
+    l’écran Configurer le système, dans la section Sonar. Il s’agit de définir
+    vos instances Sonar – vous pouvez configurer autant d’instances que vous
+    avez besoin. La configuration par défaut suppose que vous exécutez une
+    instance locale de Sonar avec la base de données embarquée par défaut.
+    Ceci est utile à des fins de test, mais n’est pas très évolutif. Pour un
+    environnement de production, vous exécuterez alors Sonar sur une vraie base
+    de données comme MySQL ou Postgres, et vous aurez besoin de
+    configurer la connexion JDBC sur la base de données de production de Sonar
+    dans Jenkins. Vous pouvez faire ceci en cliquant le bouton Avancé et en
+    remplissant les champs appropriés (voir <xref
+    linkend="fig-hudson-sonar-config"/>).</para>
+
+    <figure float="0" id="fig-hudson-sonar-config">
+      <title>Configurer Sonar dans Jenkins</title>
+
+      <mediaobject id="I_mediaobject9_d1e13815">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0920.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0920.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>L’autre chose que vous devez configurer est le moment où le build de Sonar
+    débutera dans une tâche de build où Sonar est activé. Vous configurez
+    généralement Sonar pour qu'il s'exécute avec l’une des longues tâches de build
+    Jenkins, comme le build de mesure de qualité de code. Ce n’est pas très
+    utile d'exécuter le build Sonar plus d’une fois par jour, puisque Sonar
+    stocke les mesures sur des tranches de 24 heures. La configuration par
+    défaut exécutera le build de Sonar, dans une tâche de build où Sonar est activé,
+    chaque fois qu’une tâche est déclenchée par un build périodiquement
+    planifié ou par un build manuel.</para>
+
+    <para>Pour activer Sonar dans votre tâche de build, avec des options de
+    configuration à l’échelle du système, il suffit de cocher l’option Sonar
+    dans Actions à la suite du build (voir <xref
+    linkend="fig-hudson-sonar-config-job"/>). Sonar s'exécutera à chaque fois
+    que votre build est lancé par l’un des mécanismes de déclenchements
+    définis ci-dessus.</para>
+
+    <figure float="0" id="fig-hudson-sonar-config-job">
+      <title>Configurer Sonar dans une tâche de build</title>
+
+      <mediaobject id="I_mediaobject9_d1e13830">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0921.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0921.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Vous configurez généralement Sonar pour qu'il s'exécute sur une base
+    régulière, par exemple tous les soirs ou une fois par semaine. Vous
+    pouvez donc activer Sonar sur votre tâche de build de test
+    unitaire/d’intégration normal, simplement en ajoutant un ordonnanceur
+    (voir <xref linkend="fig-hudson-sonar-build-schedule"/>). Cela évite les
+    détails de configuration en double entre les tâches. Ou, si vous avez déjà
+    une tâche de build ordonnancée qui démarre avec une fréquence appropriée
+    (comme un build dédié aux mesures de qualité de code), vous pouvez activer
+    Sonar sur cette tâche de build.</para>
+
+    <figure float="0" id="fig-hudson-sonar-build-schedule">
+      <title>Planifier les builds Sonar</title>
+
+      <mediaobject id="I_mediaobject9_d1e13842">
+        <imageobject role="print">
+          <imagedata fileref="figs/print/jtdg_0922.pdf" format="PDF"/>
+        </imageobject>
+
+        <imageobject role="web">
+          <imagedata fileref="figs/web/jtdg_0922.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <?dbfo-need height=”1in”?>
+
+    <para>Si vous cliquez sur le bouton Avancé, vous pouvez spécifier d’autres
+    options plus sophistiquées, comme lancer votre build Sonar sur une branche
+    séparée, passer des options de ligne de commande Maven supplémentaires
+    (comme de la mémoire supplémentaire), ou redéfinir la configuration par
+    défaut des déclencheurs.</para>
+
+    <para>Par défaut, Sonar s'exécutera même si le build normal échoue. C’est
+    généralement ce que l’on souhaite, puisque Sonar devrait enregistrer les
+    builds et les tests défaillants aussi bien que les résultats réussis.
+    Cependant, si c’est nécessaire, vous pouvez aussi désactiver cette option dans
+    les options<indexterm class="endofrange" id="I_indexterm9_d1e13855"
+        significance="normal" startref="ch09-sonar1">
+        <primary/>
+      </indexterm><indexterm class="endofrange" id="I_indexterm9_d1e13857"
+        significance="normal" startref="ch09-sonar2">
+        <primary/>
+      </indexterm> avancées.</para>
+  </sect1>
+
+  <?dbfo-need height=”2in”?>
+
+  <sect1 id="sect-code-quality-conclusion">
+    <title>Conclusion</title>
+
+    <para>La qualité de code est une partie importante du processus de build,
+    et Jenkins fournit un excellent support pour la vaste gamme d’outils liés
+    à la qualité de code qui existent. En conséquence, Jenkins devrait être un
+    élément clé de votre stratégie sur la qualité du code.</para>
+  </sect1>
+</chapter>

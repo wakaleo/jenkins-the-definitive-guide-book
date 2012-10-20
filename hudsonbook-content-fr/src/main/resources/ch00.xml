@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<preface id="preface">
+  <title>Préface</title>
+
+  <sect1 id="I_sect1_d1e167">
+    <title>Audience</title>
+
+    <para>Ce <indexterm id="I_indexterm_d1e172" significance="normal">
+        <primary>analyse</primary>
+
+        <see>métriques de couverture de code; métriques de qualité de code;
+        tests</see>
+      </indexterm><indexterm id="I_indexterm_d1e177" significance="normal">
+        <primary>déploiement</primary>
+
+        <see>déploiement automatisé; déploiement continu</see>
+      </indexterm>livre est destiné à des lecteurs relativement techniques,
+    bien qu'aucune expérience préalable de l'Intégration Continue ne soit requise. Vous
+    découvrez peut-être l'Intégration Continue, et désirez connaître les
+    bénéfices que cela pourrait apporter à votre équipe de développement. Ou,
+    vous pourriez déjà utiliser Jenkins ou Hudson, et vous voudriez découvrir
+    comment emmener plus loin votre infrastructure d'Intégration
+    Continue.</para>
+
+    <para>Une partie importante de ce livre traite de Jenkins dans le
+    contexte de projets Java ou liés à une JVM. Cependant, si vous utilisez
+    une autre pile technologique, ce livre devrait vous donner de bonnes bases
+    en ce qui concerne l'Intégration Continue avec Jenkins. La construction de
+    projets utilisant des technologies non-Java est abordée, comme Grails,
+    Ruby on Rails et .Net. De plus, plusieurs sujets, comme la configuration
+    générale, la notification, les builds distribués et la sécurité
+    sont applicables quel que soit le langage que vous utilisez.</para>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e185">
+    <title>Organisation du livre</title>
+
+    <para>L'Intégration Continue ressemble à beaucoup d'autres choses : plus
+    vous investissez dessus, plus vous en tirerez de bénéfices. Bien qu'une
+    configuration d'Intégration Continue basique produira tout de même des
+    améliorations dans le fonctionnement de votre équipe, il est aussi très
+    avantageux d'assimiler et d'implémenter graduellement quelques-unes des
+    techniques avancées. Dans ce but, ce livre est organisé comme un trek
+    progressif dans le monde de l'Intégration Continue avec Jenkins, allant du
+    plus simple au plus avancé. Dans le premier chapitre, nous effectuerons un
+    balayage de tout ce qui fait Jenkins, sous la forme d'une promenade à
+    haut-niveau. Ensuite, nous progresserons dans l'installation et la
+    configuration de votre serveur Jenkins et expliquerons comment configurer
+    des tâches de build basiques. Une fois que nous aurons maîtrisé les bases,
+    nous explorerons des sujets plus avancés, en passant par les tests
+    automatisés, la sécurité, des techniques avancées de notification et la
+    mesure et les rapports sur les métriques de qualité de code. Ensuite, nous
+    passerons à des techniques de construction plus poussées comme les matrix
+    builds, les builds distribués et l'IC basée sur le Cloud, avant de parler
+    de l'implémentation du déploiement continu avec Jenkins. Et enfin, nous
+    traiterons des astuces pour la maintenance de votre serveur
+    Jenkins.</para>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e190">
+    <title>Jenkins ou Hudson?</title>
+
+    <para>Comme nous <indexterm id="I_indexterm_d1e195" significance="normal">
+        <primary>Jenkins</primary>
+
+        <secondary>historique de</secondary>
+      </indexterm><indexterm id="I_indexterm_d1e200" significance="normal">
+        <primary>Hudson</primary>
+      </indexterm>l'évoquons dans l'introduction, Jenkins était
+    originellement, et jusqu'à récemment, connu sous le nom de Hudson. En
+    2009, Oracle racheta Sun et hérita de la base de code de Hudson. Début
+    2011, des tensions entre Oracle et la communauté open source atteignirent
+    un point de rupture et le projet se scinda en deux entités distinctes :
+    Jenkins, conduit par la plupart des développeurs originels de Hudson, et
+    Hudson, qui resta sous le contrôle d'Oracle.</para>
+
+    <para>Comme le titre le suggère, ce livre se concentre principalement sur
+    Jenkins. Toutefois, une bonne partie de ce livre fut initialement écrit
+    avant la scission, et les produits restent très similaires. Ainsi, bien
+    que les exemples et les illustrations se référent habituellement à Jenkins,
+    presque tout ce qui est discuté s'appliquera aussi à Hudson.</para>
+  </sect1>
+
+  <sect1 id="preface-sect-fontConventions">
+    <title>Conventions sur les polices</title>
+
+    <para>Ce <indexterm id="I_indexterm_d1e211" significance="normal">
+        <primary>polices utilisées dans ce livre</primary>
+      </indexterm><indexterm id="I_indexterm_d1e214" significance="normal">
+        <primary>conventions utilisées dans ce livre</primary>
+      </indexterm>livre suit certaines conventions pour l'utilisation des
+    polices. Comprendre ces conventions d'emblée facilitera l'utilisation de
+    ce livre.</para>
+
+    <variablelist>
+      <varlistentry>
+        <term>Italic</term>
+
+        <listitem>
+          <para>Utilisé pour les noms de fichiers, extensions de fichiers,
+          URLs, noms d'applications, emphases et les nouveaux termes lorsqu'ils
+          sont introduits pour la première fois.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><literal moreinfo="none">Largeur constante</literal></term>
+
+        <listitem>
+          <para>Utilisé pour les noms de classes Java, les méthodes, variables,
+          propriétés, types de données, éléments de base de données et
+          extraits de code apparaissant dans le texte.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><userinput moreinfo="none">Largeur constante en
+        gras</userinput></term>
+
+        <listitem>
+          <para>Utilisé pour les commandes à entrer dans la ligne de commande
+          et pour mettre en valeur du code nouveau introduit dans un exemple
+          fonctionnel.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><replaceable>Largeur constante en italique</replaceable></term>
+
+        <listitem>
+          <para>Utilisé pour annoter la sortie.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e246">
+    <title>Conventions de ligne de commande</title>
+
+    <para>De temps en temps, ce livre traite des instructions en ligne de
+    commande. Quand c'est le cas, la sortie produite par la console (e.g. les
+    invites de commande ou la sortie écran) est affichée en caractères
+    normaux, et les commandes (ce que vous tapez) sont écrites en <userinput
+    moreinfo="none">gras</userinput>. Par exemple :</para>
+
+    <screen format="linespecific">$ <userinput moreinfo="none">ls -al</userinput>
+total 168
+drwxr-xr-x   16 johnsmart  staff    544 21 Jan 07:20 .
+drwxr-xr-x+  85 johnsmart  staff   2890 21 Jan 07:10 ..
+-rw-r--r--    1 johnsmart  staff     30 26 May  2009 .owner
+-rw-r--r--@   1 johnsmart  staff   1813 16 Apr  2009 config.xml
+drwxr-xr-x  181 johnsmart  staff   6154 26 May  2009 fingerprints
+drwxr-xr-x   17 johnsmart  staff    578 16 Apr  2009 jobs
+drwxr-xr-x    3 johnsmart  staff    102 15 Apr  2009 log
+drwxr-xr-x   63 johnsmart  staff   2142 26 May  2009 plugins
+-rw-r--r--    1 johnsmart  staff     46 26 May  2009 queue.xml
+-rw-r--r--@   1 johnsmart  staff     64 13 Nov  2008 secret.key
+-rw-r--r--    1 johnsmart  staff  51568 26 May  2009 update-center.json
+drwxr-xr-x    3 johnsmart  staff    102 26 May  2009 updates
+drwxr-xr-x    3 johnsmart  staff    102 15 Apr  2009 userContent
+drwxr-xr-x   12 johnsmart  staff    408 17 Feb  2009 users
+drwxr-xr-x   28 johnsmart  staff    952 26 May  2009 war</screen>
+
+    <para>Lorsque nécessaire, l'antislash à la fin de la ligne est utilisé
+    pour indiquer un saut de ligne : vous pouvez taper l'ensemble sur une seule
+    ligne (sans l'antislash) si vous préférez. N'oubliez pas d'enlever le
+    caractère “&gt;” au début des lignes concernées — c'est un caractère de
+    l'invite Unix :</para>
+
+    <screen format="linespecific">$ wget -O - http://jenkins-ci.org/debian/jenkins-ci.org.key \
+&gt; | sudo apt-key add -</screen>
+
+    <para>Pour des raisons de cohérence, à moins que nous ne traitions une
+    question spécique à Windows, nous utiliserons des invites de commande de
+    style Unix (le signe dollar, “$”), comme montré ici :</para>
+
+    <screen format="linespecific">$ java -jar jenkins.war</screen>
+
+    <para>ou :</para>
+
+    <screen format="linespecific">$ svn list svn://localhost</screen>
+
+    <para>Cependant, à moins qu'on indique le contraire, les utilisateurs
+    Windows peuvent utiliser ces commandes depuis la console de commande
+    Windows :</para>
+
+    <screen format="linespecific">C:\Documents and Settings\Owner&gt; java -jar jenkins.war</screen>
+
+    <para>ou :</para>
+
+    <screen format="linespecific">C:\Documents and Settings\Owner&gt; svn list svn://localhost</screen>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e280">
+    <title>Contributeurs</title>
+
+    <para>Ce <indexterm id="I_indexterm_d1e285" significance="normal">
+        <primary>contributeurs pour ce livre</primary>
+      </indexterm>livre n'a pas été écrit par une seule personne. Cela a
+    plutôt été un effort collaboratif impliquant plusieurs personnes jouant
+    différents rôles. En particulier, les personnes suivantes ont
+    généreusement donné de leur temps, de leur savoir et de leur talent
+    d'écriture pour rendre ce livre meilleur :</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis role="bold">Evgeny Goldin</emphasis> est<indexterm
+            id="I_indexterm_d1e295" significance="normal">
+            <primary>Goldin, Evgeny (contributeur)</primary>
+          </indexterm> un ingénieur logiciel né en Russie vivant en Israël. Il
+        est lead developer chez Thomson Reuters où il est responsable d'un
+        certain nombre d'activités, dont certaines sont directement liées à
+        Maven, Groovy, et des outils de build comme Artifactory et Jenkins. Il
+        possède une vaste expérience d'un panel assez large de technologies,
+        dont Perl, Java, JavaScript et Groovy. Les outils de build et les
+        langages dynamiques sont les sujets favoris de Evgeny, à propos
+        desquels il écrit, présente ou bloggue souvent. Il écrit actuellement
+        pour GroovyMag, Methods &amp; Tools et développe sur deux projets open
+        source qu'il a créés : <ulink
+        url="http://evgeny-goldin.com/wiki/Maven-plugins">Maven-plugins</ulink>
+        et <ulink
+        url="http://evgeny-goldin.com/wiki/GCommons">GCommons</ulink>. Il
+        bloggue sur <ulink url="http://evgeny-goldin.com/blog"></ulink> et
+        peut être trouvé sur Twitter comme
+        <emphasis>@evgeny_goldin</emphasis>.</para>
+
+        <para>Evgeny a réalisé une section sur la génération automatique de
+        tâche de build Maven dans <xref
+        linkend="chapter-advanced-builds" />.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis role="bold">Matthew McCullough</emphasis> <indexterm
+            id="I_indexterm_d1e319" significance="normal">
+            <primary>McCullough, Matthew (contributeur)</primary>
+          </indexterm>est un vétéran énergique de 15 ans d'expérience dans le
+        développement logiciel d'entreprise, l'éducation open source, et
+        co-fondateur de LLC, une entreprise de consulting de Denver. Matthew
+        est actuellement formateur pour GitHub.com, auteur de la série Git
+        Master Class pour O’Reilly, speaker à plus de 30 conférences
+        nationales et internationales, auteur de 3 des 10 plus importantes
+        RefCards DZone, et président du Groupe Utilisateur d'Open Source de
+        Denver. Ses sujets de recherche sont aujourd'hui concentrés autour de
+        l'automatisation de projet : outils de build (Maven, Leiningen,
+        Gradle), contrôle de version distribué (Git), Intégration Continue
+        (Jenkins) et les métriques de qualité (Sonar). Matthew réside à
+        Denver, dans le Colorado avec sa magnifique femme et ses deux jeunes
+        filles, qui sont actives dans pratiquement toutes les activités
+        d'extérieur que le Colorado puisse offrir.</para>
+
+        <para>Matthew a écrit la section sur l'intégration de Git à Jenkins
+        dans <xref linkend="chapter-build-jobs" />.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis role="bold">Juven Xu</emphasis> est <indexterm
+            id="I_indexterm_d1e332" significance="normal">
+            <primary>Xu, Juven (contributor)</primary>
+          </indexterm>un ingénieur logiciel de Chine travaillant pour
+        Sonatype. Membre actif de la communauté open source et expert Maven
+        reconnu, Juven était responsable de la traduction chinoise de
+        <emphasis>Maven: The Definitive Guide</emphasis> et aussi d'un livre
+        original de référence chinois sur Maven. Il travaille aussi
+        actuellement à la traduction chinoise du présent livre.</para>
+
+        <para>Juven a écrit la section sur les notifications IRC dans <xref
+        linkend="chapter-notification" />.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis role="bold">Rene Groeschke</emphasis> est<indexterm
+            id="I_indexterm_d1e348" significance="normal">
+            <primary>Groeschke, Rene (contributeur)</primary>
+          </indexterm> ingénieur logiciel chez Cassidian Systems, connu
+        précédemment comme EADS Deutschland GmbH, et aussi un enthousiaste de
+        l'open source. ScrumMaster certifié avec 7 ans d'expérience comme
+        programmeur dans plusieurs projets Java d'entreprise, il se concentre
+        plus particulièrement sur les méthodes Agiles comme l'Intégration
+        Continue et le développement guidé par les tests. En dehors de son
+        travail quotidien, l'Université de l'Education d'Entreprise de
+        Friedrichshafen lui permet de faire passer le mot à propos de scrum et
+        de sujets connexes en donnant des cours aux étudiants en
+        informatique.</para>
+
+        <para>Rene a réalisé la section sur la construction de projets avec
+        Gradle dans <xref linkend="chapter-build-jobs" />.</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e356">
+    <title>L'équipe de revue</title>
+
+    <para>Le processus de revue technique de ce livre a été un peu différent
+    de l'approche utilisée pour la plupart des livres. Plutôt que d'avoir un
+    ou deux relecteurs techniques pour le livre entier une fois que le livre
+    aurait été en passe d'être terminé, une équipe de volontaires de la
+    communauté Jenkins, incluant plusieurs développeurs clé de Jenkins, a relu
+    les chapitres au fil de leur écriture. Cette équipe de relecture était
+    composée des personnes suivantes : Alan Harder, Andrew Bayer, Carlo
+    Bonamico, Chris Graham, Eric Smalling, Gregory Boissinot, Harald <phrase
+    role="keep-together">Soevik</phrase>, Julien Simpson, Juven Xu, Kohsuke
+    Kawaguchi, Martijn Verberg, Ross Rowe et Tyler Ballance.</para>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e364">
+    <title>Sponsors du livre</title>
+
+    <para>Ce <indexterm id="I_indexterm_d1e369" significance="normal">
+        <primary>sponsors pour ce livre</primary>
+      </indexterm>livre n'aurait pas été possible sans l'aide de plusieurs
+    organisations qui étaient désireuses d'assister et de subventionner le
+    processus d'écriture.</para>
+
+    <sect2>
+      <title>Wakaleo Consulting</title>
+
+      <para><ulink url="http://www.wakaleo.com">Wakaleo Consulting</ulink>
+      <indexterm id="I_indexterm_d1e380" significance="normal">
+          <primary>Wakaleo Consulting (sponsor)</primary>
+        </indexterm>est une entreprise de consulting qui aide les
+      organisations à optimiser leur processus de développement logiciel.
+      Dirigée par John Ferguson Smart, auteur de ce livre et de <ulink
+      url="http://oreilly.com/catalog/9780596527938"><emphasis>Java Power
+      Tools</emphasis></ulink>, Wakaleo Consulting fournit des services de
+      consulting, de formation et de mentoring dans le développement Agile
+      Java et dans les pratiques de test, l'optimisation de cycle vie de
+      développement logiciel et les méthodes Agiles.</para>
+
+      <para>Wakaleo aide les entreprises avec des formations et de
+      l'assistance dans des domaines comme l'Intégration Continue,
+      l'automatisation de build, le développement guidé par les tests, le test
+      Web automatisé et le code propre, en utilisant des outils open source
+      tels que Maven, Jenkins, Selenium 2 et Nexus. Wakaleo Consulting donne
+      aussi des formations publiques et sur site autour de l'Intégration
+      Continue and le Déploiement Continu, l'automatisation de build, les
+      pratiques de codage propre, le développement guidé par les tests (TDD)
+      et le Behavior-Driven Development, incluant des cours Certified Scrum
+      Developer (CSD).</para>
+    </sect2>
+
+    <sect2>
+      <title>CloudBees</title>
+
+      <para><ulink url="http://www.cloudbees.com">CloudBees</ulink> <indexterm
+          id="I_indexterm_d1e397" significance="normal">
+          <primary>CloudBees (sponsor)</primary>
+        </indexterm>est la seule entreprise spécialisée pour offrir un service
+      de gestion du cycle de vie, depuis le développement jusqu'au déploiement,
+      d'applications Java web dans le cloud. L'entreprise est aussi l'experte
+      mondiale sur l'outil d'intégration continue Jenkins/Hudson.</para>
+
+      <para>Le créateur de Jenkins/Hudson Kohsuke Kawaguchi dirige une équipe
+      d'experts CloudBees à travers le monde. Ils ont créé Nectar, une version
+      supportée et améliorée de Jenkins disponible par abonnement. Si vous
+      dépendez de Jenkins pour des processus logiciels critiques, Nectar
+      fournit une version hautement testée, stable et totalement supportée de
+      Jenkins. Cela inclut aussi des fonctionnalités disponibles seulement
+      dans Nectar comme le <emphasis>scaling</emphasis> automatique de
+      machines virtuelles VMWare.</para>
+
+      <para>Si vous êtes prêts à explorer la puissance de l'Intégration
+      Continue dans le cloud, CloudBees propose Jenkins/Hudson comme brique de
+      sa plateforme de build DEV@cloud. Vous pouvez démarrer avec Jenkins
+      instantanément et vous pouvez monter en puisssance comme vous le
+      souhaitez — pas de gros investissements dès le début dans vos serveurs de
+      build, plus de capacités limitées pour vos builds et plus de soucis de
+      maintenance. Une fois qu'une application est prête à partir, vous pouvez
+      la déployer sur l'offre Platform As A Service CloudBees RUN@cloud en
+      seulement quelques clics.</para>
+
+      <para>Avec les services CloudBees DEV@cloud et RUN@cloud, vous n'avez
+      pas à vous soucier des serveurs, machines virtuelles ou des équipes
+      informatique. Et avec Nectar, vous profitez du Jenkins le plus puissant,
+      stable et supporté existant.</para>
+    </sect2>
+
+    <sect2>
+      <title>Odd-e</title>
+
+      <para><ulink url="http://www.odd-e.com">Odd-e</ulink> est<indexterm
+          id="I_indexterm_d1e414" significance="normal">
+          <primary>Odd-e (sponsor)</primary>
+        </indexterm> une entreprise basée en Asie qui construit des produits
+      de façon innovante et aide les autres à faire de même. L'équipe est
+      composée de coaches expérimentés et de développeurs produit travaillant
+      dans des valeurs scrum, agile, lean, et artisan du logiciel, et
+      l'entreprise est structurée de la même façon. Par exemple, Odd-e n'a pas
+      d'organisation hiérarchique de responsables prenant les décisions pour
+      les autres. Au lieu de cela, les individus s'organisent eux-mêmes et
+      utilisent leurs talents pour constamment améliorer leurs compétences.
+      L'entreprise propose des formations et du coaching suivi pour aider les
+      autres à chercher et développer une meilleure façon de
+      travailler.</para>
+
+      <para>Ce n'est pas le travail mais les valeurs qui lient Odd-e. Ses
+      membres adorent construire du logiciel, accordent davantage d'importance
+      à l'apprentissage et la contribution qu'à la maximisation du profit, et
+      ont décidé de supporter le développement open source en Asie.</para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e420">
+    <title>Utilisation des exemples de code</title>
+
+    <para>Ce <indexterm id="I_indexterm_d1e425" significance="normal">
+        <primary>exemples de code, utilisation</primary>
+      </indexterm>livre est un livre open source, publié sous licence Creative
+    Commons. Ce livre a été écrit en DocBook, en utilisant XmlMind. Le code
+    source du livre est disponible à <ulink
+    url="http://www.github.org/wakaleo/jenkins-the-definitive-guide"></ulink>.</para>
+
+    <para>Les projets exemple Jenkins de ce livre sont open source et
+    librement disponibles en ligne — référez-vous à la page web du livre à
+    <ulink
+    url="http://www.wakaleo.com/books/jenkins-the-definitive-guide"></ulink>
+    pour plus de détails.</para>
+
+    <para>Ce livre existe pour vous aider à faire votre travail. En général,
+    vous pouvez utiliser le code de ce livre dans vos programmes et
+    documentation. Vous n'avez pas besoin de nous contacter pour obtenir une
+    permission à moins que vous ne reproduisiez une part importante du code.
+    Par exemple, écrire un programme qui utilise plusieurs extraits de code de
+    ce livre ne nécessite pas de permission. Vendre ou distribuer un CD-ROM
+    d'exemples des livres O’Reilly requiert une permission. Répondre à une
+    question en citant ce livre et utiliser des exemples de code du livre ne
+    nécessite pas de permission. Incorporer une part importante d'exemples de
+    code de ce livre dans votre documentation produit requiert une
+    permission.</para>
+
+    <para>Nous apprécions, mais ne requiérons pas, une référence. Une
+    référence inclut habituellement le titre, l'auteur, l'éditeur et l'ISBN.
+    Par exemple : “<emphasis>Jenkins: The Definitive Guide</emphasis> par John
+    <phrase>Ferguson</phrase> Smart (O’Reilly). Copyright 2011 John Ferguson
+    Smart, 978-1-449-30535-2.”</para>
+
+    <para>Si vous pensez que votre utilisation des exemples de code tombe en
+    dehors d'un usage raisonnable (NDT : fair-use) des permissions données
+    ci-dessus, n'hésitez pas à nous contacter à
+    <email>permissions@oreilly.com</email>.</para>
+  </sect1>
+
+  <?dbfo-need height=”1in”?>
+
+  <sect1 id="I_sect1_d1e455">
+    <title>Safari® Books Online</title>
+
+    <note role="safarienabled">
+      <para>Safari Books Online est une bibliothèque numérique à la demande
+      qui vous permet de chercher facilement parmi 7500 livres et vidéos de
+      référence de technologie ou de création pour trouver les réponses dont
+      vous avez besoin rapidement.</para>
+    </note>
+
+    <para>Avec un abonnement, vous pouvez lire n'importe quelle page ou
+    regarder n'importe quelle vidéo de notre bibliothèque en ligne. Lisez les
+    livres depuis votre téléphone portable ou vos périphériques mobiles.
+    Accédez aux nouveaux titres avant qu'ils soient disponibles en impression
+    papier, et obtenez des accès exclusifs à des manuscrits en développements
+    et postez des retours aux auteurs. Copiez et collez des exemples de code,
+    organisez vos favoris, téléchargez des chapitres, mettez des sections clés
+    en favoris, créez des notes, imprimez des pages et bénéficiez d'une tonne
+    d'autres fonctionnalités vous faisant gagner du temps.</para>
+
+    <para>O’Reilly Media a déposé ce livre sur le service Safari Books Online.
+    Pour obtenir l'accès numérique complet à ce livre et à d'autres dans des
+    sujets similaires de chez O’Reilly et d'autres éditeurs, enregistrez-vous
+    gratuitement chez <ulink role="orm:hideurl:ital"
+    url="http://my.safaribooksonline.com/?portal=oreilly">http://my.safaribooksonline.com</ulink>.</para>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e468">
+    <title>Comment nous contacter</title>
+
+    <para>Merci <indexterm id="I_indexterm_d1e473" significance="normal">
+        <primary>information de contact pour ce livre</primary>
+      </indexterm>d'adresser vos commentaires et vos questions concernant ce
+    livre à l'éditeur :</para>
+
+    <simplelist type="vert">
+      <member>O’Reilly Media, Inc.</member>
+
+      <member>1005 Gravenstein Highway North</member>
+
+      <member>Sebastopol, CA 95472</member>
+
+      <member>800-998-9938 (in the United States or Canada)</member>
+
+      <member>707-829-0515 (international or local)</member>
+
+      <member>707-829-0104 (fax)</member>
+    </simplelist>
+
+    <para>Nous avons une page web pour ce livre, sur laquelle nous listons les
+    erreurs, les exemples et toute autre information additionnelle. Vous
+    pouvez accéder à cette page à :</para>
+
+    <simplelist type="vert">
+      <member><ulink
+      url="http://www.oreilly.com/catalog/9781449305352"></ulink></member>
+    </simplelist>
+
+    <para>Pour commenter ou poser des questions techniques à propos de ce
+    livre, envoyez un email à :</para>
+
+    <simplelist type="vert">
+      <member><email>bookquestions@oreilly.com</email></member>
+    </simplelist>
+
+    <para>Pour plus d'information à propos de nos livres, cours, conférences
+    et nouvelles, visitez notre site web à <ulink
+    url="http://www.oreilly.com"></ulink>.</para>
+
+    <para>Trouvez-nous sur Facebook : <ulink
+    url="http://facebook.com/oreilly"></ulink></para>
+
+    <para>Suivez-nous sur Twitter : <ulink
+    url="http://twitter.com/oreillymedia"></ulink></para>
+
+    <para>Regardez-nous sur YouTube : <ulink
+    url="http://www.youtube.com/oreillymedia"></ulink></para>
+  </sect1>
+
+  <sect1 id="I_sect1_d1e514">
+    <title>Remerciements</title>
+
+    <para>Pour commencer et avant tout, à ma merveilleuse femme, et aux
+    garçons, James et William, sans qui, grâce à leur amour, leur soutien et
+    leur tolérence, ce livre n'aurait pas été possible.</para>
+
+    <para>J'aimerais remercier Mike Loukides pour avoir travaillé avec moi une
+    fois de plus sur ce projet de livre, et toute l'équipe O’Reilly pour leur
+    haut niveau de travail.</para>
+
+    <para>Merci à Kohsuke Kawaguchi d'avoir créé Jenkins, et d'être encore la
+    force motrice derrière ce brillant produit. Merci aussi à François
+    Dechery, Sacha Labourey, Harpreet Singh et le reste de l'équipe CloudBees
+    pour leur aide et leur soutien.</para>
+
+    <para>Je suis aussi très reconnaissant envers ceux qui ont consacré le
+    temps et l'énergie à contribuer leur travail à ce livre : Evgeny Goldin,
+    Matthew McCullough, Juven Xu, and Rene Groeschke.</para>
+
+    <para>Un grand merci revient aux relecteurs suivants, qui ont fourni des
+    retours de grande valeur tout le long du processus d'écriture : Alan
+    Harder, Andrew Bayer, Carlo Bonamico, Chris Graham, Eric Smalling, Gregory
+    Boissinot, Harald Soevik, Julien Simpson, Juven Xu, Kohsuke Kawaguchi,
+    Martijn Verberg, Ross Rowe, and Tyler Ballance.</para>
+
+    <para>Merci à Andrew Bayer, Martijn Verburg, Matthew McCullough, Rob
+    Purcell, Ray King, Andrew Walker, et beaucoup d'autres, dont les
+    discussions et les retours m'ont fourni l'inspiration et les idées qui ont
+    fait de ce livre ce qu'il est.</para>
+
+    <para>Et beaucoup d'autres personnes ont aidé de différentes façons pour
+    enrichir et compléter ce livre tel qu'il n'aurait pu l'être autrement :
+    Geoff and Alex Bullen, Pete Thomas, Gordon Weir, Jay Zimmerman, Tim
+    O’Brien, Russ Miles, Richard Paul, Julien Simpson, John Stevenson, Michael
+    Neale, Arnaud Héritier, and Manfred Moser.</para>
+
+    <para>Et enfin un grand merci aux développeurs et à la communauté
+    utilisateur de Hudson/Jenkins pour les encouragements et le soutien
+    constants.</para>
+  </sect1>
+</preface>
