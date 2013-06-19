@@ -4,8 +4,8 @@
   <title>Your First Steps with Jenkins</title>
   <sect1 id="sect-first-steps-introduction">
     <title>Introduction</title>
-    <para>In this chapter, you're going to take a quick guided tour through
-    some of Jenkins’s key features. You’ll get to see first-hand just how easy
+    <para>In this chapter, you'll take a quick guided tour through
+    some of Jenkins’s key features. You’ll see first-hand just how easy
     it is to install Jenkins and set up your first Jenkins automated build
     job. We won’t dwell on the details too much—there are more details to come
     in the following chapters, as well as a detailed chapter on Jenkins
@@ -18,14 +18,14 @@
     <title>Preparing Your Environment</title>
     <para>There<indexterm class="startofrange" id="ch02-env" significance="normal"><primary>Jenkins</primary><secondary>environment, requirements for</secondary></indexterm> are two ways you can tackle this chapter. You can read
     through it without touching a keyboard, just to get an overview of what
-    Jenkins is about. Or you can get your hands dirty, and follow along on
+    Jenkins is about. Or, you can get your hands dirty, and follow along on
     your own machine.</para>
     <para>If you <indexterm id="I_indexterm2_d1e949" significance="normal"><primary>version control systems</primary></indexterm>do want to follow along at home, you may need to set up some
     software on your machine. Remember, the most basic function of any
-    Continuous Integration tool is to monitor source code in a version control
-    system and to fetch and build the latest version of source code
+    Continuous Integration tool is monitoring source code in a version control
+    system, and fetching and building the latest version of source code
     whenever any changes are committed. So you’ll need a version control
-    system. In our case, we’ll be using <indexterm id="I_indexterm2_d1e953" significance="normal"><primary>Git</primary></indexterm><ulink url="http://git-scm.com">Git</ulink>. The central
+    system. In your case, you’ll be using <indexterm id="I_indexterm2_d1e953" significance="normal"><primary>Git</primary></indexterm><ulink url="http://git-scm.com">Git</ulink>. The central
     source code repository for our sample project is stored on <indexterm id="I_indexterm2_d1e959" significance="normal"><primary>GitHub repository</primary></indexterm><ulink url="https://github.com">GitHub</ulink>. Don’t worry
     about messing up this repository with your own changes, though: you’ll be
     creating your own fork of the repository that you can use as you wish. If
@@ -34,12 +34,12 @@
     is well documented on the GitHub website. We’ll explain how to set it all
     up in great detail further on.</para>
     <?dbfo-need height=”1in”?>
-    <para>In this chapter, we’ll be using Jenkins to build a Java application
+    <para>In this chapter, you’ll be using Jenkins to build a Java application
     using Maven. <indexterm id="I_indexterm2_d1e968" significance="normal"><primary>Maven</primary></indexterm>Maven is a widely-used build tool in the Java world, with
-    many powerful features such as declarative dependency management,
-    convention over configuration, and a large range of plugins. For our
-    build, we'll also be using recent versions of the <indexterm id="I_indexterm2_d1e972" significance="normal"><primary>JDK (Java Development Kit)</primary></indexterm><indexterm id="I_indexterm2_d1e975" significance="normal"><primary>Java Development Kit</primary><see>JDK</see></indexterm>Java Development Kit (JDK) and Maven, but if you don’t have
-    these installed on your machine, don’t fret! As we'll see, Jenkins
+    many powerful features, such as declarative dependency management,
+    convention over configuration, and a large range of plugins. For your
+    build, you'll also be using recent versions of the <indexterm id="I_indexterm2_d1e972" significance="normal"><primary>JDK (Java Development Kit)</primary></indexterm><indexterm id="I_indexterm2_d1e975" significance="normal"><primary>Java Development Kit</primary><see>JDK</see></indexterm>Java Development Kit (JDK) and Maven, but if you don’t have
+    these installed on your machine, don’t fret! As you'll see, Jenkins
     installs them for you.</para>
     <sect2>
       <title>Installing Java</title>
@@ -49,8 +49,8 @@
       need a recent version of Java (these examples were written with Java 6
       update 17, and the latest release at the time of writing was Java 6
       update 19). If you're not sure what version you're running, you can find out from the command
-      line (by opening a DOS console on Windows), and running <literal moreinfo="none">java
-      -version</literal>. If Java is installed on your machine should get
+      line by opening a command console on Windows, and running <literal moreinfo="none">java
+      -version</literal>. If Java is installed on your machine you should see
       something like this:</para>
       <screen format="linespecific">$ <userinput moreinfo="none">java -version</userinput>
 java version "1.6.0_17"
@@ -84,7 +84,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 14.3-b01-101, mixed mode)</screen>
       involves downloading the appropriate installer for your operating system
       from the <ulink url="http://git-scm.com">Git website</ulink>. There are
       packaged installers for both Windows and Mac OS X. If you're using
-      Linux, you're in Git’s home ground: most Linux distributions include Git. On Ubuntu
+      Linux, you're in Git’s home ground - most Linux distributions include Git. On Ubuntu
       or other Debian-based distributions, you could run something
       like:</para>
       <screen format="linespecific">$ <userinput moreinfo="none">sudo apt-get install git-core</userinput></screen>
@@ -103,8 +103,8 @@ git version 1.7.1</screen>
     <sect2>
       <title>Setting Up a GitHub Account</title>
       <para>Next, <indexterm id="I_indexterm2_d1e1077" significance="normal"><primary>GitHub repository</primary><secondary>account for, setting up</secondary></indexterm>if you don’t already have one, you'll need to create a
-      GitHub account. This is easy and (for our purposes, at least) free of
-      charge, and all the cool kids have one. Go to the <ulink url="https://github.com/plans">GitHub signup page</ulink> and choose the
+      GitHub account. This is easy and (for your purposes, at least) free of
+      charge. All the cool kids have one. Go to the <ulink url="https://github.com/plans">GitHub signup page</ulink> and choose the
       “Create a free account” option. You'll just need to provide a
       username, a password, and your email address (see <xref linkend="fig-github-signup"/>).</para>
       <figure float="0" id="fig-github-signup">
@@ -121,9 +121,9 @@ git version 1.7.1</screen>
     </sect2>
     <sect2>
       <title>Configuring SSH Keys</title>
-      <para>GitHub <indexterm id="I_indexterm2_d1e1101" significance="normal"><primary>SSH keys</primary></indexterm>uses SSH keys to establish a secure connection between
+      <para>GitHub <indexterm id="I_indexterm2_d1e1101" significance="normal"><primary>SSH keys</primary></indexterm>uses SSH keys to establish a secure connection channel between
       your computer and the GitHub servers. Setting these up is not hard, but
-      involves a bit of work: fortunately there are clear and detailed
+      involves a bit of work. Fortunately, there are clear and detailed
       instructions on the <ulink url="http://help.github.com/set-up-git-redirect">GitHub
       website</ulink>.</para>
     </sect2>
@@ -136,10 +136,10 @@ git version 1.7.1</screen>
       need to create your own fork. A fork is a personal copy of a repository
       that you can use as you wish. To create a fork, login to your GitHub
       account and navigate to the <ulink role="orm:hideurl" url="https://github.com/wakaleo/game-of-life">repository URL</ulink>.
-      Then click on the Fork button (see <xref linkend="fig-github-fork"/>).
+      Then, click on the Fork button (see <xref linkend="fig-github-fork"/>).
       This creates your own personal copy of the repository.</para>
       <para>Once <indexterm id="I_indexterm2_d1e1128" significance="normal"><primary>GitHub repository</primary><secondary>cloning a local copy of</secondary></indexterm>you've forked the repository, you should clone a local
-      copy to make sure everything is set up correctly. Go to the command line
+      copy on your local machine to make sure everything is set up correctly. Go to the command line
       and run the following command (replacing
       <replaceable>&lt;username&gt;</replaceable> with your own GitHub
       username):</para>
@@ -154,7 +154,7 @@ remote: Total 1783 (delta 1116), reused 1783 (delta 1116)
 Receiving objects: 100% (1783/1783), 14.83 MiB | 119 KiB/s, done.
 Resolving deltas: 100% (1116/1116), done.</screen>
       <para>You should now have a local copy of the project that you can build
-      and execute. We'll be using this project later on to trigger changes
+      and execute. You'll use this project later on to trigger changes
       in <indexterm id="I_indexterm2_d1e1150" class="endofrange" startref="ch02-fork" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1152" class="endofrange" startref="ch02-env" significance="normal"><primary/></indexterm>the repository.</para>
       <figure float="none" id="fig-github-fork">
         <title>Forking the sample code repository</title>
@@ -173,12 +173,12 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <title>Starting Up Jenkins</title>
     <para><indexterm class="startofrange" id="ch02-jws1" significance="normal"><primary>installation</primary><secondary>Jenkins</secondary><tertiary sortas="Java Web Start">with Java Web start</tertiary></indexterm><indexterm class="startofrange" id="ch02-jws2" significance="normal"><primary>Java Web Start</primary><secondary>installing and starting Jenkins using</secondary></indexterm><indexterm id="I_indexterm2_d1e1179" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="Java Web Start">from Java Web Start</tertiary></indexterm>There are several ways to run Jenkins. One
     of the easiest ways to run Jenkins for the first time is to use Java Web
-    Start (JWS). This is a technology that starts a Java
+    Start (JWS). This is a way to start a Java
     application on your local machine via a URL on a web page—JWS comes bundled
-    with the Java JRE. In our case, this starts a Jenkins server running
+    with the Java JRE. In your case, this starts a Jenkins server running
     on your machine.
     All you need for this to work is a recent (Java 6 or later)
-    version of the Java Runtime Environment (JRE), which we installed in the
+    version of the Java Runtime Environment (JRE), which you installed in the
     previous section.</para>
     <para>For convenience, there is a link to the Jenkins Java Web Start
     instance on the <ulink url="http://www.wakaleo.com/books/jenkins-the-definitive-guide">book
@@ -199,7 +199,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>JWS seems to work best on Firefox. When you click on the
+    <para>When you click on the
     Launch button on either of these sites in Firefox, the browser asks if
     you want to open a file called <filename moreinfo="none">jenkins.jnlp</filename> using
     Java Web Start. Click on OK—this downloads Jenkins and starts it up on
@@ -220,15 +220,15 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     JNLP file. In Internet Explorer, you may even need to right click on the
     link and select “Save Target As” to save the JNLP file, and then run it
     from Windows Explorer. However, in both of these cases, when you open the
-    JNLP file, Java Web Start downloads and starts Jenkins.</para>
-    <para>Java Web Start will only need to download a particular version of
+    JNLP file, JWS downloads and starts Jenkins.</para>
+    <para>JWS will only need to download a particular version of
     Jenkins once. From then on, when you click on the “Launch” button again,
-    Java Web Start uses the copy of Jenkins it has already downloaded
+    JWS uses the copy of Jenkins it has already downloaded
     (that is, until the next version comes out). Ignore any messages your
     operating system or anti-virus software may bring up—it's perfectly safe
     to run Jenkins on your local machine.</para>
-    <para>Once it has finished downloading, it starts up Jenkins on your
-    machine. You'll be able to see it running in a small window
+    <para>Once Jenkins has finished downloading, JWS starts up Jenkins on your
+    machine. You can see it running in a small window
     called<indexterm id="I_indexterm2_d1e1226" significance="normal"><primary>Jenkins Console</primary></indexterm> “Jenkins Console” (see <xref linkend="fig-first-steps-console"/>). To stop <indexterm id="I_indexterm2_d1e1232" significance="normal"><primary>Jenkins</primary><secondary>stopping</secondary></indexterm>Jenkins at any time, just close this <indexterm id="I_indexterm2_d1e1238" class="endofrange" startref="ch02-jws1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1240" class="endofrange" startref="ch02-jws2" significance="normal"><primary/></indexterm>window.</para>
     <figure float="none" id="fig-first-steps-console">
       <title>Java Web Start running Jenkins</title>
@@ -255,7 +255,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <screen format="linespecific">$ <userinput moreinfo="none">java -jar jenkins.war</userinput></screen>
     <para>Whether you've started Jenkins using JWS or from the
     command line, Jenkins should now be running on your machine. By
-    default, Jenkins will be running on port 8080, so you can access Jenkins
+    default, Jenkins will be listening on port 8080, so you can access Jenkins
     in your web <phrase role="keep-together">browser on</phrase> <ulink url="http://localhost:8080"/>.</para>
     <para>Alternatively, if you're familiar with Java application servers
     such as <indexterm id="I_indexterm2_d1e1304" significance="normal"><primary>Jenkins</primary><secondary>running</secondary><tertiary sortas="application">from application server</tertiary></indexterm><indexterm id="I_indexterm2_d1e1311" significance="normal"><primary>Tomcat application server</primary><secondary>deploying Jenkins using</secondary></indexterm><indexterm id="I_indexterm2_d1e1316" significance="normal"><primary>application server</primary><secondary>deploying Jenkins to</secondary></indexterm>Tomcat, you can simply deploy the Jenkins WAR file to your
@@ -282,15 +282,15 @@ Resolving deltas: 100% (1116/1116), done.</screen>
   </sect1>
   <sect1 id="sect-first-steps-configuring">
     <title>Configuring the Tools</title>
-    <para>Before <indexterm class="startofrange" id="ch02-configure" significance="normal"><primary>configuration</primary></indexterm>we get started, we do need to do a little configuration.
-    More precisely, we need to tell Jenkins about the build tools and JDK
-    versions we'll be using for our builds.</para>
+    <para>Before <indexterm class="startofrange" id="ch02-configure" significance="normal"><primary>configuration</primary></indexterm>we get started, you do need to do a little configuration.
+    More precisely, you need to tell Jenkins about the build tools and JDK
+    versions you'll be using for your builds.</para>
     <para>Click on the <indexterm id="I_indexterm2_d1e1367" significance="normal"><primary>Manage Jenkins screen</primary></indexterm>Manage Jenkins link on the home page (see <xref linkend="fig-hudson-start" os=""/>). This takes you to the Manage
     Jenkins page, the central one-stop-shop for all your Jenkins
-    configuration. From this screen, you can configure your Jenkins server,
+    configuration needs. From this screen, you can configure your Jenkins server,
     install and upgrade plugins, keep track of system load, manage distributed
     build servers, and more! For now, however, we’ll keep it simple. Just
-    click on the Configuring System link at the top of the list (see <xref linkend="fig-hudson-manage"/>).</para>
+    click on the Configure System link at the top of the list (see <xref linkend="fig-hudson-manage"/>).</para>
     <figure float="none" id="fig-hudson-manage">
       <title>The Manage Jenkins screen</title>
       <mediaobject id="I_mediaobject2_d1e1378">
@@ -304,7 +304,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     </figure>
     <para>This takes you to Jenkins’s main configuration screen (see <xref linkend="fig-hudson-configure"/>). From here you can configure everything
     from security configuration and build tools to email servers, version
-    control systems and integration with third-party software. The screen
+    control systems, and integration with third-party software. The screen
     contains a lot of information, but most of the fields contain sensible
     default values, so you can safely ignore them for now.</para>
     <figure float="0" id="fig-hudson-configure">
@@ -318,32 +318,32 @@ Resolving deltas: 100% (1116/1116), done.</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For now, you'll just need to configure the tools required to build
-    our sample project. The application we'll be building is a Java
-    application, built using Maven. So in this case, all we need to do is to
+    <para>For now, you just need to configure the tools required to build
+    your sample project. The application you'll be building is a Java
+    application, built using Maven. So in this case, all you need to do is to
     set up a recent JDK and Maven installation.</para>
-    <para>However before we start, take a look at the little blue question
-    mark icons lined to the right of the screen. These are<indexterm id="I_indexterm2_d1e1399" significance="normal"><primary>Jenkins</primary><secondary>help icons in</secondary></indexterm> Jenkins’s contextual help buttons. If you're curious about
+    <para>However, before you start, take a look at the little blue question
+    mark icons lined up on the right of the screen. These are<indexterm id="I_indexterm2_d1e1399" significance="normal"><primary>Jenkins</primary><secondary>help icons in</secondary></indexterm> Jenkins’s contextual help buttons. If you're curious about
     a particular field, click on the help icon next to it and Jenkins
-    displays a very detailed description about what it is and how it
+    displays a very detailed description about what the field is and how it
     works.</para>
     <sect2>
       <title>Configuring Your Maven Setup</title>
-      <para><indexterm class="startofrange" id="ch02-maven" significance="normal"><primary>Maven</primary><secondary>installing</secondary></indexterm><indexterm class="startofrange" id="ch02-maven2" significance="normal"><primary>configuration</primary><secondary>Maven</secondary></indexterm><indexterm class="startofrange" id="ch02-maven3" significance="normal"><primary>installation</primary><secondary>Maven</secondary></indexterm><indexterm class="startofrange" id="ch02-maven4" significance="normal"><primary>Maven</primary><secondary>configuring</secondary></indexterm>Our sample project uses Maven, so we'll need to install
+      <para><indexterm class="startofrange" id="ch02-maven" significance="normal"><primary>Maven</primary><secondary>installing</secondary></indexterm><indexterm class="startofrange" id="ch02-maven2" significance="normal"><primary>configuration</primary><secondary>Maven</secondary></indexterm><indexterm class="startofrange" id="ch02-maven3" significance="normal"><primary>installation</primary><secondary>Maven</secondary></indexterm><indexterm class="startofrange" id="ch02-maven4" significance="normal"><primary>Maven</primary><secondary>configuring</secondary></indexterm>Our sample project uses Maven, so you'll need to install
       and configure Maven first. Jenkins provides great out-of-the-box support
       for Maven. Scroll down until you reach the Maven section in the
       Configure System screen (see <xref linkend="fig-hudson-maven"/>).</para>
       <para>Jenkins provides several options when it comes to configuring
       Maven. If you already have Maven installed on your machine, you can
-      simply provide the path in the MAVEN_HOME field. Alternatively, you can
+      simply provide its path in the MAVEN_HOME field. Alternatively, you can
       install a Maven distribution by extracting a zip file located in a
-      shared directory, or execute a home-rolled installation script. Or you
+      shared directory, or execute a home-rolled installation script. Or, you
       can let Jenkins do all the hard work and download Maven for you. To
       choose this option, just tick the Install automatically checkbox.
       Jenkins downloads and installs Maven from the Apache website the
       first time a build job needs it. Just choose the Maven version you want
       to install and Jenkins will do the rest. You'll also need to give a
-      name for your Maven version (imaginatively called “Maven 2.2.1” in the
+      name to your Maven version (imaginatively called “Maven 2.2.1” in the
       example), so that you can refer to it in your build jobs.</para>
       <para>For this to work, you need to have an Internet connection. If you're
       behind a proxy, you’ll need to provide your proxy information—we
@@ -361,7 +361,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
       </figure>
       <para>One of the nice things about the Jenkins Maven installation
       process is how well it <phrase role="keep-together">works</phrase> with
-      remote build agents. Later on in the book, we’ll see how Jenkins can
+      remote build agents. Later on in the book, you’ll see how Jenkins can
       also run builds on remote build servers. You can define a standard way
       of installing Maven for all of your build servers (downloading from the
       Internet, unzipping a distribution bundle on a shared server, etc.)—all
@@ -371,9 +371,9 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <sect2>
       <title>Configuring the JDK</title>
       <para><indexterm id="I_indexterm2_d1e1464" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>configuring</secondary></indexterm><indexterm id="I_indexterm2_d1e1469" significance="normal"><primary>configuration</primary><secondary>JDK</secondary></indexterm>Once you've configured your Maven installation, you'll
-      also need to configure a JDK installation (see <xref linkend="fig-hudson-jdk"/>). Again, if you have a Java JDK (as opposed
+      also need to configure your Java environment (see <xref linkend="fig-hudson-jdk"/>). Again, if you have a Java Development Kit (as opposed
       to a Java Runtime Environment—the JDK contains extra development tools
-      such as the Java compiler) already installed on your workstation, you
+      such as the Java compiler) already installed on your machine, you
       can simply provide the path to your JDK in the JAVA_HOME field.
       Otherwise, you can ask Jenkins to download the JDK from the <ulink url="http://www.oracle.com/technetwork/java/index.html">Oracle
       website</ulink> the first time a build job requires it. This is similar
@@ -401,7 +401,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
       notification. When a Jenkins build breaks, and when it works again, it
       can send out email messages to the team to spread the word. Using
       plugins, you can also get it to send instant messages or SMS messages,
-      post entries on Twitter, or get people notified in a few other ways. It
+      post entries on Twitter, or to notify people in a few other ways. It
       all depends on what works best for your organizational culture. Email
       notification is easy enough to set up if you know your local SMTP server
       address—just provide this value in the Email Notification section
@@ -411,7 +411,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     </sect2>
     <sect2>
       <title>Setting Up Git</title>
-      <para>The <indexterm class="startofrange" id="ch02-git" significance="normal"><primary>Git plugin</primary></indexterm><indexterm class="startofrange" id="ch02-git2" significance="normal"><primary>configuration</primary><secondary>Git</secondary></indexterm><indexterm class="startofrange" id="ch02-git3" significance="normal"><primary>plugins</primary><secondary>Git</secondary></indexterm>last thing we need to configure for this demo is to get
+      <para>The <indexterm class="startofrange" id="ch02-git" significance="normal"><primary>Git plugin</primary></indexterm><indexterm class="startofrange" id="ch02-git2" significance="normal"><primary>configuration</primary><secondary>Git</secondary></indexterm><indexterm class="startofrange" id="ch02-git3" significance="normal"><primary>plugins</primary><secondary>Git</secondary></indexterm>last thing you need to configure for this demo is to get
       Jenkins working with Git. Jenkins comes with support for <indexterm id="I_indexterm2_d1e1531" significance="normal"><primary>Subversion</primary><secondary>Jenkins supporting</secondary></indexterm><indexterm id="I_indexterm2_d1e1536" significance="normal"><primary>Jenkins</primary><secondary>version control systems supported by</secondary></indexterm>Subversion and <indexterm id="I_indexterm2_d1e1542" significance="normal"><primary>CVS</primary><secondary>Jenkins supporting</secondary></indexterm><indexterm id="I_indexterm2_d1e1547" significance="normal"><primary>Jenkins</primary><secondary>CVS supported by</secondary></indexterm>CVS out of the box, but you'll need to install the
       Jenkins Git plugin to be able to complete the rest of this tutorial.
       Don’t worry, the process is pretty simple. First of all, click on the
@@ -451,8 +451,8 @@ Resolving deltas: 100% (1116/1116), done.</screen>
       <para>Once it's done, you'll need to restart Jenkins for the changes
       to take effect. To do this, you can simply click on the “Restart Jenkins
       when no jobs are running” button displayed on the installation screen,
-      or alternatively shut down and restart Jenkins by hand.</para>
-      <para>That's all we need to configure at this stage. You are now ready
+      or alternatively, shut down and restart Jenkins by hand.</para>
+      <para>That's all you need to configure at this stage. You are now ready
       to set up your first Jenkins build <indexterm id="I_indexterm2_d1e1582" class="endofrange" startref="ch02-configure" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1584" class="endofrange" startref="ch02-git" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1586" class="endofrange" startref="ch02-git2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1588" class="endofrange" startref="ch02-git3" significance="normal"><primary/></indexterm>job!</para>
     </sect2>
   </sect1>
@@ -461,7 +461,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <para>Build jobs<indexterm class="startofrange" id="ch02-jobcreate" significance="normal"><primary>build jobs</primary><secondary>creating</secondary></indexterm> are at the heart of the Jenkins build process. Simply put,
     you can think of a Jenkins build job as a particular task or step in your
     build process. This may involve simply compiling your source code and
-    running your unit tests. Or you might want a build job to do other related
+    running your unit tests. Or, you might want a build job to do other related
     tasks, such as running your integration tests, measuring code coverage or
     code quality metrics, generating technical documentation, or even
     deploying your application to a web server. A real project usually
@@ -492,14 +492,14 @@ Resolving deltas: 100% (1116/1116), done.</screen>
       </listitem>
     </itemizedlist>
     <para>Our application is a Java module, built using Maven, that implements
-    the core business logic of the Game of Life. We’ll worry about the user
-    interfaces later on. For now, let’s see how we can automate this build in
+    the core business logic of the Game of Life. You’ll worry about the user
+    interfaces later on. For now, let’s see how you can automate this build in
     Jenkins. If you're not familiar with Maven, or prefer Ant or another
     build framework—don’t worry! The examples don’t require much knowledge of
     Maven, and we’ll be looking at plenty of examples of using other build
     tools later on in the book.</para>
-    <para>For our first build job, we'll keep it simple: we're just going
-    to compile and test our sample application. Click on the New Job link. You
+    <para>For your first build job, we'll keep it simple: you're just going
+    to compile and test your sample application. Click on the New Job link. You
     should get to a screen similar to <xref linkend="fig-first-build-job"/>.
     Jenkins supports several different types of <indexterm id="I_indexterm2_d1e1633" significance="normal"><primary>build jobs</primary><secondary>types of</secondary></indexterm>build jobs. The two most commonly-used are the freestyle
     builds and the Maven 2/3 builds. The <indexterm id="I_indexterm2_d1e1639" significance="normal"><primary>freestyle build jobs</primary></indexterm>freestyle projects allow you to configure just about any
@@ -507,13 +507,13 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <indexterm id="I_indexterm2_d1e1643" significance="normal"><primary>Maven build jobs</primary></indexterm>Maven 2/3 builds understand the Maven project structure, and
     can use this to let you set up Maven build jobs with less effort and a few
     extra features. There are also plugins that provide support for other
-    types of build jobs. Nevertheless, although our project does use Maven, we
-    are going to use a<indexterm class="startofrange" id="ch02-freecreate" significance="normal"><primary>freestyle build jobs</primary><secondary>creating</secondary></indexterm> freestyle build job, just to keep things simple and general
+    types of build jobs. Nevertheless, although your project does use Maven, you're
+    going to use a<indexterm class="startofrange" id="ch02-freecreate" significance="normal"><primary>freestyle build jobs</primary><secondary>creating</secondary></indexterm> freestyle build job, just to keep things simple and general
     to start with. So choose “Build a freestyle software project”, as shown in
     <xref linkend="fig-first-build-job"/>.</para>
     <para>You’ll <indexterm id="I_indexterm2_d1e1658" significance="normal"><primary>build jobs</primary><secondary>naming</secondary></indexterm>also need to give your build job a sensible name. In this
-    case, call it <emphasis>gameoflife-default</emphasis>, as it will be the
-    default CI build for our Game of Life project.</para>
+    case, call it <emphasis>game-of-life-default</emphasis>, as it will be the
+    default CI build for your Game of Life project.</para>
     <figure float="0" id="fig-first-build-job">
       <title>Setting up your first build job in Jenkins</title>
       <mediaobject id="I_mediaobject2_d1e1670">
@@ -528,13 +528,13 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <para>Once you click on OK, Jenkins displays the project configuration
     screen (see <phrase role="keep-together"><xref linkend="fig-jenkins-git-new-project"/></phrase>).</para>
     <para>In a nutshell, Jenkins works by checking out the source code of your
-    project and building it in its own workspace. So the next thing you need
+    project and building it in its own workspace. So, the next thing you need
     to do is to tell Jenkins where it can find the <indexterm id="I_indexterm2_d1e1682" significance="normal"><primary>build jobs</primary><secondary>source code location for</secondary></indexterm>source code for your project. You do this in the<indexterm id="I_indexterm2_d1e1688" significance="normal"><primary>version control systems</primary><secondary>configuring</secondary></indexterm> Source Code Management <indexterm id="I_indexterm2_d1e1694" significance="normal"><primary>Source Code Management</primary><see>SCM; version control systems</see></indexterm><indexterm id="I_indexterm2_d1e1699" significance="normal"><primary>SCM (Source Code Management)</primary><seealso>version control systems</seealso></indexterm>section (see <xref linkend="fig-jenkins-git-new-project"/>). Jenkins<indexterm id="I_indexterm2_d1e1707" significance="normal"><primary>Jenkins</primary><secondary>version control systems supported by</secondary></indexterm> provides support for CVS and Subversion out of the box, and
     many others such as Git, Mercurial, ClearCase, Perforce and many more via
     plugins.</para>
-    <para>For this project, we'll be getting the source code from the GitHub
-    repository we set up earlier. On the Jenkins screen, choose “Git” and
-    enter the Repository URL we defined in <xref linkend="sect-git-fork"/>
+    <para>For this project, you'll be getting the source code from the GitHub
+    repository you set up earlier. On the Jenkins screen, choose “Git” and
+    enter the Repository URL you defined in <xref linkend="sect-git-fork"/>
     (see <xref linkend="fig-jenkins-git-new-project"/>). Make sure this is
     the URL of your fork, and not of the original repository: it should have
     the form
@@ -553,16 +553,16 @@ Resolving deltas: 100% (1116/1116), done.</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Once<indexterm id="I_indexterm2_d1e1739" significance="normal"><primary>build jobs</primary><secondary>scheduling</secondary><see>build triggers</see></indexterm><indexterm class="startofrange" id="ch02-trigger2" significance="normal"><primary>build triggers</primary><secondary>configuring</secondary></indexterm> we've told Jenkins where to find the source code for our
-    application, we need to tell it how often it should check for updates. We
+    <para>Once<indexterm id="I_indexterm2_d1e1739" significance="normal"><primary>build jobs</primary><secondary>scheduling</secondary><see>build triggers</see></indexterm><indexterm class="startofrange" id="ch02-trigger2" significance="normal"><primary>build triggers</primary><secondary>configuring</secondary></indexterm> you've told Jenkins where to find the source code for your
+    application, you need to tell it how often it should check for updates. You
     want Jenkins to monitor the <phrase role="keep-together">repository</phrase> and start a build whenever any
     changes have been committed. This is a common way to set up a build job in
     a Continuous Integration context, as it provides fast feedback if the
     build fails. Other approaches include building on regular intervals (for
-    example, once a day), requiring a user to kick of the build manually, or
+    example, once a day), requiring a user to kick off the build manually, or
     even triggering a build remotely using a “post-commit” hook in your
     SCM.</para>
-    <para>We configure all of this in the Build Triggers section (see <xref linkend="fig-new-job-triggers"/>). Pick the Poll SCM option and enter “*
+    <para>You configure all of this in the Build Triggers section (see <xref linkend="fig-new-job-triggers"/>). Pick the Poll SCM option and enter “*
     * * * *” (that’s five asterisks separated by spaces) in the Schedule box.
     Jenkins schedules are configured using the <literal moreinfo="none">cron</literal> syntax,
     well-known in the Unix world. The <literal moreinfo="none">cron</literal> syntax consists
@@ -600,11 +600,11 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     Grails, Gradle, Rake, Ruby, MSBuild and many other build tools are all
     supported.</para>
     <para><indexterm id="I_indexterm2_d1e1790" significance="normal"><primary>Maven</primary><secondary sortas="build steps">build steps in freestyle build
-        jobs</secondary></indexterm><indexterm id="I_indexterm2_d1e1795" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>Maven build steps</tertiary></indexterm>For now, we just want to run a simple Maven build. Scroll
+        jobs</secondary></indexterm><indexterm id="I_indexterm2_d1e1795" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>Maven build steps</tertiary></indexterm>For now, you just want to run a simple Maven build. Scroll
     down to the Build section and click on the “Add build step” and choose
     “Invoke top-level Maven targets” (see <xref linkend="fig-new-job-build-step"/>). Then enter “clean package” in the
     Goals field. If you're not familiar with Maven, this deletes any
-    previous build artifacts, compiles our code, runs our unit tests, and
+    previous build artifacts, compiles your code, runs your unit tests, and
     generates a JAR file.</para>
     <figure float="none" id="fig-new-job-build-step">
       <title>Adding a build step</title>
@@ -623,14 +623,14 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     display your test results and test result trends.</para>
     <para>The<indexterm id="I_indexterm2_d1e1820" significance="normal"><primary>build jobs</primary><secondary>reports resulting from</secondary><see>reporting</see></indexterm><indexterm id="I_indexterm2_d1e1827" significance="normal"><primary>reporting</primary><secondary>test results</secondary><tertiary>JUnit reports</tertiary></indexterm><indexterm id="I_indexterm2_d1e1834" significance="normal"><primary>tests</primary><secondary>reports from</secondary><tertiary>JUnit reports</tertiary></indexterm> de facto standard for test reporting in the Java world is
     an <indexterm id="I_indexterm2_d1e1842" significance="normal"><primary>XML format for test reports</primary><see>JUnit reports</see></indexterm>XML format used by JUnit.<indexterm id="I_indexterm2_d1e1848" significance="normal"><primary>JUnit reports</primary><secondary>format for</secondary></indexterm> This format is also used by many other Java testing tools,
-    such as TestNG, Spock and Easyb. Jenkins understands this format, so if
+    such as TestNG, Spock, and Easyb. Jenkins understands this format, so if
     your build produces JUnit XML test results, Jenkins can generate nice
     graphical test reports and statistics on test results over time, and also
     let you view the details of any test failures. Jenkins also keeps track of
     how long your tests take to run, both globally, and per test—this can come
     in handy if you need to track down performance issues.</para>
-    <para>So the next thing we need to do is to get Jenkins to keep tabs on
-    our unit tests.</para>
+    <para>So the next thing you need to do is to get Jenkins to keep tabs on
+    your unit tests.</para>
     <para><indexterm id="I_indexterm2_d1e1858" significance="normal"><primary>JUnit reports</primary><secondary>configuring in freestyle build job</secondary></indexterm>Go to the Post-build Actions section (see <xref linkend="fig-new-job-test-reports"/>) and tick “Publish JUnit test result
     report” checkbox. When Maven runs unit tests in a project, it
     automatically generates the XML test reports in a directory called
@@ -638,7 +638,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     “**/target/surefire-reports/*.xml” in the “Test report XMLs” field. The
     two asterisks at the start of the path (“**”) are a best practice to make
     the configuration a bit more robust: they allow Jenkins to find the target
-    directory no matter how we've configured Jenkins to check out the source
+    directory no matter how you've configured Jenkins to check out the source
     code.</para>
     <para>Another<indexterm id="I_indexterm2_d1e1874" significance="normal"><primary>build jobs</primary><secondary>binary artifacts from</secondary><see>binary artifacts</see></indexterm><indexterm id="I_indexterm2_d1e1881" significance="normal"><primary>archives of binary artifacts</primary></indexterm><indexterm id="I_indexterm2_d1e1884" significance="normal"><primary>binary artifacts</primary><secondary>archiving</secondary></indexterm> thing you often want to do is to archive your build
     results. Jenkins can store a copy of the binary artifacts generated by
@@ -647,7 +647,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     artifacts on the project home page, which is a convenient way to
     distribute the latest and greatest version of your application. You can
     activate this option by ticking the “Archive the artifacts” checkbox and
-    indicating which binary artifacts you want Jenkins to archive. In <xref linkend="fig-new-job-test-reports"/>, for example, we've configured
+    indicating which binary artifacts you want Jenkins to archive. In <xref linkend="fig-new-job-test-reports"/>, for example, you've configured
     Jenkins to store all of the JAR files generated by this <indexterm id="I_indexterm2_d1e1892" class="endofrange" startref="ch02-jobcreate" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e1894" class="endofrange" startref="ch02-stepadd" significance="normal"><primary/></indexterm>build job.</para>
     <figure float="0" id="fig-new-job-test-reports">
       <title>Configuring JUnit test reports and artifact archiving</title>
@@ -660,8 +660,8 @@ Resolving deltas: 100% (1116/1116), done.</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Now we’re done—just click on the Save button at the bottom of the
-    screen. Our build job <indexterm id="I_indexterm2_d1e1907" class="endofrange" startref="ch02-freecreate" significance="normal"><primary/></indexterm>should now be ready to run. So let’s see it in
+    <para>Now you’re done—just click on the Save button at the bottom of the
+    screen. Your build job <indexterm id="I_indexterm2_d1e1907" class="endofrange" startref="ch02-freecreate" significance="normal"><primary/></indexterm>should now be ready to run. So let’s see it in
     action!</para>
   </sect1>
   <sect1 id="sect-first-steps-first-job-in-action">
@@ -691,7 +691,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     general state of heath of each of your builds. It tells you when each
     build ran successfully for the last time, and when it last failed, and
     also the result of the last build.</para>
-    <para>Once of Jenkins’s specialities is the way it lets you get an idea of
+    <para>One of Jenkins’s specialities is the way it lets you get an idea of
     build behavior over time. For example, Jenkins uses a weather metaphor to
     help give you an idea of the stability of your builds. Essentially, the
     more your builds fail, the worse the weather gets. This helps you get an
@@ -719,12 +719,12 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     failures, such as unit test failures or insufficient code coverage, which
     are indicated by a yellow ball. There are also some other details about
     the latest test results, when the last build was run, and so on. But
-    before we look at the details, let’s get back to the core business model
+    before you look at the details, let’s get back to the core business model
     of a Continuous Integration server—kicking off builds when someone changes
     the code!</para>
-    <para>We<indexterm class="startofrange" id="ch02-failure" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>example of</tertiary></indexterm> are going to commit a code change to GitHub and see what
-    happens, using the source code we checked out in <xref linkend="sect-git-fork"/>. We now have Jenkins configured to monitor our
-    GitHub fork, so if we make any changes, Jenkins should be able to pick
+    <para>You<indexterm class="startofrange" id="ch02-failure" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>example of</tertiary></indexterm> are going to commit a code change to GitHub and see what
+    happens, using the source code you checked out in <xref linkend="sect-git-fork"/>. You've now Jenkins configured to monitor your
+    GitHub fork, so if you make any changes, Jenkins should be able to pick
     them up.</para>
     <para>So let’s make a change. The idea is to introduce a code change that
     causes the unit tests to fail. If your Java is a bit rusty, don’t
@@ -736,7 +736,7 @@ Resolving deltas: 100% (1116/1116), done.</screen>
     <emphasis>Then</emphasis> you would commit your changes to your version
     control system, allowing Jenkins to build them. However this would be a
     poor demonstration of how Jenkins handles unit test failures. So in this
-    example, we will, against all best practices, simply modify the
+    example, you will, against all best practices, simply modify the
     application code directly.</para>
     <para>First of all, open the <filename moreinfo="none">Cell.java</filename> file, which you'll find in the
     <filename moreinfo="none">gameoflife-core/src/main/java/com/wakaleo/gameoflife/domain</filename>
@@ -774,7 +774,7 @@ public enum Cell {
     }
 }</programlisting>
     <para>The application can print the state of the grid as a text array.
-    Currently, the application prints our live cells as an asterisk
+    Currently, the application prints your live cells as an asterisk
     (<literal moreinfo="none">*</literal>), and dead cells appear as a minus character
     (<literal moreinfo="none">–</literal>). So a five-by-five grid containing a single living
     cell in the center would look like this:</para>
@@ -782,7 +782,7 @@ public enum Cell {
 --*--
 -----</screen>
     <para>Now users have asked for a change to the application—they want
-    pluses (<literal moreinfo="none">+</literal>) instead of stars! So we are going to make a
+    pluses (<literal moreinfo="none">+</literal>) instead of stars! So you're going to make a
     slight change to the <code>Cell</code> class method, and rewrite it as
     follows (the modifications are in <userinput moreinfo="none">bold</userinput>):</para>
     <programlisting id="I_programlisting2_d1e2053" format="linespecific">package com.wakaleo.gameoflife.domain;
@@ -839,7 +839,7 @@ To git@github.com:john-smart/game-of-life.git
     second build in the <indexterm id="I_indexterm2_d1e2081" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>indicator for</tertiary></indexterm>build history with an ominous red ball (see <xref linkend="fig-new-job-failed"/>)—this tells you that the latest build has
     failed.</para>
     <para>You <indexterm id="I_indexterm2_d1e2093" significance="normal"><primary>build history</primary><secondary>results summary for</secondary></indexterm>might also notice some clouds next to the Build History
-    title—this is the same “weather” icon that we saw on the home page, and
+    title—this is the same “weather” icon that you saw on the home page, and
     serves the same purpose—to give you a general idea of how stable your
     build is over time.</para>
     <figure float="none" id="fig-new-job-failed">
@@ -891,8 +891,8 @@ To git@github.com:john-smart/game-of-life.git
     stack trace, how long the test has been broken, and how long it took to
     run. Often, this in itself is enough to put a developer on the right track
     towards<indexterm id="I_indexterm2_d1e2154" class="endofrange" startref="ch02-failure" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e2156" class="endofrange" startref="ch02-details" significance="normal"><primary/></indexterm> fixing<indexterm id="I_indexterm2_d1e2159" class="endofrange" startref="ch02-details2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm2_d1e2161" class="endofrange" startref="ch02-details3" significance="normal"><primary/></indexterm> the issue.</para>
-    <para>Now let’s fix the build. To make things simple, we’ll just back out
-    our changes and recommit the code in its original state (the end users
+    <para>Now let’s fix the build. To make things simple, you’ll just back out
+    your changes and recommit the code in its original state (the end users
     just changed their mind about the asterisks, anyway). So just undo the
     changes you made to the <literal moreinfo="none">Cell</literal> class (again, the changes
     are highlighted in <userinput moreinfo="none">bold</userinput>):</para>
@@ -942,7 +942,7 @@ To git@github.com:john-smart/game-of-life.git
     <para>Once you’ve committed these changes, Jenkins should pick them up and
     kick off a build. Once this is done, you'll be able to see the fruit of
     your work on the build job home page (see <xref linkend="fig-new-job-fixed-build"/>)—the build status is blue again and
-    all is well. Also notice the way we are building up a trend graph showing
+    all is well. Also notice the way you're building up a trend graph showing
     the number of succeeding unit tests over time—this sort of report really
     is one of Jenkins’s strong points.</para>
     <figure float="none" id="fig-new-job-fixed-build">
@@ -968,7 +968,7 @@ To git@github.com:john-smart/game-of-life.git
     <para>Jenkins can integrate Javadoc API documentation directly into the
     Jenkins website. This way, everyone can find the latest Javadoc easily, in
     a well known place. Often, this sort of task is performed in a separate
-    build job, but for simplicity we are going to add another build step to
+    build job, but for simplicity you're going to add another build step to
     the <emphasis>gameoflife-default</emphasis> build job to generate and
     display Javadoc documention for the Game of Life API.</para>
     <para>Start off by going into the “gameoflife-default” configuration
@@ -990,14 +990,14 @@ To git@github.com:john-smart/game-of-life.git
     <para>Now go to the “Post-build Action” and tick the “Publish Javadoc”
     checkbox. This project is a multimodule project, so a separate
     subdirectory is generated for each module (core, services, web and so
-    forth). For this example, we are interested in <phrase role="keep-together">displaying</phrase> the documentation for the core
+    forth). For this example, you're interested in <phrase role="keep-together">displaying</phrase> the documentation for the core
     module. In the Javadoc directory field, enter
     <userinput moreinfo="none">gameoflife-core/target/site/apidocs</userinput>—this is where
     Maven places the Javadocs it generates for the core module. Jenkins
     may display an error message saying that this directory doesn’t exist at
-    first. Jenkins is correct—this directory won’t exist until we run the
-    <literal moreinfo="none">javadoc:javadoc</literal> goal, but since we haven’t run this
-    command yet we can safely ignore the message at this stage.</para>
+    first. Jenkins is correct—this directory won’t exist until you run the
+    <literal moreinfo="none">javadoc:javadoc</literal> goal, but since you haven’t run this
+    command yet you can safely ignore the message at this stage.</para>
     <para>If you tick “Retain Javadoc for each successful build”, Jenkins
     also keeps track of the Javadocs for previous builds—not always useful, but
     it can come in handy at times.</para>
@@ -1024,7 +1024,7 @@ To git@github.com:john-smart/game-of-life.git
   <sect1 id="sect-first-steps-metrics">
     <title>Adding Code Coverage and Other Metrics</title>
     <para><indexterm class="startofrange" id="ch02-coberta1" significance="normal"><primary>code coverage metrics</primary><secondary sortas="Cobertura">with Cobertura</secondary></indexterm><indexterm class="startofrange" id="ch02-coberta2" significance="normal"><primary>Cobertura</primary></indexterm><indexterm class="startofrange" id="ch02-coberta4" significance="normal"><primary>reporting</primary><secondary>code coverage metrics</secondary></indexterm><indexterm id="I_indexterm2_d1e2297" significance="normal"><primary>build jobs</primary><secondary>code coverage metrics in</secondary><see>code coverage metrics</see></indexterm>As we mentioned earlier, reporting is one of Jenkins’s
-    strong points. We've seen how easy it is to display test results and to
+    strong points. You've seen how easy it is to display test results and to
     publish Javadocs, but you can also publish a large number of other very
     useful reports using Jenkins’s plugins.</para>
     <para>Plugins<indexterm class="startofrange" id="ch02-plugin" significance="normal"><primary>plugins</primary><secondary>installing</secondary></indexterm><indexterm id="I_indexterm2_d1e2312" significance="normal"><primary>installation</primary><secondary>plugins</secondary></indexterm><indexterm id="I_indexterm2_d1e2317" significance="normal"><primary>installation</primary><secondary>plugins</secondary><seealso>specific plugins</seealso></indexterm> are another one of Jenkins’s selling points—there are
@@ -1032,7 +1032,7 @@ To git@github.com:john-smart/game-of-life.git
     version control systems to <phrase role="keep-together">notification</phrase> mechanisms and reporting. In
     addition, Jenkins plugins are very easy to install and integrate smoothly
     into the existing Jenkins architecture.</para>
-    <para>To see how the plugins work, we are going to integrate code coverage
+    <para>To see how the plugins work, you're going to integrate code coverage
     metrics using the Cobertura plugin. Code coverage is an indication of how
     much of your application code is actually executed during your tests—it
     can be a useful tool in particular for finding areas of code that have not
@@ -1041,8 +1041,8 @@ To git@github.com:john-smart/game-of-life.git
     Development or Behavior-Driven Development.</para>
     <para><ulink url="http://cobertura.sourceforge.net">Cobertura</ulink> is
     an open source code coverage tool that works well with both Maven and
-    Jenkins. Our Maven demonstration project is already configured to record
-    code coverage metrics, so all we need to do is to install the Jenkins
+    Jenkins. Your Maven demonstration project is already configured to record
+    code coverage metrics, so all you need to do is to install the Jenkins
     Cobertura plugin and generate the code coverage metrics for Jenkins to
     record and display.</para>
     <figure float="0" id="fig-hudson-plugin-manager">
@@ -1064,7 +1064,7 @@ To git@github.com:john-smart/game-of-life.git
     installation (just open the Advanced tab in <xref linkend="fig-hudson-plugin-manager"/>), or by copying the plugin to the
     <filename moreinfo="none">$JENKINS_HOME/plugins</filename>
     directory.</para>
-    <para>In our case, we are interested in the Cobertura plugin, so go to the
+    <para>In your case, you're interested in the Cobertura plugin, so go to the
     Available tab and scroll down until you find the Cobertura Plugin entry in
     the Build Reports section. Click on the checkbox and then click on the
     Install button at the bottom of the screen.</para>
@@ -1076,16 +1076,16 @@ To git@github.com:john-smart/game-of-life.git
     <para>Once you've made sure the plugin was successfully installed, go to
     the configuration page for the <command moreinfo="none">gameoflife-default</command> build
     job.</para>
-    <para>To <indexterm id="I_indexterm2_d1e2365" significance="normal"><primary>build jobs</primary><secondary>steps in, adding</secondary></indexterm>set up code coverage metrics in our project, we need to do
-    two things. First we need to generate the Cobertura coverage data in an
-    XML form that Jenkins can use; then we need to configure Jenkins to
+    <para>To <indexterm id="I_indexterm2_d1e2365" significance="normal"><primary>build jobs</primary><secondary>steps in, adding</secondary></indexterm>set up code coverage metrics in your project, you need to do
+    two things. First you need to generate the Cobertura coverage data in an
+    XML form that Jenkins can use; then you need to configure Jenkins to
     display the coverage reports.</para>
     <para>Our Game of Life project already has been configured to generate XML
-    code coverage reports if we ask it. All you need to do is to run
+    code coverage reports if you ask it. All you need to do is to run
     <literal moreinfo="none">mvn cobertura:cobertura</literal> to generate the reports in XML
-    form. Cobertura can also generate HTML reports, but in our case we'll be
-    letting Jenkins take care of the reporting, so we can save on build time
-    by not generating the For this example, for simplicity, we'll just add
+    form. Cobertura can also generate HTML reports, but in your case you'll be
+    letting Jenkins take care of the reporting, so you can save on build time
+    by not generating the For this example, for simplicity, you'll just add
     the <literal moreinfo="none">cobertura:cobertura</literal> goal to the second build step
     (see <xref linkend="fig-hudson-cobertura-build-step"/>). You could also
     add a new build step just for the code coverage metrics. In a real-world
@@ -1103,17 +1103,17 @@ To git@github.com:john-smart/game-of-life.git
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Next, we need to tell Jenkins to keep track of our code coverage
+    <para>Next, you need to tell Jenkins to keep track of your code coverage
     metrics. Scroll down to the “Post-build Actions” section. You should see a
     new checkbox labeled Publish Cobertura Reports. Jenkins often adds UI
     elements like this when you install a new plugin. When you tick this box,
     Jenkins displays the configuration options for the Cobertura plugin
-    that we installed earlier (see <xref linkend="fig-hudson-cobertura-config"/>).</para>
+    that you installed earlier (see <xref linkend="fig-hudson-cobertura-config"/>).</para>
     <para>Like most of the code-quality related plugins in Jenkins, the
     Cobertura plugin lets you fine-tune not only the way Jenkins displays the
     report data, but also how it interprets the data. In the Coverage Metrics
     Targets section, you can define what you consider to be the minimum
-    acceptable levels of code coverage. In <xref linkend="fig-hudson-cobertura-config"/>, we've configured<indexterm id="I_indexterm2_d1e2398" significance="normal"><primary>unstable builds</primary><secondary>indicator for</secondary></indexterm><indexterm id="I_indexterm2_d1e2403" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>indicator for</tertiary></indexterm> Jenkins to list any builds with less than 50% test coverage
+    acceptable levels of code coverage. In <xref linkend="fig-hudson-cobertura-config"/>, you've configured<indexterm id="I_indexterm2_d1e2398" significance="normal"><primary>unstable builds</primary><secondary>indicator for</secondary></indexterm><indexterm id="I_indexterm2_d1e2403" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>indicator for</tertiary></indexterm> Jenkins to list any builds with less than 50% test coverage
     as “unstable” (indicated by a yellow ball), and notify the team
     accordingly.</para>
     <figure float="0" id="fig-hudson-cobertura-config">
@@ -1139,8 +1139,8 @@ To git@github.com:john-smart/game-of-life.git
     with Cobertura reporting activated, you'll see coverage statistics for
     your build displayed on the build home page, along with a Coverage Report
     link when you can go for more details (see <xref linkend="fig-hudson-initial-coverage-report"/>). The Cobertura report
-    shows different types of code coverage for the build we just ran. Since we
-    have only run the test coverage metrics once, the coverage will be
+    shows different types of code coverage for the build you just ran. Since you've
+    only run the test coverage metrics once, the coverage will be
     displayed as red and green bars.</para>
     <figure float="none" id="fig-hudson-initial-coverage-report">
       <title>Jenkins displays code coverage metrics on the build home
@@ -1197,8 +1197,8 @@ To git@github.com:john-smart/game-of-life.git
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Note that our objective here is not to improve the code coverage
-    just for the sake of improving code coverage—we are adding an extra test
+    <para>Note that your objective here is not to improve the code coverage
+    just for the sake of improving code coverage—you're adding an extra test
     to verify some code that was not previously tested, and as a result the
     code coverage goes up. There is a subtle but important difference
     here—code coverage, as with any other metric, is very much a means to an
@@ -1213,12 +1213,12 @@ To git@github.com:john-smart/game-of-life.git
   </sect1>
   <sect1 id="I_sect12_d1e2485">
     <title id="sect-first-steps-conclusion">Conclusion</title>
-    <para>In this chapter, we've gone through what you need to know to get
+    <para>In this chapter, you've gone through what you need to know to get
     started with Jenkins. You should be able to set up a new build job, and
     setting up reporting on JUnit test results and javadocs. And you've seen
     how to add a reporting plugin and keep tabs on code coverage. Well done!
     But there’s still a lot more to learn about Jenkins—in the following
-    chapters, we'll be looking at how Jenkins can help you improve your
+    chapters, you'll be looking at how Jenkins can help you improve your
     build automation process in many other areas as well.</para>
   </sect1>
 </chapter>
