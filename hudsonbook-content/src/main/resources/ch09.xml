@@ -55,7 +55,7 @@
     large numbers of existing Maven projects that you need to integrate into
     Jenkins, and you want to configure consistent code quality reporting
     across all of your projects.</para>
-    <para>In the rest of this chapter, we will see how to set up code quality
+    <para>In the rest of this chapter, we'll see how to set up code quality
     reporting in your Jenkins builds, and also how you can use it as an
     effective part of your build process.</para>
   </sect1>
@@ -80,15 +80,15 @@
     level. The effectiveness of these reports can be increased by a weekly
     code quality review, in which code quality issues and trends are discussed
     within the team.</para>
-    <para>It is important to run this job separately, because code coverage
-    analysis and many static analysis tools can be quite slow to run. It is
+    <para>It's important to run this job separately, because code coverage
+    analysis and many static analysis tools can be quite slow to run. It's
     also important to keep any code coverage tests well away from builds, as
     the code coverage process produces instrumented code which should never be
     deployed to a repository for production use.</para>
     <para>Code quality reporting is, by default, a relatively passive process.
     No one will know the state of the project if they don’t seek out the
     information on the build server. While this is better than nothing, if you
-    are serious about code quality, there is a better way. Rather than simply
+    are serious about code quality, there's a better way. Rather than simply
     reporting on code quality, set up a dedicated code quality build, which
     runs after the normal build and test, and configure the build to fail if
     code quality metrics are not at an acceptable level. You can do this in
@@ -116,7 +116,7 @@
     with Groovy or Grails, you can use CodeNarc, which checks Groovy coding
     practices and convention.</para>
     <para>All of these tools can be easily integrated into your build process.
-    In the following sections, we will look at how to set up these tools to
+    In the following sections, we'll look at how to set up these tools to
     generate the XML reports that Jenkins can then use for its own
     reporting.</para>
     <sect2>
@@ -145,13 +145,13 @@
       different organizations, teams and even projects have different
       requirements and preferences with regards to coding standards, and it's
       better to have a precise set of rules that can be adhered to, rather
-      than a broad set of rules that will be ignored. It is especially
+      than a broad set of rules that will be ignored. It's especially
       important where large legacy code bases are involved—in these cases, it
       is often better to start off with a more limited set of rules than to be
       overwhelmed with a large number of relatively minor formatting
       issues.</para>
       <figure float="none" id="fig-hudson-quality-checkstyle">
-        <title>It is easy to configure Checkstyle rules in Eclipse</title>
+        <title>It's easy to configure Checkstyle rules in Eclipse</title>
         <mediaobject id="I_mediaobject9_d1e12847">
           <imageobject role="print">
             <imagedata fileref="figs/print/jtdg_0901.pdf" format="PDF"/>
@@ -260,7 +260,7 @@
       and complexity, and good coding practices. Some typical rules include
       “Empty If Statement,” “Broken Null Check,” “Avoid Deeply Nested If
       Statements,” “Switch Statements Should Have Default,” and “Logger Is Not
-      Static Final.” There is a fair amount of overlap with some of the
+      Static Final.” There's a fair amount of overlap with some of the
       Checkstyle rules, though PMD does have some more technical rules, and
       more specialized ones such as rules related to JSF and Android.</para>
       <para>PMD <indexterm class="startofrange" id="ch09-cpd1" significance="normal"><primary>CPD</primary></indexterm><indexterm class="startofrange" id="ch09-cpd2" significance="normal"><primary>code quality metrics</primary><secondary sortas="CPD">with CPD</secondary></indexterm>also comes with CPD, a robust open source detector of
@@ -342,7 +342,7 @@
     &lt;/plugin&gt;
   &lt;/plugins&gt;
 &lt;/reporting&gt;</programlisting>
-      <para>If <indexterm id="I_indexterm9_d1e13031" significance="normal"><primary>Maven</primary><secondary>code quality metrics</secondary><tertiary sortas="PMD">with PMD and CPD</tertiary></indexterm>you're using Maven 3, you would place the plugin
+      <para>If <indexterm id="I_indexterm9_d1e13031" significance="normal"><primary>Maven</primary><secondary>code quality metrics</secondary><tertiary sortas="PMD">with PMD and CPD</tertiary></indexterm>you're using Maven 3, you'd place the plugin
       definition in the <code>&lt;maven-site-plugin&gt;</code> configuration
       section. This example also shows how to use a ruleset in another
       dependency (in this case the <filename moreinfo="none">pmd-rules.jar</filename>
@@ -393,7 +393,7 @@
       <para>Now, you can run either <literal moreinfo="none">mvn site</literal> or
       <literal moreinfo="none">mvn pmd:pmd pmd:cpd</literal> to generate the PMD and CPD
       reports.</para>
-      <para>Unfortunately there is currently no built-in Gradle support for
+      <para>Unfortunately there's currently no built-in Gradle support for
       PMD or CPD, so you have to fall back on invoking the PMD Ant plugin
       directly, as shown here:</para>
       <programlisting id="I_programlisting9_d1e13057" format="linespecific">configurations {
@@ -532,7 +532,7 @@ task pmd &lt;&lt; {
       <para>In both cases, you can generate the XML reports by running
       <literal moreinfo="none">mvn site</literal> or <literal moreinfo="none">mvn findbugs:findbugs</literal>.
       The XML reports will be placed in the <filename moreinfo="none">target</filename> directory.</para>
-      <para>At the time of writing there is no special support for FindBugs in
+      <para>At the time of writing there's no special support for FindBugs in
       Gradle, so you need to invoke the FindBugs<indexterm id="I_indexterm9_d1e13154" class="endofrange" startref="ch09-find1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm9_d1e13156" class="endofrange" startref="ch09-find2" significance="normal"><primary/></indexterm> Ant plugin.</para>
     </sect2>
     <sect2>
@@ -579,7 +579,7 @@ task pmd &lt;&lt; {
   <sect1 id="sect-violations">
     <title>Reporting on Code Quality Issues with the Violations Plugin</title>
     <para>One<indexterm class="startofrange" id="ch09-vio1" significance="normal"><primary>code quality metrics</primary><secondary sortas="Violations">with Violations plugin</secondary></indexterm><indexterm class="startofrange" id="ch09-vio2" significance="normal"><primary>Violations plugin</primary></indexterm><indexterm class="startofrange" id="ch09-vio3" significance="normal"><primary>plugins</primary><secondary>Violations</secondary></indexterm><indexterm class="startofrange" id="ch09-vio4" significance="normal"><primary>reporting</primary><secondary>code quality metrics</secondary><tertiary>Violations plugin for</tertiary></indexterm> of the most useful code quality plugins for Jenkins is the
-    Violations plugin. This plugin will not analyse your project source code
+    Violations plugin. This plugin won't analyse your project source code
     (you need to configure your build to do that), but it does a great job on
     reporting on the code quality metrics generated for individual builds and
     trends over time. The plugin caters for reports on code quality metrics
@@ -614,7 +614,7 @@ task pmd &lt;&lt; {
     Manager screen and select the Jenkins Violations plugin. Once you have
     installed the plugin and restarted Jenkins, you'll be able to use it for
     your projects.</para>
-    <para>The Violations plugin does not generate the code quality metrics
+    <para>The Violations plugin doesn't generate the code quality metrics
     data itself—you need to configure your built to do that, as shown in the
     previous section. An example of doing this for a Maven build job is
     illustrated in <xref linkend="fig-hudson-quality-goals"/>. Notice that
@@ -835,7 +835,7 @@ task pmd &lt;&lt; {
     <para>You <indexterm id="I_indexterm9_d1e13490" significance="normal"><primary>FindBugs</primary></indexterm><indexterm id="I_indexterm9_d1e13493" significance="normal"><primary>code quality metrics</primary><secondary sortas="FindBugs">with FindBugs</secondary></indexterm><indexterm id="I_indexterm9_d1e13498" significance="normal"><primary>reporting</primary><secondary>code quality metrics</secondary><tertiary sortas="FindBugs">with FindBugs</tertiary></indexterm><indexterm id="I_indexterm9_d1e13505" significance="normal"><primary>Checkstyle</primary></indexterm><indexterm id="I_indexterm9_d1e13508" significance="normal"><primary>PMD</primary></indexterm><indexterm id="I_indexterm9_d1e13511" significance="normal"><primary>code quality metrics</primary><secondary sortas="Checkstyle">with Checkstyle</secondary></indexterm><indexterm id="I_indexterm9_d1e13516" significance="normal"><primary>code quality metrics</primary><secondary sortas="PMD">with PMD</secondary></indexterm><indexterm id="I_indexterm9_d1e13521" significance="normal"><primary>reporting</primary><secondary>code quality metrics</secondary><tertiary sortas="Checkstyle">with Checkstyle</tertiary></indexterm><indexterm id="I_indexterm9_d1e13528" significance="normal"><primary>reporting</primary><secondary>code quality metrics</secondary><tertiary sortas="PMD">with PMD</tertiary></indexterm>can also report individually on results from Checkstyle,
     PMD, and FindBugs. In addition to the Violations plugin, there are also
     Jenkins plugins that produce trend graphs and detailed reports for each of
-    these tools individually. We will look at how to do this for Checkstyle,
+    these tools individually. We'll look at how to do this for Checkstyle,
     but the same approach also applies for PMD and FindBugs. You can even use
     the Analysis Collector Plugin to display the combined results in a graph
     similar to the one produced by the Violations plugin.</para>
@@ -920,7 +920,7 @@ task pmd &lt;&lt; {
     this metric, complex code typically has large numbers of nested
     conditional statements and loops, which make the code harder to understand
     and to debug.</para>
-    <para>There is also a code quality theory that correlates code complexity
+    <para>There's also a code quality theory that correlates code complexity
     and code coverage, to give a general idea of how reliable a particular
     piece of code is. This is based on the (very understandable) idea that
     code that's both complex and poorly tested is more likely to contain bugs
