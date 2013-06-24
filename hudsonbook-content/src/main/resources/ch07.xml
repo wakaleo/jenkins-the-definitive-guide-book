@@ -80,8 +80,8 @@
       </mediaobject>
     </figure>
     <para>This approach is obviously a little too simple for many
-    situations—it is useful for small teams working in close proximity, where
-    the aim is to know who’s changes caused (or broke) a particular build,
+    situations—it's useful for small teams working in close proximity, where
+    the aim is to know whose changes caused (or broke) a particular build,
     rather than to manage access in any more restrictive way. In the following
     sections, we will discuss the two orthogonal aspects of Jenkins security:
     identifying your users (Security Realms) and determining what they are
@@ -142,10 +142,10 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>A user appearing in this list cannot necessarily log on to
+      <para>A user appearing in this list can't necessarily log on to
       Jenkins. To be able to log on to Jenkins, the user account needs to be
       set up with a password. There are essentially two ways to do this. If
-      <indexterm id="I_indexterm7_d1e10234" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>enabling user sign-ups</tertiary></indexterm>you have activated the “Allow users to sign up” option,
+      <indexterm id="I_indexterm7_d1e10234" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>enabling user sign-ups</tertiary></indexterm>you've activated the “Allow users to sign up” option,
       users can simply sign up with their SCM user name and provide their
       email address and a password (see <xref linkend="hudson-security-simple"/>). Alternatively, you can activate a
       user by clicking on the Configure menu option in the user details
@@ -166,7 +166,7 @@
       work at acme.com, and user “joe” in your version control system has an
       email address of <emphasis>joe@acme.com</emphasis>), you can get Jenkins
       to derive the email address from a user name by adding a suffix that you
-      configure in the Email Notification section (see <xref linkend="fig-security-email-config"/>). If you have set up this sort of
+      configure in the Email Notification section (see <xref linkend="fig-security-email-config"/>). If you've set up this sort of
       configuration, you don’t need to specify the email address for new users
       unless it does not respect this convention.</para>
       <figure float="none" id="fig-security-email-config">
@@ -198,7 +198,7 @@
       <para>From here, you can view and edit the users who can log in to
       Jenkins (see <xref linkend="fig-hudson-user-database"/>). This includes
       both users that have signed up manually (if this option has been
-      activated) and SCM users that you have activated by configuring them
+      activated) and SCM users that you've activated by configuring them
       with a password. You can also edit a user’s details (for example
       modifying their email address or resetting their password), or even
       remove them from the list of active users. Doing this will not remove
@@ -234,10 +234,10 @@
       <para>To integrate Jenkins with your LDAP repository, Just select “LDAP”
       in the Security Realm section, and fill in the appropriate details about
       your LDAP server (see <xref linkend="fig-hudson-security-ldap"/>). The
-      most important field is the repository server. If you are using a
-      non-standard port, you will need to provide this as well (for example,
-      <filename moreinfo="none">ldap.acme.org:1389</filename>). Or, if you are
-      using LDAPS, you will need to specify this as well (for example,
+      most important field is the repository server. If you're using a
+      non-standard port, you'll need to provide this as well (for example,
+      <filename moreinfo="none">ldap.acme.org:1389</filename>). Or, if you're
+      using LDAPS, you'll need to specify this as well (for example,
       <filename moreinfo="none">ldaps://ldap.acme.org</filename>)</para>
       <para>If your server supports anonymous binding, this will probably be
       enough to get you started. If not, you can use the Advanced options to
@@ -247,8 +247,8 @@
       large, you may want to specify a root DN value (e.g., <literal moreinfo="none">dc=acme,
       dc=com</literal>) and/or a User and Group search base (e.g.,
       <literal moreinfo="none">ou=people</literal>) to narrow down the scope of user queries.
-      This is not usually required unless you notice performance issues. Or,
-      if your server does not support anonymous binding, you will need to
+      This isn't usually required unless you notice performance issues. Or,
+      if your server does not support anonymous binding, you'll need to
       provide a Manager DN and a Manager DN password, so that Jenkins can
       connect to the server to perform its queries.</para>
       <figure float="none" id="fig-hudson-security-ldap">
@@ -262,14 +262,14 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have set up LDAP as your Security Realm, you can
+      <para>Once you've set up LDAP as your Security Realm, you can
       configure your favorite security model as described previously. When
       users log on to Jenkins, they will be authenticated against the LDAP
       repository.</para>
-      <para>You <indexterm id="I_indexterm7_d1e10360" significance="normal"><primary>groups</primary><secondary>LDAP</secondary></indexterm>can also use LDAP groups, though the configuration is not
-      immediately obvious. Suppose you have defined a group called
+      <para>You <indexterm id="I_indexterm7_d1e10360" significance="normal"><primary>groups</primary><secondary>LDAP</secondary></indexterm>can also use LDAP groups, though the configuration isn't
+      immediately obvious. Suppose you've defined a group called
       JenkinsAdmin in your LDAP repository, with a DN of
-      <code>cn=JenkinsAdmin, ou-Groups, dc=acme, dc=com</code>. To refer to
+      <code>cn=JenkinsAdmin, ou=Groups, dc=acme, dc=com</code>. To refer to
       this group in Jenkins, you need to take the common name (cn) in
       uppercase, and prefix it with <literal moreinfo="none">ROLE_</literal>. So
       <code>cn=JenkinsAdmin</code> becomes <code>ROLE_JENKINSADMIN</code>. You
@@ -290,7 +290,7 @@
       <title>Using Microsoft Active Directory</title>
       <para>Microsoft Active Directory<indexterm class="startofrange" id="ch07-ad1" significance="normal"><primary>Microsoft Active Directory, as security realm</primary></indexterm><indexterm class="startofrange" id="ch07-ad2" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Microsoft Active Directory</tertiary></indexterm><indexterm class="startofrange" id="ch07-atlas3" significance="normal"><primary>Active Directory, Microsoft, as security realm</primary></indexterm> is a directory service product widely used in Microsoft
       architectures. Although Active Directory does provide an LDAP service,
-      it can be a little tricky to set up, and it is simpler to get Jenkins to
+      it can be a little tricky to set up, and it's simpler to get Jenkins to
       talk directly to the Active Directory server. Fortunately, there’s a
       plugin for that.</para>
       <para>The Jenkins Active Directory plugin lets<indexterm id="I_indexterm7_d1e10415" significance="normal"><primary>plugins</primary><secondary>Active Directory</secondary></indexterm> you configure Jenkins to authenticate against a Microsoft
@@ -308,7 +308,7 @@
       “joe@europe”.</para>
       <para>The advanced options let you specify a site name (to improve
       performance by restricting the domain controllers that Jenkins queries),
-      and a Binding DN and password, which come in handy if you are connecting
+      and a Binding DN and password, which come in handy if you're connecting
       to a multidomain forest. You need to provide a valid Binding DN and
       password values, that Jenkins can use to connect to your server so that
       it can establish the full identity of the user being authenticated. This
@@ -316,29 +316,29 @@
       automatically figure out that they are
       <emphasis>jack@europe.acme.com</emphasis> or
       <emphasis>jack@asia.acme.com</emphasis>. You need to <phrase role="keep-together">provide</phrase> the full user principal name with
-      domain name, like <emphasis>admin@europe.acme.com</emphasis>, or a
+      domain name, like <emphasis>admin@europe.acme.com</emphasis>, or an
       LDAP-style distinguished name, such as
       <literal moreinfo="none">CN=Administrator,OU=europe,DC=acme,DC=com</literal>.</para>
       <para>Another nice thing about this plugin is that it works both in a
-      Windows environment and in a Unix environment. So if Jenkins is running
+      Windows environment and in a Unix environment. So, if Jenkins is running
       on a Unix server, it can still authenticate against a Microsoft Active
       Directory service running on another machine.</para>
       <para>More precisely, if Jenkins is running on a Windows machine and you
-      do not specify a domain, that machine must be a member of the domain you
+      don't specify a domain, that machine must be a member of the domain you
       wish to authenticate against. Jenkins will use ADSI to figure out all
       the details, so no additional configuration is required.</para>
       <para>On a non-Windows machine (or you specify one or more domains), you
       need to tell Jenkins the name of Active Directory domain(s) to
       authenticate with. Jenkins then uses DNS SRV records and LDAP service of
       Active Directory to authenticate users.</para>
-      <para>Jenkins can determine which <indexterm id="I_indexterm7_d1e10462" significance="normal"><primary>groups</primary><secondary>Active Directory</secondary></indexterm>groups in Active Directory that the user belongs to, so
+      <para>Jenkins can determine which <indexterm id="I_indexterm7_d1e10462" significance="normal"><primary>groups</primary><secondary>Active Directory</secondary></indexterm>groups in Active Directory the user belongs to, so
       you can use these as part of your authorisation strategy. For example,
       you can use these groups in matrix-based security, or allow “Domain
       Admins” to administer <indexterm id="I_indexterm7_d1e10468" class="endofrange" startref="ch07-ad1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e10470" class="endofrange" startref="ch07-ad2" significance="normal"><primary/></indexterm>Jenkins.</para>
     </sect2>
     <sect2>
       <title>Using Unix Users and Groups</title>
-      <para>If <indexterm id="I_indexterm7_d1e10478" significance="normal"><primary>Unix</primary><secondary>users and groups, as security realm</secondary></indexterm><indexterm id="I_indexterm7_d1e10483" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Unix users and groups</tertiary></indexterm><indexterm id="I_indexterm7_d1e10490" significance="normal"><primary>groups</primary><secondary>Unix</secondary></indexterm>you are running Jenkins on a Unix machine, you can also
+      <para>If <indexterm id="I_indexterm7_d1e10478" significance="normal"><primary>Unix</primary><secondary>users and groups, as security realm</secondary></indexterm><indexterm id="I_indexterm7_d1e10483" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Unix users and groups</tertiary></indexterm><indexterm id="I_indexterm7_d1e10490" significance="normal"><primary>groups</primary><secondary>Unix</secondary></indexterm>you're running Jenkins on a Unix machine, you can also
       ask Jenkins to use the user and group accounts defined on this machine.
       In this case, users will log into Jenkins using their Unix account
       logins and passwords. This uses Pluggable Authentication Modules (PAM),
@@ -351,7 +351,7 @@
     <sect2>
       <title>Delegating to the Servlet Container</title>
       <para>Another <indexterm id="I_indexterm7_d1e10503" significance="normal"><primary>Servlet container</primary><secondary>as security realm</secondary></indexterm><indexterm id="I_indexterm7_d1e10508" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>Servlet container</tertiary></indexterm>way to identify Jenkins users is to let your Servlet
-      container do it for you. This approach is useful if you are running
+      container do it for you. This approach is useful if you're running
       Jenkins on a Servlet container such as <indexterm id="I_indexterm7_d1e10516" significance="normal"><primary>Tomcat Servlet container</primary></indexterm>Tomcat or <indexterm id="I_indexterm7_d1e10520" significance="normal"><primary>GlassFish Servlet container</primary></indexterm>GlassFish, and you already have an established way to
       integrate the Servlet container with your local enterprise user
       directory. Tomcat, for example, allows you to authenticate users against
@@ -360,7 +360,7 @@
       Servlet container’s user directory for use with Matrix and Project-based
       authorization <phrase role="keep-together">strategies</phrase>.</para>
       <para>In Jenkins, this is easy to configure—just select this option in
-      the Security Realm section (see <xref linkend="fig-hudson-security-container"/>). Once you have done this,
+      the Security Realm section (see <xref linkend="fig-hudson-security-container"/>). Once you've done this,
       Jenkins will let the server take care of everything.</para>
       <figure float="none" id="fig-hudson-security-container">
         <title>Selecting the security realm</title>
@@ -389,11 +389,11 @@
       set up a new Generic Application called “hudson” (or something similar),
       and step through the tabs. In the Connections tab, you need to provide
       the IP address of your Jenkins server. Then map the Crowd directories
-      that you will be using to retrieve Jenkins user accounts and group
-      information. Finally, you will need to tell Crowd which users from these
+      that you'll be using to retrieve Jenkins user accounts and group
+      information. Finally, you'll need to tell Crowd which users from these
       directories can connect to Jenkins. One option is to allow all users to
       authenticate, and let Jenkins sort out the details. Alternatively, you
-      can list the Crown user groups who are allowed to connect to
+      can list the Crowd user groups who are allowed to connect to
       Jenkins.</para>
       <figure float="0" id="fig-hudson-security-cloud-app">
         <title>Using Atlassian Crowd as the Jenkins Security Realm</title>
@@ -406,7 +406,7 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have set this up, you need to install the Jenkins Crowd
+      <para>Once you've set this up, you need to install the Jenkins Crowd
       plugin, which you do as usual via the Jenkins Plugin Manager. Once you
       have installed the plugin and restarted Jenkins, you can define Crowd as
       your Security Realm in the main Jenkins configuration screen (see <xref linkend="fig-hudson-security-crowd"/>).</para>
@@ -447,7 +447,7 @@
       Collabnet Source Forge Enterprise Edition (SFEE) server.</para>
       <para>If <indexterm class="startofrange" id="ch07-cust" significance="normal"><primary>security</primary><secondary>security realms</secondary><tertiary>customizing</tertiary></indexterm><indexterm class="startofrange" id="ch07-cust2" significance="normal"><primary>plugins</primary><secondary>Script Security Realm</secondary></indexterm><indexterm class="startofrange" id="ch07-cust3" significance="normal"><primary>Script Security Realm plugin</primary></indexterm><indexterm class="startofrange" id="ch07-cust4" significance="normal"><primary>scripts</primary><secondary>custom authentication scripts</secondary></indexterm>no plugin is available, you can also write your own custom
       authentication script. To do this, you need to install the Script
-      Security Realm plugin. Once you have installed the script and restarted
+      Security Realm plugin. Once you've installed the script and restarted
       Jenkins, you can write two scripts in your favorite scripting language.
       One script authenticates users, whereas the other determines the groups
       of a given user (see <xref linkend="fig-hudson-security-scripts"/>).</para>
@@ -491,7 +491,7 @@ def authenticate(def username, def password) {
       authentication without groups. If you want to use groups from your
       custom authentication source in your Matrix-<phrase role="keep-together">based</phrase> or Project-based authorizations (see
       <xref linkend="sect-authorization"/>), you can write a second script,
-      which determines the groups for a given user. This groups uses the U
+      which determines the groups for a given user. This script uses the U
       environment variable to determine which user is trying to log on, and
       prints a comma-separated list of groups for this user to the standard
       output. If you don’t like commas, you can override the separating
@@ -513,7 +513,7 @@ def findGroupsFor(def username) {
   </sect1>
   <sect1 id="sect-authorization">
     <title>Authorization—Who Can Do What</title>
-    <para>Once you have defined how to identify your users, you need to decide
+    <para>Once you've defined how to identify your users, you need to decide
     what they are allowed to do. Jenkins supports a variety of strategies in
     this area, ranging from a simple approach where a logged-in user can do
     anything to more involved roles and project-based authentication
@@ -536,7 +536,7 @@ def findGroupsFor(def username) {
         the purpose. If you want to create a dedicated administrator user,
         simply create one by signing up in the usual way (see <xref linkend="fig-hudson-user-signup"/>). It doesn’t have to be associated
         with an SCM user.</para>
-        <para>Once you have your admin user ready, you can activate
+        <para>Once you've your admin user ready, you can activate
         matrix-based security by selecting “Matrix-based security” in the
         Authorization section of the main configuration page. Jenkins will
         display a table containing authorized users, and checkboxes
@@ -579,9 +579,9 @@ def findGroupsFor(def username) {
       </sect3>
       <sect3>
         <title>Fine-tuning user permissions</title>
-        <para>Once you have set up your administrator account, you can add any
+        <para>Once you've set up your administrator account, you can add any
         other users that need to access your Jenkins instance. Simply add the
-        user names and tick the permissions you want to grant them (see <xref linkend="fig-hudson-matrix-users"/>). If you are using an LDAP server
+        user names and tick the permissions you want to grant them (see <xref linkend="fig-hudson-matrix-users"/>). If you're using an LDAP server
         or Unix users and groups as the underlying authentication schema (see
         <xref linkend="sec-security-ldap"/>), you can also configure
         permissions for groups of users.</para>
@@ -680,7 +680,7 @@ def findGroupsFor(def username) {
                   <term>Configure</term>
                   <listitem>
                     <para>Update the configuration of an existing build
-                    jobs.</para>
+                    job.</para>
                   </listitem>
                 </varlistentry>
                 <varlistentry>
@@ -807,7 +807,7 @@ def findGroupsFor(def username) {
         <para>Now it may happen that, during this process, you may end up
         locking yourself out of Jenkins. This can happen if, for example, you
         save the matrix configuration without having correctly set up your
-        administrator. If this happens, do not panic—there is an easy fix, as
+        administrator. If this happens, don't panic—there is an easy fix, as
         long as you have access to Jenkins’s home directory. Simply open up
         the <filename moreinfo="none">config.xml</filename> file at the root
         of the Jenkins home directory. This will contain something like
@@ -896,7 +896,7 @@ def findGroupsFor(def username) {
       writing, there is no way to revoke a system-wide permission for a
       particular project. For example, if the anonymous user has read-access
       to build jobs at the system level, you can’t revoke read-only access for
-      an individual project. So when using project-based security, use the
+      an individual project. So, when using project-based security, use the
       system level matrix to define minimum default permissions applicable
       across all of your projects, and set up projects with additional
       project-specific authorizations.</para>
@@ -922,7 +922,7 @@ def findGroupsFor(def username) {
       </figure>
       <para>It is worth noting that, whenever large and/or multiple teams are
       involved, the internal Jenkins database reaches its limits quite
-      quickly, and it is worth considering integrating with a more specialized
+      quickly, and it's worth considering integrating with a more specialized
       directory service such as an LDAP server, Active Directory or Atlassian
       Crowd, or possibly a more sophisticated permission system such as
       role-based security, discussed in the following <indexterm id="I_indexterm7_d1e11137" class="endofrange" startref="ch07-proj1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11139" class="endofrange" startref="ch07-proj2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11141" class="endofrange" startref="ch07-proj3" significance="normal"><primary/></indexterm>section.</para>
@@ -947,7 +947,7 @@ def findGroupsFor(def username) {
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have set this up, you can define roles that regroup sets
+      <para>Once you've set this up, you can define roles that regroup sets
       of related permissions. You set up and configure your roles, and assign
       these roles to your users, in the Manage Roles screen, which you can
       access in the Manage Jenkins screen (see <xref linkend="fig-hudson-security-manage-roles-menu"/>).</para>
@@ -999,7 +999,7 @@ def findGroupsFor(def username) {
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Once you have defined these roles, you can go to the Assign Roles
+      <para>Once you've defined these roles, you can go to the Assign Roles
       screen to set up individual users or groups with these roles (see <xref linkend="fig-hudson-security-assign-roles"/>).</para>
       <figure float="0" id="fig-hudson-security-assign-roles">
         <title>Assigning roles to users</title>
@@ -1012,7 +1012,7 @@ def findGroupsFor(def username) {
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Role-based strategy is relatively new in Jenkins, but it is an
+      <para>Role-based strategy is relatively new in Jenkins, but it's an
       excellent way to simplify the task of managing permissions in large,
       multiteam and<indexterm id="I_indexterm7_d1e11241" class="endofrange" startref="ch07-role1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11243" class="endofrange" startref="ch07-role2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm7_d1e11245" class="endofrange" startref="ch07-role3" significance="normal"><primary/></indexterm> multiproject organizations.</para>
     </sect2>
@@ -1110,14 +1110,14 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
     <para>There are a few other useful options in the Advanced section. The
     “Save system configuration changes” checkbox lets you keep track of
     system-wide configuration updates, and not just job-specific ones. And the
-    “Do not save duplicate history” checkbox allows you to avoid recording
+    “Don't save duplicate history” checkbox allows you to avoid recording
     configuration updates if no actual changes have been made. If not, a new
-    version of the configuration will be recorded, even if you have only
+    version of the configuration will be recorded, even if you've only
     pressed the Save button without making any changes. Jenkins can also cause
     this to happen internally—for example, system configuration settings are
     all saved whenever the main configuration page is saved, even if no
     changes have been made.</para>
-    <para>Once you have set up this plugin, you can access the configuration
+    <para>Once you've set up this plugin, you can access the configuration
     history both for the whole server, including system configuration updates,
     as well as the changes made to the configuration of each project. In both
     cases, you can view these changes by clicking on the Job Config History
@@ -1139,7 +1139,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
     suffix in the list), Jenkins takes you to a screen that lists all of the
     versions of that file, and allows you to view the differences between the
     different versions (see <xref linkend="fig-hudson-jobconfig-config-history"/>). The differences are
-    displayed as <emphasis>diff</emphasis> files, which is not particularly
+    displayed as <emphasis>diff</emphasis> files, which isn't particularly
     readable in itself. However, for small changes, the readable XML format of
     most of the Jenkins configuration files makes this sufficient to
     understand what changes were made.</para>
@@ -1157,7 +1157,7 @@ Dec 27, 2010 9:28:15 AM /configSubmit by johnsmart</programlisting>
     <para>The JobConfigHistory plugin is a powerful tool. However, at the time
     of writing, it does have its limits. As mentioned, the plugin only
     displays the differences in raw <filename moreinfo="none">diff</filename> format, and you
-    can’t restore a previous version of a configuration file (those doing this
+    can’t restore a previous version of a configuration file (doing this
     out of context could be dangerous in some circumstances, particularly for
     system-wide configuration files). Nevertheless, it gives a very clear
     picture of the changes that have been made, both to your build jobs and to

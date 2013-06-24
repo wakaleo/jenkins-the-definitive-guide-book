@@ -4,12 +4,12 @@
   <title>Maintaining Jenkins</title>
   <sect1 id="sect-maint-introduction">
     <title>Introduction</title>
-    <para><indexterm class="startofrange" id="ch13-maint" significance="normal"><primary>maintenance</primary></indexterm><indexterm class="startofrange" id="ch13-maint2" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary></indexterm>In this chapter, we will be discussing a few tips and tricks
+    <para><indexterm class="startofrange" id="ch13-maint" significance="normal"><primary>maintenance</primary></indexterm><indexterm class="startofrange" id="ch13-maint2" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary></indexterm>In this chapter, we'll be discussing a few tips and tricks
     that you might find useful when maintaining a large Jenkins instance. We
     will look at things like how to limit, and keep tabs on, disk usage, how
     to give Jenkins enough memory and how to archive build jobs or migrate
     them from one server to another. Some of these topics are discussed
-    elsewhere in the book, but here we will be looking at things from the
+    elsewhere in the book, but here we'll be looking at things from the
     point of view of the system administrator.</para>
   </sect1>
   <sect1 id="sect-maint-disk-space">
@@ -28,7 +28,7 @@
     (i.e., no more than 20 builds) or by date (i.e., builds no older than 30
     days). It does this intelligently, though: if there has ever been a
     successful build, Jenkins will always keep at least the latest successful
-    build as part of its build history, so you will never loose your last
+    build as part of its build history, so you'll never loose your last
     successful build.</para>
     <figure float="0" id="fig-maintenance-discard-old-builds">
       <title>Discarding old builds</title>
@@ -46,7 +46,7 @@
     of test results and build metrics. If you limit the number of builds to be
     kept to twenty, for example, Jenkins will only display graphs containing
     the last twenty data points, which can be a bit limited. This sort of
-    information can be very useful to the developers, but it is often good to
+    information can be very useful to the developers, but it's often good to
     be able to see how the project metrics are doing throughout the whole life
     of the project, not just over the last week or two.</para>
     <para>Fortunately, Jenkins has a work-around that can keep both developers
@@ -83,7 +83,7 @@
       the amount of disk space used by your projects. It lets you isolate and
       fix projects that are using too much disk space.</para>
       <para>You can install the Disk Usage plugin in the usual way, from the
-      Plugin Manager screen. Once you have installed the plugin and restarted
+      Plugin Manager screen. Once you've installed the plugin and restarted
       Jenkins, the Disk Usage plugin will record the amount of disk space used
       by each project. It will also add a Disk Usage link on the Manage
       Jenkins screen, which you can use to display the overall disk usage for
@@ -227,7 +227,7 @@
     JavaMelody to produce comprehensive HTML reports about the state of your
     build server, including CPU and system load, average response time, and
     memory usage (see <xref linkend="fig-jenkins-monitoring-pluging"/>). Once
-    you have installed this plugin, you can access the JavaMelody graphs from
+    you've installed this plugin, you can access the JavaMelody graphs from
     the Manage Jenkins screen, using the “Monitoring of Jenkins/Jenkins
     master” or “Jenkins/Jenkins nodes” <indexterm id="I_indexterm13_d1e17906" class="endofrange" startref="ch13-server1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e17908" class="endofrange" startref="ch13-server2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm13_d1e17910" class="endofrange" startref="ch13-server3" significance="normal"><primary/></indexterm>menu entries.</para>
     <figure float="0" id="fig-jenkins-monitoring-pluging">
@@ -246,7 +246,7 @@
     <title>Backing Up Your Configuration</title>
     <para>Backing<indexterm class="startofrange" id="ch13-backups" significance="normal"><primary>backups</primary></indexterm><indexterm class="startofrange" id="ch13-backups2" significance="normal"><primary>maintenance</primary><secondary>backups</secondary></indexterm><indexterm class="startofrange" id="ch13-backups3" significance="normal"><primary>Jenkins</primary><secondary>maintenance of</secondary><tertiary>backups</tertiary></indexterm> up your data is a universally recommended practice, and
     your Jenkins server should be no exception. Fortunately, backing up
-    Jenkins is relatively easy. In this section, we will look at a few ways to
+    Jenkins is relatively easy. In this section, we'll look at a few ways to
     do this.</para>
     <sect2>
       <title>Fundamentals of Jenkins Backups</title>
@@ -315,10 +315,10 @@
       <para>The <filename moreinfo="none">builds</filename> directory, on the
       other hand, needs more attention. This directory contains the history of
       your build results and previously-generated artifacts, with a
-      time-stamped directory for each previous build. If you are not
+      time-stamped directory for each previous build. If you're not
       interested in restoring build history or past artifacts, you don’t need
       to store this directory. If you are, read on! In each of these
-      directories, you will find the build history (stored in the form of XML
+      directories, you'll find the build history (stored in the form of XML
       files such as JUnit test results) and archived artifacts. Jenkins uses
       the XML and text files to produce the graphs it displays on the build
       job dashboard, so if these are important to you, you should store these
@@ -327,11 +327,11 @@
       These binaries may or may not be important to you, but they can take up
       a lot of space, so if you exclude them from your backups, you may be
       able to save a considerable amount of space.</para>
-      <para>Just as it is wise to make frequent backups, it is also wise to
+      <para>Just as it's wise to make frequent backups, it's also wise to
       test your backup procedure. With Jenkins, this is easy to do. Jenkins
       home directories are totally portable, so all you need to do to test
       your backup is to extract your backup into a temporary directory and run
-      an instance of Jenkins against it. For example, imagine we have
+      an instance of Jenkins against it. For example, imagine we've
       extracted our backup into a temporary directory called <filename moreinfo="none">/tmp/jenkins-backup</filename>. To test this backup,
       first set the <filename moreinfo="none">JENKINS_HOME</filename> directory to this
       temporary directory:</para>
@@ -446,7 +446,7 @@
     directory out of the job directory. Of course, typically, you would
     compress it into a ZIP file or a tarball first.</para>
     <para>In the following example, we want to archive the
-    <emphasis>tweeter-default</emphasis> project. So first we go to the
+    <emphasis>tweeter-default</emphasis> project. So, first we go to the
     Jenkins <filename moreinfo="none">jobs</filename> directory and create a
     tarball (compressed archive) of the <filename moreinfo="none">tweeter-default</filename> build job directory:</para>
     <screen format="linespecific">$ <userinput moreinfo="none">cd $JENKINS_HOME/jobs</userinput>
@@ -455,12 +455,12 @@ gameoflife-default      tweeter-default
 $ <userinput moreinfo="none">tar czf tweeter-default.tgz tweeter-default</userinput>
 $ <userinput moreinfo="none">ls</userinput>
 gameoflife-default      tweeter-default         tweeter-default.tgz</screen>
-    <para>As long as the project you want to archive is not running, you can
+    <para>As long as the project you want to archive isn't running, you can
     now safely delete the project directory and move the archive into
     storage:</para>
     <screen format="linespecific">$ <userinput moreinfo="none">rm -Rf tweeter-default</userinput>
 $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</userinput></screen>
-    <para>Once you have done this, you can simply reload the configuration
+    <para>Once you've done this, you can simply reload the configuration
     from the disk in the Manage Jenkins screen (see <xref linkend="fig-maintenance-reload-configuration"/>). The archived project
     will promptly disappear from your dashboard.</para>
     <figure float="none" id="fig-maintenance-reload-configuration">
@@ -483,9 +483,9 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     from one Jenkins instance to another, without copying the entire Jenkins
     configuration. For example, you might be migrating your build jobs to a
     Jenkins instance on a brand new box, with system configuration details
-    that vary from the original machine. Or you might be restoring an old
+    that vary from the original machine. Or, you might be restoring an old
     build job that you have archived.</para>
-    <para>As we have seen, Jenkins stores all of the data it needs for a
+    <para>As we've seen, Jenkins stores all of the data it needs for a
     project in a subdirectory of the <filename moreinfo="none">jobs</filename>
     directory in your Jenkins home directory. This subdirectory is easy to
     <phrase role="keep-together">identify—</phrase>it has the same name as
@@ -496,14 +496,14 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     <para>You can copy or move build jobs between instances of projects simply
     enough by copying or moving the build job directories to the new Jenkins
     instance. The project job directory is self-contained—it contains both the
-    full project configuration and all the build history. It is even safe
+    full project configuration and all the build history. It's even safe
     enough to copy build job directories to a running Jenkins instance, though
-    if you are also deleting them from the original server, you should shut
+    if you're also deleting them from the original server, you should shut
     this one down first. You don’t even need to restart the new Jenkins
     instance to see the results of your import—just go to the Manage Jenkins
     screen and click on Reload Configuration From Disk. This will load the new
     jobs and make them immediately visible on the Jenkins dashboard.</para>
-    <para>There are a few gotchas, however. If you are migrating your jobs to
+    <para>There are a few gotchas, however. If you're migrating your jobs to
     a brand new Jenkins configuration, remember to install, or migrate, the
     plugins from your original server. The plugins can be found in the
     <filename moreinfo="none">plugins</filename> directory, so you can simply
@@ -523,7 +523,7 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     longer understand these parts of the project configuration. The same thing
     can also sometimes happen if the plugin versions are very different on the
     machines, and the data format used by the plugin has changed.</para>
-    <para>If you are migrating jobs to a Jenkins instance with a different
+    <para>If you're migrating jobs to a Jenkins instance with a different
     configuration, it also pays to keep an eye on the system logs. Invalid
     plugin configurations will usually let you know through warnings or
     exceptions. While not always fatal, these error messages often mean that
@@ -533,7 +533,7 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     date or invalid, it will tell you so. On the Manage Jenkins screen, you
     will get a message like the one in <xref linkend="fig-jenkins-new-version"/>.</para>
     <figure float="0" id="fig-jenkins-new-version">
-      <title>Jenkins will inform you if your data is not compatible with the
+      <title>Jenkins will inform you if your data isn't compatible with the
       current version</title>
       <mediaobject id="I_mediaobject13_d1e18282">
         <imageobject role="print">
@@ -546,7 +546,7 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     </figure>
     <para>From here, you can choose to either leave the configuration as it is
     (just in case you roll back to a previous version of your Jenkins
-    instance, for example), or let Jenkins discard the fields it cannot read.
+    instance, for example), or let Jenkins discard the fields it can't read.
     If you choose this option, Jenkins will bring up a screen containing more
     details about the error, and can even help tidy up your project
     configuration files if you wish (see <xref linkend="fig-jenkins-manage-old-data"/>).</para>
@@ -563,13 +563,13 @@ $ <userinput moreinfo="none">mv tweeter-default.tgz /data/archives/jenkins</user
     </figure>
     <para>This screen gives you more details about the project containing the
     dodgy data, as well as the exact error message. This gives you several
-    options. If you are sure that you no longer need the plugin that
+    options. If you're sure that you no longer need the plugin that
     originally created the data, you can safely remove the redundant fields by
     clicking on the Discard Unreadable Data button. Alternatively, you may
     decide that the fields belong to a useful plugin that hasn’t yet been
     installed on the new Jenkins instance. In this case, install the plugin
     and all should be well. Finally, you can always choose to leave the
-    redundant data and live with the error message, at least until you are
+    redundant data and live with the error message, at least until you're
     sure that you won’t need to migrate the job back to the old server some
     day.</para>
     <para>However, Jenkins doesn’t always detect all of the errors or
