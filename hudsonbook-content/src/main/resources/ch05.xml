@@ -4,8 +4,8 @@
   <title>Setting Up Your Build Jobs</title>
   <sect1 id="sect-build-jobs-introduction">
     <title>Introduction</title>
-    <para><indexterm id="I_indexterm5_d1e4965" significance="normal"><primary>build jobs</primary></indexterm>Build jobs are the basic currency of a Continuous
-    Integration server.</para>
+    <para><indexterm id="I_indexterm5_d1e4965" significance="normal"><primary>build jobs</primary></indexterm>Build jobs are the basic currency of a CI
+    server.</para>
     <para>A build job is a particular way of compiling, testing, packaging,
     deploying or otherwise doing something with your project. Build jobs come
     in a variety of forms; you may want to compile and unit test your
@@ -81,7 +81,7 @@
       </mediaobject>
     </figure>
     <para>You <indexterm id="I_indexterm5_d1e5071" significance="normal"><primary>build jobs</primary><secondary>copying</secondary></indexterm>can also copy an existing job, which is a great way to
-    create a new job that is very similar to an existing build job, except for
+    create a new job that's very similar to an existing build job, except for
     a few configuration details.</para>
     <para>In this chapter, we will focus on the first two types of build jobs,
     which are the most commonly used. We will discuss the others later on.
@@ -110,7 +110,7 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>The <indexterm id="I_indexterm5_d1e5108" significance="normal"><primary>freestyle build jobs</primary><secondary>naming</secondary></indexterm>project name can be anything you like, but it is worth
+      <para>The <indexterm id="I_indexterm5_d1e5108" significance="normal"><primary>freestyle build jobs</primary><secondary>naming</secondary></indexterm>project name can be anything you like, but it's worth
       noting that it will be used for the project directory and the build job
       URL, so I generally avoid names with spaces. The <indexterm id="I_indexterm5_d1e5114" significance="normal"><primary>freestyle build jobs</primary><secondary>description of, for project home page</secondary></indexterm>project description will go on the project home page—use
       this to provide an overview of the build job’s goals and context. HTML
@@ -182,7 +182,7 @@
       lets you override the system-wide quiet period defined in the Jenkins
       System Configuration screen (see <xref linkend="sect-configuration-system"/>). This option is mainly used for
       version control systems that don’t support atomic commits, such as
-      <indexterm id="I_indexterm5_d1e5185" significance="normal"><primary>CVS</primary><secondary>delaying build jobs</secondary></indexterm>CVS, but it is also sometimes used in teams where
+      <indexterm id="I_indexterm5_d1e5185" significance="normal"><primary>CVS</primary><secondary>delaying build jobs</secondary></indexterm>CVS, but it's also sometimes used in teams where
       developers have the habit of committing their work in several small
       commits.</para>
       <para>The<indexterm id="I_indexterm5_d1e5193" significance="normal"><primary>freestyle build jobs</primary><secondary>blocking for upstream projects</secondary></indexterm> “Block build when upstream project is building” option is
@@ -197,19 +197,19 @@
       project. When we release a new version of this project, both the core
       and the web application version numbers will be updated (see <xref linkend="fig-hudson-new-job-version-updates"/>). Before we can build
       the web application, we need to build a new version of the original Game
-      of Life core module. However if you had a separate freestyle build job
+      of Life core module. However, if you had a separate freestyle build job
       for each module, then the build jobs for both the core and the web
       application would start simultaneously. The web application build job
       will fail if the core build job hasn’t produced a new version of the
       core module for it, even if there are no test failures.</para>
       <para>To avoid this issue, you could set up the web application build
       job to <emphasis>only</emphasis> start once the core build has
-      successfully terminated. However this would mean that the web
+      successfully terminated. However, this would mean that the web
       application would never be built if changes were made that only affected
       it, and not the core module. A better approach is to use the “Block
       build when upstream project” option. In this case, when the version
       numbers are updated in version control, Jenkins will schedule both
-      builds to be executed. However it will wait until the core build has
+      builds to be executed. However, it will wait until the core build has
       finished before starting the web application build.</para>
       <figure float="none" id="fig-hudson-new-job-version-updates">
         <title>The “Block build when upstream project is building” option is
@@ -241,7 +241,7 @@
   </sect1>
   <sect1 id="sect-subversion">
     <title>Configuring Source Code Management</title>
-    <para>In<indexterm class="startofrange" id="ch05-scm" significance="normal"><primary>SCM (Source Code Management)</primary></indexterm> its most basic role, a Continuous Integration server
+    <para>In<indexterm class="startofrange" id="ch05-scm" significance="normal"><primary>SCM (Source Code Management)</primary></indexterm> its most basic role, a CI server
     monitors your version control system, and checks out the latest changes as
     they occur. The server then compiles and tests the most recent version of
     the code. Alternatively, it may simply check out and build the latest
@@ -279,7 +279,7 @@
       </figure>
       <para>By default, Jenkins will check out the repository contents into a
       subdirectory of your workspace, whose name will match the last element
-      in the Subversion URL. So if your Subversion URL is <ulink url="svn://localhost/gameoflife/trunk"/>, Jenkins will check out
+      in the Subversion URL. So, if your Subversion URL is <ulink url="svn://localhost/gameoflife/trunk"/>, Jenkins will check out
       the repository contents to a directory called <filename moreinfo="none">trunk</filename> in the build job workspace. If you
       would prefer another directory name, just enter the directory name you
       want in the <command moreinfo="none">Local module directory</command>
@@ -298,7 +298,7 @@
       finished with them. This is also an important part of ensuring a clean
       and reproducible build <phrase role="keep-together">process—</phrase>for
       a given version of your source code, your build should behave in exactly
-      the same way, no matter where or when it is run. Locally changed source
+      the same way, no matter where or when it's run. Locally changed source
       code files, and the presence of temporary files, both have the potential
       of compromising this.</para>
       <para>You can fine-tune the way Jenkins obtains the latest source code
@@ -318,7 +318,7 @@
       clean copy for each build.</para>
       <para>Another<indexterm id="I_indexterm5_d1e5322" significance="normal"><primary>source code browsers</primary><secondary sortas="Subversion">with Subversion</secondary></indexterm><indexterm id="I_indexterm5_d1e5327" significance="normal"><primary>freestyle build jobs</primary><secondary>Subversion used with</secondary><tertiary>source code browsers for</tertiary></indexterm><indexterm id="I_indexterm5_d1e5334" significance="normal"><primary>Subversion</primary><secondary>source code browsers for</secondary></indexterm> very useful feature is Jenkins’s integration with source
       code browsers. A good source code browser is an important part of your
-      Continuous Integration setup. It lets you see at a glance what changes
+      CI setup. It lets you see at a glance what changes
       triggered a given build, which is very useful when it comes to
       troubleshooting broken builds (see <xref linkend="fig-hudson-new-job-diff"/>). Jenkins integrates with most of
       the major source code browsers, including open source tools such as
@@ -346,11 +346,11 @@
       <programlisting id="I_programlisting5_d1e5368" format="linespecific">/trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.jpg
 /trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.gif
 /trunk/gameoflife/gameoflife-web/src/main/webapp/.*\.png</programlisting>
-      <para>Alternatively, you can specify the Included Regions, if you are
+      <para>Alternatively, you can specify the Included Regions, if you're
       only interested in changes in part of the source code directory
       structure. You can even combine the Excluded Regions and Included
       Regions fields—in this case a modified file will only trigger a build if
-      it is in the Included Regions but not in the Excluded Regions.</para>
+      it's in the Included Regions but not in the Excluded Regions.</para>
       <para>You <indexterm id="I_indexterm5_d1e5375" significance="normal"><primary>freestyle build jobs</primary><secondary>Subversion used with</secondary><tertiary>excluding users from triggering</tertiary></indexterm><indexterm id="I_indexterm5_d1e5382" significance="normal"><primary>users</primary><secondary>excluding from triggering builds</secondary></indexterm><indexterm id="I_indexterm5_d1e5387" significance="normal"><primary>Subversion</primary><secondary>excluding users from triggering builds</secondary></indexterm>can also ignore changes coming from certain users
       (Excluded Users), or with certain <indexterm id="I_indexterm5_d1e5393" significance="normal"><primary>commit messages, excluding from triggering build
           jobs</primary></indexterm><indexterm id="I_indexterm5_d1e5396" significance="normal"><primary>freestyle build jobs</primary><secondary>Subversion used with</secondary><tertiary>excluding commit messages from triggering</tertiary></indexterm><indexterm id="I_indexterm5_d1e5403" significance="normal"><primary>Subversion</primary><secondary>excluding commit messages from triggering
@@ -385,7 +385,7 @@
       <para>
         <emphasis>Contributed by Matthew McCullough</emphasis>
       </para>
-      <para><ulink url="http://git-scm.com/">Git</ulink> is <indexterm class="startofrange" id="ch05-git1" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary></indexterm><indexterm class="startofrange" id="ch05-git2" significance="normal"><primary>Git</primary><secondary sortas="free-style">with freestyle build jobs</secondary></indexterm>a popular distributed version control system that is a
+      <para><ulink url="http://git-scm.com/">Git</ulink> is <indexterm class="startofrange" id="ch05-git1" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary></indexterm><indexterm class="startofrange" id="ch05-git2" significance="normal"><primary>Git</primary><secondary sortas="free-style">with freestyle build jobs</secondary></indexterm>a popular distributed version control system that's a
       logical successor to <ulink url="http://subversion.tigris.org/">Subversion</ulink> and a mind-share
       competitor to <ulink url="http://mercurial.selenic.com/">Mercurial</ulink>. Git support in
       Jenkins is both mature and full-featured. There are a number of plugins
@@ -397,7 +397,7 @@
         <para>The Git plugin <indexterm class="startofrange" id="ch05-gitinstall1" significance="normal"><primary>Git plugin</primary></indexterm><indexterm class="startofrange" id="ch05-gitinstall2" significance="normal"><primary>plugins</primary><secondary>Git</secondary></indexterm>is available in the Jenkins Plugin Manager and is
         documented on its own <ulink url="http://wiki.hudson-ci.org/display/HUDSON/Git+Plugin">wiki
         page</ulink>. The plugin assumes that Git (version 1.3.3 or later) has
-        already been installed on your build server, so you will need to make
+        already been installed on your build server, so you'll need to make
         sure that this is the case. You can do this by running the following
         command on your build server:</para>
         <screen format="linespecific">$ <userinput moreinfo="none">git --version</userinput>
@@ -424,7 +424,7 @@ git version 1.7.1</screen>
         </sect4>
         <sect4 id="ssh-key-setup">
           <title>SSH key setup</title>
-          <para>If the <indexterm id="I_indexterm5_d1e5513" significance="normal"><primary>SSH keys</primary></indexterm><indexterm id="I_indexterm5_d1e5516" significance="normal"><primary>Git</primary><secondary>SSH keys</secondary></indexterm><indexterm id="I_indexterm5_d1e5521" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary><tertiary>SSH keys</tertiary></indexterm>Git repository you are accessing uses SSH
+          <para>If the <indexterm id="I_indexterm5_d1e5513" significance="normal"><primary>SSH keys</primary></indexterm><indexterm id="I_indexterm5_d1e5516" significance="normal"><primary>Git</primary><secondary>SSH keys</secondary></indexterm><indexterm id="I_indexterm5_d1e5521" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary><tertiary>SSH keys</tertiary></indexterm>Git repository you're accessing uses SSH
           passphrase-less <phrase role="keep-together">authentication—</phrase>for example, if the
           access address is similar to <literal moreinfo="none">git@github.com:matthewmccullough/some-repo.git</literal>—you’ll
           need to provide the private half of the key as file <literal moreinfo="none">~/.ssh/id_rsa</literal> where <literal moreinfo="none">~</literal> is the home directory of the user
@@ -452,7 +452,7 @@ git version 1.7.1</screen>
         <sect4 id="advanced-per-project-source-code-management-configuration">
           <title>Advanced per-project source code management
           configuration</title>
-          <para>In most cases, the URL of the Git repository you are using
+          <para>In most cases, the URL of the Git repository you're using
           should be enough. However, if you need more options, click on the
           Advanced button (see <xref linkend="I_figure1_id2245574"/>). This
           provides more precise control of the <literal moreinfo="none">pull</literal> behavior.</para>
@@ -462,7 +462,7 @@ git version 1.7.1</screen>
           the merge action configuration.</para>
           <para>The <emphasis>Refspec</emphasis> is a Git-specific <ulink url="http://progit.org/book/ch9-5.html">language</ulink> for
           controlling precisely what is retrieved from remote servers and
-          under what namespace it is stored locally.</para>
+          under what namespace it's stored locally.</para>
         </sect4>
         <sect4 id="branches-to-build">
           <title>Branches to build</title>
@@ -470,7 +470,7 @@ git version 1.7.1</screen>
           specific branch name that should be built by Jenkins. If left blank,
           all branches will be built. At the time of this writing, after the
           first time saving a job with a blank <emphasis>branches to
-          build</emphasis> setting, it is populated with <literal moreinfo="none">**,</literal> which means “build all
+          build</emphasis> setting, it's populated with <literal moreinfo="none">**,</literal> which means “build all
           branches.”</para>
           <figure float="none" id="I_figure1_id2245479">
             <title>Entering a Git repo URL</title>
@@ -531,7 +531,7 @@ git version 1.7.1</screen>
           <para>The <indexterm id="I_indexterm5_d1e5707" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary><tertiary>excluding users from triggering</tertiary></indexterm><indexterm id="I_indexterm5_d1e5714" significance="normal"><primary>users</primary><secondary>excluding from triggering builds</secondary></indexterm><indexterm id="I_indexterm5_d1e5719" significance="normal"><primary>Git</primary><secondary>excluding users from triggering builds</secondary></indexterm>Git plugin also lets you ignore certain users, even if
           they make changes to the codebase that would typically trigger a
           build.</para>
-          <para>This is not as spiteful as it sounds: excluded users are
+          <para>This isn't as spiteful as it sounds: excluded users are
           typically automated users, not human developers, that happen to have
           distinct accounts with commit rights in the source control system.
           These automated users often are performing small numeric changes
@@ -586,7 +586,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         </sect4>
         <sect4 id="recursively-update-submodules">
           <title>Recursively update submodules</title>
-          <para>If <indexterm id="I_indexterm5_d1e5848" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary><tertiary>recursively update submodules</tertiary></indexterm><indexterm id="I_indexterm5_d1e5855" significance="normal"><primary>Git</primary><secondary>recursively update submodules</secondary></indexterm>you are using Git’s submodule facilities in the
+          <para>If <indexterm id="I_indexterm5_d1e5848" significance="normal"><primary>freestyle build jobs</primary><secondary>Git used with</secondary><tertiary>recursively update submodules</tertiary></indexterm><indexterm id="I_indexterm5_d1e5855" significance="normal"><primary>Git</primary><secondary>recursively update submodules</secondary></indexterm>you're using Git’s submodule facilities in the
           project, this option lets you ensure that every submodule is
           up-to-date with an explicit call to <literal moreinfo="none">update</literal>, even if submodules are nested
           within other submodules.</para>
@@ -790,7 +790,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           created if it does not exist (which fails if it does already exist).
           Environment variables can be embedded in the tag name. Examples
           include the process ID such as <literal moreinfo="none">HUDSON_BUILD_$PPID</literal> or even a build number,
-          if that is provided by a Jenkins plugin, such as <literal moreinfo="none">$HUDSON_AUTOTAG_$BUILDNUM</literal>. Tags can be
+          if that's provided by a Jenkins plugin, such as <literal moreinfo="none">$HUDSON_AUTOTAG_$BUILDNUM</literal>. Tags can be
           targeted to a specific remote such as <literal moreinfo="none">origin</literal> or <literal moreinfo="none">integrationrepo</literal>.</para>
         </sect4>
         <sect4 id="branches">
@@ -909,12 +909,12 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
     <sect2>
       <title>Scheduled Build Jobs</title>
       <para>Another<indexterm class="startofrange" id="ch05-regular" significance="normal"><primary>build triggers</primary><secondary sortas="regular">at regular intervals</secondary></indexterm> strategy is simply to trigger your build job at regular
-      intervals. It is important to note that this is not actually Continuous
-      Integration—it is simply scheduled builds, something you could also do,
+      intervals. It is important to note that this isn't actually CI
+      —it's simply scheduled builds, something you could also do,
       for example, as a Unix cron job. In the early days of automated builds,
       and even today in many shops, builds are not run in response to changes
       committed to version control, but simply on a nightly basis. However, to
-      be effective, a Continuous Integration server should provide feedback
+      be effective, a CI server should provide feedback
       much more quickly than once a day.</para>
       <para>There are nevertheless a few cases where scheduled builds do make
       sense. This includes very long running build jobs, where quick feedback
@@ -922,7 +922,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       which may take several hours to run, or <indexterm id="I_indexterm5_d1e6361" significance="normal"><primary>Sonar</primary><secondary>frequency of builds</secondary></indexterm>Sonar build jobs. Sonar is an excellent way to keep tabs
       on code quality metrics across your projects and over time, but the
       Sonar server only stores one set of data per day, so running Sonar
-      builds more frequently than this is not useful.</para>
+      builds more frequently than this isn't useful.</para>
       <para>For all scheduling tasks, Jenkins uses a cron-style syntax,
       consisting of five fields separated by white space in the following
       format:</para>
@@ -940,7 +940,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
         <varlistentry>
           <term>HOUR</term>
           <listitem>
-            <para>The hour of the day (0–23) DOM</para>
+            <para>The hour of the day (0–23)</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -988,7 +988,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
           “@hourly”.</para>
         </listitem>
       </itemizedlist>
-      <para>Typically, you will only have one line in this field, but for more
+      <para>Typically, you'll only have one line in this field, but for more
       complicated scheduling setups, you may need<indexterm id="I_indexterm5_d1e6425" class="endofrange" startref="ch05-regular" significance="normal"><primary/></indexterm> multiple lines.</para>
     </sect2>
     <sect2>
@@ -996,7 +996,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       <para>As <indexterm id="I_indexterm5_d1e6433" significance="normal"><primary>build triggers</primary><secondary>polling SCM for version control changes</secondary></indexterm><indexterm id="I_indexterm5_d1e6438" significance="normal"><primary>version control systems</primary><secondary>polling for changes to trigger build</secondary></indexterm>we have seen, scheduled build jobs are usually not the
       best strategy for most <phrase role="keep-together">CI build</phrase>
       jobs. The value of any feedback is proportional to the speed in which
-      you receive that feedback, and Continuous Integration is no exception.
+      you receive that feedback, and CI is no exception.
       That is why polling the SCM is generally a better option.</para>
       <para>Polling involves asking the version control server at regular
       intervals if any changes have been committed. If any changes have been
@@ -1022,7 +1022,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       can in turn slow down feedback times further. You can reduce the build
       queue to some extent by polling less frequently, but at the cost of less
       precise feedback.</para>
-      <para>If you are using <indexterm id="I_indexterm5_d1e6459" significance="normal"><primary>CVS</primary><secondary>polling with</secondary></indexterm>CVS, polling may not be a good option. When CVS checks for
+      <para>If you're using <indexterm id="I_indexterm5_d1e6459" significance="normal"><primary>CVS</primary><secondary>polling with</secondary></indexterm>CVS, polling may not be a good option. When CVS checks for
       changes in a project, it checks each file one by one, which is a slow
       and tedious process. The best solution here is to migrate to a modern
       version control system such as Git or Subversion. The second-best
@@ -1033,7 +1033,7 @@ git checkout -b mylocalbranch 73434e4a0af0f51c242f5ae8efc51a88383afc8a</screen>
       <title>Triggering Builds Remotely</title>
       <para>Polling <indexterm class="startofrange" id="ch05-remote1" significance="normal"><primary>build triggers</primary><secondary>remotely triggering from version control
           system</secondary></indexterm><indexterm class="startofrange" id="ch05-remote2" significance="normal"><primary>version control systems</primary><secondary>remotely triggering builds from</secondary></indexterm>can be an effective strategy for smaller projects, but it
-      does not scale particularly well—with large numbers of build jobs, it is
+      does not scale particularly well—with large numbers of build jobs, it's
       wasteful of network resources, and there is always a small delay between
       the code change being committed and the build job starting. A more
       precise strategy is to get the SCM system to trigger the Jenkins build
@@ -1106,8 +1106,8 @@ UUID=`svnlook uuid $REPOS`
         </mediaobject>
       </figure>
       <para>This won’t work if users need to be logged on to trigger a build
-      (for example, if you are using matrix or project-based security). In
-      this case, you will need to provide a user name and password, as shown
+      (for example, if you're using matrix or project-based security). In
+      this case, you'll need to provide a user name and password, as shown
       in the following example:</para>
       <?dbfo-need height=”1in”?>
       <screen format="linespecific">$ <userinput moreinfo="none">wget http://scott:tiger@myserver:8080/jenkins/job/gameoflife/build</userinput></screen>
@@ -1127,9 +1127,9 @@ UUID=`svnlook uuid $REPOS`
     <title>Build Steps</title>
     <para>Now <indexterm class="startofrange" id="ch05-step" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary></indexterm>Jenkins should know where and how often to obtain the
     project source code. The next thing you need to explain to Jenkins is what
-    it what to do with the source code. In a freestyle build, you do this by
+    to do with the source code. In a freestyle build, you do this by
     defining build steps. Build steps are the basic building blocks for the
-    Jenkins freestyle build process. They are what let you tell Jenkins
+    Jenkins freestyle build process. They're what let you tell Jenkins
     exactly <emphasis>how</emphasis> you want your project built.</para>
     <para>A build job may have one step, or more. It may even occasionally
     have none. In a freestyle build, you can add as many build steps as you
@@ -1168,7 +1168,7 @@ UUID=`svnlook uuid $REPOS`
           <literal moreinfo="none">--update-snapshots</literal></term>
           <listitem>
             <para>Forces <indexterm id="I_indexterm5_d1e6645" significance="normal"><primary>Maven</primary><secondary>SNAPSHOT dependencies</secondary></indexterm><indexterm id="I_indexterm5_d1e6650" significance="normal"><primary>SNAPSHOT dependencies</primary></indexterm>Maven to check for updated releases and snapshot
-            dependencies on the remote repository. This makes sure you are
+            dependencies on the remote repository. This makes sure you're
             building with the latest and greatest snapshot dependencies, and
             not just using older local copies which may not by in sync with
             the latest version of the source code.</para>
@@ -1220,7 +1220,7 @@ selenium.broswer=firefox</programlisting>
       shown here:</para>
       <programlisting id="I_programlisting5_d1e6705" format="linespecific">$ <userinput moreinfo="none">mvn verify -Dselenium.host=testserver.acme.com ...</userinput></programlisting>
       <para>The JVM Options field lets you set any of the standard Java
-      Virtual Machine options for your build job. So if your build process is
+      Virtual Machine options for your build job. So, if your build process is
       particularly memory intensive, you might add some extra heap space with
       the <literal moreinfo="none">-Xmx</literal> option (for example,
       <literal moreinfo="none">-Xmx512m</literal> would set the maximum heap size to 512
@@ -1235,7 +1235,7 @@ selenium.broswer=firefox</programlisting>
       own private repository, reserved for its own exclusive use. On the
       downside, the first time the build job runs a build, this may take some
       time to download all of the Maven artifacts, and private repositories
-      can take up a lot of space. However, it is the best way of guaranteeing
+      can take up a lot of space. However, it's the best way of guaranteeing
       that your build is run in a truly<indexterm id="I_indexterm5_d1e6725" class="endofrange" startref="ch05-mavenstep1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm5_d1e6727" class="endofrange" startref="ch05-mavenstep2" significance="normal"><primary/></indexterm> isolated environment.</para>
     </sect2>
     <sect2>
@@ -1243,7 +1243,7 @@ selenium.broswer=firefox</programlisting>
       <para>Freestyle <indexterm class="startofrange" id="ch05-antstep1" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>Ant build scripts</tertiary></indexterm><indexterm class="startofrange" id="ch05-antstep2" significance="normal"><primary>Ant</primary><secondary>in freestyle build steps</secondary></indexterm><indexterm id="I_indexterm5_d1e6747" significance="normal"><primary>scripts</primary><seealso>Ant; Maven</seealso></indexterm>build jobs work equally well with Ant. <ulink url="http://ant.apache.org/">Apache Ant</ulink> is a widely-used and
       very well-known Java build scripting tool. Indeed, a very large number
       of Java projects out there rely on Ant build scripts.</para>
-      <para>Ant is not only used as a primary build scripting tool—even if
+      <para>Ant isn't only used as a primary build scripting tool—even if
       your project uses Maven, you may resort to calling Ant scripts to do
       more specific tasks. There are Ant libraries available for many
       development tools and low-level tasks, such as using SSH, or working
@@ -1275,7 +1275,7 @@ selenium.broswer=firefox</programlisting>
       <para>Occasionally <indexterm class="startofrange" id="ch05-script1" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>shell scripts</tertiary></indexterm><indexterm class="startofrange" id="ch05-script2" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>batch scripts</tertiary></indexterm><indexterm class="startofrange" id="ch05-script3" significance="normal"><primary>shell scripts</primary></indexterm><indexterm class="startofrange" id="ch05-script4" significance="normal"><primary>batch scripts</primary></indexterm><indexterm class="startofrange" id="ch05-script5" significance="normal"><primary>scripts</primary><secondary>shell scripts</secondary></indexterm><indexterm class="startofrange" id="ch05-script6" significance="normal"><primary>scripts</primary><secondary>batch scripts</secondary></indexterm>you may need to execute a command directly at the
       Operating System level. Some legacy build processes rely on OS-specific
       scripts, for example. In other cases, you may need to perform a
-      low-level operation that is most easily done with an OS-level
+      low-level operation that's most easily done with an OS-level
       command.</para>
       <para>You can do this in Jenkins with the <literal moreinfo="none">Execute
       Shell</literal> (for Unix) or <literal moreinfo="none">Execute Windows Batch</literal>
@@ -1312,7 +1312,7 @@ drwxr-xr-x   3 johnsmart  staff   102 22 Sep 01:40 target
 drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools</programlisting>
       <para>You can either execute an OS-specific command (e.g.,
       <literal moreinfo="none">ls</literal>), or store a more complicated script as a file in
-      your version control system, and execute this script. If you are
+      your version control system, and execute this script. If you're
       executing a script, you just need to refer to the name of your script
       relative to the work directory.</para>
       <para>Shell scripts are executed using the <literal moreinfo="none">-ex</literal>
@@ -1528,7 +1528,7 @@ drwxr-xr-x   5 johnsmart  staff   170 22 Sep 01:40 tools</programlisting>
   &lt;version&gt;0.0.55-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;gameoflife-core&lt;/name&gt;
   &lt;url&gt;${JOB_URL}&lt;/url&gt;</programlisting>
-      <para>Alternatively, if you are building a web application, you can also
+      <para>Alternatively, if you're building a web application, you can also
       use the <filename moreinfo="none">maven-war-plugin</filename> to insert
       the build job number into the web application manifest, e.g.:</para>
       <programlisting id="I_programlisting5_d1e7103" format="linespecific">&lt;project&gt;
@@ -1581,7 +1581,7 @@ println env['BUILD_NUMBER']</programlisting>
     </sect2>
     <sect2>
       <title>Running Groovy Scripts</title>
-      <para>Groovy<indexterm class="startofrange" id="ch05-groovy1" significance="normal"><primary>Groovy scripts</primary><secondary>running in build jobs</secondary></indexterm><indexterm class="startofrange" id="ch05-groovy2" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>Groovy scripts</tertiary></indexterm><indexterm class="startofrange" id="ch05-groovy3" significance="normal"><primary>scripts</primary><secondary>Groovy scripts</secondary></indexterm> is not only a popular JVM dynamic language, it is also a
+      <para>Groovy<indexterm class="startofrange" id="ch05-groovy1" significance="normal"><primary>Groovy scripts</primary><secondary>running in build jobs</secondary></indexterm><indexterm class="startofrange" id="ch05-groovy2" significance="normal"><primary>freestyle build jobs</primary><secondary>build steps in</secondary><tertiary>Groovy scripts</tertiary></indexterm><indexterm class="startofrange" id="ch05-groovy3" significance="normal"><primary>scripts</primary><secondary>Groovy scripts</secondary></indexterm> isn't only a popular JVM dynamic language, it's also a
       convenient language for low-level scripting. The Jenkins <ulink url="http://wiki.jenkins-ci.org//display/HUDSON/Groovy+Plugin">Groovy
       Plugin</ulink> lets you run arbitrary Groovy commands, or invoke Groovy
       scripts, as part of your build process.</para>
@@ -1600,7 +1600,7 @@ println env['BUILD_NUMBER']</programlisting>
         </mediaobject>
       </figure>
       <para>Now you can add some Groovy scripting to your build job. When you
-      click on “Add build step”, you will see two new entries in the drop-down
+      click on “Add build step”, you'll see two new entries in the drop-down
       menu: “Execute Groovy script” and “Execute system Groovy script”. The
       first option is generally what you <phrase role="keep-together">want—</phrase>this will simply execute a Groovy
       script in a separate JVM, as if you were invoking Groovy from the
@@ -1722,13 +1722,13 @@ println env['BUILD_NUMBER']</programlisting>
       Ant-like wild cards (e.g., <literal moreinfo="none">**/*.jar</literal>, for all the JAR
       files, anywhere in the workspace). One advantage of using wild cards is
       that it makes your build less dependent on your version control set up.
-      For example, if you are using Subversion (see <xref linkend="sect-subversion"/>), Jenkins will check out your project
+      For example, if you're using Subversion (see <xref linkend="sect-subversion"/>), Jenkins will check out your project
       either directly in your workspace, or into a subdirectory, depending on
       how you set it up. If you use a wild card expression like
       <literal moreinfo="none">**/target/*.war</literal>, Jenkins will find the file no matter
       what directory the project is located in.</para>
       <para>As usual, the Advanced button give access to a few extra options.
-      If you are using wild cards to find your artifacts, you might need to
+      If you're using wild cards to find your artifacts, you might need to
       exclude certain directories from the search. You can do this by filling
       in the Excludes field. You enter a pattern to match any files that you
       <emphasis>don’t</emphasis> want to archive, even if they would normally
@@ -1737,7 +1737,7 @@ println env['BUILD_NUMBER']</programlisting>
       builds are frequent. For this reason, you may want to only keep the last
       successful one. To do this, just tick the “Discard all but the last
       successful/stable artifact” option. Jenkins will keep artifacts from the
-      last stable build (if there where any). It will also keep the artifacts
+      last stable build (if there were any). It will also keep the artifacts
       of the latest unstable build following the stable build (if any), and
       also from the last failed build that happened.</para>
       <para>Archived build artifacts appear on the build results page (see
@@ -1769,8 +1769,8 @@ println env['BUILD_NUMBER']</programlisting>
       successfully, and no publisher reports it as unstable. For example,
       depending on your project configuration, unit test failures,
       insufficient code coverage, or other code quality metrics issues, could
-      cause a build to be marked as unstable. So a stable build is always
-      successful, but the opposite is not necessarily true—a build can be
+      cause a build to be marked as unstable. So, a stable build is always
+      successful, but the opposite isn't necessarily true—a build can be
       successful without being stable.</para>
       <para>A <emphasis>completed</emphasis> build is simply a build that has
       finished, no matter what its result. Note that the archiving step will
@@ -1806,7 +1806,7 @@ println env['BUILD_NUMBER']</programlisting>
       <para>This is best illustrated by some examples. Suppose your Jenkins
       server is running on <emphasis>http://myserver:8080</emphasis>, your
       build job is called <filename moreinfo="none">game-of-life</filename>,
-      and you are storing a file called <filename moreinfo="none">gameoflife.war</filename>, which is in the target
+      and you're storing a file called <filename moreinfo="none">gameoflife.war</filename>, which is in the target
       directory of your workspace. The URLs for this artifact would be the
       following:</para>
       <variablelist>
@@ -1859,7 +1859,7 @@ println env['BUILD_NUMBER']</programlisting>
       simpler just to use the revision number for this build (which is
       displayed on the build result page) to retrieve the source code from
       your version control system. But you get the idea.</para>
-      <para>Note that if you are using an Enterprise Repository Manager such
+      <para>Note that if you're using an Enterprise Repository Manager such
       as Nexus or Artifactory to store your binary artifacts, you may not need
       to keep them on the Jenkins server. You may prefer simply to
       automatically deploy your artifacts to your Enterprise Repository
@@ -1887,7 +1887,7 @@ println env['BUILD_NUMBER']</programlisting>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>You can also opt to send a separate email to the user who’s commit
+      <para>You can also opt to send a separate email to the user whose commit
       (presumably) broke the build. For this to work, you need to have
       activated Security on your Jenkins server (see <xref linkend="chapter-security"/>).</para>
       <para>Normally, Jenkins will send an email notification out whenever a
@@ -1964,17 +1964,17 @@ println env['BUILD_NUMBER']</programlisting>
       your project uses, Jenkins will build your project as well.</para>
       <para>Typically in Maven, SNAPSHOT dependencies are used to share the
       latest bleeding-edge version of a library with other projects within the
-      same team. Since they are by definition unstable, it is not recommended
+      same team. Since they're by definition unstable, it isn't recommended
       practice to rely on SNAPSHOT dependencies from other teams or from
       external sources.</para>
-      <para>For example, imagine that you are working on a new
+      <para>For example, imagine that you're working on a new
       <emphasis>game-of-life</emphasis> web application. You are using Maven
       for this project, so you can use a Maven build job in Jenkins. Your team
       is also working on a reusable library called
       <emphasis>cooltools</emphasis>. Since these two projects are being
-      developed by the same team, you are using some of the latest
+      developed by the same team, you're using some of the latest
       <emphasis>cooltools</emphasis> features in the
-      <emphasis>game-of-life</emphasis> web application. So you have a
+      <emphasis>game-of-life</emphasis> web application. So, you have a
       SNAPSHOT dependency in the <code>&lt;dependencies&gt;</code> section of
       your <emphasis>game-of-life</emphasis> <filename moreinfo="none">pom.xml</filename> file:</para>
       <programlisting id="I_programlisting5_d1e7672" format="linespecific">    &lt;dependencies&gt;
@@ -1998,7 +1998,7 @@ println env['BUILD_NUMBER']</programlisting>
     </sect2>
     <sect2>
       <title>Configuring the Maven Build</title>
-      <para>The <indexterm id="I_indexterm5_d1e7705" significance="normal"><primary>Maven build jobs</primary><secondary>build steps in</secondary></indexterm>next area where you will notice a change is in the Build
+      <para>The <indexterm id="I_indexterm5_d1e7705" significance="normal"><primary>Maven build jobs</primary><secondary>build steps in</secondary></indexterm>next area where you'll notice a change is in the Build
       section. In a Maven build job, the build section is entirely devoted to
       running a single Maven goal (see <xref linkend="fig-hudson-build-job-maven2"/>). In this section, you specify
       the version of Maven you want to execute (remember, at the time of
@@ -2034,7 +2034,7 @@ println env['BUILD_NUMBER']</programlisting>
       If you tick this option, when a change is made to one of the project
       modules, Jenkins will only rebuild that module and any modules that use
       the changed module. It performs this magic by using some new Maven
-      features introduced in Maven 2.1 (so it won’t work if you are using
+      features introduced in Maven 2.1 (so it won’t work if you're using
       Maven 2.0.x). Jenkins detects which modules have been changed, and then
       uses the <literal moreinfo="none">-pl</literal> (<literal moreinfo="none">--project-list</literal>)
       option to build only the updated modules, and the
@@ -2088,7 +2088,7 @@ println env['BUILD_NUMBER']</programlisting>
       the build output. Artifacts, test reports, Javadoc, and so forth, are
       all generated in standard directories, which means
       <emphasis>you</emphasis> don’t have to tell Jenkins where to find
-      things. So Jenkins will find, and report on, JUnit test results
+      things. So, Jenkins will find, and report on, JUnit test results
       automatically, for example. Later on in the book, we will see how the
       Maven projects also simplify the configuration of many code quality
       metrics tools and reports.</para>
@@ -2099,7 +2099,7 @@ println env['BUILD_NUMBER']</programlisting>
     <sect2 id="sect-builds-deploy-enterprise-repository">
       <title>Deploying to an Enterprise Repository Manager</title>
       <para>One <indexterm class="startofrange" id="ch05-erm1" significance="normal"><primary>Maven build jobs</primary><secondary>deploying artifacts to Enterprise Repository
-          Manager</secondary></indexterm><indexterm class="startofrange" id="ch05-erm2" significance="normal"><primary>Enterprise Repository Manager</primary></indexterm><indexterm class="startofrange" id="ch05-erm3" significance="normal"><primary>archives of binary artifacts</primary><secondary>deploying to Enterprise Repository Manager</secondary></indexterm><indexterm class="startofrange" id="ch05-erm4" significance="normal"><primary>binary artifacts</primary><secondary>archiving</secondary><tertiary>deploying to Enterprise Repository Manager</tertiary></indexterm>extra option does appear in the Maven build jobs is the
+          Manager</secondary></indexterm><indexterm class="startofrange" id="ch05-erm2" significance="normal"><primary>Enterprise Repository Manager</primary></indexterm><indexterm class="startofrange" id="ch05-erm3" significance="normal"><primary>archives of binary artifacts</primary><secondary>deploying to Enterprise Repository Manager</secondary></indexterm><indexterm class="startofrange" id="ch05-erm4" significance="normal"><primary>binary artifacts</primary><secondary>archiving</secondary><tertiary>deploying to Enterprise Repository Manager</tertiary></indexterm>extra option that does appear in the Maven build jobs is the
       ability to deploy your artifacts to a Maven repository (see <xref linkend="fig-hudson-maven2-deploy"/>). An Enterprise Repository Manager
       is a server that acts as both a proxy/cache for public Maven artifacts,
       and as a central storage server for your own internal artifacts. Open
@@ -2194,7 +2194,7 @@ println env['BUILD_NUMBER']</programlisting>
         </mediaobject>
       </figure>
       <para>This approach will work fine for any Enterprise Repository
-      manager. However, if you are using <indexterm id="I_indexterm5_d1e7936" significance="normal"><primary>Artifactory</primary><secondary>Enterprise Repository Manager</secondary></indexterm><indexterm id="I_indexterm5_d1e7941" significance="normal"><primary>plugins</primary><secondary>Artifactory</secondary></indexterm>Artifactory, you may prefer to install the Jenkins <ulink url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
+      manager. However, if you're using <indexterm id="I_indexterm5_d1e7936" significance="normal"><primary>Artifactory</primary><secondary>Enterprise Repository Manager</secondary></indexterm><indexterm id="I_indexterm5_d1e7941" significance="normal"><primary>plugins</primary><secondary>Artifactory</secondary></indexterm>Artifactory, you may prefer to install the Jenkins <ulink url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Artifactory
       Plugin</ulink>, which provides tighter two-way integration with the
       Artifactory Enterprise Repository Manager. It works by sending
       additional information to the Artifactory server during the deployment,
@@ -2279,7 +2279,7 @@ println env['BUILD_NUMBER']</programlisting>
     </sect2>
     <sect2>
       <title>Managing Modules</title>
-      <para>When <indexterm id="I_indexterm5_d1e8031" significance="normal"><primary>Maven build jobs</primary><secondary>modules for, managing</secondary></indexterm>using Maven, it is common to split a project into several
+      <para>When <indexterm id="I_indexterm5_d1e8031" significance="normal"><primary>Maven build jobs</primary><secondary>modules for, managing</secondary></indexterm>using Maven, it's common to split a project into several
       modules. Maven build jobs have an intrinsic understand of multimodule
       projects, and adds a Modules menu item that lets you display the
       structure of the project at a glance (see <xref linkend="fig-maven2-modules"/>).</para>
@@ -2381,7 +2381,7 @@ println env['BUILD_NUMBER']</programlisting>
       example, you may want to tick the Force Upgrade checkbox, which makes
       sure that runs a <literal moreinfo="none">grails upgrade --non-interactive</literal>
       before it runs the main targets.</para>
-      <para>You can also specify the server port (useful if you are executing
+      <para>You can also specify the server port (useful if you're executing
       web tests), and any other properties you want to pass<indexterm id="I_indexterm5_d1e8150" class="endofrange" startref="ch05-grails1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm5_d1e8152" class="endofrange" startref="ch05-grails2" significance="normal"><primary/></indexterm> to the build.</para>
     </sect2>
     <sect2>
@@ -2406,9 +2406,9 @@ println env['BUILD_NUMBER']</programlisting>
         <para>You can install the Gradle plugin in the usual way—just go to
         the Manage Plugins screen and select the Jenkins Gradle plugin. Click
         Install and restart your Jenkins <phrase role="keep-together">instance</phrase>.</para>
-        <para>Once Jenkins has restarted, you will need to configure your new
+        <para>Once Jenkins has restarted, you'll need to configure your new
         Gradle plugin. You should now find a new Gradle section in your
-        Configure System screen. Here you will need to add the Gradle
+        Configure System screen. Here you'll need to add the Gradle
         installation you want to use. The process is similar to that used for
         the other tool installations. First, click the Add Gradle button to
         add a new Gradle installation, and enter an appropriate name (see
@@ -2432,7 +2432,7 @@ println env['BUILD_NUMBER']</programlisting>
           </mediaobject>
         </figure>
         <para>You typically use Freestyle build jobs to configure your Gradle
-        builds. When you add a build step to a Freestyle build job, you will
+        builds. When you add a build step to a Freestyle build job, you'll
         now have a new option called “Invoke Gradle script”, which lets you
         add Gradle specific settings to your build job.</para>
         <para>As an example, here is a very simple Gradle build script. It is
@@ -2474,7 +2474,7 @@ uploadArchives {
       <sect3 id="incremental-builds">
         <title>Incremental builds</title>
         <para>While running a Gradle build job with unchanged sources, Gradle
-        runs its builds incremental. If the output of a Gradle task is still
+        runs its builds incrementally. If the output of a Gradle task is still
         available and the sources haven’t changed since the last build, Gradle
         is able to skip the task execution and marks the according task as
         up-to-date. This incremental build feature can decrease the duration
@@ -2612,7 +2612,7 @@ uploadArchives {
       <screen format="linespecific">$ <userinput moreinfo="none">sudo gem install ci_reporter</userinput>
 Successfully installed ci_reporter-1.6.4
 1 gem installed</screen>
-      <para>Next, you will need to set this up in your Rakefile, by adding the
+      <para>Next, you'll need to set this up in your Rakefile, by adding the
       following:</para>
       <programlisting id="I_programlisting5_d1e8431" format="linespecific">require 'rubygems'
 gem 'ci_reporter'
@@ -2621,10 +2621,10 @@ require 'ci/reporter/rake/test_unit' # use this if you're using Test::Unit</prog
       code quality metrics into your Jenkins builds. Jenkins also provides
       support for code coverage metrics in Ruby. The Ruby Metrics Plugin
       supports code coverage metrics using <command moreinfo="none">rcov</command> as well as general code statistics with
-      <command moreinfo="none">Rails stats</command>. To install the <command moreinfo="none">rcov-plugin</command>, you will first need to run
+      <command moreinfo="none">Rails stats</command>. To install the <command moreinfo="none">rcov-plugin</command>, you'll first need to run
       something along the following lines:</para>
       <screen format="linespecific">$ <userinput moreinfo="none">./script/plugin install http://svn.codahale.com/rails_rcov</userinput></screen>
-      <para>Once this is set up, you will be able to display your test results
+      <para>Once this is set up, you'll be able to display your test results
       and test result trend in Jenkins.</para>
       <para>Finally, you can configure a Rake build simply by using a Rake
       build step, as illustrated in <xref linkend="fig-hudson-rake-step"/>.</para>
@@ -2662,7 +2662,7 @@ require 'ci/reporter/rake/test_unit' # use this if you're using Test::Unit</prog
   <sect1 id="sect-build-jobs-conclusion">
     <title>Conclusion</title>
     <para>In this chapter we have covered the basics of creating new build
-    jobs for the most common cases you are likely to encounter. Later on in
+    jobs for the most common cases you're likely to encounter. Later on in
     the book, we will build on these foundations to discuss more advanced
     options such as parameterized builds, matrix builds, and build promotion
     strategies.</para>
