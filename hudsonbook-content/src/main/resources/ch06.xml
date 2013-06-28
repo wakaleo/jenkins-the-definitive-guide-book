@@ -6,7 +6,7 @@
     <title>Introduction</title>
     <para><indexterm class="startofrange" id="ch06-auto2" significance="normal"><primary>tests</primary><secondary>automating</secondary></indexterm><indexterm id="I_indexterm6_d1e8512" significance="normal"><primary>build jobs</primary><secondary>tests in</secondary><see>tests</see></indexterm>If you aren’t using automated tests with your CI
     setup, you’re really missing out on something big. Believe
-    me—CI without automated tests is really just a small improvement on
+    me—CI without automated tests is really just a small improvement over
     automatically scheduled builds. Now don’t get me wrong, if you’re coming
     from nothing, that’s already a great step forward—but you can do much
     better. In short, if you're using Jenkins without any automated tests,
@@ -15,36 +15,36 @@
     <para>One of the basic principles of CI is that a
     build should be verifiable. You have to be able to objectively determine
     whether a particular build is ready to proceed to the next stage of the
-    build process, and the most convenient way to do this is to use automated
+    build process. The most convenient way to do this is to use automated
     tests. Without proper automated testing, you find yourself having to
     retain many build artifacts and test them by hand, which is hardly in the
     spirit of CI.</para>
     <para>There <indexterm id="I_indexterm6_d1e8524" significance="normal"><primary>integration tests</primary></indexterm><indexterm id="I_indexterm6_d1e8527" significance="normal"><primary>tests</primary><secondary>integration tests</secondary></indexterm>are many ways you can integrate automated tests into your
     application. One of the most efficient ways to write high quality tests is
-    to write them first, using techniques such as <indexterm id="I_indexterm6_d1e8533" significance="normal"><primary>TDD (Test Driven Development)</primary></indexterm>Test-Driven Development (TDD) or <indexterm id="I_indexterm6_d1e8537" significance="normal"><primary>BDD (Behavior-Driven Development)</primary></indexterm>Behavior-Driven Development (BDD). In this approach,
+    to write them first, using techniques such as <indexterm id="I_indexterm6_d1e8533" significance="normal"><primary>TDD (Test Driven Development)</primary></indexterm>Test-Driven Development (TDD) or <indexterm id="I_indexterm6_d1e8537" significance="normal"><primary>BDD (Behavior-Driven Development)</primary></indexterm>Behavior-Driven Development (BDD). In these approaches,
     commonly used in many Agile projects, the aim of your unit tests is to
     both clarify your understanding of the code’s behavior and to write an
-    automated test that the code does indeed implement this behavior. Focusing
+    automated test showing the code does indeed implement this behavior. Focusing
     on testing the expected behavior, rather than the implementation, of your
     code also makes for more comprehensive and more accurate tests, and thus
     helps Jenkins to provide more relevant <phrase role="keep-together">feedback</phrase>.</para>
     <para>Of <indexterm id="I_indexterm6_d1e8546" significance="normal"><primary>unit tests</primary></indexterm><indexterm id="I_indexterm6_d1e8549" significance="normal"><primary>tests</primary><secondary>unit tests</secondary></indexterm>course, more classical unit testing, done once the code has
-    been implemented, is also another commonly-used approach, and is certainly
+    been implemented, is another commonly-used approach, and is certainly
     better than no tests at all.</para>
     <?dbfo-need height=”1in”?>
     <para>Jenkins isn't limited to unit testing, though. There are many other
     types of automated testing that you should consider, depending on the
     nature of your application, including integration testing, web testing,
-    functional testing, performance testing, load testing and so on. All of
+    functional testing, performance testing, load testing, and so on. All of
     these have their place in an automated build setup.</para>
     <para>Jenkins <indexterm id="I_indexterm6_d1e8560" significance="normal"><primary>acceptance tests, automated</primary></indexterm><indexterm id="I_indexterm6_d1e8563" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>can also be used, in conjunction with techniques like
-    Behavior-Driven Development and Acceptance Test Driven Development, as a
+    BDD and acceptance TDD, as a
     communications tool aimed at both developers and other project
     stakeholders. BDD frameworks such as easyb, fitnesse, jbehave, rspec,
     Cucumber, and many others, try to present acceptance tests in terms that
     testers, product owners, and end users can understand. With the use of
     such tools, Jenkins can report on project progress in business terms, and
-    so facilitate communication between developers and non-developers within a
+    facilitate communication between developers and non-developers within a
     team.</para>
     <para>For existing or legacy applications with little or no automated
     testing in place, it can be time-consuming and difficult to retro-fit
@@ -56,7 +56,7 @@
     example, automated <indexterm id="I_indexterm6_d1e8585" significance="normal"><primary>web tests</primary></indexterm><indexterm id="I_indexterm6_d1e8588" significance="normal"><primary>tests</primary><secondary>web tests</secondary></indexterm>web testing tools such as Selenium and WebDriver can be
     effectively used to test web applications at a high level. While this
     approach isn't as comprehensive as a combination of good quality unit,
-    integration and acceptance tests, it's still an effective and relatively
+    integration, and acceptance tests, it's still an effective and relatively
     cost-efficient way to integrate automated regression testing into an
     existing application.</para>
     <para>In this chapter, we'll see how Jenkins helps you keep track of
@@ -66,24 +66,24 @@
   <sect1 id="sect-chapter-automated-testing-unit">
     <title>Automating Your Unit and Integration Tests</title>
     <para>The<indexterm id="I_indexterm6_d1e8601" significance="normal"><primary>unit tests</primary></indexterm><indexterm id="I_indexterm6_d1e8604" significance="normal"><primary>tests</primary><secondary>unit tests</secondary></indexterm> first thing we'll look at is how to integrate your unit
-    tests into Jenkins. Whether you're practicing Test-Driven Development, or
+    tests into Jenkins. Whether you're practicing TDD or
     writing unit tests using a more conventional approach, these are probably
     the first tests that you'll want to automate with Jenkins.</para>
     <para>Jenkins does an excellent job of reporting on your test results.
     However, it's up to you to write the appropriate tests and to configure
-    your build script to run them automatically. Fortunately integrating unit
+    your build script to run them automatically. Fortunately, integrating unit
     tests into your automated builds is generally relatively easy.</para>
     <para>There are many unit testing tools out there, with the <indexterm id="I_indexterm6_d1e8614" significance="normal"><primary>xUnit</primary></indexterm>xUnit family holding a predominant place. In the Java world,
     <indexterm id="I_indexterm6_d1e8618" significance="normal"><primary>JUnit reports</primary></indexterm>JUnit is the de facto standard, although <indexterm id="I_indexterm6_d1e8622" significance="normal"><primary>TestNG</primary></indexterm>TestNG is another popular Java unit testing framework with a
-    number of innovative features. For C# applications, the <indexterm id="I_indexterm6_d1e8626" significance="normal"><primary>NUnit</primary></indexterm>NUnit testing framework proposes similar functionalities to
+    number of innovative features. For C# applications, the <indexterm id="I_indexterm6_d1e8626" significance="normal"><primary>NUnit</primary></indexterm>NUnit testing framework provides similar functionalities as
     those provided by JUnit, as does<indexterm id="I_indexterm6_d1e8630" significance="normal"><primary>Test::Unit</primary></indexterm> <literal moreinfo="none">Test::Unit</literal> for Ruby. For C/C++, there's
-    <indexterm id="I_indexterm6_d1e8638" significance="normal"><primary>CppUnit</primary></indexterm>CppUnit, and PHP developers can use <indexterm id="I_indexterm6_d1e8642" significance="normal"><primary>PHPUnit</primary></indexterm>PHPUnit. And this isn't an exhaustive list!</para>
-    <para>These tools can also serve for <indexterm id="I_indexterm6_d1e8648" significance="normal"><primary>tests</primary><secondary>integration tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal"><primary>integration tests</primary></indexterm>integration tests, <indexterm id="I_indexterm6_d1e8657" significance="normal"><primary>tests</primary><secondary>functional (regression) tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal"><primary>functional (regression) tests</primary></indexterm>functional tests, web tests and so forth. Many <indexterm id="I_indexterm6_d1e8666" significance="normal"><primary>web tests</primary></indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal"><primary>tests</primary><secondary>web tests</secondary></indexterm>web testing tools, such as Selenium, WebDriver, and Watir,
-    generate xUnit-compatible reports. Behaviour-Driven Development and
-    automated Acceptance-Test tools such as easyb, Fitnesse, Concordion are
+    <indexterm id="I_indexterm6_d1e8638" significance="normal"><primary>CppUnit</primary></indexterm>CppUnit, and PHP developers can use <indexterm id="I_indexterm6_d1e8642" significance="normal"><primary>PHPUnit</primary></indexterm>PHPUnit. This isn't even an exhaustive list!</para>
+    <para>These tools can also be used for <indexterm id="I_indexterm6_d1e8648" significance="normal"><primary>tests</primary><secondary>integration tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8653" significance="normal"><primary>integration tests</primary></indexterm>integration tests, <indexterm id="I_indexterm6_d1e8657" significance="normal"><primary>tests</primary><secondary>functional (regression) tests</secondary></indexterm><indexterm id="I_indexterm6_d1e8662" significance="normal"><primary>functional (regression) tests</primary></indexterm>functional tests, web tests, and so forth. Many <indexterm id="I_indexterm6_d1e8666" significance="normal"><primary>web tests</primary></indexterm><indexterm id="I_indexterm6_d1e8669" significance="normal"><primary>tests</primary><secondary>web tests</secondary></indexterm>web testing tools, such as Selenium, WebDriver, and Watir,
+    generate xUnit-compatible reports. BDD and
+    automated Acceptance-Test tools such as easyb, Fitnesse, and Concordion are
     also xUnit-friendly. In the following sections we make no distinction
-    between these different types of test, as, from a configuration point of
-    view, they are treated by Jenkins in exactly the same manner. However, you
+    between these different types of tests since, from a configuration point of
+    view, they're treated by Jenkins in exactly the same manner. However, you
     will almost certainly need to make the distinction in your build jobs. In
     order to get the fastest possible feedback loop, your tests should be
     grouped into well-defined categories, starting with the fast-running unit
@@ -98,7 +98,7 @@
     <para>Once <indexterm class="startofrange" id="ch06-config" significance="normal"><primary>tests</primary><secondary>reports from</secondary><tertiary>configuring</tertiary></indexterm><indexterm class="startofrange" id="ch06-config2" significance="normal"><primary>reporting</primary><secondary>test results</secondary><tertiary>configuring</tertiary></indexterm>your build generates test results, you need to configure
     your Jenkins build job to display them. As mentioned above, Jenkins will
     work fine with any xUnit-compatible test reports, no matter what language
-    they are written in.</para>
+    they're written in.</para>
     <para>For <indexterm id="I_indexterm6_d1e8704" significance="normal"><primary>Maven build jobs</primary><secondary>reporting on test results</secondary></indexterm><indexterm id="I_indexterm6_d1e8709" significance="normal"><primary>tests</primary><secondary sortas="Maven">in Maven build jobs</secondary></indexterm>Maven build jobs, no special configuration is required—just
     make sure you invoke a goal that will run your tests, such as <literal moreinfo="none">mvn
     test</literal> (for your unit tests) or <literal moreinfo="none">mvn verify</literal> (for
@@ -137,7 +137,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For <indexterm id="I_indexterm6_d1e8765" significance="normal"><primary>Java applications</primary><secondary>test reports from</secondary></indexterm>Java projects, whether they are using<indexterm id="I_indexterm6_d1e8771" significance="normal"><primary>JUnit reports</primary><secondary>configuring in freestyle build job</secondary></indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal"><primary>TestNG</primary></indexterm> JUnit or TestNG, Jenkins does an excellent job out of the
+    <para>For <indexterm id="I_indexterm6_d1e8765" significance="normal"><primary>Java applications</primary><secondary>test reports from</secondary></indexterm>Java projects, whether they're using<indexterm id="I_indexterm6_d1e8771" significance="normal"><primary>JUnit reports</primary><secondary>configuring in freestyle build job</secondary></indexterm><indexterm id="I_indexterm6_d1e8776" significance="normal"><primary>TestNG</primary></indexterm> JUnit or TestNG, Jenkins does an excellent job out of the
     box. If you're using Jenkins for non-Java projects, you might need
     the<indexterm id="I_indexterm6_d1e8780" significance="normal"><primary>xUnit</primary></indexterm><indexterm id="I_indexterm6_d1e8783" significance="normal"><primary>xUnit plugin</primary></indexterm><indexterm id="I_indexterm6_d1e8786" significance="normal"><primary>plugins</primary><secondary>xUnit</secondary></indexterm> xUnit Plugin. This plugin lets Jenkins process test reports
     from non-Java tools in a consistent way. It provides support for MSUnit
@@ -178,7 +178,7 @@
     <title>Displaying Test Results</title>
     <para>Once<indexterm class="startofrange" id="ch06-disp1" significance="normal"><primary>tests</primary><secondary>reports from</secondary><tertiary>displaying</tertiary></indexterm><indexterm class="startofrange" id="ch06-disp2" significance="normal"><primary>reporting</primary><secondary>test results</secondary><tertiary>displaying</tertiary></indexterm> Jenkins knows where to find the test reports, it does a
     great job of reporting on them. Indeed, one of Jenkins’s main jobs is to
-    detect and to report on build failures. And a failing unit test is one of
+    detect and to report on build failures. A failing unit test is one of
     the most obvious symptoms.</para>
     <para>As we mentioned earlier, Jenkins <indexterm class="startofrange" id="ch06-fail1" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>details regarding</tertiary></indexterm><indexterm id="I_indexterm6_d1e8848" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary></indexterm><indexterm id="I_indexterm6_d1e8853" significance="normal"><primary>unstable builds</primary></indexterm>makes the distinction between <emphasis>failed</emphasis>
     builds and <emphasis>unstable</emphasis> builds. A failed build (indicated
@@ -187,7 +187,7 @@
     other hand, is a build that isn't considered of sufficient quality. This
     is intentionally a little vague: what defines “quality” in this sense is
     largely up to you, but it's typically related to code quality metrics
-    such as code coverage or coding standards, that we'll be discussing
+    such as code coverage or coding standards that we'll be discussing
     later on in the book. For now, let’s focus on the
     <emphasis>failed</emphasis> builds.</para>
     <para>In <xref linkend="fig-testing-maven-test-failure-dashboard"/>
@@ -197,10 +197,10 @@
     the Latest Test Result link will indicate <phrase role="keep-together">the
     current</phrase> number of test failures in this build job (“5 failures”
     in the illustration), <phrase role="keep-together">and also</phrase> the
-    change in the number of test failures since the last build (“+5” in the
+    change the number of test failures since the last build (“+5” in the
     <phrase role="keep-together">illustration—</phrase>five new test
     failures). You can also see how the tests have been faring over <phrase role="keep-together">time—</phrase>test failures from previous builds will
-    also appear as red in the Test Result Trend graph.</para>
+    also appear in red in the Test Result Trend graph.</para>
     <figure float="0" id="fig-testing-maven-test-failure-dashboard">
       <title>Jenkins displays test result trends on the project home
       page</title>
@@ -236,10 +236,10 @@
     <para>In both cases, Jenkins starts off by presenting a summary of test
     results for each package. From here, you can drill down, seeing test
     results for each test class and then finally the tests within the test
-    classes themselves. And if there are any failed tests, these will be
+    classes themselves. If there are any failed tests, these will be
     prominently displayed at the top of the page.</para>
     <para>This full view gives you both a good overview of the current state
-    of your tests, and an indication of their history. The Age column tells
+    of your tests and an indication of their history. The Age column tells
     you how for how long a test has been broken, with a hyperlink that takes
     you back to the first build in which this test failed.</para>
     <para>You can also add a description to the test results, using the Edit
@@ -271,16 +271,16 @@
     <para>Make <indexterm class="startofrange" id="ch06-perf1" significance="normal"><primary>tests</primary><secondary>performance of</secondary></indexterm><indexterm class="startofrange" id="ch06-perf2" significance="normal"><primary>performance</primary><secondary sortas="tests">of tests</secondary></indexterm>sure you also keep an eye on how long your tests take to
     run, and not just whether they pass or fail. Unit tests should be designed
     to run fast, and overly long-running tests can be the sign of a
-    performance issue. Slow unit tests also delay feedback, and in CI, fast
+    performance issue. Slow unit tests also delay feedback. In CI, fast
     feedback is the name of the game. For example, running one thousand unit
     tests in five minutes is good—taking an hour to run them isn't. So, it's
     a good idea to regularly check how long your unit tests are taking to run,
-    and if necessary investigate why they are taking so long.</para>
+    and, if necessary, investigate why they're taking so long.</para>
     <para>Luckily, Jenkins can easily tell you how long your tests have been
     taking to run over time. On the build job home page, click on the “trend”
     link in the Build History box on the left of the screen. This will give
     you a graph along the lines of the one in <xref linkend="fig-testing-test-trend"/>, showing how long each of your builds
-    took to run. Now tests are not the only thing that happens in a build job,
+    took to run. Now, tests are not the only thing that happens in a build job,
     but if you have enough tests to worry about, they will probably take a
     large proportion of the time. So, this graph is a great way to see how well
     your tests are performing as well.</para>
@@ -297,7 +297,7 @@
       </mediaobject>
     </figure>
     <para>When you're on the Test Results page (see <xref linkend="fig-testing-test-result-details"/>), you can also drill down and
-    see how long the tests in a particular module, package or class are taking
+    see how long the tests in a particular module, package, or class are taking
     to run. Just click on the test duration in the test results page (“Took 31
     ms” in <xref linkend="fig-testing-test-result-details"/>) to view the
     test history for a package, class, or individual test (see <xref linkend="fig-testing-test-result-history"/>). This makes it easy to
@@ -307,7 +307,7 @@
   <sect1 id="sect-chapter-automated-testing-ignoring">
     <title>Ignoring Tests</title>
     <para>Jenkins<indexterm class="startofrange" id="ch06-ignore" significance="normal"><primary>tests</primary><secondary>ignoring</secondary></indexterm> distinguishes between test failures and skipped tests.
-    Skipped tests are ones that have been deactivated, for example by using
+    Skipped tests are ones that have been deactivated, for example, by using
     the <literal moreinfo="none">@Ignore</literal> annotation in JUnit 4:</para>
     <programlisting id="I_programlisting6_d1e8995" format="linespecific">@Ignore("Pending more details from the BA")
 @Test 
@@ -333,7 +333,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     test, on hold while you implement the lower levels. In such cases, you
     don’t want to be distracted by the failing acceptance test, but you don’t
     want to forget that the test exists either. Using techniques such as the
-    <literal moreinfo="none">@Ignore</literal> annotation are better than simply commenting
+    <literal moreinfo="none">@Ignore</literal> annotation is better than simply commenting
     out the test or renaming it (in JUnit 3), as it lets Jenkins keep tabs on
     the ignored tests for you.</para>
     <para>In <indexterm id="I_indexterm6_d1e9012" significance="normal"><primary>TestNG</primary></indexterm>TestNG, you can also skip tests, using the
@@ -356,13 +356,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <para>Here, if the first test (<literal moreinfo="none">serverStartedOk()</literal>)
     fails, the following test will be skipped.</para>
     <para>In all of these cases, Jenkins will mark the tests that were not run
-    as yellow, both in the overall test results trend, and in the test details
+    in yellow, both in the overall test results trend, and in the test details
     (see <xref linkend="fig-testing-test-skipped"/>). Skipped tests are not
     as bad as test failures, but it's important not to get into the habit of
     neglecting them. Skipped tests are like branches in a version control
     system: a test should be skipped for a specific reason, with a clear idea
     as to when they will be reactivated. A skipped test that remains skipped
-    for too long is a bad<indexterm id="I_indexterm6_d1e9034" class="endofrange" startref="ch06-ignore" significance="normal"><primary/></indexterm> smell.</para>
+    for too long leaves a bad<indexterm id="I_indexterm6_d1e9034" class="endofrange" startref="ch06-ignore" significance="normal"><primary/></indexterm> smell.</para>
     <figure float="none" id="fig-testing-test-skipped">
       <title>Jenkins displays skipped tests as yellow</title>
       <mediaobject id="I_mediaobject6_d1e9041">
@@ -385,12 +385,12 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     indication of the quality or accuracy of your tests), it's a very good
     indication of code that has <emphasis>not</emphasis> been tested. And, if
     your team is introducing rigorous testing practices such as
-    Test-Driven-Development, code coverage can be a good indicator of how well
+    TDD, code coverage can be a good indicator of how well
     these practices are being applied.</para>
     <para>Code coverage<indexterm id="I_indexterm6_d1e9060" significance="normal"><primary>performance</primary><secondary sortas="code coverage">of code coverage
         analysis</secondary></indexterm> analysis is a CPU and memory-intensive process, and will
     slow down your build job significantly. For this reason, you'll
-    typically run code coverage metrics in a separate Jenkins build job, to be
+    typically run code coverage metrics in a separate Jenkins build job,
     run after your unit and integration tests are <phrase role="keep-together">successful</phrase>.</para>
     <para>There<indexterm id="I_indexterm6_d1e9071" significance="normal"><primary>code coverage metrics</primary><secondary>software for</secondary></indexterm> are many code coverage tools available, and several are
     supported in Jenkins, all through dedicated plugins. Java developers can
@@ -417,7 +417,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       understand the basic process that Cobertura follows, especially when you
       need to set it up in more low-level build scripting tools like Ant. Code
       coverage analysis works in three steps. First, it modifies (or
-      “instruments”) your application classes, to make them keep a tally of
+      “instruments”) your application classes to make them keep a tally of
       the number of times each line of code has been executed.<footnote><para>This is actually a slight over-simplification; in fact,
           Cobertura stores other data as well, such as how many times each
           possible outcome of a boolean test was executed. However, this does
@@ -517,7 +517,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;/plugins&gt;
   &lt;/reporting&gt;
 &lt;/project&gt;</programlisting>
-        <para>Now the coverage data will be generated when you generate the
+        <para>Now, the coverage data will be generated when you generate the
         Maven site for this project:</para>
         <screen format="linespecific">$ <userinput moreinfo="none">mvn site</userinput></screen>
         <para>If your Maven project contains modules (as is common practice
@@ -543,7 +543,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <sect3>
         <title>Integrating Cobertura with Ant</title>
         <para>Integrating <indexterm class="startofrange" id="ch06-ant1" significance="normal"><primary>Cobertura</primary><secondary sortas="Ant">with Ant</secondary></indexterm><indexterm class="startofrange" id="ch06-ant2" significance="normal"><primary>Ant</primary><secondary>code coverage metrics with Cobertura</secondary></indexterm>Cobertura into your Ant build is more complicated than
-        doing so in Maven. However, it does give you a finer control over what
+        doing so in Maven. However, it does give you finer control over what
         classes are instrumented, and when coverage is measured.</para>
         <para>Cobertura comes bundled with an Ant task that you can use to
         integrate Cobertura into your Ant builds. You'll need to download
@@ -572,18 +572,18 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
             <para>Tell Ant where your Cobertura installation is.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-path">
-            <para>We need to set up a classpath that Cobertura can use to
+            <para>Set up a classpath that Cobertura can use to
             run.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-jar">
-            <para>The path contains the Cobertura application itself.</para>
+            <para>The path containing the Cobertura application itself.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-libs">
             <para>And all of its dependencies.</para>
           </callout>
         </calloutlist>
         <para>Next, you need to instrument your application classes. You have
-        to be careful to place these instrumented classes in a separated
+        to be careful to place these instrumented classes in a separate
         directory, so that they don’t get bundled up and deployed to
         production by accident:</para>
         <programlisting id="I_programlisting6_d1e9250" format="linespecific">&lt;target name="instrument" depends="init,compile"&gt;<co id="co-ch04-cobertura-instrumentation"/>
@@ -598,7 +598,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
 &lt;/target&gt;</programlisting>
         <calloutlist>
           <callout arearefs="co-ch04-cobertura-instrumentation">
-            <para>We can only instrument the application classes once they
+            <para>Only instrument the application classes once they
             have been compiled.</para>
           </callout>
           <callout arearefs="co-ch04-cobertura-delete">
@@ -616,7 +616,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </calloutlist>
         <para>At this stage, the <filename moreinfo="none">${instrumented.dir}</filename>
         directory contains an instrumented version of our application classes.
-        Now all we need to do to generate some useful code coverage data is to
+        Now, all we need to do to generate some useful code coverage data is to
         run our unit tests against the classes in this directory:</para>
         <programlisting id="I_programlisting6_d1e9282" format="linespecific">&lt;target name="test-coverage" depends="instrument"&gt;
     &lt;junit fork="yes" dir="${basedir}"&gt;<co id="co-ch04-cobertura-junit"/>
@@ -651,7 +651,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" 
                       format="xml" /&gt;
 &lt;/target&gt;</programlisting>
-        <para>Finally, don’t forget to tidy up after your done: the <command moreinfo="none">clean</command> target should delete not only the
+        <para>Finally, don’t forget to tidy up after you're done: the <command moreinfo="none">clean</command> target should delete not only the
         generated classes, but also the generated instrumented classes, the
         Cobertura coverage data, and the Cobertura reports:</para>
         <programlisting id="I_programlisting6_d1e9305" format="linespecific">&lt;target name="clean" 
@@ -698,9 +698,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         and memory-hungry, you'd typically create a separate build job for
         this and other code quality metrics, to be run after the normal unit
         and integration tests. For very large projects, you may even want to
-        set this up as a build that only runs on a nightly basis. Indeed,
+        set up a build that only runs on a nightly basis. Indeed,
         feedback on code coverage and other such metrics is usually not as
-        time-critical as feedback on test results, and this will leave build
+        time-critical as feedback on test results. This will leave build
         executors free for build jobs that can benefit from snappy
         feedback.</para>
         <para>As we mentioned earlier, Jenkins doesn't do any code coverage
@@ -761,7 +761,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         need to execute it twice: once with a value that's more than 10,000,
         and one with a value of 10,000 or less.</para>
         <para>Other more basic code coverage metrics include methods (how many
-        methods in the application were exercised by the tests), classes and
+        methods in the application were exercised by the tests), classes, and
         packages.</para>
         <para>Jenkins lets you define which of these metrics you want to
         track. By default, the Cobertura plugin will record Conditional, Line,
@@ -788,7 +788,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </figure>
         <para>The first (the one with the sunny icon) is the minimum value
         necessary for the build to have a sunny weather icon. The second
-        indicates the value below which the build will be attributed a stormy
+        indicates the value below which the build will be assigned a stormy
         weather icon. Jenkins will extrapolate between these values for the
         other more nuanced weather icons.</para>
         <para>The<indexterm id="I_indexterm6_d1e9423" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>criteria for</tertiary></indexterm><indexterm id="I_indexterm6_d1e9430" significance="normal"><primary>unstable builds</primary><secondary>criteria for</secondary></indexterm> last threshold value is simply the value below which a
@@ -826,8 +826,8 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         coverage metrics, displaying coverage breakdowns for packages, classes
         within a package, and lines of code within a class (see <xref linkend="fig-hudson-code-coverage-package"/>). No matter what level
         of detail you're viewing, Jenkins will display a graph at the top of
-        the page showing the code coverage trend over time. Further down, you
-        will find the breakdown by package or class.</para>
+        the page showing the code coverage trend over time. Further down, you'll
+        find the breakdown by package or class.</para>
         <figure float="0" id="fig-hudson-code-coverage-package">
           <title>Displaying code coverage metrics</title>
           <mediaobject id="I_mediaobject6_d1e9481">
@@ -882,7 +882,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       Clover code coverage into your builds.</para>
       <para>Running Clover on your project is a multistep project: you
       instrument your application code, run your tests, aggregate the test
-      data (for multimodule Maven projects) and generate the HTML and XML
+      data (for multimodule Maven projects), and generate the HTML and XML
       reports. Since this can be a fairly slow operation, you typically run it
       as part of a separate build job, and not with your normal tests. You can
       do this as follows:</para>
@@ -890,7 +890,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <para>Next, you need to set up the Clover reporting in Jenkins. Tick the
       Publish Clover <phrase role="keep-together">Coverage</phrase> Report
       checkbox to set this up. The configuration is similar to that of <phrase role="keep-together">Cobertura—</phrase>you need to provide the path to
-      the Clover HTML report directory, and to the XML report file, and you
+      the Clover HTML report directory, and to the XML report file. You
       can also define threshold values for sunny and stormy weather, and for
       unstable builds (see <xref linkend="fig-hudson-clover-config"/>).</para>
       <figure float="none" id="fig-hudson-clover-config">
@@ -924,10 +924,10 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     <title>Automated Acceptance Tests</title>
     <para>Automated <indexterm class="startofrange" id="ch06-accept2" significance="normal"><primary>acceptance tests, automated</primary></indexterm><indexterm class="startofrange" id="ch06-accept3" significance="normal"><primary>tests</primary><secondary>acceptance tests</secondary></indexterm>acceptance tests play an important part in many agile
     projects, both for verification and for communication. As a verification
-    tool, acceptance tests perform a similar role to integration tests, and
+    tool, acceptance tests perform a similar role as integration tests, and
     aim to demonstrate that the application effectively does what's expected
-    of it. But this is almost a secondary aspect of automated Acceptance
-    Tests. The primary focus is actually on communication—demonstrating to
+    of it. But this is almost a secondary aspect of automated acceptance
+    tests. The primary focus is actually on communication—demonstrating to
     nondevelopers (business owners, business analysts, testers, and so forth)
     precisely where the project is at.</para>
     <para>Acceptance tests shouldn't be mixed with developer-focused tests,
@@ -936,27 +936,27 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     demonstration rather than exhaustive proof. The exhaustive tests should be
     done at the unit-testing level.</para>
     <para>Acceptance Tests can be automated using conventional tools such as
-    JUnit, but there's a growing tendency to use <indexterm id="I_indexterm6_d1e9602" significance="normal"><primary>BDD (Behaviour Driven Development)</primary></indexterm>Behavior-Driven Development (BDD) frameworks for this
+    JUnit, but there's a growing tendency to use <indexterm id="I_indexterm6_d1e9602" significance="normal"><primary>BDD (Behaviour Driven Development)</primary></indexterm>BDD frameworks for this
     purpose, as they tend to be a better fit for the public-facing nature of
-    Acceptance Tests. Behavior-driven development tools used for automated
-    Acceptance Tests <phrase role="keep-together">typically</phrase> generate
+    acceptance tests. BDD tools used for automated
+    acceptance tests <phrase role="keep-together">typically</phrase> generate
     HTML reports with a specific layout that's well-suited to nondevelopers.
     They often also produce <indexterm id="I_indexterm6_d1e9609" significance="normal"><primary>JUnit reports</primary><secondary sortas="acceptance">for acceptance tests</secondary></indexterm>JUnit-compatible reports that can be understood directly by
     Jenkins.</para>
-    <para>Behavior-Driven Development frameworks also have the notion of
-    “Pending tests,” tests that are automated, but have not yet been
+    <para>BDD frameworks also have the notion of
+    “Pending tests”, tests that are automated, but have not yet been
     implemented by the development team. This distinction plays an important
-    role in communication with other non-developer stakeholders: if you can
+    role in communication with other non-developer stakeholders. If you can
     automate these tests early on in the process, they can give an excellent
     indicator of which features have been implemented, which work, and which
     have not been started yet.</para>
-    <para>As a <indexterm class="startofrange" id="ch06-acceptrep" significance="normal"><primary>reporting</primary><secondary>acceptance test results</secondary></indexterm>rule, your Acceptance Tests should be displayed separately
+    <para>As a <indexterm class="startofrange" id="ch06-acceptrep" significance="normal"><primary>reporting</primary><secondary>acceptance test results</secondary></indexterm>rule, your acceptance tests should be displayed separately
     from the other more conventional automated tests. If they use the same
-    testing framework as your normal tests (e.g., JUnit), make sure they are
+    testing framework as your normal tests (e.g., JUnit), make sure they're
     executed in a dedicated build job, so that non-developers can view them
     and concentrate on the business-focused tests without being distracted by
     low-level or technical ones. It can also help to adopt business-focused
-    and behavioural naming conventions for your tests and test classes, to
+    and behavioral naming conventions for your tests and test classes, to
     make them more accessible to non-developers (see <xref linkend="fig-hudson-junit-acceptance-tests"/>). The way you name your
     tests and test classes can make a huge difference when it comes to reading
     the test reports and understanding the actual business features and
@@ -993,7 +993,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     </figure>
     <para>This plugin is easy to configure. Just go to the “Post-build
     Actions” section and tick the “Publish HTML reports” checkbox (see <xref linkend="fig-hudson-html-reports"/>). Next, give Jenkins the directory
-    your HTML reports were generated to, an index page, and a title for your
+    your HTML reports were generated in, an index page, and a title for your
     report. You can also ask Jenkins to store the reports generated for each
     build, or only keep the latest one.</para>
     <figure float="none" id="fig-hudson-html-reports">
@@ -1049,14 +1049,14 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     an application responds to requests with a given number of simultaneous
     users, or how well the application copes with an increasing number of
     users. Many applications have Service Level Agreements, or SLAs, which
-    define contractually how well they should perform.</para>
+    define contractually how well they must perform.</para>
     <para>Performance testing is often a one-off, ad-hoc activity, only
     undertaken right at the end of the project or when things start to go
     wrong. Nevertheless, performance issues are like any other sort of bug—the
-    later on in the process they are detected, the more costly they are to
-    fix. It therefore makes good of sense to automate these performance and
-    load tests, so that you can spot any areas of degrading performance before
-    it gets out into the wild.</para>
+    later in the process they're detected, the more costly they are to
+    fix. It therefore makes good sense to automate these performance and
+    load tests so that you can spot any areas of degrading performance before
+    they get out into the wild.</para>
     <para><ulink url="http://jakarta.apache.org/jmeter/">JMeter</ulink> is a
     popular open source performance and load testing tool. It works by
     simulating load on your application, and measuring the response time as
@@ -1180,7 +1180,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     &lt;/plugins&gt;
   &lt;/build&gt;
 &lt;/project&gt;</programlisting>
-    <para>This will start up an instance of Jetty and deploy your web
+    <para>This will start up an instance of Jetty, deploy your web
     application to it just before the integration tests, and shut it down
     afterwards.</para>
     <para>Finally, you need to run the JMeter performance tests during this
@@ -1242,7 +1242,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Once you've the plugin installed, you can set up a performance
+    <para>Once you've installed the plugin, you can set up a performance
     build job in Jenkins. This build job will typically be fairly separate
     from your other builds. In <xref linkend="fig-hudson-midnight-build"/>,
     we've set up the performance build to run on a nightly basis, which is
@@ -1326,7 +1326,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This graph gives you an overview of performance over time. You would
+    <para>This graph gives you an overview of performance over time. You'd
     typically use this graph to ensure that your average response times are
     within the expected limits, and also spot any unusually high variations in
     the average or maximum response times. However, if you need to track down
@@ -1353,7 +1353,7 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     Then, you can use the <literal moreinfo="none">&lt;property&gt;</literal> element in the
     <literal moreinfo="none">&lt;jmeter&gt;</literal> Ant task to pass the property when you
     run the script. The following Ant target, for example, runs JMeter three
-    times, for 200, 500 and 1000 <indexterm id="I_indexterm6_d1e9893" class="endofrange" startref="ch06-perf6" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9895" class="endofrange" startref="ch06-perf3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9898" class="endofrange" startref="ch06-perf4" significance="normal"><primary/></indexterm>simultaneous users:</para>
+    times, for 200, 500, and 1000 <indexterm id="I_indexterm6_d1e9893" class="endofrange" startref="ch06-perf6" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9895" class="endofrange" startref="ch06-perf3" significance="normal"><primary/></indexterm><indexterm id="I_indexterm6_d1e9898" class="endofrange" startref="ch06-perf4" significance="normal"><primary/></indexterm>simultaneous users:</para>
     <programlisting id="I_programlisting6_d1e9901" format="linespecific">    &lt;target name="jmeter"&gt;
       &lt;jmeter jmeterhome="${basedir}/tools/jmeter"
               testplan="${basedir}/src/test/jmeter/gameoflife.jmx"
@@ -1396,13 +1396,13 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
     with time. In other words, the longer the news of a build failure takes to
     get to you, the less it's worth, and the harder it is to fix.</para>
     <para>Indeed, if your functional or integration tests are taking several
-    hours to run, chances are they won’t be run for every change. They are
+    hours to run, chances are they won’t be run for every change. They're
     more likely to be scheduled as a nightly build. The problem with this is
     that a lot can happen in twenty-four hours, and, if the nightly build
     fails, it will be difficult to figure out which of the many changes
     committed to version control during the day was responsible. This is a
-    serious issue, and penalizes your CI server’s ability to provide the fast
-    feedback that makes it useful.</para>
+    serious issue, and penalizes your CI server’s ability to provide fast
+    useful feedback.</para>
     <para>Of course some builds <emphasis>are</emphasis> slow, by their very
     nature. Performance or load tests fall into this category, as do some more
     heavyweight code quality metrics builds for large projects. However,
@@ -1419,9 +1419,9 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       server. Compared to the time and effort saved in identifying and fixing
       integration-related bugs, the cost of buying a shiny new build server is
       relatively modest.</para>
-      <para>Another <indexterm id="I_indexterm6_d1e9964" significance="normal"><primary>virtual machine, for build server</primary></indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal"><primary>build server</primary><secondary>virtual machine for</secondary></indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal"><primary>cloud computing, for builds</primary></indexterm>option is to consider using virtual or cloud-based
-      approach. Later on in the book, we'll see how you can use VMware
-      virtual machines or cloud-based infrastructure such as Amazon Web
+      <para>Another <indexterm id="I_indexterm6_d1e9964" significance="normal"><primary>virtual machine, for build server</primary></indexterm><indexterm id="I_indexterm6_d1e9967" significance="normal"><primary>build server</primary><secondary>virtual machine for</secondary></indexterm><indexterm id="I_indexterm6_d1e9972" significance="normal"><primary>cloud computing, for builds</primary></indexterm>option is to consider using a virtual or cloud-based
+      approach. Later on in the book, you'll see how you can use VMware
+      virtual machines, or cloud-based infrastructure such as Amazon Web
       Services (EC2) or CloudBees to increase your build capacity on an
       “as-needed” basis, without having to invest in permanent new
       machines.</para>
@@ -1434,21 +1434,21 @@ public void whenAUserLogsOnWithACorrectUsernameAndPasswordTheHomePageIsDisplayed
       <title>Run Fewer Integration/Functional Tests</title>
       <para>In many <indexterm id="I_indexterm6_d1e9983" significance="normal"><primary>integration tests</primary><secondary>number of</secondary></indexterm><indexterm id="I_indexterm6_d1e9988" significance="normal"><primary>functional (regression) tests</primary><secondary>number of</secondary></indexterm>applications, integration or functional tests are used by
       default as the standard way to test almost all aspects of the system.
-      However, integration and functional tests are not the best way to detect
+      However, these tests are not the best way to detect
       and identify bugs. Because of the large number of components involved in
       a typical end-to-end test, it can be very hard to know where something
       has gone wrong. In addition, with so many moving parts, it's extremely
       difficult, if not completely unfeasible, to cover all of the possible
       paths through the application.</para>
       <para>For this reason, wherever possible, you should prefer
-      quick-running unit tests to the much slower integration and functional
+      quick-running unit tests to much slower integration and functional
       tests. When you're confident that the <phrase role="keep-together">individual</phrase> components work well, you can
       complete the picture by a few end-to-end tests that step through common
       use cases for the system, or use cases that have caused problems in the
       past. This will help ensure that the components do fit together
       correctly, which is, after all, what integration tests are supposed to
-      do. But leave the more comprehensive tests where possible to unit tests.
-      This strategy is probably the most sustainable approach to keeping your
+      do. But, leave the more comprehensive tests where possible to unit tests.
+      This strategy is probably the most sustainable approach for keeping your
       feedback loop short, but it does require some discipline and
       effort.</para>
     </sect2>
