@@ -6,11 +6,11 @@
     <title>Introduction</title>
     <para>In this chapter, we'll look at some more advanced build job
     setups. We'll discuss parameterized builds, which allow Jenkins to
-    prompt the user for additional parameters that will be passed into the
+    prompt the user for additional parameters to pass into the
     build job, and multiconfiguration build jobs, which let you run a single
     build job through a large number of variations. We'll look at how to run
     build jobs in parallel, and wait for the outcome of one or more build jobs
-    before continuing. And we'll see how to implement build promotion
+    before continuing. And, we'll see how to implement build promotion
     strategies and build pipelines so that Jenkins can be used not only as a
     build server, but also as a deployment server.</para>
   </sect1>
@@ -19,8 +19,8 @@
     <para>Parameterized<indexterm class="startofrange" id="ch10-param1" significance="normal"><primary>build jobs</primary><secondary>parameterized</secondary></indexterm><indexterm class="startofrange" id="ch10-param2" significance="normal"><primary>parameterized build jobs</primary></indexterm> builds are a powerful concept that enable you to add
     another dimension to your build jobs.</para>
     <para>The<indexterm id="I_indexterm10_d1e13891" significance="normal"><primary>plugins</primary><secondary>Parameterized Build</secondary></indexterm><indexterm id="I_indexterm10_d1e13896" significance="normal"><primary>Parameterized Build plugin</primary></indexterm> Parameterized Build plugin lets you configure parameters
-    for your build job, that can be either entered by the user when the build
-    job is triggered, or (as we'll see later) from another build job.</para>
+    for your build job that can be either entered by the user when the build
+    job is triggered, or (as we'll see later), from another build job.</para>
     <para>For example, you might have a deployment build job, where you want
     to choose the target environment in a drop-down list when you start the
     build job. Or, you may want to specify the version of the application you
@@ -115,7 +115,7 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>When we run this, we get a console output along the following
+      <para>When you run this, you get a console output along the following
       lines:</para>
       <screen format="linespecific">Started by user anonymous
 Building on master
@@ -152,7 +152,7 @@ Finished: SUCCESS</screen>
     &lt;target.version&gt;RELEASE&lt;/target.version&gt;
     ...
   &lt;/properties&gt;</programlisting>
-      <para>When we invoke Maven, we pass in the parameter as one of the build
+      <para>When you invoke Maven, you pass in the parameter as one of the build
       properties (see <xref linkend="fig-hudson-inject-parameter-maven"/>).
       We can then use a tool like Cargo to do the actual deployment—Maven will
       download the requested version of the WAR file from the local Enterprise
@@ -428,9 +428,9 @@ Finished: SUCCESS</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Now suppose we want to trigger a second build job to run more
+    <para>Now suppose you want to trigger a second build job to run more
     comprehensive integration tests once this first build job has finished.
-    However, we need it to run the tests against the same database. We can do
+    However, you need it to run the tests against the same database. We can do
     this by setting up a parameterized trigger to start this second build job
     (see <xref linkend="fig-hudson-build-parameters-trigger"/>).</para>
     <figure float="0" id="fig-hudson-build-parameters-trigger">
@@ -532,9 +532,9 @@ Finished: SUCCESS</screen>
       <para>You can define different axes of configuration options, including
       running the build job on different slaves or on different JDKs, or
       providing your own custom properties to the build. For example, in the
-      build jobs discussed earlier, we might want to test our application for
+      build jobs discussed earlier, you might want to test our application for
       different databases and different operating systems. We could define one
-      axis defining slave machines with different operating systems we wanted
+      axis defining slave machines with different operating systems you wanted
       our build to run on, and another axis defining all the possible database
       values. Jenkins will then run the build job for each possible database
       and each possible operating system.</para>
@@ -657,7 +657,7 @@ Finished: SUCCESS</screen>
       sequentially by ticking the Run each configuration sequentially checkbox
       at the bottom<indexterm id="I_indexterm10_d1e14732" significance="normal"><primary>multiconfiguration build jobs</primary><secondary>configuration matrix for</secondary></indexterm><indexterm id="I_indexterm10_d1e14737" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary><tertiary>configuration matrix for</tertiary></indexterm> of the Configuration Matrix section.</para>
       <para>By default, Jenkins will run all possible combinations of the
-      different axes. So, in the above example, we have three environments,
+      different axes. So, in the above example, you have three environments,
       two JDKs, and four databases. This results in a total of 24 builds.
       However, in some cases, it may not make sense (or be possible) to run
       certain combinations. For example, suppose you have a build job that
@@ -685,7 +685,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>To set this up with a Combination Filter, we could use an
+      <para>To set this up with a Combination Filter, you could use an
       expression like the following:</para>
       <programlisting id="I_programlisting10_d1e14774" format="linespecific">(browser=="firefox")
 || (browser=="iexplorer" &amp;&amp; os=="windows")
@@ -866,7 +866,7 @@ Finished: SUCCESS</screen>
       Disk”. This approach also has the advantage of making it easy to store
       your job configurations in your version control system, which in turn
       makes it easier to keep track of changes made to the build <phrase role="keep-together">configurations</phrase>.</para>
-      <para>But we still didn’t solve the problem of maintaining jobs that
+      <para>But you still didn’t solve the problem of maintaining jobs that
       share a number of identical properties, such as Maven goals, email
       recipients or code repository URL. For that, the Maven Jenkins Plugin
       provides jobs inheritance, demonstrated in the following <phrase role="keep-together">example</phrase>:</para>
@@ -1110,7 +1110,7 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Dependency Graphs</title>
-      <para>Before<indexterm id="I_indexterm10_d1e15147" significance="normal"><primary>build jobs</primary><secondary>dependencies between</secondary></indexterm><indexterm id="I_indexterm10_d1e15152" significance="normal"><primary>Dependency Graph View plugin</primary></indexterm><indexterm id="I_indexterm10_d1e15155" significance="normal"><primary>plugins</primary><secondary>Dependency Graph View</secondary></indexterm> we investigate the finer points of parallel builds, it's
+      <para>Before<indexterm id="I_indexterm10_d1e15147" significance="normal"><primary>build jobs</primary><secondary>dependencies between</secondary></indexterm><indexterm id="I_indexterm10_d1e15152" significance="normal"><primary>Dependency Graph View plugin</primary></indexterm><indexterm id="I_indexterm10_d1e15155" significance="normal"><primary>plugins</primary><secondary>Dependency Graph View</secondary></indexterm> you investigate the finer points of parallel builds, it's
       useful to be able to visualize the relationships between your build
       jobs. The Dependency Graph View plugin analyzes your build jobs and
       displays a graph describing the upstream and downstream connections
@@ -1140,7 +1140,7 @@ Finished: SUCCESS</screen>
       <para>When <indexterm class="startofrange" id="ch10-join1" significance="normal"><primary>build jobs</primary><secondary>joins in</secondary></indexterm><indexterm class="startofrange" id="ch10-join2" significance="normal"><primary>joins, in build jobs</primary></indexterm>setting up more complicated build pipelines, you
       frequently come across situations where a build job can't proceed until
       a number of other build jobs have been completed, but that these
-      upstream build jobs do not need to be executed sequentially. For
+      upstream build jobs don't need to be executed sequentially. For
       example, in <xref linkend="fig-hudson-dependency-graph"/>, imagine that
       the <command moreinfo="none">phoenix-deploy-to-uat</command> build job
       actually requires three jobs to succeed before it can be executed:
@@ -1148,7 +1148,7 @@ Finished: SUCCESS</screen>
       <para>We can set this up by using the Joins plugin, which you'll need
       to install in the usual way via the Update center. Once installed, you
       configure a join in the build job that initiates the join process (in
-      our example, this would be <command moreinfo="none">phoenix-web-tests</command>). In our example, we need to
+      our example, this would be <command moreinfo="none">phoenix-web-tests</command>). In our example, you need to
       modify the <command moreinfo="none">phoenix-web-tests</command> build
       job so that it triggers the <command moreinfo="none">phoenix-compatibility-tests</command>, <command moreinfo="none">phoenix-load-tests</command>, and <command moreinfo="none">phoenix-performance-tests</command> first, and then, if
       these three succeed, the <command moreinfo="none">phoenix-deploy-to-uat</command> build job.</para>
@@ -1495,7 +1495,7 @@ Finished: SUCCESS</screen>
       executed configuration will be copied into the current workspace, each
       in its own directory. Jenkins will build a directory structure using the
       axes that were used in the multiconfiguration build. For example,
-      imagine we need to produce a highly-optimized version of our product for
+      imagine you need to produce a highly-optimized version of our product for
       a number of different targeted databases and application servers. We
       could do this with a multiconfiguration build job like the one
       illustrated in <xref linkend="fig-jenkins-multi-config-artifacts"/>.</para>
@@ -1542,7 +1542,7 @@ Finished: SUCCESS</screen>
       integration tests, and produces a WAR file. This WAR file is then reused
       for more extensive integration tests (in the <command moreinfo="none">phoenix-integration-tests</command> build job) and then
       for a series of automated web tests (in the <command moreinfo="none">phoenix-web-test</command> build job). If the build
-      passes the automated web tests, we would like to deploy the application
+      passes the automated web tests, you would like to deploy the application
       to a functional testing environment where it can be tested by human
       testers. The deployment to this environment is implemented in the
       <command moreinfo="none">phoenix-test-deploy</command> build job. Once
@@ -1669,9 +1669,9 @@ Finished: SUCCESS</screen>
       well with build promotion, but you need to ensure that Jenkins
       fingerprints the files that are shared or copied between build jobs. In
       the example shown in <xref linkend="fig-jenkins-build-promotion"/>, for
-      instance, we need to do two things (<xref linkend="fig-jenkins-build-promotion-fingerprints"/>). First, we need
+      instance, you need to do two things (<xref linkend="fig-jenkins-build-promotion-fingerprints"/>). First, you need
       to archive the generated WAR file so that it can be reused in the
-      downstream project. Secondly, we need to record a fingerprint of the
+      downstream project. Secondly, you need to record a fingerprint of the
       archived artifacts. You do this by ticking the “Record fingerprints of
       files to track usage” option, and specifying the files you want to
       fingerprint. A useful shortcut is simply to fingerprint all archived
@@ -1691,9 +1691,9 @@ Finished: SUCCESS</screen>
       <para>This is all you need to do to configure the initial build process.
       The next step is to configure the integration tests executed in the
       <command moreinfo="none">phoenix-integration</command> build job. Here,
-      we use the Copy Artifact plugin to retrieve the WAR file generated by
+      you use the Copy Artifact plugin to retrieve the WAR file generated by
       the <phrase role="keep-together"><command moreinfo="none">phoenix-default</command></phrase> build job (see <xref linkend="fig-jenkins-build-promotion-integration"/>). Since this build
-      job is triggered immediately after the <command moreinfo="none">phoenix-default</command> build job, we can simply fetch
+      job is triggered immediately after the <command moreinfo="none">phoenix-default</command> build job, you can simply fetch
       the WAR file from the latest successful build.</para>
       <figure float="none" id="fig-jenkins-build-promotion-integration">
         <title>Fetching the WAR file from the upstream build job</title>
@@ -1706,11 +1706,11 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>This isn't quite all we need to do for the integration tests,
+      <para>This isn't quite all you need to do for the integration tests,
       however. The <command moreinfo="none">phoenix-integration</command>
       build job is followed by the <command moreinfo="none">phoenix-web</command> build job, which executes the
       automated web tests. To ensure that the same WAR file is used at each
-      stage of the build process, we need to retrieve it from the upstream
+      stage of the build process, you need to retrieve it from the upstream
       <command moreinfo="none">phoenix-integration</command> build job, and
       not from the original <command moreinfo="none">phoenix-default</command>
       build job (which may have been executed again in the meantime). So, we
@@ -1727,7 +1727,7 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>In the <command moreinfo="none">phoenix-web</command> build job,
-      we then fetch the WAR file from the <phrase role="keep-together"><command moreinfo="none">phoenix-integration</command></phrase> build job, using
+      you then fetch the WAR file from the <phrase role="keep-together"><command moreinfo="none">phoenix-integration</command></phrase> build job, using
       a configuration very similar to the one shown above (see <xref linkend="fig-jenkins-promotion-copy-from-integration"/>).</para>
       <figure float="none" id="fig-jenkins-promotion-copy-from-integration">
         <title>Fetching the WAR file from the integration job</title>
@@ -1741,10 +1741,10 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>For the build promotion process to work properly, there's one
-      more important thing we need to configure in the <command moreinfo="none">phoenix-web</command> build job. As we discussed
+      more important thing you need to configure in the <command moreinfo="none">phoenix-web</command> build job. As we discussed
       earlier, Jenkins needs to be able to be sure that the WAR file used in
       these tests is the same one generated by the original build. We do this
-      by activating fingerprinting on the WAR file we fetched from the
+      by activating fingerprinting on the WAR file you fetched from the
       <command moreinfo="none">phoenix-integration</command> build job (which,
       remember, was originally built by the <command moreinfo="none">phoenix-default</command> build job). Since we've
       copied this WAR file into the workspace, a configuration like the one in
@@ -1764,12 +1764,12 @@ Finished: SUCCESS</screen>
       </figure>
       <para>The final step is to configure the <command moreinfo="none">phoenix-deploy-to-test</command> build job to retrieve
       the last promoted WAR file (rather than just the last successful one).
-      To do this, we use the Copy Artifact plugin again, but this time we
+      To do this, you use the Copy Artifact plugin again, but this time we
       choose the “Specified by permalink” option. Here Jenkins will propose,
       among other things, the build promotion processes configured for the
       build job you're copying from. So, in <xref linkend="fig-jenkins-copy-promoted-war"/>, we're fetching the last
       promoted WAR file build by the <command moreinfo="none">phoenix-default</command> job, which is precisely what
-      we want.</para>
+      you want.</para>
       <figure float="none" id="fig-jenkins-copy-promoted-war">
         <title>Fetching the latest promoted WAR file</title>
         <mediaobject id="I_mediaobject10_d1e15817">
@@ -1832,7 +1832,7 @@ Finished: SUCCESS</screen>
       </figure>
       <para>The aggregate test results can be seen in the build details page
       (see <xref linkend="fig-jenkins-show-aggregate-tests"/>).
-      Unfortunately, these aggregate test results do not appear in the overall
+      Unfortunately, these aggregate test results don't appear in the overall
       test results, but you can display the full list of tests executed by
       clicking on the Aggregate Test Result link on the individual build
       page.</para>
