@@ -104,7 +104,7 @@
       update, or whether you which to update the database schema while
       conserving the existing data. While this sounds useful in theory, in
       fact it's very limited for anything other than noncritical development
-      environments. In particular, these tools do not handle data migration
+      environments. In particular, these tools don't handle data migration
       well. For example, if you rename a column in your database, the update
       process will simply create a new column: it won't copy the data from
       the old column into the new column, nor will it remove the old column
@@ -341,7 +341,7 @@ dropFirst = false</programlisting>
         successful, the application will be automatically deployed to the test
         environment by the <command moreinfo="none">gameoflife-deploy-to-test</command> build job.</para>
         <para>In the <emphasis>gameoflife-deploy-to-test</emphasis> build job,
-        we use the Copy Artifact plugin to retrieve the WAR file generated in
+        you use the Copy Artifact plugin to retrieve the WAR file generated in
         the <command moreinfo="none">gameoflife-default</command> build job
         and copies it into the current build job’s workspace (see <xref linkend="fig-jenkins-cd-copy-artifacts"/>).</para>
         <figure float="none" id="fig-jenkins-cd-copy-artifacts">
@@ -355,7 +355,7 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Next, we use the Deploy plugin to deploy the WAR file to the
+        <para>Next, you use the Deploy plugin to deploy the WAR file to the
         test server. Of course it's generally possible, and not too
         difficult, to write a hand-rolled deployment script to get your
         application on to your application server. In some cases, this may be
@@ -419,13 +419,13 @@ dropFirst = false</programlisting>
       <sect3>
         <title>Deploying a version from a previous Jenkins build</title>
         <para>Redeploying<indexterm class="startofrange" id="ch12-previous" significance="normal"><primary>Java applications</primary><secondary>redeploying from previous build</secondary></indexterm> a previously-deployed artifact in Jenkins is relatively
-        straightforward. In <xref linkend="sect-deploy-plugin"/>, we saw how
+        straightforward. In <xref linkend="sect-deploy-plugin"/>, you saw how
         to use the<indexterm id="I_indexterm12_d1e17291" significance="normal"><primary>plugins</primary><secondary>Deploy</secondary></indexterm><indexterm id="I_indexterm12_d1e17296" significance="normal"><primary>Deploy plugin</primary></indexterm><indexterm id="I_indexterm12_d1e17299" significance="normal"><primary>plugins</primary><secondary>Copy Artifact</secondary></indexterm><indexterm id="I_indexterm12_d1e17304" significance="normal"><primary>Copy Artifact plugin</primary></indexterm> Copy Artifacts and Deploy plugins to deploy a WAR file
-        built by a previous build job to an application server. What we need
+        built by a previous build job to an application server. What you need
         to do now is to let the user specify the version to be deployed,
         rather than just deploying the latest build.</para>
         <para>We can<indexterm id="I_indexterm12_d1e17310" significance="normal"><primary>plugins</primary><secondary>Parameterized Trigger</secondary></indexterm><indexterm id="I_indexterm12_d1e17315" significance="normal"><primary>Parameterized Trigger plugin</primary></indexterm> do this using the Parameterized Trigger plugin (see
-        <xref linkend="sect-advanced-builds-parameterized"/>). First, we add
+        <xref linkend="sect-advanced-builds-parameterized"/>). First, you add
         a parameter to the build job, using the special “Build selector for
         Copy Artifact” parameter type (see <xref linkend="fig-jenkins-build-selector-copy-artifact"/>).</para>
         <figure float="none" id="fig-jenkins-build-selector-copy-artifact">
@@ -467,20 +467,20 @@ dropFirst = false</programlisting>
         where <replaceable>MY_BUILD_JOB</replaceable> is the name of the
         <phrase role="keep-together">original</phrase> build job (in upper
         case and with characters other than A–Z converted to underscores). For
-        example, if we copy an artifact from build number 4 of the
+        example, if you copy an artifact from build number 4 of the
         <emphasis>gameoflife-default</emphasis> project, the
         <code>COPYARTIFACT_BUILD_NUMBER_GAMEOFLIFE_DEFAULT</code> environment
         variable would be set to 4.</para>
         <para>The second part of the configuration is to tell Jenkins what to
         fetch, and from which build job. In the Build section of our project
-        configuration, we add a “Copy artifacts from another project” step.
+        configuration, you add a “Copy artifacts from another project” step.
         Here you specify the project where the artifact was built and archived
         (<emphasis>gameoflife-default</emphasis> in our example). You also
         need to make Jenkins use the build specified in the parameter we
         defined earlier. You do this by choosing “Specified by a build
         parameter” in the “Which build” option, and providing the variable
-        name we specified earlier in the build selector name field (see <xref linkend="fig-jenkins-copy-artifacts-build-parameter"/>). Then, just
-        configure the artifacts to copy as we did in the previous
+        name you specified earlier in the build selector name field (see <xref linkend="fig-jenkins-copy-artifacts-build-parameter"/>). Then, just
+        configure the artifacts to copy as you did in the previous
         example.</para>
         <figure float="none" id="fig-jenkins-copy-artifacts-build-parameter">
           <title>Specify where to find the artifacts to be deployed</title>
@@ -493,9 +493,9 @@ dropFirst = false</programlisting>
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Finally, we deploy the copied artifact using the Deploy plugin,
+        <para>Finally, you deploy the copied artifact using the Deploy plugin,
         as illustrated in <xref linkend="fig-jenkins-cd-deploy-plugin"/>.</para>
-        <para>So, let’s see how this build works in practice. When we kick off
+        <para>So, let’s see how this build works in practice. When you kick off
         a build manually, Jenkins will propose a list of options letting you
         select the build to redeploy (see <xref linkend="fig-jenkins-redeploy-choose-build"/>).</para>
         <figure float="0" id="fig-jenkins-redeploy-choose-build">
@@ -630,7 +630,7 @@ dropFirst = false</programlisting>
         three modules: <command moreinfo="none">gameoflife-core</command>,
         <command moreinfo="none">gameoflife-services</command> and <command moreinfo="none">gameoflife-web</command>. The <command moreinfo="none">gameoflife-web</command> module produces a WAR file
         that includes JAR files from the other two modules. It's this WAR
-        file that we want to deploy:</para>
+        file that you want to deploy:</para>
         <screen format="linespecific">tuatara:gameoflife johnsmart$ ls -l
 total 32
 drwxr-xr-x  16 johnsmart  staff    544 16 May 09:58 gameoflife-core
@@ -638,9 +638,9 @@ drwxr-xr-x   8 johnsmart  staff    272  4 May 18:12 gameoflife-deploy
 drwxr-xr-x   8 johnsmart  staff    272 16 May 09:58 gameoflife-services
 drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
 -rw-r--r--@  1 johnsmart  staff  12182  4 May 18:07 pom.xml</screen>
-        <para>Earlier on in this chapter we saw how to use the Deploy plugin
+        <para>Earlier on in this chapter you saw how to use the Deploy plugin
         to deploy a WAR file generated by the current build job to an
-        application server. What we want to do now is to deploy an arbitrary
+        application server. What you want to do now is to deploy an arbitrary
         version of the WAR file to an application server.</para>
         <para>In <xref linkend="jenkins-maven-releases"/>, we discussed how
         to configure Jenkins to invoke the Maven Release Plugin to generate a
@@ -654,9 +654,9 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
         <para>The first thing you need to do is to set up a dedicated
         deployment project. In its simplest form, this project will simply
         fetch the requested version of your WAR file from your enterprise
-        repository to be deployed by Jenkins. In the following <filename moreinfo="none">pom.xml</filename> file, we use the <filename moreinfo="none">maven-war-plugin</filename> to fetch a specified
+        repository to be deployed by Jenkins. In the following <filename moreinfo="none">pom.xml</filename> file, you use the <filename moreinfo="none">maven-war-plugin</filename> to fetch a specified
         version of the <command moreinfo="none">gameoflife-web</command> WAR
-        file from our enterprise repository. The version we want is specified
+        file from our enterprise repository. The version you want is specified
         in the <literal moreinfo="none">target.version</literal> <phrase role="keep-together">property</phrase>:</para>
         <programlisting id="I_programlisting12_d1e17513" format="linespecific">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/
         XMLSchema-instance"
@@ -695,7 +695,7 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
     &lt;target.version&gt;RELEASE&lt;/target.version&gt;
   &lt;/properties&gt;
 &lt;/project&gt;</programlisting>
-        <para>Next, we configure a Jenkins build job to invoke this <filename moreinfo="none">pom.xml</filename> file using a property value
+        <para>Next, you configure a Jenkins build job to invoke this <filename moreinfo="none">pom.xml</filename> file using a property value
         provided by the user (see <xref linkend="fig-jenkins-gameoflife-deploy"/>). Note that we've set the
         default value to RELEASE so that, by default, the most recent release
         version will be deployed. Otherwise, the user can provide the version
@@ -801,7 +801,7 @@ drwxr-xr-x  15 johnsmart  staff    510 16 May 09:58 gameoflife-web
       sets.” A Transfer set is a set of files (defined by an Ant fileset
       expression) that you deploy to a specified directory on the remote
       server. You can also provide a prefix to be removed—this lets you strip
-      off unnecessary directories that you do not want to appear on the server
+      off unnecessary directories that you don't want to appear on the server
       (such as the <filename moreinfo="none">target/site</filename> directory
       path in the <phrase role="keep-together">example</phrase>). You can add
       as many transfer sets as you need to get the files you want onto the
