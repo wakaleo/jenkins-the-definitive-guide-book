@@ -13,15 +13,15 @@
     drop in code coverage or code quality metrics. In all cases, a CI server
     must let the right people know about any new issues, and it must be able
     to do so fast. This is what we call Notification.</para>
-    <para>There are two main classes of notification strategies, which I
+    <para>There are two main classes of notification strategies, which we
     call<indexterm id="I_indexterm8_d1e11412" significance="normal"><primary>notifications</primary><secondary>passive (pull)</secondary></indexterm><indexterm id="I_indexterm8_d1e11417" significance="normal"><primary>passive (pull) notifications</primary></indexterm> <emphasis>passive</emphasis> and <emphasis><indexterm id="I_indexterm8_d1e11425" significance="normal"><primary>active (push) notifications</primary></indexterm><indexterm id="I_indexterm8_d1e11428" significance="normal"><primary>notifications</primary><secondary>active (push) notifications</secondary></indexterm>active</emphasis> (or
     <emphasis>pull</emphasis>/<emphasis>push</emphasis>). Passive notification
     (pull) requires the developers to consciously consult the latest build
     status, including RSS feeds, build radiators, and (to a certain extent)
-    emails. Active notification (push) will pro-actively alert the developers
+    email. Active notification (push) pro-actively alerts the developers
     when a build fails, and includes methods such as desktop notifiers, chat,
     and SMS. Both approaches have their good and bad points. Passive
-    notification strategies such as build radiators can raise general
+    notification strategies, such as build radiators, can raise general
     awareness about failed builds, and help install a team culture where
     fixing broken builds takes a high priority. More direct forms of
     notification can actively encourage developers to take matters into their
@@ -30,14 +30,14 @@
   <sect1 id="sect-notification-email">
     <title>Email Notification</title>
     <para>Email <indexterm class="startofrange" id="ch08-email1" significance="normal"><primary>notifications</primary><secondary>email</secondary></indexterm><indexterm class="startofrange" id="ch08-email2" significance="normal"><primary>email notifications</primary></indexterm>notification is the most obvious and most common form of CI
-    notification. Email is well-known, ubiquitous, easy to use and easy to
+    notification. Email is well-known, ubiquitous, easy to use, and easy to
     configure (see <xref linkend="sect-configuration-email"/>). So, when
     teams set up their first CI environment, it's usually
     the most common initial notification strategy they try.</para>
     <para>You activate email notification in Jenkins by ticking the E-mail
     Notification checkbox and providing the list of email addresses of the
     people who need to be notified (see <xref linkend="fig-hudson-email-configuration"/>). By default, Jenkins will
-    send an email for <indexterm id="I_indexterm8_d1e11461" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11468" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11475" significance="normal"><primary>unstable builds</primary><secondary>notifications for</secondary></indexterm>every failed or unstable build. Remember, it will also send
+    send an email message for <indexterm id="I_indexterm8_d1e11461" significance="normal"><primary>build jobs</primary><secondary>failed</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11468" significance="normal"><primary>build jobs</primary><secondary>unstable build from</secondary><tertiary>notifications for</tertiary></indexterm><indexterm id="I_indexterm8_d1e11475" significance="normal"><primary>unstable builds</primary><secondary>notifications for</secondary></indexterm>every failed or unstable build. Remember, it will also send
     a new email for the first successful build after a series of failed or
     unstable builds, to indicate that the issue has been fixed.</para>
     <figure float="0" id="fig-hudson-email-configuration">
@@ -51,13 +51,13 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Normally a build shouldn't take too many tries to get working
+    <para>Normally, a build shouldn't take too many tries to get working
     again—developers should diagnose and reproduce the issue locally, fix it
     locally, and only then commit their fix to version control. Repeated build
     failures usually indicate either a chronic configuration issue or poor
     developer practices (for example, developers committing changes without
-    checking that it works locally first).</para>
-    <para>You can also opt to send a separate email to any developers who have
+    checking that they work locally first).</para>
+    <para>You can also opt to send a separate email message to any developers who have
     committed changes to the broken build. This is generally a good idea, as
     developers who have committed changes since the last build are naturally
     the people who should be the most interested in the build results. Jenkins
@@ -69,7 +69,7 @@
     team in the main distribution list. You may want to simply include people
     who will be interested in monitoring the result of every build (such as
     technical leads), and let Jenkins inform <phrase role="keep-together">contributing</phrase> developers directly.</para>
-    <para>This assumes of course that the changes caused the build failure,
+    <para>This assumes, of course, that the changes caused the build failure,
     which is generally (but not always) the case. However, if the builds are
     infrequent (for example, nightly builds, or if a build is queued for
     several hours before finally kicking off), many changes may have been
@@ -90,12 +90,12 @@
         having committed changes.</para>
       </listitem>
       <listitem>
-        <para>Slow builds (acceptance tests builds, run after the fast
-        builds): notification is sent to team lead, testers and developers
+        <para>Slow builds (acceptance test builds, run after the fast
+        builds): notification is sent to team lead, testers, and developers
         having committed changes.</para>
       </listitem>
       <listitem>
-        <para>Nightly builds (QA metrics, performance tests and so on; only
+        <para>Nightly builds (QA metrics, performance tests, and so on; only
         run if the other builds work): all team members—these provide a
         snapshot picture of project health before the daily status
         meeting.</para>
@@ -134,7 +134,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>This plugin has two related but distinct functionalities. Firstly,
+    <para>This plugin has two related but distinct functions. Firstly,
     it lets you customize the email notification message. You can choose from
     a large number of predefined tokens to create your own customized message
     title and body. You include a token in your message template using the
@@ -207,7 +207,7 @@
           <literal moreinfo="none">${FAILED_TESTS}</literal>
         </term>
         <listitem>
-          <para>Shows information about failing unit tests, if any have
+          <para>Information about failing unit tests, if any have
           failed</para>
         </listitem>
       </varlistentry>
@@ -216,7 +216,7 @@
           <literal moreinfo="none">${CHANGES}</literal>
         </term>
         <listitem>
-          <para>Displays the changes made since the last build</para>
+          <para>Changes made since the last build</para>
         </listitem>
       </varlistentry>
       <varlistentry>
@@ -224,7 +224,7 @@
           <literal moreinfo="none">${CHANGES_SINCE_LAST_SUCCESS}</literal>
         </term>
         <listitem>
-          <para>All the changes made since the last successful build</para>
+          <para>Changes made since the last successful build</para>
         </listitem>
       </varlistentry>
     </variablelist>
@@ -294,7 +294,7 @@
     recipients list and message template can be customized for each
     trigger—for example, by using the Still Failing and Still Unstable
     triggers, you can set up a notification strategy that only notifies
-    developer having committed changes the first time a build job fails, but
+    the developers who committed changes the first time a build job fails, but
     proceeds to notify the team leader if it fails a second time. You can
     choose to send the message only to the developers who have committed to
     this build (“Send to committers”), or to also include everyone who has
@@ -337,9 +337,9 @@
     one developer waste time by trying to fix the same problem
     separately.</para>
     <para>The Claim plugin lets developers indicate that they have taken
-    ownership of the broken build, and are attempting to fix it. You can
+    ownership of the broken build, and are attempting to fix it. You
     install this plugin in the usual way. Once installed, developers can claim
-    a failed build as their own, and optionally add a comment to explain the
+    a failed build as their own, and optionally, add a comment to explain the
     suspected cause of the build and what the developer intends to do about
     it. The claimed build will then be marked as such in the build history, so
     that fellow developers can avoid wasting time with unnecessary
@@ -385,9 +385,9 @@
     </figure>
     <para>The URLs for RSS feeds are simple, and work for any Jenkins page
     displaying a set of build results. You just need to append <filename moreinfo="none">/rssAll</filename> to get an RSS feed of all of the build
-    results on a page, or <filename moreinfo="none">/rssFailed</filename> to
-    only get the failing builds. And <filename moreinfo="none">/rssLatest</filename> will provide you with a feed
-    containing only the latest build results. But the simplest way to obtain
+    results on a page, <filename moreinfo="none">/rssFailed</filename> to
+    only get the failing builds, or <filename moreinfo="none">/rssLatest</filename> to get
+    only the latest build results. But, the simplest way to obtain
     the URL is just to click on the RSS icon in the corresponding Jenkins
     screen.</para>
     <para>There are an abundance of RSS readers out there, both commercial and
@@ -398,7 +398,7 @@
     instance is secured, you may need to do a little extra configuration to
     see your build results.</para>
     <para>RSS feeds can be a great information source on overall build
-    results, and let you see the state of your builds at a glance without
+    results, letting you see the state of your builds at a glance without
     having to connect to the server. Nevertheless, most RSS Readers are by
     nature passive devices—you can consult the state of your builds, but the
     RSS reader will usually not be able to prompt you if a new build
@@ -425,7 +425,7 @@
     passive notification strategies. They're very effective at ensuring that
     everyone is aware of failing builds. In addition, unlike some of the
     Extreme Feedback Devices that we discuss later on in this chapter, a build
-    radiator can cater for many build jobs, including many failing <phrase role="keep-together">build</phrase> jobs, and so can still be effectively
+    radiator can summarize many build jobs, including many failing <phrase role="keep-together">build</phrase> jobs, and so can still be effectively
     used in a multiteam context.</para>
     <para>There are several build radiator solutions for Jenkins. One of the
     easiest to use is the Jenkins Radiator View plugin. This plugin adds a new
@@ -454,7 +454,7 @@
     <emphasis>http://my.hudson.server/view/build-radiator/configure</emphasis>.</para>
     <para>The build radiator view (see <xref linkend="fig-hudson-notification-radiator"/>) displays a large red or
     yellow box for each failing or unstable build, with the build job name in
-    prominent letters, as well as some other details. You can configure the
+    prominent letters, as well as other details. You can configure the
     build radiator view to display passing builds as well as failing ones
     (they'll be displayed in small green boxes). However, a good build
     radiator should really only display the failing builds, unless all the
@@ -475,20 +475,20 @@
     <title>Instant Messaging</title>
     <para>Instant <indexterm class="startofrange" id="ch08-im1" significance="normal"><primary>instant messaging (IM)</primary></indexterm><indexterm class="startofrange" id="ch08-im2" significance="normal"><primary>notifications</primary><secondary>instant messaging</secondary></indexterm><indexterm id="I_indexterm8_d1e11925" significance="normal"><primary>IM</primary><see>instant messaging</see></indexterm>Messaging (or IM) is widely used today as a fast,
     lightweight medium for both professional and personal communication.
-    Instant messaging is, well, instant, which gives it an edge over email
+    IM is, well, instant, which gives it an edge over email
     when it comes to fast notification. It's also “push” rather than
     “pull”—when you receive a message, it will pop up on your screen and
     demand your attention. This makes it a little harder to ignore or put off
     than a simple email message.</para>
-    <para>Jenkins provides good support for notification via Instant
-    Messaging. The<indexterm id="I_indexterm8_d1e11933" significance="normal"><primary>plugins</primary><secondary>Instant Messaging</secondary></indexterm><indexterm id="I_indexterm8_d1e11938" significance="normal"><primary>Instant Messaging plugin</primary></indexterm> Instant Messaging plugin provides generic support for
+    <para>Jenkins provides good support for notification via IM.
+    The<indexterm id="I_indexterm8_d1e11933" significance="normal"><primary>plugins</primary><secondary>Instant Messaging</secondary></indexterm><indexterm id="I_indexterm8_d1e11938" significance="normal"><primary>Instant Messaging plugin</primary></indexterm> Instant Messaging plugin provides generic support for
     communicating with Jenkins using IM. <phrase role="keep-together">Protocol-</phrase>specific plugins can then be added
     for the various IM protocols such as Jabber and IRC.</para>
     <sect2>
       <title>IM Notification with Jabber</title>
-      <para>Many<indexterm class="startofrange" id="ch08-jabber1" significance="normal"><primary>Jabber protocol</primary></indexterm><indexterm class="startofrange" id="ch08-jabber2" significance="normal"><primary>instant messaging (IM)</primary><secondary>Jabber protocol for</secondary></indexterm> instant messaging servers today are based on Jabber, an
+      <para>Many<indexterm class="startofrange" id="ch08-jabber1" significance="normal"><primary>Jabber protocol</primary></indexterm><indexterm class="startofrange" id="ch08-jabber2" significance="normal"><primary>instant messaging (IM)</primary><secondary>Jabber protocol for</secondary></indexterm> IM servers today are based on Jabber, an
       open source, XML-based instant messaging protocol. Jenkins provides good
-      support for Jabber instant messaging, so that developers can receive
+      support for Jabber, so that developers can receive
       real-time notification of build failures. In addition, the plugin runs
       an IM bot that listens to the chat channels and lets developers run
       commands on the Jenkins server via chat messages.</para>
@@ -509,7 +509,7 @@
       </figure>
       <para>Once this is done, you need to configure your Instant Messaging
       server. Any Jabber server will do. You can use a public service like
-      Google Chat, or set up your own internal messaging server locally (the
+      Google Chat, or set up your own IM server locally (the
       Java-based open source chat server <ulink url="http://www.igniterealtime.org/projects/openfire/index.jsp">OpenFire</ulink>
       is a good choice). Using a public service for internal communications
       may be frowned upon by system administrators, and you may have
@@ -584,12 +584,12 @@
       you've set up. For chat rooms, you normally need to add a “*” to the
       start of the chat room ID (e.g.,
       “*gameoflife@conference.jabber.acme.org”). However, if the chat room ID
-      contains “@conference.”, Jenkins will work out that it's a chat room
+      contains “@conference.”, Jenkins will figure out that it's a chat room
       and append the “*” automatically. The chat room approach is more
       flexible, though you do have to trust developers to be connected
       permanently to the chat room for this strategy to be truly
       effective.</para>
-      <para>You also need to define a notification strategy. This determines
+      <para>You also need to define a notification strategy to determine
       which build results will cause a message to be sent out. Options
       include:</para>
       <variablelist>
@@ -609,7 +609,7 @@
         <varlistentry>
           <term>failure and fixed</term>
           <listitem>
-            <para>Send notifications for every failed or unstable builds, and
+            <para>Send notifications for every failed or unstable build, and
             the first successful build following a failed or unstable
             one.</para>
           </listitem>
@@ -645,7 +645,7 @@
         <varlistentry>
           <term>SCM fixers</term>
           <listitem>
-            <para>Commiters to the first successful build after a failed or
+            <para>SCM commiters to the first successful build after a failed or
             unstable one.</para>
           </listitem>
         </varlistentry>
@@ -659,7 +659,7 @@
         </varlistentry>
       </variablelist>
       <para>At the time of writing, you can only have one notification
-      strategy, so some of the advanced options we saw in <xref linkend="sect-notification-advanced-email"/> aren't yet possible with
+      strategy, so some of the advanced options you saw in <xref linkend="sect-notification-advanced-email"/> aren't yet possible with
       IM.</para>
       <para>Developers will be notified via their favorite IM client (see
       <xref linkend="fig-hudson-notification-im-messages"/>). Developers can
@@ -708,11 +708,11 @@
     </sect2>
     <sect2>
       <title>IM Notification using IRC</title>
-      <para>Another<indexterm class="startofrange" id="ch08-irc1" significance="normal"><primary>IRC (Internet Relay Chat)</primary></indexterm><indexterm class="startofrange" id="ch08-irc3" significance="normal"><primary>instant messaging (IM)</primary><secondary>IRC for</secondary></indexterm> popular form of Internet-based Instant Messaging is
+      <para>Another<indexterm class="startofrange" id="ch08-irc1" significance="normal"><primary>IRC (Internet Relay Chat)</primary></indexterm><indexterm class="startofrange" id="ch08-irc3" significance="normal"><primary>instant messaging (IM)</primary><secondary>IRC for</secondary></indexterm> popular form of IM is
       Internet Relay Chat, or IRC. IRC is traditionally focused on group
       discussions (though direct messaging is also supported), and is a very
-      popular form of communication for developers, particularly in the Open
-      Source world.</para>
+      popular form of communication for developers, particularly in the open
+      source world.</para>
       <para>The<indexterm id="I_indexterm8_d1e12171" significance="normal"><primary>plugins</primary><secondary>IRC</secondary></indexterm><indexterm id="I_indexterm8_d1e12176" significance="normal"><primary>IRC plugin</primary></indexterm> Jenkins IRC plugin lets you interact with your Jenkins
       server via an IRC channel, both to receive notification messages and to
       issue commands to the server. Like the Jabber plugin, you also need to
@@ -725,12 +725,12 @@
       <emphasis>Contributed by Juven Xu</emphasis>
     </para>
     <para>Internet Relay Chat (or IRC) is a popular form of instant messaging,
-    primarily designed for group communication in channels. For example,
+    primarily designed for group communication via channels. For example,
     Jenkins has <ulink url="http://jenkins-ci.org/content/chat">a channel set
     up on Freenode</ulink> so users and developers can discuss Jenkins related
-    topics. You'll see many users ask questions and most of the time more
+    topics. You'll see many users ask questions and, most of the time, more
     experienced users will be prompt in providing useful answers.</para>
-    <para>Just like instant messaging through Jabber, you can configure
+    <para>Just like IM through Jabber, you can configure
     Jenkins to “push” notification through IRC. Some IRC clients such as
     <ulink url="http://xchat.org/">xchat</ulink> support alert configuration
     so that when the message arrives, it can blink the tray icon or make a
@@ -738,7 +738,7 @@
     install<indexterm id="I_indexterm8_d1e12201" significance="normal"><primary>plugins</primary><secondary>IRC</secondary></indexterm><indexterm id="I_indexterm8_d1e12206" significance="normal"><primary>IRC plugin</primary></indexterm> the <ulink url="http://wiki.jenkins-ci.org/display/JENKINS/IRC+Plugin">IRC
     plugin</ulink> and the <ulink url="http://wiki.jenkins-ci.org/display/JENKINS/Instant+Messaging+Plugin">Instance
     Messaging plugin</ulink>. Simply go to the standard plugin manager, tick
-    their checkbox and then restart Jenkins (see <xref linkend="hudson-notification-irc-plugins-install"/>).</para>
+    their checkboxes, and then restart Jenkins (see <xref linkend="hudson-notification-irc-plugins-install"/>).</para>
     <figure float="none" id="hudson-notification-irc-plugins-install">
       <title>Install the Jenkins IRC plugins</title>
       <mediaobject id="I_mediaobject8_d1e12221">
@@ -750,10 +750,10 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Once it’s done, you need to enable the IRC plugin and configure it
+    <para>Once it’s installed, you need to enable the IRC plugin and configure it
     to fit into your own environment. Basically, this involves providing the
     hostname and port of the IRC server you're using, a dedicated IRC
-    channel, and a nickname for the IRC plugin. It’s a good practice to set up
+    channel, and a nickname for the IRC plugin. It’s good practice to set up
     a dedicated channel for CI notification, so as people chat in other
     channels, they won’t be disturbed. You may also want to configure extra
     details in the Advanced sector. All of these are available in the
@@ -770,7 +770,7 @@
       </mediaobject>
     </figure>
     <para>In addition to the hostname, port, channel, and nickname we
-    mentioned earlier, you can also configure IRC server password or NIckServ
+    mentioned earlier, you can also configure your IRC server or NIckServ
     password if your environment requires them. Command prefixes need to be
     configured if you want to interact with the server via IRC messages. This
     is basically the same as using Jabber (see <xref linkend="sect-notification-instant-messaging"/>). Finally, you may want
@@ -780,7 +780,7 @@
     dashes, which will prevent a response from most robots.</para>
     <para>Once the global configuration is ready, you can enable IRC
     notification for each build job and set up a notification strategy. Open
-    the build job configuration page, go to the Post-build Actions section and
+    the build job configuration page, go to the Post-build Actions section, and
     click on the IRC Notification option. If you want to set up a notification
     strategy rather than using the default one, click the “Advanced...” button
     (see <xref linkend="hudson-notification-irc-job"/>).</para>
@@ -798,7 +798,7 @@
     <para>Notification strategies (when to send notification messages, and to
     whom) are discussed in <xref linkend="sect-notification-instant-messaging"/>. Both the Jabber plugin
     and the IRC plugin depend on the Instant Messaging Plugin, so they share a
-    number of common core features. Some options are specific to IRC plugin,
+    number of common core features. Some options are specific to the IRC plugin,
     however. Here, for example, you can define a customized channel if you
     don’t like the global default. Finally, for a channel notification
     message, you can choose what information to send in the notification
@@ -809,12 +809,12 @@
     and send notification messages for build jobs.</para>
     <para>In <xref linkend="hudson-notification-irc-xchat"/>, for example,
     the IRC plugin joins the #ci-book channel on freenode. First, user juven
-    committed some change with scm message “feature x added” and IRC plugin
-    let everyone on the channel know that the build was successful. Then juven
+    committed a change with SCM message “feature x added” and the IRC plugin
+    let everyone on the channel know that the build was successful. Then, juven
     committed another change for feature y, but this time the build failed.
     John noticed it and fixed the build error. The IRC plugin now happily said
     “Yippie, build fixed!” Note that some lines in this screen are
-    highlighted, this is because I logged in as user “juven” and I configured
+    highlighted. This is because I logged in as user “juven” and I configured
     my XChat IRC client to highlight messages containing<indexterm id="I_indexterm8_d1e12277" class="endofrange" startref="ch08-irc1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e12279" class="endofrange" startref="ch08-irc3" significance="normal"><primary/></indexterm> my nickname.</para>
     <figure float="none" id="hudson-notification-irc-xchat">
       <title>IRC notification messages in action</title>
@@ -831,11 +831,11 @@
   <sect1 id="sect-notification-desktop">
     <title>Desktop Notifiers</title>
     <para>The <indexterm class="startofrange" id="ch08-desktop1" significance="normal"><primary>desktop notifiers</primary></indexterm><indexterm class="startofrange" id="ch08-desktop2" significance="normal"><primary>notifications</primary><secondary>desktop notifiers</secondary></indexterm>best push notification strategies integrate smoothly into
-    the developer’s daily work environment. This is why instant messaging can
+    the developer’s daily work environment. This is why IM can
     be an effective strategy if developers are already in the habit of using
-    instant messaging for other work-related activities.</para>
-    <para>Desktop notification tools also fall into this category. Desktop
-    notification tools are tools that run locally on the developer machine,
+    IM for other work-related activities.</para>
+    <para>Desktop notification tools also fall into this category. These are
+    tools that run locally on the developer machine,
     either as an independent application or widget, or as part of the
     developer’s IDE.</para>
     <para>If you're using <indexterm id="I_indexterm8_d1e12308" significance="normal"><primary>Eclipse plugin</primary></indexterm><indexterm id="I_indexterm8_d1e12311" significance="normal"><primary>plugins</primary><secondary>Eclipse</secondary></indexterm><indexterm id="I_indexterm8_d1e12316" significance="normal"><primary>Eclipse</primary><secondary>desktop notifiers with</secondary></indexterm>Eclipse, the <ulink url="http://code.google.com/p/hudson-eclipse/">Jenkins Eclipse
@@ -858,10 +858,10 @@
       </mediaobject>
     </figure>
     <para>
-        If you're using
+        If you're using the
         NetBeans IDE<indexterm><primary>NetBeans</primary></indexterm>,
         you already have integration with Hudson and Jenkins.
-        Open the <guilabel>Services</guilabel> window and add servers under <guilabel>Hudson Builders</guilabel>.
+        Open the <guilabel>Services</guilabel> window and add the servers under <guilabel>Hudson Builders</guilabel>.
         (If you open a Maven project whose <code>ciManagement</code> specifies
         <code>hudson</code> or <code>jenkins</code> as the <code>system</code>, the corresponding server
         will be registered automatically.)
@@ -919,17 +919,17 @@
     <title>Notification via Notifo</title>
     <para><ulink url="http://www.notifo.com">Notifo</ulink> is <indexterm class="startofrange" id="ch08-notifo" significance="normal"><primary>Notifo</primary></indexterm><indexterm class="startofrange" id="ch08-phone" significance="normal"><primary>notifications</primary><secondary sortas="smartphones">to smartphones</secondary></indexterm><indexterm class="startofrange" id="ch08-phone2" significance="normal"><primary>smartphones, notifications to</primary></indexterm>a fast and economical service to send real-time
     notifications to your smartphone or desktop. In the context of a Jenkins
-    server, you can use it to set up free or low-cost real-time notification
+    server, you can use it to set up free or low-cost real-time notifications
     for your Jenkins build results. Individual accounts (which you need to be
     able to receive notifications) are free. You need to set up a service
     account to send notification messages from your Jenkins server. This is
-    where Notifo earn their keep, though at the time of writing a service
+    where Notifo earns their keep, though at the time of writing a service
     account can send up to 10,000 notifications per month free of charge,
     which is usually plenty for an average Jenkins instance. One of the strong
     points of a real-time notification service like Notifo is that
     notification messages can be sent to the same users on different devices:
     smartphones and desk top clients, in particular.</para>
-    <para>Setting up Jenkins notification with Notifo is relatively
+    <para>Setting up Jenkins notifications with Notifo is relatively
     straightforward. First, go to the Notifio website and sign up to create an
     account. Each team member who wants to be notified will need their own
     Notifo account. They will also need to install the Notifo client on each
@@ -943,7 +943,7 @@
     My Services menu. Here, click on Create Service (see <xref linkend="fig-hudson-notification-notifo-service"/>), and fill in the
     fields. The most important is the Service Username, which needs to be
     unique. You can also specify the Site URL and the Default Notification URL
-    to point to your Jenkins instance, so that users can open the Jenkins
+    to point to your Jenkins instance so that users can open the Jenkins
     console by clicking on the notification message.</para>
     <figure float="0" id="fig-hudson-notification-notifo-service">
       <title>Creating a Notifo service for your Jenkins instance</title>
@@ -958,7 +958,7 @@
     </figure>
     <para>To receive notification messages from the Jenkins server, developers
     now need to subscribe to this service. You can then add developers to the
-    list of subscribers in the service Subscribers page, by sending them
+    list of subscribers in the service Subscribers page by sending them
     subscription requests. Once the service has been created and the users are
     all subscribed, you can configure your project to send out Notifo
     notifications (see <xref linkend="fig-hudson-notification-notifo-config"/>). You need the provide
@@ -1004,7 +1004,7 @@
     example, lets you list your current build jobs (either all of the build
     jobs on the server, or only the build jobs in a particular view). You can
     also view the details of a particular build job, including the current
-    status, failing tests and build time, and even start and stop
+    status, failing tests, and build time, and even start and stop
     builds.</para>
     <figure float="0" id="fig-hudson-notification-iphone">
       <title>Using the Hudson Helper iPhone app</title>
@@ -1017,7 +1017,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>For Android phones, you can also install the Hudson Mood widget will
+    <para>For Android phones, you can also install the Hudson Mood widget which will
     also provide updates and alerts about build failures.</para>
     <para>Note that these mobile applications rely on a data connection, so
     while they'll typically work well locally, you shouldn't rely on them
@@ -1025,7 +1025,7 @@
   </sect1>
   <sect1 id="sect-notification-sms">
     <title>SMS Notification</title>
-    <para>These <indexterm class="startofrange" id="ch08-sms1" significance="normal"><primary>notifications</primary><secondary>SMS messages</secondary></indexterm><indexterm class="startofrange" id="ch08-sms2" significance="normal"><primary>SMS messages, notifications using</primary></indexterm>days, SMS is another ubiquitous communication channel which
+    <para>These <indexterm class="startofrange" id="ch08-sms1" significance="normal"><primary>notifications</primary><secondary>SMS messages</secondary></indexterm><indexterm class="startofrange" id="ch08-sms2" significance="normal"><primary>SMS messages, notifications using</primary></indexterm>days SMS is another ubiquitous communication channel that
     has the added advantage of reaching people even when they're out of the
     office. For a build engineer, this can be a great way to monitor critical
     builds, even when developers or team leads are away from their
@@ -1059,7 +1059,7 @@
     approach is arguably that it isn't free, and requires the use of a
     third-party commercial service. That said, it's really the only
     notification technique capable of reaching developers when they're out of
-    Internet range or who do not have a data-enabled smartphone. Indeed, this
+    Internet range or who don't have a data-enabled smartphone. Indeed, this
     technique is popular among system administrators, and can be very useful
     for certain critical <indexterm id="I_indexterm8_d1e12517" class="endofrange" startref="ch08-sms1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm8_d1e12519" class="endofrange" startref="ch08-sms2" significance="normal"><primary/></indexterm>build jobs.</para>
     <figure float="0" id="fig-hudson-sms-notification">
@@ -1110,13 +1110,13 @@
     enough. First, you need to choose which build result will trigger the
     sound. You also need to specify the previous build results for which this
     rule is applicable: Not Build (NB), Aborted (Ab), Failed (Fa),
-    Unsuccessful (Un) or Successful (Su).</para>
-    <para>The Jenkins Sounds plugin proposes a large list of pre-defined
-    sounds, which usually offer plenty of choice for even the most discerning
+    Unsuccessful (Un), or Successful (Su).</para>
+    <para>The Jenkins Sounds plugin includes a large list of pre-defined
+    sounds, which usually offer plenty of choices for even the most discerning
     build administrator, but you can add your own to the list if you really
     want to. Sounds are stored as a ZIP or JAR file containing sound files in
     a flat directory structure (i.e., no subdirectories). The list of sounds
-    proposed by the plugin is simply the list of filenames, minus the
+    shown by the plugin is simply the list of filenames, minus the
     extensions. The plugin supports AIFF, AU, and WAV files.</para>
     <para>In the System Configuration page, you can give Jenkins a new sound
     archive file, using the <filename moreinfo="none">http://</filename>
@@ -1139,7 +1139,7 @@
     <para>The Jenkins Sounds plugin is an excellent choice if you want to
     complement your more conventional notification techniques. Short,
     recognizable sounds are a great way to grab a developer’s attention and
-    let the team know that something needs fixing. They will then be a bit
+    let the team know that something needs fixing. The developers will then be a bit
     more receptive when the more detailed notifications follow.</para>
     <para>Another <indexterm id="I_indexterm8_d1e12593" significance="normal"><primary>notifications</primary><secondary>spoken</secondary></indexterm><indexterm id="I_indexterm8_d1e12598" significance="normal"><primary>Speaks plugin</primary></indexterm><indexterm id="I_indexterm8_d1e12601" significance="normal"><primary>plugins</primary><secondary>Speaks</secondary></indexterm>option is the Jenkins Speaks plugin. With this plugin, you
     can get Jenkins to broadcast a customized announcement (in a very robotic
@@ -1172,7 +1172,7 @@
     template that you can configure in the System Configuration page. In fact,
     it's usually a good idea to do this, and only to use a project-specific
     script if you really need to.</para>
-    <para>The disadvantage is that the robotic voice can make it a little hard
+    <para>The disadvantage is that the robotic voice can be a little hard
     to understand. For this reason, it's a good idea to start your
     announcement with a generic phrase such as “Your attention please,” or to
     combine it with the Jenkins Sounds plugin, so that you have developers’
@@ -1256,7 +1256,7 @@
     ubiquitous, so this will form the backbone of many notification
     strategies, but if you work in a larger team or with a busy technical
     lead, you may want to consider setting up an escalation strategy based on
-    the advanced email options (see <xref linkend="sect-notification-advanced-email"/>). But you should complement
+    the advanced email options (see <xref linkend="sect-notification-advanced-email"/>). But, you should complement
     this with one of the more active strategies, such as instant messaging or
     a desktop notifier. If your team already uses a chat or IRC channel to
     communicate, try to integrate this into your notification strategy as
