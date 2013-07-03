@@ -4,13 +4,13 @@
   <title>Advanced Builds</title>
   <sect1 id="sect-advanced-builds-introduction">
     <title>Introduction</title>
-    <para>In this chapter, we'll look at some more advanced build job
+    <para>In this chapter, you'll look at some more advanced build job
     setups. We'll discuss parameterized builds, which allow Jenkins to
     prompt the user for additional parameters to pass into the
     build job, and multiconfiguration build jobs, which let you run a single
     build job through a large number of variations. We'll look at how to run
     build jobs in parallel, and wait for the outcome of one or more build jobs
-    before continuing. And, we'll see how to implement build promotion
+    before continuing. And, you'll see how to implement build promotion
     strategies and build pipelines so that Jenkins can be used not only as a
     build server, but also as a deployment server.</para>
   </sect1>
@@ -20,7 +20,7 @@
     another dimension to your build jobs.</para>
     <para>The<indexterm id="I_indexterm10_d1e13891" significance="normal"><primary>plugins</primary><secondary>Parameterized Build</secondary></indexterm><indexterm id="I_indexterm10_d1e13896" significance="normal"><primary>Parameterized Build plugin</primary></indexterm> Parameterized Build plugin lets you configure parameters
     for your build job that can be either entered by the user when the build
-    job is triggered, or (as we'll see later), from another build job.</para>
+    job is triggered, or (as you'll see later), from another build job.</para>
     <para>For example, you might have a deployment build job, where you want
     to choose the target environment in a drop-down list when you start the
     build job. Or, you may want to specify the version of the application you
@@ -60,7 +60,7 @@
       parameter types, with the exception of the File parameter, have a name
       and a description, and most often a default value.</para>
       <para>In <xref linkend="fig-hudson-enter-string-parameter"/>, for
-      example, we're adding a parameter called <literal moreinfo="none">version</literal> to
+      example, you're adding a parameter called <literal moreinfo="none">VERSION</literal> to
       a deployment build job. The default value (<literal moreinfo="none">RELEASE</literal>)
       will be initially displayed when Jenkins prompts the user for this
       parameter, so if the user doesn’t change anything, this value will be
@@ -100,7 +100,7 @@
       here, as this is also the name of the variable that Jenkins will pass
       through as an <indexterm id="I_indexterm10_d1e14010" significance="normal"><primary>environment variables</primary><secondary>build parameters as</secondary></indexterm>environment variable when it runs the build job. To
       illustrate this, consider the very basic build job configuration in
-      <xref linkend="fig-hudson-parameterized-shell"/>, where we're simply
+      <xref linkend="fig-hudson-parameterized-shell"/>, where you're simply
       echoing the build parameter back out to the console. Note that, to make
       the environment variables more portable across operating systems, it's
       good practice to put them all in upper case.</para>
@@ -135,7 +135,7 @@ Finished: SUCCESS</screen>
 &lt;/target&gt;</programlisting>
       <para>Another option is to pass the <indexterm id="I_indexterm10_d1e14045" significance="normal"><primary>properties</primary><secondary>build parameters as</secondary></indexterm>parameter into the build script as a property value. The
       following is a more involved example from a Maven POM file. In this
-      example, Maven is configured to deploy a specific WAR file. We provide
+      example, Maven is configured to deploy a specific WAR file. You provide
       the version of the WAR file to be deployed in the
       <literal moreinfo="none">target.version</literal> property, which is used in the
       dependency declaration, as shown below:</para>
@@ -154,7 +154,7 @@ Finished: SUCCESS</screen>
   &lt;/properties&gt;</programlisting>
       <para>When you invoke Maven, you pass in the parameter as one of the build
       properties (see <xref linkend="fig-hudson-inject-parameter-maven"/>).
-      We can then use a tool like Cargo to do the actual deployment—Maven will
+      You can then use a tool like Cargo to do the actual deployment—Maven will
       download the requested version of the WAR file from the local Enterprise
       Repository Manager, and deploy it to an application server.</para>
       <figure float="none" id="fig-hudson-inject-parameter-maven">
@@ -170,7 +170,7 @@ Finished: SUCCESS</screen>
       </figure>
       <para>That, in a nutshell, is how you can integrate build job parameters
       into your build. In addition to plain old String parameters, however,
-      there are a few more sophisticated parameter types, that we'll look at
+      there are a few more sophisticated parameter types that you'll look at
       in the following <indexterm id="I_indexterm10_d1e14074" class="endofrange" startref="ch10-script" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14076" class="endofrange" startref="ch10-script2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14078" class="endofrange" startref="ch10-script3" significance="normal"><primary/></indexterm>paragraphs (see <xref linkend="fig-hudson-build-parameter-types"/>).</para>
       <figure float="0" id="fig-hudson-build-parameter-types">
         <title>Many different types of parameters are available</title>
@@ -333,10 +333,10 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>Once you've added this parameter, you need to checkout the
-      corresponding tag once the repository has been cloned locally. So, if you
+      corresponding tag after the repository has been cloned locally. So, if you
       have a freestyle build, the first build step would be a command-line
       call to Git to check out the tag referenced by the
-      <literal moreinfo="none">RELEASE</literal> parameter (see <xref linkend="fig-jenkins-git-tag"/>). Of course a more portable way to do
+      <literal moreinfo="none">RELEASE</literal> parameter (see <xref linkend="fig-jenkins-git-tag"/>). Of course, a more portable way to do
       this would be to write a simple Ant or Groovy script to do the same
       thing in a more<indexterm id="I_indexterm10_d1e14322" class="endofrange" startref="ch10-git1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14324" class="endofrange" startref="ch10-git2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14326" class="endofrange" startref="ch10-git3" significance="normal"><primary/></indexterm> OS-neutral way.</para>
       <figure float="0" id="fig-jenkins-git-tag">
@@ -365,7 +365,7 @@ Finished: SUCCESS</screen>
       escaped (just like any other HTTP parameter). And if you're using a Run
       parameter, you need to provide the name of the build job
       <emphasis>and</emphasis> the run number (e.g.,
-      <literal moreinfo="none">game-of-life#197</literal>) and not just the run<indexterm id="I_indexterm10_d1e14369" class="endofrange" startref="ch10-remote1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14371" class="endofrange" startref="ch10-remote2" significance="normal"><primary/></indexterm> <phrase role="keep-together">number</phrase>.</para>
+      <literal moreinfo="none">game-of-life#197</literal>), not just the run<indexterm id="I_indexterm10_d1e14369" class="endofrange" startref="ch10-remote1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14371" class="endofrange" startref="ch10-remote2" significance="normal"><primary/></indexterm> <phrase role="keep-together">number</phrase>.</para>
     </sect2>
     <sect2>
       <title>Parameterized Build Job History</title>
@@ -395,9 +395,9 @@ Finished: SUCCESS</screen>
     build job, it's often useful to be able to pass the parameters of the
     current build job to the new one. Suppose, for example, that you have an
     application that needs to be tested against several different databases.
-    As we've seen, you could do this by setting up a parameterized build job
+    As you've seen, you could do this by setting up a parameterized build job
     that accepts the target database as a parameter. You may want to kick off a
-    series of builds, all of which will need this parameter.</para>
+    series of builds, all of which need this parameter.</para>
     <para>If you try to do this using the conventional “Build other projects”
     option in the Post-Build Actions section, it won’t work. In fact, you
     can’t trigger a parameterized build in this way.</para>
@@ -412,10 +412,10 @@ Finished: SUCCESS</screen>
     a subsequent build job, passing the current parameters to this new build
     job, which is impossible to do with a normal triggered build. The best way
     to see how this works is through an example.</para>
-    <para>In <xref linkend="fig-hudson-build-parameters-unit-test"/> we've
+    <para>In <xref linkend="fig-hudson-build-parameters-unit-test"/> we have
     an initial build job. This build job takes a single parameter,
     <literal moreinfo="none">DATABASE</literal>, which specifies the database to be used for
-    the tests. As we've seen, the user will be prompted to enter this value
+    the tests. As you've seen, the user will be prompted to enter this value
     whenever the build is started.</para>
     <figure float="0" id="fig-hudson-build-parameters-unit-test">
       <title>A parameterized build job with DATABASE parameter</title>
@@ -428,9 +428,9 @@ Finished: SUCCESS</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Now suppose you want to trigger a second build job to run more
+    <para>Now, suppose you want to trigger a second build job to run more
     comprehensive integration tests once this first build job has finished.
-    However, you need it to run the tests against the same database. We can do
+    However, you need it to run the tests against the same database. You can do
     this by setting up a parameterized trigger to start this second build job
     (see <xref linkend="fig-hudson-build-parameters-trigger"/>).</para>
     <figure float="0" id="fig-hudson-build-parameters-trigger">
@@ -444,14 +444,14 @@ Finished: SUCCESS</screen>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>In this case, we're simply passing through the current build
+    <para>In this case, you're simply passing through the current build
     parameters. This second build job will automatically be started after the
     first one, with the <literal moreinfo="none">DATABASE</literal> parameter value provided
-    by the user. You can also fine-tune the triggering policy, by telling
+    by the user. You can also fine-tune the triggering policy by telling
     Jenkins when the build should be triggered. Typically, you'd only
     trigger a downstream build after your build has completed successfully,
     but with the Parameterized Trigger plugin you can also configure builds to
-    be triggered even if the build is unstable, only when the build fails or
+    be triggered even if the build is unstable, only when the build fails, or
     ask for it to be triggered no matter what the outcome of the first build.
     You can even set up multiple triggers for the same build job.</para>
     <para>Naturally, the build job that you trigger must be a parameterized
@@ -472,9 +472,9 @@ Finished: SUCCESS</screen>
     <para>This feature actually has much broader applications than simply
     passing through the current build parameters. You can also trigger a
     parameterized build job with an arbitrary set of parameters, or use a
-    combination of parameters that were passed to the current build, and your
-    own additional ones. Or, if you have a lot of parameters, you can load
-    them from a properties file. In <xref linkend="fig-hudson-build-parameters-deploy-trigger"/>, we're passing
+    combination of parameters that were passed to the current build along with your
+    own ones. Or, if you have a lot of parameters, you can load
+    them from a properties file. In <xref linkend="fig-hudson-build-parameters-deploy-trigger"/>, you're passing
     both the current build parameters (the <literal moreinfo="none">DATABASE</literal>
     variable in this case), and an additional parameter <indexterm id="I_indexterm10_d1e14499" class="endofrange" startref="ch10-trig1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14501" class="endofrange" startref="ch10-trig2" significance="normal"><primary/></indexterm>called <literal moreinfo="none">TARGET_PLATFORM</literal>.</para>
     <figure float="0" id="fig-hudson-build-parameters-deploy-trigger">
@@ -495,8 +495,8 @@ Finished: SUCCESS</screen>
     <para>Multiconfiguration <indexterm class="startofrange" id="ch10-multi1" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary></indexterm><indexterm class="startofrange" id="ch10-multi2" significance="normal"><primary>multiconfiguration build jobs</primary></indexterm><indexterm id="I_indexterm10_d1e14528" significance="normal"><primary>parameterized build jobs</primary><seealso>multiconfiguration build jobs</seealso></indexterm>build jobs are an extremely powerful feature of Jenkins. A
     multiconfiguration build job can be thought of as a parameterized build
     job that can be automatically run with all the possible combinations of
-    parameters that it can accept. They're particularly useful for tests,
-    where you can test your application using a single build job, but under a
+    parameters that it can accept. They're particularly useful for
+    testing your application using a single build job, but under a
     wide variety of conditions (browsers, databases, and so forth).</para>
     <sect2>
       <title>Setting Up a Multiconfiguration Build</title>
@@ -532,10 +532,10 @@ Finished: SUCCESS</screen>
       <para>You can define different axes of configuration options, including
       running the build job on different slaves or on different JDKs, or
       providing your own custom properties to the build. For example, in the
-      build jobs discussed earlier, you might want to test our application for
-      different databases and different operating systems. We could define one
-      axis defining slave machines with different operating systems you wanted
-      our build to run on, and another axis defining all the possible database
+      build jobs discussed earlier, you might want to test your application for
+      different databases and different operating systems. You could define one
+      axis defining slave machines with the different operating systems you want
+      your build to run on, and another axis defining all the possible database
       values. Jenkins will then run the build job for each possible database
       and each possible operating system.</para>
       <para>Let’s look at the types of axis you can<indexterm id="I_indexterm10_d1e14581" class="endofrange" startref="ch10-mcreate1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e14583" class="endofrange" startref="ch10-mcreate2" significance="normal"><primary/></indexterm> define.</para>
@@ -544,9 +544,9 @@ Finished: SUCCESS</screen>
       <title>Configuring a Slave Axis</title>
       <para>The<indexterm class="startofrange" id="ch10-slave1" significance="normal"><primary>multiconfiguration build jobs</primary><secondary>slave axis for</secondary></indexterm><indexterm class="startofrange" id="ch10-slave2" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary><tertiary>slave axis for</tertiary></indexterm><indexterm class="startofrange" id="ch10-slave3" significance="normal"><primary>slave machines</primary><secondary sortas="multi-config">for multiconfiguration build
           jobs</secondary></indexterm> first option is to configure your build to run
-      simultaneously on different slave machines (see <xref linkend="chapter-distributed-builds"/>). Now of course, the idea of
+      simultaneously on different slave machines (see <xref linkend="chapter-distributed-builds"/>). Of course, the idea of
       having a set of slave machines is usually that you can run your build
-      job on any of them. But there are cases where it makes sense to be a
+      job on any of them. But, there might be cases where it makes sense to be a
       little more choosy. For example, you might want your tests to run on
       Windows, Mac OS X, and Linux. In this case, you create a new axis for
       your slave nodes, as shown in <xref linkend="fig-build-multi-config-slaves"/>. You can choose the nodes you
@@ -581,8 +581,8 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Configuring a JDK Axis</title>
-      <para>If you<indexterm id="I_indexterm10_d1e14643" significance="normal"><primary>multiconfiguration build jobs</primary><secondary>JDK axis for</secondary></indexterm><indexterm id="I_indexterm10_d1e14648" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary><tertiary>JDK axis for</tertiary></indexterm><indexterm id="I_indexterm10_d1e14655" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>versions of, for multiconfiguration build
-          jobs</secondary></indexterm> are deploying your application to a broad client base
+      <para>If you're<indexterm id="I_indexterm10_d1e14643" significance="normal"><primary>multiconfiguration build jobs</primary><secondary>JDK axis for</secondary></indexterm><indexterm id="I_indexterm10_d1e14648" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary><tertiary>JDK axis for</tertiary></indexterm><indexterm id="I_indexterm10_d1e14655" significance="normal"><primary>JDK (Java Development Kit)</primary><secondary>versions of, for multiconfiguration build
+          jobs</secondary></indexterm> deploying your application to a broad client base
       where you have limited control over the target environment, you may need
       to test your application using different versions of Java. In cases like
       this it's useful to be able to set up a JDK axis in a
@@ -608,7 +608,7 @@ Finished: SUCCESS</screen>
       <para>The<indexterm id="I_indexterm10_d1e14676" significance="normal"><primary>multiconfiguration build jobs</primary><secondary>custom axis for</secondary></indexterm><indexterm id="I_indexterm10_d1e14681" significance="normal"><primary>build jobs</primary><secondary>multiconfiguration</secondary><tertiary>custom axis for</tertiary></indexterm> third type of axis lets you define different ways to run
       your build job, based on arbitrary variables that you define. For
       example, you might provide a list of databases you need to test against,
-      or a list of browsers to use in your web tests. These are like
+      or a list of browsers to use in your web tests. These are similar to
       parameters for a parameterized build job, except that you provide the
       complete list of possible values, and rather than prompting for you to
       enter a value, Jenkins will run the build with <emphasis>all</emphasis>
@@ -646,7 +646,7 @@ Finished: SUCCESS</screen>
         </mediaobject>
       </figure>
       <para>By default, Jenkins will run the build jobs in parallel. However,
-      there are some cases where this isn't a good idea. For example, many
+      there are times when this isn't a good idea. For example, many
       Java web applications use Selenium or WebDriver tests running against a
       local instance of Jetty that's automatically started by the build job.
       Build scripts like this need to be specially configured to be able to
@@ -671,7 +671,7 @@ Finished: SUCCESS</screen>
       each axis. The expression must evaluate to true for the build to
       execute. For example, suppose you have a build job running web tests in
       different browsers on different operating systems (see <xref linkend="fig-hudson-build-multi-config-filters"/>). The tests need to
-      run Firefox, Internet Explorer, and Chrome, on Windows, Mac OS X, and
+      run Firefox, Internet Explorer, and Chrome on Windows, Mac OS X, and
       Linux. However, Internet Explorer only runs on Windows, and Chrome does
       not run on Linux.</para>
       <figure float="none" id="fig-hudson-build-multi-config-filters">
@@ -711,8 +711,8 @@ Finished: SUCCESS</screen>
       solution, on the other hand, might be to only run a subset of the
       combinations, possibly running the full set of combinations on a nightly
       basis. You can do this by using the special <code>index</code> variable.
-      If you include the expression <code>(index%2 == 0)</code>, for example,
-      will ensure that only one build job in two is actually executed.</para>
+      Including the expression <code>(index%2 == 0)</code>, for example,
+      ensures that only one build job in two is actually executed.</para>
       <para>You may also want certain builds to be executed before the others,
       as a sanity check. For example, you might want to run the default (and,
       theoretically, the most reliable) configuration for your application
@@ -732,11 +732,11 @@ Finished: SUCCESS</screen>
     </para>
     <para>As <indexterm class="startofrange" id="ch10-mavengen" significance="normal"><primary>Maven build jobs</primary><secondary>generating automatically</secondary></indexterm>mentioned in the previous section, the number of build jobs
     that your Jenkins server will host can vary. As the number of build jobs
-    grows, it becomes harder not only to view them in Jenkins dashboard, but
+    grows, it becomes harder not only to view them in the Jenkins dashboard, but
     to configure them as well. Imagine what would it take to configure 20 to
     50 Jenkins jobs one-by-one! In addition, many of those jobs may have
     common configuration elements, such as Maven goals or build memory
-    settings, which results in duplicated configuration and higher maintenance
+    settings, which result in duplicated configuration and higher maintenance
     overhead.</para>
     <para>For example, if you decide to run <literal moreinfo="none">mvn clean
     install</literal> instead of <literal moreinfo="none">mvn clean deploy</literal> for your
@@ -746,9 +746,9 @@ Finished: SUCCESS</screen>
     update them manually.</para>
     <para>Alternatively, you could take advantage of the fact that Jenkins
     is a simple and straightforward tool that keeps all of its definitions in
-    plain files on the disk. Indeed you can update the <filename moreinfo="none">config.xml</filename> files of your jobs directly in the
-    <filename moreinfo="none">.jenkins/jobs</filename> directory where they
-    are kept. While this approach will work, it's still far from ideal as it
+    text files. Indeed, you can update your jobs' <filename moreinfo="none">config.xml</filename> file directly in the
+    <filename moreinfo="none">.jenkins/jobs</filename> directory.
+    While this approach will work, it's still far from ideal as it
     involves quite a lot of manual picking and fragile replacements in Jenkins
     XML files.</para>
     <para>There's a third way to achieve the nirvana of massive job updates:
@@ -763,7 +763,7 @@ Finished: SUCCESS</screen>
       Maven goals, POM location, repository URLs, e-mail addresses, number of
       days to keep the logs, and so on. The plugin tries to bring you as close
       to possible to Jenkins’ usual way of configuring a job manually.</para>
-      <para>Let’s take a look on a <ulink url="http://code.google.com/p/google-guice/">Google Guice</ulink> build
+      <para>Let’s take a look at a <ulink url="http://code.google.com/p/google-guice/">Google Guice</ulink> build
       job:</para>
       <screen format="linespecific">&lt;job&gt;
     &lt;id&gt;google-guice-trunk&lt;/id&gt;
@@ -804,7 +804,7 @@ Finished: SUCCESS</screen>
       Subversion repository (defined in the
       <literal moreinfo="none">&lt;repository&gt;</literal> element), and a cron
       <literal moreinfo="none">&lt;trigger&gt;</literal> runs the job nightly at 00:00. Email
-      notifications are sent to people specified with the
+      notifications are sent to the people specified with the
       <literal moreinfo="none">&lt;mail&gt;</literal> element. This configuration also adds a
       link back to the project’s page in the description table that's
       generated automatically for each job.</para>
@@ -859,16 +859,16 @@ Finished: SUCCESS</screen>
     <sect2>
       <title>Reusing Job Configuration with Inheritance</title>
       <para>Being<indexterm class="startofrange" id="ch10-inherit" significance="normal"><primary>Maven build jobs</primary><secondary>generating automatically</secondary><tertiary>inheritance of configuration</tertiary></indexterm> able to generate Jenkins jobs using centralized
-      configuration, such as Maven POM, solves the problem of creating and
+      configuration, such as a Maven POM file, solves the problem of creating and
       updating many jobs at once. All you have to do now is modify the job
       definitions, re-run the plugin, and load definitions updated with Manage
       Jenkins<phrase role="unicode">→</phrase>“Reload Configuration from
       Disk”. This approach also has the advantage of making it easy to store
       your job configurations in your version control system, which in turn
       makes it easier to keep track of changes made to the build <phrase role="keep-together">configurations</phrase>.</para>
-      <para>But you still didn’t solve the problem of maintaining jobs that
+      <para>But, you still need to solve the problem of maintaining jobs that
       share a number of identical properties, such as Maven goals, email
-      recipients or code repository URL. For that, the Maven Jenkins Plugin
+      recipients, or code repository URLs. For that, the Maven Jenkins Plugin
       provides jobs inheritance, demonstrated in the following <phrase role="keep-together">example</phrase>:</para>
       <screen format="linespecific">&lt;jobs&gt;
     &lt;job&gt;
@@ -923,8 +923,8 @@ Finished: SUCCESS</screen>
       property, you'll need to override it with an empty value.</para>
       <para>Jobs inheritance is a very powerful concept that allows jobs to
       form hierarchical groups of any kind and for any purpose. You can group
-      your CI, nightly or release jobs this way, centralizing shared execution
-      triggers, Maven goals or mail recipients in parent jobs. This approach
+      your CI, nightly, or release jobs this way, centralizing shared execution
+      triggers, Maven goals, or mail recipients in parent jobs. This approach
       borrowed from an OOP world solves the problem of maintaining jobs
       sharing a number of identical <indexterm id="I_indexterm10_d1e14986" class="endofrange" startref="ch10-inherit" significance="normal"><primary/></indexterm>properties.</para>
     </sect2>
@@ -960,13 +960,13 @@ Finished: SUCCESS</screen>
 &lt;/job&gt;</screen>
       <para>The <literal moreinfo="none">&lt;invoke&gt;</literal> element lets you invoke
       other jobs each time the current job finishes successfully. You can
-      create a pipeline of jobs this way, making sure each job in a pipeline
-      invokes the following one. Note that if there are more than one Jenkins
-      executors available at the moment of invocation, the specified jobs will
+      create a pipeline of jobs this way, making sure each job in the pipeline
+      invokes the following one. Note that if there is more than one Jenkins
+      executor available at the moment of invocation, the specified jobs will
       start running in parallel. For serial execution you’ll need to connect
       each upstream job to a downstream one with
       <literal moreinfo="none">&lt;invoke&gt;</literal>.</para>
-      <para>By default invocation happens only when the current job is stable.
+      <para>By default, invocation happens only when the current job is stable.
       This can be modified, as shown in the following examples:</para>
       <screen format="linespecific">&lt;invoke&gt;
     &lt;jobs&gt;jobA, jobB, jobC&lt;/jobs&gt;
@@ -986,24 +986,24 @@ Finished: SUCCESS</screen>
 &lt;/invoke&gt;</screen>
       <para>The first invocation in the example above always invokes the
       downstream jobs. It can be used for a pipeline of jobs that should
-      always be executed even if some of them or their tests fail.</para>
+      always be executed even if some of them fail.</para>
       <para>The second invocation in the example above invokes downstream jobs
       even if an upstream job is unstable: the invocation happens regardless
       of test results. It can be used for a pipeline of jobs that are less
-      sensitive to tests and their failures.</para>
+      sensitive to tests and failures.</para>
       <para>The third invocation in the example above invokes downstream jobs
       only when an upstream job fails but not when it's stable or unstable.
       You can find this configuration useful when a failing job needs to
       perform additional actions beyond traditional email
       notifications.</para>
       <para><indexterm id="I_indexterm10_d1e15033" significance="normal"><primary>Artifactory plugin</primary></indexterm><indexterm id="I_indexterm10_d1e15036" significance="normal"><primary>plugins</primary><secondary>Artifactory</secondary></indexterm><indexterm id="I_indexterm10_d1e15041" significance="normal"><primary>Maven build jobs</primary><secondary>generating automatically</secondary><tertiary>Artifactory plugin with</tertiary></indexterm><ulink url="http://jfrog.org">Artifactory</ulink> is a
-      general purpose binaries repository that can be used as a Maven
+      general purpose binary repository that can be used as a Maven
       repository manager. The <ulink url="http://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin">Jenkins
       Artifactory plugin</ulink>, shown in <xref linkend="jenkins-plugin-artifactory"/>, provides a number of benefits
       for Jenkins build jobs. We've already reviewed some of them in <xref linkend="sect-builds-deploy-enterprise-repository"/>, including an
-      ability to deploy artifacts upon job completion or to send builds
-      environment info together with artifacts for their better
-      traceability.</para>
+      ability to deploy artifacts upon job completion or to send build
+      environment info together with artifacts to make them easier to
+      trace.</para>
       <figure float="0" id="jenkins-plugin-artifactory">
         <title>Artifactory Jenkins plugin configuration</title>
         <mediaobject id="I_mediaobject10_d1e15062">
@@ -1059,8 +1059,8 @@ Finished: SUCCESS</screen>
       or Ant, and invoke other jobs. They provide a convenient run-time
       environment for system scripts or any other kind of activity not readily
       available with Jenkins or one of its plugins. Using this approach, you
-      can generate Freestyle build job configuration files in a similar way to
-      the approach we've seen for Maven build jobs, which can help make your
+      can generate freestyle build job configuration files in a similar way to
+      the approach you've seen for Maven build jobs, which can help make your
       build environment more consistent <indexterm id="I_indexterm10_d1e15107" class="endofrange" startref="ch10-mavengen" significance="normal"><primary/></indexterm>and maintainable.</para>
     </sect2>
   </sect1>
@@ -1070,7 +1070,7 @@ Finished: SUCCESS</screen>
     <para>Triggering downstream build jobs is easy enough. However, when
     setting up larger and more complicated build job setups, you sometimes
     would like builds to be able to run concurrently, or possibly wait for
-    certain build jobs to finish before proceeding. In this section, we'll
+    certain build jobs to finish before proceeding. In this section, you'll
     look at techniques and plugins that can help you do this.</para>
     <sect2>
       <title>Parallel Builds in Jenkins</title>
@@ -1080,7 +1080,7 @@ Finished: SUCCESS</screen>
       nodes available.</para>
       <para>If you need to run slight variations of the same build job in
       parallel, multiconfiguration build jobs (see <xref linkend="sect-multi-configuration-build-jobs"/>) are an excellent
-      option. This can come in handy as a way of accelerating your build
+      option. They can come in handy as a way of accelerating your build
       process. A typical application of multiconfiguration build jobs in this
       context is to run integration tests in parallel. One strategy is to set
       up an integration test build job that can be run in different ways to
@@ -1094,7 +1094,7 @@ Finished: SUCCESS</screen>
       parallel, simply by listing them all in the “Build other projects” field
       (see <xref linkend="fig-hudson-build-other-projects"/>). The subsequent
       build jobs will be executed in parallel as much as possible. However, as
-      we'll see further on, this may not always be exactly what you
+      you'll see further on, this may not always be exactly what you
       need.</para>
       <figure float="none" id="fig-hudson-build-other-projects">
         <title>Triggering several other builds after a build job</title>
@@ -1139,20 +1139,20 @@ Finished: SUCCESS</screen>
       <title>Joins</title>
       <para>When <indexterm class="startofrange" id="ch10-join1" significance="normal"><primary>build jobs</primary><secondary>joins in</secondary></indexterm><indexterm class="startofrange" id="ch10-join2" significance="normal"><primary>joins, in build jobs</primary></indexterm>setting up more complicated build pipelines, you
       frequently come across situations where a build job can't proceed until
-      a number of other build jobs have been completed, but that these
+      a number of other build jobs have completed, but these
       upstream build jobs don't need to be executed sequentially. For
       example, in <xref linkend="fig-hudson-dependency-graph"/>, imagine that
       the <command moreinfo="none">phoenix-deploy-to-uat</command> build job
       actually requires three jobs to succeed before it can be executed:
       <command moreinfo="none">phoenix-compatibility-tests</command>, <command moreinfo="none">phoenix-load-tests</command>, and <command moreinfo="none">phoenix-performance-tests</command>.</para>
-      <para>We can set this up by using the Joins plugin, which you'll need
+      <para>You can set this up by using the Joins plugin, which you'll need
       to install in the usual way via the Update center. Once installed, you
       configure a join in the build job that initiates the join process (in
       our example, this would be <command moreinfo="none">phoenix-web-tests</command>). In our example, you need to
       modify the <command moreinfo="none">phoenix-web-tests</command> build
       job so that it triggers the <command moreinfo="none">phoenix-compatibility-tests</command>, <command moreinfo="none">phoenix-load-tests</command>, and <command moreinfo="none">phoenix-performance-tests</command> first, and then, if
       these three succeed, the <command moreinfo="none">phoenix-deploy-to-uat</command> build job.</para>
-      <para>We do this by simply configuring the Join Trigger field with the
+      <para>You do this by simply configuring the Join Trigger field with the
       name of the <command moreinfo="none">phoenix-deploy-to-uat</command>
       build job (see <xref linkend="fig-hudson-build-join"/>). The “Build
       other projects” field isn't modified, and still lists the build jobs to
@@ -1257,7 +1257,7 @@ Finished: SUCCESS</screen>
     specific versions of your software are selected, according to certain
     quality-related criteria, to <indexterm id="I_indexterm10_d1e15333" significance="normal"><primary>build pipelines</primary><secondary>promotions in</secondary></indexterm><indexterm id="I_indexterm10_d1e15338" significance="normal"><primary>promotions</primary></indexterm>be “promoted” to the next stage of the life cycle. This is
     known as build promotion, and the broader process is known as a build
-    pipeline. In this section, we'll look at how you can implement build
+    pipeline. In this section, you'll look at how you can implement build
     pipelines using Jenkins.</para>
     <sect2 id="jenkins-maven-releases">
       <title>Managing Maven Releases with the M2Release Plugin</title>
@@ -1280,8 +1280,8 @@ Finished: SUCCESS</screen>
       Maven version numbers in your projects. In a nutshell, it verifies,
       builds and tests your application, bumps up the version numbers, updates
       your version control system with the appropriate tags, and deploys the
-      released versions of your artifacts to your Maven repository. This is a
-      tedious task to do by hand, so the Maven Release plugin is an excellent
+      released versions of your artifacts to your Maven repository. These are
+      tedious tasks to do by hand, so the Maven Release plugin is an excellent
       way to automate things.</para>
       <para>However, the Maven Release plugin can be fickle, too. Uncommitted
       or modified local files can cause the process to fail, for example. The
@@ -1340,9 +1340,8 @@ Finished: SUCCESS</screen>
       1.1.1-SNAPSHOT as the next development version number.</para>
       <para>If you have a multimodule Maven project, you can choose to provide
       a single version number configuration for all modules, or provide a
-      different version number update for each module. Note that it's
-      generally not recommended practice to provide different version numbers
-      for different modules in a multimodule project.</para>
+      different version number update for each module, something that's
+      generally not recommended. </para>
       <figure float="none" id="fig-jenkins-perform-release">
         <title>Performing a Maven release in Jenkins</title>
         <mediaobject id="I_mediaobject10_d1e15423">
@@ -1363,7 +1362,7 @@ Finished: SUCCESS</screen>
       releasing them officially. If you're using this feature, you need to
       fine-tune your build server configuration for best results.</para>
       <para>Nexus Professional works by creating a new staging area for each
-      unique IP Address, deploy users and HTTP User agent. A given Jenkins
+      unique IP address, deploy user, and HTTP User agent. A given Jenkins
       build machine will always have the same IP address and user. However,
       you'll typically want to have a separate staging area for each build.
       The trick, then, is to configure Maven to use a unique HTTP User-Agent
@@ -1449,13 +1448,13 @@ Finished: SUCCESS</screen>
       process. This is an excellent way of ensuring a consistent and reliable
       build pipeline. For example, you can configure a build promotion process
       to trigger a build that copies a generated WAR file from the latest
-      promoted build and deploys it to a particular server. This ensures that
+      promoted build and then deploys it to a particular server. This ensures that
       you deploy precisely the right binary file, even if other builds have
       occurred since.</para>
       <para>If you're copying artifacts from a multimodule Maven build job,
       Jenkins will, by default, copy all of the artifacts from that build.
       However, often times you're only interested in one specific artifact
-      (such as the WAR artifact in a web application, for example.</para>
+      (such as the WAR file artifact in a web application, for example.</para>
       <para>This plugin is particularly useful when you need to run functional
       or performance tests on your web application. It's often a useful
       strategy to place these tests in a separate project, and not as part of
@@ -1495,8 +1494,8 @@ Finished: SUCCESS</screen>
       executed configuration will be copied into the current workspace, each
       in its own directory. Jenkins will build a directory structure using the
       axes that were used in the multiconfiguration build. For example,
-      imagine you need to produce a highly-optimized version of our product for
-      a number of different targeted databases and application servers. We
+      imagine you need to produce a highly-optimized version of your product for
+      a number of different targeted databases and application servers. You
       could do this with a multiconfiguration build job like the one
       illustrated in <xref linkend="fig-jenkins-multi-config-artifacts"/>.</para>
       <figure float="0" id="fig-jenkins-multi-config-artifacts">
@@ -1538,11 +1537,11 @@ Finished: SUCCESS</screen>
       deploy the WAR file generated to the UAT server for further manual
       testing.</para>
       <para>Let’s see how this works in practice. In the project illustrated
-      above, a default build job (<command moreinfo="none">phoenix-default</command>) runs unit and some
+      above, a default build job (<command moreinfo="none">phoenix-default</command>) runs some unit and 
       integration tests, and produces a WAR file. This WAR file is then reused
       for more extensive integration tests (in the <command moreinfo="none">phoenix-integration-tests</command> build job) and then
       for a series of automated web tests (in the <command moreinfo="none">phoenix-web-test</command> build job). If the build
-      passes the automated web tests, you would like to deploy the application
+      passes the automated web tests, you'd like to deploy the application
       to a functional testing environment where it can be tested by human
       testers. The deployment to this environment is implemented in the
       <command moreinfo="none">phoenix-test-deploy</command> build job. Once
@@ -1638,12 +1637,12 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Next you need to tell Jenkins what to do when the build is
+      <para>Next, you need to tell Jenkins what to do when the build is
       promoted. You do this by adding actions, just like in a freestyle build
       job. This makes build promotions extremely flexible, as you can add
       virtually any action available to a normal freestyle build job,
       including any additional steps made available by the plugins installed
-      on your Jenkins instance. Common actions include invoking Maven or Ant
+      in your Jenkins instance. Common actions include invoking Maven or Ant
       scripts, deploying artifacts to a Maven repository, or triggering
       another build job.</para>
       <para>One important thing to remember here is that you can't rely on
@@ -1658,9 +1657,9 @@ Finished: SUCCESS</screen>
       configured Jenkins to conserve, rather than copying the files directly
       from the workspace.</para>
       <para><indexterm id="I_indexterm10_d1e15695" significance="normal"><primary>fingerprints</primary></indexterm>For build promotion to work correctly, Jenkins needs to be
-      able to precisely link downstream build jobs to upstream ones. The more
+      able to precisely link downstream build jobs to upstream ones. The most
       accurate way to do this is by using fingerprints. In Jenkins, a
-      fingerprint is the MD5 checksum a file produced by or used in a build
+      fingerprint is the MD5 checksum of a file produced by or used in a build
       job. By matching fingerprints, Jenkins is able to identify all of the
       builds which use a particular file.</para>
       <para>In the context of build promotion, a common strategy is to build
@@ -1673,7 +1672,7 @@ Finished: SUCCESS</screen>
       to archive the generated WAR file so that it can be reused in the
       downstream project. Secondly, you need to record a fingerprint of the
       archived artifacts. You do this by ticking the “Record fingerprints of
-      files to track usage” option, and specifying the files you want to
+      files to track usage” option, specifying the files you want to
       fingerprint. A useful shortcut is simply to fingerprint all archived
       files, since these are the files that will typically be retrieved and
       reused by the downstream build jobs.</para>
@@ -1713,7 +1712,7 @@ Finished: SUCCESS</screen>
       stage of the build process, you need to retrieve it from the upstream
       <command moreinfo="none">phoenix-integration</command> build job, and
       not from the original <command moreinfo="none">phoenix-default</command>
-      build job (which may have been executed again in the meantime). So, we
+      build job (which may have been executed again in the meantime). So, you
       also need to archive the WAR file in the <command moreinfo="none">phoenix-integration</command> build job (see <xref linkend="fig-jenkins-promotion-integration-archive"/>).</para>
       <figure float="0" id="fig-jenkins-promotion-integration-archive">
         <title>Archiving the WAR file for use in the downstream job</title>
@@ -1743,15 +1742,15 @@ Finished: SUCCESS</screen>
       <para>For the build promotion process to work properly, there's one
       more important thing you need to configure in the <command moreinfo="none">phoenix-web</command> build job. As we discussed
       earlier, Jenkins needs to be able to be sure that the WAR file used in
-      these tests is the same one generated by the original build. We do this
+      these tests is the same one generated by the original build. You do this
       by activating fingerprinting on the WAR file you fetched from the
       <command moreinfo="none">phoenix-integration</command> build job (which,
-      remember, was originally built by the <command moreinfo="none">phoenix-default</command> build job). Since we've
+      remember, was originally built by the <command moreinfo="none">phoenix-default</command> build job). Since you've
       copied this WAR file into the workspace, a configuration like the one in
       <xref linkend="fig-jenkins-promotion-fingerprint-web"/> will work just
       fine.</para>
       <figure float="none" id="fig-jenkins-promotion-fingerprint-web">
-        <title>We need to determine the fingerprint of the WAR file we
+        <title>You need to determine the fingerprint of the WAR file we
         use</title>
         <mediaobject id="I_mediaobject10_d1e15799">
           <imageobject role="print">
@@ -1764,10 +1763,10 @@ Finished: SUCCESS</screen>
       </figure>
       <para>The final step is to configure the <command moreinfo="none">phoenix-deploy-to-test</command> build job to retrieve
       the last promoted WAR file (rather than just the last successful one).
-      To do this, you use the Copy Artifact plugin again, but this time we
+      To do this, you use the Copy Artifact plugin again, but this time you
       choose the “Specified by permalink” option. Here Jenkins will propose,
       among other things, the build promotion processes configured for the
-      build job you're copying from. So, in <xref linkend="fig-jenkins-copy-promoted-war"/>, we're fetching the last
+      build job you're copying from. So, in <xref linkend="fig-jenkins-copy-promoted-war"/>, you're fetching the last
       promoted WAR file build by the <command moreinfo="none">phoenix-default</command> job, which is precisely what
       you want.</para>
       <figure float="none" id="fig-jenkins-copy-promoted-war">
@@ -1781,7 +1780,7 @@ Finished: SUCCESS</screen>
           </imageobject>
         </mediaobject>
       </figure>
-      <para>Our promotion process is now ready for action. When the automated
+      <para>Your promotion process is now ready for action. When the automated
       web tests succeed for a particular build, the original build job will be
       promoted and the corresponding WAR file deployed to the test
       environment. Promoted builds are indicated by a star in the build
@@ -1804,7 +1803,7 @@ Finished: SUCCESS</screen>
       the colored star in the build history) to view the details of a
       particular build promotion, and even to rerun a promotion manually (see
       <xref linkend="fig-jenkins-promotion-details"/>). Any build promotion
-      can be triggered manually, by clicking on “Force promotion” (if this
+      can be triggered manually by clicking on “Force promotion” (if this
       build job has never been promoted) <indexterm id="I_indexterm10_d1e15838" class="endofrange" startref="ch10-promote1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e15840" class="endofrange" startref="ch10-promote2" significance="normal"><primary/></indexterm>or “Re-execute promotion” (if it has).</para>
     </sect2>
     <sect2>
@@ -1854,7 +1853,7 @@ Finished: SUCCESS</screen>
     </sect2>
     <sect2>
       <title>Build Pipelines</title>
-      <para>The<indexterm class="startofrange" id="ch10-deploy1" significance="normal"><primary>build pipelines</primary><secondary>deployment pipelines from</secondary></indexterm><indexterm class="startofrange" id="ch10-deploy2" significance="normal"><primary>deployment pipelines</primary></indexterm> final plugin we'll be looking at in this section is the
+      <para>The<indexterm class="startofrange" id="ch10-deploy1" significance="normal"><primary>build pipelines</primary><secondary>deployment pipelines from</secondary></indexterm><indexterm class="startofrange" id="ch10-deploy2" significance="normal"><primary>deployment pipelines</primary></indexterm> final plugin you'll be looking at in this section is the
       Build Pipeline plugin. The Build Pipelines plugin takes the idea of
       build promotion further, and helps you design and monitor deployment
       pipelines. A deployment pipeline is a way of orchestrating your build
@@ -1926,7 +1925,7 @@ Finished: SUCCESS</screen>
       appear on the screen at once.</para>
       <para>Once you've configured the starting point, you can return to the
       view to see the current state of your build pipeline. Jenkins displays
-      the successive related build jobs horizontally, using a color to
+      the successive related build jobs horizontally, using a specific color to
       indicate the outcome of each build (<xref linkend="fig-jenkins-build-pipeline"/>). There's a column for each
       build job in the pipeline. Whenever the initial build job kicks off, a
       new row appears on this page. As the build progresses through the
@@ -1948,7 +1947,7 @@ Finished: SUCCESS</screen>
       </figure>
       <?dbfo-need height=”1in”?>
       <para>This plugin is still relatively new, and doesn't integrate with
-      all of the other plugins we've seen here. In particular, it's really
+      all of the other plugins you've seen here. In particular, it's really
       designed for a linear build pipeline, and doesn't cope well with
       branches or parallel build jobs. Nevertheless, it does give an excellent
       global vision of a build<indexterm id="I_indexterm10_d1e15998" class="endofrange" startref="ch10-deploy1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e16000" class="endofrange" startref="ch10-deploy2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm10_d1e16002" class="endofrange" startref="ch10-pipe" significance="normal"><primary/></indexterm> pipeline.</para>
@@ -1957,10 +1956,10 @@ Finished: SUCCESS</screen>
   <sect1 id="I_sect110_d1e16005">
     <title>Conclusion</title>
     <para>CI build jobs are much more than simply the
-    scheduled execution of build scripts. In this chapter we've reviewed a
+    scheduled execution of build scripts. In this chapter you've reviewed a
     number of tools and techniques enabling you to go beyond your typical
     build jobs, combining them so that they can work together as part of a
-    larger process. We've seen how parameterized and multiconfiguration
+    larger process. You've seen how parameterized and multiconfiguration
     build jobs add an element of flexibility to ordinary build jobs by
     allowing you to run the same build job with different sets of parameters.
     Other tools help coordinate and orchestrate groups of related build jobs.
