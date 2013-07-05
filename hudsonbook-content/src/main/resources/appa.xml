@@ -5,7 +5,7 @@
   Tests</phrase></title>
   <sect1 id="sect-testing-maven">
     <title>Automating Your Tests with Maven</title>
-    <para>Maven<indexterm class="startofrange" id="appa-maven1" significance="normal"><primary>tests</primary><secondary>automating</secondary><tertiary sortas="Maven">with Maven</tertiary></indexterm><indexterm class="startofrange" id="appa-maven2" significance="normal"><primary>Maven</primary><secondary>automating tests</secondary></indexterm> is a popular open source build tool of the Java world, that
+    <para>Maven<indexterm class="startofrange" id="appa-maven1" significance="normal"><primary>tests</primary><secondary>automating</secondary><tertiary sortas="Maven">with Maven</tertiary></indexterm><indexterm class="startofrange" id="appa-maven2" significance="normal"><primary>Maven</primary><secondary>automating tests</secondary></indexterm> is a popular open source build tool in the Java world that
     makes use of practices such as declarative dependencies, standard
     directories and build life cycles, and convention over configuration to
     encourage clean, maintainable, high level build scripts. Test automation
@@ -44,7 +44,7 @@ Tests run: 38, Failures: 0, Errors: 0, Skipped: 0</screen>
     <para>In addition to executing your tests, and failing the build if any of
     the tests fail, Maven will produce a set of test reports (again, by
     default) in the <filename moreinfo="none">target/surefire-reports</filename> directory, in both XML
-    and text formats. For our CI purposes, it is the XML files that interest
+    and text formats. For our CI purposes, it's the XML files that interest
     us, as Jenkins is able to understand and analyze these files for its CI
     reporting:</para>
     <screen format="linespecific">$ <userinput moreinfo="none">ls target/surefire-reports/*.xml</userinput>
@@ -58,23 +58,23 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
     large amount of test feedback in as little time as possible. Integration
     tests are slower and more cumbersome, and often require the application to
     be built and deployed to a server (even an embedded one) to carry out more
-    complete tests. Both these sorts of tests are important, and for a
-    well-designed Continuous Integration environment, it is important to be
+    complete tests. Both these sorts of tests are important. For a
+    well-designed CI environment, it is important to be
     able to distinguish between them. The build should ensure that all of the
     unit tests are run initially—if a unit test fails, developers should be
     notified very quickly. Only if all of the unit tests pass is it worthwhile
     undertaking the slower and more heavyweight integration tests.</para>
     <para>In Maven, integration tests are executed during the <command moreinfo="none">integration-test</command> life cycle phase, which you can
     invoke by running <literal moreinfo="none">mvn integration-test</literal> or (more simply)
-    <literal moreinfo="none">mvn verify</literal>. During this phase, it is easy to configure
+    <literal moreinfo="none">mvn verify</literal>. During this phase, it's easy to configure
     Maven to start up your web application on an embedded Jetty web server, or
     to package and deploy your application to a test server, for example. Your
     integration tests can then be executed against the running application.
-    The tricky part however is telling Maven how to distinguish between your
+    The tricky part, however, is telling Maven how to distinguish between your
     unit tests and your integration tests, so that they will only be executed
     when a running version of the application is available.</para>
-    <para>There are several ways to do this, but at the time of writing there
-    is no official standard approach used across all Maven projects. One
+    <para>There are several ways to do this, but at the time of writing there's
+    no official standard approach used across all Maven projects. One
     simple strategy is to use naming conventions: all integration tests might
     end in “IntegrationTest”, or be placed in a particular package. The
     following class uses one such convention:</para>
@@ -152,8 +152,8 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
     illustrated in <xref linkend="fig-hudson-testing-sample-project"/>, all
     of the functional tests have been placed in a package called
     <command moreinfo="none">webtests</command>. There's no constraint on the names of the
-    tests, but we are using Page Objects to model our application user
-    interface, so we also make sure that no classes in the
+    tests, but you're using Page Objects to model your application user
+    interface, so you also make sure that no classes in the
     <command moreinfo="none">pages</command> package (underneath the
     <command moreinfo="none">web</command><phrase role="keep-together"><command moreinfo="none">tests</command></phrase> package) are
     treated as tests.</para>
@@ -168,7 +168,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
         </imageobject>
       </mediaobject>
     </figure>
-    <para>In Maven, we could do this with the following configuration:</para>
+    <para>In Maven, you could do this with the following configuration:</para>
     <programlisting id="I_programlisting_d1e18488" format="linespecific">      &lt;plugin&gt;
         &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
         &lt;configuration&gt;
@@ -207,7 +207,7 @@ target/surefire-reports/TEST-com.wakaleo.training.tweeter.domain.TweeterUserTest
         &lt;/executions&gt;
       &lt;/plugin&gt;</programlisting>
     <para>TestNG currently has more flexible support for test groups than
-    JUnit. If you are using TestNG, you can identify your integration tests
+    JUnit. If you're using TestNG, you can identify your integration tests
     using TestNG Groups. In TestNG, test classes or test methods can be tagged
     using the <literal moreinfo="none">groups</literal> attribute of the
     <literal moreinfo="none">@Test</literal> annotation, as shown here:</para>
@@ -257,7 +257,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
       ...</programlisting>
     <calloutlist>
       <callout arearefs="maven-it-ng-1">
-        <para>Do not run the integration-tests group during the test
+        <para>Don't run the integration-tests group during the test
         phase.</para>
       </callout>
       <callout arearefs="maven-it-ng-2">
@@ -267,9 +267,9 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     </calloutlist>
     <para>It often makes good sense to run your tests in parallel where
     possible, as it can speed up your tests significantly (see <xref linkend="sect-tests-too-slow"/>). Parallel tests are particularly
-    intensive with slow-running tests that use a lot of IO, disk or network
-    access (such as web tests), which is convenient, as these are precisely
-    the sort of tests we usually want to speed up.</para>
+    intensive when doing lots of IO, disk, or network
+    access (such as web tests). These are precisely
+    the sort of tests you want to speed up.</para>
     <para>TestNG provides good support for parallel tests. For instance, using
     TestNG, you could configure your test methods to run in parallel on ten
     concurrent threads like this:</para>
@@ -288,10 +288,10 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
     <para>You can also set the <literal moreinfo="none">&lt;parallel&gt;</literal>
     configuration item to <literal moreinfo="none">classes</literal> instead of
     <literal moreinfo="none">methods</literal>, which will try to run the test classes in
-    parallel, rather than each method. This might be slower or faster,
+    parallel, rather than running each method serially. This might be slower or faster,
     depending on the number of test classes you have, but might be safer for
     some test cases not designed with concurrency in mind.</para>
-    <para>Mileage will vary, so you should experiment with the numbers to get
+    <para>You mileage will vary, so you should experiment with the numbers to get
     the <indexterm id="I_indexterm_d1e18539" class="endofrange" startref="appa-maven1" significance="normal"><primary/></indexterm><indexterm id="I_indexterm_d1e18541" class="endofrange" startref="appa-maven2" significance="normal"><primary/></indexterm>best results.</para>
   </sect1>
   <sect1 id="sect-testing-ant">
@@ -335,16 +335,16 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 &lt;/target&gt;</programlisting>
     <calloutlist>
       <callout arearefs="junit-ant-1">
-        <para>We need to set up a classpath containing the <filename moreinfo="none">junit</filename> and <filename moreinfo="none">junit-ant</filename> JAR files, as well as the
+        <para>You need to set up a classpath containing the <filename moreinfo="none">junit</filename> and <filename moreinfo="none">junit-ant</filename> JAR files, as well as the
         application classes and any other dependencies the application needs
         to compile and run.</para>
       </callout>
       <callout arearefs="junit-ant-2">
         <para>The tests themselves are run here. The
         <literal moreinfo="none">haltonfailure</literal> option is used to make the build fail
-        immediately if any tests fail. In a Continuous Integration
-        environment, this is not exactly what we want, as we need to get the
-        results for any subsequent tests as well. So we set this value to
+        immediately if any tests fail. In a CI
+        environment, this isn't exactly what you want, as you need to get the
+        results for any subsequent tests as well. So, you set this value to
         <literal moreinfo="none">no</literal> and use the <literal moreinfo="none">failureproperty</literal>
         option to force the build to fail once all of the tests have
         finished.</para>
@@ -356,11 +356,11 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
       </callout>
       <callout arearefs="junit-ant-4">
         <para>The Junit Ant task can produce both text and XML reports, but
-        for Jenkins, we only need the XML ones.</para>
+        for Jenkins you only need the XML ones.</para>
       </callout>
       <callout arearefs="junit-ant-5">
         <para>The <literal moreinfo="none">fork</literal> option runs your tests in a separate
-        JVM. This is generally a good idea, as it can avoid classloader issues
+        JVM. This is generally a good idea, as doing so can avoid classloader issues
         related to conflicts with Ant’s own libraries. However, the default
         behaviour of the JUnit Ant task is to create a new JVM for each test,
         which slows down the tests significantly. The
@@ -368,7 +368,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
         new JVM for each batch of tests.</para>
       </callout>
       <callout arearefs="junit-ant-6">
-        <para>You define the tests you want to run in a fileset element. This
+        <para>Define the tests you want to run in a fileset element. This
         provides a great deal of flexibility, and makes it easy to define
         other targets for different subsets of tests (integration, web, and so
         on).</para>
@@ -407,7 +407,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
 &lt;/target&gt;</programlisting>
     <para>TestNG is a very flexible testing library, and the TestNG task has
     many more options than this. For example, to only run tests defined as
-    part of the “integration-test” group that we saw earlier, we could do
+    part of the “integration-test” group that you saw earlier, you could do
     this:</para>
     <programlisting id="I_programlisting_d1e18636" format="linespecific">&lt;target name="integration-test" depends="test-compile"&gt;
   &lt;testng classpathref="test.classpath"
@@ -421,7 +421,7 @@ public void cashWithdrawalShouldDeductSumFromBalance() throws Exception {
   &lt;/testng&gt;
   &lt;fail message="TEST FAILURE" if="failed" /&gt;
 &lt;/target&gt;</programlisting>
-    <para>Or to run your tests in parallel, using four concurrent threads, you
+    <para>Or, to run your tests in parallel, using four concurrent threads, you
     <indexterm id="I_indexterm_d1e18643" class="endofrange" startref="appa-ant2" significance="normal"><primary/></indexterm><indexterm id="I_indexterm_d1e18645" class="endofrange" startref="appa-ant3" significance="normal"><primary/></indexterm>could do this:</para>
     <programlisting id="I_programlisting_d1e18648" format="linespecific">&lt;target name="integration-test" depends="test-compile"&gt;
   &lt;testng classpathref="test.classpath"
